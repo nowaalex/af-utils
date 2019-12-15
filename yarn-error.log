@@ -1,0 +1,68 @@
+Arguments: 
+  /usr/bin/node /usr/share/yarn/bin/yarn.js
+
+PATH: 
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.21.1
+
+Node version: 
+  10.17.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/alex/GIT/af-react-table/package.json: Unexpected token } in JSON at position 295
+      at JSON.parse (<anonymous>)
+      at /usr/share/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/share/yarn/lib/cli.js:310:30)
+      at /usr/share/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+      "name": "af-react-table",
+      "version": "1.0.0",
+      "repository": "git@github.com:nowaalex/af-react-table.git",
+      "author": "alex <nowaalex@gmail.com>",
+      "license": "MIT",
+      "sideEffects": false,
+      "scripts": {
+        "live": "webpack-dev-server --config webpack.config.js",
+      },
+      "devDependencies": {
+        "@babel/core": "^7.7.5",
+        "@babel/plugin-proposal-class-properties": "^7.7.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.7.4",
+        "@babel/plugin-syntax-dynamic-import": "^7.7.4",
+        "@babel/preset-env": "^7.7.6",
+        "@babel/preset-react": "^7.7.4",
+        "@emotion/babel-preset-css-prop": "^10.0.23",
+        "babel-plugin-emotion": "^10.0.23",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+        "glob": "^7.1.6",
+        "globby": "^10.0.1",
+        "html-webpack-plugin": "^4.0.0-beta.9",
+        "jest": "^24.9.0",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.9.0"
+      },
+      "dependencies": {
+        "@emotion/core": "^10.0.22",
+        "@emotion/styled": "^10.0.23",
+        "babel-loader": "^8.0.6",
+        "faker": "^4.1.0",
+        "lodash": "^4.17.15",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0"
+      }
+    }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
