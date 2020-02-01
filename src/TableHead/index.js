@@ -1,15 +1,14 @@
 import React, { memo, useMemo } from "react";
+import Colgroup from "../Colgroup";
 import areEqualBy from "../utils/areEqualBy";
 
 const MEMO_PROPS = [
     "bodyScrollLeft",
     "tbodyColumnWidths",
-    "height",
     "width",
     "TableHeaderWrapperComponent",
     "HeaderRowComponent",
     "HeaderCellComponent",
-    "VirtualizedTableCellHeightControllerComponent",
     "TheadComponent",
     "columns",
     "getHeaderCellData",
@@ -19,12 +18,10 @@ const MEMO_PROPS = [
 const TableHead = memo(({
     bodyScrollLeft,
     tbodyColumnWidths,
-    height,
     width,
     TableHeaderWrapperComponent,
     HeaderRowComponent,
     HeaderCellComponent,
-    VirtualizedTableCellHeightControllerComponent,
     TheadComponent,
     columns,
     getHeaderCellData,
@@ -35,25 +32,10 @@ const TableHead = memo(({
         const cellData = getHeaderCellData( column, j, columns );
         return (
             <HeaderCellComponent key={column.dataKey}>
-                { height ? (
-                    <VirtualizedTableCellHeightControllerComponent style={{ height, maxHeight: height }}>
-                        {cellData}
-                    </VirtualizedTableCellHeightControllerComponent>
-                ) : cellData}
+                {cellData}
             </HeaderCellComponent>
-        )
-    }), [ columns, getHeaderCellData, HeaderCellComponent, height ]);
-
-    const colGroupComponent = useMemo(() => (
-        <colgroup>
-            {columns.map(({ dataKey, background, visibility, border }, i ) => <col key={dataKey} style={{
-                width: tbodyColumnWidths[ i ],
-                background,
-                visibility,
-                border
-            }} /> )}
-        </colgroup>
-    ), [ tbodyColumnWidths, columns ]);
+        );
+    }), [ columns, getHeaderCellData, HeaderCellComponent ]);
 
     const tableComponentStyle = useMemo(() => ({
         position: "relative",
@@ -62,12 +44,12 @@ const TableHead = memo(({
         width
     }), [ bodyScrollLeft, width ]);
 
-    const wrapperStyle = useMemo(() => ({ width, height }), [ width, height ]);
+    const wrapperStyle = useMemo(() => ({ width }), [ width ]);
 
     return (
         <TableHeaderWrapperComponent style={wrapperStyle}>
             <TableComponent style={tableComponentStyle}>
-                {colGroupComponent}
+                <Colgroup columns={columns} widthsArray={tbodyColumnWidths} />
                 <TheadComponent>
                     <HeaderRowComponent>
                         {cells}

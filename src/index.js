@@ -1,10 +1,11 @@
-import React, { useEffect, memo, useCallback, useMemo, useRef, useState, useReducer } from "react";
+import React, { useEffect, memo, useMemo, useState } from "react";
+import styled from "@emotion/styled";
+import useResizeObserver from "use-resize-observer";
 import TableBody from "./TableBody";
 import TableHead from "./TableHead";
-import styled from "@emotion/styled";
 import getScrollBarWidth from "./utils/getScrollbarWidth";
-import useThrottledCallback from "./utils/useThrottledCallback";
-import areArraysEqual from "./utils/areArraysEqual";
+import useSyncedColumnWidths from "./hooks/useSyncedColumnWidths";
+import useScrollSync from "./hooks/useScrollSync";
 
 const WrapperComponent = styled.div`
     display: flex;
@@ -29,14 +30,13 @@ const EmptyDataRowComponentDefault = memo(({ RowComponent, CellComponent, column
     </RowComponent>
 ));
 
-export const mapCellsDefault = ( columns, rowData, CellComponent, getCellData ) => columns.map(( column, columnIndex, columns ) => {
-    const cellData = getCellData( rowData, column, columnIndex, columns );
-    const transformCellData = column.transformCellData;
-    const FinalCellComponent = column.CellComponent || CellComponent;
+export const mapCellsDefault = ( columns, rowData, DefaultCellComponent, getCellData ) => columns.map(( column, columnIndex, curColumns ) => {
+    const cellData = getCellData( rowData, column, columnIndex, curColumns );
+    const { transformCellData, dataKey, CellComponent = DefaultCellComponent } = column;
     return (
-        <FinalCellComponent key={column.dataKey}>
+        <CellComponent key={dataKey}>
             {transformCellData?transformCellData(cellData,rowData,columnIndex):cellData}
-        </FinalCellComponent>
+        </CellComponent>
     );
 });
 
@@ -72,20 +72,13 @@ export const getVisibleRowsDefault = (
         ));
     }
     return result;
-}
+};
 
 export const getCellDataDefault = ( rowData, column ) => rowData[ column.dataKey ];
 
 export const getRowExtraPropsDefault = () => undefined;
 
 export const getHeaderCellDataDefault = column => column.label;
-
-export const tbodyColumnWidthsReducer = ( curWidths, newWidths ) => areArraysEqual( curWidths, newWidths ) ? curWidths : newWidths;
-
-export const HeaderCellComponentDefault = styled.th`
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
 
 const Table = memo(({
     height,
@@ -94,21 +87,16 @@ const Table = memo(({
     rowCount,
     columns,
     getRowData,
-
-    /* must provide only if virtualizedScroll = true */
-    headerHeight,
-    rowHeight,
-    
     getRowKey,
-    getVisibleRows = getVisibleRowsDefault,
     rowsChangeHash,
+    variableRowHeights = false,
+    approximateRowHeight = 60,
+    getVisibleRows = getVisibleRowsDefault,
     getRowExtraProps = getRowExtraPropsDefault,
     mapCells = mapCellsDefault,
     getCellData = getCellDataDefault,
     getHeaderCellData = getHeaderCellDataDefault,
-    virtualizedScroll = false,
     overscanRowsCount = 5,
-    measureCellWidthThrottleInterval = 1000,
     bodyTableLayoutFixed = false,
 
     /* height cannot be set on tr. so we must provide a div inside td to give height to it. */
@@ -121,62 +109,34 @@ const Table = memo(({
     RowComponent = "tr",
     CellComponent = "td",
     HeaderRowComponent = "tr",
-    HeaderCellComponent = HeaderCellComponentDefault,
+    HeaderCellComponent = "th",
 
     EmptyDataRowComponent = EmptyDataRowComponentDefault,
 
     ...props
 }) => {
-    const tableBodyRef = useRef();
+    const { ref: tableBodyRef, height: tbodyHeight = 1 } = useResizeObserver();
 
-    const [ bodyScrollTop, setBodyScrollTop ] = useState( 0 );
-    const [ bodyScrollLeft, setBodyScrollLeft ] = useState( 0 );
+    const { bodyScrollLeft, startIndex, endIndex, bodyScrollTop, bodyScrollHandler } = useScrollSync( tableBodyRef, tbodyHeight, approximateRowHeight, overscanRowsCount );
+    
     const [ cssDimensionsDifference, setCssDimensionsDifference ] = useState( 0 ); 
 
     const [ currentHorizontalScrollbarOffset, setHorizontalScrollBarOffset ] = useState( 0 );
 
-    const [ tbodyColumnWidths, setTdWidths ] = useReducer(
-        tbodyColumnWidthsReducer,
-        columns,
-        columns => columns.map( c => c.width || "auto" )
-    );
+
+    const tbodyColumnWidths = useSyncedColumnWidths( tableBodyRef, columns );
+
 
     useEffect(() => {
         const { scrollHeight, clientHeight } = tableBodyRef.current;
         setHorizontalScrollBarOffset( scrollHeight > clientHeight ? getScrollBarWidth() : 0 );
-    }, [ rowHeight, rowCount, height, headerHeight ]);
+    }, [ rowCount, height ]);
 
-    const bodyScrollHandler = useCallback( e => {
-        const { scrollTop, scrollLeft } = e.target;
-        setBodyScrollLeft( scrollLeft );
-        setBodyScrollTop( scrollTop );
-    }, []);
-
-    const measureCellWidthsThrottled = useThrottledCallback(() => {
-        const tbody = tableBodyRef.current.getElementsByTagName( "tbody" )[ 0 ];
-        if( !tbody ){
-            throw new Error( "cannot find tbody element inside TableBody" );
-        }
-        for( let tr of tbody.children ){
-            if( tr.children.length === columns.length ){
-                /* we must select "correct" rows without colspans, etc. */
-                const pixelWidths = [];
-                for( let td of tr.children ){
-                    pixelWidths.push( td.offsetWidth );
-                }
-                setTdWidths( pixelWidths );
-                break;
-            }
-        }
-    }, measureCellWidthThrottleInterval, [ measureCellWidthThrottleInterval, columns.length ]);
-
-    useEffect( measureCellWidthsThrottled );
-
-    /*useEffect(() => {
+    /* useEffect(() => {
         const bodyTable = tableBodyRef.current.getElementsByTagName( "table" )[ 0 ];
         const { borderSpacing } = getComputedStyle( bodyTable );
         let [ horizontalSpacing, verticalSpacing ] 
-    }, []);*/
+    }, []); */
 
     const wrapperStyle = useMemo(() => ({
         ...style,
@@ -189,13 +149,10 @@ const Table = memo(({
             <TableHead
                 bodyScrollLeft={bodyScrollLeft}
                 tbodyColumnWidths={tbodyColumnWidths}
-                height={headerHeight}
                 width={width-currentHorizontalScrollbarOffset}
                 TableHeaderWrapperComponent={TableHeaderWrapperComponent}
                 HeaderRowComponent={HeaderRowComponent}
                 HeaderCellComponent={HeaderCellComponent}
-                virtualizedScroll={virtualizedScroll}
-                VirtualizedTableCellHeightControllerComponent={VirtualizedTableCellHeightControllerComponent}
                 TheadComponent={TheadComponent}
                 TableComponent={TableComponent}
                 columns={columns}
@@ -203,11 +160,10 @@ const Table = memo(({
             />
             <TableBody
                 ref={tableBodyRef}
-                height={headerHeight ? height - headerHeight : undefined}
+                height={tbodyHeight}
                 width={width}
                 onScroll={bodyScrollHandler}
                 bodyTableLayoutFixed={bodyTableLayoutFixed}
-                virtualizedScroll={virtualizedScroll}
                 RowComponent={RowComponent}
                 CellComponent={CellComponent}
                 VirtualizedTableCellHeightControllerComponent={VirtualizedTableCellHeightControllerComponent}
@@ -217,18 +173,19 @@ const Table = memo(({
                 EmptyDataRowComponent={EmptyDataRowComponent}
                 currentHorizontalScrollbarOffset={currentHorizontalScrollbarOffset}
                 rowsChangeHash={rowsChangeHash}
-                rowHeight={rowHeight}
                 getVisibleRows={getVisibleRows}
                 getRowData={getRowData}
                 getRowKey={getRowKey}
                 getRowExtraProps={getRowExtraProps}
                 columns={columns}
+                startIndex={startIndex}
+                endIndex={endIndex}
                 rowCount={rowCount}
                 mapCells={mapCells}
                 getCellData={getCellData}
             />
         </WrapperComponent>
     );
-})
+});
 
 export default Table;

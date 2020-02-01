@@ -12,7 +12,7 @@ const getTableColsAndData = () => {
     const columns = times( random( 9, 12 ), i => ({
         dataKey: `dataKey_${i}`,
         label: Faker.name.firstName(),
-        width: i === 0 ? 200 : "auto",
+        width: 200
         //background: random( 0, 7 ) > 2 ? `rgb(${random(170,220)}, ${random(170,220)}, ${random(170,220)})` : undefined
     }));
 
@@ -21,7 +21,7 @@ const getTableColsAndData = () => {
         return r;
     }, {});
 
-    const rows = times( random( 300, 500 ), getRow );
+    const rows = times( random( 3000, 5000 ), getRow );
 
     const getRowData = index => rows[ index ];
 
@@ -30,10 +30,9 @@ const getTableColsAndData = () => {
         columns,
         getRowData
     };
-}
+};
 
 const A = () => (
-    <Table virtualizedScroll {...getTableColsAndData()} width={800} height={600} />
+    <Table virtualizedScroll {...getTableColsAndData()} width={1300} height={600} />
 );
-
 render( <A />, rootNode );

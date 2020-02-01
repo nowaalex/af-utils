@@ -1,4 +1,5 @@
 import React, { forwardRef, useMemo, memo } from "react";
+import Colgroup from "../Colgroup";
 import areEqualBy from "../utils/areEqualBy";
 
 const MEMO_PROPS = [
@@ -15,7 +16,6 @@ const MEMO_PROPS = [
     "EmptyDataRowComponent",
     "currentHorizontalScrollbarOffset",
     "rowsChangeHash",
-    "rowHeight",
     "getVisibleRows",
     "getRowData",
     "getRowKey",
@@ -38,7 +38,6 @@ const TableBody = memo(forwardRef(({
     bodyTableLayoutFixed,
     rowsChangeHash,
     onScroll,
-    rowHeight,
     virtualizedScroll,
     getVisibleRows,
     getRowData,
@@ -66,25 +65,6 @@ const TableBody = memo(forwardRef(({
         EmptyDataRowComponent
     );
 
-    if( process.env.NODE_ENV !== "production" ){
-        if( virtualizedScroll ){
-            if( visibleRows.filter( row => !!row ).length !== rowCount ){
-                throw new Error( `If virtualized scroll is enabled, visibleRows.length must be equal { rangeToIndex - rangeFromIndex }` );
-            }
-        }
-    }
-
-    const colGroupComponent = useMemo(() => (
-        <colgroup>
-            {columns.map(({ dataKey, background, visibility, border, width }) => <col key={dataKey} style={{
-                width,
-                background,
-                visibility,
-                border
-            }} /> )}
-        </colgroup>
-    ), [ columns ]);
-
     const wrapperStyle = useMemo(() => ({ width, height }), [ width, height ]);
 
     const tableStyle = useMemo(() => ({
@@ -95,7 +75,7 @@ const TableBody = memo(forwardRef(({
     return (
         <TableBodyWrapperComponent style={wrapperStyle} ref={ref} onScroll={onScroll}>
             <TableComponent style={tableStyle}>
-                {colGroupComponent}
+                <Colgroup columns={columns} />
                 <TbodyComponent>
                     {visibleRows}
                 </TbodyComponent>
