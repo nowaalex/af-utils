@@ -1,13 +1,14 @@
-import React, { useMemo, memo } from "react";
+import React, { memo } from "react";
 import { css } from "@emotion/core";
-import Colgroup from "../Colgroup";
+import Colgroup from "../TbodyColgroup";
 import { useApiPlugin } from "../useApi";
 
 const SUBSCRIBE_EVENTS = [
     "widget-height-changed",
     "total-rows-quantity-changed",
     "scroll-top-changed",
-    "visible-rows-range-changed"
+    "visible-rows-range-changed",
+    "columns-changed"
 ];
 
 const wrapperCss = css`
@@ -28,7 +29,6 @@ const TableBody = memo(({
     getRowData,
     getRowKey,
     getRowExtraProps,
-    columns,
     mapCells,
     getCellData,
    // currentHorizontalScrollbarOffset
@@ -39,7 +39,7 @@ const TableBody = memo(({
     const visibleRows = getVisibleRows(
         API.startIndex,
         API.endIndex,
-        columns,
+        API.columns,
         getRowData,
         getRowKey,
         getRowExtraProps,
@@ -61,7 +61,7 @@ const TableBody = memo(({
     return (
         <div css={wrapperCss} style={wrapperStyle} ref={wrapperRef} onScroll={onScroll}>
             <table style={tableStyle}>
-                <Colgroup columns={columns} />
+                <Colgroup />
                 <tbody ref={tbodyRef}>
                     {visibleRows}
                 </tbody>

@@ -74,6 +74,7 @@ class Table extends React.PureComponent {
     tableBodyRef = React.createRef();
 
     Data = new VirtualRowsDataStore({
+        columns: this.props.columns,
         getTbodyDomNode: () => this.tableBodyRef.current,
         totalRows: this.props.rowCount,
         approximateRowHeight: this.props.approximateRowHeight
@@ -86,6 +87,7 @@ class Table extends React.PureComponent {
                 for (let entry of entries) {
                     const { width, height } = entry.contentRect;
                     this.Data.setWidgetHeight( height );
+                    this.Data.setWidgetWidth( width );
                 }
             });
             this.rsz.observe( this.tableBodyWrapperRef.current );
@@ -100,9 +102,12 @@ class Table extends React.PureComponent {
     }
 
     componentDidUpdate( prevProps ){
-        const { rowCount } = this.props;
+        const { rowCount, columns } = this.props;
         if( rowCount !== prevProps.rowCount ){
             this.Data.setTotalRows( rowCount );
+        }
+        if( columns !== prevProps.columns ){
+            this.Data.setColumns( columns );
         }
     }
 
@@ -140,10 +145,7 @@ class Table extends React.PureComponent {
         return (
             <Context.Provider value={this.Data}>
                 <div css={wrapperCss} {...props}>
-                    <TableHead
-                        columns={columns}
-                        getHeaderCellData={getHeaderCellData}
-                    />
+                    <TableHead getHeaderCellData={getHeaderCellData} />
                     <TableBody
                         wrapperRef={this.tableBodyWrapperRef}
                         tbodyRef={this.tableBodyRef}
@@ -156,7 +158,6 @@ class Table extends React.PureComponent {
                         getRowData={getRowData}
                         getRowKey={getRowKey}
                         getRowExtraProps={getRowExtraProps}
-                        columns={columns}
                         mapCells={mapCells}
                         getCellData={getCellData}
                     />

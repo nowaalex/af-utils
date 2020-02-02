@@ -1,6 +1,12 @@
 import React, { memo, useMemo } from "react";
 import { css } from "@emotion/core";
-import Colgroup from "../Colgroup";
+import Colgroup from "../TheadColgroup";
+import { useApiPlugin } from "../useApi";
+
+const SUBSCRIBE_EVENTS = [
+    "columns-changed",
+    "scroll-left-changed"
+];
 
 const wrapperCss = css`
     flex: 0 0 auto;
@@ -8,38 +14,28 @@ const wrapperCss = css`
 `;
 
 const TableHead = memo(({
-    bodyScrollLeft,
-    tbodyColumnWidths,
-    width,
-    columns,
     getHeaderCellData,
 }) => {
 
-    const cells = useMemo(() => columns.map(( column, j, columns ) => {
-        const cellData = getHeaderCellData( column, j, columns );
-        return (
-            <th key={column.dataKey}>
-                {cellData}
-            </th>
-        );
-    }), [ columns, getHeaderCellData ]);
+    const { columns, scrollLeft } = useApiPlugin( SUBSCRIBE_EVENTS );
 
     const tableComponentStyle = useMemo(() => ({
         position: "relative",
-        right: bodyScrollLeft,
+        right: scrollLeft,
         tableLayout: "fixed",
-        width
-    }), [ bodyScrollLeft, width ]);
-
-    const wrapperStyle = useMemo(() => ({ width }), [ width ]);
+    }), [ scrollLeft ]);
 
     return (
-        <div css={wrapperCss} style={wrapperStyle}>
+        <div css={wrapperCss}>
             <table style={tableComponentStyle}>
-                <Colgroup columns={columns} widthsArray={tbodyColumnWidths} />
+                <Colgroup />
                 <thead>
                     <tr>
-                        {cells}
+                        {columns.map(( column, j, columns ) => (
+                            <th key={column.dataKey}>
+                                {getHeaderCellData( column, j, columns )}
+                            </th>
+                        ))}
                     </tr>
                 </thead>
             </table>
