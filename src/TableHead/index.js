@@ -5,19 +5,24 @@ import { useApiPlugin } from "../useApi";
 
 const SUBSCRIBE_EVENTS = [
     "columns-changed",
-    "scroll-left-changed"
+    "scroll-left-changed",
+    "column-widths-changed"
 ];
 
 const wrapperCss = css`
     flex: 0 0 auto;
     overflow: hidden;
+    th {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 `;
 
 const TableHead = memo(({
     getHeaderCellData,
 }) => {
 
-    const { columns, scrollLeft } = useApiPlugin( SUBSCRIBE_EVENTS );
+    const { columns, scrollLeft, tbodyColumnWidths } = useApiPlugin( SUBSCRIBE_EVENTS );
 
     const tableComponentStyle = useMemo(() => ({
         position: "relative",
@@ -32,7 +37,7 @@ const TableHead = memo(({
                 <thead>
                     <tr>
                         {columns.map(( column, j, columns ) => (
-                            <th key={column.dataKey}>
+                            <th key={column.dataKey} style={{ maxWidth: tbodyColumnWidths[ j ] || "auto" }}>
                                 {getHeaderCellData( column, j, columns )}
                             </th>
                         ))}
