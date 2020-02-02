@@ -1,59 +1,44 @@
-import React, { forwardRef, useMemo, memo } from "react";
+import React, { useMemo, memo } from "react";
+import { css } from "@emotion/core";
 import Colgroup from "../Colgroup";
-import areEqualBy from "../utils/areEqualBy";
+import { useApiPlugin } from "../useApi";
 
-const MEMO_PROPS = [
-    "height",
-    "width",
-    "onScroll",
-    "virtualizedScroll",
-    "RowComponent",
-    "CellComponent",
-    "VirtualizedTableCellHeightControllerComponent",
-    "TbodyComponent",
-    "TableComponent",
-    "TableBodyWrapperComponent",
-    "EmptyDataRowComponent",
-    "currentHorizontalScrollbarOffset",
-    "rowsChangeHash",
-    "getVisibleRows",
-    "getRowData",
-    "getRowKey",
-    "getRowExtraProps",
-    "columns",
-    "rowCount",
-    "mapCells",
-    "getCellData",
-    "bodyTableLayoutFixed"
+const SUBSCRIBE_EVENTS = [
+    "widget-height-changed",
+    "total-rows-quantity-changed",
+    "scroll-top-changed",
+    "visible-rows-range-changed"
 ];
 
-const TableBody = memo(forwardRef(({
-    height,
-    width,
+const wrapperCss = css`
+    overflow: auto;
+    min-height: 0;
+    flex: 1 1 auto;
+`;
+
+const TableBody = memo(({
+    wrapperRef,
+    tbodyRef,
     RowComponent,
     CellComponent,
-    TbodyComponent,
-    TableBodyWrapperComponent,
     EmptyDataRowComponent,
     bodyTableLayoutFixed,
-    rowsChangeHash,
     onScroll,
-    virtualizedScroll,
     getVisibleRows,
     getRowData,
     getRowKey,
     getRowExtraProps,
     columns,
-    rowCount,
     mapCells,
     getCellData,
-    TableComponent,
-    currentHorizontalScrollbarOffset
-}, ref ) => {
+   // currentHorizontalScrollbarOffset
+}) => {
+
+    const API = useApiPlugin( SUBSCRIBE_EVENTS );
 
     const visibleRows = getVisibleRows(
-        0,
-        rowCount,
+        API.startIndex,
+        API.endIndex,
         columns,
         getRowData,
         getRowKey,
@@ -65,23 +50,24 @@ const TableBody = memo(forwardRef(({
         EmptyDataRowComponent
     );
 
-    const wrapperStyle = useMemo(() => ({ width, height }), [ width, height ]);
+    const wrapperStyle = { height: API.widgetHeight };
 
-    const tableStyle = useMemo(() => ({
+    const tableStyle = {
         tableLayout: bodyTableLayoutFixed ? "fixed" : "auto",
-        width: width - currentHorizontalScrollbarOffset
-    }), [ width, currentHorizontalScrollbarOffset, bodyTableLayoutFixed ]);
+        marginTop: API.virtualTopOffset,
+        marginBottom: API.virtualBottomOffset
+    };
     
     return (
-        <TableBodyWrapperComponent style={wrapperStyle} ref={ref} onScroll={onScroll}>
-            <TableComponent style={tableStyle}>
+        <div css={wrapperCss} style={wrapperStyle} ref={wrapperRef} onScroll={onScroll}>
+            <table style={tableStyle}>
                 <Colgroup columns={columns} />
-                <TbodyComponent>
+                <tbody ref={tbodyRef}>
                     {visibleRows}
-                </TbodyComponent>
-            </TableComponent>
-        </TableBodyWrapperComponent>
+                </tbody>
+            </table>
+        </div>
     );
-}), ( p1, p2 ) => areEqualBy( MEMO_PROPS, p1, p2 ) );
+});
 
 export default TableBody;

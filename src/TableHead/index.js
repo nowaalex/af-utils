@@ -1,41 +1,28 @@
 import React, { memo, useMemo } from "react";
+import { css } from "@emotion/core";
 import Colgroup from "../Colgroup";
-import areEqualBy from "../utils/areEqualBy";
 
-const MEMO_PROPS = [
-    "bodyScrollLeft",
-    "tbodyColumnWidths",
-    "width",
-    "TableHeaderWrapperComponent",
-    "HeaderRowComponent",
-    "HeaderCellComponent",
-    "TheadComponent",
-    "columns",
-    "getHeaderCellData",
-    "TableComponent"
-];
+const wrapperCss = css`
+    flex: 0 0 auto;
+    overflow: hidden;
+`;
 
 const TableHead = memo(({
     bodyScrollLeft,
     tbodyColumnWidths,
     width,
-    TableHeaderWrapperComponent,
-    HeaderRowComponent,
-    HeaderCellComponent,
-    TheadComponent,
     columns,
     getHeaderCellData,
-    TableComponent
 }) => {
 
     const cells = useMemo(() => columns.map(( column, j, columns ) => {
         const cellData = getHeaderCellData( column, j, columns );
         return (
-            <HeaderCellComponent key={column.dataKey}>
+            <th key={column.dataKey}>
                 {cellData}
-            </HeaderCellComponent>
+            </th>
         );
-    }), [ columns, getHeaderCellData, HeaderCellComponent ]);
+    }), [ columns, getHeaderCellData ]);
 
     const tableComponentStyle = useMemo(() => ({
         position: "relative",
@@ -47,18 +34,18 @@ const TableHead = memo(({
     const wrapperStyle = useMemo(() => ({ width }), [ width ]);
 
     return (
-        <TableHeaderWrapperComponent style={wrapperStyle}>
-            <TableComponent style={tableComponentStyle}>
+        <div css={wrapperCss} style={wrapperStyle}>
+            <table style={tableComponentStyle}>
                 <Colgroup columns={columns} widthsArray={tbodyColumnWidths} />
-                <TheadComponent>
-                    <HeaderRowComponent>
+                <thead>
+                    <tr>
                         {cells}
-                    </HeaderRowComponent>
-                </TheadComponent>
-            </TableComponent>
-        </TableHeaderWrapperComponent>
+                    </tr>
+                </thead>
+            </table>
+        </div>
         
     );
-}, ( p1, p2 ) => areEqualBy( MEMO_PROPS, p1, p2 ) );
+});
 
 export default TableHead;

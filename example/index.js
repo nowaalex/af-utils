@@ -1,27 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { render } from "react-dom";
 import Faker from "faker";
 import random from "lodash/random";
 import times from "lodash/times";
+import { css } from "@emotion/core";
 import Table from "../src";
 
 const rootNode = document.createElement( "div" );
 document.body.appendChild( rootNode );
 
-const getTableColsAndData = () => {
-    const columns = times( random( 9, 12 ), i => ({
-        dataKey: `dataKey_${i}`,
-        label: Faker.name.firstName(),
-        width: 200
-        //background: random( 0, 7 ) > 2 ? `rgb(${random(170,220)}, ${random(170,220)}, ${random(170,220)})` : undefined
-    }));
+const tableCss = css`
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+`;
 
-    const getRow = () => columns.reduce(( r, c, i ) => {
-        r[ c.dataKey ] = Faker.random.alphaNumeric( random( i + 1, ( i + 1 ) * 1.2 | 0 ) );
+const getTableColsAndData = () => {
+    const columns = [
+        {
+            dataKey: "index",
+            label: "Index",
+            width: 150,
+            background: "green"
+        },
+        ...times( random( 6, 10 ), i => ({
+            dataKey: `dataKey_${i}`,
+            label: Faker.name.firstName(),
+            width: 200
+            //background: random( 0, 7 ) > 2 ? `rgb(${random(170,220)}, ${random(170,220)}, ${random(170,220)})` : undefined
+        }))
+    ];
+
+    const getRow = rowIndex => columns.reduce(( r, c, i ) => {
+        if( c.dataKey === "index" ){
+            r.index = rowIndex;
+        }
+        else{
+            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 1, rowIndex % 4 ) );
+        }
         return r;
     }, {});
 
-    const rows = times( random( 3000, 5000 ), getRow );
+    const rows = times( 5000, getRow );
 
     const getRowData = index => rows[ index ];
 
@@ -32,7 +53,16 @@ const getTableColsAndData = () => {
     };
 };
 
-const A = () => (
-    <Table virtualizedScroll {...getTableColsAndData()} width={1300} height={600} />
-);
+const A = () => {
+    
+    const [ tableHeight, setHeight ] = useState( 400 );
+
+    return (
+        <div>
+            <button onClick={() => setHeight(random(400, 600))}>Change height</button>
+            <Table {...getTableColsAndData()} style={{ height: tableHeight }} css={tableCss} />
+        </div>
+    );
+};
+
 render( <A />, rootNode );

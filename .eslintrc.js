@@ -18,6 +18,10 @@ module.exports = {
         "lodash/prefer-lodash-chain": [ 0 ],
         "lodash/prefer-lodash-method": [ 0 ],
         "no-restricted-syntax": [ "error", "WithStatement", "BinaryExpression[operator='in']" ],
-        "no-bitwise": [ 0 ]
+        "no-bitwise": [ 0 ],
+        "no-underscore-dangle": [ 0 ],
+        "no-plusplus": [ 0 ],
+        "lines-between-class-members": [ 0 ],
+        "one-var": [ 0 ]
     }
 }
