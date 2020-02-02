@@ -38,7 +38,7 @@ class VirtualRowsDataStore {
         }
     }
 
-    setVisibleRowsHeights = () => {
+    setVisibleRowsHeights = debounce(() => {
         const { rowHeightsByIndex, startIndex, endIndex } = this;
         for( let j = 0, ch = this.getTbodyDomNode().children, curHeight, newHeight, avgDiff; j < ch.length; j++ ){
             curHeight = rowHeightsByIndex[ j + startIndex ];
@@ -55,9 +55,7 @@ class VirtualRowsDataStore {
                 this.setAverageRowHeight( this.averageRowHeight + avgDiff / this.registeredRows );
             }
         }
-    }
-
-    setVisibleRowsHeightsDebounced = debounce( this.setVisibleRowsHeights, DEFAULT_ROW_RECALC_INTERVAL );
+    }, DEFAULT_ROW_RECALC_INTERVAL );
 
     constructor( params ){
 
@@ -72,11 +70,11 @@ class VirtualRowsDataStore {
         this.Events
             .once( "average-row-height-changed", this.__refreshEndIndex )
             .on( "widget-height-changed", this.__refreshEndIndex )
-            .on( "visible-rows-range-changed", this.setVisibleRowsHeightsDebounced );
+            .on( "visible-rows-range-changed", this.setVisibleRowsHeights );
     }
 
     destructor(){
-        this.setVisibleRowsHeightsDebounced.cancel();
+        this.setVisibleRowsHeights.cancel();
         this.Events.removeAllListeners();
     }
 
@@ -116,7 +114,7 @@ class VirtualRowsDataStore {
         this.virtualBottomOffset = Math.round( this.averageRowHeight * this.totalRows ) - newVirtualTopOffset - newVisibleDist;
         this.Events.emit( "scroll-top-changed" );
         this.__setVisibleRowsRange( newStartIndex, newEndIndex );
-        console.log( this );
+    //    console.log( this );
     }
 
     __setVisibleRowsRange( from, to ){

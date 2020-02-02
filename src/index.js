@@ -86,7 +86,6 @@ class Table extends React.PureComponent {
                 for (let entry of entries) {
                     const { width, height } = entry.contentRect;
                     this.Data.setWidgetHeight( height );
-                    console.log( 333, height )
                 }
             });
             this.rsz.observe( this.tableBodyWrapperRef.current );
