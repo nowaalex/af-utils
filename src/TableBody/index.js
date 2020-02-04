@@ -6,7 +6,7 @@ import { useApiPlugin } from "../useApi";
 const SUBSCRIBE_EVENTS = [
     "widget-height-changed",
     "total-rows-quantity-changed",
-    "scroll-top-changed",
+    "virtual-scroll-offsets-changed",
     "visible-rows-range-changed",
     "columns-changed"
 ];

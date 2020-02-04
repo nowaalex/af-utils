@@ -6,6 +6,7 @@ import areArraysEqual from "../utils/areArraysEqual";
 const DEFAULT_APPROXIMATE_ROW_HEIGHT = 30;
 const DEFAULT_ROW_RECALC_INTERVAL = 200;
 const DEFAULT_ROW_RECALC_MAX_WAIT = 2000;
+const PX_OVERSCAN_DIST = 100;
 
 class VirtualRowsDataStore {
 
@@ -36,10 +37,7 @@ class VirtualRowsDataStore {
     tbodyColumnWidths = [];
 
     __refreshEndIndex = () => {
-        const [ newEndIndex, newVisibleDist ] = this.getRowsQuantity( this.startIndex, this.widgetHeight );
-        this.virtualBottomOffset = Math.round( this.averageRowHeight * this.totalRows ) - this.virtualBottomOffset - newVisibleDist;
-        this.Events.emit( "scroll-top-changed" );
-        this.__setVisibleRowsRange( this.startIndex, newEndIndex );
+        this.__updateVirtualPosition();        
     }
 
     setAverageRowHeight( height ){
@@ -99,7 +97,7 @@ class VirtualRowsDataStore {
         this.columns = params.columns || [];
 
         this.Events
-            .once( "average-row-height-changed", this.__refreshEndIndex )
+            .on( "average-row-height-changed", this.__refreshEndIndex )
             .on( "widget-height-changed", this.__refreshEndIndex )
             .on( "visible-rows-range-changed", this.setVisibleRowsHeights )
             .on( "visible-rows-range-changed", this.calculateTbodyColumnWidths )
@@ -124,7 +122,12 @@ class VirtualRowsDataStore {
         }
         while( accumulatedHeight <= pxHeight && startIndex < totalRows );
 
-        return cutLast ? [ startIndex - 1, Math.round( accumulatedHeight - tmpHeight ) ] : [ startIndex, Math.round( accumulatedHeight ) ];
+        if( cutLast ){
+            startIndex--;
+            accumulatedHeight -= tmpHeight;
+        }
+
+        return [ startIndex, Math.round( accumulatedHeight ) ];
     }
 
     setTotalRows( totalRows ){
@@ -151,21 +154,33 @@ class VirtualRowsDataStore {
     setScrollTop( scrollTop ){
         if( scrollTop !== this.scrollTop ){
             this.scrollTop = scrollTop;
-            const [ newStartIndex, newVirtualTopOffset ] = this.getRowsQuantity( 0, scrollTop, true );
-            console.log( "F", this, newStartIndex );
-            const [ newEndIndex, newVisibleDist ] = this.getRowsQuantity( newStartIndex, this.widgetHeight );
-            this.virtualTopOffset = newVirtualTopOffset;
-            this.virtualBottomOffset = Math.round( this.averageRowHeight * this.totalRows ) - newVirtualTopOffset - newVisibleDist;
-            this.Events.emit( "scroll-top-changed" );
-            this.__setVisibleRowsRange( newStartIndex, newEndIndex );
-        // console.log( this );
+            this.__updateVirtualPosition( scrollTop );
         }
     }
 
-    __setVisibleRowsRange( from, to ){
-        if( this.startIndex !== from || this.endIndex !== to ){
-            this.startIndex = from;
-            this.endIndex = to;
+    __updateVirtualPosition( newScrollTop ){
+        let newStartIndex, newVirtualTopOffset;
+
+        if( newScrollTop !== undefined ){
+            [ newStartIndex, newVirtualTopOffset ] = this.getRowsQuantity( 0, Math.max( 0, newScrollTop - PX_OVERSCAN_DIST ), true );
+        }
+        else{
+            newStartIndex = this.startIndex;
+            newVirtualTopOffset = this.virtualTopOffset;
+        }
+
+        const [ newEndIndex, newVisibleDist ] = this.getRowsQuantity( newStartIndex, this.widgetHeight + PX_OVERSCAN_DIST * 2 );
+        const newVirtualBottomOffset = Math.round( this.averageRowHeight * this.totalRows ) - newVirtualTopOffset - newVisibleDist;
+
+        if( this.virtualBottomOffset !== newVirtualBottomOffset || this.virtualTopOffset !== newVirtualTopOffset ){
+            this.virtualTopOffset = newVirtualTopOffset;
+            this.virtualBottomOffset = newVirtualBottomOffset;
+            this.Events.emit( "virtual-scroll-offsets-changed" );
+        }
+
+        if( this.endIndex !== newEndIndex || this.startIndex !== newStartIndex ){
+            this.startIndex = newStartIndex;
+            this.endIndex = newEndIndex;
             this.Events.emit( "visible-rows-range-changed" );
         }
     }
