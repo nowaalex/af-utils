@@ -3,7 +3,7 @@ import throttle from "lodash/throttle";
 import areArraysEqual from "../utils/areArraysEqual";
 
 const DEFAULT_APPROXIMATE_ROW_HEIGHT = 30;
-const DEFAULT_ROW_RECALC_INTERVAL = 300;
+const DEFAULT_ROW_RECALC_INTERVAL = 200;
 const PX_OVERSCAN_DIST = 300;
 
 class VirtualRowsDataStore {
@@ -114,10 +114,21 @@ class VirtualRowsDataStore {
         this.resetMeasuredRangeCache();
     }
 
-    totalRowsChangeHandler = newTotalRows => {
+    totalRowsChangeHandler = ( newTotalRows, oldTotalRows ) => {
         if( newTotalRows > 0 ){
-            this.refreshMeasurements();
-            console.log( "DD", newTotalRows )
+            this.resetMeasuredRangeCache();
+            const diff = newTotalRows - oldTotalRows;
+            if( diff < 0 ){
+                this.updateVirtualPosition(
+                    Math.max( 0, Math.round( this.virtualTopOffset + diff * this.averageRowHeight ) ),
+                    Math.max( 0, this.startIndex + diff ),
+                    Math.round( newTotalRows * this.averageRowHeight )
+                );
+                this.getTableWrapperDomNode().scrollTop = Math.round( Math.max( 0, this.scrollTop += diff * this.averageRowHeight ) );
+            }
+            else{
+                this.refreshMeasurements();
+            }
         }
         else{
             this.setVisibleRowsHeights.cancel();
