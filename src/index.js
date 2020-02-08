@@ -76,6 +76,7 @@ class Table extends React.PureComponent {
     Data = new VirtualRowsDataStore({
         columns: this.props.columns,
         getTbodyDomNode: () => this.tableBodyRef.current,
+        getTableWrapperDomNode: () => this.tableBodyWrapperRef.current,
         totalRows: this.props.rowCount,
         approximateRowHeight: this.props.approximateRowHeight
     });
@@ -91,7 +92,11 @@ class Table extends React.PureComponent {
                 }
             });
             this.rsz.observe( this.tableBodyWrapperRef.current );
-
+            this.Data.Events.on( "j", nscr => {
+                this.tableBodyWrapperRef.current.scrollTop = nscr;
+                this.ffu = true;
+                console.log( "FF", nscr )
+            });
         }, 0 );
     }
 

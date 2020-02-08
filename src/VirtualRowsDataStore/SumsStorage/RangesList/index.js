@@ -1,0 +1,6 @@
+class RangesList {
+    
+    root = null;
+
+    
+}

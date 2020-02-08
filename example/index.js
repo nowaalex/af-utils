@@ -42,7 +42,7 @@ const getTableColsAndData = () => {
         return r;
     }, {});
 
-    const rows = times( 1000, getRow );
+    const rows = times( 7000, getRow );
 
     const getRowData = index => rows[ index ];
 

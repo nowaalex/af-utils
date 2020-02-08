@@ -1,20 +1,14 @@
 import EventEmitter from "eventemitter3";
-import debounce from "lodash/debounce";
 import throttle from "lodash/throttle";
 import areArraysEqual from "../utils/areArraysEqual";
 
 const DEFAULT_APPROXIMATE_ROW_HEIGHT = 30;
-const DEFAULT_ROW_RECALC_INTERVAL = 200;
-const DEFAULT_ROW_RECALC_MAX_WAIT = 2000;
-const PX_OVERSCAN_DIST = 100;
+const DEFAULT_ROW_RECALC_INTERVAL = 300;
+const PX_OVERSCAN_DIST = 200;
 
 class VirtualRowsDataStore {
 
     Events = new EventEmitter;
-    /*
-        https://github.com/trekhleb/javascript-algorithms/blob/master/src/data-structures/tree/fenwick-tree/FenwickTree.js
-    */
-    rowHeightsFenwickTree = [];
     rowHeightsByIndex = [];
     registeredRows = 0;
     totalRows = 0;
@@ -22,14 +16,18 @@ class VirtualRowsDataStore {
     startIndex = 0;
     endIndex = 0;
 
+    prevMeasuredRangeStartIndex = -1;
+    prevMeasuredRangeEndIndex = -1;
+
     virtualTopOffset = 0;
-    virtualBottomOffset = 0;
+    widgetScrollHeight = 0;
 
     averageRowHeight = 0;
     fallbackAverageRowHeight = 0;
     scrollHeight = 0;
     scrollLeft = 0;
     scrollTop = 0;
+    scrollBuff = 0;
     widgetHeight = 0;
     widgetWidth = 0;
 
@@ -65,25 +63,33 @@ class VirtualRowsDataStore {
         }
     }, 200 );
 
-    setVisibleRowsHeights = debounce(() => {
-        const { rowHeightsByIndex, startIndex } = this;
-        for( let j = 0, ch = this.getTbodyDomNode().children, curHeight, newHeight, diff, avgDiff; j < ch.length; j++ ){
-            curHeight = rowHeightsByIndex[ j + startIndex ] || 0;
+    setVisibleRowsHeights = throttle(() => {
+        const { rowHeightsByIndex, startIndex, endIndex, prevMeasuredRangeEndIndex, prevMeasuredRangeStartIndex } = this;
+        let { averageRowHeight } = this;
+        for( let j = 0, idx, ch = this.getTbodyDomNode().children, curHeight, newHeight, diff, avgDiff; j < ch.length; j++ ){
+            idx = j + startIndex;
+            if( idx >= prevMeasuredRangeStartIndex && idx < prevMeasuredRangeEndIndex ){
+                continue;
+            }
+            curHeight = rowHeightsByIndex[ idx ] || 0;
             newHeight = ch[ j ].offsetHeight;
             diff = newHeight - curHeight;   
             if( diff ){
-                rowHeightsByIndex[ j + startIndex ] = newHeight;
+                rowHeightsByIndex[ idx ] = newHeight;
                 if( !curHeight ){
                     this.registeredRows++;
-                    avgDiff = newHeight - this.averageRowHeight;
+                    avgDiff = newHeight - averageRowHeight;
                 }
                 else{
                     avgDiff = diff;
                 }
-                this.setAverageRowHeight( this.averageRowHeight + avgDiff / this.registeredRows );
+                averageRowHeight += avgDiff / this.registeredRows;
             }
         }
-    }, DEFAULT_ROW_RECALC_INTERVAL, { maxWait: DEFAULT_ROW_RECALC_MAX_WAIT });
+        this.prevMeasuredRangeStartIndex = startIndex;
+        this.prevMeasuredRangeEndIndex = endIndex;
+        this.setAverageRowHeight( averageRowHeight );
+    }, DEFAULT_ROW_RECALC_INTERVAL, { leading: false });
 
     constructor( params ){
 
@@ -92,6 +98,7 @@ class VirtualRowsDataStore {
         }
 
         this.getTbodyDomNode = params.getTbodyDomNode;
+        this.getTableWrapperDomNode = params.getTableWrapperDomNode;
         this.fallbackAverageRowHeight = params.approximateRowHeight || DEFAULT_APPROXIMATE_ROW_HEIGHT;
         this.totalRows = params.totalRows || 0;
         this.columns = params.columns || [];
@@ -114,20 +121,37 @@ class VirtualRowsDataStore {
     getRowsQuantity( startIndex, pxHeight, cutLast ){
         const { averageRowHeight, fallbackAverageRowHeight, rowHeightsByIndex, totalRows } = this;
         let accumulatedHeight = 0,
+            step = Math.sign( pxHeight ),
+            absHeight = Math.abs( pxHeight ),
             tmpHeight = 0;
 
         do {
-            tmpHeight = rowHeightsByIndex[ startIndex++ ] || averageRowHeight || fallbackAverageRowHeight;
+            tmpHeight = rowHeightsByIndex[ startIndex ] || averageRowHeight || fallbackAverageRowHeight;
             accumulatedHeight += tmpHeight;
+            startIndex += step;
         }
-        while( accumulatedHeight <= pxHeight && startIndex < totalRows );
+        while( accumulatedHeight <= absHeight && startIndex < totalRows && startIndex >= 0 );
 
         if( cutLast ){
-            startIndex--;
+            startIndex -= step;
             accumulatedHeight -= tmpHeight;
         }
 
         return [ startIndex, Math.round( accumulatedHeight ) ];
+    }
+
+    getDistanceBetween( startIndex, endIndex ){
+        const { averageRowHeight, fallbackAverageRowHeight, rowHeightsByIndex } = this;
+        let accumulatedHeight = 0,
+            tmpHeight = 0;
+
+        while( startIndex < endIndex ) {
+            tmpHeight = rowHeightsByIndex[ startIndex ] || averageRowHeight || fallbackAverageRowHeight;
+            accumulatedHeight += tmpHeight;
+            startIndex++;
+        }
+
+        return accumulatedHeight;
     }
 
     setTotalRows( totalRows ){
@@ -152,29 +176,62 @@ class VirtualRowsDataStore {
     }
 
     setScrollTop( scrollTop ){
-        if( scrollTop !== this.scrollTop ){
+        const prevScrollTop = this.scrollTop;
+        const scrollDist = scrollTop - prevScrollTop;
+        if( scrollDist ){
+
+            if( scrollDist * this.scrollBuff < 0 ){
+                this.scrollBuff = prevScrollTop - this.virtualTopOffset;
+            }
+
             this.scrollTop = scrollTop;
-            this.__updateVirtualPosition( scrollTop );
+            this.__updateVirtualPosition( scrollDist, scrollTop );
         }
     }
 
-    __updateVirtualPosition( newScrollTop ){
-        let newStartIndex, newVirtualTopOffset;
+    __updateVirtualPosition( scrollDiff, scrollTop ){
+        let newStartIndex, newVirtualTopOffset, newWidgetScrollHeight, newEndIndex, visiblePxDist, newForcedScrollTop;
 
-        if( newScrollTop !== undefined ){
-            [ newStartIndex, newVirtualTopOffset ] = this.getRowsQuantity( 0, Math.max( 0, newScrollTop - PX_OVERSCAN_DIST ), true );
+        if( scrollDiff !== undefined ){
+            const totalHeight = this.scrollBuff + scrollDiff - PX_OVERSCAN_DIST;
+            const [ tmpNewStartIndex, virtualOffsetDiff ] = this.getRowsQuantity( this.startIndex, totalHeight, true ); 
+  
+            if( newStartIndex === this.startIndex ){
+                this.scrollBuff += scrollDiff;
+                newVirtualTopOffset = this.virtualTopOffset;
+            }
+            else{
+                newStartIndex = tmpNewStartIndex;
+                const dist = virtualOffsetDiff * Math.sign( scrollDiff );
+                newVirtualTopOffset = Math.max( 0, this.virtualTopOffset + dist );
+                this.scrollBuff = scrollTop - newVirtualTopOffset;
+            }
         }
         else{
             newStartIndex = this.startIndex;
-            newVirtualTopOffset = this.virtualTopOffset;
+            const rngStart = Math.max( 0, newStartIndex - 30 );
+            const exactPart = this.getDistanceBetween( rngStart, newStartIndex ) - PX_OVERSCAN_DIST;
+            const approximatePart = this.averageRowHeight * rngStart;
+            newVirtualTopOffset = Math.round( Math.max( 0, exactPart + approximatePart ) );
+            newForcedScrollTop = Math.max( 0, this.scrollTop - this.virtualTopOffset + newVirtualTopOffset );
         }
 
-        const [ newEndIndex, newVisibleDist ] = this.getRowsQuantity( newStartIndex, this.widgetHeight + PX_OVERSCAN_DIST * 2 );
-        const newVirtualBottomOffset = Math.round( this.averageRowHeight * this.totalRows ) - newVirtualTopOffset - newVisibleDist;
+        [ newEndIndex, visiblePxDist ] = this.getRowsQuantity( newStartIndex, this.widgetHeight + PX_OVERSCAN_DIST * 2 );
 
-        if( this.virtualBottomOffset !== newVirtualBottomOffset || this.virtualTopOffset !== newVirtualTopOffset ){
+        if( scrollDiff !== undefined ){
+            newWidgetScrollHeight = this.widgetScrollHeight;
+        }
+        else{
+            newWidgetScrollHeight = Math.round(
+                newVirtualTopOffset +
+                visiblePxDist + 
+                this.averageRowHeight * Math.max( 0, ( this.totalRows - newEndIndex - 1 ) )
+            );
+        }
+        
+        if( this.widgetScrollHeight !== newWidgetScrollHeight || this.virtualTopOffset !== newVirtualTopOffset ){
             this.virtualTopOffset = newVirtualTopOffset;
-            this.virtualBottomOffset = newVirtualBottomOffset;
+            this.widgetScrollHeight = newWidgetScrollHeight;
             this.Events.emit( "virtual-scroll-offsets-changed" );
         }
 
@@ -183,7 +240,14 @@ class VirtualRowsDataStore {
             this.endIndex = newEndIndex;
             this.Events.emit( "visible-rows-range-changed" );
         }
+
+        if( newForcedScrollTop ){
+            /* setting scrollTop manually to avoid onScroll reaction and doing manual scroll */
+            this.scrollTop = newForcedScrollTop;
+            this.getTableWrapperDomNode().scrollTop = newForcedScrollTop;
+        }
     }
+
 
     setWidgetHeight( height ){
         if( this.widgetHeight !== height ){

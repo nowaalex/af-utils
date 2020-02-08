@@ -54,18 +54,19 @@ const TableBody = memo(({
 
     const tableStyle = {
         tableLayout: bodyTableLayoutFixed ? "fixed" : "auto",
-        marginTop: API.virtualTopOffset,
-        marginBottom: API.virtualBottomOffset
+        transform: `translateY(${API.virtualTopOffset}px)`
     };
     
     return (
         <div css={wrapperCss} style={wrapperStyle} ref={wrapperRef} onScroll={onScroll}>
-            <table style={tableStyle}>
-                <Colgroup />
-                <tbody ref={tbodyRef}>
-                    {visibleRows}
-                </tbody>
-            </table>
+            <div style={{ height: API.widgetScrollHeight }}>
+                <table style={tableStyle}>
+                    <Colgroup />
+                    <tbody ref={tbodyRef}>
+                        {visibleRows}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 });

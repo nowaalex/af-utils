@@ -22,6 +22,7 @@ module.exports = {
         "no-underscore-dangle": [ 0 ],
         "no-plusplus": [ 0 ],
         "lines-between-class-members": [ 0 ],
-        "one-var": [ 0 ]
+        "one-var": [ 0 ],
+        "no-param-reassign": [ 0 ]
     }
 }
