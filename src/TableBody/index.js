@@ -15,9 +15,11 @@ const wrapperCss = css`
     overflow: auto;
     min-height: 0;
     flex: 1 1 auto;
-
-    td {
-        box-sizing: border-box;
+    table {
+        width: 100%;
+        td {
+            box-sizing: border-box;
+        }
     }
 `;
 
