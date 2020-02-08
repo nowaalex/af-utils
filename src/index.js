@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { css } from "@emotion/core";
+import styled from "@emotion/styled";
 import Context from "./Context";
 import TableBody from "./TableBody";
 import TableHead from "./TableHead";
@@ -10,21 +11,30 @@ import VirtualRowsDataStore from "./VirtualRowsDataStore";
     TODO:
         * react on rowCount change
         * react on getRowData change
-        * sync tbody and thead width
-
+        * react on overscan prop change
 */
 
+/* flex: 1 1 auto, assuming that table would be used full-stretch mostly */
 const wrapperCss = css`
     display: flex;
+    flex: 1 1 auto;
     flex-flow: column nowrap;
     overflow: hidden;
 `;
 
-const EmptyDataRowComponentDefault = ({ RowComponent, CellComponent, columns }) => (
+export const EmptyDataRowComponentDefault = ({ RowComponent, CellComponent, columns }) => (
     <RowComponent>
         <CellComponent colSpan={columns.length}>&mdash;</CellComponent>
     </RowComponent>
 );
+
+export const RowCountWarningContainerDefault = styled.div`
+    flex: 1 1 auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
 
 export const mapCellsDefault = ( columns, rowData, DefaultCellComponent, getCellData ) => columns.map(( column, columnIndex, curColumns ) => {
     const cellData = getCellData( rowData, column, columnIndex, curColumns );
@@ -87,18 +97,25 @@ class Table extends React.PureComponent {
         approximateRowHeight: this.props.approximateRowHeight
     });
 
-    componentDidMount(){ 
-        /* must behave like useEffect, because children's effects must be performed before */
-        this.resizeObserverTimeout = setTimeout(() => {
-            this.rsz = new ResizeObserver( entries => {
-                for (let entry of entries) {
-                    const { width, height } = entry.contentRect;
-                    this.Data.setWidgetHeight( height );
-                    this.Data.setWidgetWidth( width );
-                }
-            });
-            this.rsz.observe( this.tableBodyWrapperRef.current );
-        }, 0 );
+    attachTbodyWrapperResizeObserver(){
+        if( this.tableBodyWrapperRef.current ){
+            /* must behave like useEffect, because children's effects must be performed before */
+            this.resizeObserverTimeout = setTimeout(() => {
+                this.rsz.observe( this.tableBodyWrapperRef.current );
+            }, 0 );
+        }
+    }
+
+    componentDidMount(){
+        this.rsz = new ResizeObserver( entries => {
+            for (let entry of entries) {
+                const { width, height } = entry.contentRect;
+                this.Data.setWidgetHeight( height );
+                this.Data.setWidgetWidth( width );
+            }
+        });
+
+        this.attachTbodyWrapperResizeObserver();
     }
 
     onBodyScroll = e => {
@@ -111,6 +128,9 @@ class Table extends React.PureComponent {
         const { rowCount, columns } = this.props;
         if( rowCount !== prevProps.rowCount ){
             this.Data.setTotalRows( rowCount );
+            if( prevProps.rowCount <= 0 && rowCount >= 0 ){
+                this.attachTbodyWrapperResizeObserver();
+            }
         }
         if( columns !== prevProps.columns ){
             this.Data.setColumns( columns );
@@ -120,7 +140,7 @@ class Table extends React.PureComponent {
     componentWillUnmount(){
         this.Data.destructor();
         clearTimeout( this.resizeObserverTimeout );
-        if( this.rsz ){
+        if( this.tableBodyWrapperRef.current ){
             this.rsz.unobserve( this.tableBodyWrapperRef.current );
         }
     }
@@ -138,11 +158,13 @@ class Table extends React.PureComponent {
             getCellData,
             bodyTableLayoutFixed,
             approximateRowHeight,
-            overscanRowsCount,
+            overscanRowsDistance,
+            rowCountWarningsTable,
 
             RowComponent,
             CellComponent,
             EmptyDataRowComponent,
+            RowCountWarningContainer,
 
             ...props
         } = this.props;
@@ -151,21 +173,27 @@ class Table extends React.PureComponent {
             <Context.Provider value={this.Data}>
                 <div css={wrapperCss} {...props}>
                     <TableHead />
-                    <TableBody
-                        wrapperRef={this.tableBodyWrapperRef}
-                        tbodyRef={this.tableBodyRef}
-                        onScroll={this.onBodyScroll}
-                        bodyTableLayoutFixed={bodyTableLayoutFixed}
-                        RowComponent={RowComponent}
-                        CellComponent={CellComponent}
-                        EmptyDataRowComponent={EmptyDataRowComponent}
-                        getVisibleRows={getVisibleRows}
-                        getRowData={getRowData}
-                        getRowKey={getRowKey}
-                        getRowExtraProps={getRowExtraProps}
-                        mapCells={mapCells}
-                        getCellData={getCellData}
-                    />
+                    { rowCount > 0 ? (
+                        <TableBody
+                            wrapperRef={this.tableBodyWrapperRef}
+                            tbodyRef={this.tableBodyRef}
+                            onScroll={this.onBodyScroll}
+                            bodyTableLayoutFixed={bodyTableLayoutFixed}
+                            RowComponent={RowComponent}
+                            CellComponent={CellComponent}
+                            EmptyDataRowComponent={EmptyDataRowComponent}
+                            getVisibleRows={getVisibleRows}
+                            getRowData={getRowData}
+                            getRowKey={getRowKey}
+                            getRowExtraProps={getRowExtraProps}
+                            mapCells={mapCells}
+                            getCellData={getCellData}
+                        />
+                    ) : rowCountWarningsTable ? (
+                        <RowCountWarningContainer>
+                            {rowCountWarningsTable[rowCount]}
+                        </RowCountWarningContainer>
+                    ) : null }
                 </div>
             </Context.Provider>
         );
@@ -184,13 +212,17 @@ Table.propTypes = {
     getVisibleRows: PropTypes.func,
     getRowExtraProps: PropTypes.func,
     mapCells: PropTypes.func,
-    overscanRowsCount: PropTypes.number,
+    /* as row heights may be different, we measure overscan in px */
+    overscanRowsDistance: PropTypes.number,
     bodyTableLayoutFixed: PropTypes.bool,
 
     RowComponent: PropTypes.element,
     CellComponent: PropTypes.element,
     HeaderRowComponent: PropTypes.element,
     EmptyDataRowComponent: PropTypes.element,
+
+    RowCountWarningContainer: PropTypes.element,
+    rowCountWarningsTable: PropTypes.object
 };
 
 Table.defaultProps = {
@@ -199,12 +231,13 @@ Table.defaultProps = {
     getRowExtraProps: getRowExtraPropsDefault,
     mapCells: mapCellsDefault,
     getCellData: getCellDataDefault,
-    overscanRowsCount: 5,
+    overscanRowsDistance: 200,
     bodyTableLayoutFixed: false,
 
     RowComponent: "tr",
     CellComponent: "td",
     EmptyDataRowComponent: EmptyDataRowComponentDefault,
+    RowCountWarningContainer: RowCountWarningContainerDefault
 };
 
 export default Table;

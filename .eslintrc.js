@@ -24,6 +24,7 @@ module.exports = {
         "lines-between-class-members": [ 0 ],
         "one-var": [ 0 ],
         "no-param-reassign": [ 0 ],
-        "no-multi-assign": [ 0 ]
+        "no-multi-assign": [ 0 ],
+        "no-nested-ternary": [ 0 ]
     }
 }

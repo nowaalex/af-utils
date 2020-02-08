@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react";
+import React, { memo } from "react";
 import { css } from "@emotion/core";
 import Colgroup from "../TheadColgroup";
 import { useApiPlugin } from "../useApi";
@@ -6,13 +6,18 @@ import { useApiPlugin } from "../useApi";
 const SUBSCRIBE_EVENTS = [
     "columns-changed",
     "scroll-left-changed",
-    "column-widths-changed"
+    "column-widths-changed",
 ];
 
-/* border-box is important, because head th widths are synced with td widths */
+/*
+    border-box is important, because head th widths are synced with td widths
+    width: 100% covers case, when no tbody is rendered and exact width cannot be calculated
+*/
 const wrapperCss = css`
     flex: 0 0 auto;
-    overflow: hidden;
+    min-width: 100%;
+    position: relative;
+    table-layout: fixed;
     th {
         text-overflow: ellipsis;
         overflow: hidden;
@@ -20,32 +25,28 @@ const wrapperCss = css`
     }
 `;
 
+
 const TableHead = memo(() => {
 
     const { columns, scrollLeft, tbodyColumnWidths } = useApiPlugin( SUBSCRIBE_EVENTS );
 
-    const tableComponentStyle = useMemo(() => ({
-        position: "relative",
-        right: scrollLeft,
-        tableLayout: "fixed",
-    }), [ scrollLeft ]);
-
     return (
-        <div css={wrapperCss}>
-            <table style={tableComponentStyle}>
-                <Colgroup />
-                <thead>
-                    <tr>
-                        {columns.map(( column, j ) => (
-                            <th key={column.dataKey} style={{ maxWidth: tbodyColumnWidths[ j ] || "auto" }}>
+        <table css={wrapperCss} style={{ right: scrollLeft }}>
+            <Colgroup />
+            <thead>
+                <tr>
+                    {columns.map(( column, j, cols ) => {
+                        const width = tbodyColumnWidths[ j ];
+                        const style = j + 1 < cols.length ? { minWidth: width, width, maxWidth: width } : { minWidth: width };
+                        return (
+                            <th key={column.dataKey} style={style}>
                                 {column.label}
                             </th>
-                        ))}
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        
+                        );
+                    })}
+                </tr>
+            </thead>
+        </table>
     );
 }, () => true );
 
