@@ -66,8 +66,6 @@ export const getCellDataDefault = ( rowData, column ) => rowData[ column.dataKey
 
 export const getRowExtraPropsDefault = () => undefined;
 
-export const getHeaderCellDataDefault = column => column.label;
-
 class Table extends React.PureComponent {
 
     tableBodyWrapperRef = React.createRef();
@@ -92,11 +90,6 @@ class Table extends React.PureComponent {
                 }
             });
             this.rsz.observe( this.tableBodyWrapperRef.current );
-            this.Data.Events.on( "j", nscr => {
-                this.tableBodyWrapperRef.current.scrollTop = nscr;
-                this.ffu = true;
-                console.log( "FF", nscr )
-            });
         }, 0 );
     }
 
@@ -128,7 +121,6 @@ class Table extends React.PureComponent {
 
         const {
             columns,
-            getHeaderCellData,
             getRowData,
             getRowKey,
             getRowExtraProps,
@@ -150,7 +142,7 @@ class Table extends React.PureComponent {
         return (
             <Context.Provider value={this.Data}>
                 <div css={wrapperCss} {...props}>
-                    <TableHead getHeaderCellData={getHeaderCellData} />
+                    <TableHead />
                     <TableBody
                         wrapperRef={this.tableBodyWrapperRef}
                         tbodyRef={this.tableBodyRef}
@@ -184,7 +176,6 @@ Table.propTypes = {
     getVisibleRows: PropTypes.func,
     getRowExtraProps: PropTypes.func,
     mapCells: PropTypes.func,
-    getHeaderCellData: PropTypes.func,
     overscanRowsCount: PropTypes.number,
     bodyTableLayoutFixed: PropTypes.bool,
 
@@ -200,7 +191,6 @@ Table.defaultProps = {
     getRowExtraProps: getRowExtraPropsDefault,
     mapCells: mapCellsDefault,
     getCellData: getCellDataDefault,
-    getHeaderCellData: getHeaderCellDataDefault,
     overscanRowsCount: 5,
     bodyTableLayoutFixed: false,
 

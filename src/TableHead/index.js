@@ -18,9 +18,7 @@ const wrapperCss = css`
     }
 `;
 
-const TableHead = memo(({
-    getHeaderCellData,
-}) => {
+const TableHead = memo(() => {
 
     const { columns, scrollLeft, tbodyColumnWidths } = useApiPlugin( SUBSCRIBE_EVENTS );
 
@@ -36,9 +34,9 @@ const TableHead = memo(({
                 <Colgroup />
                 <thead>
                     <tr>
-                        {columns.map(( column, j, columns ) => (
+                        {columns.map(( column, j ) => (
                             <th key={column.dataKey} style={{ maxWidth: tbodyColumnWidths[ j ] || "auto" }}>
-                                {getHeaderCellData( column, j, columns )}
+                                {column.label}
                             </th>
                         ))}
                     </tr>
@@ -47,6 +45,6 @@ const TableHead = memo(({
         </div>
         
     );
-});
+}, () => true );
 
 export default TableHead;

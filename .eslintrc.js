@@ -23,6 +23,7 @@ module.exports = {
         "no-plusplus": [ 0 ],
         "lines-between-class-members": [ 0 ],
         "one-var": [ 0 ],
-        "no-param-reassign": [ 0 ]
+        "no-param-reassign": [ 0 ],
+        "no-multi-assign": [ 0 ]
     }
 }

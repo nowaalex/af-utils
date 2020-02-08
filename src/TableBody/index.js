@@ -50,7 +50,7 @@ const TableBody = memo(({
         EmptyDataRowComponent
     );
 
-    const wrapperStyle = { height: API.widgetHeight,  };
+    const wrapperStyle = { height: API.widgetHeight };
 
     const tableStyle = {
         tableLayout: bodyTableLayoutFixed ? "fixed" : "auto",

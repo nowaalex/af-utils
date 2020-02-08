@@ -1,6 +1,0 @@
-class RangesList {
-    
-    root = null;
-
-    
-}

@@ -24,7 +24,7 @@ const getTableColsAndData = () => {
             width: 150,
             background: "green"
         },
-        ...times( random( 6, 10 ), i => ({
+        ...times( random( 2, 4 ), i => ({
             dataKey: `dataKey_${i}`,
             label: Faker.name.firstName(),
             width: 200
@@ -37,12 +37,12 @@ const getTableColsAndData = () => {
             r.index = rowIndex;
         }
         else{
-            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 1, rowIndex % 1 ) );
+            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 1, rowIndex % 15 ) );
         }
         return r;
     }, {});
 
-    const rows = times( 10000, getRow );
+    const rows = times( 500, getRow );
 
     const getRowData = index => rows[ index ];
 
