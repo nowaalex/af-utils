@@ -6,6 +6,14 @@ import TableBody from "./TableBody";
 import TableHead from "./TableHead";
 import VirtualRowsDataStore from "./VirtualRowsDataStore";
 
+/*
+    TODO:
+        * react on rowCount change
+        * react on getRowData change
+        * sync tbody and thead width
+
+*/
+
 const wrapperCss = css`
     display: flex;
     flex-flow: column nowrap;
