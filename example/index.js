@@ -37,12 +37,12 @@ const getTableColsAndData = () => {
             r.index = rowIndex;
         }
         else{
-            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 1, rowIndex % 4 ) );
+            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 1, rowIndex % 1 ) );
         }
         return r;
     }, {});
 
-    const rows = times( 7000, getRow );
+    const rows = times( 10000, getRow );
 
     const getRowData = index => rows[ index ];
 

@@ -4,7 +4,7 @@ import areArraysEqual from "../utils/areArraysEqual";
 
 const DEFAULT_APPROXIMATE_ROW_HEIGHT = 30;
 const DEFAULT_ROW_RECALC_INTERVAL = 300;
-const PX_OVERSCAN_DIST = 200;
+const PX_OVERSCAN_DIST = 300;
 
 class VirtualRowsDataStore {
 
@@ -190,44 +190,39 @@ class VirtualRowsDataStore {
     }
 
     __updateVirtualPosition( scrollDiff, scrollTop ){
-        let newStartIndex, newVirtualTopOffset, newWidgetScrollHeight, newEndIndex, visiblePxDist, newForcedScrollTop;
+        let newStartIndex, newVirtualTopOffset, newWidgetScrollHeight, visiblePxDistance, newEndIndex, newForcedScrollTop;
 
         if( scrollDiff !== undefined ){
-            const totalHeight = this.scrollBuff + scrollDiff - PX_OVERSCAN_DIST;
-            const [ tmpNewStartIndex, virtualOffsetDiff ] = this.getRowsQuantity( this.startIndex, totalHeight, true ); 
-  
-            if( newStartIndex === this.startIndex ){
-                this.scrollBuff += scrollDiff;
-                newVirtualTopOffset = this.virtualTopOffset;
+            newWidgetScrollHeight = this.widgetScrollHeight;
+            if( scrollTop === 0 ){
+                newStartIndex = 0;
+                newVirtualTopOffset = 0;
+                this.scrollBuff = 0;
             }
             else{
-                newStartIndex = tmpNewStartIndex;
-                const dist = virtualOffsetDiff * Math.sign( scrollDiff );
-                newVirtualTopOffset = Math.max( 0, this.virtualTopOffset + dist );
-                this.scrollBuff = scrollTop - newVirtualTopOffset;
+                const totalHeight = this.scrollBuff + scrollDiff - PX_OVERSCAN_DIST;
+                const [ tmpNewStartIndex, virtualOffsetDiff ] = this.getRowsQuantity( this.startIndex, totalHeight, true ); 
+      
+                if( newStartIndex === this.startIndex ){
+                    this.scrollBuff += scrollDiff;
+                    newVirtualTopOffset = this.virtualTopOffset;
+                }
+                else{
+                    newStartIndex = tmpNewStartIndex;
+                    const dist = virtualOffsetDiff * Math.sign( scrollDiff );
+                    newVirtualTopOffset = Math.max( 0, this.virtualTopOffset + dist );
+                    this.scrollBuff = scrollTop - newVirtualTopOffset;
+                }
             }
         }
         else{
             newStartIndex = this.startIndex;
-            const rngStart = Math.max( 0, newStartIndex - 30 );
-            const exactPart = this.getDistanceBetween( rngStart, newStartIndex ) - PX_OVERSCAN_DIST;
-            const approximatePart = this.averageRowHeight * rngStart;
-            newVirtualTopOffset = Math.round( Math.max( 0, exactPart + approximatePart ) );
+            newVirtualTopOffset = Math.round( Math.max( 0, this.getDistanceBetween( 0, newStartIndex ) - PX_OVERSCAN_DIST ) );
             newForcedScrollTop = Math.max( 0, this.scrollTop - this.virtualTopOffset + newVirtualTopOffset );
+            newWidgetScrollHeight = Math.ceil( this.averageRowHeight * this.totalRows ) - PX_OVERSCAN_DIST;
         }
 
-        [ newEndIndex, visiblePxDist ] = this.getRowsQuantity( newStartIndex, this.widgetHeight + PX_OVERSCAN_DIST * 2 );
-
-        if( scrollDiff !== undefined ){
-            newWidgetScrollHeight = this.widgetScrollHeight;
-        }
-        else{
-            newWidgetScrollHeight = Math.round(
-                newVirtualTopOffset +
-                visiblePxDist + 
-                this.averageRowHeight * Math.max( 0, ( this.totalRows - newEndIndex - 1 ) )
-            );
-        }
+        [ newEndIndex, visiblePxDistance ] = this.getRowsQuantity( newStartIndex, this.widgetHeight + PX_OVERSCAN_DIST * 2 );
         
         if( this.widgetScrollHeight !== newWidgetScrollHeight || this.virtualTopOffset !== newVirtualTopOffset ){
             this.virtualTopOffset = newVirtualTopOffset;
