@@ -9,12 +9,14 @@ const SUBSCRIBE_EVENTS = [
     "column-widths-changed"
 ];
 
+/* border-box is important, because head th widths are synced with td widths */
 const wrapperCss = css`
     flex: 0 0 auto;
     overflow: hidden;
     th {
         text-overflow: ellipsis;
         overflow: hidden;
+        box-sizing: border-box;
     }
 `;
 

@@ -15,6 +15,10 @@ const wrapperCss = css`
     overflow: auto;
     min-height: 0;
     flex: 1 1 auto;
+
+    td {
+        box-sizing: border-box;
+    }
 `;
 
 const TableBody = memo(({
