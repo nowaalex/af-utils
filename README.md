@@ -1,6 +1,8 @@
 # af-react-table
 React virtual table
 
+[Playground](https://nowaalex.github.io/af-react-table/exampleAssets/)
+
 **TODO**
 * export Row and Cell components
 * more clever reaction on rowCount prop change
