@@ -1,20 +1,19 @@
-import React, { memo } from "react";
+import React, { memo, useLayoutEffect, useCallback } from "react";
+import useResizeObserver from "use-resize-observer";
 import { css } from "@emotion/core";
-import Colgroup from "../TbodyColgroup";
+import Table from "./Table";
 import { useApiPlugin } from "../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "widget-height-changed",
-    "total-rows-quantity-changed",
-    "virtual-scroll-offsets-changed",
-    "visible-rows-range-changed",
-    "columns-changed"
+    "widget-scroll-height-changed",
+    "virtual-top-offset-changed"
 ];
 
 const wrapperCss = css`
-    overflow: auto;
     min-height: 0;
     flex: 1 1 auto;
+    position: relative;
+    overflow: hidden;
     table {
         width: 100%;
         td {
@@ -23,55 +22,51 @@ const wrapperCss = css`
     }
 `;
 
+const overflowContainerCss = css`
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+`;
+
 const TableBody = memo(({
-    wrapperRef,
     tbodyRef,
-    RowComponent,
-    CellComponent,
+    scrollContainerRef,
     EmptyDataRowComponent,
-    bodyTableLayoutFixed,
-    onScroll,
-    getVisibleRows,
+    tableLayoutFixed,
     getRowData,
     getRowKey,
     getRowExtraProps,
-    mapCells,
-    getCellData,
-   // currentHorizontalScrollbarOffset
 }) => {
 
     const API = useApiPlugin( SUBSCRIBE_EVENTS );
 
-    const visibleRows = getVisibleRows(
-        API.startIndex,
-        API.endIndex,
-        API.columns,
-        getRowData,
-        getRowKey,
-        getRowExtraProps,
-        RowComponent,
-        mapCells,
-        getCellData,
-        CellComponent,
-        EmptyDataRowComponent
-    );
+    const { width, height, ref } = useResizeObserver();
 
-    const wrapperStyle = { height: API.widgetHeight };
+    useLayoutEffect(() => {
+        API.setWidgetHeight( height );
+        API.setWidgetWidth( width );
+    }, [ width, height ]);
 
-    const tableStyle = {
-        tableLayout: bodyTableLayoutFixed ? "fixed" : "auto",
-        transform: `translateY(${API.virtualTopOffset}px)`
-    };
+    const scrollHandler = useCallback( e => {
+        const { scrollTop, scrollLeft } = e.target;
+        API.setScrollTop( scrollTop );
+        API.setScrollLeft( scrollLeft );
+    }, []);
     
     return (
-        <div css={wrapperCss} style={wrapperStyle} ref={wrapperRef} onScroll={onScroll}>
-            <div style={{ height: API.widgetScrollHeight }}>
-                <table style={tableStyle}>
-                    <Colgroup />
-                    <tbody ref={tbodyRef}>
-                        {visibleRows}
-                    </tbody>
-                </table>
+        <div css={wrapperCss} ref={ref}>
+            <div css={overflowContainerCss} style={{ width, height }} ref={scrollContainerRef} onScroll={scrollHandler}>
+                <div style={{ height: API.widgetScrollHeight, boxSizing: "border-box", paddingTop: API.virtualTopOffset }}>
+                    <Table
+                        tbodyRef={tbodyRef}
+                        tableLayoutFixed={tableLayoutFixed}
+                        EmptyDataRowComponent={EmptyDataRowComponent}
+                        getRowData={getRowData}
+                        getRowKey={getRowKey}
+                        getRowExtraProps={getRowExtraProps}
+                    />
+                </div>
             </div>
         </div>
     );

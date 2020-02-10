@@ -2,17 +2,17 @@ import EventEmitter from "eventemitter3";
 import throttle from "lodash/throttle";
 import areArraysEqual from "../utils/areArraysEqual";
 
-const DEFAULT_APPROXIMATE_ROW_HEIGHT = 30;
-const DEFAULT_ROW_RECALC_INTERVAL = 200;
-const PX_OVERSCAN_DIST = 300;
+const DEFAULT_ESTIMATED_ROW_HEIGHT = 30;
 
 class VirtualRowsDataStore {
 
-    Events = new EventEmitter;
-    rowHeightsByIndex = [];
-    registeredRows = 0;
-    totalRows = 0;
+    Events = new EventEmitter();
 
+    rowHeightsByIndex = [];
+    measuredRowsQuantity = 0;
+    measuredRowsTotalHeight = 0;
+
+    totalRows = 0;
     startIndex = 0;
     endIndex = 0;
 
@@ -24,22 +24,22 @@ class VirtualRowsDataStore {
     widgetScrollHeight = 0;
 
     overscanRowsDistance = 0;
-    averageRowHeight = 0;
-    fallbackAverageRowHeight = 0;
-    scrollHeight = 0;
+    estimatedRowHeight = 0;
+
     scrollLeft = 0;
     scrollTop = 0;
     scrollBuff = 0;
+
     widgetHeight = 0;
     widgetWidth = 0;
 
     columns = [];
     tbodyColumnWidths = [];
 
-    setAverageRowHeight( height ){
-        if( this.averageRowHeight !== height ){
-            this.averageRowHeight = height;
-            this.Events.emit( "average-row-height-changed", height );
+    setEstimatedRowHeight( height ){
+        if( this.estimatedRowHeight !== height ){
+            this.estimatedRowHeight = height;
+            this.Events.emit( "estimated-row-height-changed", height );
         }
     }
 
@@ -66,91 +66,110 @@ class VirtualRowsDataStore {
                 }
             }
         }
-    }, 200 );
+    }, 500 );
 
-    setVisibleRowsHeights = throttle(() => {
+    setVisibleRowsHeights = () => {
         const node = this.getTbodyDomNode();
+
         if( node ){
+
             const { rowHeightsByIndex, startIndex, endIndex, prevMeasuredRangeEndIndex, prevMeasuredRangeStartIndex } = this;
-            let { averageRowHeight } = this;
-            for( let j = 0, idx, ch = node.children, curHeight, newHeight, diff, avgDiff; j < ch.length; j++ ){
-                idx = j + startIndex;
-                if( idx < prevMeasuredRangeStartIndex || idx >= prevMeasuredRangeEndIndex ){
-                    curHeight = rowHeightsByIndex[ idx ] || 0;
-                    newHeight = ch[ j ].offsetHeight;
-                    diff = newHeight - curHeight;   
-                    if( diff ){
-                        rowHeightsByIndex[ idx ] = newHeight;
-                        if( !curHeight ){
-                            this.registeredRows++;
-                            avgDiff = newHeight - averageRowHeight;
-                        }
-                        else{
-                            avgDiff = diff;
-                        }
-                        averageRowHeight += avgDiff / this.registeredRows;
-                    }
+
+            let totalSum = 0,
+                totalMeasuredElementsQuantity = 0;
+
+            /* Dirty! Goes here on width change */
+            if( node.children.length !== endIndex - startIndex ){
+                return;
+            }
+
+            for( let j = startIndex, ch = node.children, curHeight, newHeight; j < endIndex; j++ ){
+
+                curHeight = rowHeightsByIndex[ j ] || 0;
+                newHeight = rowHeightsByIndex[ j ] = ch[ j - startIndex ].offsetHeight;
+                
+                totalSum += newHeight;
+                totalMeasuredElementsQuantity++;
+                this.measuredRowsTotalHeight += newHeight - curHeight;
+
+                if( !curHeight ) {
+                    this.measuredRowsQuantity++;
                 }
             }
-            this.prevMeasuredRangeStartIndex = startIndex;
-            this.prevMeasuredRangeEndIndex = endIndex;
-            this.setAverageRowHeight( averageRowHeight );
+
+            /*this.prevMeasuredRangeStartIndex = startIndex;
+            this.prevMeasuredRangeEndIndex = endIndex;*/
+
+            if( !this.estimatedRowHeight && totalMeasuredElementsQuantity ){
+                this.setEstimatedRowHeight( totalSum / totalMeasuredElementsQuantity );
+            }
+
+            this.updateWidgetScrollHeight();
         }
-        
-    }, DEFAULT_ROW_RECALC_INTERVAL, { leading: false });
+    };
 
-    refreshMeasurements = () => {
-        const newWidgetScrollHeight = Math.ceil( this.averageRowHeight * this.totalRows ); 
-        this.updateVirtualPosition( this.virtualTopOffset, this.startIndex, newWidgetScrollHeight );
-    }
+    reset(){
+        this.rowHeightsByIndex.length = this.totalRows;
+        this.rowHeightsByIndex.fill( 0, 0, this.totalRows );
 
-    clearCache(){
-        this.rowHeightsByIndex = [];
-        this.tbodyColumnWidths = [];
-        this.registeredRows = 0;
-        this.widgetScrollHeight = this.virtualTopOffset = this.scrollTop = this.scrollBuff = this.scrollHeight = 0;
-        this.averageRowHeight = this.registeredRows = 0;
-        this.startIndex = this.endIndex = this.totalRows = 0;
+        this.tbodyColumnWidths.length = this.columns.length;
+        this.tbodyColumnWidths.fill( 0, 0, this.columns.length );
+
+        this.virtualTopOffset = this.scrollTop = this.scrollBuff = 0;
+        this.measuredRowsQuantity = this.measuredRowsTotalHeight = this.estimatedRowHeight = 0;
+        this.startIndex = 0;
+
         this.resetMeasuredRangeCache();
+        this.updateWidgetScrollHeight();
+        this.updateVisibleRowsRange( this.startIndex );
     }
 
-    totalRowsChangeHandler = ( newTotalRows, oldTotalRows ) => {
+    updateWidgetScrollHeight(){
+        const avgRowHeight = this.estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT;
+        const unmeasuredRowsQuantity = this.totalRows - this.measuredRowsQuantity;
+        const newWidgetScrollHeight = this.measuredRowsTotalHeight + Math.round( avgRowHeight * unmeasuredRowsQuantity );
+        if( newWidgetScrollHeight !== this.widgetScrollHeight ){
+            this.widgetScrollHeight = newWidgetScrollHeight;
+            this.Events.emit( "widget-scroll-height-changed", newWidgetScrollHeight );
+        }
+    }
+
+    updateRowsQuantity = ( newTotalRows, prevTotalRows ) => {
         if( newTotalRows > 0 ){
-            this.resetMeasuredRangeCache();
-            const diff = newTotalRows - oldTotalRows;
-            if( diff < 0 ){
-                this.updateVirtualPosition(
-                    Math.max( 0, Math.round( this.virtualTopOffset + diff * this.averageRowHeight ) ),
-                    Math.max( 0, this.startIndex + diff ),
-                    Math.round( newTotalRows * this.averageRowHeight )
-                );
-                this.getTableWrapperDomNode().scrollTop = Math.round( Math.max( 0, this.scrollTop += diff * this.averageRowHeight ) );
+
+            if( newTotalRows > prevTotalRows ){
+                this.rowHeightsByIndex.length = newTotalRows;
+                this.rowHeightsByIndex.fill( 0, prevTotalRows, newTotalRows );
+                this.updateWidgetScrollHeight();
+                this.updateVisibleRowsRange( this.startIndex );
             }
             else{
-                this.refreshMeasurements();
+                /* TODO: need more clever action */
+                this.scrollTop = 0;
+                this.getScrollContainerNode().scrollTop = 0;
+                this.reset();
             }
         }
         else{
-            this.setVisibleRowsHeights.cancel();
-            this.calculateTbodyColumnWidths.cancel();
-            this.clearCache();
+            this.reset();
         }
     }
 
     constructor( params ){
         this.getTbodyDomNode = params.getTbodyDomNode;
-        this.getTableWrapperDomNode = params.getTableWrapperDomNode;
-        this.overscanRowsDistance = params.overscanRowsDistance || PX_OVERSCAN_DIST;
-        this.fallbackAverageRowHeight = params.approximateRowHeight || DEFAULT_APPROXIMATE_ROW_HEIGHT;
+        this.getScrollContainerNode = params.getScrollContainerNode;
+        this.overscanRowsDistance = params.overscanRowsDistance || 0;
         this.totalRows = params.totalRows || 0;
         this.columns = params.columns || [];
+        this.reset();
 
         this.Events
-            .on( "total-rows-quantity-changed", this.totalRowsChangeHandler )
-            .on( "average-row-height-changed", this.refreshMeasurements )
-            .on( "widget-height-changed", this.refreshMeasurements )
-            .on( "visible-rows-range-changed", this.setVisibleRowsHeights )
-            .on( "visible-rows-range-changed", this.calculateTbodyColumnWidths )
+            .on( "total-rows-quantity-changed", this.updateRowsQuantity )
+            .on( "estimated-row-height-changed", () => this.updateWidgetScrollHeight())
+            .on( "estimated-row-height-changed", () => this.updateVisibleRowsRange( this.startIndex ) )
+            .on( "widget-height-changed", () => this.updateVisibleRowsRange( this.startIndex ) )
+            .on( "tbody-rows-rendered", this.setVisibleRowsHeights )
+            .on( "tbody-rows-rendered", this.calculateTbodyColumnWidths )
             .on( "columns-changed", this.calculateTbodyColumnWidths )
             .on( "widget-width-changed", this.resetMeasuredRangeCache )
             .on( "widget-width-changed", this.setVisibleRowsHeights )
@@ -158,13 +177,12 @@ class VirtualRowsDataStore {
     }
 
     destructor(){
-        this.setVisibleRowsHeights.cancel();
         this.calculateTbodyColumnWidths.cancel();
         this.Events.removeAllListeners();
     }
 
     getRowsQuantity( startIndex, pxHeight, cutLast ){
-        const { averageRowHeight, fallbackAverageRowHeight, rowHeightsByIndex, totalRows } = this;
+        const { estimatedRowHeight, rowHeightsByIndex, totalRows } = this;
         
         const step = Math.sign( pxHeight ),
             absHeight = Math.abs( pxHeight );
@@ -173,16 +191,7 @@ class VirtualRowsDataStore {
             tmpHeight = 0;
 
         do {
-            tmpHeight = rowHeightsByIndex[ startIndex ];
-            if( !tmpHeight ){
-                if( averageRowHeight ){
-                    tmpHeight = rowHeightsByIndex[ startIndex ] = averageRowHeight;
-                    this.registeredRows++;
-                }
-                else{
-                    tmpHeight = fallbackAverageRowHeight;
-                }
-            }
+            tmpHeight = rowHeightsByIndex[ startIndex ] || estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT;
             accumulatedHeight += tmpHeight;
             startIndex += step;
         }
@@ -193,7 +202,7 @@ class VirtualRowsDataStore {
             accumulatedHeight -= tmpHeight;
         }
 
-        return [ startIndex, Math.round( accumulatedHeight ) ];
+        return [ startIndex, Math.round( accumulatedHeight * step ) ];
     }
     
     setTotalRows( totalRows ){
@@ -227,53 +236,52 @@ class VirtualRowsDataStore {
               
                 let newVirtualTopOffset = this.virtualTopOffset;
 
-                if( scrollDist * this.scrollBuff < 0 ){
+                if( scrollDist ^ this.scrollBuff < 0 ){
+                    /* scroll direction changed */
                     this.scrollBuff = prevScrollTop - newVirtualTopOffset;
                 }
 
-                const totalHeight = this.scrollBuff + scrollDist - this.overscanRowsDistance;
-                const [ newStartIndex, virtualOffsetDiff ] = this.getRowsQuantity( this.startIndex, totalHeight, true ); 
+                this.scrollBuff += scrollDist;
+                const totalHeight = this.scrollBuff - this.overscanRowsDistance;
+
+                /* this if is just to avoid useless getRowsQuantity call */
+                if( totalHeight ^ this.scrollBuff >= 0 ){
+                    const startIndexOffset = scrollDist < 0 && this.startIndex > 0 ? -1 : 0;
+                
+                    const [ newStartIndex, dist ] = this.getRowsQuantity( this.startIndex + startIndexOffset, totalHeight, true ); 
         
-                if( virtualOffsetDiff ){
-                    const dist = virtualOffsetDiff * Math.sign( scrollDist );
-                    newVirtualTopOffset = Math.max( 0, this.virtualTopOffset + dist );
-                    this.scrollBuff = scrollTop - newVirtualTopOffset;
-                    this.updateVirtualPosition( newVirtualTopOffset, newStartIndex, this.widgetScrollHeight );
-                }
-                else{
-                    this.scrollBuff += scrollDist;
+                    if( dist ){
+                        newVirtualTopOffset = Math.max( 0, newVirtualTopOffset + dist );
+                        this.scrollBuff = scrollTop - newVirtualTopOffset;
+                        this.setVirtualTopOffset( newVirtualTopOffset );
+                        this.updateVisibleRowsRange( newStartIndex - startIndexOffset );
+                    }
                 }
             }
             else{
                 /* scrolled to the very start */
                 this.scrollBuff = 0;
-                this.updateVirtualPosition( 0, 0, this.widgetScrollHeight );
+                this.setVirtualTopOffset( 0 );
+                this.updateVisibleRowsRange( 0 );
             }
         }
     }
 
-    updateRowsRange( newStartIndex, newEndIndex ){
-        if( this.endIndex !== newEndIndex || this.startIndex !== newStartIndex ){
+    setVirtualTopOffset( newVirtualTopOffset ){
+        if( this.virtualTopOffset !== newVirtualTopOffset ){
+            this.virtualTopOffset = newVirtualTopOffset;
+            this.Events.emit( "virtual-top-offset-changed" );
+        }
+    }
+
+    updateVisibleRowsRange( newStartIndex ){
+        const [ newEndIndex ] = this.getRowsQuantity( newStartIndex, this.widgetHeight + this.overscanRowsDistance * 2 );
+        if( this.startIndex !== newStartIndex || this.endIndex !== newEndIndex ){
             this.startIndex = newStartIndex;
             this.endIndex = newEndIndex;
             this.Events.emit( "visible-rows-range-changed" );
         }
     }
-
-    updateScrollOffsets( newVirtualTopOffset, newWidgetScrollHeight ){
-        if( this.widgetScrollHeight !== newWidgetScrollHeight || this.virtualTopOffset !== newVirtualTopOffset ){
-            this.virtualTopOffset = newVirtualTopOffset;
-            this.widgetScrollHeight = newWidgetScrollHeight;
-            this.Events.emit( "virtual-scroll-offsets-changed" );
-        }
-    }
-
-    updateVirtualPosition( newVirtualTopOffset, newStartIndex, newWidgetScrollHeight ){
-        const [ newEndIndex ] = this.getRowsQuantity( newStartIndex, this.widgetHeight + this.overscanRowsDistance * 2 );
-        this.updateScrollOffsets( newVirtualTopOffset, newWidgetScrollHeight );
-        this.updateRowsRange( newStartIndex, newEndIndex );
-    }
-
 
     setWidgetHeight( height ){
         if( this.widgetHeight !== height ){
@@ -288,8 +296,6 @@ class VirtualRowsDataStore {
             this.Events.emit( "widget-width-changed", width );
         }
     }
-
-    /* TODO: add elements removing */
 }
 
 export default VirtualRowsDataStore;

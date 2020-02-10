@@ -58,7 +58,7 @@ const tableReducer = ( oldProps, { widgetHeight, rowCount, colCount }) => {
             r.index = rowIndex;
         }
         else{
-            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 1, rowIndex % 15 ) );
+            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 1, rowIndex % 5 ) );
         }
         return r;
     }, {});
@@ -95,7 +95,7 @@ const App = () => {
                 </label>
                 <label>
                     <span>rowCount:&nbsp;</span>
-                    <input type="number" name="rowCount" defaultValue={1000} />
+                    <input type="number" name="rowCount" defaultValue={100} />
                 </label>
                 <label>
                     <span>colCount:&nbsp;</span>

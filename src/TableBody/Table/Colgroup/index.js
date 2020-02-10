@@ -1,11 +1,11 @@
 import React, { memo } from "react";
-import { useApiPlugin } from "../useApi";
+import { useApiPlugin } from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
     "columns-changed"
 ];
 
-const TbodyColgroup = memo(() => {
+const Colgroup = memo(() => {
     const { columns } = useApiPlugin( SUBSCRIBE_EVENTS );
     return (
         <colgroup>
@@ -19,4 +19,4 @@ const TbodyColgroup = memo(() => {
     );
 }, () => true );
 
-export default TbodyColgroup;
+export default Colgroup;
