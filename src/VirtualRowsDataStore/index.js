@@ -85,7 +85,7 @@ class VirtualRowsDataStore {
 
             for( let j = startIndex, ch = node.children, curHeight, newHeight; j < endIndex; j++ ){
 
-                curHeight = rowHeightsByIndex[ j ] || 0;
+                curHeight = rowHeightsByIndex[ j ];
                 newHeight = rowHeightsByIndex[ j ] = ch[ j - startIndex ].offsetHeight;
                 
                 totalSum += newHeight;

@@ -7,12 +7,6 @@ import TableBody from "./TableBody";
 import TableHead from "./TableHead";
 import VirtualRowsDataStore from "./VirtualRowsDataStore";
 
-/*
-    TODO:
-        * react on rowCount change
-        * react on getRowData change
-        * react on overscan prop change
-*/
 
 /* flex: 1 1 auto, assuming that table would be used full-stretch mostly */
 const wrapperCss = css`
@@ -116,7 +110,6 @@ Table.propTypes = {
     getRowData: PropTypes.func.isRequired,
 
     getRowKey: PropTypes.func,
-    rowsChangeHash: PropTypes.func,
     approximateRowHeight: PropTypes.number,
     getRowExtraProps: PropTypes.func,
 
