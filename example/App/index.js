@@ -70,7 +70,7 @@ const tableReducer = ( oldProps, { widgetHeight, rowCount, colCount }) => {
     return {
         rowCount: +rowCount.value,
         style: {
-            maxHeight: +widgetHeight.value || "auto"
+            maxHeight: +widgetHeight.value || undefined
         },
         columns,
         getRowData
@@ -91,15 +91,15 @@ const App = () => {
             <form onSubmit={submitHandler}>
                 <label>
                     <span>widgetHeight:&nbsp;</span>
-                    <input type="number" name="widgetHeight" defaultValue={0} />
+                    <input type="number" name="widgetHeight" min="0" defaultValue={0} />
                 </label>
                 <label>
                     <span>rowCount:&nbsp;</span>
-                    <input type="number" name="rowCount" defaultValue={100} />
+                    <input type="number" name="rowCount" min="-1" defaultValue={100} max="1000000" />
                 </label>
                 <label>
                     <span>colCount:&nbsp;</span>
-                    <input type="number" name="colCount" defaultValue={5} />
+                    <input type="number" name="colCount" defaultValue={5} min="0" max="20" />
                 </label>
                 <button type="submit">Regenerate</button>
             </form>
