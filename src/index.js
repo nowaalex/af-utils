@@ -32,6 +32,10 @@ export const RowCountWarningContainerDefault = styled.div`
 
 export const getRowExtraPropsDefault = () => undefined;
 
+/*
+    If we provide a ref to a class component, we could access Data and call it's methods from outside( Data.scrollTo(), etc. ).
+    Functional components encapsulate internals, so to keep this flexibility we use class components here.
+*/
 class Table extends React.PureComponent {
 
     scrollContainerRef = React.createRef();
