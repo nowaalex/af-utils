@@ -4,6 +4,7 @@ React virtual table
 [Playground](https://nowaalex.github.io/af-react-table/exampleAssets/)
 
 **TODO**
+* add th titles
 * export Row and Cell components
 * more clever reaction on rowCount prop change
 * reaction on overscanRowsCount prop change

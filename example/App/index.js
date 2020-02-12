@@ -95,11 +95,11 @@ const App = () => {
                 </label>
                 <label>
                     <span>rowCount:&nbsp;</span>
-                    <input type="number" name="rowCount" min="-1" defaultValue={100} max="1000000" />
+                    <input type="number" name="rowCount" min="-1" defaultValue={100} />
                 </label>
                 <label>
                     <span>colCount:&nbsp;</span>
-                    <input type="number" name="colCount" defaultValue={5} min="0" max="20" />
+                    <input type="number" name="colCount" defaultValue={5} min="0" />
                 </label>
                 <button type="submit">Regenerate</button>
             </form>

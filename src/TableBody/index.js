@@ -5,8 +5,7 @@ import Table from "./Table";
 import { useApiPlugin } from "../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "widget-scroll-height-changed",
-    "virtual-top-offset-changed"
+    "widget-scroll-height-changed"
 ];
 
 const wrapperCss = css`
@@ -57,7 +56,7 @@ const TableBody = memo(({
     return (
         <div css={wrapperCss} ref={ref}>
             <div css={overflowContainerCss} style={{ width, height }} ref={scrollContainerRef} onScroll={scrollHandler}>
-                <div style={{ height: API.widgetScrollHeight, boxSizing: "border-box", paddingTop: API.virtualTopOffset }}>
+                <div style={{ height: API.widgetScrollHeight, boxSizing: "border-box", }}>
                     <Table
                         tbodyRef={tbodyRef}
                         tableLayoutFixed={tableLayoutFixed}

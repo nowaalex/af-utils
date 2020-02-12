@@ -45,18 +45,21 @@ class Table extends React.PureComponent {
         overscanRowsDistance: this.props.overscanRowsDistance,
         columns: this.props.columns,
         totalRows: Math.max( this.props.rowCount, 0 ),
-        approximateRowHeight: this.props.approximateRowHeight,
+        estimatedRowHeight: this.props.estimatedRowHeight,
         getTbodyDomNode: () => this.tbodyRef.current,
         getScrollContainerNode: () => this.scrollContainerRef.current
     });
 
     componentDidUpdate( prevProps ){
-        const { rowCount, columns } = this.props;
+        const { rowCount, columns, estimatedRowHeight } = this.props;
         if( rowCount >= 0 && rowCount !== prevProps.rowCount ){
             this.Data.setTotalRows( rowCount );
         }
         if( columns !== prevProps.columns ){
             this.Data.setColumns( columns );
+        }
+        if( estimatedRowHeight !== prevProps.estimatedRowHeight ){
+            this.Data.setEstimatedRowHeight( estimatedRowHeight );
         }
     }
 
@@ -73,7 +76,7 @@ class Table extends React.PureComponent {
             getRowExtraProps,
             rowCount,
             tableLayoutFixed,
-            approximateRowHeight,
+            estimatedRowHeight,
             overscanRowsDistance,
             rowCountWarningsTable,
 
@@ -114,7 +117,7 @@ Table.propTypes = {
     getRowData: PropTypes.func.isRequired,
 
     getRowKey: PropTypes.func,
-    approximateRowHeight: PropTypes.number,
+    estimatedRowHeight: PropTypes.number,
     getRowExtraProps: PropTypes.func,
 
     /* as row heights may be different, we measure overscan in px */
@@ -129,7 +132,7 @@ Table.propTypes = {
 };
 
 Table.defaultProps = {
-    approximateRowHeight: 30,
+    estimatedRowHeight: 20,
     getRowExtraProps: getRowExtraPropsDefault,
     overscanRowsDistance: 200,
     tableLayoutFixed: false,

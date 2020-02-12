@@ -25,6 +25,7 @@ module.exports = {
         "one-var": [ 0 ],
         "no-param-reassign": [ 0 ],
         "no-multi-assign": [ 0 ],
-        "no-nested-ternary": [ 0 ]
+        "no-nested-ternary": [ 0 ],
+        "import/prefer-default-export": [ 0 ]
     }
 }
