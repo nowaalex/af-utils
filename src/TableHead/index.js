@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { css } from "@emotion/core";
-import Colgroup from "./TheadColgroup";
 import { useApiPlugin } from "../useApi";
+import Colgroup from "./Colgroup";
 
 const SUBSCRIBE_EVENTS = [
     "columns-changed",
@@ -9,10 +9,6 @@ const SUBSCRIBE_EVENTS = [
     "column-widths-changed",
 ];
 
-/*
-    border-box is important, because head th widths are synced with td widths
-    width: 100% covers case, when no tbody is rendered and exact width cannot be calculated
-*/
 const wrapperCss = css`
     flex: 0 0 auto;
     min-width: 100%;
@@ -21,7 +17,6 @@ const wrapperCss = css`
     th {
         text-overflow: ellipsis;
         overflow: hidden;
-        box-sizing: border-box;
     }
 `;
 
@@ -36,6 +31,9 @@ const TableHead = memo(() => {
             <thead>
                 <tr>
                     {columns.map(( column, j, cols ) => {
+                        if( column.visibility === "hidden" ){
+                            return null;
+                        }
                         const width = tbodyColumnWidths[ j ];
                         const style = j + 1 < cols.length ? { minWidth: width, width, maxWidth: width } : { minWidth: width };
                         return (

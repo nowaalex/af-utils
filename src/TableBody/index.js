@@ -15,9 +15,6 @@ const wrapperCss = css`
     overflow: hidden;
     table {
         width: 100%;
-        td {
-            box-sizing: border-box;
-        }
     }
 `;
 
@@ -31,8 +28,6 @@ const overflowContainerCss = css`
 const TableBody = memo(({
     tbodyRef,
     scrollContainerRef,
-    EmptyDataRowComponent,
-    tableLayoutFixed,
     getRowData,
     getRowKey,
     getRowExtraProps,
@@ -58,11 +53,9 @@ const TableBody = memo(({
     return (
         <div css={wrapperCss} ref={ref}>
             <div css={overflowContainerCss} style={{ width, height }} ref={scrollContainerRef} onScroll={scrollHandler}>
-                <div style={{ height: API.widgetScrollHeight, boxSizing: "border-box", }}>
+                <div style={{ height: API.widgetScrollHeight }}>
                     <Table
                         tbodyRef={tbodyRef}
-                        tableLayoutFixed={tableLayoutFixed}
-                        EmptyDataRowComponent={EmptyDataRowComponent}
                         getRowData={getRowData}
                         getRowKey={getRowKey}
                         getRowExtraProps={getRowExtraProps}

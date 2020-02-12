@@ -70,7 +70,7 @@ class VirtualRowsDataStore {
                 }
             }
         }
-    }, 500 );
+    }, 200 );
 
     setVisibleRowsHeights = () => {
         this.setVisibleRowsHeightsThrottled.cancel();
@@ -153,6 +153,15 @@ class VirtualRowsDataStore {
             this.updateWidgetScrollHeight();
             this.updateVisibleRowsRange( this.startIndex );
         }
+    }
+
+    scrollToRow( index ){
+        const node = this.getScrollContainerNode();
+        if( node ){
+            index = Math.max( 0, Math.min( this.totalRows, index ) );
+            const dist = sum( 0, index, this.heighsCache );
+            node.scrollTop = dist;
+        }        
     }
 
     setColumns( columns ){

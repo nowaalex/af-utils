@@ -6,8 +6,6 @@ Optimized non-recursize segment tree is used to store row dimensions.
 
 **TODO**
 * reaction on overscanRowsCount prop change
-* reaction on getRowData prop change
-* add scrollToRow method
 * add resetCache( fromIndex, toIndex ) method
 * add rerenderCurrentRange() method
 * think about row measurements throttling

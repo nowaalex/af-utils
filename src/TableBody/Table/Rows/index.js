@@ -15,8 +15,7 @@ const getVisibleRows = (
     getRowKey,
     getRowExtraProps,
     RowComponent,
-    CellComponent,
-    EmptyDataRowComponent
+    CellComponent
 ) => {
     const result = [];
     for( let j = rangeFrom, rowKey; j < rangeTo; j++ ){
@@ -29,14 +28,13 @@ const getVisibleRows = (
                 columns={columns}
                 getRowData={getRowData}
                 CellComponent={CellComponent}
-                EmptyDataRowComponent={EmptyDataRowComponent}
             />
         );
     }
     return result;
 };
 
-const Rows = memo(({ getRowData, getRowKey, getRowExtraProps, RowComponent, CellComponent, EmptyDataRowComponent }) => {
+const Rows = memo(({ getRowData, getRowKey, getRowExtraProps, RowComponent, CellComponent }) => {
 
     const { startIndex, endIndex, Events, columns } = useApiPlugin( SUBSCRIBE_EVENTS );
 
@@ -52,8 +50,7 @@ const Rows = memo(({ getRowData, getRowKey, getRowExtraProps, RowComponent, Cell
         getRowKey,
         getRowExtraProps,
         RowComponent,
-        CellComponent,
-        EmptyDataRowComponent
+        CellComponent
     );
 });
 

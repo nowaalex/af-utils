@@ -62,7 +62,7 @@ const calculateParents = tree => {
 
 export const getTree = ( endIndex, startIndex, defaultValue, arr ) => {
     const N = getSize( endIndex );
-    const tree = new Float32Array( N * 2 );
+    const tree = new Uint32Array( N * 2 );
     tree[ 0 ] = N;
 
     let lastInsertedElementIndex = 0;
@@ -84,7 +84,7 @@ export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
         return tree;
     }
 
-    const newTree = new Float32Array( newN * 2 );
+    const newTree = new Uint32Array( newN * 2 );
     newTree[ 0 ] = newN;
     let idx = 0;
 

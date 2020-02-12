@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useRef } from "react";
 import Faker from "faker";
 import random from "lodash/random";
 import times from "lodash/times";
@@ -25,6 +25,10 @@ const wrapperCss = css`
             width: 200px;
         }
     }
+
+    hr {
+        width: 100%;
+    }
 `;
 
 
@@ -33,6 +37,14 @@ const tableCss = css`
     table {
         border-collapse: collapse;
         border-spacing: 0;
+    }
+    th {
+        padding: 1em;
+        border-bottom: 1px solid #000;
+    }
+    td {
+        border-bottom: 1px solid rgba( 0,0,0,0.2);
+        padding: 0.3em;
     }
 `;
 
@@ -48,7 +60,6 @@ const tableReducer = ( oldProps, { widgetHeight, rowCount, colCount }) => {
         ...times( +colCount.value, i => ({
             dataKey: `dataKey_${i}`,
             label: Faker.name.firstName(),
-            width: 200,
             background: `rgb(${random(170,220)}, ${random(170,220)}, ${random(170,220)})`
         }))
     ];
@@ -84,7 +95,15 @@ const App = () => {
     const submitHandler = e => {
         e.preventDefault();
         processFields( e.currentTarget.elements );
-    }
+    };
+
+    const tableRef = useRef();
+
+    const scrollToRowSubmitHandler = e => {
+        e.preventDefault();
+        const { value } = e.currentTarget.elements.index;
+        tableRef.current.Data.scrollToRow( +value );
+    };
 
     return (
         <div css={wrapperCss}>
@@ -103,8 +122,22 @@ const App = () => {
                 </label>
                 <button type="submit">Regenerate</button>
             </form>
+            <hr />
+            <form onSubmit={scrollToRowSubmitHandler}>
+                <label>
+                    <span>Scroll to row:&nbsp;</span>
+                    <input type="number" name="index" min="0" defaultValue={0} />
+                    <button type="submit">Scroll</button>
+                </label>
+            </form>
+            <hr />
             { tableProps ? (
-                <Table {...tableProps} css={tableCss} rowCountWarningsTable={{ "0": "AA", "-1" :"OO"}} />
+                <Table
+                    {...tableProps}
+                    ref={tableRef}
+                    css={tableCss}
+                    rowCountWarningsTable={{ "0": "AA", "-1" :"OO"}}
+                />
             ) : null}
         </div>
     );

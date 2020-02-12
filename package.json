@@ -40,14 +40,14 @@
     "prettier": "^1.19.1",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.10.3",
+    "babel-loader": "^8.0.6",
+    "faker": "^4.1.0"
   },
   "dependencies": {
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
-    "babel-loader": "^8.0.6",
     "eventemitter3": "^4.0.0",
-    "faker": "^4.1.0",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",

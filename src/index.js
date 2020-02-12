@@ -9,16 +9,22 @@ import VirtualRowsDataStore from "./VirtualRowsDataStore";
 
 import RowComponentDefault from "./defaultComponents/Row";
 import CellComponentDefault from "./defaultComponents/Cell";
-import EmptyDataRowComponentDefault from "./defaultComponents/EmptyDataRowComponent";
 import RowCountWarningContainerDefault from "./defaultComponents/RowCountWarningContainer";
 
 
-/* flex: 1 1 auto, assuming that table would be used full-stretch mostly */
+/*
+    * flex: 1 1 auto, assuming that table would be used full-stretch mostly
+    * border-box is important, because head th widths are synced with td widths
+    width: 100% covers case, when no tbody is rendered and exact width cannot be calculated
+*/
 const wrapperCss = css`
     display: flex;
     flex: 1 1 auto;
     flex-flow: column nowrap;
     overflow: hidden;
+    &, table, tr, td, th {
+        box-sizing: border-box;
+    }
 `;
 
 
@@ -65,14 +71,12 @@ class Table extends React.PureComponent {
             getRowKey,
             getRowExtraProps,
             rowCount,
-            tableLayoutFixed,
             estimatedRowHeight,
             overscanRowsDistance,
             rowCountWarningsTable,
 
             RowComponent,
             CellComponent,
-            EmptyDataRowComponent,
             RowCountWarningContainer,
 
             ...props
@@ -86,8 +90,6 @@ class Table extends React.PureComponent {
                         <TableBody
                             scrollContainerRef={this.scrollContainerRef}
                             tbodyRef={this.tbodyRef}
-                            tableLayoutFixed={tableLayoutFixed}
-                            EmptyDataRowComponent={EmptyDataRowComponent}
                             getRowData={getRowData}
                             getRowKey={getRowKey}
                             getRowExtraProps={getRowExtraProps}
@@ -116,25 +118,21 @@ Table.propTypes = {
 
     /* as row heights may be different, we measure overscan in px */
     overscanRowsDistance: PropTypes.number,
-    tableLayoutFixed: PropTypes.bool,
 
-    HeaderRowComponent: PropTypes.element,
-    EmptyDataRowComponent: PropTypes.element,
-    RowComponent: PropTypes.element,
-    CellComponent: PropTypes.element,
+    HeaderRowComponent: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
+    RowComponent: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
+    CellComponent: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
 
-    RowCountWarningContainer: PropTypes.element,
+    RowCountWarningContainer: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
     rowCountWarningsTable: PropTypes.object
 };
 
 Table.defaultProps = {
     estimatedRowHeight: 20,
     overscanRowsDistance: 200,
-    tableLayoutFixed: false,
 
     RowComponent: RowComponentDefault,
     CellComponent: CellComponentDefault,
-    EmptyDataRowComponent: EmptyDataRowComponentDefault,
     RowCountWarningContainer: RowCountWarningContainerDefault,
 };
 
