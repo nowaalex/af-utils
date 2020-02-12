@@ -1,11 +1,16 @@
-import React, { memo } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { css } from "@emotion/core";
-import styled from "@emotion/styled";
+
 import Context from "./Context";
 import TableBody from "./TableBody";
 import TableHead from "./TableHead";
 import VirtualRowsDataStore from "./VirtualRowsDataStore";
+
+import RowComponentDefault from "./defaultComponents/Row";
+import CellComponentDefault from "./defaultComponents/Cell";
+import EmptyDataRowComponentDefault from "./defaultComponents/EmptyDataRowComponent";
+import RowCountWarningContainerDefault from "./defaultComponents/RowCountWarningContainer";
 
 
 /* flex: 1 1 auto, assuming that table would be used full-stretch mostly */
@@ -16,21 +21,6 @@ const wrapperCss = css`
     overflow: hidden;
 `;
 
-export const EmptyDataRowComponentDefault = memo(({ columns }) => (
-    <tr>
-        <td colSpan={columns.length}>&mdash;</td>
-    </tr>
-));
-
-export const RowCountWarningContainerDefault = styled.div`
-    flex: 1 1 auto;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-export const getRowExtraPropsDefault = () => undefined;
 
 /*
     If we provide a ref to a class component, we could access Data and call it's methods from outside( Data.scrollTo(), etc. ).
@@ -80,6 +70,8 @@ class Table extends React.PureComponent {
             overscanRowsDistance,
             rowCountWarningsTable,
 
+            RowComponent,
+            CellComponent,
             EmptyDataRowComponent,
             RowCountWarningContainer,
 
@@ -99,6 +91,8 @@ class Table extends React.PureComponent {
                             getRowData={getRowData}
                             getRowKey={getRowKey}
                             getRowExtraProps={getRowExtraProps}
+                            RowComponent={RowComponent}
+                            CellComponent={CellComponent}
                         />
                     ) : rowCountWarningsTable ? (
                         <RowCountWarningContainer>
@@ -126,6 +120,8 @@ Table.propTypes = {
 
     HeaderRowComponent: PropTypes.element,
     EmptyDataRowComponent: PropTypes.element,
+    RowComponent: PropTypes.element,
+    CellComponent: PropTypes.element,
 
     RowCountWarningContainer: PropTypes.element,
     rowCountWarningsTable: PropTypes.object
@@ -133,12 +129,13 @@ Table.propTypes = {
 
 Table.defaultProps = {
     estimatedRowHeight: 20,
-    getRowExtraProps: getRowExtraPropsDefault,
     overscanRowsDistance: 200,
     tableLayoutFixed: false,
 
+    RowComponent: RowComponentDefault,
+    CellComponent: CellComponentDefault,
     EmptyDataRowComponent: EmptyDataRowComponentDefault,
-    RowCountWarningContainer: RowCountWarningContainerDefault
+    RowCountWarningContainer: RowCountWarningContainerDefault,
 };
 
 export default Table;

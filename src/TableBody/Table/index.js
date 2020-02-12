@@ -13,7 +13,9 @@ const Table = memo(({
     getRowKey,
     getRowExtraProps,
     tbodyRef,
-    tableLayoutFixed
+    tableLayoutFixed,
+    RowComponent,
+    CellComponent
 }) => {
     const { virtualTopOffset } = useApiPlugin( SUBSCRIBE_EVENTS );
 
@@ -28,6 +30,8 @@ const Table = memo(({
                     getRowData={getRowData}
                     getRowKey={getRowKey}
                     getRowExtraProps={getRowExtraProps}
+                    RowComponent={RowComponent}
+                    CellComponent={CellComponent}
                 />
             </tbody>
         </table>

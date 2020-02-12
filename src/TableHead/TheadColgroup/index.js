@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { useApiPlugin } from "../useApi";
+import { useApiPlugin } from "../../useApi";
 
 const SUBSCRIBE_EVENTS = [
     "columns-changed"

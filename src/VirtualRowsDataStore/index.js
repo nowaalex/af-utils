@@ -73,25 +73,29 @@ class VirtualRowsDataStore {
     }, 500 );
 
     setVisibleRowsHeights = () => {
+        this.setVisibleRowsHeightsThrottled.cancel();
         const node = this.getTbodyDomNode();
 
         if( node ){
 
             const { startIndex, endIndex, prevMeasuredRangeEndIndex, prevMeasuredRangeStartIndex } = this;
 
-            /* Dirty! Goes here on width change */
-            if( node.children.length !== endIndex - startIndex ){
-                return;
-            }
-
             for( let j = startIndex, ch = node.children, newHeight; j < endIndex; j++ ){
+                if( j >= prevMeasuredRangeStartIndex && j < prevMeasuredRangeEndIndex ){
+                    continue;
+                }
                 newHeight = ch[ j - startIndex ].offsetHeight;
                 updateNodeAt( j, newHeight, this.heighsCache );
             }
 
+            this.prevMeasuredRangeStartIndex = startIndex;
+            this.prevMeasuredRangeEndIndex = endIndex;
+
             this.updateWidgetScrollHeight();
         }
     };
+
+    setVisibleRowsHeightsThrottled = throttle( this.setVisibleRowsHeights, 1000, { leading: false } );
 
     reset(){
         this.heighsCache = getTree( this.totalRows, 0, this.estimatedRowHeight  );
@@ -108,7 +112,7 @@ class VirtualRowsDataStore {
     }
 
     updateWidgetScrollHeight(){
-        const newWidgetScrollHeight = sum( 0, this.totalRows, this.heighsCache )
+        const newWidgetScrollHeight = sum( 0, this.totalRows, this.heighsCache );
         if( newWidgetScrollHeight !== this.widgetScrollHeight ){
             this.widgetScrollHeight = newWidgetScrollHeight;
             this.Events.emit( "widget-scroll-height-changed", newWidgetScrollHeight );
@@ -128,14 +132,16 @@ class VirtualRowsDataStore {
             .on( "widget-height-changed", () => this.updateVisibleRowsRange( this.startIndex ) )
             .on( "tbody-rows-rendered", this.setVisibleRowsHeights )
             .on( "tbody-rows-rendered", this.calculateTbodyColumnWidths )
+            .on( "columns-changed", this.resetMeasuredRangeCache )
             .on( "columns-changed", this.calculateTbodyColumnWidths )
             .on( "widget-width-changed", this.resetMeasuredRangeCache )
-            .on( "widget-width-changed", this.setVisibleRowsHeights )
+            .on( "widget-width-changed", this.setVisibleRowsHeightsThrottled )
             .on( "widget-width-changed", this.calculateTbodyColumnWidths );
     }
 
     destructor(){
         this.calculateTbodyColumnWidths.cancel();
+        this.setVisibleRowsHeightsThrottled.cancel();
         this.Events.removeAllListeners();
     }
     

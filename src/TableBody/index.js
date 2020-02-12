@@ -36,6 +36,8 @@ const TableBody = memo(({
     getRowData,
     getRowKey,
     getRowExtraProps,
+    RowComponent,
+    CellComponent
 }) => {
 
     const API = useApiPlugin( SUBSCRIBE_EVENTS );
@@ -64,6 +66,8 @@ const TableBody = memo(({
                         getRowData={getRowData}
                         getRowKey={getRowKey}
                         getRowExtraProps={getRowExtraProps}
+                        RowComponent={RowComponent}
+                        CellComponent={CellComponent}
                     />
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { css } from "@emotion/core";
-import Colgroup from "../TheadColgroup";
+import Colgroup from "./TheadColgroup";
 import { useApiPlugin } from "../useApi";
 
 const SUBSCRIBE_EVENTS = [
@@ -39,7 +39,7 @@ const TableHead = memo(() => {
                         const width = tbodyColumnWidths[ j ];
                         const style = j + 1 < cols.length ? { minWidth: width, width, maxWidth: width } : { minWidth: width };
                         return (
-                            <th key={column.dataKey} style={style}>
+                            <th key={column.dataKey} style={style} title={column.title}>
                                 {column.label}
                             </th>
                         );
