@@ -1,12 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+// &nbnsp;
+const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
+
 const Cell = ({ rowData, columnIndex, column }) => {
-    const { transformCellData, dataKey } = column;
-    const cellData = rowData && rowData[ dataKey ];
+    const { transformCellData, getEmptyCellData, dataKey } = column;
+
+    let cellData = rowData && rowData[ dataKey ];
+    
+    if( cellData === undefined || cellData === "" ){
+        cellData = getEmptyCellData ? getEmptyCellData( column, columnIndex ) : DEFAULT_EMPTY_CELL_CONTENT;
+    }
+    else if( transformCellData ){
+        cellData = transformCellData( cellData, rowData, column, columnIndex );
+    }
+
     return (
         <td key={dataKey}>
-            {rowData && transformCellData ? transformCellData( cellData, rowData, columnIndex ) : cellData}
+            {cellData}
         </td>
     );
 };

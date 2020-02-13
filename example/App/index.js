@@ -69,7 +69,7 @@ const tableReducer = ( oldProps, { widgetHeight, rowCount, colCount }) => {
             r.index = rowIndex;
         }
         else{
-            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 1, rowIndex % 5 ) );
+            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 0, rowIndex % 5 ) );
         }
         return r;
     }, {});
