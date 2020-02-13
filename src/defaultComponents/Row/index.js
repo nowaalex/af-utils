@@ -8,11 +8,11 @@ const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, rowIndex })
 
     return (
         <tr {...extraProps}>
-            {columns.map(( column, columnIndex ) => column.visibility !== "hidden" ? (
+            {columns.map( column => column.visibility !== "hidden" ? (
                 <CellComponent
                     key={column.dataKey}
                     rowData={rowData}
-                    columnIndex={columnIndex}
+                    rowIndex={rowIndex}
                     column={column}
                 />
             ) : null )}

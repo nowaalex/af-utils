@@ -4,16 +4,16 @@ import PropTypes from "prop-types";
 // &nbnsp;
 const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
 
-const Cell = ({ rowData, columnIndex, column }) => {
+const Cell = ({ rowData, rowIndex, column }) => {
     const { transformCellData, getEmptyCellData, dataKey } = column;
 
     let cellData = rowData && rowData[ dataKey ];
     
     if( cellData === undefined || cellData === "" ){
-        cellData = getEmptyCellData ? getEmptyCellData( columnIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;
+        cellData = getEmptyCellData ? getEmptyCellData( rowIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;
     }
     else if( transformCellData ){
-        cellData = transformCellData( cellData, rowData, column, columnIndex );
+        cellData = transformCellData( cellData, rowData, column, rowIndex );
     }
 
     return (
@@ -24,7 +24,7 @@ const Cell = ({ rowData, columnIndex, column }) => {
 };
 
 Cell.propTypes = {
-    columnIndex: PropTypes.number.isRequired,
+    rowIndex: PropTypes.number.isRequired,
     column: PropTypes.object.isRequired,
     rowData: PropTypes.object
 };
