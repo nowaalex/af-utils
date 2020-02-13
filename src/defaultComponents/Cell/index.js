@@ -10,7 +10,7 @@ const Cell = ({ rowData, columnIndex, column }) => {
     let cellData = rowData && rowData[ dataKey ];
     
     if( cellData === undefined || cellData === "" ){
-        cellData = getEmptyCellData ? getEmptyCellData( column, columnIndex ) : DEFAULT_EMPTY_CELL_CONTENT;
+        cellData = getEmptyCellData ? getEmptyCellData( columnIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;
     }
     else if( transformCellData ){
         cellData = transformCellData( cellData, rowData, column, columnIndex );
