@@ -52,7 +52,14 @@ export const updateNodeAt = ( pos, value, tree ) => {
     }
 };
 
-export const getSize = elementsQuantity => Math.pow( 2, Math.ceil( Math.log( elementsQuantity ) / Math.LN2 ) );
+/*
+    This constant is used for 2 reasons:
+        * Math.log2( 1 ) is 0, which is not correct for cache size calculation
+        * We should always have some extra space for new rows. We do not want to reallocate cache every time.
+*/
+const MIN_TREE_CACHE_SIZE = 32;
+
+export const getSize = elementsQuantity => Math.pow( 2, Math.ceil( Math.log( elementsQuantity + MIN_TREE_CACHE_SIZE ) / Math.LN2 ) );
 
 const calculateParents = tree => {
     for( let i = tree[ 0 ] - 1; i > 0; --i ){
@@ -78,12 +85,12 @@ export const getTree = ( endIndex, startIndex, defaultValue, arr ) => {
 
 export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
     const curN = tree[ 0 ];
-    const newN = getSize( endIndex );
 
-    if( curN >= newN ){
+    if( endIndex <= curN ){
         return tree;
     }
 
+    const newN = getSize( endIndex );
     const newTree = new Uint32Array( newN * 2 );
     newTree[ 0 ] = newN;
     let idx = 0;
