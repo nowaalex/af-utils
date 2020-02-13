@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, rowIndex }) => {
 
     const rowData = getRowData( rowIndex );
-    const extraProps = getRowExtraProps && getRowExtraProps( rowIndex, rowData );
+    const extraProps = getRowExtraProps && getRowExtraProps( rowData, rowIndex );
 
     return (
         <tr {...extraProps}>

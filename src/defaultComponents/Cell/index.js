@@ -6,7 +6,7 @@ const Cell = ({ rowData, columnIndex, column }) => {
     const cellData = rowData && rowData[ dataKey ];
     return (
         <td key={dataKey}>
-            {transformCellData?transformCellData(cellData,rowData,columnIndex):cellData}
+            {rowData && transformCellData ? transformCellData( cellData, rowData, columnIndex ) : cellData}
         </td>
     );
 };
