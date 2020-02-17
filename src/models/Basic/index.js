@@ -168,7 +168,7 @@ class Base {
 
     destructor(){
         this.reactOnWidthChange.cancel();
-        this.setIsScrollingFalseDebounced.calncel();
+        this.setIsScrollingFalseDebounced.cancel();
         this.Events.removeAllListeners();
     }
     
