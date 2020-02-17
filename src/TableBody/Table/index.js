@@ -21,9 +21,15 @@ const Table = memo(({
 
 
     /* Hmm, I can't put translateY more than ~ 3 000 000. Maybe need to figure this out) */
+    const tableStyle = {
+        width: "100%",
+        willChange: "transform",
+        tableLayout: fixedLayout ? "fixed" : "auto",
+        transform: `translateY(${virtualTopOffset}px)`
+    };
 
     return (
-        <table aria-rowcount={totalRows} style={{ width: "100%", tableLayout: fixedLayout ? "fixed" : "auto", transform: `translateY(${virtualTopOffset}px)` }}>
+        <table aria-rowcount={totalRows} style={tableStyle}>
             <Colgroup />
             <tbody ref={tbodyRef}>
                 <Rows

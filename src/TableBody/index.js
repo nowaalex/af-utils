@@ -5,7 +5,8 @@ import Table from "./Table";
 import { useApiPlugin } from "../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "widget-scroll-height-changed"
+    "widget-scroll-height-changed",
+    "is-scrolling-changed"
 ];
 
 const wrapperCss = css`
@@ -50,7 +51,7 @@ const TableBody = memo(({
     return (
         <div css={wrapperCss} ref={ref}>
             <div css={overflowContainerCss} style={{ width, height }} ref={scrollContainerRef} onScroll={scrollHandler}>
-                <div style={{ height: API.widgetScrollHeight }}>
+                <div style={{ pointerEvents: API.isScrolling ? "none" : "auto", height: API.widgetScrollHeight, maxHeight: API.widgetScrollHeight }}>
                     <Table
                         tbodyRef={tbodyRef}
                         getRowData={getRowData}

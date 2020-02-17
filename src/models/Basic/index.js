@@ -1,5 +1,6 @@
 import EventEmitter from "eventemitter3";
 import throttle from "lodash/throttle";
+import debounce from "lodash/debounce";
 import clamp from "lodash/clamp";
 import addSetters from "../../utils/addSetters";
 
@@ -14,6 +15,7 @@ import {
 
 const DEFAULT_ESTIMATED_ROW_HEIGHT = 30;
 const ROW_MEASUREMENT_THROTTLING_INTERVAL = 500;
+const IS_SCROLLING_DEBOUNCE_INTERVAL = 150;
 
 class Base {
 
@@ -33,11 +35,34 @@ class Base {
     widgetHeight = 0;
     widgetWidth = 0;
 
+    /*
+        Used to set pointer-events: none when scrolling
+    */
+    isScrolling = false;
     heighsCache = null;
     /*
         Used to improve perf of segments tree and recalculate needed parents only once
     */
     updatedNodesSet = new Set();
+
+    setInitialScrollingEvents(){
+        this.Events
+            .off( "scroll-top-changed", this.setIsScrollingFalseDebounced )
+            .once( "scroll-top-changed", this.setIsScrollingTrue, this );
+        return this;
+    }
+
+    setIsScrollingTrue(){
+        this.isScrolling = true;
+        this.Events.emit( "is-scrolling-changed" );
+        this.Events.on( "scroll-top-changed", this.setIsScrollingFalseDebounced );
+    }
+    
+    setIsScrollingFalseDebounced = debounce(() => {
+        this.isScrolling = false;
+        this.Events.emit( "is-scrolling-changed" );
+        this.setInitialScrollingEvents();
+    }, IS_SCROLLING_DEBOUNCE_INTERVAL );
 
     updateWidgetScrollHeight(){
         /* In segments tree 1 node is always sum of all elements */
@@ -131,9 +156,10 @@ class Base {
         this.getRowsContainerNode = params.getRowsContainerNode;
         this.getScrollContainerNode = params.getScrollContainerNode;
         
-        this.Events.on( "total-rows-changed", this.refreshHeightsCache, this )
+        this.Events.on( "total-rows-changed", this.refreshHeightsCache, this );
 
         this
+            .setInitialScrollingEvents()
             .setEstimatedRowHeight( params.estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT )
             .setOverscanRowsDistance( params.overscanRowsDistance || 0 )
             .setTotalRows( params.totalRows || 0 );
@@ -141,6 +167,7 @@ class Base {
 
     destructor(){
         this.reactOnWidthChange.cancel();
+        this.setIsScrollingFalseDebounced.calncel();
         this.Events.removeAllListeners();
     }
     
