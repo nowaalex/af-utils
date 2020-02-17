@@ -51,6 +51,10 @@ class Base {
         if( node ){
             for( let child of node.children ){
                 const newHeight = child.offsetHeight;
+                /*
+                    We can't rely on this.startIndex and this.endIndex here, because react updates DOM asynchronously
+                    and current rendered rows range may differ from startIndex - endIndex, especially if there are many rows and this method is throttled.
+                */
                 const index = +child.getAttribute( "aria-rowindex" );
                 if( process.env.NODE_ENV !== "production" && isNaN( index ) ){
                     throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
