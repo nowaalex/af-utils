@@ -3,6 +3,8 @@ import areArraysEqual from "../../utils/areArraysEqual";
 import addSetters from "../../utils/addSetters";
 import Basic from "../Basic";
 
+const ROW_WIDTH_MEASUREMENT_INTERVAL = 100;
+
 class Table extends Basic {
 
     scrollLeft = 0;
@@ -29,7 +31,7 @@ class Table extends Basic {
                 }
             }
         }
-    }, 200 );
+    }, ROW_WIDTH_MEASUREMENT_INTERVAL );
 
     constructor( params ){
         super( params );

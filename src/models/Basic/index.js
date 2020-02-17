@@ -39,7 +39,9 @@ class Base {
         Used to set pointer-events: none when scrolling
     */
     isScrolling = false;
+
     heighsCache = null;
+
     /*
         Used to improve perf of segments tree and recalculate needed parents only once
     */
@@ -71,7 +73,6 @@ class Base {
     }
 
     setVisibleRowsHeights = throttle(() => {
-        this.reactOnWidthChange.cancel();
         const node = this.getRowsContainerNode();
 
         if( node ){
@@ -97,22 +98,21 @@ class Base {
                 this.updateWidgetScrollHeight();
             }
         }
+
         return this;
     }, ROW_MEASUREMENT_THROTTLING_INTERVAL );
 
-    /*
-        TODO: maybe implement this cleaner?
-    */
-    reactOnWidthChange = throttle(() => {
-        this
-            .updateEndIndex()
-            .setVisibleRowsHeights();
-    }, 500 );
+    cancelPendingAsyncCalls(){
+        this.refreshHeightsCache.cancel();
+        this.setIsScrollingFalseDebounced.cancel();
+        this.setVisibleRowsHeights.cancel();
+        return this;
+    }
 
     refreshOffsets(){
         const dist = Math.max( 0, this.scrollTop - this.overscanRowsDistance );
         const [ newStartIndex, remainder ] = getIndexAtDist( dist, this.heighsCache );
-        this
+        return this
             .setVirtualTopOffset( dist - remainder )
             .setStartIndex( newStartIndex )
             .updateEndIndex();
@@ -129,16 +129,15 @@ class Base {
             [ method ]( "overscan-rows-distance-changed", this.refreshOffsets, this ) 
             [ method ]( "widget-height-changed", this.updateEndIndex, this )
             [ method ]( "rows-rendered", this.setVisibleRowsHeights )
-            [ method ]( "widget-width-changed", this.reactOnWidthChange );
+            [ method ]( "widget-width-changed", this.setVisibleRowsHeights );
+        return this;
     }
 
     refreshHeightsCache( totalRows, prevTotalRows ){
         if( totalRows > 0 ){
             if( prevTotalRows > 0 ){
                 this.heighsCache = reallocateIfNeeded( this.heighsCache, prevTotalRows, totalRows, this.estimatedRowHeight );
-                this
-                    .updateWidgetScrollHeight()
-                    .updateEndIndex();
+                this.updateWidgetScrollHeight();
             }
             else{
                 this.heighsCache = getTree( totalRows, this.estimatedRowHeight );
@@ -146,10 +145,10 @@ class Base {
             }
         }
         else{
-            this.reactOnWidthChange.cancel();
-            this.setVisibleRowsHeights.cancel();
+            this
+                .cancelPendingAsyncCalls()
+                .toggleBasicEvents( "off" );
             this.startIndex = this.endIndex = this.virtualTopOffset = this.scrollTop = 0;
-            this.toggleBasicEvents( "off" );
         }
     }
 
@@ -167,9 +166,9 @@ class Base {
     }
 
     destructor(){
-        this.reactOnWidthChange.cancel();
-        this.setIsScrollingFalseDebounced.cancel();
-        this.Events.removeAllListeners();
+        this
+            .cancelPendingAsyncCalls()
+            .Events.removeAllListeners();
     }
     
     reportRowsRendered(){
