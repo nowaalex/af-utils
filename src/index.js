@@ -37,15 +37,19 @@ class Table extends React.PureComponent {
     scrollContainerRef = React.createRef();
     tbodyRef = React.createRef();
 
-    Data = new VirtualTableDataStore({
-        overscanRowsDistance: this.props.overscanRowsDistance,
-        columns: this.props.columns,
-        totalRows: Math.max( this.props.rowCount, 0 ),
-        estimatedRowHeight: this.props.estimatedRowHeight,
-        getRowsContainerNode: () => this.tbodyRef.current,
-        getScrollContainerNode: () => this.scrollContainerRef.current
-    });
+    constructor( props ){
+        super( props );
 
+        this.Data = new VirtualTableDataStore({
+            overscanRowsDistance: props.overscanRowsDistance,
+            columns: props.columns,
+            totalRows: props.rowCount,
+            estimatedRowHeight: props.estimatedRowHeight,
+            getRowsContainerNode: () => this.tbodyRef.current,
+            getScrollContainerNode: () => this.scrollContainerRef.current
+        });
+    }
+    
     componentDidUpdate(){
         const { rowCount, columns, estimatedRowHeight } = this.props;
         this.Data

@@ -47,16 +47,8 @@ class Base {
         return this;
     }
 
-    setEstimatedRowHeight( height ){
-        if( this.estimatedRowHeight !== height ){
-            this.estimatedRowHeight = height;
-            this.Events.emit( "estimated-row-height-changed", height );
-        }
-        return this;
-    }
-
     setVisibleRowsHeights = () => {
-        this.setVisibleRowsHeightsThrottled.cancel();
+        this.reactOnWidthChange.cancel();
         const node = this.getRowsContainerNode();
 
         if( node ){
@@ -79,31 +71,37 @@ class Base {
         }
     };
 
-    setVisibleRowsHeightsThrottled = throttle( this.setVisibleRowsHeights, 1000, { leading: false } );
+    /*
+        TODO: maybe implement this cleaner?
+    */
+    reactOnWidthChange = throttle(() => {
+        this.setVisibleRowsHeights();
+        this.updateVisibleRowsRange( this.startIndex );
+    }, 500, { leading: false } );
 
     constructor( params ){
         this.getRowsContainerNode = params.getRowsContainerNode;
         this.getScrollContainerNode = params.getScrollContainerNode;
         this.overscanRowsDistance = params.overscanRowsDistance || 0;
         this.estimatedRowHeight = params.estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT;
-        this.totalRows = params.totalRows || 0;
-        this.heighsCache = getTree( this.totalRows, this.estimatedRowHeight );
         
         this.Events
             .on( "widget-height-changed", () => this.updateVisibleRowsRange( this.startIndex ) )
             .on( "rows-rendered", this.setVisibleRowsHeights )
-            .on( "widget-width-changed", this.setVisibleRowsHeightsThrottled );
+            .on( "widget-width-changed", this.reactOnWidthChange );
+
+        this.setTotalRows( params.totalRows || 0 );
     }
 
     destructor(){
-        this.setVisibleRowsHeightsThrottled.cancel();
+        this.reactOnWidthChange.cancel();
         this.Events.removeAllListeners();
     }
     
     reportRowsRendered(){
         this.Events.emit( "rows-rendered" );
     }
-    
+
     setTotalRows( totalRows ){
         const prevTotalRows = this.totalRows;
         if( prevTotalRows !== totalRows ){
@@ -116,12 +114,15 @@ class Base {
                         .updateVisibleRowsRange( this.startIndex );
                 }
                 else{
-                    this.heighsCache = getTree( this.totalRows, this.estimatedRowHeight );
+                    this.heighsCache = getTree( totalRows, this.estimatedRowHeight );
                 }
             }
             else{
+                this.reactOnWidthChange.cancel();
                 this.startIndex = this.endIndex = this.virtualTopOffset = this.scrollTop = 0;
             }
+
+            this.Events.emit( "total-rows-quantity-changed" );
         }
         return this;
     }
@@ -175,14 +176,25 @@ class Base {
         return this;
     }
 
-    updateVisibleRowsRange( newStartIndex ){
-        let [ newEndIndex ] = getIndexAtDist( this.virtualTopOffset + this.widgetHeight + this.overscanRowsDistance * 2, this.heighsCache );
-        newEndIndex = Math.min( newEndIndex, this.totalRows );
-        if( this.startIndex !== newStartIndex || this.endIndex !== newEndIndex ){
-            this.startIndex = newStartIndex;
-            this.endIndex = newEndIndex;
-            this.Events.emit( "visible-rows-range-changed" );
+    setEstimatedRowHeight( height ){
+        if( this.estimatedRowHeight !== height ){
+            this.estimatedRowHeight = height;
+            this.Events.emit( "estimated-row-height-changed", height );
         }
+        return this;
+    }
+
+    updateVisibleRowsRange( newStartIndex ){
+        if( this.widgetHeight && this.heighsCache ){
+            let [ newEndIndex ] = getIndexAtDist( this.virtualTopOffset + this.widgetHeight + this.overscanRowsDistance * 2, this.heighsCache );
+            newEndIndex = Math.min( newEndIndex, this.totalRows );
+            if( this.startIndex !== newStartIndex || this.endIndex !== newEndIndex ){
+                this.startIndex = newStartIndex;
+                this.endIndex = newEndIndex;
+                this.Events.emit( "visible-rows-range-changed" );
+            }
+        }
+      
         return this;
     }
 }
