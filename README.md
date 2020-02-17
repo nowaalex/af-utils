@@ -8,7 +8,6 @@ Optimized non-recursize segment tree is used to store row dimensions.
 * reaction on overscanRowsCount prop change
 * add resetCache( fromIndex, toIndex ) method
 * add rerenderCurrentRange() method
-* think about row measurements throttling
 * add mobx example
 * write documentation
 * implement keyboard navigation(focus becomes lost when rows are rerendered)
