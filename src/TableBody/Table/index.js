@@ -22,6 +22,7 @@ const Table = memo(({
 
     /* Hmm, I can't put translateY more than ~ 3 000 000. Maybe need to figure this out) */
     const tableStyle = {
+        contain: "paint",
         width: "100%",
         willChange: "transform",
         tableLayout: fixedLayout ? "fixed" : "auto",

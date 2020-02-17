@@ -47,10 +47,16 @@ const TableBody = memo(({
         const { scrollTop, scrollLeft } = e.target;
         API.setScrollTop( scrollTop ).setScrollLeft( scrollLeft );
     }, []);
+
+    const scrollWrapperStyle = {
+        contain: "strict",
+        width,
+        height
+    };
     
     return (
         <div css={wrapperCss} ref={ref}>
-            <div css={overflowContainerCss} style={{ width, height }} ref={scrollContainerRef} onScroll={scrollHandler}>
+            <div css={overflowContainerCss} style={scrollWrapperStyle} ref={scrollContainerRef} onScroll={scrollHandler}>
                 <div style={{ pointerEvents: API.isScrolling ? "none" : "auto", height: API.widgetScrollHeight, maxHeight: API.widgetScrollHeight }}>
                     <Table
                         tbodyRef={tbodyRef}
