@@ -54,8 +54,9 @@ class Base {
 
     setIsScrollingTrue(){
         this.isScrolling = true;
-        this.Events.emit( "is-scrolling-changed" );
-        this.Events.on( "scroll-top-changed", this.setIsScrollingFalseDebounced );
+        this.Events
+            .on( "scroll-top-changed", this.setIsScrollingFalseDebounced )
+            .emit( "is-scrolling-changed" );
     }
     
     setIsScrollingFalseDebounced = debounce(() => {

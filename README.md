@@ -6,6 +6,7 @@ Optimized non-recursize segment tree is used to store row dimensions.
 
 **TODO**
 * reaction on overscanRowsCount prop change causes unnecessary scroll
+* when overscan is small endIndex is buggy
 * add resetCache( fromIndex, toIndex ) method
 * add rerenderCurrentRange() method
 * add mobx example
