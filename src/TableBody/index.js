@@ -60,9 +60,12 @@ const TableBody = memo(({
         maxHeight: API.widgetScrollHeight
     };
     
+    /*
+        tabIndex="0" is for proper keyboard nav
+    */
     return (
         <div css={wrapperCss} ref={ref}>
-            <div css={overflowContainerCss} style={scrollWrapperStyle} ref={scrollContainerRef} onScroll={scrollHandler}>
+            <div tabIndex="0" css={overflowContainerCss} style={scrollWrapperStyle} ref={scrollContainerRef} onScroll={scrollHandler}>
                 <div style={heightProviderStyle}>
                     <Table
                         tbodyRef={tbodyRef}

@@ -46,6 +46,6 @@ const TableHead = memo(() => {
             </thead>
         </table>
     );
-}, () => true );
+});
 
 export default TableHead;
