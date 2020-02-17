@@ -18,12 +18,12 @@ const getVisibleRows = (
     CellComponent
 ) => {
     const result = [];
-    for( let j = rangeFrom, rowKey; j < rangeTo; j++ ){
-        rowKey = getRowKey ? getRowKey( j ) : j;
+    for( let rowKey; rangeFrom < rangeTo; rangeFrom++ ){
+        rowKey = getRowKey ? getRowKey( rangeFrom ) : rangeFrom;
         result.push(
             <RowComponent
                 getRowExtraProps={getRowExtraProps}
-                rowIndex={j}
+                rowIndex={rangeFrom}
                 key={rowKey}
                 columns={columns}
                 getRowData={getRowData}
