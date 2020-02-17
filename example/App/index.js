@@ -69,7 +69,7 @@ const tableCss = css`
     }
 `;
 
-const tableReducer = ( oldProps, { widgetHeight, rowCount, fixedLayout, colCount }) => {
+const tableReducer = ( oldProps, { widgetHeight, rowCount, fixedLayout, colCount, overscanRowsDistance }) => {
 
     const columns = [
         {
@@ -101,6 +101,7 @@ const tableReducer = ( oldProps, { widgetHeight, rowCount, fixedLayout, colCount
 
     return {
         rowCount: +rowCount.value,
+        overscanRowsDistance: +overscanRowsDistance.value,
         fixedLayout: fixedLayout.checked,
         style: {
             maxHeight: +widgetHeight.value || undefined
@@ -143,6 +144,10 @@ const App = () => {
                         <label>
                             <span>colCount:&nbsp;</span>
                             <input type="number" name="colCount" defaultValue={5} min="0" />
+                        </label>
+                        <label>
+                            <span>overscanRowsDistance:&nbsp;</span>
+                            <input type="number" name="overscanRowsDistance" defaultValue={200} min="0" />
                         </label>
                         <label>
                             <span>fixedLayout:&nbsp;</span>

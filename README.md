@@ -5,7 +5,7 @@ Optimized non-recursize segment tree is used to store row dimensions.
 [Playground](https://nowaalex.github.io/af-react-table/exampleAssets/)
 
 **TODO**
-* reaction on overscanRowsCount prop change
+* reaction on overscanRowsCount prop change causes unnecessary scroll
 * add resetCache( fromIndex, toIndex ) method
 * add rerenderCurrentRange() method
 * add mobx example

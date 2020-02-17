@@ -1,5 +1,6 @@
 import throttle from "lodash/throttle";
 import areArraysEqual from "../../utils/areArraysEqual";
+import addSetters from "../../utils/addSetters";
 import Basic from "../Basic";
 
 class Table extends Basic {
@@ -46,22 +47,11 @@ class Table extends Basic {
         this.calculateTbodyColumnWidths.cancel();
         super.destructor();
     }
-
-    setColumns( columns ){
-        if( columns !== this.columns ){
-            this.columns = columns;
-            this.Events.emit( "columns-changed" );
-        }
-        return this;
-    }
-
-    setScrollLeft( scrollLeft ){
-        if( scrollLeft !== this.scrollLeft ){
-            this.scrollLeft = scrollLeft;
-            this.Events.emit( "scroll-left-changed", scrollLeft );
-        }
-        return this;
-    }
 }
+
+addSetters( Table.prototype, [
+    "columns",
+    "scrollLeft"
+]);
 
 export default Table;

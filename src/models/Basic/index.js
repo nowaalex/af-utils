@@ -1,6 +1,7 @@
 import EventEmitter from "eventemitter3";
 import throttle from "lodash/throttle";
 import clamp from "lodash/clamp";
+import addSetters from "../../utils/addSetters";
 
 import {
     updateNodeAt,
@@ -12,6 +13,7 @@ import {
 } from "./treeUtils";
 
 const DEFAULT_ESTIMATED_ROW_HEIGHT = 30;
+const ROW_MEASUREMENT_THROTTLING_INTERVAL = 500;
 
 class Base {
 
@@ -39,12 +41,7 @@ class Base {
 
     updateWidgetScrollHeight(){
         /* In segments tree 1 node is always sum of all elements */
-        const newWidgetScrollHeight = this.heighsCache[ 1 ];
-        if( newWidgetScrollHeight !== this.widgetScrollHeight ){
-            this.widgetScrollHeight = newWidgetScrollHeight;
-            this.Events.emit( "widget-scroll-height-changed", newWidgetScrollHeight );
-        }
-        return this;
+        return this.setWidgetScrollHeight( this.heighsCache[ 1 ] );
     }
 
     setVisibleRowsHeights = throttle(() => {
@@ -52,11 +49,13 @@ class Base {
         const node = this.getRowsContainerNode();
 
         if( node ){
-            for( let j = 0, children = node.children, len = children.length, child, index, newHeight, tmpPos; j < len; j++ ){
-                child = children[ j ];
-                newHeight = child.offsetHeight;
-                index = +child.getAttribute( "aria-rowindex" );
-                tmpPos = updateNodeAt( index, newHeight, this.heighsCache );
+            for( let child of node.children ){
+                const newHeight = child.offsetHeight;
+                const index = +child.getAttribute( "aria-rowindex" );
+                if( process.env.NODE_ENV !== "production" && isNaN( index ) ){
+                    throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
+                }
+                const tmpPos = updateNodeAt( index, newHeight, this.heighsCache );
                 if( tmpPos ){
                     this.updatedNodesSet.add( tmpPos );
                 }
@@ -68,28 +67,72 @@ class Base {
                 this.updateWidgetScrollHeight();
             }
         }
-    }, 300 );
+        return this;
+    }, ROW_MEASUREMENT_THROTTLING_INTERVAL );
 
     /*
         TODO: maybe implement this cleaner?
     */
     reactOnWidthChange = throttle(() => {
-        this.setVisibleRowsHeights();
-        this.updateVisibleRowsRange( this.startIndex );
-    }, 500, { leading: false } );
+        this
+            .updateEndIndex()
+            .setVisibleRowsHeights();
+    }, 500 );
+
+    refreshOffsets(){
+        const dist = Math.max( 0, this.scrollTop - this.overscanRowsDistance );
+        const [ newStartIndex, remainder ] = getIndexAtDist( dist, this.heighsCache );
+        this
+            .setVirtualTopOffset( dist - remainder )
+            .setStartIndex( newStartIndex )
+            .updateEndIndex();
+    }
+
+    updateEndIndex(){
+        const [ newEndIndex ] = getIndexAtDist( this.virtualTopOffset + this.widgetHeight + this.overscanRowsDistance * 2, this.heighsCache );
+        return this.setEndIndex( Math.min( newEndIndex, this.totalRows ) );
+    }
+
+    toggleBasicEvents( method ){
+        this.Events
+            [ method ]( "scroll-top-changed", this.refreshOffsets, this )
+            [ method ]( "overscan-rows-distance-changed", this.refreshOffsets, this ) 
+            [ method ]( "widget-height-changed", this.updateEndIndex, this )
+            [ method ]( "rows-rendered", this.setVisibleRowsHeights )
+            [ method ]( "widget-width-changed", this.reactOnWidthChange );
+    }
+
+    refreshHeightsCache( totalRows, prevTotalRows ){
+        if( totalRows > 0 ){
+            if( prevTotalRows > 0 ){
+                this.heighsCache = reallocateIfNeeded( this.heighsCache, prevTotalRows, totalRows, this.estimatedRowHeight );
+                this
+                    .updateWidgetScrollHeight()
+                    .updateEndIndex();
+            }
+            else{
+                this.heighsCache = getTree( totalRows, this.estimatedRowHeight );
+                this.toggleBasicEvents( "on" );
+            }
+        }
+        else{
+            this.reactOnWidthChange.cancel();
+            this.setVisibleRowsHeights.cancel();
+            this.startIndex = this.endIndex = this.virtualTopOffset = this.scrollTop = 0;
+            this.toggleBasicEvents( "off" );
+        }
+    }
 
     constructor( params ){
         this.getRowsContainerNode = params.getRowsContainerNode;
         this.getScrollContainerNode = params.getScrollContainerNode;
-        this.overscanRowsDistance = params.overscanRowsDistance || 0;
-        this.estimatedRowHeight = params.estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT;
         
-        this.Events
-            .on( "widget-height-changed", () => this.updateVisibleRowsRange( this.startIndex ) )
-            .on( "rows-rendered", this.setVisibleRowsHeights )
-            .on( "widget-width-changed", this.reactOnWidthChange );
+        this.Events.on( "total-rows-changed", this.refreshHeightsCache, this )
 
-        this.setTotalRows( params.totalRows || 0 );
+        this
+            .setEstimatedRowHeight( params.estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT )
+            .setOverscanRowsDistance( params.overscanRowsDistance || 0 )
+            .setTotalRows( params.totalRows || 0 );
     }
 
     destructor(){
@@ -99,32 +142,6 @@ class Base {
     
     reportRowsRendered(){
         this.Events.emit( "rows-rendered" );
-    }
-
-    setTotalRows( totalRows ){
-        const prevTotalRows = this.totalRows;
-        if( prevTotalRows !== totalRows ){
-            this.totalRows = totalRows;
-            if( totalRows > 0 ){
-                if( prevTotalRows > 0 ){
-                    this.heighsCache = reallocateIfNeeded( this.heighsCache, prevTotalRows, totalRows, this.estimatedRowHeight );
-                    this
-                        .updateWidgetScrollHeight()
-                        .updateVisibleRowsRange( this.startIndex );
-                }
-                else{
-                    this.heighsCache = getTree( totalRows, this.estimatedRowHeight );
-                }
-            }
-            else{
-                this.reactOnWidthChange.cancel();
-                this.setVisibleRowsHeights.cancel();
-                this.startIndex = this.endIndex = this.virtualTopOffset = this.scrollTop = 0;
-            }
-
-            this.Events.emit( "total-rows-quantity-changed" );
-        }
-        return this;
     }
 
     /*
@@ -138,65 +155,19 @@ class Base {
         }
         return this;    
     }
-
-    setScrollTop( scrollTop ){
-        if( this.scrollTop !== scrollTop ){
-            this.scrollTop = scrollTop;
-            const dist = Math.max( 0, scrollTop - this.overscanRowsDistance );
-            const [ newStartIndex, remainder ] = getIndexAtDist( dist, this.heighsCache );
-            this.setVirtualTopOffset( dist - remainder );
-            if( this.startIndex !== newStartIndex ){
-                this.updateVisibleRowsRange( newStartIndex );
-            }
-        }
-        return this;
-    }
-
-    setWidgetHeight( widgetHeight ){
-        if( this.widgetHeight !== widgetHeight ){
-            this.widgetHeight = widgetHeight;
-            this.Events.emit( "widget-height-changed", widgetHeight );
-        }
-        return this;
-    }
-
-    setWidgetWidth( widgetWidth ){
-        if( this.widgetWidth !== widgetWidth ){
-            this.widgetWidth = widgetWidth;
-            this.Events.emit( "widget-width-changed", widgetWidth );
-        }
-        return this;
-    }
-
-    setVirtualTopOffset( newVirtualTopOffset ){
-        if( this.virtualTopOffset !== newVirtualTopOffset ){
-            this.virtualTopOffset = newVirtualTopOffset;
-            this.Events.emit( "virtual-top-offset-changed" );
-        }
-        return this;
-    }
-
-    setEstimatedRowHeight( height ){
-        if( this.estimatedRowHeight !== height ){
-            this.estimatedRowHeight = height;
-            this.Events.emit( "estimated-row-height-changed", height );
-        }
-        return this;
-    }
-
-    updateVisibleRowsRange( newStartIndex ){
-        if( this.widgetHeight && this.heighsCache ){
-            let [ newEndIndex ] = getIndexAtDist( this.virtualTopOffset + this.widgetHeight + this.overscanRowsDistance * 2, this.heighsCache );
-            newEndIndex = Math.min( newEndIndex, this.totalRows );
-            if( this.startIndex !== newStartIndex || this.endIndex !== newEndIndex ){
-                this.startIndex = newStartIndex;
-                this.endIndex = newEndIndex;
-                this.Events.emit( "visible-rows-range-changed" );
-            }
-        }
-      
-        return this;
-    }
 }
+
+addSetters( Base.prototype, [
+    "estimatedRowHeight",
+    "virtualTopOffset",
+    "scrollTop",
+    "widgetWidth",
+    "widgetHeight",
+    "widgetScrollHeight",
+    "overscanRowsDistance",
+    "startIndex",
+    "endIndex",
+    "totalRows"
+]);
 
 export default Base;

@@ -2,7 +2,8 @@ import React, { memo, useLayoutEffect } from "react";
 import { useApiPlugin } from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "visible-rows-range-changed",
+    "start-index-changed",
+    "end-index-changed",
     "columns-changed"
 ];
 

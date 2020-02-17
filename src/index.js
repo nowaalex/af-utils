@@ -51,8 +51,9 @@ class Table extends React.PureComponent {
     }
     
     componentDidUpdate(){
-        const { rowCount, columns, estimatedRowHeight } = this.props;
+        const { rowCount, columns, estimatedRowHeight, overscanRowsDistance } = this.props;
         this.Data
+            .setOverscanRowsDistance( overscanRowsDistance )
             .setColumns( columns )
             .setTotalRows( rowCount )
             .setEstimatedRowHeight( estimatedRowHeight );        
