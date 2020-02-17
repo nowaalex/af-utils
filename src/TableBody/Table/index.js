@@ -4,7 +4,8 @@ import Rows from "./Rows";
 import { useApiPlugin } from "../../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "virtual-top-offset-changed"
+    "virtual-top-offset-changed",
+    "total-rows-changed"
 ];
 
 const Table = memo(({
@@ -16,13 +17,13 @@ const Table = memo(({
     CellComponent,
     fixedLayout
 }) => {
-    const { virtualTopOffset } = useApiPlugin( SUBSCRIBE_EVENTS );
+    const { virtualTopOffset, totalRows } = useApiPlugin( SUBSCRIBE_EVENTS );
 
 
     /* Hmm, I can't put translateY more than ~ 3 000 000. Maybe need to figure this out) */
 
     return (
-        <table style={{ width: "100%", tableLayout: fixedLayout ? "fixed" : "auto", transform: `translateY(${virtualTopOffset}px)` }}>
+        <table aria-rowcount={totalRows} style={{ width: "100%", tableLayout: fixedLayout ? "fixed" : "auto", transform: `translateY(${virtualTopOffset}px)` }}>
             <Colgroup />
             <tbody ref={tbodyRef}>
                 <Rows
