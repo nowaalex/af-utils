@@ -69,7 +69,7 @@ export const updateNodeAt = ( pos, value, tree ) => {
     return 0;
 };
 
-export const getSize = elementsQuantity => Math.pow( 2, Math.ceil( Math.log( elementsQuantity + MIN_TREE_CACHE_SIZE ) / Math.LN2 ) );
+export const getSize = elementsQuantity => 2 ** Math.ceil( Math.log2( elementsQuantity + MIN_TREE_CACHE_SIZE ) );
 
 const calculateAllParents = ( tree, endIndex ) => {
     for( let i = tree[ 0 ] + endIndex >> 1, j; i > 0; --i ){
