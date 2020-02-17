@@ -47,17 +47,16 @@ class Base {
         return this;
     }
 
-    setVisibleRowsHeights = () => {
+    setVisibleRowsHeights = throttle(() => {
         this.reactOnWidthChange.cancel();
         const node = this.getRowsContainerNode();
 
         if( node ){
-
-            const { startIndex, endIndex } = this;
-
-            for( let j = startIndex, ch = node.children, newHeight, tmpPos; j < endIndex; j++ ){
-                newHeight = ch[ j - startIndex ].offsetHeight;
-                tmpPos = updateNodeAt( j, newHeight, this.heighsCache );
+            for( let j = 0, children = node.children, len = children.length, child, index, newHeight, tmpPos; j < len; j++ ){
+                child = children[ j ];
+                newHeight = child.offsetHeight;
+                index = +child.getAttribute( "aria-rowindex" );
+                tmpPos = updateNodeAt( index, newHeight, this.heighsCache );
                 if( tmpPos ){
                     this.updatedNodesSet.add( tmpPos );
                 }
@@ -69,7 +68,7 @@ class Base {
                 this.updateWidgetScrollHeight();
             }
         }
-    };
+    }, 300 );
 
     /*
         TODO: maybe implement this cleaner?
@@ -119,6 +118,7 @@ class Base {
             }
             else{
                 this.reactOnWidthChange.cancel();
+                this.setVisibleRowsHeights.cancel();
                 this.startIndex = this.endIndex = this.virtualTopOffset = this.scrollTop = 0;
             }
 
