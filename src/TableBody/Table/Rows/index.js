@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { useApiPlugin } from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
@@ -39,7 +39,7 @@ const Rows = memo(({ getRowData, getRowKey, getRowExtraProps, RowComponent, Cell
 
     const API = useApiPlugin( SUBSCRIBE_EVENTS );
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         API.reportRowsRendered();
     });
 

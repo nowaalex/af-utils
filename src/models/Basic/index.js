@@ -104,7 +104,6 @@ class Base {
     }, ROW_MEASUREMENT_THROTTLING_INTERVAL );
 
     cancelPendingAsyncCalls(){
-        this.refreshHeightsCache.cancel();
         this.setIsScrollingFalseDebounced.cancel();
         this.setVisibleRowsHeights.cancel();
         return this;
@@ -120,8 +119,8 @@ class Base {
     }
 
     updateEndIndex(){
-        const [ newEndIndex ] = getIndexAtDist( this.virtualTopOffset + this.widgetHeight + this.overscanRowsDistance * 2, this.heighsCache );
-        return this.setEndIndex( Math.min( newEndIndex, this.totalRows ) );
+        const [ newEndIndex ] = getIndexAtDist( this.scrollTop + this.widgetHeight + this.overscanRowsDistance, this.heighsCache );
+        return this.setEndIndex( Math.min( newEndIndex + 1, this.totalRows ) );
     }
 
     toggleBasicEvents( method ){

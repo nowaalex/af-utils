@@ -8,20 +8,15 @@ const MIN_TREE_CACHE_SIZE = 32;
 export const getIndexAtDist = ( dist, tree ) => {
     const N = tree[ 0 ];
 
-    /*
-        this tree implementation always has root node and N can't be < MIN_TREE_CACHE_SIZE, so going to index 2 directly.
-    */
-    let nodeIndex = 2,
-        v;
+    let nodeIndex = 1;
 
-    do {
-        v = tree[ nodeIndex ];
+    for( let v; nodeIndex < N; ){
+        v = tree[ nodeIndex <<= 1 ];
         if( dist >= v ){
             dist -= v;
             nodeIndex |= 1;
         }
     }
-    while( ( nodeIndex <<= 1 ) < N );
 
     return [ nodeIndex - N, dist ];
 };

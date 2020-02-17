@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useCallback } from "react";
+import React, { memo, useEffect, useCallback } from "react";
 import useResizeObserver from "use-resize-observer";
 import { css } from "@emotion/core";
 import Table from "./Table";
@@ -38,7 +38,7 @@ const TableBody = memo(({
 
     const { width, height, ref } = useResizeObserver();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         API.setWidgetHeight( height ).setWidgetWidth( width );
     }, [ height, width ]);
 

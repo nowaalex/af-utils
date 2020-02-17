@@ -110,10 +110,10 @@ class Table extends React.PureComponent {
 }
 
 Table.propTypes = {
-    rowCount: PropTypes.number.isRequired,
     columns: PropTypes.array.isRequired,
     getRowData: PropTypes.func.isRequired,
 
+    rowCount: PropTypes.number,
     getRowKey: PropTypes.func,
     estimatedRowHeight: PropTypes.number,
     getRowExtraProps: PropTypes.func,
@@ -131,6 +131,7 @@ Table.propTypes = {
 };
 
 Table.defaultProps = {
+    rowCount: 0,
     estimatedRowHeight: 20,
     overscanRowsDistance: 200,
     fixedLayout: false,
