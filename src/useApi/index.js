@@ -1,13 +1,20 @@
-import { useContext, useEffect, useReducer } from "react";
+import { useContext, useLayoutEffect, useReducer } from "react";
 import Context from "../Context";
 
+const emptyArr = [];
+
 const reducer = () => performance.now();
+
+/*
+	TODO:
+		why useEffect does not properly update colgroup of tbody, when rowcount changes from 0 to positive value?
+*/
 
 const useApiPluginRaw = (API, subscribeEvents) => {
 
     const [stamp, up] = useReducer( reducer, 0 );
     
-	useEffect(() => {
+	useLayoutEffect(() => {
 		for (let e of subscribeEvents) {
 			API.Events.on(e, up);
 		}
@@ -16,7 +23,7 @@ const useApiPluginRaw = (API, subscribeEvents) => {
 				API.Events.off(e, up);
 			}
 		};
-	}, []);
+	}, emptyArr );
 };
 
 export const useApiContext = () => useContext( Context );

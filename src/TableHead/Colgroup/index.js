@@ -5,7 +5,7 @@ const SUBSCRIBE_EVENTS = [
     "columns-changed"
 ];
 
-const Colgroup = memo(() => {
+const Colgroup = () => {
     const { columns } = useApiPlugin( SUBSCRIBE_EVENTS );
     return (
         <colgroup>
@@ -20,6 +20,6 @@ const Colgroup = memo(() => {
             ) : null )}
         </colgroup>
     );
-}, () => true );
+};
 
-export default Colgroup;
+export default memo( Colgroup );

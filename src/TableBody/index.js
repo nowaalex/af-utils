@@ -13,9 +13,6 @@ const wrapperCss = css`
     flex: 1 1 auto;
     position: relative;
     overflow: hidden;
-    table {
-        width: 100%;
-    }
 `;
 
 const overflowContainerCss = css`
@@ -32,7 +29,8 @@ const TableBody = memo(({
     getRowKey,
     getRowExtraProps,
     RowComponent,
-    CellComponent
+    CellComponent,
+    fixedLayout,
 }) => {
 
     const API = useApiPlugin( SUBSCRIBE_EVENTS );
@@ -40,14 +38,13 @@ const TableBody = memo(({
     const { width, height, ref } = useResizeObserver();
 
     useLayoutEffect(() => {
-        API.setWidgetHeight( height );
-        API.setWidgetWidth( width );
-    }, [ width, height ]);
+        API.setWidgetHeight( height ).setWidgetWidth( width );
+    }, [ height, width ]);
+
 
     const scrollHandler = useCallback( e => {
         const { scrollTop, scrollLeft } = e.target;
-        API.setScrollTop( scrollTop );
-        API.setScrollLeft( scrollLeft );
+        API.setScrollTop( scrollTop ).setScrollLeft( scrollLeft );
     }, []);
     
     return (
@@ -61,6 +58,7 @@ const TableBody = memo(({
                         getRowExtraProps={getRowExtraProps}
                         RowComponent={RowComponent}
                         CellComponent={CellComponent}
+                        fixedLayout={fixedLayout}
                     />
                 </div>
             </div>

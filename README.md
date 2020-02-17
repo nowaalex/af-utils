@@ -11,3 +11,5 @@ Optimized non-recursize segment tree is used to store row dimensions.
 * think about row measurements throttling
 * add mobx example
 * write documentation
+* implement keyboard navigation(focus becomes lost when rows are rerendered)
+* implement position: sticky where it is supported

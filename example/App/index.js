@@ -6,24 +6,23 @@ import { css } from "@emotion/core";
 import Table from "../../src";
 
 const wrapperCss = css`
+    box-sizing: border-box;
     display: flex;
     flex-flow: column nowrap;
     height: 90vh;
     font-family: monospace;
 
-    form {
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: center;
-        label > span {
-            display: inline-block;
-            width: 160px;
-        }
-        input, button {
-            padding: 0.3em;
-            margin: 0.3em;
-            width: 200px;
-        }
+    input, button {
+        padding: 0.3em;
+        margin: 0.3em 0;
+    }
+
+    label {
+        white-space: nowrap;
+    }
+
+    input:not([type="checkbox"]) {
+        width: 100px;
     }
 
     hr {
@@ -31,6 +30,28 @@ const wrapperCss = css`
     }
 `;
 
+const regenerateButtonCss = css`
+    && {
+        width: 100%;
+        padding: 1em;
+    }  
+`;
+
+const tableFormCss = css`
+    display: table;
+    label {
+        display: table-row;
+        & > * {
+            display: table-cell;
+        }
+    }
+`;
+
+const formWrapperCss = css`
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+`;
 
 const tableCss = css`
     flex: 1 1 auto;
@@ -48,7 +69,7 @@ const tableCss = css`
     }
 `;
 
-const tableReducer = ( oldProps, { widgetHeight, rowCount, colCount }) => {
+const tableReducer = ( oldProps, { widgetHeight, rowCount, fixedLayout, colCount }) => {
 
     const columns = [
         {
@@ -80,6 +101,7 @@ const tableReducer = ( oldProps, { widgetHeight, rowCount, colCount }) => {
 
     return {
         rowCount: +rowCount.value,
+        fixedLayout: fixedLayout.checked,
         style: {
             maxHeight: +widgetHeight.value || undefined
         },
@@ -107,29 +129,36 @@ const App = () => {
 
     return (
         <div css={wrapperCss}>
-            <form onSubmit={submitHandler}>
-                <label>
-                    <span>widgetHeight:&nbsp;</span>
-                    <input type="number" name="widgetHeight" min="0" defaultValue={0} />
-                </label>
-                <label>
-                    <span>rowCount:&nbsp;</span>
-                    <input type="number" name="rowCount" min="-1" defaultValue={100} />
-                </label>
-                <label>
-                    <span>colCount:&nbsp;</span>
-                    <input type="number" name="colCount" defaultValue={5} min="0" />
-                </label>
-                <button type="submit">Regenerate</button>
-            </form>
-            <hr />
-            <form onSubmit={scrollToRowSubmitHandler}>
-                <label>
-                    <span>Scroll to row:&nbsp;</span>
-                    <input type="number" name="index" min="0" defaultValue={0} />
-                    <button type="submit">Scroll</button>
-                </label>
-            </form>
+            <div css={formWrapperCss}>
+                <form onSubmit={submitHandler}>
+                    <div css={tableFormCss}>
+                        <label>
+                            <span>widgetHeight:&nbsp;</span>
+                            <input type="number" name="widgetHeight" min="0" defaultValue={0} />
+                        </label>
+                        <label>
+                            <span>rowCount:&nbsp;</span>
+                            <input type="number" name="rowCount" min="-1" defaultValue={1000} />
+                        </label>
+                        <label>
+                            <span>colCount:&nbsp;</span>
+                            <input type="number" name="colCount" defaultValue={5} min="0" />
+                        </label>
+                        <label>
+                            <span>fixedLayout:&nbsp;</span>
+                            <input type="checkbox" name="fixedLayout" />
+                        </label>
+                    </div>
+                    <button type="submit" css={regenerateButtonCss}>Regenerate</button>
+                </form>
+                <form onSubmit={scrollToRowSubmitHandler}>
+                    <label>
+                        <span>Scroll to row:&nbsp;</span>
+                        <input type="number" name="index" min="0" defaultValue={0} />
+                        <button type="submit">Scroll</button>
+                    </label>
+                </form>
+            </div>
             <hr />
             { tableProps ? (
                 <Table

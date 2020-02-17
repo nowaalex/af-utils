@@ -36,16 +36,16 @@ const getVisibleRows = (
 
 const Rows = memo(({ getRowData, getRowKey, getRowExtraProps, RowComponent, CellComponent }) => {
 
-    const { startIndex, endIndex, Events, columns } = useApiPlugin( SUBSCRIBE_EVENTS );
+    const API = useApiPlugin( SUBSCRIBE_EVENTS );
 
     useLayoutEffect(() => {
-        Events.emit( "tbody-rows-rendered" );
+        API.reportRowsRendered();
     });
 
     return getVisibleRows(
-        startIndex,
-        endIndex,
-        columns,
+        API.startIndex,
+        API.endIndex,
+        API.columns,
         getRowData,
         getRowKey,
         getRowExtraProps,

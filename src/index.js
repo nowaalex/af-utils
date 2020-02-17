@@ -5,7 +5,7 @@ import { css } from "@emotion/core";
 import Context from "./Context";
 import TableBody from "./TableBody";
 import TableHead from "./TableHead";
-import VirtualRowsDataStore from "./VirtualRowsDataStore";
+import VirtualTableDataStore from "./models/Table";
 
 import RowComponentDefault from "./defaultComponents/Row";
 import CellComponentDefault from "./defaultComponents/Cell";
@@ -37,26 +37,21 @@ class Table extends React.PureComponent {
     scrollContainerRef = React.createRef();
     tbodyRef = React.createRef();
 
-    Data = new VirtualRowsDataStore({
+    Data = new VirtualTableDataStore({
         overscanRowsDistance: this.props.overscanRowsDistance,
         columns: this.props.columns,
         totalRows: Math.max( this.props.rowCount, 0 ),
         estimatedRowHeight: this.props.estimatedRowHeight,
-        getTbodyDomNode: () => this.tbodyRef.current,
+        getRowsContainerNode: () => this.tbodyRef.current,
         getScrollContainerNode: () => this.scrollContainerRef.current
     });
 
-    componentDidUpdate( prevProps ){
+    componentDidUpdate(){
         const { rowCount, columns, estimatedRowHeight } = this.props;
-        if( rowCount >= 0 && rowCount !== prevProps.rowCount ){
-            this.Data.setTotalRows( rowCount );
-        }
-        if( columns !== prevProps.columns ){
-            this.Data.setColumns( columns );
-        }
-        if( estimatedRowHeight !== prevProps.estimatedRowHeight ){
-            this.Data.setEstimatedRowHeight( estimatedRowHeight );
-        }
+        this.Data
+            .setColumns( columns )
+            .setTotalRows( rowCount )
+            .setEstimatedRowHeight( estimatedRowHeight );        
     }
 
     componentWillUnmount(){
@@ -74,6 +69,7 @@ class Table extends React.PureComponent {
             estimatedRowHeight,
             overscanRowsDistance,
             rowCountWarningsTable,
+            fixedLayout,
 
             RowComponent,
             CellComponent,
@@ -95,6 +91,7 @@ class Table extends React.PureComponent {
                             getRowExtraProps={getRowExtraProps}
                             RowComponent={RowComponent}
                             CellComponent={CellComponent}
+                            fixedLayout={fixedLayout}
                         />
                     ) : rowCountWarningsTable ? (
                         <RowCountWarningContainer>
@@ -124,12 +121,14 @@ Table.propTypes = {
     CellComponent: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
 
     RowCountWarningContainer: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
-    rowCountWarningsTable: PropTypes.object
+    rowCountWarningsTable: PropTypes.object,
+    fixedLayout: PropTypes.bool
 };
 
 Table.defaultProps = {
     estimatedRowHeight: 20,
     overscanRowsDistance: 200,
+    fixedLayout: false,
 
     RowComponent: RowComponentDefault,
     CellComponent: CellComponentDefault,

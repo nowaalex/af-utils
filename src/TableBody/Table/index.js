@@ -13,7 +13,8 @@ const Table = memo(({
     getRowExtraProps,
     tbodyRef,
     RowComponent,
-    CellComponent
+    CellComponent,
+    fixedLayout
 }) => {
     const { virtualTopOffset } = useApiPlugin( SUBSCRIBE_EVENTS );
 
@@ -21,7 +22,7 @@ const Table = memo(({
     /* Hmm, I can't put translateY more than ~ 3 000 000. Maybe need to figure this out) */
 
     return (
-        <table style={{ transform: `translateY(${virtualTopOffset}px)` }}>
+        <table style={{ width: "100%", tableLayout: fixedLayout ? "fixed" : "auto", transform: `translateY(${virtualTopOffset}px)` }}>
             <Colgroup />
             <tbody ref={tbodyRef}>
                 <Rows
