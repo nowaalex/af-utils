@@ -63,8 +63,9 @@ class Base {
     
     setIsScrollingFalseDebounced = debounce(() => {
         this.isScrolling = false;
-        this.Events.emit( "is-scrolling-changed" );
-        this.setInitialScrollingEvents();
+        this
+            .setInitialScrollingEvents()
+            .Events.emit( "is-scrolling-changed" );
     }, IS_SCROLLING_DEBOUNCE_INTERVAL );
 
     updateWidgetScrollHeight(){

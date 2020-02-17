@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { css } from "@emotion/core";
 import Colgroup from "./Colgroup";
 import Rows from "./Rows";
 import { useApiPlugin } from "../../useApi";
@@ -7,6 +8,28 @@ const SUBSCRIBE_EVENTS = [
     "virtual-top-offset-changed",
     "total-rows-changed"
 ];
+
+const tableBaseCss = css`
+    && {
+        contain: paint;
+        width: 100%;
+        will-change: transform;
+    }    
+`;
+
+const fixedTableCss = css`
+    ${tableBaseCss};
+    && {
+        table-layout: fixed;
+    }
+`;
+
+const autoTableCss = css`
+    ${tableBaseCss};
+    && {
+        table-layout: auto;
+    }
+`;
 
 const Table = memo(({
     getRowData,
@@ -22,15 +45,11 @@ const Table = memo(({
 
     /* Hmm, I can't put translateY more than ~ 3 000 000. Maybe need to figure this out) */
     const tableStyle = {
-        contain: "paint",
-        width: "100%",
-        willChange: "transform",
-        tableLayout: fixedLayout ? "fixed" : "auto",
         transform: `translateY(${virtualTopOffset}px)`
     };
 
     return (
-        <table aria-rowcount={totalRows} style={tableStyle}>
+        <table css={fixedLayout ? fixedTableCss : autoTableCss} aria-rowcount={totalRows} style={tableStyle}>
             <Colgroup />
             <tbody ref={tbodyRef}>
                 <Rows

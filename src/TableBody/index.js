@@ -53,11 +53,17 @@ const TableBody = memo(({
         width,
         height
     };
+
+    const heightProviderStyle = {
+        pointerEvents: API.isScrolling ? "none" : "auto",
+        height: API.widgetScrollHeight,
+        maxHeight: API.widgetScrollHeight
+    };
     
     return (
         <div css={wrapperCss} ref={ref}>
             <div css={overflowContainerCss} style={scrollWrapperStyle} ref={scrollContainerRef} onScroll={scrollHandler}>
-                <div style={{ pointerEvents: API.isScrolling ? "none" : "auto", height: API.widgetScrollHeight, maxHeight: API.widgetScrollHeight }}>
+                <div style={heightProviderStyle}>
                     <Table
                         tbodyRef={tbodyRef}
                         getRowData={getRowData}
