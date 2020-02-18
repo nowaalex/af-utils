@@ -62,8 +62,10 @@ Table.defaultProps = {
 * happens rarely(after certain width changes), but sometimes I can't scroll to last index(it trembles and hides)
 * add resetCache( fromIndex, toIndex ) method
 * add rerenderCurrentRange() method
-* add mobx example
+* show example source in playground
 * write documentation
 * implement position: sticky where it is supported
 * maybe pass props via context somehow to avoid memos and deep passing?
-* as models are extensible and most of the logics is taken away from react, it should be easy to implement List component
+* as models are extensible and most of the logics is taken away from react, it should be easy to implement List
+* improve performance on mobile
+* optimize segments tree batch insertion
