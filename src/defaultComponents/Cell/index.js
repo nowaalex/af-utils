@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-// &nbnsp;
+/*
+    If all cells in a row would be completely empty - row can "collapse" short.
+    To prevent it we can fill it with &nbsp;
+*/
 const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
 
 const Cell = ({ rowData, rowIndex, column }) => {
