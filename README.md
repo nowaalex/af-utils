@@ -69,3 +69,4 @@ Table.defaultProps = {
 * as models are extensible and most of the logics is taken away from react, it should be easy to implement List
 * improve performance on mobile
 * optimize segments tree batch insertion
+* add footer with column summaries and sorting
