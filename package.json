@@ -7,16 +7,23 @@
   "sideEffects": false,
   "scripts": {
     "live": "webpack-dev-server",
-    "build-example": "webpack"
+    "build:example": "webpack",
+    "build:modules": "babel src --out-dir es --delete-dir-on-start",
+    "build:commonjs": "babel src --out-dir lib --delete-dir-on-start",
+    "build": "yarn build:commonjs && yarn build:modules && yarn build:example"
   },
-  "main": "src/index.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
+    "@babel/runtime": "^7.8.4",
     "@emotion/babel-preset-css-prop": "^10.0.27",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
@@ -53,5 +60,8 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "use-resize-observer": "^6.0.0"
-  }
+  },
+  "browserslist": [
+    ">2%"
+  ]
 }

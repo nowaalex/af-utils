@@ -1,7 +1,9 @@
 const BASIC_PLUGINS = [
     "@babel/plugin-syntax-dynamic-import",
+    "emotion",
     [ "@babel/plugin-proposal-class-properties", { loose: true }],
-    [ "@babel/plugin-proposal-object-rest-spread", { loose: true, useBuiltIns: true }]
+    [ "@babel/plugin-proposal-object-rest-spread", { loose: true, useBuiltIns: true }],
+    [ "@babel/plugin-transform-runtime", { useESModules: true }]
 ];
 
 const BASIC_PRESETS = [ "@babel/preset-react", "@emotion/babel-preset-css-prop" ];
@@ -34,5 +36,5 @@ module.exports = api => {
                 )
             }
         }
-    }
-}
+    };
+};
