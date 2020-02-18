@@ -20,6 +20,7 @@ const wrapperCss = css`
     }
 `;
 
+const CachedColgroup = <Colgroup />;
 
 const TableHead = memo(() => {
 
@@ -27,7 +28,7 @@ const TableHead = memo(() => {
 
     return (
         <table css={wrapperCss} style={{ right: scrollLeft }}>
-            <Colgroup />
+            {CachedColgroup}
             <thead>
                 <tr>
                     {columns.map(( column, j, cols ) => {

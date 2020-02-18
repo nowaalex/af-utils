@@ -31,6 +31,8 @@ const autoTableCss = css`
     }
 `;
 
+const CachedColgroup = <Colgroup />;
+
 const Table = memo(({
     getRowData,
     getRowKey,
@@ -49,8 +51,8 @@ const Table = memo(({
     };
 
     return (
-        <table css={fixedLayout ? fixedTableCss : autoTableCss} aria-rowcount={totalRows} style={tableStyle}>
-            <Colgroup />
+        <table css={fixedLayout?fixedTableCss:autoTableCss} aria-rowcount={totalRows} style={tableStyle}>
+            {CachedColgroup}
             <tbody ref={tbodyRef}>
                 <Rows
                     getRowData={getRowData}

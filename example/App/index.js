@@ -64,7 +64,7 @@ const tableCss = css`
         border-bottom: 1px solid #000;
     }
     td {
-        border-bottom: 1px solid rgba( 0,0,0,0.2);
+        border-bottom: 1px solid #666;
         padding: 0.3em;
     }
 `;
@@ -76,7 +76,7 @@ const tableReducer = ( oldProps, { widgetHeight, rowCount, fixedLayout, colCount
             dataKey: "index",
             label: "Index",
             width: 150,
-            background: "green"
+            background: "#f7f7f7"
         },
         ...times( +colCount.value, i => ({
             dataKey: `dataKey_${i}`,

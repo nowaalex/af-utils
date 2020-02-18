@@ -5,7 +5,7 @@
 */
 const MIN_TREE_CACHE_SIZE = 32;
 
-export const getIndexAtDist = ( dist, tree ) => {
+export const walkUntil = ( dist, tree ) => {
     const N = tree[ 0 ];
 
     let nodeIndex = 1;

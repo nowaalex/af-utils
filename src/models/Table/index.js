@@ -15,12 +15,12 @@ class Table extends Basic {
     calculateTbodyColumnWidths = throttle(() => {
         const node = this.getRowsContainerNode();
         if( node ){
-            for( let j = 0, ch = node.children, trChildren; j < ch.length; j++ ){
-                trChildren = ch[ j ].children;
-                if( trChildren.length === this.columns.length ){
+            for( let child of node.children ){
+                const tds = child.children;
+                if( tds.length === this.columns.length ){
                     /* we must select "correct" rows without colspans, etc. */
                     const pixelWidths = [];
-                    for( let td of trChildren ){
+                    for( let td of tds ){
                         pixelWidths.push( td.offsetWidth );
                     }
                     if( !areArraysEqual( this.tbodyColumnWidths, pixelWidths ) ){

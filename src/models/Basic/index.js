@@ -7,15 +7,16 @@ import addSetters from "../../utils/addSetters";
 import {
     updateNodeAt,
     calculateParentsAt,
-    getIndexAtDist,
+    walkUntil,
     getTree,
     sum,
     reallocateIfNeeded
 } from "./treeUtils";
 
 const DEFAULT_ESTIMATED_ROW_HEIGHT = 30;
-const ROW_MEASUREMENT_THROTTLING_INTERVAL = 500;
+const ROW_MEASUREMENT_THROTTLING_INTERVAL = 300;
 const IS_SCROLLING_DEBOUNCE_INTERVAL = 150;
+const END_INDEX_CHECK_INTERVAL = 400;
 
 class Base {
 
@@ -63,8 +64,7 @@ class Base {
     
     setIsScrollingFalseDebounced = debounce(() => {
         this.isScrolling = false;
-        this
-            .setInitialScrollingEvents()
+        this.setInitialScrollingEvents()
             .Events.emit( "is-scrolling-changed" );
     }, IS_SCROLLING_DEBOUNCE_INTERVAL );
 
@@ -73,6 +73,9 @@ class Base {
         return this.setWidgetScrollHeight( this.heighsCache[ 1 ] );
     }
 
+    /*
+        TODO: maybe some react-like performUnitOfWork logic is needed here?
+    */
     setVisibleRowsHeights = throttle(() => {
         const node = this.getRowsContainerNode();
 
@@ -83,10 +86,10 @@ class Base {
                     We can't rely on this.startIndex and this.endIndex here, because react updates DOM asynchronously
                     and current rendered rows range may differ from startIndex - endIndex, especially if there are many rows and this method is throttled.
                 */
-                const index = +child.getAttribute( "aria-rowindex" );
-                if( process.env.NODE_ENV !== "production" && isNaN( index ) ){
+                if( process.env.NODE_ENV !== "production" && !child.hasAttribute( "aria-rowindex" ) ){
                     throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
                 }
+                const index = +child.getAttribute( "aria-rowindex" );
                 const tmpPos = updateNodeAt( index, newHeight, this.heighsCache );
                 if( tmpPos ){
                     this.updatedNodesSet.add( tmpPos );
@@ -103,15 +106,32 @@ class Base {
         return this;
     }, ROW_MEASUREMENT_THROTTLING_INTERVAL );
 
+    /*
+        Column widths && heights may change during scroll/width-change,
+        especially if table layout is not fixed.
+    */
+    increaseEndIndexIfNeeded = debounce(() => {
+        const currentVisibleDist = sum( this.startIndex, this.endIndex, this.heighsCache );
+        if( this.widgetHeight > this.virtualTopOffset + currentVisibleDist - this.scrollTop ){
+            this.updateEndIndex();
+        }
+        return this;
+    }, END_INDEX_CHECK_INTERVAL );
+
     cancelPendingAsyncCalls(){
         this.setIsScrollingFalseDebounced.cancel();
         this.setVisibleRowsHeights.cancel();
+        this.increaseEndIndexIfNeeded.cancel();
         return this;
     }
 
     refreshOffsets(){
         const dist = Math.max( 0, this.scrollTop - this.overscanRowsDistance );
-        const [ newStartIndex, remainder ] = getIndexAtDist( dist, this.heighsCache );
+        const [ newStartIndex, remainder ] = walkUntil( dist, this.heighsCache );
+        
+        /*
+            TODO: maybe do not call setStartIndex and updateEndIndex, if newStartIndex === this.startIndex?
+        */
         return this
             .setVirtualTopOffset( dist - remainder )
             .setStartIndex( newStartIndex )
@@ -119,28 +139,34 @@ class Base {
     }
 
     updateEndIndex(){
-        const [ newEndIndex ] = getIndexAtDist( this.scrollTop + this.widgetHeight + this.overscanRowsDistance, this.heighsCache );
+        const [ newEndIndex ] = walkUntil( this.scrollTop + this.widgetHeight + this.overscanRowsDistance, this.heighsCache );
+        /*
+            walkUntil works by "strict less" algo. It is good for startIndex,
+            but for endIndex we need "<=", so adding 1 artificially.
+        */
         return this.setEndIndex( Math.min( newEndIndex + 1, this.totalRows ) );
     }
 
     toggleBasicEvents( method ){
         this.Events
             [ method ]( "scroll-top-changed", this.refreshOffsets, this )
-            [ method ]( "overscan-rows-distance-changed", this.refreshOffsets, this ) 
+            [ method ]( "overscan-rows-distance-changed", this.refreshOffsets, this )
+            [ method ]( "widget-scroll-height-changed", this.increaseEndIndexIfNeeded )
             [ method ]( "widget-height-changed", this.updateEndIndex, this )
             [ method ]( "rows-rendered", this.setVisibleRowsHeights )
+            [ method ]( "end-index-changed", this.increaseEndIndexIfNeeded.cancel )
             [ method ]( "widget-width-changed", this.setVisibleRowsHeights );
         return this;
     }
 
-    refreshHeightsCache( totalRows, prevTotalRows ){
-        if( totalRows > 0 ){
+    refreshHeightsCache( prevTotalRows ){
+        if( this.totalRows > 0 ){
             if( prevTotalRows > 0 ){
-                this.heighsCache = reallocateIfNeeded( this.heighsCache, prevTotalRows, totalRows, this.estimatedRowHeight );
+                this.heighsCache = reallocateIfNeeded( this.heighsCache, prevTotalRows, this.totalRows, this.estimatedRowHeight );
                 this.updateWidgetScrollHeight();
             }
             else{
-                this.heighsCache = getTree( totalRows, this.estimatedRowHeight );
+                this.heighsCache = getTree( this.totalRows, this.estimatedRowHeight );
                 this.toggleBasicEvents( "on" );
             }
         }

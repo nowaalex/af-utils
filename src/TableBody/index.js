@@ -49,7 +49,6 @@ const TableBody = memo(({
     }, []);
 
     const scrollWrapperStyle = {
-        contain: "strict",
         width,
         height
     };
