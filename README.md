@@ -66,3 +66,4 @@ Table.defaultProps = {
 * write documentation
 * implement position: sticky where it is supported
 * maybe pass props via context somehow to avoid memos and deep passing?
+* as models are extensible and most of the logics is taken away from react, it should be easy to implement List component
