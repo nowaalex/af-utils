@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import { css } from "@emotion/core";
 
@@ -121,11 +121,11 @@ Table.propTypes = {
     /* as row heights may be different, we measure overscan in px */
     overscanRowsDistance: PropTypes.number,
 
-    HeaderRowComponent: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
-    RowComponent: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
-    CellComponent: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
+    HeaderRowComponent: PropTypes.any,
+    RowComponent: PropTypes.any,
+    CellComponent: PropTypes.any,
 
-    RowCountWarningContainer: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]),
+    RowCountWarningContainer: PropTypes.any,
     rowCountWarningsTable: PropTypes.object,
     fixedLayout: PropTypes.bool
 };
@@ -136,7 +136,12 @@ Table.defaultProps = {
     overscanRowsDistance: 200,
     fixedLayout: false,
 
-    RowComponent: RowComponentDefault,
+    /*
+        For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
+        If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
+        memo(observer(RowComponentDefault)) will do the trick.
+    */
+    RowComponent: memo( RowComponentDefault ),
     CellComponent: CellComponentDefault,
     RowCountWarningContainer: RowCountWarningContainerDefault,
 };
