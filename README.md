@@ -70,4 +70,4 @@ Table.defaultProps = {
 * improve performance on mobile
 * optimize segments tree batch insertion
 * add footer with column summaries and sorting
-* add caption
+* mobile scroll flickering

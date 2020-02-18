@@ -13,7 +13,8 @@ const tableBaseCss = css`
     && {
         contain: paint;
         width: 100%;
-    }    
+        will-change: transform;
+    }
 `;
 
 const fixedTableCss = css`
