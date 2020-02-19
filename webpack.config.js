@@ -50,6 +50,13 @@ module.exports = ( env, argv ) => ({
                     name: "faker(fake data generator)",
                     minSize: 0
                 },
+                emotion: {
+                    test: /emotion/,
+                    priority: -4,
+                    chunks: "all",
+                    name: "emotion",
+                    minSize: 0
+                },
                 defaultVendors: {
                     test: /[\\/]node_modules[\\/]/,
                     priority: -10,

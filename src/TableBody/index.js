@@ -1,7 +1,22 @@
 import React, { memo, useEffect, useCallback } from "react";
+import { css } from "emotion";
 import useResizeObserver from "use-resize-observer";
 import Table from "./Table";
 import { useApiPlugin } from "../useApi";
+
+const wrapperClass = css`
+    min-height: 0;
+    flex: 1 1 auto;
+    position: relative;
+    overflow: hidden;
+`;
+
+const overflowWrapperClass = css`
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+`;
 
 const SUBSCRIBE_EVENTS = [
     "widget-scroll-height-changed",
@@ -48,8 +63,8 @@ const TableBody = memo(({
         tabIndex="0" is for proper keyboard nav
     */
     return (
-        <div className="af-react-table-tbody-wrapper" ref={ref}>
-            <div tabIndex="0" className="af-react-table-overflow-container" style={scrollWrapperStyle} ref={scrollContainerRef} onScroll={scrollHandler}>
+        <div className={wrapperClass} ref={ref}>
+            <div tabIndex="0" className={overflowWrapperClass} style={scrollWrapperStyle} ref={scrollContainerRef} onScroll={scrollHandler}>
                 <div style={heightProviderStyle}>
                     <Table
                         tbodyRef={tbodyRef}

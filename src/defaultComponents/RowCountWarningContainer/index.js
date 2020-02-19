@@ -1,6 +1,14 @@
 import React from "react";
-import { css } from "@emotion/core";
+import { css, cx } from "emotion";
 
-const RowCountWarningContainer = props => <div className="af-react-table-default-warning-container" {...props} />;
+const wrapperClass = css`
+    flex: 1 1 auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const RowCountWarningContainer = ({ className, ...props }) => <div className={cx(wrapperClass,className)} {...props} />;
 
 export default RowCountWarningContainer;

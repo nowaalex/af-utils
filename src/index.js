@@ -1,15 +1,32 @@
 import React, { memo } from "react";
 import PropTypes from "prop-types";
+import { css, cx } from "emotion";
 
 import Context from "./Context";
 import TableBody from "./TableBody";
 import TableHead from "./TableHead";
 import VirtualTableDataStore from "./models/Table";
-import cn from "./utils/classNames";
 
 import RowComponentDefault from "./defaultComponents/Row";
 import CellComponentDefault from "./defaultComponents/Cell";
 import RowCountWarningContainerDefault from "./defaultComponents/RowCountWarningContainer";
+
+
+/*
+    * flex: 1 1 auto, assuming that table would be used full-stretch mostly
+    * border-box is important, because head th widths are synced with td widths
+    width: 100% covers case, when no tbody is rendered and exact width cannot be calculated
+*/
+const wrapperClass = css`
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    overflow: hidden;
+
+    * {
+        box-sizing: border-box;
+    }
+`;
 
 /*
     If we provide a ref to a class component, we could access Data and call it's methods from outside( Data.scrollTo(), etc. ).
@@ -69,7 +86,7 @@ class Table extends React.PureComponent {
 
         return (
             <Context.Provider value={this.Data}>
-                <div className={cn("af-react-table", className )} {...props}>
+                <div className={cx(wrapperClass, className )} {...props}>
                     <TableHead />
                     { rowCount > 0 ? (
                         <TableBody

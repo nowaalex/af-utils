@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { css } from "emotion";
 import Colgroup from "./Colgroup";
 import Rows from "./Rows";
 import { useApiPlugin } from "../../useApi";
@@ -7,6 +8,13 @@ const SUBSCRIBE_EVENTS = [
     "virtual-top-offset-changed",
     "total-rows-changed"
 ];
+
+const tableClass = css`
+    contain: paint;
+    width: 100%;
+    will-change: transform;
+    table-layout: auto;
+`;
 
 const CachedColgroup = <Colgroup />;
 
@@ -29,7 +37,7 @@ const Table = memo(({
     };
 
     return (
-        <table className="af-react-table-tbody-table" aria-rowcount={totalRows} style={tableStyle}>
+        <table className={tableClass} aria-rowcount={totalRows} style={tableStyle}>
             {CachedColgroup}
             <tbody ref={tbodyRef}>
                 <Rows

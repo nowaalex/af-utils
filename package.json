@@ -8,7 +8,7 @@
   "scripts": {
     "live": "webpack-dev-server",
     "build:example": "webpack --mode=production",
-    "build:modules": "babel src --out-dir lib --delete-dir-on-start --copy-files",
+    "build:modules": "babel src --out-dir lib --delete-dir-on-start",
     "build": "yarn build:modules && yarn build:example"
   },
   "main": "lib/index.js",
