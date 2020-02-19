@@ -7,7 +7,7 @@
   "sideEffects": false,
   "scripts": {
     "live": "webpack-dev-server",
-    "build:example": "webpack",
+    "build:example": "webpack --mode=production --env.production",
     "build:modules": "babel src --out-dir es --delete-dir-on-start",
     "build:commonjs": "babel src --out-dir lib --delete-dir-on-start",
     "build": "yarn build:commonjs && yarn build:modules && yarn build:example"
@@ -55,6 +55,7 @@
     "react-hook-form": "^4.9.6",
     "style-loader": "^1.1.3",
     "webpack": "^4.41.6",
+    "webpack-bundle-analyzer": "^3.6.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },

@@ -1,7 +1,8 @@
 const path = require( "path" );
 const HtmlWebpackPlugin = require( "html-webpack-plugin" );
+const { BundleAnalyzerPlugin } = require( "webpack-bundle-analyzer" );
 
-module.exports = {
+module.exports = ( env, argv ) => ({
     entry: "./example/index.js",
     devtool: "source-map",
     output: {
@@ -32,5 +33,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: "Table"
         })
-    ]
-};
+    ].concat( argv.mode === "production" ? new BundleAnalyzerPlugin({
+        analyzerMode: "static",
+        reportFilename: "bundle.html"
+    }) : [])
+});
