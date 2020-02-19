@@ -1,15 +1,39 @@
-import React, { useReducer, useRef } from "react";
-import Faker from "faker";
-import random from "lodash/random";
-import times from "lodash/times";
+import React, { useReducer, useRef, useState } from "react";
+import map from "lodash/map";
+import mapValues from "lodash/mapValues";
 import { css } from "@emotion/core";
+import { useForm } from "react-hook-form";
+import useRandomColumnsAndRowsData from "./useRandomColumnsAndRowsData";
+import TopDrawer from "./TopDrawer";
 import Table from "../../src";
+
+const defaultValues = {
+    widgetHeight: "auto",
+    widgetWidth: "auto",
+    rowCount: 5000,
+    colCount: 6,
+    overscanRowsDistance: 200,
+    fixedLayout: true
+};
+
+const inputTypes = {
+    number: "number",
+    boolean: "checkbox"
+};
+
+const formHookParam = {
+    defaultValues
+};
+
+const fullWidthCss = css`
+    width: 100%;
+`;
 
 const wrapperCss = css`
     box-sizing: border-box;
     display: flex;
     flex-flow: column nowrap;
-    height: 90vh;
+    height: 100vh;
     font-family: monospace;
 
     input, button {
@@ -25,36 +49,6 @@ const wrapperCss = css`
         width: 100px;
     }
 
-    hr {
-        width: 100%;
-    }
-`;
-
-const regenerateButtonCss = css`
-    && {
-        width: 100%;
-        padding: 1em;
-    }  
-`;
-
-const tableFormCss = css`
-    display: table;
-    label {
-        display: table-row;
-        & > * {
-            display: table-cell;
-        }
-    }
-`;
-
-const formWrapperCss = css`
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-`;
-
-const tableCss = css`
-    flex: 1 1 auto;
     table {
         border-collapse: collapse;
         border-spacing: 0;
@@ -69,56 +63,45 @@ const tableCss = css`
     }
 `;
 
-const tableReducer = ( oldProps, { widgetHeight, rowCount, fixedLayout, colCount, overscanRowsDistance }) => {
-
-    const columns = [
-        {
-            dataKey: "index",
-            label: "Index",
-            width: 150,
-            background: "#f7f7f7"
-        },
-        ...times( +colCount.value, i => ({
-            dataKey: `dataKey_${i}`,
-            label: Faker.name.firstName(),
-            background: `rgb(${random(170,220)}, ${random(170,220)}, ${random(170,220)})`
-        }))
-    ];
-
-    const getRow = rowIndex => columns.reduce(( r, c, i ) => {
-        if( c.dataKey === "index" ){
-            r.index = rowIndex;
+const tableFormCss = css`
+    display: table;
+    label {
+        display: table-row;
+        & > * {
+            display: table-cell;
         }
-        else{
-            r[ c.dataKey ] = `${Faker.hacker.noun()} `.repeat( random( 0, rowIndex % 5 ) );
-        }
-        return r;
-    }, {});
+    }
+`;
 
-    const rows = +rowCount.value > 0 ? times( +rowCount.value, getRow ) : +rowCount.value;
+const formWrapperCss = css`
+    display: flex;
+    flex-flow: row wrap;
+    align-content: center;
+    justify-content: center;
+    & > * {
+        margin: 1em 2em;
+    }
+`;
 
-    const getRowData = index => rows[ index ];
+const increment = j => j + 1;
 
-    return {
-        rowCount: +rowCount.value,
-        overscanRowsDistance: +overscanRowsDistance.value,
-        fixedLayout: fixedLayout.checked,
-        style: {
-            maxHeight: +widgetHeight.value || undefined
-        },
-        columns,
-        getRowData
-    };
-};
+const processFormValues = ( oldValues, newValues ) => mapValues( newValues, v => {
+    const n = parseInt( v, 10 );
+    if( Number.isFinite( n ) ){
+        return n;
+    }
+    return v;
+});
 
 const App = () => {
     
-    const [ tableProps, processFields ] = useReducer( tableReducer, null );
+    const [{ colCount, rowCount, widgetHeight, widgetWidth, fixedLayout, overscanRowsDistance }, setFormValues ] = useReducer( processFormValues, defaultValues );
 
-    const submitHandler = e => {
-        e.preventDefault();
-        processFields( e.currentTarget.elements );
-    };
+    const [ refreshId, forceColRowsRefresh ] = useState( 0 );
+
+    const { columns, getRowData } = useRandomColumnsAndRowsData( colCount, rowCount, refreshId );
+
+    const { register, handleSubmit } = useForm( formHookParam );
 
     const tableRef = useRef();
 
@@ -130,49 +113,47 @@ const App = () => {
 
     return (
         <div css={wrapperCss}>
-            <div css={formWrapperCss}>
-                <form onSubmit={submitHandler}>
-                    <div css={tableFormCss}>
-                        <label>
-                            <span>widgetHeight:&nbsp;</span>
-                            <input type="number" name="widgetHeight" min="0" defaultValue={0} />
-                        </label>
-                        <label>
-                            <span>rowCount:&nbsp;</span>
-                            <input type="number" name="rowCount" min="-1" defaultValue={1000} />
-                        </label>
-                        <label>
-                            <span>colCount:&nbsp;</span>
-                            <input type="number" name="colCount" defaultValue={5} min="0" />
-                        </label>
-                        <label>
-                            <span>overscanRowsDistance:&nbsp;</span>
-                            <input type="number" name="overscanRowsDistance" defaultValue={200} min="0" />
-                        </label>
-                        <label>
-                            <span>fixedLayout:&nbsp;</span>
-                            <input type="checkbox" name="fixedLayout" />
-                        </label>
+            <TopDrawer>
+                <div css={formWrapperCss}>
+                    <form onSubmit={handleSubmit(setFormValues)}>
+                        <div css={tableFormCss}>
+                            {map(defaultValues, ( v, k ) => (
+                                <label key={k}>
+                                    <span>{k}:&nbsp;</span>
+                                    <input name={k} type={inputTypes[typeof v]} ref={register} />
+                                </label>
+                            ))}
+                        </div>
+                        <button type="submit" css={fullWidthCss}>Update</button>
+                    </form>
+                    <div>
+                        <button css={fullWidthCss} onClick={() => forceColRowsRefresh( increment )}>
+                            Regenerate cols({colCount}) and rows({rowCount})
+                        </button>
+                        <form onSubmit={scrollToRowSubmitHandler}>
+                            <label>
+                                <span>Scroll to row:&nbsp;</span>
+                                <input type="number" name="index" defaultValue={0} />
+                                &nbsp;
+                                <button type="submit">Scroll</button>
+                            </label>
+                        </form>
                     </div>
-                    <button type="submit" css={regenerateButtonCss}>Regenerate</button>
-                </form>
-                <form onSubmit={scrollToRowSubmitHandler}>
-                    <label>
-                        <span>Scroll to row:&nbsp;</span>
-                        <input type="number" name="index" min="0" defaultValue={0} />
-                        <button type="submit">Scroll</button>
-                    </label>
-                </form>
-            </div>
-            <hr />
-            { tableProps ? (
-                <Table
-                    {...tableProps}
-                    ref={tableRef}
-                    css={tableCss}
-                    rowCountWarningsTable={{ "0": "AA", "-1" :"OO"}}
-                />
-            ) : null}
+                </div>
+            </TopDrawer>           
+            <Table
+                style={{
+                    height: widgetHeight,
+                    width: widgetWidth
+                }}
+                rowCount={rowCount}
+                columns={columns}
+                getRowData={getRowData}
+                fixedLayout={fixedLayout}
+                overscanRowsDistance={overscanRowsDistance}
+                ref={tableRef}
+                rowCountWarningsTable={{ "0": "AA", "-1" :"OO"}}
+            />
         </div>
     );
 };
