@@ -1,7 +1,9 @@
 # af-react-table
 
-### Install
-`npm install --save af-react-table`
+### Install & use
+* `npm install --save af-react-table`
+* `import "af-react-table/style.css"`
+* `import Table from "af-react-table"`
 
 ### Features
 * All heights are calculated automatically, so there is no need to provide them.
@@ -12,8 +14,9 @@
 * fixed and auto table layout mode
 * -N ... 0 rowCount handling available via `rowCountWarningsTable` prop
 * `useApi` can give table any table subcomponent access to global API
-* `@emotion` is used for styling, so you can pass css prop to table wrapper
 * renders `table`, `tr`, `td`, `th`, so default table styling, border collapsing, etc. can be easily applied.
+* small size ([playground bundle contents](https://nowaalex.github.io/af-react-table/exampleAssets/))
+
 
 ### PropTypes
 ```javascript

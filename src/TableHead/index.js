@@ -1,5 +1,4 @@
 import React, { memo } from "react";
-import { css } from "@emotion/core";
 import { useApiPlugin } from "../useApi";
 import Colgroup from "./Colgroup";
 
@@ -9,17 +8,6 @@ const SUBSCRIBE_EVENTS = [
     "column-widths-changed",
 ];
 
-const wrapperCss = css`
-    flex: 0 0 auto;
-    min-width: 100%;
-    position: relative;
-    table-layout: fixed;
-    th {
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-`;
-
 const CachedColgroup = <Colgroup />;
 
 const TableHead = memo(() => {
@@ -27,7 +15,7 @@ const TableHead = memo(() => {
     const { columns, scrollLeft, tbodyColumnWidths } = useApiPlugin( SUBSCRIBE_EVENTS );
 
     return (
-        <table css={wrapperCss} style={{ right: scrollLeft }}>
+        <table className="af-react-table-thead-table" style={{ right: scrollLeft }}>
             {CachedColgroup}
             <thead>
                 <tr>

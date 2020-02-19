@@ -7,15 +7,12 @@
   "sideEffects": false,
   "scripts": {
     "live": "webpack-dev-server",
-    "build:example": "webpack --mode=production --env.production",
-    "build:modules": "babel src --out-dir es --delete-dir-on-start",
-    "build:commonjs": "babel src --out-dir lib --delete-dir-on-start",
-    "build": "yarn build:commonjs && yarn build:modules && yarn build:example"
+    "build:example": "webpack --mode=production",
+    "build:modules": "babel src --out-dir lib --delete-dir-on-start --copy-files",
+    "build": "yarn build:modules && yarn build:example"
   },
   "main": "lib/index.js",
-  "module": "es/index.js",
   "files": [
-    "es",
     "lib"
   ],
   "devDependencies": {
@@ -63,6 +60,7 @@
     "@babel/runtime": "^7.8.4",
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
+    "emotion": "^10.0.27",
     "eventemitter3": "^4.0.0",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
