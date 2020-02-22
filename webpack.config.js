@@ -8,7 +8,9 @@ module.exports = ( env, argv ) => ({
     output: {
         path: path.resolve(__dirname, "exampleAssets" )
     },
-    optimization: {
+    optimization: {    
+        minimize: false,
+        /*
         splitChunks: {
             minSize: 30000,
             minChunks: 1,
@@ -69,6 +71,7 @@ module.exports = ( env, argv ) => ({
                 }
             }
         }
+        */
     },
 	module: {
 		rules: [

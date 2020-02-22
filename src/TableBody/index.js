@@ -23,6 +23,12 @@ const SUBSCRIBE_EVENTS = [
     "is-scrolling-changed"
 ];
 
+/*
+    TODO:
+        maybe pos: fixed?
+        https://developer.mozilla.org/en-US/docs/Mozilla/Performance/Scroll-linked_effects
+*/
+
 const TableBody = memo(({
     tbodyRef,
     scrollContainerRef,

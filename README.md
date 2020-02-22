@@ -72,3 +72,4 @@ Table.defaultProps = {
 * optimize segments tree batch insertion
 * add footer with column summaries and sorting
 * mobile scroll flickering
+* remove react focus evt

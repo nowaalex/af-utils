@@ -8,13 +8,15 @@ const useRandomColumnsAndRowsData = ( colCount, rowCount, refreshId ) => useMemo
         dataKey: "index",
         label: "Index",
         width: 150,
-        background: "#f7f7f7"
+        background: "#f7f7f7",
+        sort: "numeric"
     }];
 
     for( let j = 1; j < colCount; j++ ){
         columns.push({
             dataKey: `dataKey_${j}`,
             label: Faker.name.firstName(),
+            sort: "locale",
             background: `rgb(${random(170,220)}, ${random(170,220)}, ${random(170,220)})`
         });
     }

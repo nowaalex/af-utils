@@ -4,11 +4,13 @@ import { useApiPlugin } from "../../../useApi";
 const SUBSCRIBE_EVENTS = [
     "start-index-changed",
     "end-index-changed",
-    "columns-changed"
+    "columns-changed",
+    "rows-order-changed"
 ];
 
 
 const getVisibleRows = (
+    rowsOrder,
     rangeFrom,
     rangeTo,
     columns,
@@ -19,12 +21,13 @@ const getVisibleRows = (
     CellComponent
 ) => {
     const result = [];
-    for( let rowKey; rangeFrom < rangeTo; rangeFrom++ ){
-        rowKey = getRowKey ? getRowKey( rangeFrom ) : rangeFrom;
+    for( let rowKey, idx; rangeFrom < rangeTo; rangeFrom++ ){
+        idx = rowsOrder[ rangeFrom ];
+        rowKey = getRowKey ? getRowKey( idx ) : idx;
         result.push(
             <RowComponent
                 getRowExtraProps={getRowExtraProps}
-                rowIndex={rangeFrom}
+                rowIndex={idx}
                 key={rowKey}
                 columns={columns}
                 getRowData={getRowData}
@@ -44,6 +47,7 @@ const Rows = memo(({ getRowData, getRowKey, getRowExtraProps, RowComponent, Cell
     });
 
     return getVisibleRows(
+        API.rowsOrder,
         API.startIndex,
         API.endIndex,
         API.columns,
