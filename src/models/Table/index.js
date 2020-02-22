@@ -80,8 +80,10 @@ class Table extends Basic {
     }, ROW_WIDTH_MEASUREMENT_INTERVAL );
 
     refreshRowsOrder( prevTotalRows ){
-        this.orderedRows.length = this.totalRows;
-        fillOrderedRowsArray( this.orderedRows, this.totalRows > prevTotalRows ? prevTotalRows : 0, this.totalRows );
+        if( this.totalRows > 0 ){
+            this.orderedRows.length = this.totalRows;
+            fillOrderedRowsArray( this.orderedRows, this.totalRows > prevTotalRows ? prevTotalRows : 0, this.totalRows );
+        }
     }
 
     constructor( params ){
@@ -90,7 +92,7 @@ class Table extends Basic {
         this.rowDataGetter = params.rowDataGetter || getRowDataInitial;
         this.tbodyColumnWidths.length = this.columns.length;
         this.tbodyColumnWidths.fill( 0, 0, this.columns.length );
-        this.orderedRows = Array( params.totalRows );   
+        this.orderedRows = params.totalRows ? Array( params.totalRows ) : [];
         fillOrderedRowsArray( this.orderedRows, 0, params.totalRows );
 
         this.Events
