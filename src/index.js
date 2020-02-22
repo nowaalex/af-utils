@@ -41,7 +41,7 @@ class Table extends React.PureComponent {
         super( props );
 
         this.Data = new VirtualTableDataStore({
-            overscanRowsDistance: props.overscanRowsDistance,
+            overscanRowsCount: props.overscanRowsCount,
             columns: props.columns,
             totalRows: props.rowCount,
             rowDataGetter: props.getRowData,
@@ -53,9 +53,9 @@ class Table extends React.PureComponent {
     }
     
     componentDidUpdate(){
-        const { rowCount, columns, estimatedRowHeight, overscanRowsDistance, getRowData, getRowKey } = this.props;
+        const { rowCount, columns, estimatedRowHeight, overscanRowsCount, getRowData, getRowKey } = this.props;
         this.Data
-            .setOverscanRowsDistance( overscanRowsDistance )
+            .setOverscanRowsCount( overscanRowsCount )
             .setColumns( columns )
             .setTotalRows( rowCount )
             .setRowDataGetter( getRowData )
@@ -76,7 +76,7 @@ class Table extends React.PureComponent {
             getRowExtraProps,
             rowCount,
             estimatedRowHeight,
-            overscanRowsDistance,
+            overscanRowsCount,
             rowCountWarningsTable,
             fixedLayout,
 
@@ -123,7 +123,7 @@ Table.propTypes = {
     getRowExtraProps: PropTypes.func,
 
     /* as row heights may be different, we measure overscan in px */
-    overscanRowsDistance: PropTypes.number,
+    overscanRowsCount: PropTypes.number,
 
     HeaderRowComponent: PropTypes.any,
     RowComponent: PropTypes.any,
@@ -137,7 +137,7 @@ Table.propTypes = {
 Table.defaultProps = {
     rowCount: 0,
     estimatedRowHeight: 20,
-    overscanRowsDistance: 200,
+    overscanRowsCount: 4,
     fixedLayout: false,
 
     /*

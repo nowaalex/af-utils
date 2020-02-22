@@ -28,7 +28,7 @@ Table.propTypes = {
     getRowExtraProps: PropTypes.func,
 
     /* as row heights may be different, we measure overscan in px */
-    overscanRowsDistance: PropTypes.number,
+    overscanRowsCount: PropTypes.number,
 
     HeaderRowComponent: PropTypes.any,
     RowComponent: PropTypes.any,
@@ -42,7 +42,7 @@ Table.propTypes = {
 Table.defaultProps = {
     rowCount: 0,
     estimatedRowHeight: 20,
-    overscanRowsDistance: 200,
+    overscanRowsCount: 200,
     fixedLayout: false,
 
     /*

@@ -12,7 +12,7 @@ const defaultValues = {
     widgetWidth: "auto",
     rowCount: 5000,
     colCount: 6,
-    overscanRowsDistance: 200,
+    overscanRowsCount: 4,
     fixedLayout: true
 };
 
@@ -95,7 +95,7 @@ const processFormValues = ( oldValues, newValues ) => mapValues( newValues, v =>
 
 const App = () => {
     
-    const [{ colCount, rowCount, widgetHeight, widgetWidth, fixedLayout, overscanRowsDistance }, setFormValues ] = useReducer( processFormValues, defaultValues );
+    const [{ colCount, rowCount, widgetHeight, widgetWidth, fixedLayout, overscanRowsCount }, setFormValues ] = useReducer( processFormValues, defaultValues );
 
     const [ refreshId, forceColRowsRefresh ] = useState( 0 );
 
@@ -150,7 +150,7 @@ const App = () => {
                 columns={columns}
                 getRowData={getRowData}
                 fixedLayout={fixedLayout}
-                overscanRowsDistance={overscanRowsDistance}
+                overscanRowsCount={overscanRowsCount}
                 ref={tableRef}
                 rowCountWarningsTable={{ "0": "AA", "-1" :"OO"}}
             />

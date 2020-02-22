@@ -28,7 +28,7 @@ class Base {
     virtualTopOffset = 0;
     widgetScrollHeight = 0;
 
-    overscanRowsDistance = 0;
+    overscanRowsCount = 0;
     estimatedRowHeight = 0;
 
     scrollTop = 0;
@@ -125,25 +125,24 @@ class Base {
     }
 
     refreshOffsets(){
-        const dist = Math.max( 0, this.scrollTop - this.overscanRowsDistance );
-        const [ newStartIndex, remainder ] = walkUntil( dist, this.heighsCache );
-        
-        /*
-            TODO: maybe do not call setStartIndex and updateEndIndex, if newStartIndex === this.startIndex?
-        */
+
+        const newTopOffset = this.scrollTop;
+        const [ newVisibleStartIndex, remainder ] = walkUntil( newTopOffset, this.heighsCache );
+        const newStartIndex = Math.max( 0, newVisibleStartIndex - this.overscanRowsCount );
+        const overscanOffset = sum( newStartIndex, newVisibleStartIndex, this.heighsCache );
+                
         return this
-            .setVirtualTopOffset( dist - remainder )
-            .setStartIndex( newStartIndex )
-            .updateEndIndex();
+            .setVirtualTopOffset( newTopOffset - remainder - overscanOffset )
+            .setStartIndex( newStartIndex );
     }
 
     updateEndIndex(){
-        const [ newEndIndex ] = walkUntil( this.scrollTop + this.widgetHeight + this.overscanRowsDistance, this.heighsCache );
+        const [ newEndIndex ] = walkUntil( this.scrollTop + this.widgetHeight, this.heighsCache );
         /*
             walkUntil works by "strict less" algo. It is good for startIndex,
             but for endIndex we need "<=", so adding 1 artificially.
         */
-        return this.setEndIndex( Math.min( newEndIndex + 1, this.totalRows ) );
+        return this.setEndIndex( Math.min( newEndIndex + 1 + this.overscanRowsCount, this.totalRows ) );
     }
 
     toggleBasicEvents( method ){
@@ -153,6 +152,7 @@ class Base {
             [ method ]( "widget-scroll-height-changed", this.increaseEndIndexIfNeeded )
             [ method ]( "widget-height-changed", this.updateEndIndex, this )
             [ method ]( "rows-rendered", this.setVisibleRowsHeights )
+            [ method ]( "start-index-changed", this.updateEndIndex, this )
             [ method ]( "end-index-changed", this.increaseEndIndexIfNeeded.cancel )
             [ method ]( "widget-width-changed", this.setVisibleRowsHeights );
         return this;
@@ -189,7 +189,7 @@ class Base {
         this
             .setInitialScrollingEvents()
             .setEstimatedRowHeight( params.estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT )
-            .setOverscanRowsDistance( params.overscanRowsDistance || 0 )
+            .setOverscanRowsCount( params.overscanRowsCount || 0 )
             .setTotalRows( params.totalRows || 0 );
     }
 
@@ -223,7 +223,7 @@ addSetters( Base.prototype, [
     "widgetWidth",
     "widgetHeight",
     "widgetScrollHeight",
-    "overscanRowsDistance",
+    "overscanRowsCount",
     "startIndex",
     "endIndex",
     "totalRows",
