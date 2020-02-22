@@ -8,7 +8,6 @@ import {
     updateNodeAt,
     calculateParentsAt,
     walkUntil,
-    getTree,
     sum,
     reallocateIfNeeded
 } from "./treeUtils";
@@ -159,16 +158,19 @@ class Base {
         return this;
     }
 
+    resetMeasurementsCache(){
+        this.heighsCache = reallocateIfNeeded( this.heighsCache, this.totalRows, this.estimatedRowHeight );
+        return this;
+    }
+
     refreshHeightsCache( prevTotalRows ){
         if( this.totalRows > 0 ){
-            if( prevTotalRows > 0 ){
-                this.heighsCache = reallocateIfNeeded( this.heighsCache, prevTotalRows, this.totalRows, this.estimatedRowHeight );
-                this.updateWidgetScrollHeight();
-            }
-            else{
-                this.heighsCache = getTree( this.totalRows, this.estimatedRowHeight );
+            if( prevTotalRows < 1 ){
                 this.toggleBasicEvents( "on" );
             }
+            this
+                .resetMeasurementsCache()
+                .updateWidgetScrollHeight();
         }
         else{
             this
@@ -224,7 +226,8 @@ addSetters( Base.prototype, [
     "overscanRowsDistance",
     "startIndex",
     "endIndex",
-    "totalRows"
+    "totalRows",
+    "rowKeyGetter"
 ]);
 
 export default Base;

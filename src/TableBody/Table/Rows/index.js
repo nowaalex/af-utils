@@ -5,12 +5,14 @@ const SUBSCRIBE_EVENTS = [
     "start-index-changed",
     "end-index-changed",
     "columns-changed",
-    "rows-order-changed"
+    "rows-order-changed",
+    "row-key-getter-changed",
+    "row-data-getter-changed"
 ];
 
 
 const getVisibleRows = (
-    rowsOrder,
+    orderedRows,
     rangeFrom,
     rangeTo,
     columns,
@@ -22,12 +24,13 @@ const getVisibleRows = (
 ) => {
     const result = [];
     for( let rowKey, idx; rangeFrom < rangeTo; rangeFrom++ ){
-        idx = rowsOrder[ rangeFrom ];
+        idx = orderedRows[ rangeFrom ];
         rowKey = getRowKey ? getRowKey( idx ) : idx;
         result.push(
             <RowComponent
                 getRowExtraProps={getRowExtraProps}
-                rowIndex={idx}
+                rowIndex={rangeFrom}
+                rowDataIndex={idx}
                 key={rowKey}
                 columns={columns}
                 getRowData={getRowData}
@@ -38,7 +41,7 @@ const getVisibleRows = (
     return result;
 };
 
-const Rows = memo(({ getRowData, getRowKey, getRowExtraProps, RowComponent, CellComponent }) => {
+const Rows = memo(({ getRowExtraProps, RowComponent, CellComponent }) => {
 
     const API = useApiPlugin( SUBSCRIBE_EVENTS );
 
@@ -47,12 +50,12 @@ const Rows = memo(({ getRowData, getRowKey, getRowExtraProps, RowComponent, Cell
     });
 
     return getVisibleRows(
-        API.rowsOrder,
+        API.orderedRows,
         API.startIndex,
         API.endIndex,
         API.columns,
-        getRowData,
-        getRowKey,
+        API.rowDataGetter,
+        API.rowKeyGetter,
         getRowExtraProps,
         RowComponent,
         CellComponent

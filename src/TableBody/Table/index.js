@@ -19,8 +19,6 @@ const tableClass = css`
 const CachedColgroup = <Colgroup />;
 
 const Table = memo(({
-    getRowData,
-    getRowKey,
     getRowExtraProps,
     tbodyRef,
     RowComponent,
@@ -41,8 +39,6 @@ const Table = memo(({
             {CachedColgroup}
             <tbody ref={tbodyRef}>
                 <Rows
-                    getRowData={getRowData}
-                    getRowKey={getRowKey}
                     getRowExtraProps={getRowExtraProps}
                     RowComponent={RowComponent}
                     CellComponent={CellComponent}

@@ -45,6 +45,7 @@ class Table extends React.PureComponent {
             columns: props.columns,
             totalRows: props.rowCount,
             rowDataGetter: props.getRowData,
+            rowKeyGetter: props.getRowKey,
             estimatedRowHeight: props.estimatedRowHeight,
             getRowsContainerNode: () => this.tbodyRef.current,
             getScrollContainerNode: () => this.scrollContainerRef.current
@@ -52,12 +53,13 @@ class Table extends React.PureComponent {
     }
     
     componentDidUpdate(){
-        const { rowCount, columns, estimatedRowHeight, overscanRowsDistance, getRowData } = this.props;
+        const { rowCount, columns, estimatedRowHeight, overscanRowsDistance, getRowData, getRowKey } = this.props;
         this.Data
             .setOverscanRowsDistance( overscanRowsDistance )
             .setColumns( columns )
             .setTotalRows( rowCount )
             .setRowDataGetter( getRowData )
+            .setRowKeyGetter( getRowKey )
             .setEstimatedRowHeight( estimatedRowHeight );        
     }
 
@@ -94,8 +96,6 @@ class Table extends React.PureComponent {
                         <TableBody
                             scrollContainerRef={this.scrollContainerRef}
                             tbodyRef={this.tbodyRef}
-                            getRowData={getRowData}
-                            getRowKey={getRowKey}
                             getRowExtraProps={getRowExtraProps}
                             RowComponent={RowComponent}
                             CellComponent={CellComponent}

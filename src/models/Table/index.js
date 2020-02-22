@@ -11,7 +11,7 @@ const getRowDataInitial = () => {
     throw new Error( "getRowData must be provided for table" );
 };
 
-const fillRowsOrderArray = ( arr, startIndex, endIndex ) => {
+const fillOrderedRowsArray = ( arr, startIndex, endIndex ) => {
     while( startIndex < endIndex ){
         arr[ startIndex ] = startIndex++;
     }
@@ -53,7 +53,7 @@ class Table extends Basic {
     refreshSorting = throttle(() => {
         if( this.sortField ){
             const sorter = getSorter( this.rowDataGetter, this.sortField, this.sortMethod, this.sortDirectionSign );
-            this.rowsOrder.sort( sorter );
+            this.orderedRows.sort( sorter );
             this.Events.emit( "rows-order-changed" );
         }
     }, REFRESH_SORT_THROTTLING_INTERVAL );
@@ -80,8 +80,8 @@ class Table extends Basic {
     }, ROW_WIDTH_MEASUREMENT_INTERVAL );
 
     refreshRowsOrder( prevTotalRows ){
-        this.rowsOrder.length = this.totalRows;
-        fillRowsOrderArray( this.rowsOrder, this.totalRows > prevTotalRows ? prevTotalRows : 0, this.totalRows );
+        this.orderedRows.length = this.totalRows;
+        fillOrderedRowsArray( this.orderedRows, this.totalRows > prevTotalRows ? prevTotalRows : 0, this.totalRows );
     }
 
     constructor( params ){
@@ -90,8 +90,8 @@ class Table extends Basic {
         this.rowDataGetter = params.rowDataGetter || getRowDataInitial;
         this.tbodyColumnWidths.length = this.columns.length;
         this.tbodyColumnWidths.fill( 0, 0, this.columns.length );
-        this.rowsOrder = Array( params.totalRows );   
-        fillRowsOrderArray( this.rowsOrder, 0, params.totalRows );
+        this.orderedRows = Array( params.totalRows );   
+        fillOrderedRowsArray( this.orderedRows, 0, params.totalRows );
 
         this.Events
             .on( "rows-rendered", this.calculateTbodyColumnWidths )
@@ -100,6 +100,7 @@ class Table extends Basic {
             .on( "sort-params-changed", this.refreshSorting )
             .on( "total-rows-changed", this.refreshRowsOrder, this )
             .on( "total-rows-changed", this.refreshSorting )
+            .on( "rows-order-changed", this.resetMeasurementsCache, this )
             .on( "rows-order-changed", () => this.scrollToRow( 0 ) );
     }
 

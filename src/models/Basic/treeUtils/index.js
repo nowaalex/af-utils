@@ -6,6 +6,7 @@
 const MIN_TREE_CACHE_SIZE = 32;
 
 export const walkUntil = ( dist, tree ) => {
+
     const N = tree[ 0 ];
 
     let nodeIndex = 1;
@@ -66,59 +67,32 @@ export const updateNodeAt = ( pos, value, tree ) => {
 
 export const getSize = elementsQuantity => 2 ** Math.ceil( Math.log2( elementsQuantity + MIN_TREE_CACHE_SIZE ) );
 
-const calculateAllParents = ( tree, endIndex ) => {
-    for( let i = tree[ 0 ] + endIndex >> 1, j; i > 0; --i ){
-        j = i << 1;
-        tree[ i ] = tree[ j ] + tree[ j | 1 ];
-    }
-};
-
-const getTreeContainer = endIndex => {
-    const N = getSize( endIndex );
-    const tree = new Uint32Array( N * 2 );
-    tree[ 0 ] = N;
-
-    return tree;
-};
-
-export const getTree = ( endIndex, defaultValue ) => {
-    const tree = getTreeContainer( endIndex );
-    const N = tree[ 0 ];
-
-    tree.fill( defaultValue, N, endIndex + N );
-    calculateAllParents( tree, endIndex );
-    return tree;
-};
-
 /*
     TODO:
         think about reducing cache size( now it only increases )
 */
-export const reallocateIfNeeded = ( tree, prevEndIndex, endIndex, defaultValue ) => {
+export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
 
-    let N = tree[ 0 ];
+    let N = tree ? tree[ 0 ] : 0;
 
-    if( endIndex > prevEndIndex ){
-        if( endIndex > N ){
-            const newTree = getTreeContainer( endIndex );
-            const newN = newTree[ 0 ];
+    if( endIndex > N ){
+        N = getSize( endIndex );
+        tree = new Uint32Array( N * 2 );
+        tree[ 0 ] = N;
+    }
+
+    tree
+        .fill( 0, 1, N )
+        .fill( defaultValue, N, N + endIndex )
+        .fill( 0, N + endIndex, N * 2 );
     
-            for( let idx = 0; idx < prevEndIndex; idx++ ){
-                newTree[ newN + idx ] = tree[ N + idx ];
-            }
-            
-            tree = newTree;
-            N = newN;
-        }
-    }
-    else{
-        endIndex ^= prevEndIndex;
-        prevEndIndex ^= endIndex;
-        endIndex ^= prevEndIndex;
-        defaultValue = 0;
+    /*
+        Calculate all parents
+    */
+    for( let i = N + endIndex >> 1, j; i > 0; --i ){
+        j = i << 1;
+        tree[ i ] = tree[ j ] + tree[ j | 1 ];
     }
 
-    tree.fill( defaultValue, N + prevEndIndex, N + endIndex );
-    calculateAllParents( tree, endIndex );
     return tree;
 };
