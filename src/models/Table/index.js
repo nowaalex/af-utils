@@ -92,7 +92,7 @@ class Table extends Basic {
         this.rowDataGetter = params.rowDataGetter || getRowDataInitial;
         this.tbodyColumnWidths.length = this.columns.length;
         this.tbodyColumnWidths.fill( 0, 0, this.columns.length );
-        this.orderedRows = params.totalRows ? Array( params.totalRows ) : [];
+        this.orderedRows = params.totalRows > 0 ? Array( params.totalRows ) : [];
         fillOrderedRowsArray( this.orderedRows, 0, params.totalRows );
 
         this.Events
