@@ -61,7 +61,6 @@ Table.defaultProps = {
 
 ### TODO
 * happens rarely(after certain width changes), but sometimes I can't scroll to last index(it trembles and hides)
-* add resetCache( fromIndex, toIndex ) method
 * add rerenderCurrentRange() method
 * show example source in playground
 * write documentation

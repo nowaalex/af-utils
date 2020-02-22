@@ -1,6 +1,7 @@
 const path = require( "path" );
 const HtmlWebpackPlugin = require( "html-webpack-plugin" );
 const { BundleAnalyzerPlugin } = require( "webpack-bundle-analyzer" );
+const TerserPlugin = require("terser-webpack-plugin"  );
 
 module.exports = ( env, argv ) => ({
     entry: "./example/index.js",
@@ -9,7 +10,27 @@ module.exports = ( env, argv ) => ({
         path: path.resolve(__dirname, "exampleAssets" )
     },
     optimization: {    
-        minimize: false,
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    ecma: undefined,
+                    warnings: false,
+                    parse: {},
+                    compress: false,
+                    mangle: false, // Note `mangle.properties` is `false` by default.
+                    module: false,
+                    output: {
+                        beautify: true
+                    },
+                    toplevel: false,
+                    nameCache: null,
+                    ie8: false,
+                    keep_classnames: true,
+                    keep_fnames: true,
+                    safari10: false,
+                }
+            })
+        ]
         /*
         splitChunks: {
             minSize: 30000,
