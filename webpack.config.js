@@ -10,27 +10,7 @@ module.exports = ( env, argv ) => ({
         path: path.resolve(__dirname, "exampleAssets" )
     },
     optimization: {    
-        minimizer: [
-            new TerserPlugin({
-                terserOptions: {
-                    ecma: undefined,
-                    warnings: false,
-                    parse: {},
-                    compress: false,
-                    mangle: false, // Note `mangle.properties` is `false` by default.
-                    module: false,
-                    output: {
-                        beautify: true
-                    },
-                    toplevel: false,
-                    nameCache: null,
-                    ie8: false,
-                    keep_classnames: true,
-                    keep_fnames: true,
-                    safari10: false,
-                }
-            })
-        ]
+        minimize: false,
         /*
         splitChunks: {
             minSize: 30000,
@@ -113,7 +93,11 @@ module.exports = ( env, argv ) => ({
 		]
     },
     resolve: {
-        modules: [ "node_modules", "src" ]
+        modules: [ "node_modules", "src" ],
+        alias: {
+            "react-dom$": "react-dom/profiling",
+            "scheduler/tracing": "scheduler/tracing-profiling",
+        }
     },
     plugins: [
         new HtmlWebpackPlugin({
