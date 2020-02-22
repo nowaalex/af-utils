@@ -22,12 +22,11 @@ Table.propTypes = {
     columns: PropTypes.array.isRequired,
     getRowData: PropTypes.func.isRequired,
 
+    className: PropTypes.string,
     rowCount: PropTypes.number,
     getRowKey: PropTypes.func,
     estimatedRowHeight: PropTypes.number,
     getRowExtraProps: PropTypes.func,
-
-    /* as row heights may be different, we measure overscan in px */
     overscanRowsCount: PropTypes.number,
 
     HeaderRowComponent: PropTypes.any,
@@ -42,7 +41,7 @@ Table.propTypes = {
 Table.defaultProps = {
     rowCount: 0,
     estimatedRowHeight: 20,
-    overscanRowsCount: 200,
+    overscanRowsCount: 4,
     fixedLayout: false,
 
     /*

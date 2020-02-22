@@ -121,8 +121,6 @@ Table.propTypes = {
     getRowKey: PropTypes.func,
     estimatedRowHeight: PropTypes.number,
     getRowExtraProps: PropTypes.func,
-
-    /* as row heights may be different, we measure overscan in px */
     overscanRowsCount: PropTypes.number,
 
     HeaderRowComponent: PropTypes.any,
