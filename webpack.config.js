@@ -1,7 +1,6 @@
 const path = require( "path" );
 const HtmlWebpackPlugin = require( "html-webpack-plugin" );
 const { BundleAnalyzerPlugin } = require( "webpack-bundle-analyzer" );
-const TerserPlugin = require("terser-webpack-plugin"  );
 
 module.exports = ( env, argv ) => ({
     entry: "./example/index.js",
@@ -10,7 +9,6 @@ module.exports = ( env, argv ) => ({
         path: path.resolve(__dirname, "exampleAssets" )
     },
     optimization: {    
-        minimize: false,
         /*
         splitChunks: {
             minSize: 30000,
@@ -94,10 +92,12 @@ module.exports = ( env, argv ) => ({
     },
     resolve: {
         modules: [ "node_modules", "src" ],
-        alias: {
+       /*
+         alias: {
             "react-dom$": "react-dom/profiling",
             "scheduler/tracing": "scheduler/tracing-profiling",
         }
+        */
     },
     plugins: [
         new HtmlWebpackPlugin({
