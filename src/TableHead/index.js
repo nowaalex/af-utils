@@ -49,7 +49,10 @@ const getAriaSortAttribute = ( sortField, sortDirectionSign, dataKey ) => {
     return sortDirectionSign === 1 ? "ascending" : "descending";
 };
 
-
+/*
+    TODO:
+        When rowCount is 0 - render th's of auto width.
+*/
 const TableHead = memo(() => {
 
     const API = useApiPlugin( SUBSCRIBE_EVENTS );
