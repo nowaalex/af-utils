@@ -1,8 +1,15 @@
 {
   "name": "af-react-table",
   "version": "1.4.3",
-  "repository": "git@github.com:nowaalex/af-react-table.git",
-  "author": "alex <nowaalex@gmail.com>",
+  "description": "React component for rendering large scrollable tables",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nowaalex/af-react-table.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nowaalex/af-react-table/issues"
+  },
+  "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
   "license": "MIT",
   "sideEffects": false,
   "scripts": {
@@ -16,6 +23,16 @@
   "main": "lib/index.js",
   "files": [
     "lib"
+  ],
+  "keywords": [
+    "react",
+    "reactjs",
+    "virtual",
+    "table",
+    "scrolling",
+    "infinite",
+    "virtualized",
+    "grid"
   ],
   "devDependencies": {
     "@babel/cli": "^7.8.4",
