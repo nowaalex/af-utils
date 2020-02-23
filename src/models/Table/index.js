@@ -42,9 +42,9 @@ class Table extends Basic {
     tbodyColumnWidths = [];
 
     setSortParams( sortField, sortMethod, sortDirectionSign ){
-        if( this.sortField !== sortField || this.sortMethod !== sortMethod || sortDirectionSign !== this.sortDirectionSign ){
-            this.sortField = sortField;
+        if( this.sortMethod !== sortMethod || this.sortField !== sortField || sortDirectionSign !== this.sortDirectionSign ){
             this.sortMethod = sortMethod;
+            this.sortField = sortField;
             this.sortDirectionSign = sortDirectionSign;
             this.Events.emit( "sort-params-changed" );
         }
