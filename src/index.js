@@ -53,13 +53,18 @@ class Table extends React.PureComponent {
     }
     
     componentDidUpdate(){
+        /*
+            Order is important here!
+            TODO:
+                write order tests
+        */
         const { rowCount, columns, estimatedRowHeight, overscanRowsCount, getRowData, getRowKey } = this.props;
         this.Data
+            .setRowDataGetter( getRowData )
+            .setRowKeyGetter( getRowKey )
             .setOverscanRowsCount( overscanRowsCount )
             .setColumns( columns )
             .setTotalRows( rowCount )
-            .setRowDataGetter( getRowData )
-            .setRowKeyGetter( getRowKey )
             .setEstimatedRowHeight( estimatedRowHeight );        
     }
 
