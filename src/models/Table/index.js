@@ -51,7 +51,7 @@ class Table extends Basic {
     }
 
     refreshSorting = throttle(() => {
-        if( this.sortField ){
+        if( this.sortField && this.totalRows > 0 ){
             const sorter = getSorter( this.rowDataGetter, this.sortField, this.sortMethod, this.sortDirectionSign );
             this.orderedRows.sort( sorter );
             this.Events.emit( "rows-order-changed" );
@@ -83,6 +83,9 @@ class Table extends Basic {
         if( this.totalRows > 0 ){
             this.orderedRows.length = this.totalRows;
             fillOrderedRowsArray( this.orderedRows, this.totalRows > prevTotalRows ? prevTotalRows : 0, this.totalRows );
+        }
+        else{
+            this.orderedRows.length = 0;
         }
     }
 
