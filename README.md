@@ -68,6 +68,7 @@ Table.defaultProps = {
 * maybe pass props via context somehow to avoid memos and deep passing?
 * as models are extensible and most of the logics is taken away from react, it should be easy to implement List
 * improve performance on mobile
-* add footer with column summaries and sorting
+* add footer with column summaries
 * mobile scroll flickering
 * maybe remove react focus evt
+* dynamically adjust estimatedRowHeight on width change( otherwise too few or too much rows could be rendered sometimes)

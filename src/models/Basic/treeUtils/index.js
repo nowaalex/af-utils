@@ -45,10 +45,8 @@ export const sum = ( l, r, tree ) => {
 export const calculateParentsInRange = ( l, r, tree ) => {
     const N = tree[ 0 ];
     
-    for( r += N, l += N; l > 1; ){
-        l >>= 1;
-        r >>= 1;
-        for( let i = l; i <= r; i++ ){
+    for( r += N, l += N; r >>= 1; ){
+        for( let i = l >>= 1; i <= r; i++ ){
             tree[ i ] = tree[ i << 1 ] + tree[ i << 1 | 1 ];
         }
     }
