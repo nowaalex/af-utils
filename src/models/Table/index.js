@@ -1,10 +1,10 @@
-import throttle from "lodash/throttle";
+import debounce from "lodash/debounce";
 import subtract from "lodash/subtract";
 import addSetters from "../../utils/addSetters";
 import Basic from "../Basic";
 
 const ROW_WIDTH_MEASUREMENT_INTERVAL = 100;
-const REFRESH_SORT_THROTTLING_INTERVAL = 200;
+const REFRESH_SORT_DEBOUNCE_INTERVAL = 500;
 
 const getRowDataInitial = () => {
     throw new Error( "getRowData must be provided for table" );
@@ -58,7 +58,7 @@ class Table extends Basic {
         }
     }
 
-    refreshSorting = throttle(() => {
+    refreshSorting = debounce(() => {
         if( this.sortColumnIndex > -1 && this.totalRows > 0 ){
             const { sort, dataKey, getCellData } = this.columns[ this.sortColumnIndex ];
             if( sort ){
@@ -67,9 +67,9 @@ class Table extends Basic {
                 this.Events.emit( "rows-order-changed" );
             }
         }
-    }, REFRESH_SORT_THROTTLING_INTERVAL );
+    }, REFRESH_SORT_DEBOUNCE_INTERVAL );
 
-    calculateTbodyColumnWidths = throttle(() => {
+    calculateTbodyColumnWidths = debounce(() => {
         const node = this.getRowsContainerNode();
         if( node ){
             for( let tr = node.firstElementChild; tr; tr = tr.nextElementSibling ){
@@ -90,7 +90,7 @@ class Table extends Basic {
                 }
             }
         }
-    }, ROW_WIDTH_MEASUREMENT_INTERVAL );
+    }, ROW_WIDTH_MEASUREMENT_INTERVAL, { maxWait: ROW_WIDTH_MEASUREMENT_INTERVAL });
 
     refreshRowsOrder( prevTotalRows ){
         if( this.totalRows > 0 ){

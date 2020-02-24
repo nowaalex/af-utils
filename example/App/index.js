@@ -94,6 +94,8 @@ const processFormValues = ( oldValues, newValues ) => mapValues( newValues, v =>
     return v;
 });
 
+const rowCountWarningsTable = { "0": "AA", "-1" :"OO"};
+
 const App = () => {
     
     const [{ colCount, rowCount, widgetHeight, widgetWidth, fixedLayout, overscanRowsCount, headless }, setFormValues ] = useReducer( processFormValues, defaultValues );
@@ -147,14 +149,14 @@ const App = () => {
                     height: widgetHeight,
                     width: widgetWidth
                 }}
+                getRowData={getRowData}
                 rowCount={rowCount}
                 columns={columns}
-                getRowData={getRowData}
                 fixedLayout={fixedLayout}
                 headless={headless}
                 overscanRowsCount={overscanRowsCount}
                 ref={tableRef}
-                rowCountWarningsTable={{ "0": "AA", "-1" :"OO"}}
+                rowCountWarningsTable={rowCountWarningsTable}
             />
         </div>
     );

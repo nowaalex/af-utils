@@ -1,5 +1,4 @@
 import EventEmitter from "eventemitter3";
-import throttle from "lodash/throttle";
 import debounce from "lodash/debounce";
 import clamp from "lodash/clamp";
 import addSetters from "../../utils/addSetters";
@@ -12,7 +11,8 @@ import {
 } from "./treeUtils";
 
 const DEFAULT_ESTIMATED_ROW_HEIGHT = 30;
-const ROW_MEASUREMENT_THROTTLING_INTERVAL = 300;
+const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 100;
+const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 300;
 const IS_SCROLLING_DEBOUNCE_INTERVAL = 150;
 const END_INDEX_CHECK_INTERVAL = 400;
 
@@ -69,7 +69,7 @@ class Base {
     /*
         TODO: maybe some react-like performUnitOfWork logic is needed here?
     */
-    setVisibleRowsHeights = throttle(() => {
+    setVisibleRowsHeights = debounce(() => {
         const node = this.getRowsContainerNode();
 
         if( node ){
@@ -121,7 +121,7 @@ class Base {
         }
 
         return this;
-    }, ROW_MEASUREMENT_THROTTLING_INTERVAL );
+    }, ROW_MEASUREMENT_DEBOUNCE_INTERVAL, { maxWait: ROW_MEASUREMENT_DEBOUNCE_MAXWAIT });
 
     /*
         Column widths && heights may change during scroll/width-change,
