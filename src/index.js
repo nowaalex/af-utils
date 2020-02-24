@@ -47,6 +47,7 @@ class Table extends React.PureComponent {
             rowDataGetter: props.getRowData,
             rowKeyGetter: props.getRowKey,
             estimatedRowHeight: props.estimatedRowHeight,
+            headlessMode: props.headless,
             getRowsContainerNode: () => this.tbodyRef.current,
             getScrollContainerNode: () => this.scrollContainerRef.current
         });
@@ -58,8 +59,9 @@ class Table extends React.PureComponent {
             TODO:
                 write order tests
         */
-        const { rowCount, columns, estimatedRowHeight, overscanRowsCount, getRowData, getRowKey } = this.props;
+        const { rowCount, columns, estimatedRowHeight, overscanRowsCount, getRowData, getRowKey, headless } = this.props;
         this.Data
+            .setHeadlessMode( headless )
             .setRowDataGetter( getRowData )
             .setRowKeyGetter( getRowKey )
             .setOverscanRowsCount( overscanRowsCount )
@@ -84,6 +86,7 @@ class Table extends React.PureComponent {
             overscanRowsCount,
             rowCountWarningsTable,
             fixedLayout,
+            headless,
 
             RowComponent,
             CellComponent,
@@ -96,7 +99,7 @@ class Table extends React.PureComponent {
         return (
             <Context.Provider value={this.Data}>
                 <div className={cx(wrapperClass, className )} {...props}>
-                    <TableHead />
+                    { headless ? null : <TableHead /> }
                     { rowCount > 0 ? (
                         <TableBody
                             scrollContainerRef={this.scrollContainerRef}
@@ -121,6 +124,7 @@ Table.propTypes = {
     columns: PropTypes.array.isRequired,
     getRowData: PropTypes.func.isRequired,
 
+    headless: PropTypes.bool,
     className: PropTypes.string,
     rowCount: PropTypes.number,
     getRowKey: PropTypes.func,
@@ -142,6 +146,7 @@ Table.defaultProps = {
     estimatedRowHeight: 20,
     overscanRowsCount: 4,
     fixedLayout: false,
+    headless: false,
 
     /*
         For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.

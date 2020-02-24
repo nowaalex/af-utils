@@ -23,6 +23,7 @@ Table.propTypes = {
     columns: PropTypes.array.isRequired,
     getRowData: PropTypes.func.isRequired,
 
+    headless: PropTypes.bool,
     className: PropTypes.string,
     rowCount: PropTypes.number,
     getRowKey: PropTypes.func,
@@ -44,6 +45,7 @@ Table.defaultProps = {
     estimatedRowHeight: 20,
     overscanRowsCount: 4,
     fixedLayout: false,
+    headless: false,
 
     /*
         For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.

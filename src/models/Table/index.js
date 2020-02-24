@@ -1,6 +1,5 @@
 import throttle from "lodash/throttle";
 import subtract from "lodash/subtract";
-import areArraysEqual from "../../utils/areArraysEqual";
 import addSetters from "../../utils/addSetters";
 import Basic from "../Basic";
 
@@ -40,6 +39,7 @@ class Table extends Basic {
 
     scrollLeft = 0;
     tbodyColumnWidths = [];
+    orderedRows = [];
 
     setSortParams( sortField, sortMethod, sortDirectionSign ){
         if( this.sortMethod !== sortMethod || this.sortField !== sortField || sortDirectionSign !== this.sortDirectionSign ){
@@ -61,16 +61,18 @@ class Table extends Basic {
     calculateTbodyColumnWidths = throttle(() => {
         const node = this.getRowsContainerNode();
         if( node ){
-            for( let child of node.children ){
-                const tds = child.children;
-                if( tds.length === this.columns.length ){
-                    /* we must select "correct" rows without colspans, etc. */
-                    const pixelWidths = [];
-                    for( let td of tds ){
-                        pixelWidths.push( td.offsetWidth );
+            for( let tr = node.firstElementChild; tr; tr = tr.nextElementSibling ){
+                /* we must select "correct" rows without colspans, etc. */
+                if( tr.childElementCount === this.columns.length ){
+                    let columnWidthsChanged = false;
+                    for( let td = tr.firstElementChild, j = 0, width; td; td = td.nextElementSibling, j++ ){
+                        width = td.offsetWidth;
+                        if( this.tbodyColumnWidths[ j ] !== width ){
+                            this.tbodyColumnWidths[ j ] = width;
+                            columnWidthsChanged = true;
+                        }
                     }
-                    if( !areArraysEqual( this.tbodyColumnWidths, pixelWidths ) ){
-                        this.tbodyColumnWidths = pixelWidths;
+                    if( columnWidthsChanged ){
                         this.Events.emit( "column-widths-changed" );
                     }
                     break;
@@ -87,26 +89,50 @@ class Table extends Basic {
         else{
             this.orderedRows.length = 0;
         }
+        return this;
+    }
+
+    toggleColumnWidthMeasurerEvents( method ){
+        this.Events
+            [ method ]( "rows-rendered", this.calculateTbodyColumnWidths )
+            [ method ]( "widget-width-changed", this.calculateTbodyColumnWidths );
+        return this;
+    }
+
+    refreshHeadlessMode(){
+        if( this.headlessMode ){
+            this.toggleColumnWidthMeasurerEvents( "off" );
+            this.calculateTbodyColumnWidths.cancel();
+        }
+        else{
+            this.toggleColumnWidthMeasurerEvents( "on" );
+            this.calculateTbodyColumnWidths();
+        }
+        return this;
+    }
+
+    resetColumnWidthsCache(){
+        this.tbodyColumnWidths.length = this.columns.length;
+        this.tbodyColumnWidths.fill( 0, 0, this.columns.length );
     }
 
     constructor( params ){
         super( params );
-        this.columns = params.columns || [];
-        this.rowDataGetter = params.rowDataGetter || getRowDataInitial;
-        this.tbodyColumnWidths.length = this.columns.length;
-        this.tbodyColumnWidths.fill( 0, 0, this.columns.length );
-        this.orderedRows = params.totalRows > 0 ? Array( params.totalRows ) : [];
-        fillOrderedRowsArray( this.orderedRows, 0, params.totalRows );
 
         this.Events
-            .on( "rows-rendered", this.calculateTbodyColumnWidths )
-            .on( "columns-changed", this.calculateTbodyColumnWidths )
-            .on( "widget-width-changed", this.calculateTbodyColumnWidths )
+            .on( "headless-mode-changed", this.refreshHeadlessMode, this )
+            .on( "columns-changed", this.resetColumnWidthsCache, this )
             .on( "sort-params-changed", this.refreshSorting )
             .on( "total-rows-changed", this.refreshRowsOrder, this )
             .on( "total-rows-changed", this.refreshSorting )
             .on( "rows-order-changed", this.resetMeasurementsCache, this )
             .on( "rows-order-changed", () => this.scrollToRow( 0 ) );
+        
+        this
+            .setColumns( params.columns || [] )
+            .setHeadlessMode( !!params.headlessMode )
+            .setRowDataGetter( params.rowDataGetter || getRowDataInitial )
+            .refreshRowsOrder( 0 );
     }
 
     destructor(){
@@ -119,7 +145,8 @@ class Table extends Basic {
 addSetters( Table.prototype, [
     "columns",
     "scrollLeft",
-    "rowDataGetter"
+    "rowDataGetter",
+    "headlessMode"
 ]);
 
 export default Table;
