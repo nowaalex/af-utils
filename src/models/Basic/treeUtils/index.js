@@ -41,6 +41,9 @@ export const sum = ( l, r, tree ) => {
 /*
     We always do batch insert, so there is no sense to update all parents each time.
     It is more logical to insert leaves and then call calculateParentsInRange once.
+
+    TODO:
+        * reimplement this method using Duff's device( l++,r-- in one iteration) and make benchmarks for different l-r ranges
 */
 export const calculateParentsInRange = ( l, r, tree ) => {
     const N = tree[ 0 ];
