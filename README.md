@@ -5,6 +5,7 @@
 
 ### Features
 * All heights are calculated automatically, so there is no need to provide them.
+* Sortable
 * Optimized non-recursize segment tree is used to store row dimensions.
 * mobx-ready Row and Cell components, which can be easily wrapped by observer
 * available height and width are calculated and observed automatically via `use-resize-observer` hook
@@ -67,7 +68,6 @@ Table.defaultProps = {
 * maybe pass props via context somehow to avoid memos and deep passing?
 * as models are extensible and most of the logics is taken away from react, it should be easy to implement List
 * improve performance on mobile
-* optimize segments tree batch insertion
 * add footer with column summaries and sorting
 * mobile scroll flickering
-* remove react focus evt
+* maybe remove react focus evt

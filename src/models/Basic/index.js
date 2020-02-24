@@ -5,8 +5,7 @@ import clamp from "lodash/clamp";
 import addSetters from "../../utils/addSetters";
 
 import {
-    updateNodeAt,
-    calculateParentsAt,
+    calculateParentsInRange,
     walkUntil,
     sum,
     reallocateIfNeeded
@@ -42,11 +41,6 @@ class Base {
 
     heighsCache = null;
 
-    /*
-        Used to improve perf of segments tree and recalculate needed parents only once
-    */
-    updatedNodesSet = new Set();
-
     setInitialScrollingEvents(){
         this.Events
             .off( "scroll-top-changed", this.setIsScrollingFalseDebounced )
@@ -79,25 +73,46 @@ class Base {
         const node = this.getRowsContainerNode();
 
         if( node ){
-            for( let child of node.children ){
-                const newHeight = child.offsetHeight;
-                /*
-                    We can't rely on this.startIndex and this.endIndex here, because react updates DOM asynchronously
-                    and current rendered rows range may differ from startIndex - endIndex, especially if there are many rows and this method is throttled.
-                */
+            
+            /*
+                TODO:
+                    make tree[ 0 ] more obvious and self-documented
+            */
+            const tree = this.heighsCache,
+                N = tree[ 0 ];
+            
+            let l = -1,
+                r = -1;
+
+            /*
+                Some benchmarks inspire me to use nextElementSibling
+                https://jsperf.com/nextsibling-vs-childnodes-increment/2
+            */
+            for( let child = node.firstElementChild, newHeight, index; child; child = child.nextElementSibling ){
+                
                 if( process.env.NODE_ENV !== "production" && !child.hasAttribute( "aria-rowindex" ) ){
                     throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
                 }
-                const index = +child.getAttribute( "aria-rowindex" );
-                const tmpPos = updateNodeAt( index, newHeight, this.heighsCache );
-                if( tmpPos ){
-                    this.updatedNodesSet.add( tmpPos );
+
+                newHeight = child.offsetHeight;
+                index = +child.getAttribute( "aria-rowindex" );
+
+                if( tree[ N + index ] !== newHeight ){
+                    tree[ N + index ] = newHeight;
+                    
+                    if( l === -1 ){
+                        l = index;
+                    }
+                    
+                    r = index;
                 }
             }
-
-            if( this.updatedNodesSet.size ){
-                calculateParentsAt( this.updatedNodesSet, this.heighsCache );
-                this.updatedNodesSet.clear();
+ 
+            if( l !== -1 ){
+                if( process.env.NODE_ENV !== "production" ){
+                    console.log( "Updating heights in range: %d - %d", l, r );
+                }
+                calculateParentsInRange( l, r, tree );
                 this.updateWidgetScrollHeight();
             }
         }

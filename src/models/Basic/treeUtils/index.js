@@ -39,37 +39,27 @@ export const sum = ( l, r, tree ) => {
 };
 
 /*
-    TODO:
-        this can be optimized even more
+    We always do batch insert, so there is no sense to update all parents each time.
+    It is more logical to insert leaves and then call calculateParentsInRange once.
 */
-export const calculateParentsAt = ( posSet, tree ) => {
-    for( let pos of posSet ){
-        for( let i = pos, curSum; i > 1; ){
-            curSum = tree[ i ] + tree[ i ^ 1 ];
-            tree[ i >>= 1 ] = curSum;
+export const calculateParentsInRange = ( l, r, tree ) => {
+    const N = tree[ 0 ];
+    
+    for( r += N, l += N; l > 1; ){
+        l >>= 1;
+        r >>= 1;
+        for( let i = l; i <= r; i++ ){
+            tree[ i ] = tree[ i << 1 ] + tree[ i << 1 | 1 ];
         }
     }
-};
-
-/*
-    We always do batch insert, so there is no sense to update all parents each time.
-    It is more logical to call updateNodeAt many times, and then call calculateParentsAtPos once.
-*/
-export const updateNodeAt = ( pos, value, tree ) => {
-    const N = tree[ 0 ];
-    pos += N;
-    if( tree[ pos ] !== value ){
-        tree[ pos ] = value;
-        return pos | 1;
-    }
-    return 0;
 };
 
 export const getSize = elementsQuantity => 2 ** Math.ceil( Math.log2( elementsQuantity + MIN_TREE_CACHE_SIZE ) );
 
 /*
     TODO:
-        think about reducing cache size( now it only increases )
+        * think about reducing cache size( now it only increases )
+        * Maybe uint16? 65535 is enough for height
 */
 export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
 
@@ -85,14 +75,18 @@ export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
         .fill( 0, 1, N )
         .fill( defaultValue, N, N + endIndex )
         .fill( 0, N + endIndex, N * 2 );
-    
+
     /*
-        Calculate all parents
+        Trees are not always ideally allocated, gaps are possible.
+        Classical way for calculating parents is much simpler,
+        but can do much more work in such conditions. Commented classic algo:
+
+        for( let i = N + endIndex >> 1, j; i > 0; --i ){
+            j = i << 1;
+            tree[ i ] = tree[ j ] + tree[ j | 1 ];
+        }
     */
-    for( let i = N + endIndex >> 1, j; i > 0; --i ){
-        j = i << 1;
-        tree[ i ] = tree[ j ] + tree[ j | 1 ];
-    }
+    calculateParentsInRange( 0, endIndex, tree );
 
     return tree;
 };
