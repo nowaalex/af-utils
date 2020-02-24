@@ -6,7 +6,8 @@ import { useApiPlugin } from "../../useApi";
 
 const SUBSCRIBE_EVENTS = [
     "virtual-top-offset-changed",
-    "total-rows-changed"
+    "total-rows-changed",
+    "columns-changed"
 ];
 
 const tableClass = css`
@@ -25,7 +26,7 @@ const Table = memo(({
     CellComponent,
     fixedLayout
 }) => {
-    const { virtualTopOffset, totalRows } = useApiPlugin( SUBSCRIBE_EVENTS );
+    const { virtualTopOffset, totalRows, columns } = useApiPlugin( SUBSCRIBE_EVENTS );
 
 
     /* Hmm, I can't put translateY more than ~ 3 000 000. Maybe need to figure this out) */
@@ -35,7 +36,7 @@ const Table = memo(({
     };
 
     return (
-        <table className={tableClass} aria-rowcount={totalRows} style={tableStyle}>
+        <table className={tableClass} aria-rowcount={totalRows} style={tableStyle} aria-colcount={columns.length}>
             {CachedColgroup}
             <tbody ref={tbodyRef}>
                 <Rows

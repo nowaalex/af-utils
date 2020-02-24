@@ -90,12 +90,15 @@ class Base {
             */
             for( let child = node.firstElementChild, newHeight, index; child; child = child.nextElementSibling ){
                 
-                if( process.env.NODE_ENV !== "production" && !child.hasAttribute( "aria-rowindex" ) ){
+                /* It is counted from 1 according to w3c spec */
+                index = child.getAttribute( "aria-rowindex" ) - 1;
+
+                if( process.env.NODE_ENV !== "production" && Number.isNaN( index ) ){
                     throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
                 }
 
                 newHeight = child.offsetHeight;
-                index = +child.getAttribute( "aria-rowindex" );
+                
 
                 if( tree[ N + index ] !== newHeight ){
                     tree[ N + index ] = newHeight;

@@ -7,13 +7,14 @@ const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, rowDataInde
     const extraProps = getRowExtraProps && getRowExtraProps( rowData, rowDataIndex );
 
     return (
-        <tr {...extraProps} aria-rowindex={rowIndex}>
-            {columns.map( column => column.visibility !== "hidden" ? (
+        <tr {...extraProps} aria-rowindex={rowIndex+1}>
+            {columns.map(( column, columnIndex ) => column.visibility !== "hidden" ? (
                 <CellComponent
                     key={column.dataKey}
                     rowData={rowData}
                     rowIndex={rowIndex}
                     column={column}
+                    columnIndex={columnIndex}
                 />
             ) : null )}
         </tr>

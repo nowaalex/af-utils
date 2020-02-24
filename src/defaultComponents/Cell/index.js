@@ -7,10 +7,10 @@ import PropTypes from "prop-types";
 */
 const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
 
-const Cell = ({ rowData, rowIndex, column }) => {
-    const { transformCellData, getEmptyCellData, dataKey } = column;
+const Cell = ({ rowData, rowIndex, column, columnIndex }) => {
+    const { transformCellData, getEmptyCellData, dataKey, getCellData } = column;
 
-    let cellData = rowData && rowData[ dataKey ];
+    let cellData = rowData && ( getCellData ? getCellData( rowData ) : rowData[ dataKey ] );
     
     if( cellData === undefined || cellData === "" ){
         cellData = getEmptyCellData ? getEmptyCellData( rowIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;
@@ -20,7 +20,7 @@ const Cell = ({ rowData, rowIndex, column }) => {
     }
 
     return (
-        <td key={dataKey}>
+        <td key={dataKey} aria-colindex={columnIndex+1}>
             {cellData}
         </td>
     );
@@ -28,6 +28,7 @@ const Cell = ({ rowData, rowIndex, column }) => {
 
 Cell.propTypes = {
     rowIndex: PropTypes.number.isRequired,
+    columnIndex: PropTypes.number.isRequired,
     column: PropTypes.object.isRequired,
     rowData: PropTypes.object
 };

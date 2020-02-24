@@ -18,10 +18,20 @@ const fillOrderedRowsArray = ( arr, startIndex, endIndex ) => {
 
 const L = new Intl.Collator();
 
-const getSorter = ( getRowData, fieldName, method, directionSign ) => {
+const getSorter = ( getRowData, fieldName, method, getCellData, directionSign ) => {
     const fn = method === "locale" ? L.compare : subtract;
     const defaultValue = method === "locale" ? "" : 0;
 
+    if( getCellData ){
+        return ( a, b ) => {
+            a = getRowData( a );
+            a = a ? getCellData( a ) : defaultValue;
+            b = getRowData( b );
+            b = b ? getCellData( b ) : defaultValue;
+            return fn( a, b ) * directionSign;
+        };
+    }
+    
     return ( a, b ) => {
         a = getRowData( a );
         a = a ? a[ fieldName ] : defaultValue;
@@ -33,28 +43,29 @@ const getSorter = ( getRowData, fieldName, method, directionSign ) => {
 
 class Table extends Basic {
 
-    sortField = null;
-    sortMethod = null;
+    sortColumnIndex = -1;
     sortDirectionSign = 1;
 
     scrollLeft = 0;
     tbodyColumnWidths = [];
     orderedRows = [];
 
-    setSortParams( sortField, sortMethod, sortDirectionSign ){
-        if( this.sortMethod !== sortMethod || this.sortField !== sortField || sortDirectionSign !== this.sortDirectionSign ){
-            this.sortMethod = sortMethod;
-            this.sortField = sortField;
+    setSortParams( colIndex, sortDirectionSign ){
+        if( this.sortColumnIndex !== colIndex || sortDirectionSign !== this.sortDirectionSign ){
+            this.sortColumnIndex = colIndex;
             this.sortDirectionSign = sortDirectionSign;
             this.Events.emit( "sort-params-changed" );
         }
     }
 
     refreshSorting = throttle(() => {
-        if( this.sortField && this.totalRows > 0 ){
-            const sorter = getSorter( this.rowDataGetter, this.sortField, this.sortMethod, this.sortDirectionSign );
-            this.orderedRows.sort( sorter );
-            this.Events.emit( "rows-order-changed" );
+        if( this.sortColumnIndex > -1 && this.totalRows > 0 ){
+            const { sort, dataKey, getCellData } = this.columns[ this.sortColumnIndex ];
+            if( sort ){
+                const sorter = getSorter( this.rowDataGetter, dataKey, sort, getCellData, this.sortDirectionSign );
+                this.orderedRows.sort( sorter );
+                this.Events.emit( "rows-order-changed" );
+            }
         }
     }, REFRESH_SORT_THROTTLING_INTERVAL );
 
@@ -122,9 +133,11 @@ class Table extends Basic {
         this.Events
             .on( "headless-mode-changed", this.refreshHeadlessMode, this )
             .on( "columns-changed", this.resetColumnWidthsCache, this )
-            .on( "sort-params-changed", this.refreshSorting )
             .on( "total-rows-changed", this.refreshRowsOrder, this )
             .on( "total-rows-changed", this.refreshSorting )
+            .on( "sort-params-changed", this.refreshSorting )
+            .on( "columns-changed", this.refreshSorting )
+            .on( "row-data-getter-changed", this.refreshSorting )
             .on( "rows-order-changed", this.resetMeasurementsCache, this )
             .on( "rows-order-changed", () => this.scrollToRow( 0 ) );
         

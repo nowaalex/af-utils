@@ -22,7 +22,7 @@ const wrapperClass = css`
         text-overflow: ellipsis;
         overflow: hidden;
 
-        &[data-sort-type] {
+        &[data-sortable] {
             cursor: pointer;
             user-select: none;
         }
@@ -41,12 +41,10 @@ const wrapperClass = css`
     }
 `;
 
-const getAriaSortAttribute = ( sortField, sortDirectionSign, dataKey ) => {
-    if( sortField !== dataKey ){
-        return "none";
-    }
 
-    return sortDirectionSign === 1 ? "ascending" : "descending";
+const SortDirections = {
+    "1": "ascending",
+    "-1": "descending"
 };
 
 /*
@@ -57,17 +55,22 @@ const TableHead = memo(() => {
 
     const API = useApiPlugin( SUBSCRIBE_EVENTS );
 
-    const clickHandler = e => {
-        const sortType = e.target.getAttribute( "data-sort-type" );
-        if( sortType ){
-            const colKey = e.target.getAttribute( "data-column-key" );
-            const directionSign = e.target.getAttribute( "aria-sort" ) === "ascending" ? -1 : 1;
-            API.setSortParams( colKey, sortType, directionSign );
+    const clickHandler = useCallback( e => {
+
+        const colIndex = e.target.getAttribute( "aria-colindex" ) - 1;
+
+        if( process.env.NODE_ENV !== "production" && Number.isNaN( colIndex ) ){
+            throw new Error( "colIndex attr missing" );
         }
-    };
+
+        if( API.columns[ colIndex ].sort ){
+            const directionSign = e.target.getAttribute( "aria-sort" ) === "ascending" ? -1 : 1;
+            API.setSortParams( colIndex, directionSign );
+        }
+    }, [ API.columns ]);
 
     return (
-        <table className={wrapperClass} style={{ right: API.scrollLeft }}>
+        <table className={wrapperClass} style={{ right: API.scrollLeft }} aria-colcount={API.columns.length}>
             {CachedColgroup}
             <thead onClick={clickHandler}>
                 <tr>
@@ -82,9 +85,9 @@ const TableHead = memo(() => {
                                 key={column.dataKey}
                                 style={style}
                                 title={column.title}
-                                data-sort-type={column.sort}
-                                data-column-key={column.dataKey}
-                                aria-sort={getAriaSortAttribute(API.sortField,API.sortDirectionSign,column.dataKey)}
+                                data-sortable={column.sort?"":undefined}
+                                aria-colindex={j+1}
+                                aria-sort={API.sortColumnIndex!==j?"none":SortDirections[API.sortDirectionSign]}
                             >
                                 {column.label}
                             </th>
