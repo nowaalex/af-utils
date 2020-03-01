@@ -46,11 +46,17 @@ const calculateSum = ( totalRows, dataKey, getRowData, getCellData ) => {
     for( let i = 0, rowData, cellData; i < totalRows; i++ ){
         rowData = getRowData( i );
         cellData = getCellData ? getCellData( rowData, i ) : rowData[ dataKey ];
-        res += cellData;
+        if( cellData ){
+            res += cellData;
+        }
     }
     return res;
 };
 
+/*
+    We could use simple object literal,
+    but constructors with stable-order this initialization enforce "hidden-classes" v8 optimization
+*/
 class TotalsCachePart {
     constructor(){
         this.count = 0;
@@ -226,6 +232,7 @@ class Table extends List {
     destructor(){
         this.calculateTbodyColumnWidths.cancel();
         this.refreshSorting.cancel();
+        this.refreshTotals.cancel();
         super.destructor();
     }
 }
