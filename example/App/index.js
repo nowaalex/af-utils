@@ -102,7 +102,7 @@ const App = () => {
 
     const [ refreshId, forceColRowsRefresh ] = useState( 0 );
 
-    const { columns, getRowData } = useRandomColumnsAndRowsData( colCount, rowCount, refreshId );
+    const { columns, getRowData, totals } = useRandomColumnsAndRowsData( colCount, rowCount, refreshId );
 
     const { register, handleSubmit } = useForm( formHookParam );
 
@@ -149,6 +149,7 @@ const App = () => {
                     height: widgetHeight,
                     width: widgetWidth
                 }}
+                totals={totals}
                 getRowData={getRowData}
                 rowCount={rowCount}
                 columns={columns}

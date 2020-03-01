@@ -16,9 +16,7 @@ const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 300;
 const IS_SCROLLING_DEBOUNCE_INTERVAL = 150;
 const END_INDEX_CHECK_INTERVAL = 400;
 
-class Base {
-
-    Events = new EventEmitter();
+class List extends EventEmitter {
 
     totalRows = 0;
     startIndex = 0;
@@ -42,23 +40,23 @@ class Base {
     heighsCache = null;
 
     setInitialScrollingEvents(){
-        this.Events
+        return this
             .off( "scroll-top-changed", this.setIsScrollingFalseDebounced )
             .once( "scroll-top-changed", this.setIsScrollingTrue, this );
-        return this;
     }
 
     setIsScrollingTrue(){
         this.isScrolling = true;
-        this.Events
+        this
             .on( "scroll-top-changed", this.setIsScrollingFalseDebounced )
             .emit( "is-scrolling-changed" );
     }
     
     setIsScrollingFalseDebounced = debounce(() => {
         this.isScrolling = false;
-        this.setInitialScrollingEvents()
-            .Events.emit( "is-scrolling-changed" );
+        this
+            .setInitialScrollingEvents()
+            .emit( "is-scrolling-changed" );
     }, IS_SCROLLING_DEBOUNCE_INTERVAL );
 
     updateWidgetScrollHeight(){
@@ -164,7 +162,7 @@ class Base {
     }
 
     toggleBasicEvents( method ){
-        this.Events
+        return this
             [ method ]( "scroll-top-changed", this.refreshOffsets, this )
             [ method ]( "overscan-rows-distance-changed", this.refreshOffsets, this )
             [ method ]( "widget-scroll-height-changed", this.increaseEndIndexIfNeeded )
@@ -173,7 +171,6 @@ class Base {
             [ method ]( "start-index-changed", this.updateEndIndex, this )
             [ method ]( "end-index-changed", this.increaseEndIndexIfNeeded.cancel )
             [ method ]( "widget-width-changed", this.setVisibleRowsHeights );
-        return this;
     }
 
     resetMeasurementsCache(){
@@ -199,12 +196,13 @@ class Base {
     }
 
     constructor( params ){
+        super();
+
         this.getRowsContainerNode = params.getRowsContainerNode;
         this.getScrollContainerNode = params.getScrollContainerNode;
         
-        this.Events.on( "total-rows-changed", this.refreshHeightsCache, this );
-
         this
+            .on( "total-rows-changed", this.refreshHeightsCache, this )
             .setInitialScrollingEvents()
             .setEstimatedRowHeight( params.estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT )
             .setOverscanRowsCount( params.overscanRowsCount || 0 )
@@ -214,11 +212,11 @@ class Base {
     destructor(){
         this
             .cancelPendingAsyncCalls()
-            .Events.removeAllListeners();
+            .removeAllListeners();
     }
     
     reportRowsRendered(){
-        this.Events.emit( "rows-rendered" );
+        this.emit( "rows-rendered" );
     }
 
     /*
@@ -234,7 +232,7 @@ class Base {
     }
 }
 
-addSetters( Base.prototype, [
+addSetters( List.prototype, [
     "estimatedRowHeight",
     "virtualTopOffset",
     "scrollTop",
@@ -248,4 +246,4 @@ addSetters( Base.prototype, [
     "rowKeyGetter"
 ]);
 
-export default Base;
+export default List;

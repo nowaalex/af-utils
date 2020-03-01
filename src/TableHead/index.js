@@ -27,16 +27,12 @@ const wrapperClass = css`
             user-select: none;
         }
 
-        &[aria-sort]::after {
-            float: right;
-        }
-
         &[aria-sort="ascending"]::after {
-            content: "↑"
+            content: " ↑"
         }
 
         &[aria-sort="descending"]::after {
-            content: "↓";
+            content: " ↓";
         }
     }
 `;

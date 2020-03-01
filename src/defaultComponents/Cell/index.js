@@ -10,7 +10,7 @@ const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
 const Cell = ({ rowData, rowIndex, column, columnIndex }) => {
     const { transformCellData, getEmptyCellData, dataKey, getCellData } = column;
 
-    let cellData = rowData && ( getCellData ? getCellData( rowData ) : rowData[ dataKey ] );
+    let cellData = rowData && ( getCellData ? getCellData( rowData, rowIndex ) : rowData[ dataKey ] );
     
     if( cellData === undefined || cellData === "" ){
         cellData = getEmptyCellData ? getEmptyCellData( rowIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;

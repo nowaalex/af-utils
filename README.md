@@ -20,8 +20,38 @@
 ### PropTypes
 ```javascript
 Table.propTypes = {
-    columns: PropTypes.array.isRequired,
+    columns: PropTypes.arrayOf(
+        PropTypes.shape({
+            /* unique key for column */
+            dataKey: PropTypes.string.isRequired,
+
+            /* 
+                If rowData is available, cellData goes through flow, where each fn is optional: transformCellData(getCellData(rowData,rowIndex),rowData, column, rowIndex)
+                If not, it goes through flow: getEmptyCellData(rowIndex, column).
+            */
+            getCellData: PropTypes.func,
+            getEmptyCellData: PropTypes.func,
+            transformCellData: PropTypes.func,
+
+            visibility: PropTypes.oneOf([ "visible", "hidden" ]),
+            sort: PropTypes.oneOf([ "locale", "numeric" ]),
+
+            /*
+                column props, affecting colgroup > col tags
+            */
+            background: PropTypes.string,
+            border: PropTypes.string,
+            width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ])
+        })
+    ).isRequired,
     getRowData: PropTypes.func.isRequired,
+
+    totals: PropTypes.arrayOf(
+        PropTypes.shape({
+            dataKey: PropTypes.string.isRequired,
+            type: PropTypes.oneOf([ "sum", "average", "count" ])
+        })
+    ),
 
     headless: PropTypes.bool,
     className: PropTypes.string,
@@ -37,6 +67,8 @@ Table.propTypes = {
 
     RowCountWarningContainer: PropTypes.any,
     rowCountWarningsTable: PropTypes.object,
+
+    /* Determines, if table-layout: fixed is applied to main table */
     fixedLayout: PropTypes.bool
 };
 
@@ -62,7 +94,6 @@ Table.defaultProps = {
 * [**Customizable playground**](https://nowaalex.github.io/af-react-table/exampleAssets/)
 
 ### TODO
-* happens rarely(after certain width changes), but sometimes I can't scroll to last index(it trembles and hides)
 * add rerenderCurrentRange() method
 * show example source in playground
 * write documentation

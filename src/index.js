@@ -1,10 +1,11 @@
-import React, { memo } from "react";
+import React, { Fragment, memo } from "react";
 import PropTypes from "prop-types";
 import { css, cx } from "emotion";
 
 import Context from "./Context";
 import TableBody from "./TableBody";
 import TableHead from "./TableHead";
+import TableFooter from "./TableFooter";
 import VirtualTableDataStore from "./models/Table";
 
 import RowComponentDefault from "./defaultComponents/Row";
@@ -43,6 +44,7 @@ class Table extends React.PureComponent {
         this.Data = new VirtualTableDataStore({
             overscanRowsCount: props.overscanRowsCount,
             columns: props.columns,
+            totals: props.totals,
             totalRows: props.rowCount,
             rowDataGetter: props.getRowData,
             rowKeyGetter: props.getRowKey,
@@ -59,12 +61,13 @@ class Table extends React.PureComponent {
             TODO:
                 write order tests
         */
-        const { rowCount, columns, estimatedRowHeight, overscanRowsCount, getRowData, getRowKey, headless } = this.props;
+        const { rowCount, columns, totals, estimatedRowHeight, overscanRowsCount, getRowData, getRowKey, headless } = this.props;
         this.Data
             .setHeadlessMode( headless )
             .setRowDataGetter( getRowData )
             .setRowKeyGetter( getRowKey )
             .setOverscanRowsCount( overscanRowsCount )
+            .setTotals( totals )
             .setColumns( columns )
             .setTotalRows( rowCount )
             .setEstimatedRowHeight( estimatedRowHeight );        
@@ -78,6 +81,7 @@ class Table extends React.PureComponent {
 
         const {
             columns,
+            totals,
             getRowData,
             getRowKey,
             getRowExtraProps,
@@ -101,14 +105,17 @@ class Table extends React.PureComponent {
                 <div className={cx(wrapperClass, className )} {...props}>
                     { headless ? null : <TableHead /> }
                     { rowCount > 0 ? (
-                        <TableBody
-                            scrollContainerRef={this.scrollContainerRef}
-                            tbodyRef={this.tbodyRef}
-                            getRowExtraProps={getRowExtraProps}
-                            RowComponent={RowComponent}
-                            CellComponent={CellComponent}
-                            fixedLayout={fixedLayout}
-                        />
+                        <Fragment>
+                            <TableBody
+                                scrollContainerRef={this.scrollContainerRef}
+                                tbodyRef={this.tbodyRef}
+                                getRowExtraProps={getRowExtraProps}
+                                RowComponent={RowComponent}
+                                CellComponent={CellComponent}
+                                fixedLayout={fixedLayout}
+                            />
+                            {totals&&<TableFooter />}
+                        </Fragment>
                     ) : rowCountWarningsTable ? (
                         <RowCountWarningContainer>
                             {rowCountWarningsTable[rowCount]}
@@ -121,8 +128,36 @@ class Table extends React.PureComponent {
 }
 
 Table.propTypes = {
-    columns: PropTypes.array.isRequired,
+    columns: PropTypes.arrayOf(
+        PropTypes.shape({
+            /* unique key for column */
+            dataKey: PropTypes.string.isRequired,
+
+            /* 
+                If rowData is available, cellData goes through flow, where each fn is optional: transformCellData(getCellData(rowData,rowIndex),rowData, column, rowIndex)
+                If not, it goes through flow: getEmptyCellData(rowIndex, column).
+            */
+            getCellData: PropTypes.func,
+            getEmptyCellData: PropTypes.func,
+            transformCellData: PropTypes.func,
+
+            visibility: PropTypes.oneOf([ "visible", "hidden" ]),
+            sort: PropTypes.oneOf([ "locale", "numeric" ]),
+
+            /*
+                column props, affecting colgroup > col tags
+            */
+            background: PropTypes.string,
+            border: PropTypes.string,
+            width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ])
+        })
+    ).isRequired,
     getRowData: PropTypes.func.isRequired,
+
+    totals: PropTypes.objectOf(
+        /* array may contain: "sum", "average", "count". */
+        PropTypes.array
+    ),
 
     headless: PropTypes.bool,
     className: PropTypes.string,
@@ -138,6 +173,8 @@ Table.propTypes = {
 
     RowCountWarningContainer: PropTypes.any,
     rowCountWarningsTable: PropTypes.object,
+
+    /* Determines, if table-layout: fixed is applied to main table */
     fixedLayout: PropTypes.bool
 };
 

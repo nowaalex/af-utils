@@ -9,7 +9,7 @@ const addSetters = ( target, setters ) => {
             const prevValue = this[ varName ];
             if( newValue !== prevValue ){
                 this[ varName ] = newValue;
-                this.Events.emit( eventName, prevValue );
+                this.emit( eventName, prevValue );
             }
             return this;
         };

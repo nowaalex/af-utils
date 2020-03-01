@@ -27,6 +27,7 @@ module.exports = {
         "no-multi-assign": [ 0 ],
         "no-nested-ternary": [ 0 ],
         "import/prefer-default-export": [ 0 ],
-        "no-cond-assign": [ 0 ]
+        "no-cond-assign": [ 0 ],
+        "max-classes-per-file": [ 5 ]
     }
 }
