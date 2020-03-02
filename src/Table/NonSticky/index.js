@@ -9,7 +9,8 @@ import Thead from "../common/Thead";
 import Tfoot from "../common/Tfoot";
 import Tbody from "../common/Tbody";
 
-import ColgroupCached from "../common/ColgroupCached";
+import useColWidthsResizeObserver from "./useColWidthsResizeObserver";
+import Colgroup from "../common/Colgroup";
 import TbodyScrollerCached from "../common/TbodyScrollerCached";
 import ScrollContainer from "../common/ScrollContainer";
 
@@ -20,12 +21,12 @@ import ScrollContainer from "../common/ScrollContainer";
 const wrapperClass = css`
     display: flex;
     flex-flow: column nowrap;
+    overflow: hidden;
 `;
 
 const headerFooterClass = css`
     flex: 0 0 auto;
     table-layout: fixed;
-    min-width: 100%;
 `;
 
 const hiddenHeaderFooterClass = css`
@@ -44,18 +45,6 @@ const subscribeEvents = [
     "totals-changed"
 ];
 
-const TableHeaderCached = (
-    <TableWrapper className={headerFooterClass}>
-        <Thead />
-    </TableWrapper>
-);
-
-const TableFooterCached = (
-    <TableWrapper className={headerFooterClass}>
-        <Tfoot />
-    </TableWrapper>
-);
-
 const NonSticky = ({
     className,
     tbodyRef,
@@ -68,22 +57,37 @@ const NonSticky = ({
     ...props
 }) => {
 
-    const { headlessMode, totals } = useApi( subscribeEvents );
+    const API = useApi( subscribeEvents );
+
+    const { headlessMode, totals } = API;
 
     /*
-        Hidden tfoot & thead are needed to 'hold' widths of columns.
-        There are 3 tables rendered in this mode, so they need to be synced somehow
+        Hidden tfoot & thead are needed to 'hold' widths of tbody columns no to be narrower than real thead/tfoot
+        and notify model about columns width changes.
+        There are 3 tables rendered in this mode, so their column widths need to be synced somehow.
     */
+
+    const widthsObserverRef = useColWidthsResizeObserver( API );
+
+    if( process.env.NODE_ENV !== "production" ){
+        if( headlessMode && !totals ){
+            console.warn( "NonSticky table is rendered without headers and footers. This is not ok." )
+        }
+    }
 
     return (
         <div className={cx(wrapperClass, className )} {...props}>
-            {headlessMode?null:TableHeaderCached}
+            {headlessMode ? null : (
+                <TableWrapper className={headerFooterClass}>
+                    <Thead />
+                </TableWrapper>
+            )}
             <ScrollContainer ref={scrollContainerRef} fixedLayout={fixedLayout} onScroll={onScroll}>
                 {useMemo(() => (
                     <Fragment>
-                        {ColgroupCached}
-                        <Thead className={hiddenHeaderFooterClass} />
-                        <Tfoot className={hiddenHeaderFooterClass} />
+                        <Colgroup />
+                        {headlessMode?null:<Thead className={hiddenHeaderFooterClass} trRef={widthsObserverRef} />}
+                        {totals&&<Tfoot className={hiddenHeaderFooterClass} trRef={headlessMode?undefined:widthsObserverRef} />}
                         {TbodyScrollerCached}
                         <Tbody
                             tbodyRef={tbodyRef}
@@ -92,9 +96,13 @@ const NonSticky = ({
                             CellComponent={CellComponent}
                         />
                     </Fragment>
-                ), [ fixedLayout, getRowExtraProps, RowComponent, CellComponent ])}
+                ), [ totals, headlessMode, fixedLayout, getRowExtraProps, RowComponent, CellComponent ])}
             </ScrollContainer>
-            {totals&&TableFooterCached}
+            {totals && (
+                <TableWrapper className={headerFooterClass}>
+                    <Tfoot />
+                </TableWrapper>
+            )}
         </div>
     )
 }

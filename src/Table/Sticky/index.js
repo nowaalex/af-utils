@@ -2,7 +2,7 @@ import React, { memo, useMemo, Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import { css, cx } from "emotion";
 
-import ColgroupCached from "../common/ColgroupCached";
+import Colgroup from "../common/Colgroup";
 import TbodyScrollerCached from "../common/TbodyScrollerCached";
 import ScrollContainer from "../common/ScrollContainer";
 import Thead from "../common/Thead";
@@ -76,7 +76,7 @@ const Sticky = ({
         <ScrollContainer className={className} ref={scrollContainerRef} {...props}>
             {useMemo(() => (
                 <Fragment>
-                    {ColgroupCached}
+                    <Colgroup />
                     {headlessMode?null:<Thead className={theadClass} />}
                     {TbodyScrollerCached}
                     <Tbody

@@ -11,9 +11,8 @@ import {
 } from "./treeUtils";
 
 const DEFAULT_ESTIMATED_ROW_HEIGHT = 30;
-const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 100;
-const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 300;
-const IS_SCROLLING_DEBOUNCE_INTERVAL = 150;
+const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 50;
+const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150;
 const END_INDEX_CHECK_INTERVAL = 400;
 
 class List extends EventEmitter {
@@ -32,32 +31,7 @@ class List extends EventEmitter {
     widgetHeight = 0;
     widgetWidth = 0;
 
-    /*
-        Used to set pointer-events: none when scrolling
-    */
-    isScrolling = false;
-
     heighsCache = null;
-
-    setInitialScrollingEvents(){
-        return this
-            .off( "scroll-top-changed", this.setIsScrollingFalseDebounced )
-            .once( "scroll-top-changed", this.setIsScrollingTrue, this );
-    }
-
-    setIsScrollingTrue(){
-        this.isScrolling = true;
-        this
-            .on( "scroll-top-changed", this.setIsScrollingFalseDebounced )
-            .emit( "is-scrolling-changed" );
-    }
-    
-    setIsScrollingFalseDebounced = debounce(() => {
-        this.isScrolling = false;
-        this
-            .setInitialScrollingEvents()
-            .emit( "is-scrolling-changed" );
-    }, IS_SCROLLING_DEBOUNCE_INTERVAL );
 
     updateWidgetScrollHeight(){
         /* In segments tree 1 node is always sum of all elements */
@@ -103,6 +77,7 @@ class List extends EventEmitter {
                 
 
                 if( tree[ N + index ] !== newHeight ){
+                    // console.log( "%d| was: %d; is: %d", index, tree[N+index],newHeight)
                     tree[ N + index ] = newHeight;
                     
                     if( l === -1 ){
@@ -212,7 +187,6 @@ class List extends EventEmitter {
         
         this
             .on( "total-rows-changed", this.refreshHeightsCache, this )
-            .setInitialScrollingEvents()
             .setEstimatedRowHeight( params.estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT )
             .setOverscanRowsCount( params.overscanRowsCount || 0 )
             .setTotalRows( params.totalRows || 0 );

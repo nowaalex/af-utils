@@ -2,9 +2,9 @@ import React, { memo } from "react";
 import FooterCellsCached from "../FooterCellsCached";
 
 
-const Tfoot = ({ className }) => (
+const Tfoot = ({ className, trRef }) => (
     <tfoot className={className}>
-        <tr>
+        <tr ref={trRef}>
             {FooterCellsCached}
         </tr>
     </tfoot>

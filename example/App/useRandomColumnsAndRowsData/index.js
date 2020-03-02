@@ -17,6 +17,7 @@ const useRandomColumnsAndRowsData = ( colCount, rowCount, refreshId ) => useMemo
             dataKey: `dataKey_${j}`,
             label: Faker.name.firstName(),
             sort: "locale",
+            width: 500,
             background: `rgb(${random(170,220)}, ${random(170,220)}, ${random(170,220)})`
         });
     }

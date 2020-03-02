@@ -55,9 +55,16 @@ const wrapperCss = css`
         border-spacing: 0;
     }
 
+    td, th {
+        border: 1px solid #666;
+    }
+
+    td {
+        padding: 0.3em;
+    }
+
     th {
         padding: 1em;
-        border: 1px solid #000;
         background: #fff;
     }
 
@@ -77,11 +84,6 @@ const wrapperCss = css`
 
     tfoot td {
         background: #fff;
-    }
-
-    td {
-        border: 1px solid #666;
-        padding: 0.3em;
     }
 `;
 
@@ -170,6 +172,7 @@ const App = () => {
                     height: widgetHeight,
                     width: widgetWidth
                 }}
+                useStickyIfPossible
                 estimatedRowHeight={21}
                 totals={totals}
                 getRowData={getRowData}

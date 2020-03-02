@@ -1,8 +1,6 @@
 import { useContext, useLayoutEffect, useReducer } from "react";
 import Context from "../Context";
 
-const emptyArr = [];
-
 const reducer = x => x + 1;
 
 /*
@@ -25,7 +23,7 @@ const useApi = subscribeEvents => {
 				API.off( subscribeEvents[ j ], up );
 			}
 		};
-	}, emptyArr );
+	}, subscribeEvents );
 
 	return API;
 };

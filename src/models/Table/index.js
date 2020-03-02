@@ -3,7 +3,6 @@ import subtract from "lodash/subtract";
 import addSetters from "../../utils/addSetters";
 import List from "../List";
 
-const ROW_WIDTH_MEASUREMENT_INTERVAL = 100;
 const REFRESH_SORT_DEBOUNCE_INTERVAL = 500;
 
 const getRowDataInitial = () => {
@@ -58,12 +57,10 @@ const calculateSum = ( totalRows, dataKey, getRowData, getCellData ) => {
     but constructors with stable-order this initialization enforce "hidden-classes" v8 optimization
 */
 class TotalsCachePart {
-    constructor(){
-        this.count = 0;
-        this.sum = 0;
-        this.average = 0.0;
-    }
-}
+    count = 0;
+    sum = 0;
+    average = 0.0;
+};
 
 class Table extends List {
 
@@ -71,14 +68,13 @@ class Table extends List {
     sortDirectionSign = 1;
 
     scrollLeft = 0;
-    tbodyColumnWidths = [];
+    tbodyColumnWidths = null;
     orderedRows = [];
 
     /*
         We do not want to recalculate totals too often, so caching them in object by column dataKey
     */
     totalsCache = Object.create( null );
-
 
 
     /*
@@ -151,29 +147,6 @@ class Table extends List {
         }
     }, REFRESH_SORT_DEBOUNCE_INTERVAL );
 
-    calculateTbodyColumnWidths = debounce(() => {
-        const node = this.getRowsContainerNode();
-        if( node ){
-            for( let tr = node.firstElementChild; tr; tr = tr.nextElementSibling ){
-                /* we must select "correct" rows without colspans, etc. */
-                if( tr.childElementCount === this.columns.length ){
-                    let columnWidthsChanged = false;
-                    for( let td = tr.firstElementChild, j = 0, width; td; td = td.nextElementSibling, j++ ){
-                        width = td.offsetWidth;
-                        if( this.tbodyColumnWidths[ j ] !== width ){
-                            this.tbodyColumnWidths[ j ] = width;
-                            columnWidthsChanged = true;
-                        }
-                    }
-                    if( columnWidthsChanged ){
-                        this.emit( "column-widths-changed" );
-                    }
-                    break;
-                }
-            }
-        }
-    }, ROW_WIDTH_MEASUREMENT_INTERVAL, { maxWait: ROW_WIDTH_MEASUREMENT_INTERVAL });
-
     refreshRowsOrder( prevTotalRows ){
         if( this.totalRows > 0 ){
             this.orderedRows.length = this.totalRows;
@@ -185,36 +158,14 @@ class Table extends List {
         return this;
     }
 
-    toggleColumnWidthMeasurerEvents( method ){
-        return this
-           // [ method ]( "rows-rendered", this.calculateTbodyColumnWidths )
-            // [ method ]( "widget-width-changed", this.calculateTbodyColumnWidths );
-    }
-
-    refreshHeadlessMode(){
-        if( this.headlessMode ){
-            this
-                .toggleColumnWidthMeasurerEvents( "off" )
-                .calculateTbodyColumnWidths.cancel();
-        }
-        else{
-            this
-                .toggleColumnWidthMeasurerEvents( "on" )
-                .calculateTbodyColumnWidths();
-        }
-        return this;
-    }
-
     resetColumnWidthsCache(){
-        this.tbodyColumnWidths.length = this.columns.length;
-        this.tbodyColumnWidths.fill( 0, 0, this.columns.length );
+        this.tbodyColumnWidths = new Uint32Array( this.columns.length );
     }
 
     constructor( params ){
         super( params );
 
         this
-            .on( "headless-mode-changed", this.refreshHeadlessMode, this )
             .on( "columns-changed", this.resetColumnWidthsCache, this )
             .on( "columns-changed", this.refreshTotals )
             .on( "total-rows-changed", this.refreshRowsOrder, this )
@@ -236,7 +187,6 @@ class Table extends List {
     }
 
     destructor(){
-        this.calculateTbodyColumnWidths.cancel();
         this.refreshSorting.cancel();
         this.refreshTotals.cancel();
         super.destructor();

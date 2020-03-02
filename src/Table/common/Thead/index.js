@@ -23,22 +23,17 @@ const wrapperClass = css`
 `;
 
 
-const SortDirections = {
-    "1": "ascending",
-    "-1": "descending"
-};
-
 /*
     TODO:
         When rowCount is 0 - render th's of auto width.
 */
-const Thead = ({ className, getCellStyle, ...props }) => {
+const Thead = ({ className, trRef, getCellStyle, ...props }) => {
 
     const API = useApi( SUBSCRIBE_EVENTS );
 
     const clickHandler = useCallback( e => {
 
-        const colIndex = e.target.getAttribute( "aria-colindex" ) - 1;
+        const colIndex = parseInt( e.target.getAttribute( "aria-colindex" ), 10 ) - 1;
 
         if( process.env.NODE_ENV !== "production" && Number.isNaN( colIndex ) ){
             throw new Error( "colIndex attr missing" );
@@ -52,7 +47,7 @@ const Thead = ({ className, getCellStyle, ...props }) => {
 
     return (
         <thead className={cx(wrapperClass,className)} onClick={clickHandler}>
-            <tr>
+            <tr ref={trRef}>
                 {HeaderCellsCached}
             </tr>
         </thead>

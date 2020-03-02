@@ -1,24 +1,28 @@
 import React from "react";
 import useApi from "../../../useApi";
-import ColgroupCached from "../../common/ColgroupCached";
+import Colgroup from "../../common/Colgroup";
+import sum from "lodash/sum";
 
 const SUBSCRIBE_EVENTS = [
     "columns-changed",
-    "scroll-left-changed"
+    "scroll-left-changed",
+    "widget-width-changed",
+    "tbody-column-widths-changed"
 ];
 
 const TableWrapper = ({ className, children }) => {
 
-    const { scrollLeft, columns } = useApi( SUBSCRIBE_EVENTS );
+    const { scrollLeft, columns, tbodyColumnWidths } = useApi( SUBSCRIBE_EVENTS );
 
     const style = {
         /* If we do this via transform translate, col background would have bugs during horizontal scroll. Strange webkit behavior */
-        marginLeft: -scrollLeft
+        marginLeft: -scrollLeft,
+        width: sum( tbodyColumnWidths )
     };
 
     return (
         <table className={className} style={style} aria-colcount={columns.length}>
-            {ColgroupCached}
+            <Colgroup useTbodyWidths />
             {children}
         </table>
     );

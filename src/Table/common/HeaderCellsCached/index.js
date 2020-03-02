@@ -17,15 +17,15 @@ const SortDirections = {
 */
 const HeaderCells = () => {
 
-    const API = useApi( SUBSCRIBE_EVENTS );
+    const { columns, sortColumnIndex, sortDirectionSign } = useApi( SUBSCRIBE_EVENTS );
 
-    return API.columns.map(({ dataKey, title, sort, label, visibility }, j ) => visibility === "hidden" ? null : (
+    return columns.map(({ dataKey, title, sort, label, visibility }, j ) => visibility === "hidden" ? null : (
         <th
             key={dataKey}
             title={title}
             data-sortable={sort?"":undefined}
             aria-colindex={j+1}
-            aria-sort={API.sortColumnIndex!==j?"none":SortDirections[API.sortDirectionSign]}
+            aria-sort={sortColumnIndex!==j?"none":SortDirections[sortDirectionSign]}
         >
             {label}
         </th>

@@ -26,6 +26,10 @@ const wrapperClass = css`
         text-overflow: ellipsis;
     }
 
+    thead, tfoot {
+        white-space: nowrap;
+    }
+
     * {
         box-sizing: border-box;
     }
