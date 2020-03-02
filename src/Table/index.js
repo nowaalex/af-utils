@@ -97,7 +97,11 @@ const Table = ({
         };
     }, []);
 
-    const ComponentVariant = useStickyIfPossible && isPositionStickySupported() ? StickyComponent : NonStickyComponent;
+    /*
+        Only cells inside thead/tfoot can be sticky.
+        If thead/tfoot are hidden - we can easily render lighter StickyComponent to avoid extra wrappers
+    */
+    const ComponentVariant = ( headless && !totals ) || ( useStickyIfPossible && isPositionStickySupported() ) ? StickyComponent : NonStickyComponent;
 
     return (
         <Context.Provider value={finalDataRef.current}>

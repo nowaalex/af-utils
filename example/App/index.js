@@ -171,6 +171,7 @@ const App = () => {
                     width: widgetWidth
                 }}
                 useStickyIfPossible
+                estimatedRowHeight={21}
                 totals={totals}
                 getRowData={getRowData}
                 rowCount={rowCount}

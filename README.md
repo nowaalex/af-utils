@@ -6,6 +6,8 @@
 ### Features
 * All heights are calculated automatically, so there is no need to provide them.
 * Sortable
+* Has column summaries ( count, sum, average )
+* Can automatically detect and use position: sticky
 * Optimized non-recursize segment tree is used to store row dimensions.
 * mobx-ready Row and Cell components, which can be easily wrapped by observer
 * available height and width are calculated and observed automatically via `use-resize-observer` hook
@@ -96,6 +98,6 @@ Table.defaultProps = {
 * add rerenderCurrentRange() method
 * show example source in playground
 * write documentation
-* Due to firefox & mobile APZ fast scrolling causes lags
+* mobile fast scrolling causes lags because mobile scroll event is async ( react-virtualized, react-window, devextreme grids also have this problem )
 * maybe pass props via context somehow to avoid memos and deep passing?
 * dynamically adjust estimatedRowHeight on width change( otherwise too few or too much rows could be rendered sometimes)

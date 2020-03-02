@@ -56,6 +56,7 @@ const NonSticky = ({
     RowComponent,
     CellComponent,
     fixedLayout,
+    onScroll,
     ...props
 }) => {
 
@@ -64,7 +65,7 @@ const NonSticky = ({
     return (
         <div className={cx(wrapperClass, className )} {...props}>
             {headlessMode?null:TableHeaderCached}
-            <ScrollContainer ref={scrollContainerRef} fixedLayout={fixedLayout}>
+            <ScrollContainer ref={scrollContainerRef} fixedLayout={fixedLayout} onScroll={onScroll}>
                 {useMemo(() => (
                     <Fragment>
                         {ColgroupCached}

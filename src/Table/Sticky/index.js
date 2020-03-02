@@ -34,8 +34,12 @@ const SUBSCRIBE_EVENTS = [
     "totals-changed"
 ];
 
-const TheadCached = <Thead className={theadClass} />;
-const TfootCached = <Tfoot className={tfootClass} />;
+
+/*
+    Todo:
+        measure thead & tfoot heights in order to properly calculate available space for rows
+*/
+
 
 const Sticky = ({
     className,
@@ -57,22 +61,23 @@ const Sticky = ({
         useEffect(() => {
             const table = scrollContainerRef.current.querySelector( "table" );
             const tableStyle = getComputedStyle( table );
-            if( tableStyle.borderCollapse === "collapse" ){
-                console.warn(
-                    "You use sticky table version. Due to special border behavior when scrolling, use border-collpase: separate.%o",
-                    "https://bugs.chromium.org/p/chromium/issues/detail?id=702927"
-                );
+            if( !headlessMode || totals.length ){
+                if( tableStyle.borderCollapse === "collapse" ){
+                    console.warn(
+                        "You use sticky table version. Due to special border behavior when scrolling, use border-collpase: separate.%o",
+                        "https://bugs.chromium.org/p/chromium/issues/detail?id=702927"
+                    );
+                }
             }
-        }, []);
+        }, [ headlessMode, totals.length === 0 ]);
     }
     
-
     return (
         <ScrollContainer className={className} ref={scrollContainerRef} {...props}>
             {useMemo(() => (
                 <Fragment>
                     {ColgroupCached}
-                    {headlessMode?null:TheadCached}
+                    {headlessMode?null:<Thead className={theadClass} />}
                     {TbodyScrollerCached}
                     <Tbody
                         tbodyRef={tbodyRef}
@@ -80,7 +85,7 @@ const Sticky = ({
                         RowComponent={RowComponent}
                         CellComponent={CellComponent}
                     />
-                    {totals&&TfootCached}
+                    {totals&&<Tfoot className={tfootClass} />}
                 </Fragment>
             ), [ headlessMode, totals, getRowExtraProps, RowComponent, CellComponent ])}
         </ScrollContainer>
