@@ -82,7 +82,7 @@ class Table extends List {
             make this call throttled
     */
     refreshTotalsForColumn( dataKey ){
-        const curTotals = this.totals[ dataKey ];
+        const curTotals = this.totals && this.totals[ dataKey ];
         if( curTotals ){
             let curCachePart = this.totalsCache[ dataKey ];
 
