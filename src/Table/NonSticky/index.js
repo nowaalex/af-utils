@@ -3,16 +3,15 @@ import PropTypes from "prop-types";
 import { css, cx } from "emotion";
 
 import useApi from "../../useApi";
-import TableHeader from "./TableHeader";
-import TableFooter from "./TableFooter";
+import TableWrapper from "./TableWrapper";
 
 import Thead from "../common/Thead";
 import Tfoot from "../common/Tfoot";
+import Tbody from "../common/Tbody";
 
 import ColgroupCached from "../common/ColgroupCached";
 import TbodyScrollerCached from "../common/TbodyScrollerCached";
 import ScrollContainer from "../common/ScrollContainer";
-import Tbody from "../common/Tbody";
 
 
 /*
@@ -45,8 +44,17 @@ const subscribeEvents = [
     "totals-changed"
 ];
 
-const TableHeaderCached = <TableHeader className={headerFooterClass} />;
-const TableFooterCached = <TableFooter className={headerFooterClass} />;
+const TableHeaderCached = (
+    <TableWrapper className={headerFooterClass}>
+        <Thead />
+    </TableWrapper>
+);
+
+const TableFooterCached = (
+    <TableWrapper className={headerFooterClass}>
+        <Tfoot />
+    </TableWrapper>
+);
 
 const NonSticky = ({
     className,
@@ -61,6 +69,11 @@ const NonSticky = ({
 }) => {
 
     const { headlessMode, totals } = useApi( subscribeEvents );
+
+    /*
+        Hidden tfoot & thead are needed to 'hold' widths of columns.
+        There are 3 tables rendered in this mode, so they need to be synced somehow
+    */
 
     return (
         <div className={cx(wrapperClass, className )} {...props}>

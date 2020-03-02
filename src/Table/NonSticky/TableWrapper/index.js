@@ -1,6 +1,5 @@
 import React from "react";
 import useApi from "../../../useApi";
-import Thead from "../../common/Thead";
 import ColgroupCached from "../../common/ColgroupCached";
 
 const SUBSCRIBE_EVENTS = [
@@ -8,7 +7,7 @@ const SUBSCRIBE_EVENTS = [
     "scroll-left-changed"
 ];
 
-const TableHead = ({ className }) => {
+const TableWrapper = ({ className, children }) => {
 
     const { scrollLeft, columns } = useApi( SUBSCRIBE_EVENTS );
 
@@ -20,9 +19,9 @@ const TableHead = ({ className }) => {
     return (
         <table className={className} style={style} aria-colcount={columns.length}>
             {ColgroupCached}
-            <Thead />
+            {children}
         </table>
     );
 };
 
-export default TableHead;
+export default TableWrapper;
