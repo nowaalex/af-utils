@@ -113,6 +113,7 @@ const Table = ({
                 <ComponentVariant
                     className={wrapperClass}
                     scrollContainerRef={scrollContainerRef}
+                    getRowExtraProps={getRowExtraProps}
                     tbodyRef={tbodyRef}
                     {...props}
                 />
