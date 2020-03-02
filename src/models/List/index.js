@@ -113,7 +113,6 @@ class List extends EventEmitter {
     }, END_INDEX_CHECK_INTERVAL );
 
     cancelPendingAsyncCalls(){
-        this.setIsScrollingFalseDebounced.cancel();
         this.setVisibleRowsHeights.cancel();
         this.increaseEndIndexIfNeeded.cancel();
         return this;
