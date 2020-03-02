@@ -69,7 +69,7 @@ const Sticky = ({
                     );
                 }
             }
-        }, [ headlessMode, totals.length === 0 ]);
+        }, [ headlessMode, totals && totals.length === 0 ]);
     }
     
     return (
