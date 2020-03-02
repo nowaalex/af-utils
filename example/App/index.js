@@ -5,7 +5,7 @@ import { css } from "@emotion/core";
 import { useForm } from "react-hook-form";
 import useRandomColumnsAndRowsData from "./useRandomColumnsAndRowsData";
 import TopDrawer from "./TopDrawer";
-import Table from "../../src";
+import Table from "../../src/Table";
 
 const defaultValues = {
     widgetHeight: "auto",
@@ -51,15 +51,36 @@ const wrapperCss = css`
     }
 
     table {
-        border-collapse: collapse;
+        border-collapse: separate;
         border-spacing: 0;
     }
+
     th {
         padding: 1em;
-        border-bottom: 1px solid #000;
+        border: 1px solid #000;
+        background: #fff;
     }
+
+    th + th,
+    td + td {
+        border-left-style: none;
+    }
+
+    tbody {
+        tr td {
+            border-top-style: none;
+        }
+        tr:last-child td {
+            border-bottom-style: none;
+        }
+    }
+
+    tfoot td {
+        background: #fff;
+    }
+
     td {
-        border-bottom: 1px solid #666;
+        border: 1px solid #666;
         padding: 0.3em;
     }
 `;
@@ -111,7 +132,7 @@ const App = () => {
     const scrollToRowSubmitHandler = e => {
         e.preventDefault();
         const { value } = e.currentTarget.elements.index;
-        tableRef.current.Data.scrollToRow( +value );
+        tableRef.current.scrollToRow( +value );
     };
 
     return (
@@ -149,6 +170,7 @@ const App = () => {
                     height: widgetHeight,
                     width: widgetWidth
                 }}
+                useStickyIfPossible
                 totals={totals}
                 getRowData={getRowData}
                 rowCount={rowCount}
@@ -156,7 +178,7 @@ const App = () => {
                 fixedLayout={fixedLayout}
                 headless={headless}
                 overscanRowsCount={overscanRowsCount}
-                ref={tableRef}
+                dataRef={tableRef}
                 rowCountWarningsTable={rowCountWarningsTable}
             />
         </div>

@@ -1,5 +1,5 @@
-import React, { memo, useEffect } from "react";
-import { useApiPlugin } from "../../../useApi";
+import React, { useEffect } from "react";
+import useApi from "../../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
     "start-index-changed",
@@ -41,9 +41,9 @@ const getVisibleRows = (
     return result;
 };
 
-const Rows = memo(({ getRowExtraProps, RowComponent, CellComponent }) => {
+const Rows = ({ getRowExtraProps, RowComponent, CellComponent }) => {
 
-    const API = useApiPlugin( SUBSCRIBE_EVENTS );
+    const API = useApi( SUBSCRIBE_EVENTS );
 
     useEffect(() => {
         API.reportRowsRendered();
@@ -60,6 +60,6 @@ const Rows = memo(({ getRowExtraProps, RowComponent, CellComponent }) => {
         RowComponent,
         CellComponent
     );
-});
+};
 
 export default Rows;

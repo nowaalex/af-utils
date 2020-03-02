@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { useApiPlugin } from "../../../useApi";
+import React from "react";
+import useApiPlugin from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
     "columns-changed"
@@ -23,4 +23,6 @@ const Colgroup = () => {
     );
 };
 
-export default memo( Colgroup );
+const ColgroupCached = <Colgroup />;
+
+export default ColgroupCached;

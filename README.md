@@ -46,13 +46,12 @@ Table.propTypes = {
     ).isRequired,
     getRowData: PropTypes.func.isRequired,
 
-    totals: PropTypes.arrayOf(
-        PropTypes.shape({
-            dataKey: PropTypes.string.isRequired,
-            type: PropTypes.oneOf([ "sum", "average", "count" ])
-        })
+    totals: PropTypes.objectOf(
+        /* array may contain: "sum", "average", "count". */
+        PropTypes.array
     ),
-
+    
+    useStickyIfPossible: PropTypes.bool,
     headless: PropTypes.bool,
     className: PropTypes.string,
     rowCount: PropTypes.number,
@@ -97,11 +96,6 @@ Table.defaultProps = {
 * add rerenderCurrentRange() method
 * show example source in playground
 * write documentation
-* implement position: sticky where it is supported
+* Due to firefox & mobile APZ fast scrolling causes lags
 * maybe pass props via context somehow to avoid memos and deep passing?
-* as models are extensible and most of the logics is taken away from react, it should be easy to implement List
-* improve performance on mobile
-* add footer with column summaries
-* mobile scroll flickering
-* maybe remove react focus evt
 * dynamically adjust estimatedRowHeight on width change( otherwise too few or too much rows could be rendered sometimes)

@@ -10,23 +10,24 @@ const reducer = x => x + 1;
 		why useEffect does not properly update colgroup of tbody, when rowcount changes from 0 to positive value?
 */
 
-export const useApiContext = () => useContext( Context );
+const useApi = subscribeEvents => {
 
-export const useApiPlugin = subscribeEvents => {
-	const API = useApiContext();
+	const API = useContext( Context );
 
 	const [, up] = useReducer( reducer, 0 );
     
 	useLayoutEffect(() => {
-		for (let e of subscribeEvents) {
-			API.on(e, up);
+		for( let j = 0; j < subscribeEvents.length; j++ ){
+			API.on( subscribeEvents[ j ], up );
 		}
 		return () => {
-			for (let e of subscribeEvents) {
-				API.off(e, up);
+			for( let j = 0; j < subscribeEvents.length; j++ ){
+				API.off( subscribeEvents[ j ], up );
 			}
 		};
 	}, emptyArr );
 
 	return API;
 };
+
+export default useApi;

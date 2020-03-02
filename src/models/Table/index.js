@@ -79,6 +79,12 @@ class Table extends List {
     */
     totalsCache = Object.create( null );
 
+
+
+    /*
+        TODO:
+            make this call throttled
+    */
     refreshTotalsForColumn( dataKey ){
         const curTotals = this.totals[ dataKey ];
         if( curTotals ){
@@ -114,7 +120,7 @@ class Table extends List {
             }
         }
         else if( process.env.NODE_ENV !== "production" ){
-            console.warn( `Asked to recalculate wrong totals. Datakey: ${dataKey}` );
+            console.log( `Asked to recalculate totals for: ${dataKey}; doing nothing;` );
         }
         return this;
     }
@@ -181,8 +187,8 @@ class Table extends List {
 
     toggleColumnWidthMeasurerEvents( method ){
         return this
-            [ method ]( "rows-rendered", this.calculateTbodyColumnWidths )
-            [ method ]( "widget-width-changed", this.calculateTbodyColumnWidths );
+           // [ method ]( "rows-rendered", this.calculateTbodyColumnWidths )
+            // [ method ]( "widget-width-changed", this.calculateTbodyColumnWidths );
     }
 
     refreshHeadlessMode(){

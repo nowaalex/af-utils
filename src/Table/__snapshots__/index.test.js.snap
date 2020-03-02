@@ -1,0 +1,387 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table component renders ok Performs initial render with rowCount: -1 1`] = `null`;
+
+exports[`Table component renders ok Performs initial render with rowCount: -2 1`] = `null`;
+
+exports[`Table component renders ok Performs initial render with rowCount: 0 1`] = `null`;
+
+exports[`Table component renders ok Performs initial render with rowCount: 1 1`] = `
+.emotion-0 th[data-sortable] {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.emotion-0 th[aria-sort="ascending"]::after {
+  content: " ↑";
+}
+
+.emotion-0 th[aria-sort="descending"]::after {
+  content: " ↓";
+}
+
+.emotion-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  width: 1px;
+}
+
+.emotion-5 {
+  min-width: 100%;
+}
+
+.emotion-6 {
+  overflow: auto;
+  outline: none;
+  min-height: 0;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  position: relative;
+}
+
+.emotion-1 {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  table-layout: fixed;
+  min-width: 100%;
+}
+
+.emotion-4 {
+  visibility: hidden;
+}
+
+.emotion-4 th,
+.emotion-4 td {
+  line-height: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  min-height: 0;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+.emotion-7 td,
+.emotion-7 th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emotion-7 * {
+  box-sizing: border-box;
+}
+
+.emotion-3 {
+  visibility: hidden;
+}
+
+.emotion-3 th[data-sortable] {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.emotion-3 th[aria-sort="ascending"]::after {
+  content: " ↑";
+}
+
+.emotion-3 th[aria-sort="descending"]::after {
+  content: " ↓";
+}
+
+.emotion-3 th,
+.emotion-3 td {
+  line-height: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+<div
+  className="emotion-7"
+>
+  <table
+    aria-colcount={0}
+    className="emotion-1"
+    style={
+      Object {
+        "marginLeft": -0,
+      }
+    }
+  >
+    <colgroup />
+    <thead
+      className="emotion-0"
+      onClick={[Function]}
+    >
+      <tr />
+    </thead>
+  </table>
+  <div
+    className="emotion-6"
+    onScroll={[Function]}
+    tabIndex="0"
+  >
+    <div
+      className="emotion-2"
+      style={
+        Object {
+          "height": 20,
+        }
+      }
+    />
+    <table
+      aria-colcount={0}
+      aria-rowcount={1}
+      className="emotion-5"
+      style={
+        Object {
+          "tableLayout": "auto",
+        }
+      }
+    >
+      <colgroup />
+      <thead
+        className="emotion-3"
+        onClick={[Function]}
+      >
+        <tr />
+      </thead>
+      <tfoot
+        className="emotion-4"
+      >
+        <tr />
+      </tfoot>
+      <tbody
+        style={
+          Object {
+            "visibility": "hidden",
+          }
+        }
+      >
+        <tr
+          style={
+            Object {
+              "height": 0,
+            }
+          }
+        />
+      </tbody>
+      <tbody />
+    </table>
+  </div>
+</div>
+`;
+
+exports[`Table component renders ok Performs initial render with rowCount: 2 1`] = `
+.emotion-0 th[data-sortable] {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.emotion-0 th[aria-sort="ascending"]::after {
+  content: " ↑";
+}
+
+.emotion-0 th[aria-sort="descending"]::after {
+  content: " ↓";
+}
+
+.emotion-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  width: 1px;
+}
+
+.emotion-5 {
+  min-width: 100%;
+}
+
+.emotion-6 {
+  overflow: auto;
+  outline: none;
+  min-height: 0;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  position: relative;
+}
+
+.emotion-1 {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  table-layout: fixed;
+  min-width: 100%;
+}
+
+.emotion-4 {
+  visibility: hidden;
+}
+
+.emotion-4 th,
+.emotion-4 td {
+  line-height: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  min-height: 0;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+.emotion-7 td,
+.emotion-7 th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emotion-7 * {
+  box-sizing: border-box;
+}
+
+.emotion-3 {
+  visibility: hidden;
+}
+
+.emotion-3 th[data-sortable] {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.emotion-3 th[aria-sort="ascending"]::after {
+  content: " ↑";
+}
+
+.emotion-3 th[aria-sort="descending"]::after {
+  content: " ↓";
+}
+
+.emotion-3 th,
+.emotion-3 td {
+  line-height: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+<div
+  className="emotion-7"
+>
+  <table
+    aria-colcount={0}
+    className="emotion-1"
+    style={
+      Object {
+        "marginLeft": -0,
+      }
+    }
+  >
+    <colgroup />
+    <thead
+      className="emotion-0"
+      onClick={[Function]}
+    >
+      <tr />
+    </thead>
+  </table>
+  <div
+    className="emotion-6"
+    onScroll={[Function]}
+    tabIndex="0"
+  >
+    <div
+      className="emotion-2"
+      style={
+        Object {
+          "height": 40,
+        }
+      }
+    />
+    <table
+      aria-colcount={0}
+      aria-rowcount={2}
+      className="emotion-5"
+      style={
+        Object {
+          "tableLayout": "auto",
+        }
+      }
+    >
+      <colgroup />
+      <thead
+        className="emotion-3"
+        onClick={[Function]}
+      >
+        <tr />
+      </thead>
+      <tfoot
+        className="emotion-4"
+      >
+        <tr />
+      </tfoot>
+      <tbody
+        style={
+          Object {
+            "visibility": "hidden",
+          }
+        }
+      >
+        <tr
+          style={
+            Object {
+              "height": 0,
+            }
+          }
+        />
+      </tbody>
+      <tbody />
+    </table>
+  </div>
+</div>
+`;
+
+exports[`Table component renders ok Performs initial render with rowCount: undefined 1`] = `null`;

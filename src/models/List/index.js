@@ -88,8 +88,12 @@ class List extends EventEmitter {
             */
             for( let child = node.firstElementChild, newHeight, index; child; child = child.nextElementSibling ){
                 
-                /* It is counted from 1 according to w3c spec */
-                index = child.getAttribute( "aria-rowindex" ) - 1;
+                /*
+                    * aria-rowindex is counted from 1 according to w3c spec;
+                    * parseInt with radix is 2x faster, then +, -, etc.
+                      https://jsperf.com/number-vs-parseint-vs-plus/116
+                */
+                index = parseInt( child.getAttribute( "aria-rowindex" ), 10 ) - 1;
 
                 if( process.env.NODE_ENV !== "production" && Number.isNaN( index ) ){
                     throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
@@ -153,6 +157,11 @@ class List extends EventEmitter {
     }
 
     updateEndIndex(){
+        /*
+            TODO:
+                perf benchmarks tell, that removeChild is called often.
+                maybe cache previous range( endIndex - startIndex ) and if new range is smaller - throttle it's decrease?
+        */
         const [ newEndIndex ] = walkUntil( this.scrollTop + this.widgetHeight, this.heighsCache );
         /*
             walkUntil works by "strict less" algo. It is good for startIndex,
