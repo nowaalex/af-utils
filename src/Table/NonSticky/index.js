@@ -22,6 +22,7 @@ const wrapperClass = css`
     display: flex;
     flex-flow: column nowrap;
     overflow: hidden;
+    flex: 1 1 auto;
 `;
 
 const headerFooterClass = css`
@@ -30,13 +31,14 @@ const headerFooterClass = css`
 `;
 
 const hiddenHeaderFooterClass = css`
-    visibility: hidden;
+    visibility: hidden !important;
     th, td {
         line-height: 0 !important;
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         border-top: none !important;
         border-bottom: none !important;
+        max-height: 0 !important;
     }
 `;
 

@@ -12,7 +12,7 @@ const FooterCells = () => {
 
     const { columns, totals, totalsCache } = useApi( SUBSCRIBE_EVENTS );
 
-    return columns.map(({ dataKey, visibility }, j ) => {
+    return columns.map(({ dataKey, format, visibility }, j ) => {
 
         if( visibility === "hidden" ){
             return null;
@@ -25,9 +25,9 @@ const FooterCells = () => {
             <td key={dataKey} aria-colindex={j+1}>
                 {curTotals&&curTotalsCache&&curTotals.map( summaryType => {
                     const res = curTotalsCache[ summaryType ];
-                    return res ? (
+                    return res !== undefined ? (
                         <div key={summaryType}>
-                            {capitalize(summaryType)}:&nbsp;{res}
+                            {capitalize(summaryType)}:&nbsp;{format?format(res):res}
                         </div>
                     ) : null;
                 })}
