@@ -1,6 +1,6 @@
 {
   "name": "af-react-table",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "React component for rendering large scrollable tables",
   "repository": {
     "type": "git",

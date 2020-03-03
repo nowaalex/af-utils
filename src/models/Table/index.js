@@ -81,7 +81,8 @@ class Table extends List {
         TODO:
             make this call throttled
     */
-    refreshTotalsForColumn( dataKey ){
+
+    refreshTotalsForColumnRaw( dataKey, cellDataGetter ){
         const curTotals = this.totals && this.totals[ dataKey ];
         if( curTotals ){
             let curCachePart = this.totalsCache[ dataKey ];
@@ -98,11 +99,11 @@ class Table extends List {
                         newVal = this.totalRows;
                         break;
                     case "sum":
-                        newVal = calculateSum( this.totalRows, dataKey, this.rowDataGetter );
+                        newVal = calculateSum( this.totalRows, dataKey, this.rowDataGetter, cellDataGetter );
                         break;
                     case "average":
                         /* Todo: optimize, if we already calculated sum */
-                        newVal = calculateSum( this.totalRows, dataKey, this.rowDataGetter ) / this.totalRows;
+                        newVal = calculateSum( this.totalRows, dataKey, this.rowDataGetter, cellDataGetter ) / this.totalRows;
                         break;
                     default:
                         if( process.env.NODE_ENV !== "production" ){
@@ -121,11 +122,20 @@ class Table extends List {
         return this;
     }
 
-    refreshTotals = debounce(() => {
-        for( let j = 0, dataKey; j < this.columns.length; j++ ){
-            dataKey = this.columns[ j ].dataKey;
-            this.refreshTotalsForColumn( dataKey );
+    refreshTotalsForColumn( dataKey ){
+        const col = this.columns.find( c => c.dataKey === dataKey );
+        if( col ){
+            this.refreshTotalsForColumnRaw( dataKey, col.getCellData );
         }
+        return this;
+    }
+
+    refreshTotals = debounce(() => {
+        for( let j = 0, dataKey, getCellData; j < this.columns.length; j++ ){
+            ({ dataKey, getCellData } = this.columns[ j ]);
+            this.refreshTotalsForColumnRaw( dataKey, getCellData );
+        }
+        return this;
     }, 100 );
 
     setSortParams( colIndex, sortDirectionSign ){
