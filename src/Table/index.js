@@ -133,12 +133,11 @@ Table.propTypes = {
             dataKey: PropTypes.string.isRequired,
 
             /* 
-                If rowData is available, cellData goes through flow, where each fn is optional: format(transformCellData(getCellData(rowData,rowIndex),rowData, column, rowIndex))
+                If rowData is available, cellData goes through flow, where each fn is optional: render(format((getCellData(rowData,rowIndex))),rowData)
                 If not, it goes through flow: getEmptyCellData(rowIndex, column).
             */
             getCellData: PropTypes.func,
             getEmptyCellData: PropTypes.func,
-            transformCellData: PropTypes.func,
             format: PropTypes.func,
 
             visibility: PropTypes.oneOf([ "visible", "hidden" ]),

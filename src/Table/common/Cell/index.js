@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
 
 const Cell = ({ rowData, rowIndex, column, columnIndex }) => {
-    const { transformCellData, getEmptyCellData, dataKey, format, getCellData } = column;
+    const { render, getEmptyCellData, dataKey, format, getCellData } = column;
 
     let cellData = rowData && ( getCellData ? getCellData( rowData, rowIndex ) : rowData[ dataKey ] );
     
@@ -16,11 +16,11 @@ const Cell = ({ rowData, rowIndex, column, columnIndex }) => {
         cellData = getEmptyCellData ? getEmptyCellData( rowIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;
     }
     else{
-        if( transformCellData ){
-            cellData = transformCellData( cellData, rowData, column, rowIndex );
-        }
         if( format ){
             cellData = format( cellData );
+        }
+        if( render ){
+            cellData = render( cellData, rowData );
         }
     }
 
