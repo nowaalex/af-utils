@@ -1,10 +1,9 @@
 export const walkUntil = ( dist, tree ) => {
-
     const N = tree[ 0 ];
 
-    let nodeIndex = 1;
+    let nodeIndex = 1, v;
 
-    for( let v; nodeIndex < N; ){
+    while( nodeIndex < N ){
         v = tree[ nodeIndex <<= 1 ];
         if( dist >= v ){
             dist -= v;
@@ -12,6 +11,14 @@ export const walkUntil = ( dist, tree ) => {
         }
     }
 
+    /*
+        IDEA:
+            pack this to one double number.
+            num + remianer / 65535
+            Cons:
+                * unobvious
+                * perf fault because of double type costs.
+    */
     return [ nodeIndex - N, dist ];
 };
 
@@ -37,8 +44,8 @@ export const sum = ( l, r, tree ) => {
     We always do batch insert, so there is no sense to update all parents each time.
     It is more logical to insert leaves and then call calculateParentsInRange once.
 
-    TODO:
-        * reimplement this method using Duff's device( l++,r-- in one iteration) and make benchmarks for different l-r ranges
+    IDEA:
+        * maybe reimplement this method using Duff's device( l++,r-- in one iteration) and make benchmarks for different l-r ranges
 */
 export const calculateParentsInRange = ( l, r, tree ) => {
     const N = tree[ 0 ];
@@ -58,17 +65,16 @@ export const calculateParentsInRange = ( l, r, tree ) => {
 */
 const MIN_TREE_CACHE_SIZE = 32;
 
-/*
-    TODO:
-        * think if reducing cache size is needed( now it only increases )
-*/
 export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
 
     let N = tree ? tree[ 0 ] : 0;
 
     if( endIndex > N ){
         N = 2 ** Math.ceil( Math.log2( endIndex + MIN_TREE_CACHE_SIZE ) );
-        tree = new Uint16Array( N * 2 );
+        /*
+            Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
+        */
+        tree = new Uint32Array( N * 2 );
         tree[ 0 ] = N;
     }
 
@@ -80,7 +86,7 @@ export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
     /*
         Trees are not always ideally allocated, gaps are possible.
         Classical way for calculating parents is much simpler,
-        but can do much more work in such conditions. Commented classic algo:
+        but can do much more work(summing zeros) in such conditions. Commented classic algo:
 
         for( let i = N + endIndex >> 1, j; i > 0; --i ){
             j = i << 1;

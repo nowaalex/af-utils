@@ -119,7 +119,6 @@ class List extends EventEmitter {
     }
 
     refreshOffsets(){
-
         const newTopOffset = this.scrollTop;
         const [ newVisibleStartIndex, remainder ] = walkUntil( newTopOffset, this.heighsCache );
         const newStartIndex = Math.max( 0, newVisibleStartIndex - this.overscanRowsCount );
@@ -166,15 +165,24 @@ class List extends EventEmitter {
             if( prevTotalRows < 1 ){
                 this.toggleBasicEvents( "on" );
             }
+
             this
                 .resetMeasurementsCache()
                 .updateWidgetScrollHeight()
                 .updateEndIndex();
+                
         }
         else{
-            this
-                .cancelPendingAsyncCalls()
-                .toggleBasicEvents( "off" );
+            if( prevTotalRows > 0 ){
+                this.toggleBasicEvents( "off" );
+            }
+
+            this.cancelPendingAsyncCalls();
+                     
+            /*
+                this is not necessary, but heightsCache takes approximately 2 * sizeof(int) * rowCount memory
+            */
+            this.heighsCache = null;
             this.startIndex = this.endIndex = this.virtualTopOffset = this.scrollTop = 0;
         }
     }
