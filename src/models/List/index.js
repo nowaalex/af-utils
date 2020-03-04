@@ -168,7 +168,8 @@ class List extends EventEmitter {
             }
             this
                 .resetMeasurementsCache()
-                .updateWidgetScrollHeight();
+                .updateWidgetScrollHeight()
+                .updateEndIndex();
         }
         else{
             this

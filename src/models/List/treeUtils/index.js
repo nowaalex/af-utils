@@ -1,10 +1,3 @@
-/*
-    This constant is used for 2 reasons:
-        * Math.log2( 1 ) is 0, which is not correct for cache size calculation
-        * We should always have some extra space for new rows. We do not want to reallocate cache every time.
-*/
-const MIN_TREE_CACHE_SIZE = 32;
-
 export const walkUntil = ( dist, tree ) => {
 
     const N = tree[ 0 ];
@@ -38,6 +31,8 @@ export const sum = ( l, r, tree ) => {
     return res; 
 };
 
+// export const changeExcep
+
 /*
     We always do batch insert, so there is no sense to update all parents each time.
     It is more logical to insert leaves and then call calculateParentsInRange once.
@@ -55,27 +50,32 @@ export const calculateParentsInRange = ( l, r, tree ) => {
     }
 };
 
-export const getSize = elementsQuantity => 2 ** Math.ceil( Math.log2( elementsQuantity + MIN_TREE_CACHE_SIZE ) );
+
+/*
+    This constant is used for 2 reasons:
+        * Math.log2( 1 ) is 0, which is not correct for cache size calculation
+        * We should always have some extra space for new rows. We do not want to reallocate cache every time.
+*/
+const MIN_TREE_CACHE_SIZE = 32;
 
 /*
     TODO:
-        * think about reducing cache size( now it only increases )
-        * Maybe uint16? 65535 is enough for height
+        * think if reducing cache size is needed( now it only increases )
 */
 export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
 
     let N = tree ? tree[ 0 ] : 0;
 
     if( endIndex > N ){
-        N = getSize( endIndex );
-        tree = new Uint32Array( N * 2 );
+        N = 2 ** Math.ceil( Math.log2( endIndex + MIN_TREE_CACHE_SIZE ) );
+        tree = new Uint16Array( N * 2 );
         tree[ 0 ] = N;
     }
 
+    /* clearing only what is needed */
     tree
-        .fill( 0, 1, N )
-        .fill( defaultValue, N, N + endIndex )
-        .fill( 0, N + endIndex, N * 2 );
+        .fill( 0, 2, N + endIndex >> 1 )
+        .fill( defaultValue, N, N + endIndex );
 
     /*
         Trees are not always ideally allocated, gaps are possible.

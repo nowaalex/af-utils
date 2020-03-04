@@ -51,7 +51,7 @@ const List = ({
         finalDataRef.current = new VirtualListDataStore({
             overscanRowsCount,
             totalRows: rowCount,
-            estimatedRowHeight: estimatedRowHeight,
+            estimatedRowHeight,
             getRowsContainerNode: () => scrollContainerRef.current,
             getScrollContainerNode: () => scrollContainerRef.current
         });
@@ -63,12 +63,10 @@ const List = ({
         }
         if( isMountedRef.current ){
             finalDataRef.current
-                .setHeadlessMode( headless )
                 .setRowDataGetter( getRowData )
                 .setRowKeyGetter( getRowKey )
                 .setOverscanRowsCount( overscanRowsCount )
                 .setTotals( totals )
-                .setColumns( columns )
                 .setTotalRows( rowCount )
                 .setEstimatedRowHeight( estimatedRowHeight );
         }
@@ -99,7 +97,7 @@ const List = ({
 }
 
 List.propTypes = {
-    getItemData: PropTypes.func.isRequired,
+    getRowData: PropTypes.func.isRequired,
     className: PropTypes.string,
     rowCount: PropTypes.number,
     getItemKey: PropTypes.func,

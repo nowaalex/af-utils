@@ -70,7 +70,7 @@ const Table = ({
             totalRows: rowCount,
             rowDataGetter: getRowData,
             rowKeyGetter: getRowKey,
-            estimatedRowHeight: estimatedRowHeight,
+            estimatedRowHeight,
             headlessMode: headless,
             getRowsContainerNode: () => tbodyRef.current,
             getScrollContainerNode: () => scrollContainerRef.current
