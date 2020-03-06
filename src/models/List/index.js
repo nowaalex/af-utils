@@ -210,9 +210,6 @@ class List extends EventEmitter {
         this.emit( "rows-rendered" );
     }
 
-    /*
-        TODO: think, why this shit has ~20px fault
-    */
     scrollToRow( index ){
         const node = this.getScrollContainerNode();
         if( node ){

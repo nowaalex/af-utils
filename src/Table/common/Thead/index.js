@@ -22,11 +22,6 @@ const wrapperClass = css`
     }
 `;
 
-
-/*
-    TODO:
-        When rowCount is 0 - render th's of auto width.
-*/
 const Thead = ({ className, trRef, getCellStyle, ...props }) => {
 
     const API = useApi( SUBSCRIBE_EVENTS );

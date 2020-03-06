@@ -11,10 +11,6 @@ const SortDirections = {
     "-1": "descending"
 };
 
-/*
-    TODO:
-        When rowCount is 0 - render th's of auto width.
-*/
 const HeaderCells = () => {
 
     const { columns, sortColumnIndex, sortDirectionSign } = useApi( SUBSCRIBE_EVENTS );
