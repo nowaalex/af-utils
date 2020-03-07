@@ -90,8 +90,8 @@ const Table = ({
             overscanRowsCount,
             totals,
             columns,
-            totalRows: rowCount,
             estimatedRowHeight,
+            totalRows: rowCount,
             rowsContainerNode: tbodyRef.current,
             scrollContainerNode: scrollContainerRef.current
         });

@@ -187,6 +187,11 @@ class List extends EventEmitter {
     }
 
     resetMeasurementsCache(){
+        if( process.env.NODE_ENV !== "production" ){
+            if( !this.estimatedRowHeight ){
+                throw new Error( "estimatedRowHeight must be provided" );
+            }
+        }
         this.heighsCache = reallocateIfNeeded( this.heighsCache, this.totalRows, this.estimatedRowHeight );
         return this;
     }
