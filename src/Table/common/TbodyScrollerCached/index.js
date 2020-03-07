@@ -2,7 +2,7 @@ import React, { cloneElement } from "react";
 import useApiPlugin from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "virtual-top-offset-changed"
+    "#virtualTopOffset"
 ];
 
 const tr = <tr />;

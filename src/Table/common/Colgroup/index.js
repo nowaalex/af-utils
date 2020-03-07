@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import useApiPlugin from "../../../useApi";
 
-const commonSubscribeEvents = [ "columns-changed" ];
+const commonSubscribeEvents = [ "#columns" ];
 const nonStickySubscribeEvents = commonSubscribeEvents.concat( "tbody-column-widths-changed" );
 
 const Colgroup = ({ useTbodyWidths }) => {

@@ -3,7 +3,7 @@ import { css } from "emotion";
 import useApi from "../../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "widget-scroll-height-changed"
+    "#widgetScrollHeight"
 ];
 
 const heightProviderClass = css`

@@ -1,13 +1,8 @@
 import debounce from "lodash/debounce";
 import subtract from "lodash/subtract";
-import addSetters from "../../utils/addSetters";
 import List from "../List";
 
 const REFRESH_SORT_DEBOUNCE_INTERVAL = 500;
-
-const getRowDataInitial = () => {
-    throw new Error( "getRowData must be provided for table" );
-};
 
 const fillOrderedRowsArray = ( arr, startIndex, endIndex ) => {
     while( startIndex < endIndex ){
@@ -63,6 +58,10 @@ class TotalsCachePart {
 };
 
 class Table extends List {
+
+    columns = [];
+    totals = {};
+    headlessMode = false;
 
     sortColumnIndex = -1;
     sortDirectionSign = 1;
@@ -152,7 +151,7 @@ class Table extends List {
             if( sort ){
                 const sorter = getSorter( this.rowDataGetter, dataKey, sort, getCellData, this.sortDirectionSign );
                 this.orderedRows.sort( sorter );
-                this.emit( "rows-order-changed" );
+                this.emit( "#rowsOrder" );
             }
         }
     }, REFRESH_SORT_DEBOUNCE_INTERVAL );
@@ -176,23 +175,19 @@ class Table extends List {
         super( params );
 
         this
-            .on( "columns-changed", this.resetColumnWidthsCache, this )
-            .on( "columns-changed", this.refreshTotals )
-            .on( "total-rows-changed", this.refreshRowsOrder, this )
-            .on( "total-rows-changed", this.refreshSorting )
-            .on( "total-rows-changed", this.refreshTotals )
+            .on( "#columns", this.resetColumnWidthsCache, this )
+            .on( "#columns", this.refreshTotals )
+            .on( "#columns", this.refreshSorting )
+            .on( "#totalRows", this.refreshRowsOrder, this )
+            .on( "#totalRows", this.refreshSorting )
+            .on( "#totalRows", this.refreshTotals )
             .on( "sort-params-changed", this.refreshSorting )
-            .on( "columns-changed", this.refreshSorting )
-            .on( "row-data-getter-changed", this.refreshSorting )
-            .on( "row-data-getter-changed", this.refreshTotals )
-            .on( "rows-order-changed", this.resetMeasurementsCache, this )
-            .on( "rows-order-changed", () => this.scrollToRow( 0 ) )
-            .on( "totals-changed", this.refreshTotals )
+            .on( "#rowDataGetter", this.refreshSorting )
+            .on( "#rowDataGetter", this.refreshTotals )
+            .on( "#rowsOrder", this.resetMeasurementsCache, this )
+            .on( "#rowsOrder", () => this.scrollToRow( 0 ) )
+            .on( "#totals", this.refreshTotals )
         
-            .setColumns( params.columns || [] )
-            .setTotals( params.totals )
-            .setHeadlessMode( !!params.headlessMode )
-            .setRowDataGetter( params.rowDataGetter || getRowDataInitial )
             .refreshRowsOrder( 0 );
     }
 
@@ -202,13 +197,5 @@ class Table extends List {
         super.destructor();
     }
 }
-
-addSetters( Table.prototype, [
-    "columns",
-    "totals",
-    "scrollLeft",
-    "rowDataGetter",
-    "headlessMode"
-]);
 
 export default Table;

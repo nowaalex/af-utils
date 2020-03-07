@@ -39,6 +39,26 @@ const wrapperClass = css`
     dataRef is to call Data methods from outside( Data.scrollTo(), etc. ).
     As it is not dom-related, I decided to avoid forwardRef
 */
+const useStore = ( StoreConstructor, dataRef ) => {
+    const finalDataRef = useRef();
+
+    let Store = finalDataRef.current;
+
+    if( !Store ){
+        Store = finalDataRef.current = new StoreConstructor();
+
+        if( dataRef.current ){
+            dataRef.current = Store;
+        }
+    }
+
+    useEffect(() => () => {
+        Store.destructor();
+    }, []);
+
+    return Store;
+};
+
 const Table = ({
     columns,
     totals,
@@ -59,47 +79,23 @@ const Table = ({
 
     const scrollContainerRef = useRef();
     const tbodyRef = useRef();
-    const isMountedRef = useRef();
-    const finalDataRef = useRef();
 
-    if( !finalDataRef.current ){
-        finalDataRef.current = new VirtualTableDataStore({
-            overscanRowsCount,
-            columns,
-            totals,
-            totalRows: rowCount,
+    const Store = useStore( VirtualTableDataStore, dataRef );
+
+    useEffect(() => {
+        Store.merge({
+            headlessMode: headless,
             rowDataGetter: getRowData,
             rowKeyGetter: getRowKey,
+            overscanRowsCount,
+            totals,
+            columns,
+            totalRows: rowCount,
             estimatedRowHeight,
-            headlessMode: headless,
-            getRowsContainerNode: () => tbodyRef.current,
-            getScrollContainerNode: () => scrollContainerRef.current
+            rowsContainerNode: tbodyRef.current,
+            scrollContainerNode: scrollContainerRef.current
         });
-    }
-
-    useEffect(() => {
-        if( dataRef ){
-            dataRef.current = finalDataRef.current;
-        }
-        if( isMountedRef.current ){
-            finalDataRef.current
-                .setHeadlessMode( headless )
-                .setRowDataGetter( getRowData )
-                .setRowKeyGetter( getRowKey )
-                .setOverscanRowsCount( overscanRowsCount )
-                .setTotals( totals )
-                .setColumns( columns )
-                .setTotalRows( rowCount )
-                .setEstimatedRowHeight( estimatedRowHeight );
-        }
     });
-
-    useEffect(() => {
-        isMountedRef.current = true;
-        return () => {
-            finalDataRef.current.destructor();
-        };
-    }, []);
 
     /*
         Only cells inside thead/tfoot can be sticky.
@@ -108,7 +104,7 @@ const Table = ({
     const ComponentVariant = ( headless && !totals ) || ( useStickyIfPossible && isPositionStickySupported() ) ? StickyComponent : NonStickyComponent;
 
     return (
-        <Context.Provider value={finalDataRef.current}>
+        <Context.Provider value={Store}>
             { rowCount > 0 ? (
                 <ComponentVariant
                     className={wrapperClass}

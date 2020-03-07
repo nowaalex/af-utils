@@ -43,8 +43,8 @@ const hiddenHeaderFooterClass = css`
 `;
 
 const subscribeEvents = [
-    "headless-mode-changed",
-    "totals-changed"
+    "#headlessMode",
+    "#totals"
 ];
 
 const NonSticky = ({

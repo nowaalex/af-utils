@@ -4,10 +4,10 @@ import Colgroup from "../../common/Colgroup";
 import sum from "lodash/sum";
 
 const SUBSCRIBE_EVENTS = [
-    "columns-changed",
-    "scroll-left-changed",
-    "widget-width-changed",
-    "tbody-column-widths-changed"
+    "#columns",
+    "#scrollLeft",
+    "#widgetWidth",
+    "tbody-column-widths"
 ];
 
 const TableWrapper = ({ className, children }) => {

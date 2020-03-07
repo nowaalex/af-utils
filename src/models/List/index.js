@@ -1,7 +1,6 @@
 import EventEmitter from "eventemitter3";
 import debounce from "lodash/debounce";
 import clamp from "lodash/clamp";
-import addSetters from "../../utils/addSetters";
 
 import {
     calculateParentsInRange,
@@ -10,10 +9,13 @@ import {
     reallocateIfNeeded
 } from "./treeUtils";
 
-const DEFAULT_ESTIMATED_ROW_HEIGHT = 30;
 const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 50;
 const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150;
 const END_INDEX_CHECK_INTERVAL = 400;
+
+const getRowDataInitial = () => {
+    throw new Error( "getRowData must be provided for table" );
+};
 
 class List extends EventEmitter {
 
@@ -31,18 +33,47 @@ class List extends EventEmitter {
     widgetHeight = 0;
     widgetWidth = 0;
 
+    rowKeyGetter = undefined;
+    rowDataGetter = getRowDataInitial;
+    rowsContainerNode = null;
+    scrollContainerNode = null;
+
     heighsCache = null;
+
+    merge( params ){
+        for( let k in params ){
+            this.set( k, params[ k ] );
+        }
+    }
+
+    set( paramName, paramValue ){
+
+        if( process.env.NODE_ENV !== "production" ){
+            if( !this.hasOwnProperty( paramName ) ){
+                throw new Error( `Trying to merge key, which does not exist: ${paramName}` );
+            }
+        }
+
+        const prevValue = this[ paramName ];
+
+        if( prevValue !== paramValue ){
+            this[ paramName ] = paramValue;
+            this.emit( `#${paramName}`, prevValue );
+        }
+
+        return this;
+    }
 
     updateWidgetScrollHeight(){
         /* In segments tree 1 node is always sum of all elements */
-        return this.setWidgetScrollHeight( this.heighsCache[ 1 ] );
+        return this.set( "widgetScrollHeight", this.heighsCache[ 1 ] );
     }
 
     /*
         TODO: maybe some react-like performUnitOfWork logic is needed here?
     */
     setVisibleRowsHeights = debounce(() => {
-        const node = this.getRowsContainerNode();
+        const node = this.rowsContainerNode;
 
         if( node ){
             
@@ -125,8 +156,8 @@ class List extends EventEmitter {
         const overscanOffset = sum( newStartIndex, newVisibleStartIndex, this.heighsCache );
                 
         return this
-            .setVirtualTopOffset( newTopOffset - remainder - overscanOffset )
-            .setStartIndex( newStartIndex );
+            .set( "virtualTopOffset", newTopOffset - remainder - overscanOffset )
+            .set( "startIndex", newStartIndex );
     }
 
     updateEndIndex(){
@@ -140,19 +171,19 @@ class List extends EventEmitter {
             walkUntil works by "strict less" algo. It is good for startIndex,
             but for endIndex we need "<=", so adding 1 artificially.
         */
-        return this.setEndIndex( Math.min( newEndIndex + 1 + this.overscanRowsCount, this.totalRows ) );
+        return this.set( "endIndex", Math.min( newEndIndex + 1 + this.overscanRowsCount, this.totalRows ) );
     }
 
     toggleBasicEvents( method ){
         return this
-            [ method ]( "scroll-top-changed", this.refreshOffsets, this )
-            [ method ]( "overscan-rows-distance-changed", this.refreshOffsets, this )
-            [ method ]( "widget-scroll-height-changed", this.increaseEndIndexIfNeeded )
-            [ method ]( "widget-height-changed", this.updateEndIndex, this )
+            [ method ]( "#scrollTop", this.refreshOffsets, this )
+            [ method ]( "#overscanRowsCount", this.refreshOffsets, this )
+            [ method ]( "#widgetScrollHeight", this.increaseEndIndexIfNeeded )
+            [ method ]( "#widgetHeight", this.updateEndIndex, this )
             [ method ]( "rows-rendered", this.setVisibleRowsHeights )
-            [ method ]( "start-index-changed", this.updateEndIndex, this )
-            [ method ]( "end-index-changed", this.increaseEndIndexIfNeeded.cancel )
-            [ method ]( "widget-width-changed", this.setVisibleRowsHeights );
+            [ method ]( "#startIndex", this.updateEndIndex, this )
+            [ method ]( "#endIndex", this.increaseEndIndexIfNeeded.cancel )
+            [ method ]( "#widgetWidth", this.setVisibleRowsHeights );
     }
 
     resetMeasurementsCache(){
@@ -187,17 +218,10 @@ class List extends EventEmitter {
         }
     }
 
-    constructor( params ){
+    constructor(){
         super();
-
-        this.getRowsContainerNode = params.getRowsContainerNode;
-        this.getScrollContainerNode = params.getScrollContainerNode;
         
-        this
-            .on( "total-rows-changed", this.refreshHeightsCache, this )
-            .setEstimatedRowHeight( params.estimatedRowHeight || DEFAULT_ESTIMATED_ROW_HEIGHT )
-            .setOverscanRowsCount( params.overscanRowsCount || 0 )
-            .setTotalRows( params.totalRows || 0 );
+        this.on( "#totalRows", this.refreshHeightsCache, this );
     }
 
     destructor(){
@@ -211,27 +235,13 @@ class List extends EventEmitter {
     }
 
     scrollToRow( index ){
-        const node = this.getScrollContainerNode();
+        const node = this.scrollContainerNode;
         if( node ){
             index = clamp( index, 0, this.totalRows );
             node.scrollTop = sum( 0, index, this.heighsCache );
         }
         return this;    
     }
-}
-
-addSetters( List.prototype, [
-    "estimatedRowHeight",
-    "virtualTopOffset",
-    "scrollTop",
-    "widgetWidth",
-    "widgetHeight",
-    "widgetScrollHeight",
-    "overscanRowsCount",
-    "startIndex",
-    "endIndex",
-    "totalRows",
-    "rowKeyGetter"
-]);
+};
 
 export default List;

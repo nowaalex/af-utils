@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import useApi from "../../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "start-index-changed",
-    "end-index-changed",
-    "columns-changed",
-    "rows-order-changed",
-    "row-key-getter-changed",
-    "row-data-getter-changed"
+    "#startIndex",
+    "#endIndex",
+    "#columns",
+    "#rowsOrder",
+    "#rowKeyGetter",
+    "#rowDataGetter"
 ];
 
 

@@ -5,8 +5,8 @@ import HeightProviderCached from "./HeightProviderCached";
 import useApi from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "total-rows-changed",
-    "columns-changed"
+    "#totalRows",
+    "#columns"
 ];
 
 const tableClass = css`
@@ -38,14 +38,14 @@ const ScrollContainer = forwardRef(({
 
     const scrollHandler = useCallback( e => {
         const { scrollTop, scrollLeft } = e.target;
-        API.setScrollTop( scrollTop ).setScrollLeft( scrollLeft );
+        API.set( "scrollTop", scrollTop ).set( "scrollLeft", scrollLeft );
         if( onScroll ){
             onScroll( e );
         }
     }, [ onScroll ]);
 
     const resizeHandler = useCallback(({ width, height }) => {
-        API.setWidgetHeight( height ).setWidgetWidth( width );
+        API.set( "widgetHeight", height ).set( "widgetWidth", width );
     }, []);
 
     useResizeObserver({ ref, onResize: resizeHandler });

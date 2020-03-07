@@ -3,8 +3,8 @@ import capitalize from "lodash/capitalize";
 import useApi from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "columns-changed",
-    "totals-changed",
+    "#columns",
+    "#totals",
     "totals-calculated"
 ];
 

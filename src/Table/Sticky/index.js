@@ -30,8 +30,8 @@ const tfootClass = cx( theadTfootCommonClass, css`
 `);
 
 const SUBSCRIBE_EVENTS = [
-    "headless-mode-changed",
-    "totals-changed"
+    "#headlessMode",
+    "#totals"
 ];
 
 
@@ -61,9 +61,11 @@ const Sticky = ({
         const areTotalsPresent = totals && totals.length !== 0;
 
         useEffect(() => {
-            const table = scrollContainerRef.current.querySelector( "table" );
-            const tableStyle = getComputedStyle( table );
             if( !headlessMode || areTotalsPresent ){
+
+                const table = scrollContainerRef.current.querySelector( "table" );
+                const tableStyle = getComputedStyle( table );
+
                 if( tableStyle.borderCollapse === "collapse" ){
                     console.warn(
                         "You use sticky table version. Due to special border behavior when scrolling, use border-collpase: separate.%o",

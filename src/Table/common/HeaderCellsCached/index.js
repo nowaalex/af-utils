@@ -2,7 +2,7 @@ import React from "react";
 import useApi from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
-    "columns-changed",
+    "#columns",
     "sort-params-changed"
 ];
 
