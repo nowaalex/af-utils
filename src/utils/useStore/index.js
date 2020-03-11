@@ -12,7 +12,7 @@ const useStore = ( StoreConstructor, dataRef ) => {
     if( !Store ){
         Store = finalDataRef.current = new StoreConstructor();
 
-        if( dataRef.current ){
+        if( dataRef ){
             dataRef.current = Store;
         }
     }
