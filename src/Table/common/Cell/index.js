@@ -17,7 +17,7 @@ const Cell = ({ rowData, rowIndex, column, columnIndex }) => {
     }
     else{
         if( format ){
-            cellData = format( cellData );
+            cellData = format( cellData, rowData );
         }
         if( render ){
             cellData = render( cellData, rowData );

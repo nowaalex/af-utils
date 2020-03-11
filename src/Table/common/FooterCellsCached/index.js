@@ -12,7 +12,7 @@ const FooterCells = () => {
 
     const { columns, totals, totalsCache } = useApi( SUBSCRIBE_EVENTS );
 
-    return columns.map(({ dataKey, format, visibility }, j ) => {
+    return columns.map(({ dataKey, formatTotal, visibility }, j ) => {
 
         if( visibility === "hidden" ){
             return null;
@@ -27,7 +27,7 @@ const FooterCells = () => {
                     const res = curTotalsCache[ summaryType ];
                     return res !== undefined ? (
                         <div key={summaryType}>
-                            {capitalize(summaryType)}:&nbsp;{format?format(res):res}
+                            {capitalize(summaryType)}:&nbsp;{formatTotal?formatTotal(res):res}
                         </div>
                     ) : null;
                 })}

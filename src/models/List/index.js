@@ -14,7 +14,7 @@ const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150;
 const END_INDEX_CHECK_INTERVAL = 400;
 
 const getRowDataInitial = () => {
-    throw new Error( "getRowData must be provided for table" );
+    throw new Error( "getRowData must be provided" );
 };
 
 class List extends EventEmitter {

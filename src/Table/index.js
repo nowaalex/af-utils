@@ -5,6 +5,7 @@ import { css } from "emotion";
 import isPositionStickySupported from "../utils/isPositionStickySupported";
 import Context from "../Context";
 import VirtualTableDataStore from "../models/Table";
+import useStore from "../utils/useStore";
 
 import RowComponentDefault from "./common/Row";
 import CellComponentDefault from "./common/Cell";
@@ -34,30 +35,6 @@ const wrapperClass = css`
         box-sizing: border-box;
     }
 `;
-
-/*
-    dataRef is to call Data methods from outside( Data.scrollTo(), etc. ).
-    As it is not dom-related, I decided to avoid forwardRef
-*/
-const useStore = ( StoreConstructor, dataRef ) => {
-    const finalDataRef = useRef();
-
-    let Store = finalDataRef.current;
-
-    if( !Store ){
-        Store = finalDataRef.current = new StoreConstructor();
-
-        if( dataRef.current ){
-            dataRef.current = Store;
-        }
-    }
-
-    useEffect(() => () => {
-        Store.destructor();
-    }, []);
-
-    return Store;
-};
 
 const Table = ({
     columns,
@@ -135,6 +112,7 @@ Table.propTypes = {
             getCellData: PropTypes.func,
             getEmptyCellData: PropTypes.func,
             format: PropTypes.func,
+            formatTotal: PropTypes.func,
 
             visibility: PropTypes.oneOf([ "visible", "hidden" ]),
             sort: PropTypes.oneOf([ "locale", "numeric" ]),
