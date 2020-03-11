@@ -20,7 +20,7 @@ const Cell = ({ rowData, rowIndex, column, columnIndex }) => {
             cellData = format( cellData, rowData );
         }
         if( render ){
-            cellData = render( cellData, rowData );
+            cellData = render( cellData, rowData, column );
         }
     }
 
