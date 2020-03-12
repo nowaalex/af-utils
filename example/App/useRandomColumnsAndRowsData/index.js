@@ -38,7 +38,7 @@ const useRandomColumnsAndRowsData = ( colCount, rowCount, refreshId ) => useMemo
         columns,
         getRowData,
         totals: {
-            index: [ "count", "sum" ]
+            index: [ "count"]
         }
     };
 }, [ colCount, Math.max( rowCount, 0 ), refreshId ]);

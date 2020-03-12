@@ -9,6 +9,8 @@ import useStore from "../utils/useStore";
 
 import RowComponentDefault from "./common/Row";
 import CellComponentDefault from "./common/Cell";
+import TotalsCellComponentDefault from "./common/TotalsCell";
+
 import RowCountWarningContainerDefault from "./common/RowCountWarningContainer";
 
 import NonStickyComponent from "./NonSticky";
@@ -144,6 +146,7 @@ Table.propTypes = {
     HeaderRowComponent: PropTypes.any,
     RowComponent: PropTypes.any,
     CellComponent: PropTypes.any,
+    TotalsCellComponent: PropTypes.any,
 
     RowCountWarningContainer: PropTypes.any,
     rowCountWarningsTable: PropTypes.object,
@@ -166,6 +169,7 @@ Table.defaultProps = {
     */
     RowComponent: memo( RowComponentDefault ),
     CellComponent: CellComponentDefault,
+    TotalsCellComponent: TotalsCellComponentDefault,
     RowCountWarningContainer: RowCountWarningContainerDefault,
 };
 

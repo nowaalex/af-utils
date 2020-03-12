@@ -54,6 +54,7 @@ const NonSticky = ({
     getRowExtraProps,
     RowComponent,
     CellComponent,
+    TotalsCellComponent,
     fixedLayout,
     onScroll,
     ...props
@@ -102,7 +103,7 @@ const NonSticky = ({
             </ScrollContainer>
             {totals && (
                 <TableWrapper className={headerFooterClass}>
-                    <Tfoot />
+                    <Tfoot TotalsCellComponent={TotalsCellComponent} />
                 </TableWrapper>
             )}
         </div>

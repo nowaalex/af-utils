@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { css } from "emotion";
 
 import Context from "../Context";
-import VirtualTableListStore from "../models/List";
+import VirtualTableListStore from "../models/VariableSizeList";
 import useStore from "../utils/useStore";
 
 import RowComponentDefault from "./common/Row";

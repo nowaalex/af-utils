@@ -1,11 +1,11 @@
 import React, { memo } from "react";
-import FooterCellsCached from "../FooterCellsCached";
+import FooterCells from "../FooterCells";
 
 
-const Tfoot = ({ className, trRef }) => (
+const Tfoot = ({ className, trRef, TotalsCellComponent }) => (
     <tfoot className={className}>
         <tr ref={trRef}>
-            {FooterCellsCached}
+            <FooterCells TotalsCellComponent={TotalsCellComponent} />
         </tr>
     </tfoot>
 );

@@ -48,6 +48,7 @@ const Sticky = ({
     getRowExtraProps,
     RowComponent,
     CellComponent,
+    TotalsCellComponent,
     ...props
 }) => {
 
@@ -89,7 +90,12 @@ const Sticky = ({
                         RowComponent={RowComponent}
                         CellComponent={CellComponent}
                     />
-                    {totals&&<Tfoot className={tfootClass} />}
+                    {totals && (
+                        <Tfoot
+                            className={tfootClass}
+                            TotalsCellComponent={TotalsCellComponent}
+                        />
+                    )}
                 </Fragment>
             ), [ headlessMode, totals, getRowExtraProps, RowComponent, CellComponent ])}
         </ScrollContainer>

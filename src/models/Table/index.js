@@ -1,6 +1,6 @@
 import debounce from "lodash/debounce";
 import subtract from "lodash/subtract";
-import List from "../List";
+import VariableSizeList from "../VariableSizeList";
 
 const REFRESH_SORT_DEBOUNCE_INTERVAL = 500;
 
@@ -57,7 +57,7 @@ class TotalsCachePart {
     average = 0.0;
 };
 
-class Table extends List {
+class Table extends VariableSizeList {
 
     columns = [];
     totals = {};

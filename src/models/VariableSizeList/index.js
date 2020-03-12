@@ -1,4 +1,4 @@
-import EventEmitter from "eventemitter3";
+import FixedSizeList from "../FixedSizeList";
 import debounce from "lodash/debounce";
 import clamp from "lodash/clamp";
 
@@ -13,56 +13,10 @@ const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 50;
 const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150;
 const END_INDEX_CHECK_INTERVAL = 400;
 
-const getRowDataInitial = () => {
-    throw new Error( "getRowData must be provided" );
-};
+class VariableSizeList extends FixedSizeList {
 
-class List extends EventEmitter {
-
-    totalRows = 0;
-    startIndex = 0;
-    endIndex = 0;
-
-    virtualTopOffset = 0;
-    widgetScrollHeight = 0;
-
-    overscanRowsCount = 0;
     estimatedRowHeight = 0;
-
-    scrollTop = 0;
-    widgetHeight = 0;
-    widgetWidth = 0;
-
-    rowKeyGetter = undefined;
-    rowDataGetter = getRowDataInitial;
-    rowsContainerNode = null;
-    scrollContainerNode = null;
-
     heighsCache = null;
-
-    merge( params ){
-        for( let k in params ){
-            this.set( k, params[ k ] );
-        }
-    }
-
-    set( paramName, paramValue ){
-
-        if( process.env.NODE_ENV !== "production" ){
-            if( !this.hasOwnProperty( paramName ) ){
-                throw new Error( `Trying to merge key, which does not exist: ${paramName}` );
-            }
-        }
-
-        const prevValue = this[ paramName ];
-
-        if( prevValue !== paramValue ){
-            this[ paramName ] = paramValue;
-            this.emit( `#${paramName}`, prevValue );
-        }
-
-        return this;
-    }
 
     updateWidgetScrollHeight(){
         /* In segments tree 1 node is always sum of all elements */
@@ -175,13 +129,10 @@ class List extends EventEmitter {
     }
 
     toggleBasicEvents( method ){
+        super.toggleBasicEvents( method );
         return this
-            [ method ]( "#scrollTop", this.refreshOffsets, this )
-            [ method ]( "#overscanRowsCount", this.refreshOffsets, this )
             [ method ]( "#widgetScrollHeight", this.increaseEndIndexIfNeeded )
-            [ method ]( "#widgetHeight", this.updateEndIndex, this )
             [ method ]( "rows-rendered", this.setVisibleRowsHeights )
-            [ method ]( "#startIndex", this.updateEndIndex, this )
             [ method ]( "#endIndex", this.increaseEndIndexIfNeeded.cancel )
             [ method ]( "#widgetWidth", this.setVisibleRowsHeights );
     }
@@ -223,20 +174,9 @@ class List extends EventEmitter {
         }
     }
 
-    constructor(){
-        super();
-        
-        this.on( "#totalRows", this.refreshHeightsCache, this );
-    }
-
     destructor(){
-        this
-            .cancelPendingAsyncCalls()
-            .removeAllListeners();
-    }
-    
-    reportRowsRendered(){
-        this.emit( "rows-rendered" );
+        this.cancelPendingAsyncCalls();
+        super.destructor();
     }
 
     scrollToRow( index ){
@@ -249,4 +189,4 @@ class List extends EventEmitter {
     }
 };
 
-export default List;
+export default VariableSizeList;
