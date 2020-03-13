@@ -172,7 +172,7 @@ const App = () => {
                     height: widgetHeight,
                     width: widgetWidth
                 }}
-                useStickyIfPossible
+                
                 estimatedRowHeight={21}
                 totals={totals}
                 getRowData={getRowData}

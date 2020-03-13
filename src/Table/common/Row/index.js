@@ -4,10 +4,24 @@ import PropTypes from "prop-types";
 const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, rowDataIndex, rowIndex }) => {
 
     const rowData = getRowData( rowDataIndex );
-    const extraProps = getRowExtraProps && getRowExtraProps( rowData, rowDataIndex );
+
+    /* avoiding double destructurization via getRowExtraProps, so making prop object once */
+    const trProps = {
+        "aria-rowindex": rowIndex + 1
+    };
+
+    if( getRowExtraProps ){
+        const extraProps = getRowExtraProps( rowData, rowDataIndex );
+        if( process.env.NODE_ENV !== "production" ){
+            if( extraProps.hasOwnProperty( "aria-rowindex" ) ){
+                throw new Error( "getExtraProps must not override aria-rowindex" );
+            }
+        }
+        Object.assign( trProps, extraProps );
+    }
 
     return (
-        <tr {...extraProps} aria-rowindex={rowIndex+1}>
+        <tr {...trProps}>
             {columns.map(( column, columnIndex ) => column.visibility !== "hidden" ? (
                 <CellComponent
                     key={column.dataKey}

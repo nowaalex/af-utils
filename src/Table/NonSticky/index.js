@@ -14,10 +14,6 @@ import Colgroup from "../common/Colgroup";
 import TbodyScrollerCached from "../common/TbodyScrollerCached";
 import ScrollContainer from "../common/ScrollContainer";
 
-
-/*
-    border-box is important, because head th widths are synced with td widths
-*/
 const wrapperClass = css`
     display: flex;
     flex-flow: column nowrap;
@@ -89,8 +85,19 @@ const NonSticky = ({
                 {useMemo(() => (
                     <Fragment>
                         <Colgroup />
-                        {headlessMode?null:<Thead className={hiddenHeaderFooterClass} trRef={widthsObserverRef} />}
-                        {totals&&<Tfoot className={hiddenHeaderFooterClass} trRef={headlessMode?undefined:widthsObserverRef} />}
+                        {headlessMode ? null : (
+                            <Thead
+                                className={hiddenHeaderFooterClass}
+                                trRef={widthsObserverRef}
+                            />
+                        )}
+                        {totals && (
+                            <Tfoot
+                                TotalsCellComponent={TotalsCellComponent}
+                                className={hiddenHeaderFooterClass}
+                                trRef={headlessMode?undefined:widthsObserverRef}
+                            />
+                        )}
                         {TbodyScrollerCached}
                         <Tbody
                             tbodyRef={tbodyRef}
@@ -99,7 +106,7 @@ const NonSticky = ({
                             CellComponent={CellComponent}
                         />
                     </Fragment>
-                ), [ totals, headlessMode, fixedLayout, getRowExtraProps, RowComponent, CellComponent ])}
+                ), [ totals, headlessMode, fixedLayout, getRowExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
             </ScrollContainer>
             {totals && (
                 <TableWrapper className={headerFooterClass}>

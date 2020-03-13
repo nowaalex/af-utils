@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 import FooterCells from "../FooterCells";
 
-
 const Tfoot = ({ className, trRef, TotalsCellComponent }) => (
     <tfoot className={className}>
         <tr ref={trRef}>

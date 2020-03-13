@@ -1,15 +1,15 @@
 import once from "lodash/once";
 
-const PREFIXES = [ "", "-webkit-", "-ms-" ];
+const stickyCssText = [ "", "-webkit-", "-ms-" ].map( p => `position:${p}sticky` ).join( ";" );
 
-const isPositionStickySupported = once(() => {
-
-    const el = document.createElement( "a" ),
-        mStyle = el.style;
-
-    mStyle.cssText = PREFIXES.map( p => `position:${p}sticky` ).join( ";" );
+const isPositionStickySupported = () => {
+    const elStyle = document.createElement( "a" ).style;
+    elStyle.cssText = stickyCssText;
     
-    return mStyle.position.includes( "sticky" );
-}); 
+    return elStyle.position.includes( "sticky" );
+};
 
-export default isPositionStickySupported;
+/*
+    'once' is needed to use this function frequently without perf issues.
+*/
+export default once( isPositionStickySupported );

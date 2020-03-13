@@ -97,7 +97,7 @@ class VariableSizeList extends FixedSizeList {
         return this;
     }, END_INDEX_CHECK_INTERVAL );
 
-    refreshOffsets(){
+    updateStartOffset(){
         const newTopOffset = this.scrollTop;
         const [ newVisibleStartIndex, remainder ] = walkUntil( newTopOffset, this.heighsCache );
         const newStartIndex = Math.max( 0, newVisibleStartIndex - this.overscanRowsCount );

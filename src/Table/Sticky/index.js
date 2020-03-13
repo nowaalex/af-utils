@@ -97,7 +97,7 @@ const Sticky = ({
                         />
                     )}
                 </Fragment>
-            ), [ headlessMode, totals, getRowExtraProps, RowComponent, CellComponent ])}
+            ), [ headlessMode, totals, getRowExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
         </ScrollContainer>
     );
 }

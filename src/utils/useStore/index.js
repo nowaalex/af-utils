@@ -1,5 +1,7 @@
 import { useRef, useEffect } from "react";
 
+const FIRE_EFFECT_ONLY_ONCE = [];
+
 /*
     dataRef is to call Data methods from outside( Data.scrollTo(), etc. ).
     As it is not dom-related, I decided to avoid forwardRef
@@ -19,7 +21,7 @@ const useStore = ( StoreConstructor, dataRef ) => {
 
     useEffect(() => () => {
         Store.destructor();
-    }, []);
+    }, FIRE_EFFECT_ONLY_ONCE );
 
     return Store;
 };

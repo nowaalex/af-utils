@@ -53,7 +53,7 @@ class FixedSizeList extends EventEmitter {
         return this.set( "widgetScrollHeight", this.rowHeight * this.totalRows );
     }
 
-    refreshOffsets(){
+    updateStartOffset(){
         const { scrollTop, rowHeight } = this;
         const newVisibleStartIndex = scrollTop / rowHeight | 0;
         const remainder = scrollTop % rowHeight;
@@ -77,8 +77,8 @@ class FixedSizeList extends EventEmitter {
         this
             .on( "#totalRows", this.updateWidgetScrollHeight )
             .on( "#totalRows", this.updateEndIndex )
-            .on( "#scrollTop", this.refreshOffsets )
-            .on( "#overscanRowsCount", this.refreshOffsets )
+            .on( "#scrollTop", this.updateStartOffset )
+            .on( "#overscanRowsCount", this.updateStartOffset )
             .on( "#widgetHeight", this.updateEndIndex )
             .on( "#startIndex", this.updateEndIndex );
     }

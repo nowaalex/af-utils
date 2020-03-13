@@ -1,9 +1,7 @@
 import React, { cloneElement } from "react";
 import useApiPlugin from "../../../useApi";
 
-const SUBSCRIBE_EVENTS = [
-    "#virtualTopOffset"
-];
+const SUBSCRIBE_EVENTS = [ "#virtualTopOffset" ];
 
 const tr = <tr />;
 

@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import PropTypes from "prop-types";
 import useApi from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
@@ -31,5 +32,9 @@ const FooterCells = ({ TotalsCellComponent }) => {
         );
     });
 };
+
+FooterCells.propTypes = {
+    TotalsCellComponent: PropTypes.any.isRequired
+}
 
 export default memo( FooterCells );

@@ -28,12 +28,13 @@ Table.propTypes = {
             dataKey: PropTypes.string.isRequired,
 
             /* 
-                If rowData is available, cellData goes through flow, where each fn is optional: transformCellData(getCellData(rowData,rowIndex),rowData, column, rowIndex)
+                If rowData is available, cellData goes through flow, where each fn is optional: render(format((getCellData(rowData,rowIndex))),rowData)
                 If not, it goes through flow: getEmptyCellData(rowIndex, column).
             */
             getCellData: PropTypes.func,
             getEmptyCellData: PropTypes.func,
-            transformCellData: PropTypes.func,
+            format: PropTypes.func,
+            formatTotal: PropTypes.func,
 
             visibility: PropTypes.oneOf([ "visible", "hidden" ]),
             sort: PropTypes.oneOf([ "locale", "numeric" ]),
@@ -65,6 +66,7 @@ Table.propTypes = {
     HeaderRowComponent: PropTypes.any,
     RowComponent: PropTypes.any,
     CellComponent: PropTypes.any,
+    TotalsCellComponent: PropTypes.any,
 
     RowCountWarningContainer: PropTypes.any,
     rowCountWarningsTable: PropTypes.object,
@@ -87,6 +89,7 @@ Table.defaultProps = {
     */
     RowComponent: memo( RowComponentDefault ),
     CellComponent: CellComponentDefault,
+    TotalsCellComponent: TotalsCellComponentDefault,
     RowCountWarningContainer: RowCountWarningContainerDefault,
 };
 ```
