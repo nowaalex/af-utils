@@ -1,6 +1,5 @@
 import FixedSizeList from "../FixedSizeList";
 import debounce from "lodash/debounce";
-import clamp from "lodash/clamp";
 
 import {
     calculateParentsInRange,
@@ -13,10 +12,12 @@ const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 50;
 const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150;
 const END_INDEX_CHECK_INTERVAL = 400;
 
+const DEFAULT_HEIGHS_CACHE = [ 0, 0 ];
+
 class VariableSizeList extends FixedSizeList {
 
     estimatedRowHeight = 0;
-    heighsCache = null;
+    heighsCache = DEFAULT_HEIGHS_CACHE;
 
     updateWidgetScrollHeight(){
         /* In segments tree 1 node is always sum of all elements */
@@ -86,8 +87,7 @@ class VariableSizeList extends FixedSizeList {
     }, ROW_MEASUREMENT_DEBOUNCE_INTERVAL, { maxWait: ROW_MEASUREMENT_DEBOUNCE_MAXWAIT });
 
     /*
-        Column widths && heights may change during scroll/width-change,
-        especially if table layout is not fixed.
+        Column heights may change during scroll/width-change,
     */
     increaseEndIndexIfNeeded = debounce(() => {
         const currentVisibleDist = sum( this.startIndex, this.endIndex, this.heighsCache );
@@ -96,12 +96,6 @@ class VariableSizeList extends FixedSizeList {
         }
         return this;
     }, END_INDEX_CHECK_INTERVAL );
-
-    cancelPendingAsyncCalls(){
-        this.setVisibleRowsHeights.cancel();
-        this.increaseEndIndexIfNeeded.cancel();
-        return this;
-    }
 
     refreshOffsets(){
         const newTopOffset = this.scrollTop;
@@ -128,64 +122,46 @@ class VariableSizeList extends FixedSizeList {
         return this.set( "endIndex", Math.min( newEndIndex + 1 + this.overscanRowsCount, this.totalRows ) );
     }
 
-    toggleBasicEvents( method ){
-        super.toggleBasicEvents( method );
-        return this
-            [ method ]( "#widgetScrollHeight", this.increaseEndIndexIfNeeded )
-            [ method ]( "rows-rendered", this.setVisibleRowsHeights )
-            [ method ]( "#endIndex", this.increaseEndIndexIfNeeded.cancel )
-            [ method ]( "#widgetWidth", this.setVisibleRowsHeights );
-    }
-
     resetMeasurementsCache(){
         if( process.env.NODE_ENV !== "production" ){
             if( !this.estimatedRowHeight ){
                 throw new Error( "estimatedRowHeight must be provided" );
             }
         }
-        this.heighsCache = reallocateIfNeeded( this.heighsCache, this.totalRows, this.estimatedRowHeight );
+        
+        this.heighsCache = this.totalRows ? reallocateIfNeeded( this.heighsCache, this.totalRows, this.estimatedRowHeight ) : DEFAULT_HEIGHS_CACHE;
         return this;
     }
 
-    refreshHeightsCache( prevTotalRows ){
-        if( this.totalRows > 0 ){
-            if( prevTotalRows < 1 ){
-                this.toggleBasicEvents( "on" );
-            }
+    /*
+    TODO: maybe this is needed on #totalRows? Check
 
-            this
-                .resetMeasurementsCache()
-                .updateWidgetScrollHeight()
-                .updateEndIndex();
-                
-        }
-        else{
-            if( prevTotalRows > 0 ){
-                this.toggleBasicEvents( "off" );
-            }
-
+    cancelPendingAsyncCallsIfNeeded(){
+        if( this.totalRows < 0 ){
             this.cancelPendingAsyncCalls();
-                     
-            /*
-                this is not necessary, but heightsCache takes approximately 2 * sizeof(int) * rowCount memory
-            */
-            this.heighsCache = null;
-            this.startIndex = this.endIndex = this.virtualTopOffset = this.scrollTop = 0;
         }
+    }
+    */
+
+    constructor(){
+        super();
+
+        this
+            .prependListener( "#totalRows", this.resetMeasurementsCache )
+            .on( "#widgetScrollHeight", this.increaseEndIndexIfNeeded )
+            .on( "rows-rendered", this.setVisibleRowsHeights )
+            .on( "#endIndex", this.increaseEndIndexIfNeeded.cancel )
+            .on( "#widgetWidth", this.setVisibleRowsHeights );
     }
 
     destructor(){
-        this.cancelPendingAsyncCalls();
+        this.setVisibleRowsHeights.cancel();
+        this.increaseEndIndexIfNeeded.cancel();
         super.destructor();
     }
 
-    scrollToRow( index ){
-        const node = this.scrollContainerNode;
-        if( node ){
-            index = clamp( index, 0, this.totalRows );
-            node.scrollTop = sum( 0, index, this.heighsCache );
-        }
-        return this;    
+    getNodeScrollTopForRowIndex( clampedRowIndex ){
+        return sum( 0, clampedRowIndex, this.heighsCache );
     }
 };
 

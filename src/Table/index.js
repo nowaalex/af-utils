@@ -70,7 +70,7 @@ const Table = ({
             totals,
             columns,
             estimatedRowHeight,
-            totalRows: rowCount,
+            totalRows: Math.max( rowCount, 0 ),
             rowsContainerNode: tbodyRef.current,
             scrollContainerNode: scrollContainerRef.current
         });

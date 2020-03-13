@@ -156,10 +156,10 @@ class Table extends VariableSizeList {
         }
     }, REFRESH_SORT_DEBOUNCE_INTERVAL );
 
-    refreshRowsOrder( prevTotalRows ){
+    refreshRowsOrder(){
         if( this.totalRows > 0 ){
             this.orderedRows.length = this.totalRows;
-            fillOrderedRowsArray( this.orderedRows, this.totalRows > prevTotalRows ? prevTotalRows : 0, this.totalRows );
+            fillOrderedRowsArray( this.orderedRows, 0, this.totalRows );
         }
         else{
             this.orderedRows.length = 0;
@@ -171,24 +171,24 @@ class Table extends VariableSizeList {
         this.tbodyColumnWidths = new Uint32Array( this.columns.length );
     }
 
-    constructor( params ){
-        super( params );
+    constructor(){
+        super();
 
         this
-            .on( "#columns", this.resetColumnWidthsCache, this )
+            .on( "#columns", this.resetColumnWidthsCache )
             .on( "#columns", this.refreshTotals )
             .on( "#columns", this.refreshSorting )
-            .on( "#totalRows", this.refreshRowsOrder, this )
+            .on( "#totalRows", this.refreshRowsOrder )
             .on( "#totalRows", this.refreshSorting )
             .on( "#totalRows", this.refreshTotals )
             .on( "sort-params-changed", this.refreshSorting )
             .on( "#rowDataGetter", this.refreshSorting )
             .on( "#rowDataGetter", this.refreshTotals )
-            .on( "#rowsOrder", this.resetMeasurementsCache, this )
-            .on( "#rowsOrder", () => this.scrollToRow( 0 ) )
+            .on( "#rowsOrder", this.resetMeasurementsCache )
+            .on( "#rowsOrder", this.scrollToStart )
             .on( "#totals", this.refreshTotals )
         
-            .refreshRowsOrder( 0 );
+            .refreshRowsOrder();
     }
 
     destructor(){

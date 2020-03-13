@@ -1,4 +1,5 @@
-import EventEmitter from "eventemitter3";
+import clamp from "lodash/clamp";
+import EventEmitter from "../EventEmitter";
 
 const getRowDataInitial = () => {
     throw new Error( "getRowData must be provided" );
@@ -25,12 +26,6 @@ class FixedSizeList extends EventEmitter {
     rowsContainerNode = null;
     scrollContainerNode = null;
 
-    merge( params ){
-        for( let k in params ){
-            this.set( k, params[ k ] );
-        }
-    }
-
     set( paramName, paramValue ){
 
         if( process.env.NODE_ENV !== "production" ){
@@ -39,16 +34,21 @@ class FixedSizeList extends EventEmitter {
             }
         }
 
-        const prevValue = this[ paramName ];
-
-        if( prevValue !== paramValue ){
+        if( this[ paramName ] !== paramValue ){
             this[ paramName ] = paramValue;
-            this.emit( `#${paramName}`, prevValue );
+            this.emit( `#${paramName}` );
         }
 
         return this;
     }
-
+    
+    merge( params ){
+        for( let k in params ){
+            this.set( k, params[ k ] );
+        }
+        return this;
+    }
+    
     updateWidgetScrollHeight(){
         return this.set( "widgetScrollHeight", this.rowHeight * this.totalRows );
     }
@@ -71,48 +71,16 @@ class FixedSizeList extends EventEmitter {
         return this.set( "endIndex", newEndIndex );
     }
 
-    toggleBasicEvents( method ){
-        return this
-            [ method ]( "#scrollTop", this.refreshOffsets, this )
-            [ method ]( "#overscanRowsCount", this.refreshOffsets, this )
-            [ method ]( "#widgetHeight", this.updateEndIndex, this )
-            [ method ]( "#startIndex", this.updateEndIndex, this );
-    }
-
-    resetMeasurementsCache(){
-        if( process.env.NODE_ENV !== "production" ){
-            if( !this.estimatedRowHeight ){
-                throw new Error( "estimatedRowHeight must be provided" );
-            }
-        }
-        this.heighsCache = reallocateIfNeeded( this.heighsCache, this.totalRows, this.estimatedRowHeight );
-        return this;
-    }
-
-    refreshHeightsCache( prevTotalRows ){
-        if( this.totalRows > 0 ){
-            if( prevTotalRows < 1 ){
-                this.toggleBasicEvents( "on" );
-            }
-
-            this
-                .updateWidgetScrollHeight()
-                .updateEndIndex();
-                
-        }
-        else{
-            if( prevTotalRows > 0 ){
-                this.toggleBasicEvents( "off" );
-            }
-
-            this.startIndex = this.endIndex = this.virtualTopOffset = this.scrollTop = 0;
-        }
-    }
-
     constructor(){
         super();
         
-        this.on( "#totalRows", this.refreshHeightsCache, this );
+        this
+            .on( "#totalRows", this.updateWidgetScrollHeight )
+            .on( "#totalRows", this.updateEndIndex )
+            .on( "#scrollTop", this.refreshOffsets )
+            .on( "#overscanRowsCount", this.refreshOffsets )
+            .on( "#widgetHeight", this.updateEndIndex )
+            .on( "#startIndex", this.updateEndIndex );
     }
 
     destructor(){
@@ -123,7 +91,22 @@ class FixedSizeList extends EventEmitter {
         this.emit( "rows-rendered" );
     }
 
-    /* TODO: implement scrollToRow here */
+    getNodeScrollTopForRowIndex( clampedRowIndex ){
+        return this.rowHeight * clampedRowIndex;
+    }
+
+    scrollToRow( index ){
+        const node = this.scrollContainerNode;
+        if( node ){
+            index = clamp( index, 0, this.totalRows );
+            node.scrollTop = this.getNodeScrollTopForRowIndex( index );
+        }
+        return this;    
+    }
+
+    scrollToStart(){
+        return this.scrollToRow( 0 );
+    }
 };
 
 export default FixedSizeList;
