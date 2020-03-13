@@ -2,18 +2,28 @@ class EventEmitter {
 
     _T = Object.create( null );
 
-    _a = ( eventName, fn, prepend, once ) => {
+    _a( eventName, fn, prepend, once ){
         let eventsQueue = this._T[ eventName ];
 
-        const finalFn = once ? function(){
-            fn.apply( this.off( eventName, finalFn ), arguments );
-        } : fn;
+        
+        if( once ){
+            const that = this,
+                originalFn = fn;
+
+            /*
+                when using ...args and arrow func, babel is making unnecessary arguments copy.
+                Going old-school here for perf
+            */
+            fn = function(){
+                originalFn.apply( that.off( eventName, fn ), arguments );
+            }
+        }
     
         if( !eventsQueue ){
             eventsQueue = this._T[ eventName ] = [];
         }
     
-        eventsQueue[ prepend ? "unshift" : "push" ]( finalFn );
+        eventsQueue[ prepend ? "unshift" : "push" ]( fn );
         return this;
     }
 

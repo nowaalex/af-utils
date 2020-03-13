@@ -54,11 +54,11 @@ class FixedSizeList extends EventEmitter {
     }
 
     refreshOffsets(){
-        const newTopOffset = this.scrollTop;
-        const newVisibleStartIndex = newTopOffset / this.rowHeight | 0;
-        const remainder = newTopOffset % this.rowHeight;
+        const { scrollTop, rowHeight } = this;
+        const newVisibleStartIndex = scrollTop / rowHeight | 0;
+        const remainder = scrollTop % rowHeight;
         const newStartIndex = Math.max( 0, newVisibleStartIndex - this.overscanRowsCount );
-        const overscanOffset = ( newVisibleStartIndex - newStartIndex ) * this.rowHeight;
+        const overscanOffset = ( newVisibleStartIndex - newStartIndex ) * rowHeight;
                 
         return this
             .set( "virtualTopOffset", newTopOffset - remainder - overscanOffset )
@@ -66,8 +66,8 @@ class FixedSizeList extends EventEmitter {
     }
 
     updateEndIndex(){
-        const newVisibleEndIndex = ( this.scrollTop + this.widgetHeight ) / this.rowHeight | 0;
-        const newEndIndex = Math.min( newVisibleEndIndex + 1 + this.overscanRowsCount, this.totalRows );
+        const newVisibleEndIndex = Math.ceil(( this.scrollTop + this.widgetHeight ) / this.rowHeight );
+        const newEndIndex = Math.min( newVisibleEndIndex + this.overscanRowsCount, this.totalRows );
         return this.set( "endIndex", newEndIndex );
     }
 
