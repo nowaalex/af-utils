@@ -8,6 +8,7 @@ module.exports = ( env, argv ) => ({
     devtool: "source-map",
     output: {
         publicPath:         env.ASSETS_PATH,
+        path: 				path.resolve( __dirname, "exampleAssets" ),
         jsonpFunction:      "Z",
         filename: 			"[name].[contenthash].js",
         sourceMapFilename: 	"sm.[name].[contenthash].map"
