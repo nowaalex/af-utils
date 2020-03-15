@@ -4,11 +4,11 @@ const HtmlWebpackPlugin = require( "html-webpack-plugin" );
 const { BundleAnalyzerPlugin } = require( "webpack-bundle-analyzer" );
 
 module.exports = ( env, argv ) => ({
-    entry: "./example/index.js",
+    entry: "./websiteSrc/index.js",
     devtool: "source-map",
     output: {
         publicPath:         env.ASSETS_PATH,
-        path: 				path.resolve( __dirname, "exampleAssets" ),
+        path: 				path.resolve( __dirname, "website" ),
         jsonpFunction:      "Z",
         filename: 			"[name].[contenthash].js",
         sourceMapFilename: 	"sm.[name].[contenthash].map"
@@ -34,7 +34,7 @@ module.exports = ( env, argv ) => ({
     resolve: {
         modules: [ "node_modules", "src" ],
         alias: {
-            "af-react-table": path.resolve(__dirname,"./")
+            "af-virtual-scroll": path.resolve(__dirname,"./")
         }
        /*
          alias: {

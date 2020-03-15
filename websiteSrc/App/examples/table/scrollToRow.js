@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import Table from "af-react-table/lib/Table";
+import Table from "af-virtual-scroll/lib/Table";
 import { css } from "@emotion/core";
 
 const wrapperCss = css`

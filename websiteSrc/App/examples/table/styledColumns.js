@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "af-react-table/lib/Table";
+import Table from "af-virtual-scroll/lib/Table";
 import times from "lodash/times";
 import range from "lodash/range";
 import r from "lodash/random";

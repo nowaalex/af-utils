@@ -1,10 +1,10 @@
-# af-react-table
+# af-virtual-scroll
 
 ### Install & use
-`npm install --save af-react-table`
+`npm install --save af-virtual-scroll`
 
-### Demo
-* [**Playground**](https://nowaalex.github.io/af-react-table/exampleAssets/)
+### Website
+https://nowaalex.github.io/af-virtual-scroll/website/
 
 ### Features
 * All heights are calculated automatically, so there is no need to provide them.
@@ -19,7 +19,6 @@
 * -N ... 0 rowCount handling available via `rowCountWarningsTable` prop
 * `useApi` can give table any table subcomponent access to global API
 * renders `table`, `tr`, `td`, `th`, so default table styling, border collapsing, etc. can be easily applied.
-* small size ([playground bundle contents](https://nowaalex.github.io/af-react-table/exampleAssets/bundle.html))
 
 
 ### PropTypes
@@ -99,7 +98,6 @@ Table.defaultProps = {
 
 ### TODO
 * add rerenderCurrentRange() method
-* show example source in playground
 * write documentation
 * mobile fast scrolling causes lags because mobile scroll event is async ( react-virtualized, react-window, devextreme grids also have this problem )
 * maybe pass props via context somehow to avoid memos and deep passing?

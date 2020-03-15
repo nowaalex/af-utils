@@ -11,7 +11,6 @@ const Tr = () => {
 
     const props = {
         style: {
-            /* Hmm, I can't put here more than ~ 3 000 000. Maybe need to figure this out) */
             height: virtualTopOffset
         }
     };
@@ -21,6 +20,8 @@ const Tr = () => {
 
 /*
     According to specs, tr must always be inside tbody, thead or tfoot
+                
+    Hmm, I can't put here more than ~ 3 000 000. Maybe need to put one more tr in case this height is > 3 000 000
 */
 const CachedTbodyScroller = (
     <tbody style={{ visibility: "hidden" }}>
