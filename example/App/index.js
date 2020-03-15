@@ -18,6 +18,21 @@ const history = createBrowserHistory({
 
 SyntaxHighlighter.registerLanguage( "javascript", js );
 
+const Menu = [
+    {
+        name: "Examples",
+        children: ExamplesMenu
+    },
+    {
+        name: "Misc",
+        children: [
+            {
+                name: "Bundle analyzer",
+                path: "/misc/bundle"
+            }
+        ]
+    }
+];
 
 const wrapperCss = css`
     display: flex;
@@ -44,7 +59,7 @@ const mainFieldWrapperCss = css`
 `;
 
 const sidePaneCss = css`
-    padding: 0.5em 1em;
+    padding: 0.5em 1em 0.5em 0;
     overflow: auto;
     flex: 0 0 auto;
     border-right: 2px solid rgb(30, 30, 30);
@@ -85,7 +100,7 @@ const Ul = ({ name, children, className, hIndex }) => {
 
     return (
         <div css={ulWrapperCss} className={className}>
-            <NameComponent>{name}</NameComponent>
+            { name ? <NameComponent>{name}</NameComponent> : null }
             <ul>
                 {children.map(( r, i ) => (
                     <li key={i}>
@@ -128,11 +143,14 @@ const renderExample = ({ match }) => {
 const App = () => (
     <Router history={history}>
         <div css={wrapperCss}>
-            <Ul name="Examples" css={sidePaneCss} hIndex={2}>
-                {ExamplesMenu}
+            <Ul css={sidePaneCss} hIndex={1}>
+                {Menu}
             </Ul>
             <Switch>
                 <Route path="/examples/:example(.+)" render={renderExample} />
+                <Route path="/misc/bundle">
+                    <iframe src={`${ASSETS_PATH}bundle.html`} />
+                </Route>
             </Switch>
         </div>
     </Router>

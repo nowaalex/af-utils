@@ -14,7 +14,7 @@ const wrapperCss = css`
         font-weight: bold;
     }
     tr[data-odd]{
-        background: rgba(0,0,0,0.5)
+        background: rgba(0,0,0,0.2)
     }
 `;
 
