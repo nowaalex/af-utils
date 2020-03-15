@@ -1,3 +1,4 @@
+import React from "react";
 import Table from "af-react-table/lib/Table";
 import times from "lodash/times";
 import range from "lodash/range";
@@ -25,7 +26,7 @@ const getRowExtraProps = ( rowData, rowDataIndex ) => rowDataIndex % 2 ? { "data
 const columns = times( colCount, colIndex => ({
     dataKey: `col${colIndex}`,
     label: `col${colIndex}`,
-    background: `rgb(${r(130,220)}, ${r(130,220)}, ${r(130,220)})`,
+    background: `hsl(${r(0,360)},80%,80%)`,
     width: r( 50, 300 )
 }));
 

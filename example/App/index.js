@@ -1,7 +1,7 @@
 import React from "react";
 import startCase from "lodash/startCase";
 import { css } from "@emotion/core";
-import { BrowserRouter as Router, NavLink, Switch, Route } from "react-router-dom";
+import { Router, NavLink, Switch, Route } from "react-router-dom";
 import { ComponentsMap, ExamplesMenu } from "./routes";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import js from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
@@ -57,6 +57,7 @@ const mainFieldCss = css`
 const mainFieldWrapperCss = css`
     flex-grow: 1;
     display: flex;
+    overflow: hidden;
     flex-flow: column nowrap;
     min-height: 0;
     text-align: center;
@@ -73,7 +74,8 @@ const sidePaneCss = css`
 const codeCss = css`
     margin: 0 2em;
     font-size: 0.9em;
-    flex: 0 0 auto;
+    flex: 0 2 auto;
+    max-width: 40vw;
     overflow: auto;
 `;
 

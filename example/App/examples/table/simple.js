@@ -1,3 +1,4 @@
+import React from "react";
 import Table from "af-react-table/lib/Table";
 
 const columns = [

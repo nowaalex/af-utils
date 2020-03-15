@@ -25,6 +25,10 @@ module.exports = api => {
         }
     }
 
+    if( api.env( "production" ) ){
+        plugins.push( "transform-react-remove-prop-types" );
+    }
+
     presets.push([ "@babel/preset-env", presetEnvOptions ]);
 
     return {
