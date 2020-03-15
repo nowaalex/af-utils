@@ -12,12 +12,14 @@ const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, rowDataInde
 
     if( getRowExtraProps ){
         const extraProps = getRowExtraProps( rowData, rowDataIndex );
-        if( process.env.NODE_ENV !== "production" ){
-            if( extraProps.hasOwnProperty( "aria-rowindex" ) ){
-                throw new Error( "getExtraProps must not override aria-rowindex" );
+        if( extraProps ){
+            if( process.env.NODE_ENV !== "production" ){
+                if( extraProps.hasOwnProperty( "aria-rowindex" ) ){
+                    throw new Error( "getExtraProps must not override aria-rowindex" );
+                }
             }
+            Object.assign( trProps, extraProps );
         }
-        Object.assign( trProps, extraProps );
     }
 
     return (

@@ -3,6 +3,9 @@
 ### Install & use
 `npm install --save af-react-table`
 
+### Demo
+* [**Playground**](https://nowaalex.github.io/af-react-table/exampleAssets/)
+
 ### Features
 * All heights are calculated automatically, so there is no need to provide them.
 * Sortable
@@ -93,9 +96,6 @@ Table.defaultProps = {
     RowCountWarningContainer: RowCountWarningContainerDefault,
 };
 ```
-
-### Demo
-* [**Customizable playground**](https://nowaalex.github.io/af-react-table/exampleAssets/)
 
 ### TODO
 * add rerenderCurrentRange() method
