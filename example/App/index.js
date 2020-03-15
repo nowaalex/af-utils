@@ -34,6 +34,10 @@ const Menu = [
     }
 ];
 
+const growCss = css`
+    flex: 1 1 auto;
+`;
+
 const wrapperCss = css`
     display: flex;
     flex-flow: row nowrap;
@@ -43,7 +47,7 @@ const wrapperCss = css`
 `;
 
 const mainFieldCss = css`
-    flex: 1 1 auto;
+    ${growCss};
     display: flex;
     flex-flow: row nowrap;
     padding: 0.5em;
@@ -149,7 +153,10 @@ const App = () => (
             <Switch>
                 <Route path="/examples/:example(.+)" render={renderExample} />
                 <Route path="/misc/bundle">
-                    <iframe src={`${ASSETS_PATH}bundle.html`} />
+                    <div css={mainFieldWrapperCss}>
+                        <h2>Misc/bundle</h2>
+                        <iframe css={growCss} src={`${ASSETS_PATH}bundle.html`} />
+                    </div>
                 </Route>
             </Switch>
         </div>
