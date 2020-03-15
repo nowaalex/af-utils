@@ -1,30 +1,42 @@
-const routes = [
-    {
-        section: "List",
-        children: [
-            {
-                name: "Simple",
-                path: "/list/simple"
-            },
-            {
-                name: "MUI",
-                path: "/list/mui"
-            }
-        ]
-    },
-    {
-        section: "Table",
-        children: [
-            {
-                name: "Simple",
-                path: "/table/simple"
-            },
-            {
-                name: "MUI",
-                path: "/table/mui"
-            }
-        ]
-    }
-];
+import set from "lodash/set";
 
-export default routes;
+const toArr = ( obj, arr ) => {
+    let v, a;
+    for( let k in obj ) {
+        v = obj[ k ];
+        if( typeof v === "object" ){
+            a = arr.find( el => el.name === k );
+            if( !a ){
+                a = { name: k, children: [] };
+                arr.push( a );
+            }
+            toArr( v, a.children );
+        } else {
+            arr.push({
+                name: k,
+                path: `/examples/${v}`
+            });
+        }
+    }
+    return arr;
+}
+
+const Code = require.context( "!!raw-loader!./examples", true, /\.js$/ );
+const Components = require.context( "./examples", true, /\.js$/ );
+
+const groupedMenu = Components.keys().reduce(( acc, path ) => set(
+    acc,
+    path.slice( 2, -3 ).split( "/" ),
+    path.slice( 2, -3 )
+), {});
+
+export const ComponentsMap = Components.keys().reduce(( acc, path ) => {
+    acc[ path.slice( 2, -3 ) ] = [
+        Components( path ).default,
+        Code( path ).default,
+        path.slice( 2, -3 )
+    ];
+    return acc;
+}, {});
+
+export const ExamplesMenu = toArr( groupedMenu, [] );

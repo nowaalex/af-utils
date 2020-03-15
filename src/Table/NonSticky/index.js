@@ -1,4 +1,4 @@
-import React, { memo, useMemo, Fragment } from "react";
+import React, { memo, useMemo, useRef, Fragment } from "react";
 import PropTypes from "prop-types";
 import { css, cx } from "emotion";
 
@@ -65,8 +65,7 @@ const NonSticky = ({
         and notify model about columns width changes.
         There are 3 tables rendered in this mode, so their column widths need to be synced somehow.
     */
-
-    const widthsObserverRef = useColWidthsResizeObserver( API );
+    const  widthsObserverRef = useColWidthsResizeObserver( API );
 
     if( process.env.NODE_ENV !== "production" ){
         if( headlessMode && !totals ){
@@ -95,7 +94,7 @@ const NonSticky = ({
                             <Tfoot
                                 TotalsCellComponent={TotalsCellComponent}
                                 className={hiddenHeaderFooterClass}
-                                trRef={headlessMode?undefined:widthsObserverRef}
+                                trRef={headlessMode?widthsObserverRef:undefined}
                             />
                         )}
                         {TbodyScrollerCached}

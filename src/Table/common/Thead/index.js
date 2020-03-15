@@ -1,6 +1,6 @@
 import React, { useCallback, memo } from "react";
 import { css, cx } from "emotion";
-import HeaderCellsCached from "../HeaderCellsCached";
+import HeaderCells from "../HeaderCells";
 import useApi from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [];
@@ -38,12 +38,12 @@ const Thead = ({ className, trRef, getCellStyle, ...props }) => {
             const directionSign = e.target.getAttribute( "aria-sort" ) === "ascending" ? -1 : 1;
             API.setSortParams( colIndex, directionSign );
         }
-    }, [ API.columns ]);
+    }, []);
 
     return (
         <thead className={cx(wrapperClass,className)} onClick={clickHandler}>
             <tr ref={trRef}>
-                {HeaderCellsCached}
+                <HeaderCells />
             </tr>
         </thead>
     );

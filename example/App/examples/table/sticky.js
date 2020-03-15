@@ -1,4 +1,4 @@
-import Table from "../../../src/Table";
+import Table from "af-react-table/lib/Table";
 
 const columns = [
     {
@@ -23,6 +23,7 @@ const getRowData = index => ({
 
 const SimpleTable = () => (
     <Table
+        useStickyIfPossible
         getRowData={getRowData}
         rowCount={500}
         columns={columns}

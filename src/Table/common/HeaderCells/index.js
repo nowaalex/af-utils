@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import useApi from "../../../useApi";
 
 const SUBSCRIBE_EVENTS = [
@@ -28,6 +28,4 @@ const HeaderCells = () => {
     ));
 };
 
-const HeaderCellsCached = <HeaderCells />;
-
-export default HeaderCellsCached;
+export default memo( HeaderCells );

@@ -6,6 +6,7 @@ module.exports = ( env, argv ) => ({
     entry: "./example/index.js",
     devtool: "source-map",
     output: {
+        publicPath: "/",
         path: path.resolve(__dirname, "exampleAssets" )
     },
     optimization: {    
@@ -92,12 +93,18 @@ module.exports = ( env, argv ) => ({
     },
     resolve: {
         modules: [ "node_modules", "src" ],
+        alias: {
+            "af-react-table": path.resolve(__dirname,"./")
+        }
        /*
          alias: {
             "react-dom$": "react-dom/profiling",
             "scheduler/tracing": "scheduler/tracing-profiling",
         }
         */
+    },
+    devServer: {
+        historyApiFallback: true
     },
     plugins: [
         new HtmlWebpackPlugin({
