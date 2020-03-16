@@ -1,4 +1,5 @@
 import set from "lodash/set";
+import { lazy } from "react";
 
 const toArr = ( obj, arr ) => {
     let v, a;
@@ -22,7 +23,7 @@ const toArr = ( obj, arr ) => {
 }
 
 const Code = require.context( "!!raw-loader!./examples", true, /\.js$/ );
-const Components = require.context( "./examples", true, /\.js$/ );
+const Components = require.context( "./examples", true, /\.js$/, "lazy" );
 
 const groupedMenu = Components.keys().reduce(( acc, path ) => set(
     acc,
@@ -32,7 +33,7 @@ const groupedMenu = Components.keys().reduce(( acc, path ) => set(
 
 export const ComponentsMap = Components.keys().reduce(( acc, path ) => {
     acc[ path.slice( 2, -3 ) ] = [
-        Components( path ).default,
+        lazy(() => Components( path )),
         Code( path ).default,
         path.slice( 2, -3 )
     ];

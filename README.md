@@ -11,13 +11,13 @@ https://nowaalex.github.io/af-virtual-scroll/website/
 * Sortable
 * Has column summaries ( count, sum, average )
 * Can automatically detect and use position: sticky
-* Optimized non-recursize segment tree is used to store row dimensions.
+* Optimized non-recursive segment tree is used to store row dimensions.
 * mobx-ready Row and Cell components, which can be easily wrapped by observer
 * available height and width are calculated and observed automatically via `use-resize-observer` hook
 * `scrollToRow(rowIndex)` method is available
 * fixed and auto table layout mode
 * -N ... 0 rowCount handling available via `rowCountWarningsTable` prop
-* `useApi` can give table any table subcomponent access to global API
+* `useApi` can give any table subcomponent access to global API
 * renders `table`, `tr`, `td`, `th`, so default table styling, border collapsing, etc. can be easily applied.
 
 
