@@ -1,2 +1,0 @@
-(window.Z=window.Z||[]).push([[16],{110:function(n,t,e){"use strict";e.r(t);e(0);var r=e(128),a=e(136),u=e.n(a),o=e(135),i=e.n(o),c=e(150),l=e.n(c),s=e(1),m=[{dataKey:"num",label:"Numeric",sort:"numeric"},{dataKey:"str",label:"String",sort:"locale"}],d=i()(5e3,(function(){return{num:u()(1,2e4),str:l.a.name.findName()}})),f=function(n){return d[n]};t.default=function(){return Object(s.a)(r.a,{getRowData:f,rowCount:5e3,columns:m})}}}]);
-//# sourceMappingURL=sm.16.dc43db1dcf8584e7c9cc1285325f2565.map
