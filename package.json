@@ -9,6 +9,7 @@
   "bugs": {
     "url": "https://github.com/nowaalex/af-virtual-scroll/issues"
   },
+  "homepage": "https://nowaalex.github.io/af-virtual-scroll/website",
   "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
   "license": "MIT",
   "sideEffects": false,
