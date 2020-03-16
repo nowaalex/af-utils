@@ -4,13 +4,15 @@ import r from "lodash/random";
 import times from "lodash/times";
 import faker from "faker";
 
-const FMT = new Intl.DateTimeFormat();
+const DFMT = new Intl.DateTimeFormat();
+const NFMT = new Intl.NumberFormat();
 
 const columns = [
     {
         dataKey: "num",
         label: "Numeric",
-        sort: "numeric"
+        sort: "numeric",
+        format: cellData => NFMT.format( cellData ),
     },
     {
         dataKey: "str",
@@ -20,7 +22,7 @@ const columns = [
     {
         dataKey: "timeStamp",
         label: "Date",
-        format: cellData => FMT.format( cellData ),
+        format: cellData => DFMT.format( cellData ),
         sort: "numeric"
     }
 ];
@@ -28,7 +30,7 @@ const columns = [
 const rowCount = 5000;
 
 const rows = times( rowCount, () => ({
-    num: r( 1, 20000 ),
+    num: r( 1, 20000 ) / 27,
     str: faker.name.findName(),
     timeStamp: r( 0, Date.now() )
 }));

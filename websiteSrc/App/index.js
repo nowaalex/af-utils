@@ -76,7 +76,7 @@ const codeCss = css`
     font-size: 0.9em;
     flex: 0 2 auto;
     max-width: 40vw;
-    overflow: auto;
+    display: flex;
 `;
 
 const ulWrapperCss = css`

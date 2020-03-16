@@ -11,7 +11,7 @@ const wrapperCss = css`
     }
     tfoot td, th {
         padding: 0.5em;
-        background: #e6e6e6;
+        background: #d6d6d6;
         font-weight: bold;
     }
     tr[data-odd]{
@@ -26,7 +26,7 @@ const getRowExtraProps = ( rowData, rowDataIndex ) => rowDataIndex % 2 ? { "data
 const columns = times( colCount, colIndex => ({
     dataKey: `col${colIndex}`,
     label: `col${colIndex}`,
-    background: `hsl(${r(0,360)},80%,80%)`,
+    background: `hsl(${Math.floor(360/colCount*colIndex)},80%,80%)`,
     width: r( 50, 300 )
 }));
 
