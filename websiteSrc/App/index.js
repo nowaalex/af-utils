@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from "react";
 import { css } from "@emotion/core";
-import { Router, Switch, Route } from "react-router-dom";
+/* App is deployed to github pages, so BrowserRouter would not work there */
+import { HashRouter, Switch, Route } from "react-router-dom";
 import { ExamplesMenu } from "./routes";
-import { createBrowserHistory } from "history";
 
 const MenuList = lazy(() => import( "./MenuList" ));
 const Example = lazy(() => import( "./Example" ));
@@ -10,10 +10,6 @@ const Example = lazy(() => import( "./Example" ));
 if( !ASSETS_PATH ){
     throw new Error( `ASSETS_PATH should be passed` );
 }
-
-const history = createBrowserHistory({
-    basename: ASSETS_PATH
-});
 
 const Menu = [
     {
@@ -61,7 +57,7 @@ const sidePaneCss = css`
 `;
 
 const App = () => (
-    <Router history={history}>
+    <HashRouter basename={ASSETS_PATH}>
         <div css={wrapperCss}>
             <Suspense fallback="Loading menu...">
                 <MenuList css={sidePaneCss} hIndex={1}>
@@ -82,7 +78,7 @@ const App = () => (
                 </Switch>
             </div>
         </div>
-    </Router>
+    </HashRouter>
 );
 
 export default App;
