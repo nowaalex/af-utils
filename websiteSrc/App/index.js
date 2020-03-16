@@ -77,7 +77,7 @@ const App = () => (
                     </Route>
                     <Route path="/misc/bundle">
                         <h2>Misc/bundle</h2>
-                        <iframe css={growCss} src={`${ASSETS_PATH}bundle.html`} />
+                        <iframe css={growCss} src={`${ASSETS_PATH}/bundle.html`} />
                     </Route>
                 </Switch>
             </div>
