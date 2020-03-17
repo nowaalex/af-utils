@@ -1,2 +1,0 @@
-(window.Z=window.Z||[]).push([[13],{106:function(a,e,t){"use strict";t.r(e);t(0);var l=t(116),c=t(1),n=[{dataKey:"a",label:"a"},{dataKey:"b",label:"b"},{dataKey:"c",label:"c"}],o=function(a){return{a:a,b:"cell_b_row: "+a,c:"cell_c_row: "+a}};e.default=function(){return Object(c.a)(l.a,{headless:!0,getRowData:o,rowCount:500,columns:n})}}}]);
-//# sourceMappingURL=sm.13.2ad9c14d4efcd821cbbfa99466cb964c.map

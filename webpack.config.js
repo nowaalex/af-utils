@@ -1,6 +1,11 @@
 const path = require( "path" );
 const webpack = require( "webpack" );
+const TerserPlugin = require("terser-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 const HtmlWebpackPlugin = require( "html-webpack-plugin" );
+const MiniCssExtractPlugin = require( "mini-css-extract-plugin" );
+const { CleanWebpackPlugin } = require( "clean-webpack-plugin" );
 const { BundleAnalyzerPlugin } = require( "webpack-bundle-analyzer" );
 
 module.exports = ( env, argv ) => ({
@@ -24,14 +29,19 @@ module.exports = ( env, argv ) => ({
             },
             {
                 test: /\.css$/,
-                use: [
-                    "style-loader",
-                    "css-loader"
-                ]
+                use: [ argv.mode === "production" ? MiniCssExtractPlugin.loader : "style-loader", "css-loader" ]
             }
 		]
     },
     optimization: {
+        minimizer: [
+			new TerserPlugin({
+				extractComments: "all",
+				parallel: true,
+				cache: true
+			}),
+			new OptimizeCSSAssetsPlugin({})
+		],
 		splitChunks: {
 			chunks: "async",
 			minSize: 6000,
@@ -48,7 +58,13 @@ module.exports = ( env, argv ) => ({
 					name: "react",
 					chunks: "all",
 					priority: -5
-				},
+                },
+                faker: {
+                    test: /[\\/]node_modules[\\/]faker/,
+                    name: "faker",
+                    chunks: "all",
+                    priority: -7
+                },
 				vendors: {
 					test: /[\\/]node_modules[\\/]/,
 					priority: -10
@@ -82,8 +98,14 @@ module.exports = ( env, argv ) => ({
         new HtmlWebpackPlugin({
             title: "Table"
         })
-    ].concat( argv.mode === "production" ? new BundleAnalyzerPlugin({
-        analyzerMode: "static",
-        reportFilename: "bundle.html"
-    }) : [])
+    ].concat( argv.mode === "production" ? [
+        new CleanWebpackPlugin(),
+        new CompressionPlugin(),
+        new BundleAnalyzerPlugin({
+            analyzerMode: "static",
+            excludeAssets: /faker/,
+            reportFilename: "bundle.html"
+        }),
+        new MiniCssExtractPlugin()
+    ] : [])
 });
