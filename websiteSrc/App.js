@@ -10,25 +10,29 @@ if( !ASSETS_PATH ){
     throw new Error( `ASSETS_PATH should be passed` );
 }
 
-const globalCss = css`
-    html, body, #root {
-        height: 100%;
-    }
-`;
-
 const growCss = css`
     flex: 1 1 auto;
 `;
 
-const wrapperCss = css`
-    display: flex;
-    flex-flow: row nowrap;
-    font-family: monospace;
-    height: 100%;
-
-    @media(max-width: 900px){
-        flex-flow: column nowrap;
+const globalCss = css`
+    html, body, #root {
+        height: 100%;
     }
+
+    #root {
+        display: flex;
+        flex-flow: row nowrap;
+        font-family: monospace;
+
+        @media(max-width: 900px){
+            flex-flow: column nowrap;
+        }
+    }
+`;
+
+const bundleIframeCss = css`
+    ${growCss};
+    border: none;
 `;
 
 const mainFieldWrapperCss = css`
@@ -44,24 +48,22 @@ const mainFieldWrapperCss = css`
 const App = () => (
     <HashRouter basename={ASSETS_PATH}>
         <Global styles={globalCss} />
-        <div css={wrapperCss}>
-            <Suspense fallback="Loading menu...">
-                <Menu />
-            </Suspense>
-            <div css={mainFieldWrapperCss}>
-                <Switch>
-                    <Route path="/examples/:example(.+)">
-                        <Suspense fallback="Loading Examples container...">
-                            <Example />
-                        </Suspense>
-                    </Route>
-                    <Route path="/misc/bundle">
-                        <h2>Misc/bundle</h2>
-                        <iframe css={growCss} src={`${ASSETS_PATH}bundle.html`} />
-                    </Route>
-                    <Redirect to="/examples/table/simple" />
-                </Switch>
-            </div>
+        <Suspense fallback="Loading menu...">
+            <Menu />
+        </Suspense>
+        <div css={mainFieldWrapperCss}>
+            <Switch>
+                <Route path="/examples/:example(.+)">
+                    <Suspense fallback="Loading Examples container...">
+                        <Example />
+                    </Suspense>
+                </Route>
+                <Route path="/misc/bundle">
+                    <h3>Misc/bundle</h3>
+                    <iframe css={bundleIframeCss} src={`${ASSETS_PATH}bundle.html`} />
+                </Route>
+                <Redirect to="/examples/table/simple" />
+            </Switch>
         </div>
     </HashRouter>
 );

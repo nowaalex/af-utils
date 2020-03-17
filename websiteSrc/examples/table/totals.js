@@ -28,8 +28,9 @@ const totals = {
 
 const getRowData = index => rows[ index ];
 
-const TableWithTotals = () => (
+const TableWithTotals = ({ className }) => (
     <Table
+        className={className}
         getRowData={getRowData}
         rowCount={rowCount}
         columns={columns}

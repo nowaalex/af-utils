@@ -22,8 +22,9 @@ const getRowData = index => ({
     c: `cell_c_row: ${index}`
 })
 
-const SimpleTable = () => (
+const SimpleTable = ({ className }) => (
     <Table
+        className={className}
         getRowData={getRowData}
         rowCount={500}
         columns={columns}

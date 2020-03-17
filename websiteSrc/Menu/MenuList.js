@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import startCase from "lodash/startCase";
 import { css } from "@emotion/core";
 import { NavLink } from "react-router-dom";
@@ -52,4 +52,4 @@ const MenuList = ({ Component = "div", name, children, hIndex, ...props }) => {
     );
 };
 
-export default MenuList;
+export default memo( MenuList );

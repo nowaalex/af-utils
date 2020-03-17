@@ -49,7 +49,7 @@ const rowCount = 200;
 
 const CellComponent = memo(observer(DefaultCellComponent))
 
-const TableWithObservableRows = () => {
+const TableWithObservableRows = ({ className }) => {
 
     const [ rows ] = useState(() => {
         const r = observable([]);
@@ -79,6 +79,7 @@ const TableWithObservableRows = () => {
     return (
         <Table
             css={tableCss}
+            className={className}
             useStickyIfPossible
             fixedLayout
             CellComponent={CellComponent}

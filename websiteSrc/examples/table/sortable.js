@@ -26,8 +26,9 @@ const rows = times( rowCount, () => ({
 
 const getRowData = index => rows[ index ];
 
-const SortableTable = () => (
+const SortableTable = ({ className }) => (
     <Table
+        className={className}
         getRowData={getRowData}
         rowCount={rowCount}
         columns={columns}

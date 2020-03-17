@@ -37,8 +37,9 @@ const rows = times( rowCount, () => ({
 
 const getRowData = index => rows[ index ];
 
-const TableWithFormattedCell = () => (
+const TableWithFormattedCell = ({ className }) => (
     <Table
+        className={className}
         getRowData={getRowData}
         rowCount={rowCount}
         columns={columns}

@@ -22,8 +22,9 @@ const getRowData = index => ({
     c: `cell_c_row: ${index}`
 })
 
-const SimpleTable = () => (
+const SimpleTable = ({ className }) => (
     <Table
+        className={className}
         useStickyIfPossible
         getRowData={getRowData}
         rowCount={500}

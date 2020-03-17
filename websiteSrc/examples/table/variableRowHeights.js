@@ -61,9 +61,10 @@ const totals = {
     it makes table a little smoother.
     In future this prop may be removed.
 */
-const VariableRowHeightsTable = () => (
+const VariableRowHeightsTable = ({ className }) => (
     <Table
         css={tableCss}
+        className={className}
         useStickyIfPossible
         totals={totals}
         getRowData={getRowData}

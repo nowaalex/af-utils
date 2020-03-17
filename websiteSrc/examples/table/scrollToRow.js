@@ -4,9 +4,7 @@ import { css } from "@emotion/core";
 
 const wrapperCss = css`
     display: flex;
-    flex: 1 1 auto;
     flex-flow: column nowrap;
-    min-height: inherit;
 `;
 
 const columns = [
@@ -30,7 +28,7 @@ const getRowData = index => ({
     c: `cell_c_row: ${index}`
 })
 
-const TableWithScrollToRowButton = () => {
+const TableWithScrollToRowButton = ({ className }) => {
 
     const dataRef = useRef();
 
@@ -41,7 +39,7 @@ const TableWithScrollToRowButton = () => {
     };
 
     return (
-        <div css={wrapperCss}>
+        <div css={wrapperCss} className={className}>
             <form onSubmit={submitHandler}>
                 <label>
                     Row:&nbsp;

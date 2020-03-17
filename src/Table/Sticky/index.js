@@ -42,7 +42,6 @@ const SUBSCRIBE_EVENTS = [
 
 
 const Sticky = ({
-    className,
     tbodyRef,
     scrollContainerRef,
     getRowExtraProps,
@@ -78,7 +77,7 @@ const Sticky = ({
     }
     
     return (
-        <ScrollContainer className={className} ref={scrollContainerRef} {...props}>
+        <ScrollContainer ref={scrollContainerRef} {...props}>
             {useMemo(() => (
                 <Fragment>
                     <Colgroup />

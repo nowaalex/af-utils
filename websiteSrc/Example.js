@@ -24,17 +24,21 @@ const mainFieldCss = css`
     }
 `;
 
+/*
+    TODO:
+        emotion gives more specificity to default styles. This && should be removed.
+*/
 const tableWrapperCss = css`
-    display: flex;
-    flex: 1 1 50%;
-    flex-flow: column nowrap;
-    min-height: 0;
+    && {
+        flex: 1 1 50%;
+        min-height: 6em;
+    }
 `;
 
 const codeCss = css`
     margin: 0 1em;
     font-size: 0.9em;
-    flex: 1 2 auto;
+    flex: 1 1 30%;
     min-width: 15em;
     min-height: 0;
 `;
@@ -53,9 +57,7 @@ const Example = () => {
             <h3>Examples/{example}</h3>
             <div css={mainFieldCss}>
                 <Suspense fallback="Loading example...">
-                    <div css={tableWrapperCss}>
-                        <Component />
-                    </div>
+                    <Component css={tableWrapperCss} />
                     <SyntaxHighlighter css={codeCss} language="javascript" style={codeStyle} customStyle={customStyle}>
                         {code}
                     </SyntaxHighlighter>

@@ -22,8 +22,9 @@ const getRowData = index => ({
     c: `cell_c_row: ${index}`
 })
 
-const SimpleHeadlessTable = () => (
+const SimpleHeadlessTable = ({ className }) => (
     <Table
+        className={className}
         headless
         getRowData={getRowData}
         rowCount={500}

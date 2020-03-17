@@ -40,10 +40,11 @@ const totals = range( colCount ).reduce(( acc, colIndex ) => {
     return acc;
 }, {});
 
-const TableWithStyledColumns = () => (
+const TableWithStyledColumns = ({ className }) => (
     <Table
         getRowExtraProps={getRowExtraProps}
         css={wrapperCss}
+        className={className}
         useStickyIfPossible
         getRowData={getRowData}
         rowCount={500}

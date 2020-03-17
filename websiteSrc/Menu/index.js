@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useCallback, Fragment } from "react";
 import { css } from "@emotion/core";
 import MenuList from "./MenuList";
 import { ExamplesMenu } from "../routes";
@@ -93,10 +93,12 @@ const toggle = x => !x;
 const Menu = ({ className }) => {
 
     const [ mobileExpanded, setMobileExpanded ] = useState( false );
+    const hideMenu = useCallback(() => setMobileExpanded( false ), []);
+    const toggleMenu = useCallback(() => setMobileExpanded( toggle ), []);
 
     return (
         <Fragment>
-            <div css={mobileBurgerMenu} onClick={() => setMobileExpanded( toggle )}>
+            <div css={mobileBurgerMenu} onClick={toggleMenu}>
                 <div css={burgerCss} />
             </div>
             <MenuList
@@ -105,7 +107,7 @@ const Menu = ({ className }) => {
                 hIndex={1}
                 Component="nav"
                 data-mobile-expanded={mobileExpanded?"":undefined}
-                onClick={() => setMobileExpanded( false )}
+                onClick={hideMenu}
             >
                 {MenuStruct}
             </MenuList>
