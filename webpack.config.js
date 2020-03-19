@@ -96,6 +96,9 @@ module.exports = ( env, argv ) => ({
             ASSETS_PATH: JSON.stringify( env.ASSETS_PATH )
         }),
         new HtmlWebpackPlugin({
+            meta: {
+				"viewport": "width=device-width, initial-scale=1, shrink-to-fit=no",
+			},
             title: "Table"
         })
     ].concat( argv.mode === "production" ? [

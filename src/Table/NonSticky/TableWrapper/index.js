@@ -10,7 +10,7 @@ const SUBSCRIBE_EVENTS = [
     "tbody-column-widths"
 ];
 
-const TableWrapper = ({ className, children }) => {
+const TableWrapper = ({ children, ...props }) => {
 
     const { scrollLeft, columns, tbodyColumnWidths } = useApi( SUBSCRIBE_EVENTS );
 
@@ -21,7 +21,7 @@ const TableWrapper = ({ className, children }) => {
     };
 
     return (
-        <table className={className} style={style} aria-colcount={columns.length}>
+        <table {...props} style={style} aria-colcount={columns.length}>
             <Colgroup useTbodyWidths />
             {children}
         </table>

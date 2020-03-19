@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import { css, cx } from "emotion";
 
 import Colgroup from "../common/Colgroup";
-import TbodyScrollerCached from "../common/TbodyScrollerCached";
-import ScrollContainer from "../common/ScrollContainer";
+import TbodyScroller from "../common/TbodyScroller";
+import ScrollContainer from "../../common/ScrollContainer";
 import Thead from "../common/Thead";
 import Tbody from "../common/Tbody";
 import Tfoot from "../common/Tfoot";
+import BodyTable from "../common/BodyTable";
 import useApi from "../../useApi";
 
 const theadTfootCommonClass = css`
@@ -48,6 +49,7 @@ const Sticky = ({
     RowComponent,
     CellComponent,
     TotalsCellComponent,
+    fixedLayout,
     ...props
 }) => {
 
@@ -77,12 +79,12 @@ const Sticky = ({
     }
     
     return (
-        <ScrollContainer ref={scrollContainerRef} {...props}>
+        <ScrollContainer ref={scrollContainerRef} reportScrollLeft {...props}>
             {useMemo(() => (
-                <Fragment>
+                <BodyTable fixedLayout={fixedLayout}>
                     <Colgroup />
                     {headlessMode?null:<Thead className={theadClass} />}
-                    {TbodyScrollerCached}
+                    <TbodyScroller />
                     <Tbody
                         tbodyRef={tbodyRef}
                         getRowExtraProps={getRowExtraProps}
@@ -95,8 +97,8 @@ const Sticky = ({
                             TotalsCellComponent={TotalsCellComponent}
                         />
                     )}
-                </Fragment>
-            ), [ headlessMode, totals, getRowExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
+                </BodyTable>
+            ), [ headlessMode, fixedLayout, totals, getRowExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
         </ScrollContainer>
     );
 }

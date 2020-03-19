@@ -1,4 +1,4 @@
-import React, { memo, useMemo, Fragment } from "react";
+import React, { memo, useMemo } from "react";
 import PropTypes from "prop-types";
 import { css, cx } from "emotion";
 
@@ -8,11 +8,12 @@ import TableWrapper from "./TableWrapper";
 import Thead from "../common/Thead";
 import Tfoot from "../common/Tfoot";
 import Tbody from "../common/Tbody";
+import BodyTable from "../common/BodyTable";
 
 import useColWidthsResizeObserver from "./useColWidthsResizeObserver";
 import Colgroup from "../common/Colgroup";
-import TbodyScrollerCached from "../common/TbodyScrollerCached";
-import ScrollContainer from "../common/ScrollContainer";
+import TbodyScroller from "../common/TbodyScroller";
+import ScrollContainer from "../../common/ScrollContainer";
 
 const wrapperClass = css`
     display: flex;
@@ -80,9 +81,9 @@ const NonSticky = ({
                     <Thead />
                 </TableWrapper>
             )}
-            <ScrollContainer ref={scrollContainerRef} fixedLayout={fixedLayout} onScroll={onScroll}>
+            <ScrollContainer ref={scrollContainerRef} onScroll={onScroll} reportScrollLeft>
                 {useMemo(() => (
-                    <Fragment>
+                    <BodyTable fixedLayout={fixedLayout}>
                         <Colgroup />
                         {headlessMode ? null : (
                             <Thead
@@ -97,14 +98,14 @@ const NonSticky = ({
                                 trRef={headlessMode?widthsObserverRef:undefined}
                             />
                         )}
-                        {TbodyScrollerCached}
+                        <TbodyScroller />
                         <Tbody
                             tbodyRef={tbodyRef}
                             getRowExtraProps={getRowExtraProps}
                             RowComponent={RowComponent}
                             CellComponent={CellComponent}
                         />
-                    </Fragment>
+                    </BodyTable>
                 ), [ totals, headlessMode, fixedLayout, getRowExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
             </ScrollContainer>
             {totals && (
@@ -113,7 +114,7 @@ const NonSticky = ({
                 </TableWrapper>
             )}
         </div>
-    )
-}
+    );
+};
 
 export default memo( NonSticky );

@@ -11,7 +11,7 @@ import RowComponentDefault from "./common/Row";
 import CellComponentDefault from "./common/Cell";
 import TotalsCellComponentDefault from "./common/TotalsCell";
 
-import RowCountWarningContainerDefault from "./common/RowCountWarningContainer";
+import RowCountWarningContainerDefault from "../common/RowCountWarningContainer";
 
 import NonStickyComponent from "./NonSticky";
 import StickyComponent from "./Sticky";

@@ -47,7 +47,6 @@ const TableWithScrollToRowButton = ({ className }) => {
                         name="scrollRow"
                         type="number"
                         defaultValue="0"
-                        step="10"
                     />
                 </label>
                 <button type="submit">

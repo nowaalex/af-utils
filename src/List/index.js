@@ -3,12 +3,16 @@ import PropTypes from "prop-types";
 import { css } from "emotion";
 
 import Context from "../Context";
-import VirtualTableListStore from "../models/VariableSizeList";
+import VariableSizeList from "../models/VariableSizeList";
 import useStore from "../utils/useStore";
 
+
+import ScrollContainer from "../common/ScrollContainer";
 import RowComponentDefault from "./common/Row";
-import CellComponentDefault from "./common/Cell";
-import RowCountWarningContainerDefault from "./common/RowCountWarningContainer";
+import Rows from "./common/Rows";
+
+import Scroller from "../common/Scroller";
+import RowCountWarningContainerDefault from "../common/RowCountWarningContainer";
 
 
 
@@ -34,13 +38,14 @@ const List = ({
     rowCountWarningsTable,
     RowCountWarningContainer,
     dataRef,
-
+    RowComponent,
     ...props
 }) => {
 
     const scrollContainerRef = useRef();
+    const rowsContainerRef = useRef();
 
-    const Store = useStore( VirtualTableListStore, dataRef );
+    const Store = useStore( VariableSizeList, dataRef );
 
     useEffect(() => {
         Store.merge({
@@ -49,7 +54,7 @@ const List = ({
             overscanRowsCount,
             estimatedRowHeight,
             totalRows: rowCount,
-            rowsContainerNode: scrollContainerRef.current,
+            rowsContainerNode: rowsContainerRef.current,
             scrollContainerNode: scrollContainerRef.current
         });
     });
@@ -57,13 +62,16 @@ const List = ({
     return (
         <Context.Provider value={Store}>
             { rowCount > 0 ? (
-                <ComponentVariant
+                <ScrollContainer
                     className={wrapperClass}
-                    scrollContainerRef={scrollContainerRef}
-                    getRowExtraProps={getRowExtraProps}
-                    tbodyRef={tbodyRef}
+                    ref={scrollContainerRef}
                     {...props}
-                />
+                >
+                    <Scroller Component="div" />
+                    <div ref={rowsContainerRef}>
+                        <Rows RowComponent={RowComponent} getRowExtraProps={getRowExtraProps} />
+                    </div>
+                </ScrollContainer>
             ) : rowCountWarningsTable ? (
                 <RowCountWarningContainer>
                     {rowCountWarningsTable[rowCount]}
@@ -98,7 +106,6 @@ List.defaultProps = {
         memo(observer(RowComponentDefault)) will do the trick.
     */
     RowComponent: memo( RowComponentDefault ),
-    CellComponent: CellComponentDefault,
     RowCountWarningContainer: RowCountWarningContainerDefault,
 };
 
