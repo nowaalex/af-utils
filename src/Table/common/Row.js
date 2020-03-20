@@ -1,29 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import getRowProps from "../../utils/getRowProps";
 
 const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, rowDataIndex, rowIndex }) => {
 
     const rowData = getRowData( rowDataIndex );
 
-    /* avoiding double destructurization via getRowExtraProps, so making prop object once */
-    const trProps = {
-        "aria-rowindex": rowIndex + 1
-    };
-
-    if( getRowExtraProps ){
-        const extraProps = getRowExtraProps( rowData, rowDataIndex );
-        if( extraProps ){
-            if( process.env.NODE_ENV !== "production" ){
-                if( extraProps.hasOwnProperty( "aria-rowindex" ) ){
-                    throw new Error( "getExtraProps must not override aria-rowindex" );
-                }
-            }
-            Object.assign( trProps, extraProps );
-        }
-    }
-
     return (
-        <tr {...trProps}>
+        <tr {...getRowProps(rowData,rowDataIndex,getRowExtraProps)}>
             {columns.map(( column, columnIndex ) => column.visibility !== "hidden" ? (
                 <CellComponent
                     key={column.dataKey}

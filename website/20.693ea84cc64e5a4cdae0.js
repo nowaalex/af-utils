@@ -1,0 +1,3 @@
+/*! For license information please see 20.693ea84cc64e5a4cdae0.js.LICENSE.txt */
+(window.Z=window.Z||[]).push([[20],{1258:function(a,e,c){"use strict";c.r(e);c(0);var l=c(35),t=c(1),n=[{dataKey:"a",label:"a"},{dataKey:"b",label:"b"},{dataKey:"c",label:"c"}],o=function(a){return{a:a,b:"cell_b_row: "+a,c:"cell_c_row: "+a}};e.default=function(a){var e=a.className;return Object(t.c)(l.a,{className:e,headless:!0,getRowData:o,rowCount:500,columns:n})}}}]);
+//# sourceMappingURL=sm.20.d101dae15c3f775969bc497f51b46c1b.map

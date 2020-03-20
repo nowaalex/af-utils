@@ -15,7 +15,6 @@ import Scroller from "../common/Scroller";
 import RowCountWarningContainerDefault from "../common/RowCountWarningContainer";
 
 
-
 /*
     flex: 1 1 auto, assuming that table would be used full-stretch mostly
 */

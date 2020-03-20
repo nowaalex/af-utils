@@ -1,5 +1,6 @@
 import debounce from "lodash/debounce";
 import subtract from "lodash/subtract";
+import add from "lodash/add";
 import VariableSizeList from "../VariableSizeList";
 
 const REFRESH_SORT_DEBOUNCE_INTERVAL = 500;
@@ -12,40 +13,34 @@ const fillOrderedRowsArray = ( arr, startIndex, endIndex ) => {
 
 const L = new Intl.Collator();
 
+const getValueForSorting = ( srcVal, rowIndex, fieldName, defaultValue, getRowData, getCellData ) => {
+    const result = getRowData( srcVal );
+    if( result ){
+        return getCellData ? getCellData( result, rowIndex ) : result[ fieldName ];
+    }
+    return defaultValue;
+}
+
 const getSorter = ( getRowData, fieldName, method, getCellData, directionSign ) => {
     const fn = method === "locale" ? L.compare : subtract;
     const defaultValue = method === "locale" ? "" : 0;
 
-    if( getCellData ){
-        return ( a, b, i ) => {
-            a = getRowData( a );
-            a = a ? getCellData( a, i ) : defaultValue;
-            b = getRowData( b );
-            b = b ? getCellData( b, i ) : defaultValue;
-            return fn( a, b ) * directionSign;
-        };
-    }
-    
-    return ( a, b ) => {
-        a = getRowData( a );
-        a = a ? a[ fieldName ] : defaultValue;
-        b = getRowData( b );
-        b = b ? b[ fieldName ] : defaultValue;
-        return fn( a, b ) * directionSign;
+    return ( a, b, i ) => {
+        const v1 = getValueForSorting( a, i, fieldName, defaultValue, getRowData, getCellData );
+        const v2 = getValueForSorting( b, i, fieldName, defaultValue, getRowData, getCellData );
+        return fn( v1, v2 ) * directionSign;
     };
 };
 
-const calculateSum = ( totalRows, dataKey, getRowData, getCellData ) => {
-    let res = 0;
+const reduceRange = ( totalRows, dataKey, getRowData, getCellData, startValue, getNewRes ) => {
+    let res = startValue;
     for( let i = 0, rowData, cellData; i < totalRows; i++ ){
         rowData = getRowData( i );
         cellData = getCellData ? getCellData( rowData, i ) : rowData[ dataKey ];
-        if( cellData ){
-            res += cellData;
-        }
+        res = getNewRes( res, cellData );
     }
     return res;
-};
+}
 
 /*
     We could use simple object literal,
@@ -90,25 +85,37 @@ class Table extends VariableSizeList {
                 curCachePart = this.totalsCache[ dataKey ] = new TotalsCachePart();
             }
             
-            for( let j = 0, totalType, oldVal, newVal; j < curTotals.length; j++ ){
+            for( let j = 0, totalType, oldVal, newVal, tmpSum; j < curTotals.length; j++ ){
                 totalType = curTotals[ j ];
                 oldVal = curCachePart[ totalType ];
-                switch( curTotals[ j ] ){
+                switch( totalType ){
                     case "count":
                         newVal = this.totalRows;
                         break;
                     case "sum":
-                        newVal = calculateSum( this.totalRows, dataKey, this.rowDataGetter, cellDataGetter );
-                        break;
                     case "average":
-                        /* Todo: optimize, if we already calculated sum */
-                        newVal = calculateSum( this.totalRows, dataKey, this.rowDataGetter, cellDataGetter ) / this.totalRows;
+                        if( tmpSum === undefined ){
+                            tmpSum = reduceRange( this.totalRows, dataKey, this.rowDataGetter, cellDataGetter, 0, add );
+                        }
+                        newVal = totalType === "sum" ? tmpSum : tmpSum / this.totalRows;
+                        break;
+                    case "min":
+                    case "max":
+                        newVal = reduceRange(
+                            this.totalRows,
+                            dataKey,
+                            this.rowDataGetter,
+                            cellDataGetter,
+                            totalType === "min" ? Number.MAX_SAFE_INTEGER : Number.MIN_SAFE_INTEGER,
+                            Math[totalType]
+                        );
                         break;
                     default:
                         if( process.env.NODE_ENV !== "production" ){
-                            console.error( `Unknown totals type: ${curTotals[ j ]}` );
+                            throw new Error( `Wrong total type: ${totalType}` );
                         }
                 }
+  
                 if( oldVal !== newVal ){
                     curCachePart[ totalType ] = newVal;
                     this.emit( "totals-calculated" );

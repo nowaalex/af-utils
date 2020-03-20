@@ -16,7 +16,6 @@ import RowCountWarningContainerDefault from "../common/RowCountWarningContainer"
 import NonStickyComponent from "./NonSticky";
 import StickyComponent from "./Sticky";
 
-
 /*
     flex: 1 1 auto, assuming that table would be used full-stretch mostly
 */

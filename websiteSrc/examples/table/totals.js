@@ -21,8 +21,8 @@ const rows = times( rowCount, () => ({
 
 const totals = {
     n1: [ "count" ],
-    n2: [ "sum" ],
-    n3: [ "average" ],
+    n2: [ "sum", "max" ],
+    n3: [ "average", "min" ],
     n4: [ "count", "sum", "average" ]
 };
 
