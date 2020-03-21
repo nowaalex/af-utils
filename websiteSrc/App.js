@@ -6,10 +6,6 @@ import { HashRouter, Switch, Route, Redirect } from "react-router-dom";
 const Menu = lazy(() => import( "./Menu" ));
 const Example = lazy(() => import( "./Example" ));
 
-if( !ASSETS_PATH ){
-    throw new Error( `ASSETS_PATH should be passed` );
-}
-
 const growCss = css`
     flex: 1 1 auto;
 `;
@@ -46,7 +42,7 @@ const mainFieldWrapperCss = css`
 `;
 
 const App = () => (
-    <HashRouter basename={ASSETS_PATH}>
+    <HashRouter>
         <Global styles={globalCss} />
         <Suspense fallback="Loading menu...">
             <Menu />
