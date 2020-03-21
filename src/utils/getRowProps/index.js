@@ -6,7 +6,7 @@ const getRowProps = ( rowData, rowIndex, getRowExtraProps ) => {
     };
 
     if( getRowExtraProps ){
-        const extraProps = getRowExtraProps( rowData, rowDataIndex );
+        const extraProps = getRowExtraProps( rowData, rowIndex );
         if( extraProps ){
             if( process.env.NODE_ENV !== "production" ){
                 if( extraProps.hasOwnProperty( "aria-rowindex" ) ){
