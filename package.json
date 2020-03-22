@@ -1,6 +1,6 @@
 {
   "name": "af-virtual-scroll",
-  "version": "1.6.9",
+  "version": "1.7.0",
   "description": "React components for rendering large scrollable data",
   "repository": {
     "type": "git",
@@ -26,6 +26,10 @@
     "./lib/": "./lib/",
     "./": "./lib/"
   },
+  "files": [
+    "lib",
+    "src/*.js"
+  ],
   "keywords": [
     "react",
     "reactjs",
