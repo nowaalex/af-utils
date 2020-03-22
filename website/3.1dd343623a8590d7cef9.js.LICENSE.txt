@@ -1,0 +1,53 @@
+/*
+        TODO:
+            make this call throttled
+    */
+
+/*
+        We do not want to recalculate totals too often, so caching them in object by column dataKey
+    */
+
+/*
+      Only cells inside thead/tfoot can be sticky.
+      If thead/tfoot are hidden - we can easily render lighter StickyComponent to avoid extra wrappers
+  */
+
+/*
+    flex: 1 1 auto, assuming that table would be used full-stretch mostly
+*/
+
+/* If we do this via transform translate, col background would have bugs during horizontal scroll. Strange webkit behavior */
+
+/* harmony default export */
+
+/* harmony import */
+
+/*#__PURE__*/
+
+/***/
+
+//    For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
+
+//    If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
+
+//    memo(observer(RowComponentDefault)) will do the trick.
+
+// CONCATENATED MODULE: ./lib/Table/common/Tfoot.js
+
+// Determines, if table-layout: fixed is applied to main table
+
+// EXTERNAL MODULE: ./lib/Table/common/Cell.js
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+
+// EXTERNAL MODULE: ./node_modules/emotion/dist/emotion.esm.js + 1 modules
+
+// If not, it goes through flow: getEmptyCellData(rowIndex, column).
+
+// If rowData is available, cellData goes through flow, where each fn is optional: render(format((getCellData(rowData,rowIndex))),rowData)
+
+// array may contain: "sum", "average", "count", "max", "min"
+
+// column props, affecting colgroup > col tags
+
+// unique key for column

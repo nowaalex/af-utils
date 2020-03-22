@@ -1,7 +1,5 @@
 import { useRef, useEffect } from "react";
 
-const FIRE_EFFECT_ONLY_ONCE = [];
-
 /*
     dataRef is to call Data methods from outside( Data.scrollTo(), etc. ).
     As it is not dom-related, I decided to avoid forwardRef
@@ -11,17 +9,17 @@ const useStore = ( StoreConstructor, dataRef ) => {
 
     let Store = finalDataRef.current;
 
-    if( !Store ){
+    if( !Store || !( Store instanceof StoreConstructor ) ){
         Store = finalDataRef.current = new StoreConstructor();
+    }
 
-        if( dataRef ){
-            dataRef.current = Store;
-        }
+    if( dataRef ){
+        dataRef.current = Store;
     }
 
     useEffect(() => () => {
         Store.destructor();
-    }, FIRE_EFFECT_ONLY_ONCE );
+    }, [ Store ]);
 
     return Store;
 };

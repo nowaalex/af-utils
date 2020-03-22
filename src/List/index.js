@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import { css } from "emotion";
 
 import Context from "../Context";
-import VariableSizeList from "../models/VariableSizeList";
 import useStore from "../utils/useStore";
 
+import VariableSizeListStore from "../models/VariableSizeList";
+import FixedSizeListStore from "../models/FixedSizeList";
 
 import ScrollContainer from "../common/ScrollContainer";
 import RowComponentDefault from "./common/Row";
@@ -28,30 +29,29 @@ const wrapperClass = css`
 `;
 
 const List = ({
+    fixedSize,
     getRowData,
     getRowKey,
     getRowExtraProps,
     rowCount,
-    estimatedRowHeight,
     overscanRowsCount,
     rowCountWarningsTable,
     RowCountWarningContainer,
+    RowComponent = RowComponentDefault,
     dataRef,
-    RowComponent,
     ...props
 }) => {
 
     const scrollContainerRef = useRef();
     const rowsContainerRef = useRef();
 
-    const Store = useStore( VariableSizeList, dataRef );
+    const Store = useStore( fixedSize ? FixedSizeListStore : VariableSizeListStore, dataRef );
 
     useEffect(() => {
         Store.merge({
             rowDataGetter: getRowData,
             rowKeyGetter: getRowKey,
             overscanRowsCount,
-            estimatedRowHeight,
             totalRows: rowCount,
             rowsContainerNode: rowsContainerRef.current,
             scrollContainerNode: scrollContainerRef.current
@@ -78,14 +78,15 @@ const List = ({
             ) : null }
         </Context.Provider>
     );
-}
+};
+
 
 List.propTypes = {
+    fixedSize: PropTypes.bool,
     getRowData: PropTypes.func.isRequired,
     className: PropTypes.string,
     rowCount: PropTypes.number,
     getRowKey: PropTypes.func,
-    estimatedRowHeight: PropTypes.number,
     getRowExtraProps: PropTypes.func,
     overscanRowsCount: PropTypes.number,
     RowComponent: PropTypes.any,
@@ -95,15 +96,17 @@ List.propTypes = {
 };
 
 List.defaultProps = {
+    fixedSize: false,
     rowCount: 0,
-    estimatedRowHeight: 20,
     overscanRowsCount: 4,
 
+    
     /*
         For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
         If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
         memo(observer(RowComponentDefault)) will do the trick.
     */
+    
     RowComponent: memo( RowComponentDefault ),
     RowCountWarningContainer: RowCountWarningContainerDefault,
 };

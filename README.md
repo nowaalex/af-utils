@@ -61,7 +61,6 @@ Table.propTypes = {
     className: PropTypes.string,
     rowCount: PropTypes.number,
     getRowKey: PropTypes.func,
-    estimatedRowHeight: PropTypes.number,
     getRowExtraProps: PropTypes.func,
     overscanRowsCount: PropTypes.number,
 
@@ -79,7 +78,6 @@ Table.propTypes = {
 
 Table.defaultProps = {
     rowCount: 0,
-    estimatedRowHeight: 20,
     overscanRowsCount: 4,
     fixedLayout: false,
     headless: false,

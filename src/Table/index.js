@@ -4,8 +4,10 @@ import { css } from "emotion";
 
 import isPositionStickySupported from "../utils/isPositionStickySupported";
 import Context from "../Context";
-import VirtualTableDataStore from "../models/Table";
 import useStore from "../utils/useStore";
+
+import FixedSizeTableStore from "../models/FixedSizeTable";
+import VariableSizeTableStore from "../models/VariableSizeTable";
 
 import RowComponentDefault from "./common/Row";
 import CellComponentDefault from "./common/Cell";
@@ -38,13 +40,13 @@ const wrapperClass = css`
 `;
 
 const Table = ({
+    fixedSize,
     columns,
     totals,
     getRowData,
     getRowKey,
     getRowExtraProps,
     rowCount,
-    estimatedRowHeight,
     overscanRowsCount,
     rowCountWarningsTable,
     headless,
@@ -58,7 +60,7 @@ const Table = ({
     const scrollContainerRef = useRef();
     const tbodyRef = useRef();
 
-    const Store = useStore( VirtualTableDataStore, dataRef );
+    const Store = useStore( fixedSize ? FixedSizeTableStore : VariableSizeTableStore, dataRef );
 
     useEffect(() => {
         Store.merge({
@@ -68,7 +70,6 @@ const Table = ({
             overscanRowsCount,
             totals,
             columns,
-            estimatedRowHeight,
             totalRows: Math.max( rowCount, 0 ),
             rowsContainerNode: tbodyRef.current,
             scrollContainerNode: scrollContainerRef.current
@@ -101,15 +102,14 @@ const Table = ({
 }
 
 Table.propTypes = {
+    fixedSize: PropTypes.bool,
     columns: PropTypes.arrayOf(
         PropTypes.shape({
-            /* unique key for column */
+            // unique key for column
             dataKey: PropTypes.string.isRequired,
 
-            /* 
-                If rowData is available, cellData goes through flow, where each fn is optional: render(format((getCellData(rowData,rowIndex))),rowData)
-                If not, it goes through flow: getEmptyCellData(rowIndex, column).
-            */
+            // If rowData is available, cellData goes through flow, where each fn is optional: render(format((getCellData(rowData,rowIndex))),rowData)
+            // If not, it goes through flow: getEmptyCellData(rowIndex, column).
             getCellData: PropTypes.func,
             getEmptyCellData: PropTypes.func,
             format: PropTypes.func,
@@ -118,9 +118,7 @@ Table.propTypes = {
             visibility: PropTypes.oneOf([ "visible", "hidden" ]),
             sort: PropTypes.oneOf([ "locale", "numeric" ]),
 
-            /*
-                column props, affecting colgroup > col tags
-            */
+            // column props, affecting colgroup > col tags
             background: PropTypes.string,
             border: PropTypes.string,
             width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ])
@@ -129,7 +127,7 @@ Table.propTypes = {
     getRowData: PropTypes.func.isRequired,
 
     totals: PropTypes.objectOf(
-        /* array may contain: "sum", "average", "count". */
+        // array may contain: "sum", "average", "count", "max", "min"
         PropTypes.array
     ),
     
@@ -138,7 +136,6 @@ Table.propTypes = {
     className: PropTypes.string,
     rowCount: PropTypes.number,
     getRowKey: PropTypes.func,
-    estimatedRowHeight: PropTypes.number,
     getRowExtraProps: PropTypes.func,
     overscanRowsCount: PropTypes.number,
 
@@ -150,22 +147,21 @@ Table.propTypes = {
     RowCountWarningContainer: PropTypes.any,
     rowCountWarningsTable: PropTypes.object,
 
-    /* Determines, if table-layout: fixed is applied to main table */
+    // Determines, if table-layout: fixed is applied to main table
     fixedLayout: PropTypes.bool
 };
 
 Table.defaultProps = {
+    fixedSize: false,
     rowCount: 0,
-    estimatedRowHeight: 20,
     overscanRowsCount: 4,
     fixedLayout: false,
     headless: false,
 
-    /*
-        For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
-        If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
-        memo(observer(RowComponentDefault)) will do the trick.
-    */
+    //    For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
+    //    If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
+    //    memo(observer(RowComponentDefault)) will do the trick.
+    
     RowComponent: memo( RowComponentDefault ),
     CellComponent: CellComponentDefault,
     TotalsCellComponent: TotalsCellComponentDefault,

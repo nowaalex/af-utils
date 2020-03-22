@@ -9,17 +9,12 @@ const wrapperCss = css`
     flex-flow: column nowrap;
 `;
 
-const rowCss = css`
-    margin: 1em;
-    border: 1px solid #000;
-`;
-
 const rowCount = 100000;
 
 const heights = times( rowCount, () => r( 50, 250 ) );
 
 const getRowData = index => (
-    <div css={rowCss} style={{
+    <div style={{
         lineHeight: `${heights[index]}px`,
         background: `hsl(${r(0,360)},${r(30,80)}%,${r(30,80)}%)`
     }}>
@@ -56,7 +51,6 @@ const ListWithScrollToRowButton = ({ className }) => {
                 dataRef={dataRef}
                 getRowData={getRowData}
                 rowCount={rowCount}
-                estimatedRowHeight={120}
             />
         </div>
     );

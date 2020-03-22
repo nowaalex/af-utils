@@ -55,12 +55,6 @@ const totals = {
     num: [ "sum", "count" ]
 };
 
-/*
-    Table measures row heights automatically.
-    estimatedRowHeight is not necessary,
-    it makes table a little smoother.
-    In future this prop may be removed.
-*/
 const VariableRowHeightsTable = ({ className }) => (
     <Table
         css={tableCss}
@@ -70,7 +64,6 @@ const VariableRowHeightsTable = ({ className }) => (
         getRowData={getRowData}
         rowCount={rowCount}
         columns={columns}
-        estimatedRowHeight={120}
     />
 );
 

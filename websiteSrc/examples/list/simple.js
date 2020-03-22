@@ -5,9 +5,10 @@ const getRowData = index => `row ${index}`;
 
 const SimpleList = ({ className }) => (
     <List
+        fixedSize
         className={className}
         getRowData={getRowData}
-        rowCount={500}
+        rowCount={500000}
     />
 );
 

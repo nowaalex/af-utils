@@ -24,6 +24,14 @@ const globalCss = css`
             flex-flow: column nowrap;
         }
     }
+
+    table {
+        border-spacing: 0;
+    }
+
+    td {
+        padding: 0;
+    }
 `;
 
 const bundleIframeCss = css`
