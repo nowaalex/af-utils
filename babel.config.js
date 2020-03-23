@@ -2,6 +2,9 @@ const plugins = [
     "emotion",
     [ "@babel/plugin-proposal-class-properties", { loose: true }],
     [ "@babel/plugin-proposal-object-rest-spread", { loose: true, useBuiltIns: true }],
+    [ "transform-react-remove-prop-types", {
+        mode: "wrap"
+    }]
 ];
 
 const presets = [ "@babel/preset-react" ];
@@ -23,10 +26,6 @@ module.exports = api => {
         if( !api.env( "lib" ) ){
             presets.push( "@emotion/babel-preset-css-prop" );
         }
-    }
-
-    if( api.env( "production" ) ){
-        plugins.push( "transform-react-remove-prop-types" );
     }
 
     presets.push([ "@babel/preset-env", presetEnvOptions ]);

@@ -9,6 +9,15 @@ const MenuStruct = [
         children: ExamplesMenu
     },
     {
+        name: "Docs",
+        children: [
+            {
+                name: "Basic",
+                path: "/docs/basic"
+            }
+        ]
+    },
+    {
         name: "Misc",
         children: [
             {

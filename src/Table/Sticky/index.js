@@ -1,5 +1,4 @@
-import React, { memo, useMemo, Fragment, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { memo, useMemo, useEffect } from "react";
 import { css, cx } from "emotion";
 
 import Colgroup from "../common/Colgroup";

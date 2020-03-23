@@ -18,6 +18,9 @@ import RowCountWarningContainerDefault from "../common/RowCountWarningContainer"
 import NonStickyComponent from "./NonSticky";
 import StickyComponent from "./Sticky";
 
+import commonPropTypes from "../commonPropTypes";
+import commonDefaultProps from "../commonDefaultProps";
+
 /*
     flex: 1 1 auto, assuming that table would be used full-stretch mostly
 */
@@ -102,7 +105,7 @@ const Table = ({
 }
 
 Table.propTypes = {
-    fixedSize: PropTypes.bool,
+    ...commonPropTypes,
     columns: PropTypes.arrayOf(
         PropTypes.shape({
             // unique key for column
@@ -124,7 +127,6 @@ Table.propTypes = {
             width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ])
         })
     ).isRequired,
-    getRowData: PropTypes.func.isRequired,
 
     totals: PropTypes.objectOf(
         // array may contain: "sum", "average", "count", "max", "min"
@@ -133,14 +135,8 @@ Table.propTypes = {
     
     useStickyIfPossible: PropTypes.bool,
     headless: PropTypes.bool,
-    className: PropTypes.string,
-    rowCount: PropTypes.number,
-    getRowKey: PropTypes.func,
-    getRowExtraProps: PropTypes.func,
-    overscanRowsCount: PropTypes.number,
 
     HeaderRowComponent: PropTypes.any,
-    RowComponent: PropTypes.any,
     CellComponent: PropTypes.any,
     TotalsCellComponent: PropTypes.any,
 
@@ -152,9 +148,7 @@ Table.propTypes = {
 };
 
 Table.defaultProps = {
-    fixedSize: false,
-    rowCount: 0,
-    overscanRowsCount: 4,
+    ...commonDefaultProps,
     fixedLayout: false,
     headless: false,
 

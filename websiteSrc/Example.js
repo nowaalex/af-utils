@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense } from "react";
+import React, { Suspense } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import js from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import codeStyle from "react-syntax-highlighter/dist/esm/styles/prism/vs-dark";
@@ -47,23 +47,20 @@ const Example = () => {
     const { example } = useParams();
 
     if( !ComponentsMap.hasOwnProperty( example ) ){
-        return <h3>Wrong example</h3>;
+        return "Wrong example";
     }
 
     const [ Component, code ] = ComponentsMap[ example ];
 
     return (
-        <Fragment>
-            <h3>Examples/{example}</h3>
-            <div css={mainFieldCss}>
-                <Suspense fallback="Loading example...">
-                    <Component css={tableWrapperCss} />
-                    <SyntaxHighlighter css={codeCss} language="javascript" style={codeStyle} customStyle={customStyle}>
-                        {code}
-                    </SyntaxHighlighter>
-                </Suspense>
-            </div>
-        </Fragment>
+        <div css={mainFieldCss}>
+            <Suspense fallback="Loading example...">
+                <Component css={tableWrapperCss} />
+                <SyntaxHighlighter css={codeCss} language="javascript" style={codeStyle} customStyle={customStyle}>
+                    {code}
+                </SyntaxHighlighter>
+            </Suspense>
+        </div>
     );
 }
 

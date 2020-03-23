@@ -15,6 +15,8 @@ import Rows from "./common/Rows";
 import Scroller from "../common/Scroller";
 import RowCountWarningContainerDefault from "../common/RowCountWarningContainer";
 
+import commonPropTypes from "../commonPropTypes";
+import commonDefaultProps from "../commonDefaultProps";
 
 /*
     flex: 1 1 auto, assuming that table would be used full-stretch mostly
@@ -80,25 +82,14 @@ const List = ({
     );
 };
 
-
 List.propTypes = {
-    fixedSize: PropTypes.bool,
-    getRowData: PropTypes.func.isRequired,
-    className: PropTypes.string,
-    rowCount: PropTypes.number,
-    getRowKey: PropTypes.func,
-    getRowExtraProps: PropTypes.func,
-    overscanRowsCount: PropTypes.number,
-    RowComponent: PropTypes.any,
-
+    ...commonPropTypes,
     RowCountWarningContainer: PropTypes.any,
     rowCountWarningsTable: PropTypes.object
 };
 
 List.defaultProps = {
-    fixedSize: false,
-    rowCount: 0,
-    overscanRowsCount: 4,
+    ...commonDefaultProps,
 
     
     /*

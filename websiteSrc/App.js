@@ -1,10 +1,11 @@
 import React, { Suspense, lazy } from "react";
 import { css, Global } from "@emotion/core";
 /* App is deployed to github pages, so BrowserRouter would not work there */
-import { HashRouter, Switch, Route, Redirect } from "react-router-dom";
+import { HashRouter, Switch, Route, Redirect, useLocation } from "react-router-dom";
 
 const Menu = lazy(() => import( "./Menu" ));
 const Example = lazy(() => import( "./Example" ));
+const Docs = lazy(() => import( "./Docs" ));
 
 const growCss = css`
     flex: 1 1 auto;
@@ -49,6 +50,8 @@ const mainFieldWrapperCss = css`
     overflow: hidden;
 `;
 
+const Header = () => <h2>{useLocation().pathname.slice( 1 )}</h2>;
+
 const App = () => (
     <HashRouter>
         <Global styles={globalCss} />
@@ -56,6 +59,7 @@ const App = () => (
             <Menu />
         </Suspense>
         <div css={mainFieldWrapperCss}>
+            <Header />
             <Switch>
                 <Route path="/examples/:example(.+)">
                     <Suspense fallback="Loading Examples container...">
@@ -63,8 +67,12 @@ const App = () => (
                     </Suspense>
                 </Route>
                 <Route path="/misc/bundle">
-                    <h3>Misc/bundle</h3>
                     <iframe css={bundleIframeCss} src={`${ASSETS_PATH}bundle.html`} />
+                </Route>
+                <Route path="/docs/:docpage">
+                    <Suspense fallback="Loading docs...">
+                        <Docs />
+                    </Suspense>
                 </Route>
                 <Redirect to="/examples/table/simple" />
             </Switch>
