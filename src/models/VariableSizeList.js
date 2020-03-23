@@ -11,7 +11,10 @@ import {
 const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 50;
 const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150;
 
-const DEFAULT_HEIGHS_CACHE = [ 0, 0 ];
+/*
+    Could just make [ 0, 0 ], but want to keep type of heightsCache always of same type.
+*/
+const DEFAULT_HEIGHS_CACHE = new Uint32Array( 2 );
 
 class VariableSizeList extends ListBase {
 
@@ -43,11 +46,10 @@ class VariableSizeList extends ListBase {
         if( node ){
             
             /*
-                TODO:
-                    make tree[ 0 ] more obvious and self-documented
+                see utils/tree.
             */
             const tree = this.heighsCache,
-                N = tree[ 0 ];
+                N = tree.length >> 1;
             
             let l = -1,
                 r = -1,

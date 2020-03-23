@@ -1,5 +1,5 @@
 export const walkUntil = ( dist, tree ) => {
-    const N = tree[ 0 ];
+    const N = tree.length >> 1;
 
     let nodeIndex = 1, v;
 
@@ -24,7 +24,7 @@ export const walkUntil = ( dist, tree ) => {
 
 export const sum = ( l, r, tree ) => {  
     let res = 0; 
-    const N = tree[ 0 ];
+    const N = tree.length >> 1;
     for( l += N, r += N; l < r; l >>= 1, r >>= 1 ){
         if( l & 1 ){
             res += tree[ l++ ];
@@ -48,7 +48,7 @@ export const sum = ( l, r, tree ) => {
         * maybe reimplement this method using Duff's device( l++,r-- in one iteration) and make benchmarks for different l-r ranges
 */
 export const calculateParentsInRange = ( l, r, tree ) => {
-    const N = tree[ 0 ];
+    const N = tree.length >> 1;
     
     for( r += N, l += N; r >>= 1; ){
         for( let i = l >>= 1; i <= r; i++ ){
@@ -67,7 +67,7 @@ const MIN_TREE_CACHE_SIZE = 32;
 
 export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
 
-    let N = tree ? tree[ 0 ] : 0;
+    let N = tree ? tree.length >> 1 : 0;
 
     if( endIndex > N ){
         N = 2 ** Math.ceil( Math.log2( endIndex + MIN_TREE_CACHE_SIZE ) );
@@ -75,13 +75,22 @@ export const reallocateIfNeeded = ( tree, endIndex, defaultValue ) => {
             Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
         */
         tree = new Uint32Array( N * 2 );
-        tree[ 0 ] = N;
+        tree[ 0 ] = endIndex;
+    }
+    else{
+        const [ prevEndIndex ] = tree;
+
+        /*
+            clearing only what is needed;
+            TODO: optimize this more
+        */
+        if( endIndex !== prevEndIndex ){
+            tree.fill( 0, 2, N + Math.max( endIndex, prevEndIndex ) >> 1 )
+        }
     }
 
-    /* clearing only what is needed */
-    tree
-        .fill( 0, 2, N + endIndex >> 1 )
-        .fill( defaultValue, N, N + endIndex );
+    
+    tree.fill( defaultValue, N, N + endIndex );
 
     /*
         Trees are not always ideally allocated, gaps are possible.

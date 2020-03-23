@@ -10,8 +10,7 @@
         */
 
 /*
-            TODO:
-                make tree[ 0 ] more obvious and self-documented
+            see utils/tree.
         */
 
 /*
@@ -27,6 +26,11 @@
 
 /*
         Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
+    */
+
+/*
+        clearing only what is needed;
+        TODO: optimize this more
     */
 
 /*
@@ -85,8 +89,6 @@
 /* In segments tree 1 node is always sum of all elements */
 
 /* avoiding double destructurization via getRowExtraProps, so making prop object once */
-
-/* clearing only what is needed */
 
 /* harmony default export */
 
