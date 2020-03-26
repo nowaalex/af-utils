@@ -1,12 +1,15 @@
 import ListBase from "./ListBase";
 import debounce from "lodash/debounce";
 
-import {
-    calculateParentsInRange,
-    walkUntil,
-    sum,
-    reallocateIfNeeded
-} from "../utils/tree";
+// Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
+const SegmentsTreeCache = Uint32Array;
+
+/*
+    This constant is used for 2 reasons:
+        * Math.log2( 1 ) is 0, which is not correct for cache size calculation
+        * We should always have some extra space for new rows. We do not want to reallocate cache every time.
+*/
+const MIN_TREE_CACHE_SIZE = 32;
 
 const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 50;
 const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150;
@@ -14,11 +17,13 @@ const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150;
 /*
     Could just make [ 0, 0 ], but want to keep type of heightsCache always of same type.
 */
-const DEFAULT_HEIGHS_CACHE = new Uint32Array( 2 );
+const DEFAULT_HEIGHS_CACHE = new SegmentsTreeCache( 2 );
 
 class VariableSizeList extends ListBase {
 
-    heighsCache = DEFAULT_HEIGHS_CACHE;
+    /* Two vars for non-recursive segments tree */
+    sTree = DEFAULT_HEIGHS_CACHE;
+    N = 0;
 
     /*
         When all row heights are different,
@@ -34,7 +39,19 @@ class VariableSizeList extends ListBase {
 
     updateWidgetScrollHeight(){
         /* In segments tree 1 node is always sum of all elements */
-        return this.set( "widgetScrollHeight", this.heighsCache[ 1 ] );
+        return this.set( "widgetScrollHeight", this.sTree[ 1 ] );
+    }
+
+    calculateParentsInRange( startIndex, endIndex ){
+        const { sTree, N } = this;
+    
+        for( endIndex += N, startIndex += N; endIndex >>= 1; ){
+            for( let i = startIndex >>= 1; i <= endIndex; i++ ){
+                sTree[ i ] = sTree[ i << 1 ] + sTree[ i << 1 | 1 ];
+            }
+        }
+
+        return this;
     }
 
     /*
@@ -44,12 +61,7 @@ class VariableSizeList extends ListBase {
         const node = this.rowsContainerNode;
 
         if( node ){
-            
-            /*
-                see utils/tree.
-            */
-            const tree = this.heighsCache,
-                N = tree.length >> 1;
+            const { sTree, N } = this;
             
             let l = -1,
                 r = -1,
@@ -76,9 +88,9 @@ class VariableSizeList extends ListBase {
                 newHeight = child.offsetHeight;
                 rowHeightsSum += newHeight;
 
-                if( tree[ N + index ] !== newHeight ){
-                    // console.log( "%d| was: %d; is: %d", index, tree[N+index],newHeight)
-                    tree[ N + index ] = newHeight;
+                if( sTree[ N + index ] !== newHeight ){
+                    // console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)
+                    sTree[ N + index ] = newHeight;
                     
                     if( l === -1 ){
                         l = index;
@@ -98,8 +110,9 @@ class VariableSizeList extends ListBase {
                     this.shouldResetInvisibleRowHeights = false;
                 }
                 else{
-                    calculateParentsInRange( l, r, tree );
-                    this.updateWidgetScrollHeight();
+                    this
+                        .calculateParentsInRange( l, r )
+                        .updateWidgetScrollHeight();
                 }
             }
         }
@@ -107,33 +120,63 @@ class VariableSizeList extends ListBase {
         return this;
     }, ROW_MEASUREMENT_DEBOUNCE_INTERVAL, { maxWait: ROW_MEASUREMENT_DEBOUNCE_MAXWAIT });
     
-    updateStartOffset(){
-        const { scrollTop, heighsCache, overscanRowsCount } = this;
-        const [ newVisibleStartIndex, remainder ] = walkUntil( scrollTop, heighsCache );
-        const newStartIndex = Math.max( 0, newVisibleStartIndex - overscanRowsCount );
-        const overscanOffset = sum( newStartIndex, newVisibleStartIndex, heighsCache );
-                
-        return this
-            .set( "virtualTopOffset", scrollTop - remainder - overscanOffset )
-            .set( "startIndex", newStartIndex );
-    }
+    getVisibleRangeStart( dist ){
+        const { sTree, N } = this;
+        let nodeIndex = 1, v;
 
-    updateEndIndex(){
-        /*
-            TODO:
-                perf benchmarks tell, that removeChild is called often.
-                maybe cache previous range( endIndex - startIndex ) and if new range is smaller - throttle it's decrease?
-        */
-        const [ newEndIndex ] = walkUntil( this.scrollTop + this.widgetHeight, this.heighsCache );
-        /*
-            walkUntil works by "strict less" algo. It is good for startIndex,
-            but for endIndex we need "<=", so adding 1 artificially.
-        */
-        return this.set( "endIndex", Math.min( newEndIndex + 1 + this.overscanRowsCount, this.totalRows ) );
+        while( nodeIndex < N ){
+            v = sTree[ nodeIndex <<= 1 ];
+            if( dist >= v ){
+                dist -= v;
+                nodeIndex |= 1;
+            }
+        }
+
+        return [ nodeIndex - N, dist ];
     }
 
     resetMeasurementsCache(){
-        this.heighsCache = this.totalRows ? reallocateIfNeeded( this.heighsCache, this.totalRows, this.estimatedRowHeight ) : DEFAULT_HEIGHS_CACHE;
+        const { totalRows } = this;
+
+        if( totalRows ){
+
+            const { estimatedRowHeight } = this;
+            let { sTree, N } = this;
+
+            if( totalRows > N ){
+                N = this.N = 2 ** Math.ceil( Math.log2( totalRows + MIN_TREE_CACHE_SIZE ) );
+                sTree = this.sTree = new SegmentsTreeCache( N * 2 );
+            }
+            else{
+                const [ prevTotalRows ] = sTree;
+    
+                /*
+                    clearing only what is needed;
+                    TODO: optimize this more
+                */
+                if( totalRows !== prevTotalRows ){
+                    sTree.fill( 0, 2, N + Math.max( totalRows, prevTotalRows ) >> 1 )
+                }
+            }
+
+            sTree.fill( estimatedRowHeight, N, N + totalRows );
+
+            /*
+                Trees are not always ideally allocated, gaps are possible.
+                Classical way for calculating parents is much simpler,
+                but can do much more work(summing zeros) in such conditions. Commented classic algo:
+        
+                for( let i = N + totalRows >> 1, j; i > 0; --i ){
+                    j = i << 1;
+                    sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
+                }
+            */
+            this.calculateParentsInRange( 0, totalRows );
+        }
+        else{
+            this.sTree = DEFAULT_HEIGHS_CACHE;
+        }
+
         return this;
     }
 
@@ -155,7 +198,20 @@ class VariableSizeList extends ListBase {
     }
 
     getDistanceBetweenIndexes( startIndex, endIndex ){
-        return sum( startIndex, endIndex, this.heighsCache );
+        const { sTree, N } = this;
+        let res = 0; 
+
+        for( startIndex += N, endIndex += N; startIndex < endIndex; startIndex >>= 1, endIndex >>= 1 ){
+            if( startIndex & 1 ){
+                res += sTree[ startIndex++ ];
+            }
+
+            if( endIndex & 1 ){
+                res += sTree[ --endIndex ]; 
+            }
+        };
+
+        return res; 
     }
 };
 

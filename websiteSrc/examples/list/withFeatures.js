@@ -16,6 +16,7 @@ const heights = times( rowCount, () => r( 50, 250 ) );
 const getRowData = index => (
     <div style={{
         lineHeight: `${heights[index]}px`,
+        borderTop: "1px solid #666",
         background: `hsl(${r(0,360)},${r(30,80)}%,${r(30,80)}%)`
     }}>
         row{index}:&nbsp;{heights[index]}px

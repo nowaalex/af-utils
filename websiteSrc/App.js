@@ -31,7 +31,7 @@ const globalCss = css`
     }
 
     td {
-        padding: 0;
+        padding: 0.4em;
     }
 `;
 

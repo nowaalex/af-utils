@@ -58,10 +58,9 @@ class ListBase extends EventEmitter {
         
         if( process.env.NODE_ENV !== "production" ){
             const absentMethods = [
-                "updateEndIndex",
-                "updateStartOffset",
                 "updateWidgetScrollHeight",
-                "getDistanceBetweenIndexes"
+                "getDistanceBetweenIndexes",
+                "getVisibleRangeStart"
             ].filter( fn => !this[ fn ] );
 
             if( absentMethods.length ){
@@ -98,6 +97,26 @@ class ListBase extends EventEmitter {
     
     reportRowsRendered(){
         this.emit( "rows-rendered" );
+    }
+
+    updateStartOffset(){
+        const { scrollTop, overscanRowsCount } = this;
+        const [ newVisibleStartIndex, remainder ] = this.getVisibleRangeStart( scrollTop );
+        const newStartIndex = Math.max( 0, newVisibleStartIndex - overscanRowsCount );
+        const overscanOffset = this.getDistanceBetweenIndexes( newStartIndex, newVisibleStartIndex );
+                
+        return this
+            .set( "virtualTopOffset", scrollTop - remainder - overscanOffset )
+            .set( "startIndex", newStartIndex );
+    }
+
+    updateEndIndex(){
+        const [ newEndIndex ] = this.getVisibleRangeStart( this.scrollTop + this.widgetHeight );
+        /*
+            getVisibleRangeStart works by "strict less" algo. It is good for startIndex,
+            but for endIndex we need "<=", so adding 1 artificially.
+        */
+        return this.set( "endIndex", Math.min( newEndIndex + 1 + this.overscanRowsCount, this.totalRows ) );
     }
 
     scrollToRow( index ){
