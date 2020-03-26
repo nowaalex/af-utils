@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import List from "af-virtual-scroll/src/List";
+import List from "af-virtual-scroll/lib/List";
 import r from "lodash/random";
 import times from "lodash/times";
 import { css } from "@emotion/core";
