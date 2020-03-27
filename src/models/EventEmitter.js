@@ -3,8 +3,15 @@ class EventEmitter {
     _T = Object.create( null );
 
     _a( eventName, fn, prepend, once ){
-        let eventsQueue = this._T[ eventName ];
 
+        if( process.env.NODE_ENV !== "production" ){
+            if( !eventName || !fn ){
+                console.log( eventName, fn );
+                throw new Error( "Wrong eventName/fn provided" );
+            }
+        }
+
+        let eventsQueue = this._T[ eventName ];
         
         if( once ){
             const that = this,

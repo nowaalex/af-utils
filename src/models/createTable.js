@@ -2,13 +2,10 @@ import debounce from "lodash/debounce";
 import subtract from "lodash/subtract";
 import add from "lodash/add";
 
-const REFRESH_SORT_DEBOUNCE_INTERVAL = 500;
+const OrderedRowsCache = Uint32Array;
+const TbodyColumnWidthsCache = Uint32Array;
 
-const fillOrderedRowsArray = ( arr, startIndex, endIndex ) => {
-    while( startIndex < endIndex ){
-        arr[ startIndex ] = startIndex++;
-    }
-};
+const REFRESH_SORT_DEBOUNCE_INTERVAL = 500;
 
 const L = new Intl.Collator();
 
@@ -65,7 +62,7 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
 
     scrollLeft = 0;
     tbodyColumnWidths = null;
-    orderedRows = [];
+    orderedRows = new OrderedRowsCache( 0 );
 
     /*
         We do not want to recalculate totals too often, so caching them in object by column dataKey
@@ -166,18 +163,17 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
     }, REFRESH_SORT_DEBOUNCE_INTERVAL );
 
     refreshRowsOrder(){
-        if( this.totalRows > 0 ){
-            this.orderedRows.length = this.totalRows;
-            fillOrderedRowsArray( this.orderedRows, 0, this.totalRows );
-        }
-        else{
-            this.orderedRows.length = 0;
+        if( this.orderedRows.length !== this.totalRows ){
+            const rows = this.orderedRows = new OrderedRowsCache( this.totalRows );
+            for( let j = 1; j < rows.length; j++ ){
+                rows[ j ] = j;
+            }
         }
         return this;
     }
 
     resetColumnWidthsCache(){
-        this.tbodyColumnWidths = new Uint32Array( this.columns.length );
+        this.tbodyColumnWidths = new TbodyColumnWidthsCache( this.columns.length );
     }
 
     constructor(){
