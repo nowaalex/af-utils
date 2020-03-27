@@ -9,21 +9,19 @@ const SegmentsTreeCache = Uint32Array;
         * Math.log2( 1 ) is 0, which is not correct for cache size calculation
         * We should always have some extra space for new rows. We do not want to reallocate cache every time.
 */
-const MIN_TREE_CACHE_SIZE = 32;
+const MIN_TREE_CACHE_OFFSET = 32;
 
 const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 50;
-const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150;
-
-/*
-    Could just make [ 0, 0 ], but want to keep type of heightsCache always of same type.
-*/
-const DEFAULT_HEIGHS_CACHE = new SegmentsTreeCache( 2 );
+const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150; 
 
 class VariableSizeList extends ListBase {
 
-    /* Two vars for non-recursive segments tree */
-    sTree = DEFAULT_HEIGHS_CACHE;
-    N = 0;
+    /*
+        Two vars for non-recursive segments tree;
+        Could just make [ 0, 0 ], but want to keep type of heightsCache always of same type.
+    */
+    sTree = new SegmentsTreeCache( 2 );
+    N = 1;
 
     /*
         When all row heights are different,
@@ -135,46 +133,29 @@ class VariableSizeList extends ListBase {
         return [ nodeIndex - N, dist ];
     }
 
-    resetMeasurementsCache(){
-        const { totalRows } = this;
+    resetCache(){
+        const { sTree, estimatedRowHeight, N, totalRows } = this;
+        sTree.fill( estimatedRowHeight, N, N + totalRows );
 
-        if( totalRows ){
-
-            const { estimatedRowHeight } = this;
-            let { sTree, N } = this;
-
-            if( totalRows > N ){
-                N = this.N = 2 ** Math.ceil( Math.log2( totalRows + MIN_TREE_CACHE_SIZE ) );
-                sTree = this.sTree = new SegmentsTreeCache( N * 2 );
-            }
-            else{
-                const [ prevTotalRows ] = sTree;
+        /*
+            Trees are not always ideally allocated, gaps are possible.
+            Classical way for calculating parents is much simpler,
+            but can do much more work(summing zeros) in such conditions. Commented classic algo:
     
-                /*
-                    clearing only what is needed;
-                    TODO: optimize this more
-                */
-                if( totalRows !== prevTotalRows ){
-                    sTree.fill( 0, 2, N + Math.max( totalRows, prevTotalRows ) >> 1 )
-                }
+            for( let i = N + totalRows >> 1, j; i > 0; --i ){
+                j = i << 1;
+                sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
             }
+        */
+        return this.calculateParentsInRange( 0, totalRows );
+    }
 
-            sTree.fill( estimatedRowHeight, N, N + totalRows );
+    reallocateCacheIfNeeded(){
+        const suggestedN = this.totalRows ? 2 ** Math.ceil( Math.log2( this.totalRows + MIN_TREE_CACHE_OFFSET ) ) : 1;
 
-            /*
-                Trees are not always ideally allocated, gaps are possible.
-                Classical way for calculating parents is much simpler,
-                but can do much more work(summing zeros) in such conditions. Commented classic algo:
-        
-                for( let i = N + totalRows >> 1, j; i > 0; --i ){
-                    j = i << 1;
-                    sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
-                }
-            */
-            this.calculateParentsInRange( 0, totalRows );
-        }
-        else{
-            this.sTree = DEFAULT_HEIGHS_CACHE;
+        if( this.N !== suggestedN ){
+            this.N = suggestedN;
+            this.sTree = new SegmentsTreeCache( suggestedN * 2 );
         }
 
         return this;
@@ -184,8 +165,9 @@ class VariableSizeList extends ListBase {
         super();
 
         this
-            .prependListener( "#totalRows", this.resetMeasurementsCache )
-            .on( "#estimatedRowHeight", this.resetMeasurementsCache )
+            .prependListener( "#totalRows", this.resetCache )
+            .prependListener( "#totalRows", this.reallocateCacheIfNeeded )
+            .on( "#estimatedRowHeight", this.resetCache )
             .on( "#estimatedRowHeight", this.updateWidgetScrollHeight )
             .on( "rows-rendered", this.setVisibleRowsHeights )
             .on( "#widgetWidth", this.markResetInvisibleRowHeights )
@@ -199,7 +181,7 @@ class VariableSizeList extends ListBase {
 
     getDistanceBetweenIndexes( startIndex, endIndex ){
         const { sTree, N } = this;
-        let res = 0; 
+        let res = 0;
 
         for( startIndex += N, endIndex += N; startIndex < endIndex; startIndex >>= 1, endIndex >>= 1 ){
             if( startIndex & 1 ){

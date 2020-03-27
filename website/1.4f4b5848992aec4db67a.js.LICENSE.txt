@@ -10,24 +10,19 @@
         */
 
 /*
-            clearing only what is needed;
-            TODO: optimize this more
-        */
-
-/*
-          Trees are not always ideally allocated, gaps are possible.
-          Classical way for calculating parents is much simpler,
-          but can do much more work(summing zeros) in such conditions. Commented classic algo:
-                   for( let i = N + totalRows >> 1, j; i > 0; --i ){
-              j = i << 1;
-              sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
-          }
-      */
-
-/*
           when using ...args and arrow func, babel is making unnecessary arguments copy.
           Going old-school here for perf
       */
+
+/*
+        Trees are not always ideally allocated, gaps are possible.
+        Classical way for calculating parents is much simpler,
+        but can do much more work(summing zeros) in such conditions. Commented classic algo:
+             for( let i = N + totalRows >> 1, j; i > 0; --i ){
+            j = i << 1;
+            sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
+        }
+    */
 
 /*
         getVisibleRangeStart works by "strict less" algo. It is good for startIndex,
@@ -44,6 +39,11 @@
 
 /*
       TODO: maybe some react-like performUnitOfWork logic is needed here?
+  */
+
+/*
+      Two vars for non-recursive segments tree;
+      Could just make [ 0, 0 ], but want to keep type of heightsCache always of same type.
   */
 
 /*
@@ -70,8 +70,6 @@
 */
 
 /* In segments tree 1 node is always sum of all elements */
-
-/* Two vars for non-recursive segments tree */
 
 /* avoiding double destructurization via getRowExtraProps, so making prop object once */
 
