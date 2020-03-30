@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import getRowProps from "../../utils/getRowProps";
+import { getRowProps } from "../../utils/extraPropsGetters";
 
 const Row = ({ getRowData, getRowExtraProps, rowIndex }) => {
 

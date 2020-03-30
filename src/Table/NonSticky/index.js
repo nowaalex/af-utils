@@ -49,6 +49,7 @@ const NonSticky = ({
     tbodyRef,
     scrollContainerRef,
     getRowExtraProps,
+    getCellExtraProps,
     RowComponent,
     CellComponent,
     TotalsCellComponent,
@@ -102,11 +103,12 @@ const NonSticky = ({
                         <Tbody
                             tbodyRef={tbodyRef}
                             getRowExtraProps={getRowExtraProps}
+                            getCellExtraProps={getCellExtraProps}
                             RowComponent={RowComponent}
                             CellComponent={CellComponent}
                         />
                     </BodyTable>
-                ), [ totals, headlessMode, fixedLayout, getRowExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
+                ), [ totals, headlessMode, fixedLayout, getRowExtraProps, getCellExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
             </ScrollContainer>
             {totals && (
                 <TableWrapper className={headerFooterClass}>

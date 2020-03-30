@@ -18,6 +18,7 @@ const getVisibleRows = (
     getRowData,
     getRowKey,
     getRowExtraProps,
+    getCellExtraProps,
     RowComponent,
     CellComponent
 ) => {
@@ -28,6 +29,7 @@ const getVisibleRows = (
         result.push(
             <RowComponent
                 getRowExtraProps={getRowExtraProps}
+                getCellExtraProps={getCellExtraProps}
                 rowIndex={rangeFrom}
                 rowDataIndex={idx}
                 key={rowKey}
@@ -40,7 +42,7 @@ const getVisibleRows = (
     return result;
 };
 
-const Rows = ({ getRowExtraProps, RowComponent, CellComponent }) => {
+const Rows = ({ getRowExtraProps, getCellExtraProps, RowComponent, CellComponent }) => {
 
     const API = useApi( SUBSCRIBE_EVENTS );
 
@@ -56,6 +58,7 @@ const Rows = ({ getRowExtraProps, RowComponent, CellComponent }) => {
         API.rowDataGetter,
         API.rowKeyGetter,
         getRowExtraProps,
+        getCellExtraProps,
         RowComponent,
         CellComponent
     );

@@ -49,6 +49,7 @@ const Table = ({
     getRowData,
     getRowKey,
     getRowExtraProps,
+    getCellExtraProps,
     rowCount,
     overscanRowsCount,
     rowCountWarningsTable,
@@ -92,6 +93,7 @@ const Table = ({
                     className={wrapperClass}
                     scrollContainerRef={scrollContainerRef}
                     getRowExtraProps={getRowExtraProps}
+                    getCellExtraProps={getCellExtraProps}
                     tbodyRef={tbodyRef}
                     {...props}
                 />
@@ -124,9 +126,13 @@ Table.propTypes = {
             // column props, affecting colgroup > col tags
             background: PropTypes.string,
             border: PropTypes.string,
-            width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ])
+            width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
+            CellComponent: PropTypes.any,
+            getCellExtraProps: PropTypes.func
         })
     ).isRequired,
+
+    getCellExtraProps: PropTypes.func,
 
     totals: PropTypes.objectOf(
         // array may contain: "sum", "average", "count", "max", "min"

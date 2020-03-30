@@ -45,6 +45,7 @@ const Sticky = ({
     tbodyRef,
     scrollContainerRef,
     getRowExtraProps,
+    getCellExtraProps,
     RowComponent,
     CellComponent,
     TotalsCellComponent,
@@ -87,6 +88,7 @@ const Sticky = ({
                     <Tbody
                         tbodyRef={tbodyRef}
                         getRowExtraProps={getRowExtraProps}
+                        getCellExtraProps={getCellExtraProps}
                         RowComponent={RowComponent}
                         CellComponent={CellComponent}
                     />
@@ -97,7 +99,7 @@ const Sticky = ({
                         />
                     )}
                 </BodyTable>
-            ), [ headlessMode, fixedLayout, totals, getRowExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
+            ), [ headlessMode, fixedLayout, totals, getRowExtraProps, getCellExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
         </ScrollContainer>
     );
 }

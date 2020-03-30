@@ -1,0 +1,129 @@
+/*
+              * aria-rowindex is counted from 1 according to w3c spec;
+              * parseInt with radix is 2x faster, then +, -, etc.
+                https://jsperf.com/number-vs-parseint-vs-plus/116
+          */
+
+/*
+            Some benchmarks inspire me to use nextElementSibling
+            https://jsperf.com/nextsibling-vs-childnodes-increment/2
+        */
+
+/*
+          when using ...args and arrow func, babel is making unnecessary arguments copy.
+          Going old-school here for perf
+      */
+
+/*
+        TODO:
+            make this call throttled
+    */
+
+/*
+        Trees are not always ideally allocated, gaps are possible.
+        Classical way for calculating parents is much simpler,
+        but can do much more work(summing zeros) in such conditions. Commented classic algo:
+             for( let i = N + totalRows >> 1, j; i > 0; --i ){
+            j = i << 1;
+            sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
+        }
+    */
+
+/*
+        We do not want to recalculate totals too often, so caching them in object by column dataKey
+    */
+
+/*
+        getVisibleRangeStart works by "strict less" algo. It is good for startIndex,
+        but for endIndex we need "<=", so adding 1 artificially.
+    */
+
+/*
+      Column heights may change during scroll/width-change
+  */
+
+/*
+      Hmm, I can't put here more than ~ 3 000 000. Maybe need to put one more row in case this height is > 3 000 000
+  */
+
+/*
+      Only cells inside thead/tfoot can be sticky.
+      If thead/tfoot are hidden - we can easily render lighter StickyComponent to avoid extra wrappers
+  */
+
+/*
+      TODO: maybe some react-like performUnitOfWork logic is needed here?
+  */
+
+/*
+      Two vars for non-recursive segments tree;
+      Could just make [ 0, 0 ], but want to keep type of heightsCache always of same type.
+  */
+
+/*
+      When all row heights are different,
+      we must "predict" them on the left of startIndex and on the right of endIndex(where they are invisible),
+      basing on what we know: heights between startIndex and endIndex.
+      Using simple average by default.
+  */
+
+/*
+      tabIndex="0" is for proper keyboard nav
+      https://bugzilla.mozilla.org/show_bug.cgi?id=1346159
+  */
+
+/*
+    * flex: 1 1 auto, assuming that table would be used full-stretch mostly
+    width: 100% covers case, when no tbody is rendered and exact width cannot be calculated
+*/
+
+/*
+    If all cells in a row would be completely empty - row can "collapse" short.
+    To prevent it we can fill it with &nbsp;
+*/
+
+/*
+    This constant is used for 2 reasons:
+        * Math.log2( 1 ) is 0, which is not correct for cache size calculation
+        * We should always have some extra space for new rows. We do not want to reallocate cache every time.
+*/
+
+/*
+    flex: 1 1 auto, assuming that table would be used full-stretch mostly
+*/
+
+/* If we do this via transform translate, col background would have bugs during horizontal scroll. Strange webkit behavior */
+
+/* In segments tree 1 node is always sum of all elements */
+
+/* avoiding double destructurization via getExtraProps, so making prop object once */
+
+/* harmony default export */
+
+/*#__PURE__*/
+
+/***/
+
+//    For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
+
+//    If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
+
+//    memo(observer(RowComponentDefault)) will do the trick.
+
+// CONCATENATED MODULE: ./src/Table/common/Cell.js
+
+// CONCATENATED MODULE: ./src/Table/common/Tfoot.js
+
+// ESM COMPAT FLAG
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+
+// EXTERNAL MODULE: ./node_modules/lodash/capitalize.js
+
+// EXTERNAL MODULE: ./node_modules/lodash/random.js
+
+// EXTERNAL MODULE: ./node_modules/react/index.js
+
+// Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
+
+// console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)

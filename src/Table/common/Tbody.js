@@ -3,6 +3,7 @@ import Rows from "./Rows";
 
 const Tbody = ({
     getRowExtraProps,
+    getCellExtraProps,
     tbodyRef,
     RowComponent,
     CellComponent
@@ -10,6 +11,7 @@ const Tbody = ({
     <tbody ref={tbodyRef}>
         <Rows
             getRowExtraProps={getRowExtraProps}
+            getCellExtraProps={getCellExtraProps}
             RowComponent={RowComponent}
             CellComponent={CellComponent}
         />
