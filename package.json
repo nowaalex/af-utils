@@ -1,6 +1,6 @@
 {
   "name": "af-virtual-scroll",
-  "version": "1.7.7",
+  "version": "1.8.0",
   "description": "React components for rendering large scrollable data",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
   "scripts": {
     "start": "webpack-dev-server --env.ASSETS_PATH=/",
     "build:website": "webpack --mode=production --env.ASSETS_PATH=/af-virtual-scroll/website/",
-    "build:modules": "babel src --out-dir lib --delete-dir-on-start --ignore '**/*.test.js' --env-name lib",
+    "build:modules": "babel src --out-dir lib --delete-dir-on-start --ignore '**/*.test.js' --copy-files --env-name lib",
     "build": "yarn build:modules && yarn build:website",
     "test": "jest",
     "clear-test-cache": "jest --clearCache"
@@ -28,7 +28,8 @@
   },
   "files": [
     "lib",
-    "src/*.js"
+    "src/*.js",
+    "src/*.css"
   ],
   "keywords": [
     "react",
@@ -55,9 +56,9 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^25.2.4",
+    "babel-jest": "^25.2.6",
     "babel-loader": "^8.1.0",
-    "babel-plugin-emotion": "^10.0.29",
+    "babel-plugin-emotion": "^10.0.33",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "clean-webpack-plugin": "^3.0.0",
@@ -78,8 +79,8 @@
     "glob": "^7.1.6",
     "globby": "^11.0.0",
     "history": "^4.10.1",
-    "html-webpack-plugin": "^4.0.3",
-    "jest": "^25.2.4",
+    "html-webpack-plugin": "^4.0.4",
+    "jest": "^25.2.7",
     "jest-emotion": "^10.0.27",
     "mini-css-extract-plugin": "^0.9.0",
     "mobx": "^5.15.4",
@@ -108,7 +109,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
-    "emotion": "^10.0.27",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "use-resize-observer": "^6.0.0"
