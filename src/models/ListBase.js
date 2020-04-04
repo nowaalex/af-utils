@@ -1,5 +1,5 @@
 import clamp from "lodash/clamp";
-import EventEmitter from "./EventEmitter";
+import EventEmitter from "af-tools/lib/eventEmitters/Basic";
 import debounce from "lodash/debounce";
 
 const getRowDataInitial = () => {

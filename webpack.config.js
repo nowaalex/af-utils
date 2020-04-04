@@ -53,6 +53,12 @@ module.exports = ( env, argv ) => ({
 			automaticNameMaxLength: 30,
 			name: true,
 			cacheGroups: {
+                thisLibrary: {
+                    test: /[\\/]af-virtual-scroll[\\/]lib[\\/]/,
+					name: "This library",
+					chunks: "all",
+					priority: 0
+                },
 				react: {
 					test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
 					name: "react",
