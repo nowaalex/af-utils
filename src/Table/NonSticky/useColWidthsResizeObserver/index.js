@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import resizeObserverOptions from "../../../constants/resizeObserverOptions";
 
 const useColWidthsResizeObserver = API => {
 
@@ -21,7 +22,7 @@ const useColWidthsResizeObserver = API => {
     useEffect(() => {
         if( trRef.current ){
             for( let node = trRef.current.firstElementChild; node; node = node.nextElementSibling ){
-                O.observe( node );
+                O.observe( node, resizeObserverOptions );
             }
             return () => {
                 O.disconnect();

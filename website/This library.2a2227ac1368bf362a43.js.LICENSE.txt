@@ -1,0 +1,240 @@
+/*
+              * aria-rowindex is counted from 1 according to w3c spec;
+              * parseInt with radix is 2x faster, then +, -, etc.
+                https://jsperf.com/number-vs-parseint-vs-plus/116
+          */
+
+/*
+            Some benchmarks inspire me to use nextElementSibling
+            https://jsperf.com/nextsibling-vs-childnodes-increment/2
+        */
+
+/*
+        TODO:
+            make this call throttled
+    */
+
+/*
+        Trees are not always ideally allocated, gaps are possible.
+        Classical way for calculating parents is much simpler,
+        but can do much more work(summing zeros) in such conditions. Commented classic algo:
+             for( let i = N + totalRows >> 1, j; i > 0; --i ){
+            j = i << 1;
+            sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
+        }
+    */
+
+/*
+        We do not want to recalculate totals too often, so caching them in object by column dataKey
+    */
+
+/*
+        getVisibleRangeStart works by "strict less" algo. It is good for startIndex,
+        but for endIndex we need "<=", so adding 1 artificially.
+    */
+
+/*
+      Column heights may change during scroll/width-change
+  */
+
+/*
+      For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
+      If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
+      memo(observer(RowComponentDefault)) will do the trick.
+  */
+
+/*
+      Hmm, I can't put here more than ~ 3 000 000. Maybe need to put one more row in case this height is > 3 000 000
+  */
+
+/*
+      Only cells inside thead/tfoot can be sticky.
+      If thead/tfoot are hidden - we can easily render lighter StickyComponent to avoid extra wrappers
+  */
+
+/*
+      TODO: maybe some react-like performUnitOfWork logic is needed here?
+  */
+
+/*
+      Two vars for non-recursive segments tree;
+      Could just make [ 0, 0 ], but want to keep type of heightsCache always of same type.
+  */
+
+/*
+      When all row heights are different,
+      we must "predict" them on the left of startIndex and on the right of endIndex(where they are invisible),
+      basing on what we know: heights between startIndex and endIndex.
+      Using simple average by default.
+  */
+
+/*
+      tabIndex="0" is for proper keyboard nav
+      https://bugzilla.mozilla.org/show_bug.cgi?id=1346159
+  */
+
+/*
+    This constant is used for 2 reasons:
+        * Math.log2( 1 ) is 0, which is not correct for cache size calculation
+        * We should always have some extra space for new rows. We do not want to reallocate cache every time.
+*/
+
+/* 0 */
+
+/* 1 */
+
+/* 10 */
+
+/* 11 */
+
+/* 12 */
+
+/* 13 */
+
+/* 14 */
+
+/* 15 */
+
+/* 16 */
+
+/* 17 */
+
+/* 18 */
+
+/* 19 */
+
+/* 2 */
+
+/* 20 */
+
+/* 21 */
+
+/* 22 */
+
+/* 23 */
+
+/* 24 */
+
+/* 25 */
+
+/* 26 */
+
+/* 27 */
+
+/* 28 */
+
+/* 29 */
+
+/* 3 */
+
+/* 30 */
+
+/* 31 */
+
+/* 32 */
+
+/* 33 */
+
+/* 34 */
+
+/* 35 */
+
+/* 36 */
+
+/* 37 */
+
+/* 38 */
+
+/* 39 */
+
+/* 4 */
+
+/* 40 */
+
+/* 41 */
+
+/* 42 */
+
+/* 43 */
+
+/* 44 */
+
+/* 45 */
+
+/* 46 */
+
+/* 47 */
+
+/* 48 */
+
+/* 49 */
+
+/* 5 */
+
+/* 50 */
+
+/* 51 */
+
+/* 52 */
+
+/* 53 */
+
+/* 54 */
+
+/* 55 */
+
+/* 56 */
+
+/* 57 */
+
+/* 58 */
+
+/* 6 */
+
+/* 7 */
+
+/* 8 */
+
+/* 9 */
+
+/* If we do this via transform translate, col background would have bugs during horizontal scroll. Strange webkit behavior */
+
+/* In segments tree 1 node is always sum of all elements */
+
+/* It is important, because all observed dimensions ( td widths, tr heights ) must include paddings and borders */
+
+/* TODO: maybe box-sizing:border-box; is needed here? */
+
+/* avoiding double destructurization via getExtraProps, so making prop object once */
+
+/* harmony default export */
+
+/* harmony export (binding) */
+
+/* harmony import */
+
+/*#__PURE__*/
+
+/***/
+
+//    For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
+
+//    If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
+
+//    memo(observer(RowComponentDefault)) will do the trick.
+
+// CONCATENATED MODULE: ./lib/Table/common/Tfoot.js
+
+// EXTERNAL MODULE: ./lib/Table/common/Cell.js
+
+// EXTERNAL MODULE: ./lib/useApi/index.js
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
+
+// Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
+
+// console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)
+
+// extracted by mini-css-extract-plugin

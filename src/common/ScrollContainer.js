@@ -2,6 +2,7 @@ import React, { forwardRef, useCallback, useEffect } from "react";
 import cx from "../utils/cx";
 import HeightProvider from "./HeightProvider";
 import useApi from "../useApi";
+import resizeObserverOptions from "../constants/resizeObserverOptions";
 
 const SUBSCRIBE_EVENTS = [];
 
@@ -39,7 +40,7 @@ const ScrollContainer = forwardRef(({
             }
         });
 
-        R.observe( el );
+        R.observe( el, resizeObserverOptions );
 
         return () => {
             R.unobserve( el );

@@ -83,6 +83,9 @@
     border-top: none !important;
     border-bottom: none !important;
     max-height: 0 !important;
+    
+    /* max-height is not enough(already tried) */
+    height: 0 !important;
 }
 
 .afvscr-st thead td,
