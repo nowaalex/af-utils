@@ -1,6 +1,6 @@
 {
   "name": "af-virtual-scroll",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "React components for rendering large scrollable data",
   "repository": {
     "type": "git",
@@ -112,7 +112,6 @@
   "dependencies": {
     "@babel/runtime": "^7.9.2",
     "lodash": "^4.17.15",
-    "prop-types": "^15.7.2",
-    "use-resize-observer": "^6.0.0"
+    "prop-types": "^15.7.2"
   }
 }
