@@ -7,116 +7,12 @@ exports[`Table component renders ok Performs initial render with rowCount: -2 1`
 exports[`Table component renders ok Performs initial render with rowCount: 0 1`] = `null`;
 
 exports[`Table component renders ok Performs initial render with rowCount: 1 1`] = `
-.emotion-0 th[data-sortable] {
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.emotion-0 th[aria-sort="ascending"]::after {
-  content: " ↑";
-}
-
-.emotion-0 th[aria-sort="descending"]::after {
-  content: " ↓";
-}
-
-.emotion-2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  visibility: hidden;
-  width: 1px;
-}
-
-.emotion-4 {
-  overflow: auto;
-  outline: none;
-  min-height: 0;
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  position: relative;
-}
-
-.emotion-1 {
-  -webkit-flex: 0 0 auto;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  table-layout: fixed;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: column nowrap;
-  -ms-flex-flow: column nowrap;
-  flex-flow: column nowrap;
-  overflow: hidden;
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  min-height: 0;
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-}
-
-.emotion-5 td,
-.emotion-5 th {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-5 thead,
-.emotion-5 tfoot {
-  white-space: nowrap;
-}
-
-.emotion-5 * {
-  box-sizing: border-box;
-}
-
-.emotion-3 {
-  visibility: hidden !important;
-}
-
-.emotion-3 th[data-sortable] {
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.emotion-3 th[aria-sort="ascending"]::after {
-  content: " ↑";
-}
-
-.emotion-3 th[aria-sort="descending"]::after {
-  content: " ↓";
-}
-
-.emotion-3 th,
-.emotion-3 td {
-  line-height: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  border-top: none !important;
-  border-bottom: none !important;
-  max-height: 0 !important;
-}
-
 <div
-  className="emotion-5"
+  className="afvscr-nonst afvscr-table-wrapper"
 >
   <table
     aria-colcount={0}
-    className="emotion-1"
+    className="afvscr-nonst-subtable"
     style={
       Object {
         "marginLeft": -0,
@@ -126,20 +22,19 @@ exports[`Table component renders ok Performs initial render with rowCount: 1 1`]
   >
     <colgroup />
     <thead
-      className="emotion-0"
       onClick={[Function]}
     >
       <tr />
     </thead>
   </table>
   <div
-    className="emotion-4"
+    className="afvscr-scroll-container"
     onScroll={[Function]}
     tabIndex="0"
   >
     <div
       aria-hidden="true"
-      className="emotion-2"
+      className="afvscr-height-provider"
       style={
         Object {
           "height": 16,
@@ -158,25 +53,21 @@ exports[`Table component renders ok Performs initial render with rowCount: 1 1`]
     >
       <colgroup />
       <thead
-        className="emotion-3"
+        className="afvscr-hdnwrp"
         onClick={[Function]}
       >
         <tr />
       </thead>
       <tbody
         aria-hidden="true"
-        style={
-          Object {
-            "visibility": "hidden",
-          }
-        }
+        className="afvscr-scroller"
       >
         <tr
           aria-hidden="true"
+          className="afvscr-scroller"
           style={
             Object {
               "height": 0,
-              "visibility": "hidden",
             }
           }
         />
@@ -192,116 +83,12 @@ exports[`Table component renders ok Performs initial render with rowCount: 1 1`]
 `;
 
 exports[`Table component renders ok Performs initial render with rowCount: 2 1`] = `
-.emotion-0 th[data-sortable] {
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.emotion-0 th[aria-sort="ascending"]::after {
-  content: " ↑";
-}
-
-.emotion-0 th[aria-sort="descending"]::after {
-  content: " ↓";
-}
-
-.emotion-2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  visibility: hidden;
-  width: 1px;
-}
-
-.emotion-4 {
-  overflow: auto;
-  outline: none;
-  min-height: 0;
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  position: relative;
-}
-
-.emotion-1 {
-  -webkit-flex: 0 0 auto;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  table-layout: fixed;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: column nowrap;
-  -ms-flex-flow: column nowrap;
-  flex-flow: column nowrap;
-  overflow: hidden;
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  min-height: 0;
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-}
-
-.emotion-5 td,
-.emotion-5 th {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-5 thead,
-.emotion-5 tfoot {
-  white-space: nowrap;
-}
-
-.emotion-5 * {
-  box-sizing: border-box;
-}
-
-.emotion-3 {
-  visibility: hidden !important;
-}
-
-.emotion-3 th[data-sortable] {
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.emotion-3 th[aria-sort="ascending"]::after {
-  content: " ↑";
-}
-
-.emotion-3 th[aria-sort="descending"]::after {
-  content: " ↓";
-}
-
-.emotion-3 th,
-.emotion-3 td {
-  line-height: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  border-top: none !important;
-  border-bottom: none !important;
-  max-height: 0 !important;
-}
-
 <div
-  className="emotion-5"
+  className="afvscr-nonst afvscr-table-wrapper"
 >
   <table
     aria-colcount={0}
-    className="emotion-1"
+    className="afvscr-nonst-subtable"
     style={
       Object {
         "marginLeft": -0,
@@ -311,20 +98,19 @@ exports[`Table component renders ok Performs initial render with rowCount: 2 1`]
   >
     <colgroup />
     <thead
-      className="emotion-0"
       onClick={[Function]}
     >
       <tr />
     </thead>
   </table>
   <div
-    className="emotion-4"
+    className="afvscr-scroll-container"
     onScroll={[Function]}
     tabIndex="0"
   >
     <div
       aria-hidden="true"
-      className="emotion-2"
+      className="afvscr-height-provider"
       style={
         Object {
           "height": 32,
@@ -343,25 +129,21 @@ exports[`Table component renders ok Performs initial render with rowCount: 2 1`]
     >
       <colgroup />
       <thead
-        className="emotion-3"
+        className="afvscr-hdnwrp"
         onClick={[Function]}
       >
         <tr />
       </thead>
       <tbody
         aria-hidden="true"
-        style={
-          Object {
-            "visibility": "hidden",
-          }
-        }
+        className="afvscr-scroller"
       >
         <tr
           aria-hidden="true"
+          className="afvscr-scroller"
           style={
             Object {
               "height": 0,
-              "visibility": "hidden",
             }
           }
         />

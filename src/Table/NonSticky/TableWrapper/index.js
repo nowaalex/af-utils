@@ -1,7 +1,7 @@
 import React from "react";
+import sum from "lodash/sum";
 import useApi from "../../../useApi";
 import Colgroup from "../../common/Colgroup";
-import sum from "lodash/sum";
 
 const SUBSCRIBE_EVENTS = [
     "#columns",

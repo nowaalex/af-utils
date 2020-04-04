@@ -18,7 +18,8 @@
   "scripts": {
     "start": "webpack-dev-server --env.ASSETS_PATH=/",
     "build:website": "webpack --mode=production --env.ASSETS_PATH=/af-virtual-scroll/website/",
-    "build:modules": "babel src --out-dir lib --delete-dir-on-start --ignore '**/*.test.js' --copy-files --env-name lib",
+    "build:modules": "babel src --out-dir lib --delete-dir-on-start --ignore '**/*.test.js' --env-name lib && yarn copy-style-file",
+    "copy-style-file": "yarn cpy src/style.css lib",
     "build": "yarn build:modules && yarn build:website",
     "test": "jest",
     "clear-test-cache": "jest --clearCache"
@@ -50,7 +51,6 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.9.0",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-modules-commonjs": "^7.9.0",
     "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
@@ -65,6 +65,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "clean-webpack-plugin": "^3.0.0",
     "compression-webpack-plugin": "^3.1.0",
+    "cpy-cli": "^3.1.0",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
