@@ -2,7 +2,6 @@ import React, { forwardRef, useCallback, useEffect } from "react";
 import cx from "../utils/cx";
 import HeightProvider from "./HeightProvider";
 import useApi from "../useApi";
-import resizeObserverOptions from "../constants/resizeObserverOptions";
 
 const SUBSCRIBE_EVENTS = [];
 
@@ -32,15 +31,19 @@ const ScrollContainer = forwardRef(({
 
         const R = new ResizeObserver( entries => {
             if( entries.length === 1 ){
-                const { width, height } = entries[ 0 ].contentRect;
+                /*
+                    using target.offsetWidth instead of contentRect.width, because we need border-box sizing, 
+                    and { box: border-box } option does not work here
+                */
+                const { offsetWidth, offsetHeight } = entries[ 0 ].target;
 
                 API
-                    .set( "widgetHeight", Math.round( height ) )
-                    .set( "widgetWidth", Math.round( width ) );
+                    .set( "widgetHeight", Math.round( offsetHeight ) )
+                    .set( "widgetWidth", Math.round( offsetWidth ) );
             }
         });
 
-        R.observe( el, resizeObserverOptions );
+        R.observe( el );
 
         return () => {
             R.unobserve( el );

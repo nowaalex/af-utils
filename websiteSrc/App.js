@@ -33,6 +33,11 @@ const globalCss = css`
     td {
         padding: 0.4em;
     }
+
+    th {
+        font-weight: bold;
+        background: #e3e3e3;
+    }
 `;
 
 const bundleIframeCss = css`
