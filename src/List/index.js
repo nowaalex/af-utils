@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { css } from "emotion";
 
 import Context from "../Context";
 import useStore from "../utils/useStore";
@@ -18,17 +17,7 @@ import RowCountWarningContainerDefault from "../common/RowCountWarningContainer"
 import commonPropTypes from "../commonPropTypes";
 import commonDefaultProps from "../commonDefaultProps";
 
-/*
-    flex: 1 1 auto, assuming that table would be used full-stretch mostly
-*/
-const wrapperClass = css`
-    min-height: 0;
-    flex: 1 1 auto;
-
-    * {
-        box-sizing: border-box;
-    }
-`;
+import cx from "../utils/cx";
 
 const List = ({
     fixedSize,
@@ -41,6 +30,7 @@ const List = ({
     RowCountWarningContainer,
     RowComponent = RowComponentDefault,
     dataRef,
+    className,
     ...props
 }) => {
 
@@ -64,7 +54,7 @@ const List = ({
         <Context.Provider value={Store}>
             { rowCount > 0 ? (
                 <ScrollContainer
-                    className={wrapperClass}
+                    className={cx("afvscr-list-wrapper",className)}
                     ref={scrollContainerRef}
                     {...props}
                 >

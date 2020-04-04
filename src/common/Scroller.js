@@ -9,7 +9,7 @@ const Scroller = ({ Component }) => {
     /*
         Hmm, I can't put here more than ~ 3 000 000. Maybe need to put one more row in case this height is > 3 000 000
     */
-    return <Component aria-hidden="true" style={{ height: virtualTopOffset, visibility: "hidden" }} />;
+    return <Component className="afvscr-scroller" aria-hidden="true" style={{ height: virtualTopOffset }} />;
 };
 
 export default memo( Scroller );

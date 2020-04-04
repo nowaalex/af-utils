@@ -1,6 +1,5 @@
 import React, { memo, useMemo } from "react";
 import PropTypes from "prop-types";
-import { css, cx } from "emotion";
 
 import useApi from "../../useApi";
 import TableWrapper from "./TableWrapper";
@@ -14,30 +13,7 @@ import useColWidthsResizeObserver from "./useColWidthsResizeObserver";
 import Colgroup from "../common/Colgroup";
 import TbodyScroller from "../common/TbodyScroller";
 import ScrollContainer from "../../common/ScrollContainer";
-
-const wrapperClass = css`
-    display: flex;
-    flex-flow: column nowrap;
-    overflow: hidden;
-    flex: 1 1 auto;
-`;
-
-const headerFooterClass = css`
-    flex: 0 0 auto;
-    table-layout: fixed;
-`;
-
-const hiddenHeaderFooterClass = css`
-    visibility: hidden !important;
-    th, td {
-        line-height: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        border-top: none !important;
-        border-bottom: none !important;
-        max-height: 0 !important;
-    }
-`;
+import cx from "../../utils/cx";
 
 const subscribeEvents = [
     "#headlessMode",
@@ -76,9 +52,9 @@ const NonSticky = ({
     }
 
     return (
-        <div className={cx(wrapperClass,className)} {...props}>
+        <div className={cx("afvscr-nonst",className)} {...props}>
             {headlessMode ? null : (
-                <TableWrapper className={headerFooterClass}>
+                <TableWrapper className="afvscr-nonst-subtable">
                     <Thead />
                 </TableWrapper>
             )}
@@ -88,14 +64,14 @@ const NonSticky = ({
                         <Colgroup />
                         {headlessMode ? null : (
                             <Thead
-                                className={hiddenHeaderFooterClass}
+                                className="afvscr-hdnwrp"
                                 trRef={widthsObserverRef}
                             />
                         )}
                         {totals && (
                             <Tfoot
                                 TotalsCellComponent={TotalsCellComponent}
-                                className={hiddenHeaderFooterClass}
+                                className="afvscr-hdnwrp"
                                 trRef={headlessMode?widthsObserverRef:undefined}
                             />
                         )}
@@ -111,7 +87,7 @@ const NonSticky = ({
                 ), [ totals, headlessMode, fixedLayout, getRowExtraProps, getCellExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
             </ScrollContainer>
             {totals && (
-                <TableWrapper className={headerFooterClass}>
+                <TableWrapper className="afvscr-nonst-subtable">
                     <Tfoot TotalsCellComponent={TotalsCellComponent} />
                 </TableWrapper>
             )}

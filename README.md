@@ -2,6 +2,7 @@
 
 ### Install & use
 `npm install --save af-virtual-scroll`
+`import "af-virtual-scroll/lib/style.css";`
 
 ### Website
 https://nowaalex.github.io/af-virtual-scroll/website/

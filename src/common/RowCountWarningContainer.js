@@ -1,14 +1,6 @@
 import React from "react";
-import { css, cx } from "emotion";
+import cx from "../utils/cx"
 
-const wrapperClass = css`
-    flex: 1 1 auto;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-const RowCountWarningContainer = ({ className, ...props }) => <div className={cx(wrapperClass,className)} {...props} />;
+const RowCountWarningContainer = ({ className, ...props }) => <div className={cx("afvscr-row-count-warning-container",className)} {...props} />;
 
 export default RowCountWarningContainer;

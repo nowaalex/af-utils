@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { css } from "emotion";
 
 import isPositionStickySupported from "../utils/isPositionStickySupported";
 import Context from "../Context";
@@ -20,27 +19,7 @@ import StickyComponent from "./Sticky";
 
 import commonPropTypes from "../commonPropTypes";
 import commonDefaultProps from "../commonDefaultProps";
-
-/*
-    flex: 1 1 auto, assuming that table would be used full-stretch mostly
-*/
-const wrapperClass = css`
-    min-height: 0;
-    flex: 1 1 auto;
-
-    td, th {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    thead, tfoot {
-        white-space: nowrap;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-`;
+import cx from "../utils/cx";
 
 const Table = ({
     fixedSize,
@@ -57,7 +36,7 @@ const Table = ({
     RowCountWarningContainer,
     dataRef,
     useStickyIfPossible,
-
+    className,
     ...props
 }) => {
 
@@ -90,7 +69,7 @@ const Table = ({
         <Context.Provider value={Store}>
             { rowCount > 0 ? (
                 <ComponentVariant
-                    className={wrapperClass}
+                    className={cx("afvscr-table-wrapper",className)}
                     scrollContainerRef={scrollContainerRef}
                     getRowExtraProps={getRowExtraProps}
                     getCellExtraProps={getCellExtraProps}

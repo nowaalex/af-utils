@@ -1,28 +1,10 @@
 import React, { useCallback, memo } from "react";
-import { css, cx } from "emotion";
 import HeaderCells from "./HeaderCells";
 import useApi from "../../useApi";
 
 const SUBSCRIBE_EVENTS = [];
 
-const wrapperClass = css`
-    th {
-        &[data-sortable] {
-            cursor: pointer;
-            user-select: none;
-        }
-
-        &[aria-sort="ascending"]::after {
-            content: " ↑"
-        }
-
-        &[aria-sort="descending"]::after {
-            content: " ↓";
-        }
-    }
-`;
-
-const Thead = ({ className, trRef, getCellStyle, ...props }) => {
+const Thead = ({ trRef, getCellStyle, ...props }) => {
 
     const API = useApi( SUBSCRIBE_EVENTS );
 
@@ -41,7 +23,7 @@ const Thead = ({ className, trRef, getCellStyle, ...props }) => {
     }, []);
 
     return (
-        <thead className={cx(wrapperClass,className)} onClick={clickHandler}>
+        <thead {...props} onClick={clickHandler}>
             <tr ref={trRef}>
                 <HeaderCells />
             </tr>

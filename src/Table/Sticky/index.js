@@ -1,6 +1,4 @@
 import React, { memo, useMemo, useEffect } from "react";
-import { css, cx } from "emotion";
-
 import Colgroup from "../common/Colgroup";
 import TbodyScroller from "../common/TbodyScroller";
 import ScrollContainer from "../../common/ScrollContainer";
@@ -9,25 +7,7 @@ import Tbody from "../common/Tbody";
 import Tfoot from "../common/Tfoot";
 import BodyTable from "../common/BodyTable";
 import useApi from "../../useApi";
-
-const theadTfootCommonClass = css`
-    td, th {
-        position: sticky;
-        z-index: 1;
-    }
-`;
-
-const theadClass = cx( theadTfootCommonClass, css`
-    td, th {
-        top: 0;
-    }
-`);
-
-const tfootClass = cx( theadTfootCommonClass, css`
-    td, th {
-        bottom: 0;
-    }
-`);
+import cx from "../../utils/cx";
 
 const SUBSCRIBE_EVENTS = [
     "#headlessMode",
@@ -50,6 +30,7 @@ const Sticky = ({
     CellComponent,
     TotalsCellComponent,
     fixedLayout,
+    className,
     ...props
 }) => {
 
@@ -79,11 +60,11 @@ const Sticky = ({
     }
     
     return (
-        <ScrollContainer ref={scrollContainerRef} reportScrollLeft {...props}>
+        <ScrollContainer ref={scrollContainerRef} reportScrollLeft className={cx("afvscr-st",className)} {...props}>
             {useMemo(() => (
                 <BodyTable fixedLayout={fixedLayout}>
                     <Colgroup />
-                    {headlessMode?null:<Thead className={theadClass} />}
+                    {headlessMode?null:<Thead />}
                     <TbodyScroller />
                     <Tbody
                         tbodyRef={tbodyRef}
@@ -93,10 +74,7 @@ const Sticky = ({
                         CellComponent={CellComponent}
                     />
                     {totals && (
-                        <Tfoot
-                            className={tfootClass}
-                            TotalsCellComponent={TotalsCellComponent}
-                        />
+                        <Tfoot TotalsCellComponent={TotalsCellComponent} />
                     )}
                 </BodyTable>
             ), [ headlessMode, fixedLayout, totals, getRowExtraProps, getCellExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}

@@ -1,0 +1,104 @@
+.afvscr-height-provider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+}
+
+.afvscr-hdnwrp,
+.afvscr-height-provider,
+.afvscr-scroller {
+    visibility: hidden !important;
+}
+
+.afvscr-row-count-warning-container {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.afvscr-scroll-container {
+    overflow: auto;
+    outline: none;
+    position: relative;
+}
+
+.afvscr-row-count-warning-container,
+.afvscr-scroll-container,
+.afvscr-table-wrapper,
+.afvscr-list-wrapper {
+    min-height: 0;
+    
+    /* assuming that table would be used full-stretch mostly */
+    flex: 1 1 auto;
+}
+
+.afvscr-table-wrapper td,
+.afvscr-table-wrapper th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.afvscr-table-wrapper thead,
+.afvscr-table-wrapper tfoot {
+    white-space: nowrap;
+}
+
+.afvscr-table-wrapper thead th[data-sortable]{
+    cursor: pointer;
+    user-select: none;
+}
+
+.afvscr-table-wrapper thead th[aria-sort="ascending"]::after{
+    content: " ↑";
+}
+
+.afvscr-table-wrapper thead th[aria-sort="descending"]::after{
+    content: " ↓";
+}
+
+/*
+    nonst - non-sticky
+    st - sticky
+*/
+.afvscr-nonst {
+    display: flex;
+    flex-flow: column nowrap;
+    overflow: hidden;
+}
+
+/* thead and tfoot are rendered as other tables in nonst mode */
+.afvscr-nonst-subtable {
+    flex: 0 0 auto;
+    table-layout: fixed;
+}
+
+/* hdnwrp is used in non-sticky mode. You most likely would not want change this */
+.afvscr-hdnwrp td,
+.afvscr-hdnwrp th {
+    line-height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    max-height: 0 !important;
+}
+
+.afvscr-st thead td,
+.afvscr-st thead th,
+.afvscr-st tfoot td,
+.afvscr-st tfoot th {
+    position: sticky;
+    z-index: 1;
+}
+
+.afvscr-st thead td,
+.afvscr-st thead th {
+    top: 0;
+}
+
+.afvscr-st tfoot td,
+.afvscr-st tfoot th {
+    bottom: 0;
+}
