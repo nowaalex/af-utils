@@ -10,9 +10,9 @@ const useColWidthsResizeObserver = API => {
     if( !O ){
         O = observerRef.current = new ResizeObserver( entries => {
             for( let j = 0, colIndex; j < entries.length; j++ ){
-                const { target } = entries[ j ];
+                const { target, contentRect } = entries[ j ];
                 colIndex = parseInt( target.getAttribute( "aria-colindex" ) );
-                API.tbodyColumnWidths[ colIndex - 1 ] = Math.round( target.offsetWidth );
+                API.tbodyColumnWidths[ colIndex - 1 ] = Math.round( contentRect.width );
             }
             API.emit( "tbody-column-widths-changed" );
         });

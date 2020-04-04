@@ -14,7 +14,7 @@ https://nowaalex.github.io/af-virtual-scroll/website/
 * Can automatically detect and use position: sticky
 * Optimized non-recursive segment tree is used to store row dimensions.
 * mobx-ready Row and Cell components, which can be easily wrapped by observer
-* available height and width are calculated and observed automatically via `use-resize-observer` hook
+* available height and width are calculated and observed automatically
 * `scrollToRow(rowIndex)` method is available
 * fixed and auto table layout mode
 * -N ... 0 rowCount handling available via `rowCountWarningsTable` prop

@@ -1,5 +1,4 @@
-import React, { forwardRef, useCallback } from "react";
-import useResizeObserver from "use-resize-observer";
+import React, { forwardRef, useCallback, useEffect } from "react";
 import cx from "../utils/cx";
 import HeightProvider from "./HeightProvider";
 import useApi from "../useApi";
@@ -27,11 +26,25 @@ const ScrollContainer = forwardRef(({
         }
     }, [ onScroll, reportScrollLeft ]);
 
-    const resizeHandler = useCallback(({ width, height }) => {
-        API.set( "widgetHeight", height ).set( "widgetWidth", width );
-    }, []);
+    useEffect(() => {
+        const el = ref.current;
 
-    useResizeObserver({ ref, onResize: resizeHandler });
+        const R = new ResizeObserver( entries => {
+            if( entries.length === 1 ){
+                const { width, height } = entries[ 0 ].contentRect;
+
+                API
+                    .set( "widgetHeight", Math.round( height ) )
+                    .set( "widgetWidth", Math.round( width ) );
+            }
+        });
+
+        R.observe( el );
+
+        return () => {
+            R.unobserve( el );
+        };
+    }, []);
     
     /*
         tabIndex="0" is for proper keyboard nav
