@@ -109,6 +109,9 @@ module.exports = ( env, argv ) => ({
             excludeAssets: /faker/,
             reportFilename: "bundle.html"
         }),
-        new MiniCssExtractPlugin()
+        new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].css',
+            chunkFilename: '[id].[contenthash].css',
+        })
     ] : [])
 });
