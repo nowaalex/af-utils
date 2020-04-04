@@ -12,7 +12,9 @@
   "homepage": "https://nowaalex.github.io/af-virtual-scroll/website/",
   "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
   "license": "MIT",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "start": "webpack-dev-server --env.ASSETS_PATH=/",
     "build:website": "webpack --mode=production --env.ASSETS_PATH=/af-virtual-scroll/website/",

@@ -69,6 +69,8 @@ object-assign
 
 /* 26 */
 
+/* 27 */
+
 /* 3 */
 
 /* 4 */
@@ -433,6 +435,8 @@ object-assign
 // ESM COMPAT FLAG
 
 // EXPORTS
+
+// EXTERNAL MODULE: ./lib/style.css
 
 // EXTERNAL MODULE: ./node_modules/@emotion/core/node_modules/@babel/runtime/helpers/inheritsLoose.js
 
