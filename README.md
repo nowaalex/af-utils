@@ -1,8 +1,7 @@
 # af-virtual-scroll
 
-### Install & use
+### Install
 `npm install --save af-virtual-scroll`
-`import "af-virtual-scroll/lib/style.css";`
 
 ### Website
 https://nowaalex.github.io/af-virtual-scroll/website/
@@ -23,5 +22,4 @@ https://nowaalex.github.io/af-virtual-scroll/website/
 
 ### TODO
 * add rerenderCurrentRange() method
-* write documentation
 * mobile fast scrolling causes lags because mobile scroll event is async ( react-virtualized, react-window, devextreme grids also have this problem )

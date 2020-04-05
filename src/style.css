@@ -29,9 +29,11 @@
 .afvscr-table-wrapper,
 .afvscr-list-wrapper {
     min-height: 0;
-    
     /* assuming that table would be used full-stretch mostly */
     flex: 1 1 auto;
+
+    /* experimental: should improve widget perf inside other layouts */
+    contain: strict;
 }
 
 .afvscr-table-wrapper td,
