@@ -7,7 +7,7 @@ const SUBSCRIBE_EVENTS = [
     "#columns",
     "#scrollLeft",
     "#widgetWidth",
-    "tbody-column-widths"
+    "tbody-column-widths-changed"
 ];
 
 const TableWrapper = ({ children, ...props }) => {

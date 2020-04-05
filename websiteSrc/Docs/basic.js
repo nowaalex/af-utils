@@ -1,8 +1,60 @@
 import React, { Fragment } from "react";
+import { css } from "@emotion/core";
+import Code from "../Code";
+
+const codeCss = css`
+    font-size: 0.8em;
+    display: inline-flex;
+`;
+
+const importCode = `/* import style once in your project */
+import "af-virtual-scroll/lib/style.css";
+
+/* import component( both named and default import syntax supported ) */
+import { Table, List } from "af-virtual-scroll";
+
+/* OR */
+import Table from "af-virtual-scroll/lib/Table";
+import List from "af-virtual-scroll/lib/List";
+/* end import */
+
+/*Polyfill ResizeObserver and MutationObserver if needed.*/
+const examplePolyfill = "https://github.com/juggle/resize-observer";`;
+
+const totalsCode = `{
+    column1: [ "sum", "max" ],
+    column2: [ "average" ]
+}`;
+
+const columnsCode = `{
+    // unique key for column
+    dataKey: string.isRequired,
+
+    // for details see CellComponent implementation
+    getCellData: func,
+    getEmptyCellData: func,
+    format: func,
+    render: func,
+    formatTotal: func,
+
+    visibility: oneOf([ "visible", "hidden" ]),
+    sort: oneOf([ "locale", "numeric" ]),
+
+    // column props, affecting colgroup > col tags
+    background: string,
+    border: string,
+    width: oneOfType([ number, string ]),
+
+    // These two override global props, if present
+    CellComponent: any,
+    getCellExtraProps: func
+}`;
 
 const Basic = () => (
     <Fragment>
-        <h3>Common props</h3>
+        <h3>Usage</h3>
+        <Code css={codeCss}>{importCode}</Code>
+        <h3>Common props (Table/List)</h3>
         <ul>
             <li>
                 <h4 data-required>rowCount</h4>
@@ -26,6 +78,7 @@ const Basic = () => (
                 <h4>getRowExtraProps(rowData,rowIndex)</h4>
                 <p>
                     Returns an object of extra props, that will be passed to row wrapper(usually tr for table and div for list).
+                    Hooks also can be called here.
                 </p>
             </li>
             <li>
@@ -39,13 +92,87 @@ const Basic = () => (
                 <p>
                     By default table/list assumes, that it's rows have different heights.
                     If you are SURE, that all rows always will have same height(after collapsing widget width, etc.) - put this prop as true.
-                    This will optimize calculations.
+                    This will optimize calculations. For details see difference between FixedSizeList and VariableSizeList&nbsp;
+                    <a href="https://github.com/nowaalex/af-virtual-scroll/tree/master/src/models" target="_blank">here.</a>
                 </p>
             </li>
             <li>
                 <h4>overscanRowsCount</h4>
                 <p>
                     Determines, how many rows are drawn above and below table/list visible part.
+                </p>
+            </li>
+        </ul>
+        <h3>List props</h3>
+        <ul>
+            <li>RowComponent</li>
+            <p>
+                <a href="https://github.com/nowaalex/af-virtual-scroll/blob/master/src/List/common/Row.js" target="_blank">
+                    Default implementation
+                </a>
+            </p>
+        </ul>
+        <h3>Table props</h3>
+        <ul>
+            <li>
+                <h4 data-required>columns</h4>
+                <p>
+                    Array of objects of shape:
+                </p>
+                <Code css={codeCss}>{columnsCode}</Code>
+            </li>
+            <li>
+                <h4>headless</h4>
+                <p>
+                    Omits thead rendering if enabled.
+                </p>
+            </li>
+            <li>
+                <h4>totals</h4>
+                <p>
+                    Object, where keys are column dataKeys, and values are arrays of ( "sum", "average", "count", "max", "min" ).
+                </p>
+                <Code css={codeCss}>{totalsCode}</Code>
+            </li>
+            <li>
+                <h4>nonSticky</h4>
+                <p>
+                    Scrollable table body can be achieved either by position: sticky table cells or by rendering 3 separate tables.
+                    This prop allows to render table in non-sticky mode, even when browser supports position: sticky. <br />
+                    <a href="https://github.com/nowaalex/af-virtual-scroll/blob/master/src/utils/isPositionStickySupported/index.js" target="_blank">
+                        Util implementation
+                    </a>
+                </p>
+            </li>
+            <li>
+                <h4>RowComponent</h4>
+                <p>
+                    <a href="https://github.com/nowaalex/af-virtual-scroll/blob/master/src/Table/common/Row.js" target="_blank">
+                        Default implementation
+                    </a>
+                </p>
+            </li>
+            <li>
+                <h4>CellComponent</h4>
+                <p>
+                    <a href="https://github.com/nowaalex/af-virtual-scroll/blob/master/src/Table/common/Cell.js" target="_blank">
+                        Default implementation
+                    </a>
+                </p>
+            </li>
+            <li>
+                <h4>TotalsCellComponent</h4>
+                <p>
+                    <a href="https://github.com/nowaalex/af-virtual-scroll/blob/master/src/Table/common/TotalsCell.js" target="_blank">
+                        Default implementation
+                    </a>
+                </p>
+            </li>
+            <li>
+                <h4>getCellProps(rowData,columnIndex)</h4>
+                <p>
+                    Returns an object of extra props, that will be passed to td.
+                    Hooks also can be called here.
                 </p>
             </li>
         </ul>

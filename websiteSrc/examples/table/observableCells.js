@@ -6,10 +6,6 @@ import DefaultCellComponent from "af-virtual-scroll/lib/Table/common/Cell";
 import r from "lodash/random";
 import { css } from "@emotion/core";
 
-const tableCss = css`
-    th { background: #fff; }
-`;
-
 const hueBlockCss = css`
     padding: 0.5em;
     border-radius: 5px;
@@ -78,9 +74,7 @@ const TableWithObservableRows = ({ className }) => {
 
     return (
         <Table
-            css={tableCss}
             className={className}
-            useStickyIfPossible
             fixedLayout
             CellComponent={CellComponent}
             getRowData={getRowData}

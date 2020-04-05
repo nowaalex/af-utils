@@ -9,11 +9,6 @@ const wrapperCss = css`
     table {
         border-spacing: 0;
     }
-    tfoot td, th {
-        padding: 0.5em;
-        background: #d6d6d6;
-        font-weight: bold;
-    }
     tr[data-odd]{
         background: rgba(0,0,0,0.2)
     }
@@ -45,7 +40,6 @@ const TableWithStyledColumns = ({ className }) => (
         getRowExtraProps={getRowExtraProps}
         css={wrapperCss}
         className={className}
-        useStickyIfPossible
         getRowData={getRowData}
         rowCount={500}
         totals={totals}

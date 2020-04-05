@@ -34,9 +34,11 @@ const globalCss = css`
         padding: 0.4em;
     }
 
-    th {
-        font-weight: bold;
-        background: #e3e3e3;
+    thead, tfoot {
+        th, td {
+            font-weight: bold;
+            background: #d3d3d3;
+        }
     }
 `;
 
@@ -52,7 +54,7 @@ const mainFieldWrapperCss = css`
     min-height: 0;
     min-width: 0;
     text-align: center;
-    overflow: hidden;
+    overflow: auto;
 `;
 
 const Header = () => <h2>{useLocation().pathname.slice( 1 )}</h2>;

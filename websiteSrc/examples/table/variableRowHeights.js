@@ -3,13 +3,6 @@ import Table from "af-virtual-scroll/lib/Table";
 import r from "lodash/random";
 import times from "lodash/times";
 import faker from "faker";
-import { css } from "@emotion/core";
-
-const tableCss = css`
-    th, tfoot td {
-        background: #fff;
-    }
-`;
 
 const columns = [
     {
@@ -57,9 +50,7 @@ const totals = {
 
 const VariableRowHeightsTable = ({ className }) => (
     <Table
-        css={tableCss}
         className={className}
-        useStickyIfPossible
         totals={totals}
         getRowData={getRowData}
         rowCount={rowCount}

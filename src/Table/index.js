@@ -35,7 +35,7 @@ const Table = ({
     headless,
     RowCountWarningContainer,
     dataRef,
-    useStickyIfPossible,
+    nonSticky,
     className,
     ...props
 }) => {
@@ -63,7 +63,7 @@ const Table = ({
         Only cells inside thead/tfoot can be sticky.
         If thead/tfoot are hidden - we can easily render lighter StickyComponent to avoid extra wrappers
     */
-    const ComponentVariant = ( headless && !totals ) || ( useStickyIfPossible && isPositionStickySupported() ) ? StickyComponent : NonStickyComponent;
+    const ComponentVariant = ( headless && !totals ) || ( !nonSticky && isPositionStickySupported() ) ? StickyComponent : NonStickyComponent;
 
     return (
         <Context.Provider value={Store}>
@@ -92,11 +92,11 @@ Table.propTypes = {
             // unique key for column
             dataKey: PropTypes.string.isRequired,
 
-            // If rowData is available, cellData goes through flow, where each fn is optional: render(format((getCellData(rowData,rowIndex))),rowData)
-            // If not, it goes through flow: getEmptyCellData(rowIndex, column).
+            // for details see CellComponent implementation
             getCellData: PropTypes.func,
             getEmptyCellData: PropTypes.func,
             format: PropTypes.func,
+            render: PropTypes.func,
             formatTotal: PropTypes.func,
 
             visibility: PropTypes.oneOf([ "visible", "hidden" ]),
@@ -118,7 +118,7 @@ Table.propTypes = {
         PropTypes.array
     ),
     
-    useStickyIfPossible: PropTypes.bool,
+    nonSticky: PropTypes.bool,
     headless: PropTypes.bool,
 
     HeaderRowComponent: PropTypes.any,
