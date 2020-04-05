@@ -14,7 +14,7 @@ const BodyTable = ({ fixedLayout, ...props }) => {
         tableLayout: fixedLayout ? "fixed" : "auto",
         minWidth: "100%"
     };
-    
+
     return (
         <table
             {...props}

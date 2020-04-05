@@ -1,14 +1,15 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 
 const useColWidthsResizeObserver = API => {
 
     const observerRef = useRef();
-    const trRef = useRef();
+    const mutationObserverRef = useRef();
 
-    let O = observerRef.current;
+    let RO = observerRef.current;
+    let MO = mutationObserverRef.current;
 
-    if( !O ){
-        O = observerRef.current = new ResizeObserver( entries => {
+    if( !RO ){
+        RO = observerRef.current = new ResizeObserver( entries => {
             for( let j = 0, colIndex; j < entries.length; j++ ){
                 const { target } = entries[ j ];
                 colIndex = parseInt( target.getAttribute( "aria-colindex" ) );
@@ -21,20 +22,33 @@ const useColWidthsResizeObserver = API => {
             }
             API.emit( "tbody-column-widths-changed" );
         });
+
+        MO = mutationObserverRef.current = new MutationObserver( entries => {
+            for( let i = 0; i < entries.length; i++ ){
+                const { addedNodes, removedNodes } = entries[ i ];
+                for( let j = 0; j < addedNodes.length; j++ ){
+                    RO.observe( addedNodes[ j ] );
+                }
+                for( let j = 0; j < removedNodes.length; j++ ){
+                    RO.unobserve( removedNodes[ j ] );
+                }
+            }   
+        });
     }
 
-    useEffect(() => {
-        if( trRef.current ){
-            for( let node = trRef.current.firstElementChild; node; node = node.nextElementSibling ){
-                O.observe( node );
-            }
-            return () => {
-                O.disconnect();
-            };
-        }
-    }, [ trRef.current ]);
+    useEffect(() => () => {
+        RO.disconnect();
+        MO.disconnect();
+    }, []);
 
-    return trRef;
+    /* callback ref */
+    return useCallback( trNode => {
+        MO.disconnect();
+        RO.disconnect();
+        if( trNode ){
+            MO.observe( trNode, { childList: true });
+        }
+    }, []);
 };
 
 export default useColWidthsResizeObserver;

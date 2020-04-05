@@ -72,6 +72,20 @@
 .afvscr-nonst-subtable {
     flex: 0 0 auto;
     table-layout: fixed;
+    position: relative;
+}
+
+/* hiding empty rectangular space for th in nonst mode */
+.afvscr-nonst-subtable td:last-child::after,
+.afvscr-nonst-subtable th:last-child::after {
+    content: "";
+    background: inherit;
+    /* definitely wider, than any scrollbar. Overflow: hidden would cut unneeded part. */
+    width: 100px;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    bottom: 0;
 }
 
 /* hdnwrp is used in non-sticky mode. You most likely would not want change this */

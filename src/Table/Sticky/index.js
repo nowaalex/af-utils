@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import Colgroup from "../common/Colgroup";
 import TbodyScroller from "../common/TbodyScroller";
 import ScrollContainer from "../../common/ScrollContainer";
@@ -61,23 +61,21 @@ const Sticky = ({
     
     return (
         <ScrollContainer ref={scrollContainerRef} reportScrollLeft className={cx("afvscr-st",className)} {...props}>
-            {useMemo(() => (
-                <BodyTable fixedLayout={fixedLayout}>
-                    <Colgroup />
-                    {headlessMode?null:<Thead />}
-                    <TbodyScroller />
-                    <Tbody
-                        tbodyRef={tbodyRef}
-                        getRowExtraProps={getRowExtraProps}
-                        getCellExtraProps={getCellExtraProps}
-                        RowComponent={RowComponent}
-                        CellComponent={CellComponent}
-                    />
-                    {totals && (
-                        <Tfoot TotalsCellComponent={TotalsCellComponent} />
-                    )}
-                </BodyTable>
-            ), [ headlessMode, fixedLayout, totals, getRowExtraProps, getCellExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
+            <BodyTable fixedLayout={fixedLayout}>
+                <Colgroup />
+                {headlessMode?null:<Thead />}
+                <TbodyScroller />
+                <Tbody
+                    tbodyRef={tbodyRef}
+                    getRowExtraProps={getRowExtraProps}
+                    getCellExtraProps={getCellExtraProps}
+                    RowComponent={RowComponent}
+                    CellComponent={CellComponent}
+                />
+                {totals && (
+                    <Tfoot TotalsCellComponent={TotalsCellComponent} />
+                )}
+            </BodyTable>
         </ScrollContainer>
     );
 }

@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 
 import useApi from "../../useApi";
@@ -59,32 +59,30 @@ const NonSticky = ({
                 </TableWrapper>
             )}
             <ScrollContainer ref={scrollContainerRef} onScroll={onScroll} reportScrollLeft>
-                {useMemo(() => (
-                    <BodyTable fixedLayout={fixedLayout}>
-                        <Colgroup />
-                        {headlessMode ? null : (
-                            <Thead
-                                className="afvscr-hdnwrp"
-                                trRef={widthsObserverRef}
-                            />
-                        )}
-                        {totals && (
-                            <Tfoot
-                                TotalsCellComponent={TotalsCellComponent}
-                                className="afvscr-hdnwrp"
-                                trRef={headlessMode?widthsObserverRef:undefined}
-                            />
-                        )}
-                        <TbodyScroller />
-                        <Tbody
-                            tbodyRef={tbodyRef}
-                            getRowExtraProps={getRowExtraProps}
-                            getCellExtraProps={getCellExtraProps}
-                            RowComponent={RowComponent}
-                            CellComponent={CellComponent}
+                <BodyTable fixedLayout={fixedLayout}>
+                    <Colgroup />
+                    {headlessMode ? null : (
+                        <Thead
+                            className="afvscr-hdnwrp"
+                            trRef={widthsObserverRef}
                         />
-                    </BodyTable>
-                ), [ totals, headlessMode, fixedLayout, getRowExtraProps, getCellExtraProps, RowComponent, CellComponent, TotalsCellComponent ])}
+                    )}
+                    {totals && (
+                        <Tfoot
+                            TotalsCellComponent={TotalsCellComponent}
+                            className="afvscr-hdnwrp"
+                            trRef={headlessMode?widthsObserverRef:undefined}
+                        />
+                    )}
+                    <TbodyScroller />
+                    <Tbody
+                        tbodyRef={tbodyRef}
+                        getRowExtraProps={getRowExtraProps}
+                        getCellExtraProps={getCellExtraProps}
+                        RowComponent={RowComponent}
+                        CellComponent={CellComponent}
+                    />
+                </BodyTable>
             </ScrollContainer>
             {totals && (
                 <TableWrapper className="afvscr-nonst-subtable">

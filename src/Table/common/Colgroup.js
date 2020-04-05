@@ -10,7 +10,7 @@ const Colgroup = ({ useTbodyWidths }) => {
 
     return (
         <colgroup>
-            {columns.map(({ dataKey, background, visibility, border, width }, j, cols ) => visibility !== "hidden" ? (
+            {columns.map(({ dataKey, background, visibility, border, width }, j ) => visibility !== "hidden" ? (
                 <col
                     key={dataKey}
                     style={{
