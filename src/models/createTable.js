@@ -60,6 +60,7 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
     sortDirectionSign = 1;
 
     scrollLeft = 0;
+    tbodyColumnWidthsSum = 0;
     tbodyColumnWidths = null;
     orderedRows = new OrderedRowsCache( 0 );
 
@@ -176,6 +177,10 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
         this.tbodyColumnWidths = new TbodyColumnWidthsCache( this.columns.length );
     }
 
+    refreshColumnWidthsSum(){
+        this.tbodyColumnWidthsSum = this.tbodyColumnWidths.reduce( add );
+    }
+
     constructor(){
         super();
 
@@ -191,6 +196,7 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
             .on( "#rowDataGetter", this.refreshTotals )
             .on( "#rowsOrder", this.scrollToStart )
             .on( "#totals", this.refreshTotals )
+            .on( "tbody-column-widths-changed", this.refreshColumnWidthsSum ) //for non-sticky
         
             .refreshRowsOrder();
 

@@ -1,7 +1,7 @@
 import React from "react";
 import useApi from "../../../useApi";
 import Colgroup from "../../common/Colgroup";
-import { add } from "../../../utils/math";
+import cx from "../../../utils/cx";
 
 const SUBSCRIBE_EVENTS = [
     "#columns",
@@ -10,18 +10,18 @@ const SUBSCRIBE_EVENTS = [
     "tbody-column-widths-changed"
 ];
 
-const TableWrapper = ({ children, ...props }) => {
+const TableWrapper = ({ children, className, ...props }) => {
 
-    const { scrollLeft, columns, tbodyColumnWidths } = useApi( SUBSCRIBE_EVENTS );
+    const { scrollLeft, columns, tbodyColumnWidthsSum } = useApi( SUBSCRIBE_EVENTS );
 
     const style = {
         /* If we do this via transform translate, col background would have bugs during horizontal scroll. Strange webkit behavior */
         marginLeft: -scrollLeft,
-        width: tbodyColumnWidths.reduce( add, 0 )
+        width: tbodyColumnWidthsSum
     };
 
     return (
-        <table {...props} style={style} aria-colcount={columns.length}>
+        <table className={cx("afvscr-nonst-subtable",className)} {...props} style={style} aria-colcount={columns.length}>
             <Colgroup useTbodyWidths />
             {children}
         </table>

@@ -54,7 +54,7 @@ const NonSticky = ({
     return (
         <div className={cx("afvscr-nonst",className)} {...props}>
             {headlessMode ? null : (
-                <TableWrapper className="afvscr-nonst-subtable">
+                <TableWrapper>
                     <Thead />
                 </TableWrapper>
             )}
@@ -85,7 +85,7 @@ const NonSticky = ({
                 </BodyTable>
             </ScrollContainer>
             {totals && (
-                <TableWrapper className="afvscr-nonst-subtable">
+                <TableWrapper>
                     <Tfoot TotalsCellComponent={TotalsCellComponent} />
                 </TableWrapper>
             )}
