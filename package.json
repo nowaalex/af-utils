@@ -1,6 +1,6 @@
 {
   "name": "af-virtual-scroll",
-  "version": "1.8.8",
+  "version": "1.8.9",
   "description": "React components for rendering large scrollable data",
   "repository": {
     "type": "git",
@@ -43,7 +43,9 @@
     "scrolling",
     "infinite",
     "virtualized",
-    "grid"
+    "grid",
+    "sortable",
+    "windowing"
   ],
   "devDependencies": {
     "@babel/cli": "^7.8.4",
