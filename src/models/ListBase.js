@@ -1,6 +1,5 @@
-import clamp from "lodash/clamp";
 import EventEmitter from "af-tools/lib/eventEmitters/Basic";
-import debounce from "lodash/debounce";
+import debounce from "../utils/debounce";
 
 const getRowDataInitial = () => {
     throw new Error( "getRowData must be provided" );
@@ -82,21 +81,18 @@ class ListBase extends EventEmitter {
     /*
         Column heights may change during scroll/width-change
     */
-    increaseEndIndexIfNeeded = debounce(() => {
+    increaseEndIndexIfNeededSync(){
         const currentVisibleDist = this.getDistanceBetweenIndexes( this.startIndex, this.endIndex );
         if( this.widgetHeight > this.virtualTopOffset + currentVisibleDist - this.scrollTop ){
             this.updateEndIndex();
         }
-        return this;
-    }, END_INDEX_CHECK_INTERVAL );
+    }
+
+    increaseEndIndexIfNeeded = debounce( this.increaseEndIndexIfNeededSync, END_INDEX_CHECK_INTERVAL );
 
     destructor(){
         this.increaseEndIndexIfNeeded.cancel();
         this.removeAllListeners();
-    }
-    
-    reportRowsRendered(){
-        this.emit( "rows-rendered" );
     }
 
     updateStartOffset(){
@@ -122,7 +118,7 @@ class ListBase extends EventEmitter {
     scrollToRow( index ){
         const node = this.scrollContainerNode;
         if( node ){
-            index = clamp( index, 0, this.totalRows );
+            index = Math.max( 0, Math.min( index, this.totalRows ) );
             node.scrollTop = this.getDistanceBetweenIndexes( 0, index );
         }
         return this;    

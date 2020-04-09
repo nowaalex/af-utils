@@ -1,5 +1,4 @@
 import React from "react";
-import capitalize from "lodash/capitalize";
 
 const TotalsCell = ({ cellTotals, totalsCache, formatTotal }) => {
 
@@ -11,7 +10,7 @@ const TotalsCell = ({ cellTotals, totalsCache, formatTotal }) => {
         const summaryType = cellTotals[ 0 ];
         const res = totalsCache[ summaryType ];
         return (
-            <div title={summaryType}>
+            <div title={summaryType} className="afvscr-summary">
                 {formatTotal?formatTotal(res):res}
             </div>
         );
@@ -20,8 +19,8 @@ const TotalsCell = ({ cellTotals, totalsCache, formatTotal }) => {
     return cellTotals.map( summaryType => {
         const res = totalsCache[ summaryType ];
         return res !== undefined ? (
-            <div key={summaryType}>
-                {capitalize(summaryType)}:&nbsp;{formatTotal?formatTotal(res):res}
+            <div key={summaryType} className="afvscr-summary">
+                {summaryType}:&nbsp;{formatTotal?formatTotal(res):res}
             </div>
         ) : null;
     });

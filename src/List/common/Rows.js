@@ -36,7 +36,7 @@ const Rows = ({ getRowExtraProps, RowComponent }) => {
     const API = useApi( SUBSCRIBE_EVENTS );
 
     useEffect(() => {
-        API.reportRowsRendered();
+        API.emit( "rows-rendered" );
     });
 
     return getVisibleRows(

@@ -1,5 +1,4 @@
 import React, { memo } from "react";
-import startCase from "lodash/startCase";
 import { css } from "@emotion/core";
 import { NavLink } from "react-router-dom";
 
@@ -16,6 +15,8 @@ const ulWrapperCss = css`
             color: darkgreen;
             font-weight: bold;
         }
+
+        text-transform: capitalize;
     }
 
     ul {
@@ -38,7 +39,7 @@ const MenuList = ({ Component = "div", name, children, hIndex, ...props }) => {
                             <MenuList {...r} hIndex={hIndex+1} />
                         ) : r.path.startsWith( "/" ) ? (
                             <NavLink to={r.path}>
-                                {startCase(r.name)}
+                                {r.name}
                             </NavLink>
                         ) : (
                             <a href={r.path} target="_blank">

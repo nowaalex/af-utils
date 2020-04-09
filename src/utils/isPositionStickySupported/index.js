@@ -1,15 +1,8 @@
-import once from "lodash/once";
+const elStyle = document.createElement( "a" ).style;
+elStyle.cssText = [ "", "-webkit-", "-ms-" ].map( p => `position:${p}sticky` ).join( ";" );
 
-const stickyCssText = [ "", "-webkit-", "-ms-" ].map( p => `position:${p}sticky` ).join( ";" );
+const isSupported = elStyle.position.includes( "sticky" );
 
-const isPositionStickySupported = () => {
-    const elStyle = document.createElement( "a" ).style;
-    elStyle.cssText = stickyCssText;
-    
-    return elStyle.position.includes( "sticky" );
-};
+const isPositionStickySupported = () => isSupported;
 
-/*
-    'once' is needed to use this function frequently without perf issues.
-*/
-export default once( isPositionStickySupported );
+export default isPositionStickySupported;

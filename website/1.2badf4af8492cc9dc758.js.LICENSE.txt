@@ -1,0 +1,167 @@
+/* Built-in method references for those with the same name as other `lodash` methods. */
+
+/* harmony default export */
+
+/* harmony export (binding) */
+
+/*#__PURE__*/
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+
+/**
+ * Converts `value` to a finite number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.12.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted number.
+ * @example
+ *
+ * _.toFinite(3.2);
+ * // => 3.2
+ *
+ * _.toFinite(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toFinite(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toFinite('3.2');
+ * // => 3.2
+ */
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3.2);
+ * // => 3.2
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
+ */
+
+/**
+ * Produces a random number between the inclusive `lower` and `upper` bounds.
+ * If only one argument is provided a number between `0` and the given number
+ * is returned. If `floating` is `true`, or either `lower` or `upper` are
+ * floats, a floating-point number is returned instead of an integer.
+ *
+ * **Note:** JavaScript follows the IEEE-754 standard for resolving
+ * floating-point values which can produce unexpected results.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.7.0
+ * @category Number
+ * @param {number} [lower=0] The lower bound.
+ * @param {number} [upper=1] The upper bound.
+ * @param {boolean} [floating] Specify returning a floating-point number.
+ * @returns {number} Returns the random number.
+ * @example
+ *
+ * _.random(0, 5);
+ * // => an integer between 0 and 5
+ *
+ * _.random(5);
+ * // => also an integer between 0 and 5
+ *
+ * _.random(5, true);
+ * // => a floating-point number between 0 and 5
+ *
+ * _.random(1.2, 5.2);
+ * // => a floating-point number between 1.2 and 5.2
+ */
+
+/**
+ * The base implementation of `_.random` without support for returning
+ * floating-point numbers.
+ *
+ * @private
+ * @param {number} lower The lower bound.
+ * @param {number} upper The upper bound.
+ * @returns {number} Returns the random number.
+ */
+
+/** Built-in method references without a dependency on `root`. */
+
+/** Used as references for various `Number` constants. */
+
+/***/

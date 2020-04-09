@@ -1,5 +1,5 @@
 import ListBase from "./ListBase";
-import debounce from "lodash/debounce";
+import debounce from "../utils/debounce";
 
 // Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
 const SegmentsTreeCache = Uint32Array;
@@ -11,8 +11,8 @@ const SegmentsTreeCache = Uint32Array;
 */
 const MIN_TREE_CACHE_OFFSET = 32;
 
-const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 50;
-const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 150; 
+const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 150;
+const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 1000; 
 
 class VariableSizeList extends ListBase {
 
@@ -52,10 +52,7 @@ class VariableSizeList extends ListBase {
         return this;
     }
 
-    /*
-        TODO: maybe some react-like performUnitOfWork logic is needed here?
-    */
-    setVisibleRowsHeights = debounce(() => {
+    setVisibleRowsHeightsSync(){
         const node = this.rowsContainerNode;
 
         if( node ){
@@ -116,8 +113,10 @@ class VariableSizeList extends ListBase {
         }
 
         return this;
-    }, ROW_MEASUREMENT_DEBOUNCE_INTERVAL, { maxWait: ROW_MEASUREMENT_DEBOUNCE_MAXWAIT });
-    
+    }
+
+    setVisibleRowsHeights = debounce( this.setVisibleRowsHeightsSync, ROW_MEASUREMENT_DEBOUNCE_INTERVAL, ROW_MEASUREMENT_DEBOUNCE_MAXWAIT );
+   
     getVisibleRangeStart( dist ){
         const { sTree, N } = this;
         let nodeIndex = 1, v;

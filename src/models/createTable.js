@@ -1,6 +1,5 @@
-import debounce from "lodash/debounce";
-import subtract from "lodash/subtract";
-import add from "lodash/add";
+import debounce from "../utils/debounce";
+import { add, subtract } from "../utils/math";
 
 const OrderedRowsCache = Uint32Array;
 const TbodyColumnWidthsCache = Uint32Array;
@@ -135,13 +134,14 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
         return this;
     }
 
-    refreshTotals = debounce(() => {
+    refreshTotalsSync(){
         for( let j = 0, dataKey, getCellData; j < this.columns.length; j++ ){
             ({ dataKey, getCellData } = this.columns[ j ]);
             this.refreshTotalsForColumnRaw( dataKey, getCellData );
         }
-        return this;
-    }, 100 );
+    }
+
+    refreshTotals = debounce( this.refreshTotalsSync, 150 );
 
     setSortParams( colIndex, sortDirectionSign ){
         if( this.sortColumnIndex !== colIndex || sortDirectionSign !== this.sortDirectionSign ){

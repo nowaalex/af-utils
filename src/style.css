@@ -121,3 +121,7 @@
 .afvscr-st tfoot th {
     bottom: 0;
 }
+
+.afvscr-summary {
+    text-transform: capitalize;
+}
