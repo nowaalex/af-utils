@@ -26,7 +26,7 @@ const Cell = ({ rowData, rowIndex, column, columnIndex, getCellExtraProps }) => 
     }
 
     return (
-        <td {...getCellProps(rowData,columnIndex,getCellExtraProps)}>
+        <td {...getCellProps(rowData,columnIndex,columnIndex,getCellExtraProps)}>
             {cellData}
         </td>
     );

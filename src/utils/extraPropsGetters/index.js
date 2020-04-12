@@ -1,4 +1,4 @@
-const getPropsGetter = propName => ( data, index, getExtraProps ) => {
+const getPropsGetter = propName => ( data, index, dataIndex, getExtraProps ) => {
 
     /* avoiding double destructurization via getExtraProps, so making prop object once */
     const props = {
@@ -6,7 +6,7 @@ const getPropsGetter = propName => ( data, index, getExtraProps ) => {
     };
 
     if( getExtraProps ){
-        const extraProps = getExtraProps( data, index );
+        const extraProps = getExtraProps( data, index, dataIndex );
         if( extraProps ){
             if( process.env.NODE_ENV !== "production" ){
                 if( extraProps.hasOwnProperty( propName ) ){

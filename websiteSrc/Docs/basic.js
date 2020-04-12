@@ -75,10 +75,12 @@ const Basic = () => (
                 </p>
             </li>
             <li>
-                <h4>getRowExtraProps(rowData,rowIndex)</h4>
+                <h4>getRowExtraProps(rowData,rowIndex,rowDataIndex)</h4>
                 <p>
                     Returns an object of extra props, that will be passed to row wrapper(usually tr for table and div for list).
                     Hooks also can be called here.
+                    rowIndex afer sorting remains 1, 2, 3, etc.
+                    rowDataIndex refers initial data indexes ( can be 1, 10, 5, 3, etc. )
                 </p>
             </li>
             <li>

@@ -7,7 +7,7 @@ const Row = ({ getRowData, getRowExtraProps, rowIndex }) => {
     const rowData = getRowData( rowIndex );
 
     return (
-        <div {...getRowProps(rowData, rowIndex, getRowExtraProps)}>
+        <div {...getRowProps(rowData, rowIndex, rowIndex, getRowExtraProps)}>
             {rowData}
         </div>
     );

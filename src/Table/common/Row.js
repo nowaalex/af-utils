@@ -7,7 +7,7 @@ const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, getCellExtr
     const rowData = getRowData( rowDataIndex );
 
     return (
-        <tr {...getRowProps(rowData,rowDataIndex,getRowExtraProps)}>
+        <tr {...getRowProps(rowData,rowIndex,rowDataIndex,getRowExtraProps)}>
             {columns.map(( column, columnIndex ) => {
                 if( column.visibility === "hidden" ){
                     return null;
