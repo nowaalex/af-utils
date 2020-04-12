@@ -1,8 +1,13 @@
 import "normalize.css";
 import "af-virtual-scroll/lib/style.css";
+import { ResizeObserver as ResizeObserverPolyfill } from '@juggle/resize-observer';
 import React from "react";
 import { render } from "react-dom";
 import App from "./App";
+
+if( !window.ResizeObserver ){
+    window.ResizeObserver = ResizeObserverPolyfill;
+}
 
 const rootNode = document.createElement( "div" );
 rootNode.id = "root";

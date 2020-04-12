@@ -7,6 +7,10 @@ const plugins = [
     }]
 ];
 
+/*
+    TODO: add babel pure annotations
+*/
+
 const presets = [ "@babel/preset-react" ];
 
 module.exports = api => {

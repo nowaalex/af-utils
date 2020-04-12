@@ -8,15 +8,26 @@ exports[`Table component renders ok Performs initial render with rowCount: 0 1`]
 
 exports[`Table component renders ok Performs initial render with rowCount: 1 1`] = `
 <div
-  className="afvscr-nonst afvscr-table-wrapper"
+  className="afvscr-scroll-container afvscr-st afvscr-table-wrapper"
+  onScroll={[Function]}
+  tabIndex="0"
 >
-  <table
-    aria-colcount={0}
-    className="afvscr-nonst-subtable"
+  <div
+    aria-hidden="true"
+    className="afvscr-height-provider"
     style={
       Object {
-        "marginLeft": -0,
-        "width": 0,
+        "height": 16,
+      }
+    }
+  />
+  <table
+    aria-colcount={0}
+    aria-rowcount={1}
+    style={
+      Object {
+        "minWidth": "100%",
+        "tableLayout": "auto",
       }
     }
   >
@@ -26,73 +37,51 @@ exports[`Table component renders ok Performs initial render with rowCount: 1 1`]
     >
       <tr />
     </thead>
-  </table>
-  <div
-    className="afvscr-scroll-container"
-    onScroll={[Function]}
-    tabIndex="0"
-  >
-    <div
+    <tbody
       aria-hidden="true"
-      className="afvscr-height-provider"
-      style={
-        Object {
-          "height": 16,
-        }
-      }
-    />
-    <table
-      aria-colcount={0}
-      aria-rowcount={1}
-      style={
-        Object {
-          "minWidth": "100%",
-          "tableLayout": "auto",
-        }
-      }
+      className="afvscr-scroller"
     >
-      <colgroup />
-      <thead
-        className="afvscr-hdnwrp"
-        onClick={[Function]}
-      >
-        <tr />
-      </thead>
-      <tbody
+      <tr
         aria-hidden="true"
         className="afvscr-scroller"
-      >
-        <tr
-          aria-hidden="true"
-          className="afvscr-scroller"
-          style={
-            Object {
-              "height": 0,
-            }
+        style={
+          Object {
+            "height": 0,
           }
-        />
-      </tbody>
-      <tbody>
-        <tr
-          aria-rowindex={1}
-        />
-      </tbody>
-    </table>
-  </div>
+        }
+      />
+    </tbody>
+    <tbody>
+      <tr
+        aria-rowindex={1}
+      />
+    </tbody>
+  </table>
 </div>
 `;
 
 exports[`Table component renders ok Performs initial render with rowCount: 2 1`] = `
 <div
-  className="afvscr-nonst afvscr-table-wrapper"
+  className="afvscr-scroll-container afvscr-st afvscr-table-wrapper"
+  onScroll={[Function]}
+  tabIndex="0"
 >
-  <table
-    aria-colcount={0}
-    className="afvscr-nonst-subtable"
+  <div
+    aria-hidden="true"
+    className="afvscr-height-provider"
     style={
       Object {
-        "marginLeft": -0,
-        "width": 0,
+        "height": 32,
+      }
+    }
+  />
+  <table
+    aria-colcount={0}
+    aria-rowcount={2}
+    style={
+      Object {
+        "minWidth": "100%",
+        "tableLayout": "auto",
       }
     }
   >
@@ -102,62 +91,29 @@ exports[`Table component renders ok Performs initial render with rowCount: 2 1`]
     >
       <tr />
     </thead>
-  </table>
-  <div
-    className="afvscr-scroll-container"
-    onScroll={[Function]}
-    tabIndex="0"
-  >
-    <div
+    <tbody
       aria-hidden="true"
-      className="afvscr-height-provider"
-      style={
-        Object {
-          "height": 32,
-        }
-      }
-    />
-    <table
-      aria-colcount={0}
-      aria-rowcount={2}
-      style={
-        Object {
-          "minWidth": "100%",
-          "tableLayout": "auto",
-        }
-      }
+      className="afvscr-scroller"
     >
-      <colgroup />
-      <thead
-        className="afvscr-hdnwrp"
-        onClick={[Function]}
-      >
-        <tr />
-      </thead>
-      <tbody
+      <tr
         aria-hidden="true"
         className="afvscr-scroller"
-      >
-        <tr
-          aria-hidden="true"
-          className="afvscr-scroller"
-          style={
-            Object {
-              "height": 0,
-            }
+        style={
+          Object {
+            "height": 0,
           }
-        />
-      </tbody>
-      <tbody>
-        <tr
-          aria-rowindex={1}
-        />
-        <tr
-          aria-rowindex={2}
-        />
-      </tbody>
-    </table>
-  </div>
+        }
+      />
+    </tbody>
+    <tbody>
+      <tr
+        aria-rowindex={1}
+      />
+      <tr
+        aria-rowindex={2}
+      />
+    </tbody>
+  </table>
 </div>
 `;
 
