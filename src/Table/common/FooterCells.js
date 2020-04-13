@@ -34,7 +34,7 @@ const FooterCells = ({ TotalsCellComponent }) => {
 };
 
 FooterCells.propTypes = {
-    TotalsCellComponent: PropTypes.any.isRequired
+    TotalsCellComponent: PropTypes.elementType.isRequired
 }
 
 export default memo( FooterCells );

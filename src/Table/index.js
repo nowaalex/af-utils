@@ -106,7 +106,7 @@ Table.propTypes = {
             background: PropTypes.string,
             border: PropTypes.string,
             width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
-            CellComponent: PropTypes.any,
+            CellComponent: PropTypes.elementType,
             getCellExtraProps: PropTypes.func
         })
     ).isRequired,
@@ -121,11 +121,11 @@ Table.propTypes = {
     nonSticky: PropTypes.bool,
     headless: PropTypes.bool,
 
-    HeaderRowComponent: PropTypes.any,
-    CellComponent: PropTypes.any,
-    TotalsCellComponent: PropTypes.any,
+    HeaderRowComponent: PropTypes.elementType,
+    CellComponent: PropTypes.elementType,
+    TotalsCellComponent: PropTypes.elementType,
 
-    RowCountWarningContainer: PropTypes.any,
+    RowCountWarningContainer: PropTypes.elementType,
     rowCountWarningsTable: PropTypes.object,
 
     // Determines, if table-layout: fixed is applied to main table

@@ -32,7 +32,7 @@ const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, getCellExtr
 
 Row.propTypes = {
     columns: PropTypes.array.isRequired,
-    CellComponent: PropTypes.oneOfType([ PropTypes.func, PropTypes.node ]).isRequired,
+    CellComponent: PropTypes.elementType.isRequired,
     getRowData: PropTypes.func.isRequired,
     rowIndex: PropTypes.number.isRequired,
     rowDataIndex: PropTypes.number.isRequired,

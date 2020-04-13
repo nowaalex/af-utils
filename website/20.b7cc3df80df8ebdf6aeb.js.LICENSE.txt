@@ -1,0 +1,112 @@
+/* WEBPACK VAR INJECTION */
+
+/* harmony export (binding) */
+
+/* harmony import */
+
+/* unused harmony export Observer */
+
+/* unused harmony export isObserverBatched */
+
+/* unused harmony export isUsingStaticRendering */
+
+/* unused harmony export observerBatching */
+
+/* unused harmony export observerBatchingOptOut */
+
+/* unused harmony export useAsObservableSource */
+
+/* unused harmony export useForceUpdate */
+
+/* unused harmony export useLocalStore */
+
+/* unused harmony export useObserver */
+
+/* unused harmony export useStaticRendering */
+
+/*#__PURE__*/
+
+/**
+ * Run by the cleanup timer to dispose any outstanding reactions
+ */
+
+/**
+ * The frequency with which we'll check for leaked reactions.
+ */
+
+/**
+ * The minimum time before we'll clean up a Reaction created in a render
+ * for a component that hasn't managed to run its effects. This needs to
+ * be big enough to ensure that a component won't turn up and have its
+ * effects run without being re-rendered.
+ */
+
+/***/
+
+//    since it wouldn't be a callable function anymore
+
+// (It triggers warnings in StrictMode, for a start.)
+
+// 1. it cannot go before memo, only after it
+
+// 2. forwardRef converts the function into an actual component, so we can't let the baseComponent do it
+
+// BUT if we're a component that hasn't yet got to the useEffect()
+
+// Called on first mount only
+
+// First render for this component (or first time since a previous
+
+// Great. We've already got our reaction from our render;
+
+// It's time to tidy up this leaked reaction.
+
+// Loop through all the candidate leaked reactions; those older
+
+// Observable has changed, meaning we want to re-render
+
+// Re-create the reaction
+
+// The reaction we set up in our render has been disposed.
+
+// The working of observer is explained step by step in this talk: https://www.youtube.com/watch?v=cPF4iBedoF0&feature=youtu.be&t=1307
+
+// This is either due to bad timings of renderings, e.g. our
+
+// We have reached useEffect(), so we're mounted, and can trigger an update
+
+// We haven't yet reached useEffect(), so we'll need to trigger a re-render
+
+// We've definitely already been mounted at this point
+
+// We've just finished a round of cleanups but there are still
+
+// all we need to do is to record that it's now mounted,
+
+// based on https://github.com/mridgway/hoist-non-react-statics/blob/master/src/index.js
+
+// between render and useEffect
+
+// component was paused for a _very_ long time, and our
+
+// drop our current reaction and allow useEffect() to recreate it.
+
+// got dropped, and we don't want to make state changes then.
+
+// re-throw any exceptions catched during rendering
+
+// reaction from an abandoned render was disposed).
+
+// reaction got cleaned up, or we got a observable change
+
+// some leak candidates outstanding.
+
+// stage, we might be a component that _started_ to render, but
+
+// than CLEANUP_LEAKED_REACTIONS_AFTER_MILLIS get tidied.
+
+// to allow future observable changes to trigger re-renders
+
+// we have to use forwardRef here because:
+
+// when (and if) useEffect() arrives.  The easiest way to do that is just to

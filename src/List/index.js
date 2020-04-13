@@ -74,7 +74,7 @@ const List = ({
 
 List.propTypes = {
     ...commonPropTypes,
-    RowCountWarningContainer: PropTypes.any,
+    RowCountWarningContainer: PropTypes.elementType,
     rowCountWarningsTable: PropTypes.object
 };
 

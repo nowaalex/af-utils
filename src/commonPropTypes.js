@@ -5,7 +5,7 @@ const commonPropTypes = {
     getRowKey: PropTypes.func,
     getRowExtraProps: PropTypes.func,
     className: PropTypes.string,
-    RowComponent: PropTypes.any,
+    RowComponent: PropTypes.elementType,
     fixedSize: PropTypes.bool,
     rowCount: PropTypes.number,
     overscanRowsCount: PropTypes.number,
