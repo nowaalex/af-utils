@@ -1,15 +1,12 @@
 const plugins = [
     "emotion",
+    "annotate-pure-calls",
     [ "@babel/plugin-proposal-class-properties", { loose: true }],
     [ "@babel/plugin-proposal-object-rest-spread", { loose: true, useBuiltIns: true }],
     [ "transform-react-remove-prop-types", {
         mode: "wrap"
     }]
 ];
-
-/*
-    TODO: add babel pure annotations
-*/
 
 const presets = [ "@babel/preset-react" ];
 
