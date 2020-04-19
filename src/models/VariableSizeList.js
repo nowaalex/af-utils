@@ -5,11 +5,9 @@ import debounce from "../utils/debounce";
 const SegmentsTreeCache = Uint32Array;
 
 /*
-    This constant is used for 2 reasons:
-        * Math.log2( 1 ) is 0, which is not correct for cache size calculation
-        * We should always have some extra space for new rows. We do not want to reallocate cache every time.
+    We should always have some extra space for new rows. We do not want to reallocate cache every time.
 */
-const MIN_TREE_CACHE_OFFSET = 32;
+const MIN_TREE_CACHE_OFFSET = 15;
 
 const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 150;
 const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 1000; 
@@ -150,11 +148,12 @@ class VariableSizeList extends ListBase {
     }
 
     reallocateCacheIfNeeded(){
-        const suggestedN = this.totalRows ? 2 ** Math.ceil( Math.log2( this.totalRows + MIN_TREE_CACHE_OFFSET ) ) : 1;
+        /* Nearest pow of 2 to totalRows. 56 >= 64, 67 => 128, etc. */
+        const suggestedN = this.totalRows > 0 ? 2 << Math.log2( this.totalRows + MIN_TREE_CACHE_OFFSET ) : 1;
 
         if( this.N !== suggestedN ){
             this.N = suggestedN;
-            this.sTree = new SegmentsTreeCache( suggestedN * 2 );
+            this.sTree = new SegmentsTreeCache( suggestedN << 1 );
         }
 
         return this;

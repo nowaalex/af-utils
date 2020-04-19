@@ -188,6 +188,8 @@
 
 /* In segments tree 1 node is always sum of all elements */
 
+/* Nearest pow of 2 to totalRows. 56 >= 64, 67 => 128, etc. */
+
 /* avoiding double destructurization via getExtraProps, so making prop object once */
 
 /* callback ref */

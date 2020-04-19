@@ -38,5 +38,22 @@ describe( "Segments tree works correctly", () => {
                 VList.calculateParentsInRange( randomIndex, randomIndex + 1 );
                 expect(VList.getDistanceBetweenIndexes( 0, rowCount )).toEqual( ( rowCount - 2 ) * rowHeight + randomNumber * 2 );
             }
-        });
+        }
+    );
+
+    test.each`
+        totalRows | expectedCacheSize
+        ${-1}     | ${2}
+        ${0}      | ${2}
+        ${1}      | ${64}
+        ${5}      | ${64}
+        ${100}    | ${256}
+        ${129}    | ${512}
+    `(
+        "Cache reallocation works ok for: { totalRows: $totalRows, expectedCacheSize: $expectedCacheSize }",
+        ({ totalRows, expectedCacheSize }) => {
+            VList.set( "totalRows", totalRows );
+            expect(VList.sTree.length).toEqual( expectedCacheSize );
+        }
+    );
 });
