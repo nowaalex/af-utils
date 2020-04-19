@@ -6,20 +6,15 @@ const SUBSCRIBE_EVENTS = [
     "#columns"
 ];
 
-const BodyTable = ({ fixedLayout, ...props }) => {
+const BodyTable = ({ children }) => {
 
     const API = useApi( SUBSCRIBE_EVENTS );
 
-    const tableStyle = {
-        tableLayout: fixedLayout ? "fixed" : "auto",
-        minWidth: "100%"
-    };
-
     return (
         <table
-            {...props}
+            children={children}
+            className="afvscr-main-table"
             aria-rowcount={API.totalRows}
-            style={tableStyle}
             aria-colcount={API.columns.length}
         />
     );

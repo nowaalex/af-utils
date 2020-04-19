@@ -126,15 +126,11 @@ Table.propTypes = {
     TotalsCellComponent: PropTypes.elementType,
 
     RowCountWarningContainer: PropTypes.elementType,
-    rowCountWarningsTable: PropTypes.object,
-
-    // Determines, if table-layout: fixed is applied to main table
-    fixedLayout: PropTypes.bool
+    rowCountWarningsTable: PropTypes.object
 };
 
 Table.defaultProps = {
     ...commonDefaultProps,
-    fixedLayout: false,
     headless: false,
 
     //    For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.

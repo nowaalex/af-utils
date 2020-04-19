@@ -29,7 +29,6 @@ const Sticky = ({
     RowComponent,
     CellComponent,
     TotalsCellComponent,
-    fixedLayout,
     className,
     ...props
 }) => {
@@ -63,7 +62,7 @@ const Sticky = ({
     
     return (
         <ScrollContainer ref={scrollContainerRef} reportScrollLeft className={cx("afvscr-st",className)} {...props}>
-            <BodyTable fixedLayout={fixedLayout}>
+            <BodyTable>
                 <Colgroup />
                 {headlessMode?null:<Thead />}
                 <TbodyScroller />

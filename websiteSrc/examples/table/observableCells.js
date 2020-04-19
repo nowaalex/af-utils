@@ -75,7 +75,6 @@ const TableWithObservableRows = ({ className }) => {
     return (
         <Table
             className={className}
-            fixedLayout
             CellComponent={CellComponent}
             getRowData={getRowData}
             rowCount={rowCount}

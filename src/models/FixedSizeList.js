@@ -12,7 +12,7 @@ class FixedSizeList extends ListBase {
         if( node ){
             const { firstElementChild } = node;
             if( firstElementChild ){
-                this.set( "estimatedRowHeight", node.firstElementChild.offsetHeight );
+                this.set( "estimatedRowHeight", firstElementChild.offsetHeight );
             }
         }
     }

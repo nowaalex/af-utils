@@ -29,7 +29,6 @@ const NonSticky = ({
     RowComponent,
     CellComponent,
     TotalsCellComponent,
-    fixedLayout,
     onScroll,
     ...props
 }) => {
@@ -59,7 +58,7 @@ const NonSticky = ({
                 </TableWrapper>
             )}
             <ScrollContainer ref={scrollContainerRef} onScroll={onScroll} reportScrollLeft>
-                <BodyTable fixedLayout={fixedLayout}>
+                <BodyTable>
                     <Colgroup />
                     {headlessMode ? null : (
                         <Thead

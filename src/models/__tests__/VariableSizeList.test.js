@@ -1,10 +1,10 @@
-import VariableSizeList from "./VariableSizeList";
+import VariableSizeList from "../VariableSizeList";
 
 describe( "Segments tree works correctly", () => {
 
     const VList = new VariableSizeList();
 
-    test( "It initialies properly", () => {
+    test( "It initializes properly", () => {
         VList.set( "totalRows", 50 ).set( "estimatedRowHeight", 5 );
         expect(VList.getDistanceBetweenIndexes( 2, 7)).toEqual(25);
     });

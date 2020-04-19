@@ -70,11 +70,19 @@
     overflow: hidden;
 }
 
+.afvscr-main-table {
+    min-width: 100%;
+}
+
 /* thead and tfoot are rendered as other tables in nonst mode */
 .afvscr-nonst-subtable {
     flex: 0 0 auto;
-    table-layout: fixed;
     position: relative;
+}
+
+.afvscr-main-table,
+.afvscr-nonst-subtable {
+    table-layout: fixed;
 }
 
 /* hiding empty rectangular space for th in nonst mode */

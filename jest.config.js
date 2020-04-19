@@ -1,6 +1,10 @@
 module.exports = {
     verbose: true,
     bail: true,
-    transformIgnorePatterns: []
+    transformIgnorePatterns: [],
+    // collectCoverage: true,
+    collectCoverageFrom: [
+        "src/**/*.{js,jsx}"
+    ]
 };
   

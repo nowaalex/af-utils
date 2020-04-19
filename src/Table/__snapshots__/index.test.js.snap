@@ -24,12 +24,7 @@ exports[`Table component renders ok Performs initial render with rowCount: 1 1`]
   <table
     aria-colcount={0}
     aria-rowcount={1}
-    style={
-      Object {
-        "minWidth": "100%",
-        "tableLayout": "auto",
-      }
-    }
+    className="afvscr-main-table"
   >
     <colgroup />
     <thead
@@ -78,12 +73,7 @@ exports[`Table component renders ok Performs initial render with rowCount: 2 1`]
   <table
     aria-colcount={0}
     aria-rowcount={2}
-    style={
-      Object {
-        "minWidth": "100%",
-        "tableLayout": "auto",
-      }
-    }
+    className="afvscr-main-table"
   >
     <colgroup />
     <thead
