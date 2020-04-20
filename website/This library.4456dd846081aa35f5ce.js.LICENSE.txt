@@ -53,11 +53,6 @@
   */
 
 /*
-      Only cells inside thead/tfoot can be sticky.
-      If thead/tfoot are hidden - we can easily render lighter StickyComponent to avoid extra wrappers
-  */
-
-/*
       Two vars for non-recursive segments tree;
       Could just make [ 0, 0 ], but want to keep type of heightsCache always of same type.
   */

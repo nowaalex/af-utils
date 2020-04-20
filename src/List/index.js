@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 
 import Context from "../Context";
@@ -34,20 +34,11 @@ const List = ({
     ...props
 }) => {
 
-    const scrollContainerRef = useRef();
-    const rowsContainerRef = useRef();
-
-    const Store = useStore( fixedSize ? FixedSizeListStore : VariableSizeListStore, dataRef );
-
-    useEffect(() => {
-        Store.merge({
-            rowDataGetter: getRowData,
-            rowKeyGetter: getRowKey,
-            overscanRowsCount,
-            totalRows: rowCount,
-            rowsContainerNode: rowsContainerRef.current,
-            scrollContainerNode: scrollContainerRef.current
-        });
+    const [ Store, scrollContainerRef, rowsContainerRef ] = useStore( fixedSize ? FixedSizeListStore : VariableSizeListStore, dataRef, {
+        rowDataGetter: getRowData,
+        rowKeyGetter: getRowKey,
+        overscanRowsCount,
+        totalRows: rowCount
     });
 
     return (

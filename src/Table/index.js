@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 
 import isPositionStickySupported from "../utils/isPositionStickySupported";
@@ -40,23 +40,14 @@ const Table = ({
     ...props
 }) => {
 
-    const scrollContainerRef = useRef();
-    const tbodyRef = useRef();
-
-    const Store = useStore( fixedSize ? FixedSizeTableStore : VariableSizeTableStore, dataRef );
-
-    useEffect(() => {
-        Store.merge({
-            headlessMode: headless,
-            rowDataGetter: getRowData,
-            rowKeyGetter: getRowKey,
-            overscanRowsCount,
-            totals,
-            columns,
-            totalRows: Math.max( rowCount, 0 ),
-            rowsContainerNode: tbodyRef.current,
-            scrollContainerNode: scrollContainerRef.current
-        });
+    const [ Store, scrollContainerRef, tbodyRef ] = useStore( fixedSize ? FixedSizeTableStore : VariableSizeTableStore, dataRef, {
+        headlessMode: headless,
+        rowDataGetter: getRowData,
+        rowKeyGetter: getRowKey,
+        overscanRowsCount,
+        totals,
+        columns,
+        totalRows: Math.max( rowCount, 0 )
     });
 
     /*
