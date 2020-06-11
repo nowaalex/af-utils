@@ -6,7 +6,6 @@ const getRowDataInitial = () => {
 };
 
 const END_INDEX_CHECK_INTERVAL = 400;
-const DEFAULT_ESTIMATED_ROW_HEIGHT = 16;
 
 class ListBase extends EventEmitter {
 
@@ -18,7 +17,7 @@ class ListBase extends EventEmitter {
     widgetScrollHeight = 0;
 
     overscanRowsCount = 0;
-    estimatedRowHeight = DEFAULT_ESTIMATED_ROW_HEIGHT;
+    estimatedRowHeight = 0;
 
     scrollTop = 0;
     widgetHeight = 0;
@@ -107,6 +106,11 @@ class ListBase extends EventEmitter {
     }
 
     updateEndIndex(){
+
+        if( !this.estimatedRowHeight ){
+            return this.set( "endIndex", 0 );
+        }
+        
         const [ newEndIndex ] = this.getVisibleRangeStart( this.scrollTop + this.widgetHeight );
         /*
             getVisibleRangeStart works by "strict less" algo. It is good for startIndex,

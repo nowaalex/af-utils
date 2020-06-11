@@ -19,7 +19,7 @@ class FixedSizeList extends ListBase {
 
     getVisibleRangeStart( distance ){
         const { estimatedRowHeight } = this;
-        return [ distance / estimatedRowHeight | 0, distance % estimatedRowHeight ];
+        return estimatedRowHeight ? [ distance / estimatedRowHeight | 0, distance % estimatedRowHeight ] : [ 0, 0 ];
     }
 
     constructor(){

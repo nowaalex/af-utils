@@ -24,6 +24,7 @@ const List = ({
     getRowData,
     getRowKey,
     getRowExtraProps,
+    estimatedRowHeight,
     rowCount,
     overscanRowsCount,
     rowCountWarningsTable,
@@ -38,6 +39,7 @@ const List = ({
         rowDataGetter: getRowData,
         rowKeyGetter: getRowKey,
         overscanRowsCount,
+        estimatedRowHeight,
         totalRows: rowCount
     });
 

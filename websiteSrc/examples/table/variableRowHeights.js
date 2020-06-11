@@ -53,6 +53,7 @@ const VariableRowHeightsTable = ({ className }) => (
         className={className}
         totals={totals}
         getRowData={getRowData}
+        estimatedRowHeight={300}
         rowCount={rowCount}
         columns={columns}
     />

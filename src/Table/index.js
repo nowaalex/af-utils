@@ -23,6 +23,7 @@ import cx from "../utils/cx";
 
 const Table = ({
     fixedSize,
+    estimatedRowHeight,
     columns,
     totals,
     getRowData,
@@ -45,6 +46,7 @@ const Table = ({
         rowDataGetter: getRowData,
         rowKeyGetter: getRowKey,
         overscanRowsCount,
+        estimatedRowHeight,
         totals,
         columns,
         totalRows: Math.max( rowCount, 0 )

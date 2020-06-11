@@ -116,18 +116,24 @@ class VariableSizeList extends ListBase {
     setVisibleRowsHeights = debounce( this.setVisibleRowsHeightsSync, ROW_MEASUREMENT_DEBOUNCE_INTERVAL, ROW_MEASUREMENT_DEBOUNCE_MAXWAIT );
    
     getVisibleRangeStart( dist ){
-        const { sTree, N } = this;
-        let nodeIndex = 1, v;
 
-        while( nodeIndex < N ){
-            v = sTree[ nodeIndex <<= 1 ];
-            if( dist >= v ){
-                dist -= v;
-                nodeIndex |= 1;
+        const { estimatedRowHeight, sTree, N } = this;
+
+        if( estimatedRowHeight ){
+            let nodeIndex = 1, v;
+
+            while( nodeIndex < N ){
+                v = sTree[ nodeIndex <<= 1 ];
+                if( dist >= v ){
+                    dist -= v;
+                    nodeIndex |= 1;
+                }
             }
+    
+            return [ nodeIndex - N, dist ];
         }
-
-        return [ nodeIndex - N, dist ];
+        
+        return [ 0, 0 ];
     }
 
     resetCache(){
@@ -144,7 +150,7 @@ class VariableSizeList extends ListBase {
                 sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
             }
         */
-        return this.calculateParentsInRange( 0, totalRows );
+        return estimatedRowHeight ? this.calculateParentsInRange( 0, totalRows ) : this;
     }
 
     reallocateCacheIfNeeded(){
@@ -178,6 +184,11 @@ class VariableSizeList extends ListBase {
     }
 
     getDistanceBetweenIndexes( startIndex, endIndex ){
+
+        if( !this.estimatedRowHeight ){
+            return 0;
+        }
+
         const { sTree, N } = this;
         let res = 0;
 

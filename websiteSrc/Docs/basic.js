@@ -104,6 +104,14 @@ const Basic = () => (
                     Determines, how many rows are drawn above and below table/list visible part.
                 </p>
             </li>
+            <li>
+                <h4>estimatedRowHeight</h4>
+                <p>
+                    Quantity of rows to render is roughly counted like this: availableHeight / rowHeight.
+                    So quantity of initially rendered rows can be tweaked. Further, when exact height/heights of rows would be known,
+                    this value would not be used.
+                </p>
+            </li>
         </ul>
         <h3>List props</h3>
         <ul>

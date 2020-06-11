@@ -9,6 +9,7 @@ const commonPropTypes = {
     fixedSize: PropTypes.bool,
     rowCount: PropTypes.number,
     overscanRowsCount: PropTypes.number,
+    estimatedRowHeight: PropTypes.number
 };
 
 export default commonPropTypes;

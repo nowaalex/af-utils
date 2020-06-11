@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "af-virtual-scroll/lib/Table";
+import Table from "af-virtual-scroll/src/Table";
 
 const columns = [
     {
@@ -28,6 +28,7 @@ const SimpleTable = ({ className }) => (
         getRowData={getRowData}
         rowCount={500}
         columns={columns}
+        estimatedRowHeight={200}
     />
 );
 
