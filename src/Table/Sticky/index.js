@@ -1,4 +1,5 @@
-import React, { memo, useEffect } from "react";
+import React, { useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import Colgroup from "../common/Colgroup";
 import TbodyScroller from "../common/TbodyScroller";
 import ScrollContainer from "../../common/ScrollContainer";
@@ -8,11 +9,6 @@ import Tfoot from "../common/Tfoot";
 import BodyTable from "../common/BodyTable";
 import useApi from "../../useApi";
 import cx from "../../utils/cx";
-
-const SUBSCRIBE_EVENTS = [
-    "#headlessMode",
-    "#totals"
-];
 
 
 /*
@@ -33,7 +29,7 @@ const Sticky = ({
     ...props
 }) => {
 
-    const { headlessMode, totals } = useApi( SUBSCRIBE_EVENTS );
+    const { headlessMode, totals } = useApi();
 
     if( process.env.NODE_ENV !== "production" ){
         /*
@@ -81,4 +77,4 @@ const Sticky = ({
     );
 }
 
-export default memo( Sticky );
+export default observer( Sticky );

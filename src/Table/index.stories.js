@@ -4,7 +4,7 @@ import r from "lodash/random";
 import times from "lodash/times";
 
 export default { title: "Table" };
-/*
+
 const DEFAULT_ROW_COUNT = 50000;
 
 const columns = [
@@ -36,4 +36,4 @@ export const FixedTable = () => (
         rowCount={DEFAULT_ROW_COUNT}
         columns={columns}
     />
-);*/
+);

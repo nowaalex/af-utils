@@ -20,7 +20,6 @@ const useColWidthsResizeObserver = API => {
                 */
                 API.tbodyColumnWidths[ colIndex - 1 ] = Math.round( target.offsetWidth );
             }
-            API.emit( "tbody-column-widths-changed" );
         });
 
         MO = mutationObserverRef.current = new MutationObserver( entries => {

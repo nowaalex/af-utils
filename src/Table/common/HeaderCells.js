@@ -1,19 +1,11 @@
-import React, { memo } from "react";
+import React from "react";
 import useApi from "../../useApi";
-
-const SUBSCRIBE_EVENTS = [
-    "#columns",
-    "sort-params-changed"
-];
-
-const SortDirections = {
-    "1": "ascending",
-    "-1": "descending"
-};
+import { observer } from "mobx-react-lite";
 
 const HeaderCells = () => {
 
-    const { columns, sortColumnIndex, sortDirectionSign } = useApi( SUBSCRIBE_EVENTS );
+    const { columns, Rows } = useApi();
+    const { dataKey: sortDataKey, value: sortValue } = Rows.modifiers.sort;
 
     return columns.map(({ dataKey, title, sort, label, visibility }, j ) => visibility === "hidden" ? null : (
         <th
@@ -21,11 +13,11 @@ const HeaderCells = () => {
             title={title}
             data-sortable={sort?"":undefined}
             aria-colindex={j+1}
-            aria-sort={sortColumnIndex!==j?"none":SortDirections[sortDirectionSign]}
+            aria-sort={dataKey !== sortDataKey?"none":sortValue}
         >
             {label}
         </th>
     ));
 };
 
-export default memo( HeaderCells );
+export default observer( HeaderCells );

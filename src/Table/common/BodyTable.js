@@ -1,14 +1,10 @@
 import React from "react";
+import { observer } from "mobx-react-lite";
 import useApi from "../../useApi";
-
-const SUBSCRIBE_EVENTS = [
-    "#totalRows",
-    "#columns"
-];
 
 const BodyTable = ({ children }) => {
 
-    const API = useApi( SUBSCRIBE_EVENTS );
+    const API = useApi();
 
     return (
         <table
@@ -20,4 +16,4 @@ const BodyTable = ({ children }) => {
     );
 };
 
-export default BodyTable;
+export default observer( BodyTable );

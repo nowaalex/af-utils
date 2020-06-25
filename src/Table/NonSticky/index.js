@@ -1,4 +1,5 @@
-import React, { memo } from "react";
+import React from "react";
+import { observer } from "mobx-react-lite";
 import PropTypes from "prop-types";
 
 import useApi from "../../useApi";
@@ -15,11 +16,6 @@ import TbodyScroller from "../common/TbodyScroller";
 import ScrollContainer from "../../common/ScrollContainer";
 import cx from "../../utils/cx";
 
-const subscribeEvents = [
-    "#headlessMode",
-    "#totals"
-];
-
 const NonSticky = ({
     className,
     tbodyRef,
@@ -33,7 +29,7 @@ const NonSticky = ({
     ...props
 }) => {
 
-    const API = useApi( subscribeEvents );
+    const API = useApi();
 
     const { headlessMode, totals } = API;
 
@@ -92,4 +88,4 @@ const NonSticky = ({
     );
 };
 
-export default memo( NonSticky );
+export default observer( NonSticky );

@@ -63,8 +63,6 @@ class ListBase {
     merge( params ){
         Object.assign( this, params );
     }
-
-    
     
     constructor(){
         

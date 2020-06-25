@@ -23,6 +23,8 @@ class VariableSizeList extends ListBase {
         this.lastRowsRenderTimeStamp = performance.now();
     }));
 
+    disposeCallbacks = [];
+
     /*
         When all row heights are different,
         we must "predict" them on the left of startIndex and on the right of endIndex(where they are invisible),
@@ -80,106 +82,106 @@ class VariableSizeList extends ListBase {
     constructor(){
         super();
 
-        autorun(() => {
-            const { sTree, estimatedRowHeight, N, totalRows } = this;
-            sTree.fill( estimatedRowHeight, N, N + totalRows );
-            if( estimatedRowHeight ){
-                /*
-                    Trees are not always ideally allocated, gaps are possible.
-                    Classical way for calculating parents is much simpler,
-                    but can do much more work(summing zeros) in such conditions. Commented classic algo:
-            
-                    for( let i = N + totalRows >> 1, j; i > 0; --i ){
-                        j = i << 1;
-                        sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
-                    }
-                */
-                this.calculateParentsInRange( 0, totalRows );
-            }
-        });
-
-        autorun(() => {
-            if( this.widgetWidth ){
-                this.merge({
-                    shouldResetInvisibleRowHeights: true
-                });
-            }
-        });
-
-        autorun(() => {
-            this.rowsDomObserver.disconnect();
-            if( this.rowsContainerNode ){
-                this.rowsDomObserver.observe( this.rowsContainerNode, { childList: true, subtree: true });
-            }
-        });
-
-        reaction(
-            () => this.lastRowsRenderTimeStamp * this.widgetWidth,
-            () => {
-                const node = this.rowsContainerNode;
-
-                if( node ){
-                    const { sTree, N } = this;
-                    
-                    let l = -1,
-                        r = -1,
-                        rowHeightsSum = 0,
-                        rowCounter = 0;
-        
+        this.disposeCallbacks.push(
+            autorun(() => {
+                const { sTree, estimatedRowHeight, N, totalRows } = this;
+                sTree.fill( estimatedRowHeight, N, N + totalRows );
+                if( estimatedRowHeight ){
                     /*
-                        Some benchmarks inspire me to use nextElementSibling
-                        https://jsperf.com/nextsibling-vs-childnodes-increment/2
+                        Trees are not always ideally allocated, gaps are possible.
+                        Classical way for calculating parents is much simpler,
+                        but can do much more work(summing zeros) in such conditions. Commented classic algo:
+                
+                        for( let i = N + totalRows >> 1, j; i > 0; --i ){
+                            j = i << 1;
+                            sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
+                        }
                     */
-                    for( let child = node.firstElementChild, newHeight, index; child; child = child.nextElementSibling, rowCounter++ ){
-                        
-                        /*
-                            * aria-rowindex is counted from 1 according to w3c spec;
-                            * parseInt with radix is 2x faster, then +, -, etc.
-                              https://jsperf.com/number-vs-parseint-vs-plus/116
-                        */
-                        index = parseInt( child.getAttribute( "aria-rowindex" ), 10 ) - 1;
-        
-                        if( process.env.NODE_ENV !== "production" && Number.isNaN( index ) ){
-                            throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
-                        }
-        
-                        newHeight = child.offsetHeight;
-                        rowHeightsSum += newHeight;
-        
-                        if( sTree[ N + index ] !== newHeight ){
-                            // console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)
-                            sTree[ N + index ] = newHeight;
-                            
-                            if( l === -1 ){
-                                l = index;
-                            }
-                            
-                            r = index;
-                        }
-                    }
-         
-                    if( l !== -1 ){
-                        if( process.env.NODE_ENV !== "production" ){
-                            console.log( "Updating heights in range: %d - %d", l, r );
-                        }
-        
-                        if( this.shouldResetInvisibleRowHeights ){
-                            this.merge({
-                                estimatedRowHeight: Math.round( rowHeightsSum / rowCounter ),
-                                shouldResetInvisibleRowHeights: false
-                            });
-                        }
-                        else{
-                            this.calculateParentsInRange( l, r )
-                        }
-                    }
+                    this.calculateParentsInRange( 0, totalRows );
                 }
-            },
-            { delay: ROW_MEASUREMENT_DEBOUNCE_INTERVAL }
+            }),
+            autorun(() => {
+                if( this.widgetWidth ){
+                    this.merge({
+                        shouldResetInvisibleRowHeights: true
+                    });
+                }
+            }),
+            autorun(() => {
+                this.rowsDomObserver.disconnect();
+                if( this.rowsContainerNode ){
+                    this.rowsDomObserver.observe( this.rowsContainerNode, { childList: true, subtree: true });
+                }
+            }),
+            reaction(
+                () => this.lastRowsRenderTimeStamp * this.widgetWidth,
+                () => {
+                    const node = this.rowsContainerNode;
+    
+                    if( node ){
+                        const { sTree, N } = this;
+                        
+                        let l = -1,
+                            r = -1,
+                            rowHeightsSum = 0,
+                            rowCounter = 0;
+            
+                        /*
+                            Some benchmarks inspire me to use nextElementSibling
+                            https://jsperf.com/nextsibling-vs-childnodes-increment/2
+                        */
+                        for( let child = node.firstElementChild, newHeight, index; child; child = child.nextElementSibling, rowCounter++ ){
+                            
+                            /*
+                                * aria-rowindex is counted from 1 according to w3c spec;
+                                * parseInt with radix is 2x faster, then +, -, etc.
+                                  https://jsperf.com/number-vs-parseint-vs-plus/116
+                            */
+                            index = parseInt( child.getAttribute( "aria-rowindex" ), 10 ) - 1;
+            
+                            if( process.env.NODE_ENV !== "production" && Number.isNaN( index ) ){
+                                throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
+                            }
+            
+                            newHeight = child.offsetHeight;
+                            rowHeightsSum += newHeight;
+            
+                            if( sTree[ N + index ] !== newHeight ){
+                                // console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)
+                                sTree[ N + index ] = newHeight;
+                                
+                                if( l === -1 ){
+                                    l = index;
+                                }
+                                
+                                r = index;
+                            }
+                        }
+             
+                        if( l !== -1 ){
+                            if( process.env.NODE_ENV !== "production" ){
+                                console.log( "Updating heights in range: %d - %d", l, r );
+                            }
+            
+                            if( this.shouldResetInvisibleRowHeights ){
+                                this.merge({
+                                    estimatedRowHeight: Math.round( rowHeightsSum / rowCounter ),
+                                    shouldResetInvisibleRowHeights: false
+                                });
+                            }
+                            else{
+                                this.calculateParentsInRange( l, r )
+                            }
+                        }
+                    }
+                },
+                { delay: ROW_MEASUREMENT_DEBOUNCE_INTERVAL }
+            )
         );
     }
 
     destructor(){
+        this.disposeCallbacks.forEach( cb => cb() );
         super.destructor();
     }
 

@@ -1,5 +1,8 @@
-import debounce from "../utils/debounce";
-import { add, subtract } from "../utils/math";
+import { observable, computed } from "mobx";
+import add from "lodash/add";
+import subtract from "lodash/subtract";
+import Rows from "./RowsComplex";
+import RowsComplex from "./RowsComplex";
 
 const OrderedRowsCache = Uint32Array;
 const TbodyColumnWidthsCache = Uint32Array;
@@ -52,28 +55,21 @@ class TotalsCachePart {
 */
 const createTable = ( BaseClass, constructorCallback ) => class extends BaseClass {
 
+    Rows = new RowsComplex( this );
+
+    @observable
     columns = [];
+
+    @observable
     totals = {};
+
+    @observable
     headlessMode = false;
+
+    @observable
     getCellData = null;
 
-    sortColumnIndex = -1;
-    sortDirectionSign = 1;
-
-    tbodyColumnWidthsSum = 0;
     tbodyColumnWidths = null;
-    orderedRows = new OrderedRowsCache( 0 );
-
-    /*
-        We do not want to recalculate totals too often, so caching them in object by column dataKey
-    */
-    totalsCache = Object.create( null );
-
-
-    /*
-        TODO:
-            make this call throttled
-    */
 
     refreshTotalsForColumnRaw( dataKey, cellDataGetter ){
         const curTotals = this.totals && this.totals[ dataKey ];
@@ -127,51 +123,6 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
         return this;
     }
 
-    refreshTotalsForColumn( dataKey ){
-        const col = this.columns.find( c => c.dataKey === dataKey );
-        if( col ){
-            this.refreshTotalsForColumnRaw( dataKey, col.getCellData || this.getCellData );
-        }
-        return this;
-    }
-
-    refreshTotalsSync(){
-        for( let j = 0, dataKey, getCellData; j < this.columns.length; j++ ){
-            ({ dataKey, getCellData } = this.columns[ j ]);
-            this.refreshTotalsForColumnRaw( dataKey, getCellData || this.getCellData );
-        }
-    }
-
-    refreshTotals = debounce( this.refreshTotalsSync, 150 );
-
-    setSortParams( colIndex, sortDirectionSign ){
-        if( this.sortColumnIndex !== colIndex || sortDirectionSign !== this.sortDirectionSign ){
-            this.sortColumnIndex = colIndex;
-            this.sortDirectionSign = sortDirectionSign;
-            this.emit( "sort-params-changed" );
-        }
-    }
-
-    refreshSorting = debounce(() => {
-        if( this.sortColumnIndex > -1 && this.totalRows > 0 ){
-            const { sort, dataKey, getCellData } = this.columns[ this.sortColumnIndex ];
-            if( sort ){
-                const sorter = getSorter( this.getRowData, dataKey, sort, getCellData || this.getCellData, this.sortDirectionSign );
-                this.orderedRows.sort( sorter );
-                this.emit( "#rowsOrder" );
-            }
-        }
-    }, REFRESH_SORT_DEBOUNCE_INTERVAL );
-
-    refreshRowsOrder(){
-        if( this.orderedRows.length !== this.totalRows ){
-            const rows = this.orderedRows = new OrderedRowsCache( this.totalRows );
-            for( let j = 1; j < rows.length; j++ ){
-                rows[ j ] = j;
-            }
-        }
-        return this;
-    }
 
     resetColumnWidthsCache(){
         this.tbodyColumnWidths = new TbodyColumnWidthsCache( this.columns.length );
@@ -184,30 +135,12 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
     constructor(){
         super();
 
-        this
-            .on( "#columns", this.resetColumnWidthsCache )
-            .on( "#columns", this.refreshTotals )
-            .on( "#columns", this.refreshSorting )
-            .on( "#totalRows", this.refreshRowsOrder )
-            .on( "#totalRows", this.refreshSorting )
-            .on( "#totalRows", this.refreshTotals )
-            .on( "sort-params-changed", this.refreshSorting )
-            .on( "#getRowData", this.refreshSorting )
-            .on( "#getRowData", this.refreshTotals )
-            .on( "#rowsOrder", this.scrollToStart )
-            .on( "#totals", this.refreshTotals )
-            .on( "tbody-column-widths-changed", this.refreshColumnWidthsSum ) //for non-sticky
-        
-            .refreshRowsOrder();
-
         if( constructorCallback ){
             constructorCallback( this );
         }
     }
 
     destructor(){
-        this.refreshSorting.cancel();
-        this.refreshTotals.cancel();
         super.destructor();
     }
 }

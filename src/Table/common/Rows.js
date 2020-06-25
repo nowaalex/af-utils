@@ -1,15 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { observer } from "mobx-react-lite";
 import useApi from "../../useApi";
-
-const SUBSCRIBE_EVENTS = [
-    "#startIndex",
-    "#endIndex",
-    "#columns",
-    "#rowsOrder",
-    "#getRowKey",
-    "#getCellData",
-    "#getRowData"
-];
 
 const getVisibleRows = (
     orderedRows,
@@ -47,10 +38,12 @@ const getVisibleRows = (
 
 const Rows = ({ getRowExtraProps, getCellExtraProps, RowComponent, CellComponent }) => {
 
-    const API = useApi( SUBSCRIBE_EVENTS );
+    const API = useApi();
+
+    console.log( "Gg", API)
 
     return getVisibleRows(
-        API.orderedRows,
+        API.Rows.flat,
         API.startIndex,
         API.endIndex,
         API.columns,
@@ -64,4 +57,4 @@ const Rows = ({ getRowExtraProps, getCellExtraProps, RowComponent, CellComponent
     );
 };
 
-export default Rows;
+export default observer( Rows );

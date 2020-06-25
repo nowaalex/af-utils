@@ -1,4 +1,18 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { observer } from "mobx-react-lite";
+
+const Total = observer(({ cache, showSummaryType, summaryType, formatTotal }) => {
+    const res = cache[ summaryType ];
+
+    return res !== undefined ? (
+        <div key={summaryType} title={summaryType} className="afvscr-summary">
+            {showSummaryType ? (
+                <Fragment>{summaryType}&nbsp;</Fragment>
+            ) : null}
+            {formatTotal?formatTotal(res):res}
+        </div>
+    ) : null;
+});
 
 const TotalsCell = ({ cellTotals, totalsCache, formatTotal }) => {
 
@@ -7,23 +21,23 @@ const TotalsCell = ({ cellTotals, totalsCache, formatTotal }) => {
     }
 
     if( cellTotals.length === 1 ){
-        const summaryType = cellTotals[ 0 ];
-        const res = totalsCache[ summaryType ];
         return (
-            <div title={summaryType} className="afvscr-summary">
-                {formatTotal?formatTotal(res):res}
-            </div>
+            <Total
+                summaryType={cellTotals[0]}
+                cache={totalsCache}
+                formatTotal={formatTotal}
+            />
         );
     }
 
-    return cellTotals.map( summaryType => {
-        const res = totalsCache[ summaryType ];
-        return res !== undefined ? (
-            <div key={summaryType} className="afvscr-summary">
-                {summaryType}:&nbsp;{formatTotal?formatTotal(res):res}
-            </div>
-        ) : null;
-    });
+    return cellTotals.map( summaryType => (
+        <Total
+            showSummaryType
+            summaryType={summaryType}
+            cache={totalsCache}
+            formatTotal={formatTotal}
+        />
+    ));
 };
 
-export default TotalsCell;
+export default observer( TotalsCell );

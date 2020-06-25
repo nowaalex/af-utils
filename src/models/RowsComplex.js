@@ -1,4 +1,7 @@
-import debounce from "../utils/debounce";
+import { computed, observable } from "mobx";
+import groupBy from "lodash/groupBy";
+import keyBy from "lodash/keyBy";
+import times from "lodash/times";
 
 /*
     {
@@ -9,16 +12,14 @@ import debounce from "../utils/debounce";
                 type: "includes"
             }
         ],
-        group: [
-            {
-                dataKey: "example2",
-                value: "",
-                type: "default"
-            }
-        ],
+        group: {
+            dataKey: "example2",
+            value: "",
+            type: "default"
+        },
         sort: {
             dataKey: "example3",
-            value: "asc",
+            value: "ascending",
             type: "numeric"
         }
     }
@@ -28,68 +29,62 @@ class RowsComplex {
 
     constructor( table ){
         this.table = table;
-
-        table
-            .on( "#getRowData", this.recalculateModifiers )
-            .on( "#totalRows", this.recalculateModifiers )
-            .on( "#getRowKey", this.recalculateModifiers );
     }
 
-    ready = false;
-
+    @observable
     modifiers = {
         group: [],
-        filter: [],
+        filter: [
+            {
+                dataKey: "a",
+                value: "10",
+                type: "includes"
+            }
+        ],
         sort: {}
     };
 
-    filtered = [];
-    grouped = new Map();
-    flat = [];
+    @computed get columnsByDataKey(){
+        return keyBy( this.table.columns, "dataKey" );
+    }
 
-    recalculateFilters = () => {
+    @computed get rowIndexesArray(){
+        return times( this.table.totalRows );
+    }
 
-        const { totalRows, getCellData, getRowData, columns } = this.table;
+    @computed get filtered(){
 
-        if( this.filtered.length !== totalRows ){
-            this.filtered = new Uint32Array( totalRows );
+        const { columnsByDataKey, table } = this;
+        const { getCellData, getRowData } = table;
+        const { filter } = this.modifiers;
+
+        if( !getCellData || !filter.length ){
+            return this.rowIndexesArray;
         }
 
-        let filteredRowsQuantity = 0;
-
-        for( let j = 0, row, cellValue; j < totalRows; j++ ){
-            row = getRowData( j );
-            const passes = this.modifiers.filter.every(({ dataKey, value, type }) => {
-                const col = columns.find( c => c.dataKey === dataKey );
-                cellValue = ( col.getCellData || getCellData )( row, j, dataKey );
-                return cellValue.includes( value );
+        return this.rowIndexesArray.filter( i => {
+            const row = getRowData( i );
+            return filter.every(({ dataKey, value, type }) => {
+                const col = columnsByDataKey[ dataKey ];
+                const cellData = ( col.getCellData || getCellData )( row, i, dataKey );
+                return cellData.toString().includes( value );
             });
-            if( passes ){
-                this.filtered[ filteredRowsQuantity++ ] = j;
-            }
-        }
+        });
     }
+/*
+    @computed get grouped(){
 
-    recalculateGrouping = () => {
-        this.grouped.clear();
+        const { group } = this.modifiers;
 
-        for( let j = 0; j < this.modifiers.group.length; j++ ){
-            const { dataKey, value } = this.modifiers.group[ j ];
-            const rows = [];
-            this.grouped.set( dataKey, rows );
-            for( let i = 0, row; j < this.filtered.length; j++ ){
-                row = getRowData( this.filtered[ j ] );
-    
-            }
-        }
-        
+        return groupBy( this.filtered, i => {
+            const row = getRowData( i );
+            return row.
+        });
     }
+    */
 
-
-    
-
-    changeModifiers( filterType, filterColumn, filterValue, operation ){
-
+    @computed get flat(){
+        return this.filtered;
     }
 }
 

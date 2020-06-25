@@ -1,18 +1,12 @@
 import React from "react";
+import { observer } from "mobx-react-lite";
 import useApi from "../../../useApi";
 import Colgroup from "../../common/Colgroup";
 import cx from "../../../utils/cx";
 
-const SUBSCRIBE_EVENTS = [
-    "#columns",
-    "#scrollLeft",
-    "#widgetWidth",
-    "tbody-column-widths-changed"
-];
-
 const TableWrapper = ({ children, className, ...props }) => {
 
-    const { scrollLeft, columns, tbodyColumnWidthsSum } = useApi( SUBSCRIBE_EVENTS );
+    const { scrollLeft, columns, tbodyColumnWidthsSum } = useApi();
 
     const style = {
         /* If we do this via transform translate, col background would have bugs during horizontal scroll. Strange webkit behavior */
@@ -28,4 +22,4 @@ const TableWrapper = ({ children, className, ...props }) => {
     );
 };
 
-export default TableWrapper;
+export default observer( TableWrapper );

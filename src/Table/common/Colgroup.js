@@ -1,12 +1,10 @@
-import React, { memo } from "react";
-import useApiPlugin from "../../useApi";
-
-const commonSubscribeEvents = [ "#columns" ];
-const nonStickySubscribeEvents = [ ...commonSubscribeEvents, "tbody-column-widths-changed" ];
+import React from "react";
+import { observer } from "mobx-react-lite";
+import useApi from "../../useApi";
 
 const Colgroup = ({ useTbodyWidths }) => {
 
-    const { columns, tbodyColumnWidths } = useApiPlugin( useTbodyWidths ? nonStickySubscribeEvents : commonSubscribeEvents );
+    const { columns, tbodyColumnWidths } = useApi();
 
     return (
         <colgroup>
@@ -24,4 +22,4 @@ const Colgroup = ({ useTbodyWidths }) => {
     );
 };
 
-export default memo( Colgroup );
+export default observer( Colgroup );

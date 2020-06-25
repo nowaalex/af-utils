@@ -1,16 +1,11 @@
-import React, { memo } from "react";
+import React from "react";
+import { observer } from "mobx-react-lite";
 import PropTypes from "prop-types";
 import useApi from "../../useApi";
 
-const SUBSCRIBE_EVENTS = [
-    "#columns",
-    "#totals",
-    "totals-calculated"
-];
-
 const FooterCells = ({ TotalsCellComponent }) => {
 
-    const { columns, totals, totalsCache } = useApi( SUBSCRIBE_EVENTS );
+    const { columns, totals, totalsCache } = useApi();
 
     return columns.map(({ dataKey, formatTotal, visibility }, j ) => {
 
@@ -37,4 +32,4 @@ FooterCells.propTypes = {
     TotalsCellComponent: PropTypes.elementType.isRequired
 }
 
-export default memo( FooterCells );
+export default observer( FooterCells );
