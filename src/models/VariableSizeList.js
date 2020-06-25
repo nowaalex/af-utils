@@ -1,21 +1,27 @@
 import ListBase from "./ListBase";
-import { observable, computed, autorun, action, reaction } from "mobx";
+import { observable, computed, autorun, action, runInAction, reaction } from "mobx";
 
 /*
     We should always have some extra space for new rows. We do not want to reallocate cache every time.
 */
 const MIN_TREE_CACHE_OFFSET = 15;
 
-const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 150;
-const ROW_MEASUREMENT_DEBOUNCE_MAXWAIT = 1000; 
+const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 200;
 
 class VariableSizeList extends ListBase {
 
-    @observable
+    @observable.ref
     estimatedRowHeight = 10;
 
-    @observable
+    @observable.ref
     widgetScrollHeight = 0;
+
+    @observable.ref
+    lastRowsRenderTimeStamp = 0;
+
+    rowsDomObserver = new MutationObserver(() => runInAction(() => {
+        this.lastRowsRenderTimeStamp = performance.now();
+    }));
 
     /*
         When all row heights are different,
@@ -23,7 +29,7 @@ class VariableSizeList extends ListBase {
         basing on what we know: heights between startIndex and endIndex.
         Using simple average by default.
     */
-    @observable
+    @observable.ref
     shouldResetInvisibleRowHeights = true;
 
     @computed({ keepAlive: true }) get N(){
@@ -52,9 +58,9 @@ class VariableSizeList extends ListBase {
    
     getVisibleRangeStart( dist ){
 
-        const { estimatedRowHeight, sTree, N } = this;
+        const { widgetScrollHeight, estimatedRowHeight, sTree, N } = this;
 
-        if( estimatedRowHeight ){
+        if( widgetScrollHeight && estimatedRowHeight ){
             let nodeIndex = 1, v;
 
             while( nodeIndex < N ){
@@ -100,8 +106,15 @@ class VariableSizeList extends ListBase {
             }
         });
 
+        autorun(() => {
+            this.rowsDomObserver.disconnect();
+            if( this.rowsContainerNode ){
+                this.rowsDomObserver.observe( this.rowsContainerNode, { childList: true, subtree: true });
+            }
+        });
+
         reaction(
-            () => this.startIndex + "-" + this.endIndex + "-" + this.widgetWidth,
+            () => this.lastRowsRenderTimeStamp * this.widgetWidth,
             () => {
                 const node = this.rowsContainerNode;
 
@@ -162,7 +175,7 @@ class VariableSizeList extends ListBase {
                     }
                 }
             },
-            { delay: 350, fireImmediately: true }
+            { delay: ROW_MEASUREMENT_DEBOUNCE_INTERVAL }
         );
     }
 

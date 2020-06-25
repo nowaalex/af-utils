@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import useApi from "../../useApi";
 
@@ -28,11 +28,6 @@ const getVisibleRows = (
 const Rows = ({ getRowExtraProps, RowComponent }) => {
 
     const { startIndex, endIndex, getRowData, getRowKey } = useApi();
-
-    console.log( 2, useApi())
-  /*  useEffect(() => {
-        API.emit( "rows-rendered" );
-    });*/
 
     return getVisibleRows(
         startIndex,

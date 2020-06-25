@@ -38,6 +38,6 @@ class FixedSizeList extends ListBase {
 decorate( FixedSizeList, {
     estimatedRowHeight: computed({ keepAlive: true }),
     widgetScrollHeight: computed
-})
+});
 
 export default FixedSizeList;

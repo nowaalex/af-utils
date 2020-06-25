@@ -1,4 +1,4 @@
-import { extendObservable, decorate, computed, action } from "mobx";
+import { extendObservable, decorate, computed, action, observable } from "mobx";
 import debounce from "../utils/debounce";
 
 const getRowDataInitial = () => {
@@ -24,20 +24,10 @@ const END_INDEX_CHECK_INTERVAL = 400;
 
 class ListBase {
 
-    totalRows = 0;
-    overscanRowsCount = 0;
-    estimatedRowHeightFallback = 0;
-
-    scrollLeft = 0;
-    scrollTop = 0;
-
-    widgetHeight = 0;
-    widgetWidth = 0;
-
-    getRowKey = undefined;
-    getRowData = getRowDataInitial;
-
+    @observable.ref
     rowsContainerNode = null;
+
+    @observable.ref
     scrollContainerNode = null;
 
     get visibleRangeStart(){
@@ -74,19 +64,19 @@ class ListBase {
         Object.assign( this, params );
     }
 
-    /*
+    
     
     constructor(){
         
         extendObservable( this, BASIC_OBSERVABLE_FIELDS );
-        
+        /*
         this
             .on( "#widgetScrollHeight", this.increaseEndIndexIfNeeded )
             .on( "#endIndex", this.increaseEndIndexIfNeeded.cancel );
-        
+        */
     }
 
-    */
+    
 
     /*
         Column heights may change during scroll/width-change
@@ -119,20 +109,6 @@ class ListBase {
 };
 
 decorate( ListBase, {
-
-    totalRows: 0,
-    overscanRowsCount: 0,
-    estimatedRowHeightFallback: 0,
-
-    scrollLeft: 0,
-    scrollTop: 0,
-
-    widgetHeight: 0,
-    widgetWidth: 0,
-
-    getRowKey: undefined,
-    getRowData: getRowDataInitial
-
     merge: action,
     virtualTopOffset: computed,
     startIndex: computed,

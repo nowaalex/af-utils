@@ -49,10 +49,6 @@ const Rows = ({ getRowExtraProps, getCellExtraProps, RowComponent, CellComponent
 
     const API = useApi( SUBSCRIBE_EVENTS );
 
-    useEffect(() => {
-        API.emit( "rows-rendered" );
-    });
-
     return getVisibleRows(
         API.orderedRows,
         API.startIndex,
