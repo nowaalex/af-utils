@@ -1,20 +1,28 @@
+import { computed, decorate } from "mobx";
 import ListBase from "./ListBase";
 
 class FixedSizeList extends ListBase {
-    
-    updateWidgetScrollHeight(){
-        return this.set( "widgetScrollHeight", this.estimatedRowHeight * this.totalRows );
-    }
 
-    updateEstimatedRowHeight(){
-        const node = this.rowsContainerNode;
+    get estimatedRowHeight(){
+        if( this.widgetWidth ){
+            const node = this.rowsContainerNode;
 
-        if( node ){
-            const { firstElementChild } = node;
-            if( firstElementChild ){
-                this.set( "estimatedRowHeight", firstElementChild.offsetHeight );
+            if( node ){
+                const { firstElementChild } = node;
+                if( firstElementChild ){
+                    return firstElementChild.offsetHeight;
+                }
             }
         }
+        return this.estimatedRowHeightFallback;
+    }
+
+    set estimatedRowHeight( value ){
+        this.estimatedRowHeightFallback = value;
+    }
+
+    get widgetScrollHeight(){
+        return this.estimatedRowHeight * this.totalRows;
     }
 
     getVisibleRangeStart( distance ){
@@ -22,17 +30,14 @@ class FixedSizeList extends ListBase {
         return estimatedRowHeight ? [ distance / estimatedRowHeight | 0, distance % estimatedRowHeight ] : [ 0, 0 ];
     }
 
-    constructor(){
-        super();
-
-        this
-            .on( "#estimatedRowHeight", this.updateWidgetScrollHeight )
-            .on( "#widgetWidth", this.updateEstimatedRowHeight );
-    }
-
     getDistanceBetweenIndexes( startIndex, endIndex ){
         return this.estimatedRowHeight * ( endIndex - startIndex );
     }
 };
+
+decorate( FixedSizeList, {
+    estimatedRowHeight: computed({ keepAlive: true }),
+    widgetScrollHeight: computed
+})
 
 export default FixedSizeList;

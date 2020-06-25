@@ -27,6 +27,7 @@ const Table = ({
     columns,
     totals,
     getRowData,
+    getCellData,
     getRowKey,
     getRowExtraProps,
     getCellExtraProps,
@@ -43,8 +44,9 @@ const Table = ({
 
     const [ Store, scrollContainerRef, tbodyRef ] = useStore( fixedSize ? FixedSizeTableStore : VariableSizeTableStore, dataRef, {
         headlessMode: headless,
-        rowDataGetter: getRowData,
-        rowKeyGetter: getRowKey,
+        getRowData,
+        getCellData,
+        getRowKey,
         overscanRowsCount,
         estimatedRowHeight,
         totals,
@@ -116,6 +118,7 @@ Table.propTypes = {
 
     HeaderRowComponent: PropTypes.elementType,
     CellComponent: PropTypes.elementType,
+    getCellData: PropTypes.func,
     TotalsCellComponent: PropTypes.elementType,
 
     RowCountWarningContainer: PropTypes.elementType,
@@ -132,6 +135,7 @@ Table.defaultProps = {
     
     RowComponent: memo( RowComponentDefault ),
     CellComponent: CellComponentDefault,
+    getCellData: ( rowData, rowIndex, dataKey ) => rowData[ dataKey ],
     TotalsCellComponent: TotalsCellComponentDefault,
     RowCountWarningContainer: RowCountWarningContainerDefault,
 };

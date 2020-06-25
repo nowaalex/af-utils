@@ -1,81 +1,92 @@
-import EventEmitter from "af-tools/lib/eventEmitters/Basic";
+import { extendObservable, decorate, computed, action } from "mobx";
 import debounce from "../utils/debounce";
 
 const getRowDataInitial = () => {
     throw new Error( "getRowData must be provided" );
+}
+
+const BASIC_OBSERVABLE_FIELDS = {
+    totalRows: 0,
+    overscanRowsCount: 0,
+    estimatedRowHeightFallback: 0,
+
+    scrollLeft: 0,
+    scrollTop: 0,
+
+    widgetHeight: 0,
+    widgetWidth: 0,
+
+    getRowKey: undefined,
+    getRowData: getRowDataInitial
 };
 
 const END_INDEX_CHECK_INTERVAL = 400;
 
-class ListBase extends EventEmitter {
+class ListBase {
 
     totalRows = 0;
-    startIndex = 0;
-    endIndex = 0;
-
-    virtualTopOffset = 0;
-    widgetScrollHeight = 0;
-
     overscanRowsCount = 0;
-    estimatedRowHeight = 0;
+    estimatedRowHeightFallback = 0;
 
+    scrollLeft = 0;
     scrollTop = 0;
+
     widgetHeight = 0;
     widgetWidth = 0;
 
-    rowKeyGetter = undefined;
-    rowDataGetter = getRowDataInitial;
+    getRowKey = undefined;
+    getRowData = getRowDataInitial;
+
     rowsContainerNode = null;
     scrollContainerNode = null;
 
-    set( paramName, paramValue ){
+    get visibleRangeStart(){
+        return this.getVisibleRangeStart( this.scrollTop );
+    }
 
-        if( process.env.NODE_ENV !== "production" ){
-            if( !this.hasOwnProperty( paramName ) ){
-                throw new Error( `Trying to merge key, which does not exist: ${paramName}` );
-            }
+    get startIndex(){
+        const [ newVisibleStartIndex ] = this.visibleRangeStart;
+        return Math.max( 0, newVisibleStartIndex - this.overscanRowsCount );
+    }
+
+    get endIndex(){
+
+        if( !this.estimatedRowHeight ){
+            return 0;
         }
+        
+        const [ newEndIndex ] = this.getVisibleRangeStart( this.scrollTop + this.widgetHeight );
 
-        if( this[ paramName ] !== paramValue ){
-            this[ paramName ] = paramValue;
-            this.emit( `#${paramName}` );
-        }
+        /*
+            getVisibleRangeStart works by "strict less" algo. It is good for startIndex,
+            but for endIndex we need "<=", so adding 1 artificially.
+        */
+        return Math.min( newEndIndex + 1 + this.overscanRowsCount, this.totalRows );
+    }
 
-        return this;
+    get virtualTopOffset(){
+        const [ newVisibleStartIndex, remainder ] = this.visibleRangeStart;
+        const overscanOffset = this.getDistanceBetweenIndexes( this.startIndex, newVisibleStartIndex );
+        return this.scrollTop - remainder - overscanOffset;
     }
     
     merge( params ){
-        for( let k in params ){
-            this.set( k, params[ k ] );
-        }
-        return this;
+        Object.assign( this, params );
     }
+
+    /*
     
     constructor(){
-        super();
         
-        if( process.env.NODE_ENV !== "production" ){
-            const absentMethods = [
-                "updateWidgetScrollHeight",
-                "getDistanceBetweenIndexes",
-                "getVisibleRangeStart"
-            ].filter( fn => !this[ fn ] );
-
-            if( absentMethods.length ){
-                throw new Error( `Absent methods: ${absentMethods.join( "," )}` );
-            }
-        }
-
+        extendObservable( this, BASIC_OBSERVABLE_FIELDS );
+        
         this
-            .on( "#totalRows", this.updateWidgetScrollHeight )
-            .on( "#totalRows", this.updateEndIndex )
             .on( "#widgetScrollHeight", this.increaseEndIndexIfNeeded )
-            .on( "#endIndex", this.increaseEndIndexIfNeeded.cancel )
-            .on( "#scrollTop", this.updateStartOffset )
-            .on( "#overscanRowsCount", this.updateStartOffset )
-            .on( "#widgetHeight", this.updateEndIndex )
-            .on( "#startIndex", this.updateEndIndex );
+            .on( "#endIndex", this.increaseEndIndexIfNeeded.cancel );
+        
     }
+
+    */
 
     /*
         Column heights may change during scroll/width-change
@@ -91,32 +102,6 @@ class ListBase extends EventEmitter {
 
     destructor(){
         this.increaseEndIndexIfNeeded.cancel();
-        this.removeAllListeners();
-    }
-
-    updateStartOffset(){
-        const { scrollTop, overscanRowsCount } = this;
-        const [ newVisibleStartIndex, remainder ] = this.getVisibleRangeStart( scrollTop );
-        const newStartIndex = Math.max( 0, newVisibleStartIndex - overscanRowsCount );
-        const overscanOffset = this.getDistanceBetweenIndexes( newStartIndex, newVisibleStartIndex );
-                
-        return this
-            .set( "virtualTopOffset", scrollTop - remainder - overscanOffset )
-            .set( "startIndex", newStartIndex );
-    }
-
-    updateEndIndex(){
-
-        if( !this.estimatedRowHeight ){
-            return this.set( "endIndex", 0 );
-        }
-        
-        const [ newEndIndex ] = this.getVisibleRangeStart( this.scrollTop + this.widgetHeight );
-        /*
-            getVisibleRangeStart works by "strict less" algo. It is good for startIndex,
-            but for endIndex we need "<=", so adding 1 artificially.
-        */
-        return this.set( "endIndex", Math.min( newEndIndex + 1 + this.overscanRowsCount, this.totalRows ) );
     }
 
     scrollToRow( index ){
@@ -132,5 +117,27 @@ class ListBase extends EventEmitter {
         return this.scrollToRow( 0 );
     }
 };
+
+decorate( ListBase, {
+
+    totalRows: 0,
+    overscanRowsCount: 0,
+    estimatedRowHeightFallback: 0,
+
+    scrollLeft: 0,
+    scrollTop: 0,
+
+    widgetHeight: 0,
+    widgetWidth: 0,
+
+    getRowKey: undefined,
+    getRowData: getRowDataInitial
+
+    merge: action,
+    virtualTopOffset: computed,
+    startIndex: computed,
+    endIndex: computed,
+    visibleRangeStart: computed
+});
 
 export default ListBase;

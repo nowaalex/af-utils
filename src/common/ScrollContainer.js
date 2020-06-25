@@ -3,28 +3,25 @@ import cx from "../utils/cx";
 import HeightProvider from "./HeightProvider";
 import useApi from "../useApi";
 
-const SUBSCRIBE_EVENTS = [];
-
 const ScrollContainer = forwardRef(({
     className,
     children,
     onScroll,
-    reportScrollLeft,
     ...props
 }, ref ) => {
 
-    const API = useApi( SUBSCRIBE_EVENTS );
+    const API = useApi();
 
     const scrollHandler = useCallback( e => {
         const { scrollTop, scrollLeft } = e.target;
-        API.set( "scrollTop", scrollTop );
-        if( reportScrollLeft ){
-            API.set( "scrollLeft", scrollLeft );
-        }
+        API.merge({
+            scrollLeft,
+            scrollTop
+        });
         if( onScroll ){
             onScroll( e );
         }
-    }, [ onScroll, reportScrollLeft ]);
+    }, [ onScroll ]);
 
     useEffect(() => {
         const el = ref.current;
@@ -37,9 +34,10 @@ const ScrollContainer = forwardRef(({
                 */
                 const { offsetWidth, offsetHeight } = entries[ 0 ].target;
 
-                API
-                    .set( "widgetHeight", Math.round( offsetHeight ) )
-                    .set( "widgetWidth", Math.round( offsetWidth ) );
+                API.merge({
+                    widgetHeight: Math.round( offsetHeight ),
+                    widgetWidth: Math.round( offsetWidth )
+                });
             }
         });
 

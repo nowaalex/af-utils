@@ -36,10 +36,10 @@ const List = ({
 }) => {
 
     const [ Store, scrollContainerRef, rowsContainerRef ] = useStore( fixedSize ? FixedSizeListStore : VariableSizeListStore, dataRef, {
-        rowDataGetter: getRowData,
-        rowKeyGetter: getRowKey,
+        getRowData,
+        getRowKey,
         overscanRowsCount,
-        estimatedRowHeight,
+        estimatedRowHeightFallback: estimatedRowHeight,
         totalRows: rowCount
     });
 

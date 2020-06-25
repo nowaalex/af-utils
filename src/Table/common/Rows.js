@@ -6,8 +6,9 @@ const SUBSCRIBE_EVENTS = [
     "#endIndex",
     "#columns",
     "#rowsOrder",
-    "#rowKeyGetter",
-    "#rowDataGetter"
+    "#getRowKey",
+    "#getCellData",
+    "#getRowData"
 ];
 
 const getVisibleRows = (
@@ -16,6 +17,7 @@ const getVisibleRows = (
     rangeTo,
     columns,
     getRowData,
+    getCellData,
     getRowKey,
     getRowExtraProps,
     getCellExtraProps,
@@ -35,6 +37,7 @@ const getVisibleRows = (
                 key={rowKey}
                 columns={columns}
                 getRowData={getRowData}
+                getCellData={getCellData}
                 CellComponent={CellComponent}
             />
         );
@@ -55,8 +58,9 @@ const Rows = ({ getRowExtraProps, getCellExtraProps, RowComponent, CellComponent
         API.startIndex,
         API.endIndex,
         API.columns,
-        API.rowDataGetter,
-        API.rowKeyGetter,
+        API.getRowData,
+        API.getCellData,
+        API.getRowKey,
         getRowExtraProps,
         getCellExtraProps,
         RowComponent,

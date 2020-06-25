@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import useApi from "../../useApi";
-
-const SUBSCRIBE_EVENTS = [
-    "#startIndex",
-    "#endIndex",
-    "#rowKeyGetter",
-    "#rowDataGetter"
-];
 
 const getVisibleRows = (
     rangeFrom,
@@ -33,20 +27,21 @@ const getVisibleRows = (
 
 const Rows = ({ getRowExtraProps, RowComponent }) => {
 
-    const API = useApi( SUBSCRIBE_EVENTS );
+    const { startIndex, endIndex, getRowData, getRowKey } = useApi();
 
-    useEffect(() => {
+    console.log( 2, useApi())
+  /*  useEffect(() => {
         API.emit( "rows-rendered" );
-    });
+    });*/
 
     return getVisibleRows(
-        API.startIndex,
-        API.endIndex,
-        API.rowDataGetter,
-        API.rowKeyGetter,
+        startIndex,
+        endIndex,
+        getRowData,
+        getRowKey,
         getRowExtraProps,
         RowComponent
     );
 };
 
-export default Rows;
+export default observer( Rows );

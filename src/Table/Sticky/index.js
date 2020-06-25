@@ -61,7 +61,7 @@ const Sticky = ({
     }
     
     return (
-        <ScrollContainer ref={scrollContainerRef} reportScrollLeft className={cx("afvscr-st",className)} {...props}>
+        <ScrollContainer ref={scrollContainerRef} className={cx("afvscr-st",className)} {...props}>
             <BodyTable>
                 <Colgroup />
                 {headlessMode?null:<Thead />}

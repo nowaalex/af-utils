@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { getRowProps } from "../../utils/extraPropsGetters";
 
-const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, getCellExtraProps, rowDataIndex, rowIndex }) => {
+const Row = ({ columns, CellComponent, getRowData, getCellData, getRowExtraProps, getCellExtraProps, rowDataIndex, rowIndex }) => {
 
     const rowData = getRowData( rowDataIndex );
 
@@ -22,6 +22,7 @@ const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, getCellExtr
                         rowIndex={rowIndex}
                         column={column}
                         columnIndex={columnIndex}
+                        getCellData={getCellData}
                         getCellExtraProps={column.getCellExtraProps||getCellExtraProps}
                     />
                 );
@@ -31,6 +32,7 @@ const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, getCellExtr
 };
 
 Row.propTypes = {
+    getCellData: PropTypes.func.isRequired,
     columns: PropTypes.array.isRequired,
     CellComponent: PropTypes.elementType.isRequired,
     getRowData: PropTypes.func.isRequired,

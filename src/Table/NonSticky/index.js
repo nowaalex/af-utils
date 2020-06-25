@@ -57,7 +57,7 @@ const NonSticky = ({
                     <Thead />
                 </TableWrapper>
             )}
-            <ScrollContainer ref={scrollContainerRef} onScroll={onScroll} reportScrollLeft>
+            <ScrollContainer ref={scrollContainerRef} onScroll={onScroll}>
                 <BodyTable>
                     <Colgroup />
                     {headlessMode ? null : (

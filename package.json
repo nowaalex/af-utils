@@ -19,6 +19,7 @@
     "*.css"
   ],
   "scripts": {
+    "storybook": "start-storybook",
     "start": "webpack-dev-server --env.ASSETS_PATH=/",
     "build:website": "webpack --mode=production --env.ASSETS_PATH=/af-virtual-scroll/website/",
     "build:modules": "babel src --out-dir lib --delete-dir-on-start --ignore '**/*.test.js' --env-name lib && yarn copy-style-file",
@@ -54,6 +55,7 @@
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-proposal-decorators": "^7.10.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.10.1",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.10.1",
@@ -63,6 +65,7 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@juggle/resize-observer": "^3.2.0",
+    "@storybook/react": "^5.3.19",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
     "babel-loader": "^8.1.0",
@@ -116,6 +119,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "peerDependencies": {
+    "mobx": "^5.15.4",
+    "mobx-react-lite": "^2.0.7",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },

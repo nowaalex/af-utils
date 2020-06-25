@@ -1,21 +1,13 @@
-import React, { cloneElement, memo } from "react";
+import React, { cloneElement } from "react";
 import useApi from "../useApi";
-
-const SUBSCRIBE_EVENTS = [ "#widgetScrollHeight" ];
+import { observer } from "mobx-react-lite";
 
 const el = <div aria-hidden="true" className="afvscr-height-provider" />;
 
-const HeightProvider = () => {
+const HeightProvider = () => cloneElement( el, {
+    style: {
+        height: useApi().widgetScrollHeight
+    }
+});
 
-    const { widgetScrollHeight: height } = useApi( SUBSCRIBE_EVENTS );
-
-    const props = {
-        style: {
-            height
-        }
-    };
-
-    return cloneElement( el, props );
-};
-
-export default memo( HeightProvider );
+export default observer( HeightProvider );

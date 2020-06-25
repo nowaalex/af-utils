@@ -4,14 +4,14 @@ import { add, subtract } from "../utils/math";
 const OrderedRowsCache = Uint32Array;
 const TbodyColumnWidthsCache = Uint32Array;
 
-const REFRESH_SORT_DEBOUNCE_INTERVAL = 500;
+const REFRESH_SORT_DEBOUNCE_INTERVAL = 200;
 
 const L = new Intl.Collator();
 
 const getValueForSorting = ( srcVal, rowIndex, fieldName, defaultValue, getRowData, getCellData ) => {
     const result = getRowData( srcVal );
     if( result ){
-        return getCellData ? getCellData( result, rowIndex ) : result[ fieldName ];
+        return getCellData( result, rowIndex, fieldName );
     }
     return defaultValue;
 }
@@ -31,7 +31,7 @@ const reduceRange = ( totalRows, dataKey, getRowData, getCellData, startValue, g
     let res = startValue;
     for( let i = 0, rowData, cellData; i < totalRows; i++ ){
         rowData = getRowData( i );
-        cellData = getCellData ? getCellData( rowData, i ) : rowData[ dataKey ];
+        cellData = getCellData( rowData, i, dataKey );
         res = getNewRes( res, cellData );
     }
     return res;
@@ -55,11 +55,11 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
     columns = [];
     totals = {};
     headlessMode = false;
+    getCellData = null;
 
     sortColumnIndex = -1;
     sortDirectionSign = 1;
 
-    scrollLeft = 0;
     tbodyColumnWidthsSum = 0;
     tbodyColumnWidths = null;
     orderedRows = new OrderedRowsCache( 0 );
@@ -94,7 +94,7 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
                     case "sum":
                     case "average":
                         if( tmpSum === undefined ){
-                            tmpSum = reduceRange( this.totalRows, dataKey, this.rowDataGetter, cellDataGetter, 0, add );
+                            tmpSum = reduceRange( this.totalRows, dataKey, this.getRowData, cellDataGetter, 0, add );
                         }
                         newVal = totalType === "sum" ? tmpSum : tmpSum / this.totalRows;
                         break;
@@ -103,7 +103,7 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
                         newVal = reduceRange(
                             this.totalRows,
                             dataKey,
-                            this.rowDataGetter,
+                            this.getRowData,
                             cellDataGetter,
                             totalType === "min" ? Number.MAX_SAFE_INTEGER : Number.MIN_SAFE_INTEGER,
                             Math[totalType]
@@ -130,7 +130,7 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
     refreshTotalsForColumn( dataKey ){
         const col = this.columns.find( c => c.dataKey === dataKey );
         if( col ){
-            this.refreshTotalsForColumnRaw( dataKey, col.getCellData );
+            this.refreshTotalsForColumnRaw( dataKey, col.getCellData || this.getCellData );
         }
         return this;
     }
@@ -138,7 +138,7 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
     refreshTotalsSync(){
         for( let j = 0, dataKey, getCellData; j < this.columns.length; j++ ){
             ({ dataKey, getCellData } = this.columns[ j ]);
-            this.refreshTotalsForColumnRaw( dataKey, getCellData );
+            this.refreshTotalsForColumnRaw( dataKey, getCellData || this.getCellData );
         }
     }
 
@@ -156,7 +156,7 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
         if( this.sortColumnIndex > -1 && this.totalRows > 0 ){
             const { sort, dataKey, getCellData } = this.columns[ this.sortColumnIndex ];
             if( sort ){
-                const sorter = getSorter( this.rowDataGetter, dataKey, sort, getCellData, this.sortDirectionSign );
+                const sorter = getSorter( this.getRowData, dataKey, sort, getCellData || this.getCellData, this.sortDirectionSign );
                 this.orderedRows.sort( sorter );
                 this.emit( "#rowsOrder" );
             }
@@ -192,8 +192,8 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
             .on( "#totalRows", this.refreshSorting )
             .on( "#totalRows", this.refreshTotals )
             .on( "sort-params-changed", this.refreshSorting )
-            .on( "#rowDataGetter", this.refreshSorting )
-            .on( "#rowDataGetter", this.refreshTotals )
+            .on( "#getRowData", this.refreshSorting )
+            .on( "#getRowData", this.refreshTotals )
             .on( "#rowsOrder", this.scrollToStart )
             .on( "#totals", this.refreshTotals )
             .on( "tbody-column-widths-changed", this.refreshColumnWidthsSum ) //for non-sticky

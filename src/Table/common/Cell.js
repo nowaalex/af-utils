@@ -8,10 +8,10 @@ import { getCellProps } from "../../utils/extraPropsGetters";
 */
 const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
 
-const Cell = ({ rowData, rowIndex, column, columnIndex, getCellExtraProps }) => {
+const Cell = ({ rowData, rowIndex, getCellData: getCellDataDefault, column, columnIndex, getCellExtraProps }) => {
     const { render, getEmptyCellData, dataKey, format, getCellData } = column;
 
-    let cellData = rowData && ( getCellData ? getCellData( rowData, rowIndex ) : rowData[ dataKey ] );
+    let cellData = rowData && ( getCellData || getCellDataDefault )( rowData, rowIndex, dataKey );
     
     if( cellData === undefined || cellData === "" ){
         cellData = getEmptyCellData ? getEmptyCellData( rowIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;
@@ -33,6 +33,7 @@ const Cell = ({ rowData, rowIndex, column, columnIndex, getCellExtraProps }) => 
 };
 
 Cell.propTypes = {
+    getCellData: PropTypes.func.isRequired,
     rowIndex: PropTypes.number.isRequired,
     columnIndex: PropTypes.number.isRequired,
     column: PropTypes.object.isRequired,

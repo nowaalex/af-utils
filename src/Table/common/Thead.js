@@ -2,11 +2,9 @@ import React, { useCallback, memo } from "react";
 import HeaderCells from "./HeaderCells";
 import useApi from "../../useApi";
 
-const SUBSCRIBE_EVENTS = [];
-
 const Thead = ({ trRef, getCellStyle, ...props }) => {
 
-    const API = useApi( SUBSCRIBE_EVENTS );
+    const API = useApi();
 
     const clickHandler = useCallback( e => {
 
