@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "af-virtual-scroll/src/Table";
+import Table from "af-virtual-scroll/lib/Table";
 
 const columns = [
     {

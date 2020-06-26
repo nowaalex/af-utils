@@ -32,6 +32,7 @@ const TotalsCell = ({ cellTotals, totalsCache, formatTotal }) => {
 
     return cellTotals.map( summaryType => (
         <Total
+            key={summaryType}
             showSummaryType
             summaryType={summaryType}
             cache={totalsCache}
