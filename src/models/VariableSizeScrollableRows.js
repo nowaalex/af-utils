@@ -82,10 +82,10 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
             autorun(() => {
 
                 //superdirty
-                if( !this.rowCount ){
+                if( !this.estimatedRowHeight || !this.rowCount ){
                     return;
                 }
-                
+
                 const { sTree, estimatedRowHeight, N, Rows: { visibleRowCount } } = this;
                 sTree.fill( estimatedRowHeight, N, N + visibleRowCount );
                 if( estimatedRowHeight ){
