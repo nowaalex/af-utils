@@ -1,23 +1,14 @@
 import React from "react";
 import useApi from "../../useApi";
 import { observer } from "mobx-react-lite";
+import HeaderCell from "./HeaderCell";
 
-const HeaderCells = () => {
-
-    const { columns, Rows } = useApi();
-    const { sort } = Rows.aggregators;
-
-    return columns.map(({ dataKey, title, sort: colSort, label, visibility }, j ) => visibility === "hidden" ? null : (
-        <th
-            key={dataKey}
-            title={title}
-            data-sortable={colSort?"":undefined}
-            aria-colindex={j+1}
-            aria-sort={sort&&sort.dataKey === dataKey?sort.value:"none"}
-        >
-            {label}
-        </th>
-    ));
-};
+const HeaderCells = () => useApi().columns.map(( column, j ) => (
+    <HeaderCell
+        key={column.dataKey}
+        column={column}
+        index={j}
+    />
+));
 
 export default observer( HeaderCells );

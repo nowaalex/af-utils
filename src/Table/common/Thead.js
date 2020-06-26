@@ -17,20 +17,16 @@ const Thead = ({ trRef, getCellStyle, ...props }) => {
         const { sort, dataKey } = API.columns[ colIndex ];
 
         if( e.ctrlKey ){
-            API.Rows.modifyAggregators({
-                group: API.Rows.aggregators.group && API.Rows.aggregators.group.dataKey === dataKey ? null : {
-                    dataKey,
-                    value: ""
-                }
+            API.Rows.aggregators.setGrouping( group => group && group.dataKey === dataKey ? null : {
+                dataKey,
+                value: ""
             });
         }
         else if( sort ){
             const value = e.target.getAttribute( "aria-sort" ) === "ascending" ? "descending" : "ascending";
-            API.Rows.modifyAggregators({
-                sort: {
-                    dataKey,
-                    value
-                }
+            API.Rows.aggregators.setSorting({
+                dataKey,
+                value
             });
         }
     }, []);

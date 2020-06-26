@@ -24,7 +24,9 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
     @computed({ keepAlive: true }) get sTree(){
         // Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
-        console.log( "NEw tree", this.N)
+        if( process.env.NODE_ENV !== "production" ){
+            console.log( "New tree cache. Size:", this.N );
+        }
         return new Uint32Array( this.N << 1 );
     }
 

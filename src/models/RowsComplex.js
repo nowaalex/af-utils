@@ -4,6 +4,7 @@ import mapValues from "lodash/mapValues";
 import keyBy from "lodash/keyBy";
 import times from "lodash/times";
 import reduce from "lodash/reduce";
+import toPairs from "lodash/toPairs";
 
 /*
     {
@@ -11,7 +12,6 @@ import reduce from "lodash/reduce";
             {
                 dataKey: "example",
                 value: "ssss",
-                type: "includes"
             }
         ],
         group: {
@@ -57,6 +57,37 @@ class TotalsCachePart {
     }
 };
 
+class Aggregators {
+
+    @observable
+    filtersByDataKey = {};
+
+    @computed get filtersList(){
+        return toPairs( this.filtersByDataKey );
+    }
+
+    @observable
+    group = null;
+
+    @observable
+    sort = null;
+
+    @action
+    setFiltering( dataKey, value ){
+        this.filtersByDataKey[ dataKey ] = value;
+    }
+
+    @action
+    setSorting( v ){
+        this.sort = typeof v === "function" ? v( this.sort ) : v;
+    }
+
+    @action
+    setGrouping( v ){
+        this.group = typeof v === "function" ? v( this.group ) : v;
+    }
+};
+
 class RowsComplex {
 
     constructor( parent ){
@@ -64,12 +95,7 @@ class RowsComplex {
     }
 
     @observable
-    aggregators = {};
-
-    @action
-    modifyAggregators( arg ){
-        Object.assign( this.aggregators, arg );
-    }
+    aggregators = new Aggregators();
 
     @computed get totalsCache(){
         return mapValues( this.parent.totals, ( v, k ) => new TotalsCachePart( this, k ) );
@@ -87,18 +113,18 @@ class RowsComplex {
 
         const { columnsByDataKey, parent } = this;
         const { getCellData, getRowData } = parent;
-        const { filter } = this.aggregators;
+        const { filtersList } = this.aggregators;
 
-        if( !getCellData || !filter || !filter.length ){
+        if( !getCellData || !filtersList.length ){
             return this.rowIndexesArray;
         }
 
         return this.rowIndexesArray.filter( i => {
             const row = getRowData( i );
-            return filter.every(({ dataKey, value, type }) => {
+            return filtersList.every(([ dataKey, value ]) => {
                 const col = columnsByDataKey[ dataKey ];
-                const cellData = ( col.getCellData || getCellData )( row, i, dataKey );
-                return cellData.toString().includes( value );
+                const cellData = row && ( col.getCellData || getCellData )( row, i, dataKey );
+                return cellData.toString().toLowerCase().includes( value.toLowerCase() );
             });
         });
     }
@@ -121,7 +147,7 @@ class RowsComplex {
 
         return groupBy( this.filtered, i => {
             const row = getRowData( i );
-            const cellData = ( col.getCellData || getCellData )( row, i, dataKey );
+            const cellData = row && ( col.getCellData || getCellData )( row, i, dataKey );
             return cellData;
         });
     }
@@ -138,6 +164,9 @@ class RowsComplex {
             return mapValues( this.grouped, v => v.sort(( a, b ) => {
                 const row1 = getRowData( a );
                 const row2 = getRowData( b );
+                if( !row1 || !row2 ){
+                    return 0;
+                }
                 const cell1 = fn( row1, a, dataKey );
                 const cell2 = fn( row2, b, dataKey );
                 if( cell1 > cell2 ){
