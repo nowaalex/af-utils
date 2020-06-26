@@ -10,19 +10,19 @@
         */
 
 /*
-            Trees are not always ideally allocated, gaps are possible.
-            Classical way for calculating parents is much simpler,
-            but can do much more work(summing zeros) in such conditions. Commented classic algo:
-                             for( let i = N + visibleRowCount >> 1, j; i > 0; --i ){
-                j = i << 1;
-                sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
-            }
-        */
-
-/*
             using target.offsetWidth instead of contentRect.width, because we need border-box sizing, 
             and { box: border-box } option does not work here
         */
+
+/*
+          Trees are not always ideally allocated, gaps are possible.
+          Classical way for calculating parents is much simpler,
+          but can do much more work(summing zeros) in such conditions. Commented classic algo:
+                       for( let i = N + visibleRowCount >> 1, j; i > 0; --i ){
+              j = i << 1;
+              sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
+          }
+      */
 
 /*
           When all row heights are different,

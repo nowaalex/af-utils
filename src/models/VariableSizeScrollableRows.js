@@ -18,7 +18,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
     @computed({ keepAlive: true }) get N(){
         /* Nearest pow of 2 to visibleRowCount. 56 >= 64, 67 => 128, etc. */
-        const { visibleRowCount }  = this.Rows;
+        const { visibleRowCount } = this.Rows;
         return visibleRowCount > 0 ? 2 << Math.log2( visibleRowCount + MIN_TREE_CACHE_OFFSET ) : 1;
     }
 
@@ -65,7 +65,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
         super();
 
         extendObservable( this, {
-            estimatedRowHeight: 20,
+            estimatedRowHeight: 0,
             widgetScrollHeight: 0,
             lastRowsRenderTimeStamp: 0,
         
@@ -81,26 +81,28 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
         this.disposeCallbacks.push(
             autorun(() => {
 
+                const { rowCount, estimatedRowHeight } = this;
+
                 //superdirty
-                if( !this.estimatedRowHeight || !this.rowCount ){
+                if( !estimatedRowHeight || !rowCount ){
                     return;
                 }
 
-                const { sTree, estimatedRowHeight, N, Rows: { visibleRowCount } } = this;
+                console.log( "DD", this )
+
+                const { sTree, N, Rows: { visibleRowCount } } = this;
                 sTree.fill( estimatedRowHeight, N, N + visibleRowCount );
-                if( estimatedRowHeight ){
-                    /*
-                        Trees are not always ideally allocated, gaps are possible.
-                        Classical way for calculating parents is much simpler,
-                        but can do much more work(summing zeros) in such conditions. Commented classic algo:
-                
-                        for( let i = N + visibleRowCount >> 1, j; i > 0; --i ){
-                            j = i << 1;
-                            sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
-                        }
-                    */
-                    this.calculateParentsInRange( 0, visibleRowCount );
-                }
+                /*
+                    Trees are not always ideally allocated, gaps are possible.
+                    Classical way for calculating parents is much simpler,
+                    but can do much more work(summing zeros) in such conditions. Commented classic algo:
+            
+                    for( let i = N + visibleRowCount >> 1, j; i > 0; --i ){
+                        j = i << 1;
+                        sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
+                    }
+                */
+                this.calculateParentsInRange( 0, visibleRowCount );
             }),
             autorun(() => {
                 if( this.widgetWidth ){
