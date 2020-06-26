@@ -63,7 +63,7 @@ class Aggregators {
     filtersByDataKey = {};
 
     @computed get filtersList(){
-        return toPairs( this.filtersByDataKey );
+        return toPairs( this.filtersByDataKey ).filter( p => p[ 1 ] );
     }
 
     @observable
@@ -124,7 +124,7 @@ class RowsComplex {
             return filtersList.every(([ dataKey, value ]) => {
                 const col = columnsByDataKey[ dataKey ];
                 const cellData = row && ( col.getCellData || getCellData )( row, i, dataKey );
-                return cellData.toString().toLowerCase().includes( value.toLowerCase() );
+                return cellData === undefined || ( "" + cellData ).toLowerCase().includes( value.toLowerCase() );
             });
         });
     }
