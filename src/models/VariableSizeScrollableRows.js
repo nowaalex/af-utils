@@ -24,6 +24,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
     @computed({ keepAlive: true }) get sTree(){
         // Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
+        console.log( "NEw tree", this.N)
         return new Uint32Array( this.N << 1 );
     }
 
@@ -87,8 +88,6 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
                 if( !estimatedRowHeight || !rowCount ){
                     return;
                 }
-
-                console.log( "DD", this )
 
                 const { sTree, N, Rows: { visibleRowCount } } = this;
                 sTree.fill( estimatedRowHeight, N, N + visibleRowCount );

@@ -20,6 +20,7 @@
   ],
   "scripts": {
     "storybook": "start-storybook",
+    "build-storybook": "build-storybook -c .storybook -o .out",
     "start": "webpack-dev-server --env.ASSETS_PATH=/",
     "build:website": "webpack --mode=production --env.ASSETS_PATH=/af-virtual-scroll/website/",
     "build:modules": "babel src --out-dir lib --delete-dir-on-start --ignore '**/*.test.js' --env-name lib && yarn copy-style-file",

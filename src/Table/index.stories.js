@@ -35,7 +35,6 @@ const rows = times( DEFAULT_ROW_COUNT, index => ({
 
 export const FixedTable = () => (
     <Table
-        fixedSize
         getRowData={i => rows[ i ]}
         totals={{
             a: [ "sum" ],
