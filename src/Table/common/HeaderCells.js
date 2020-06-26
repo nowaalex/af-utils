@@ -5,15 +5,15 @@ import { observer } from "mobx-react-lite";
 const HeaderCells = () => {
 
     const { columns, Rows } = useApi();
-    const { dataKey: sortDataKey, value: sortValue } = Rows.aggregators.sort;
+    const { sort } = Rows.aggregators;
 
-    return columns.map(({ dataKey, title, sort, label, visibility }, j ) => visibility === "hidden" ? null : (
+    return columns.map(({ dataKey, title, sort: colSort, label, visibility }, j ) => visibility === "hidden" ? null : (
         <th
             key={dataKey}
             title={title}
-            data-sortable={sort?"":undefined}
+            data-sortable={colSort?"":undefined}
             aria-colindex={j+1}
-            aria-sort={dataKey !== sortDataKey?"none":sortValue}
+            aria-sort={sort&&sort.dataKey === dataKey?sort.value:"none"}
         >
             {label}
         </th>

@@ -130,6 +130,10 @@
     bottom: 0;
 }
 
+.afvscr-group-cell {
+    font-weight: 500;
+}
+
 .afvscr-summary {
     text-transform: capitalize;
 }

@@ -6,39 +6,6 @@ import RowsComplex from "./RowsComplex";
 const OrderedRowsCache = Uint32Array;
 const TbodyColumnWidthsCache = Uint32Array;
 
-const REFRESH_SORT_DEBOUNCE_INTERVAL = 200;
-
-const L = new Intl.Collator();
-
-const getValueForSorting = ( srcVal, rowIndex, fieldName, defaultValue, getRowData, getCellData ) => {
-    const result = getRowData( srcVal );
-    if( result ){
-        return getCellData( result, rowIndex, fieldName );
-    }
-    return defaultValue;
-}
-
-const getSorter = ( getRowData, fieldName, method, getCellData, directionSign ) => {
-    const fn = method === "locale" ? L.compare : subtract;
-    const defaultValue = method === "locale" ? "" : 0;
-
-    return ( a, b, i ) => {
-        const v1 = getValueForSorting( a, i, fieldName, defaultValue, getRowData, getCellData );
-        const v2 = getValueForSorting( b, i, fieldName, defaultValue, getRowData, getCellData );
-        return fn( v1, v2 ) * directionSign;
-    };
-};
-
-const reduceRange = ( rowCount, dataKey, getRowData, getCellData, startValue, getNewRes ) => {
-    let res = startValue;
-    for( let i = 0, rowData, cellData; i < rowCount; i++ ){
-        rowData = getRowData( i );
-        cellData = getCellData( rowData, i, dataKey );
-        res = getNewRes( res, cellData );
-    }
-    return res;
-}
-
 /*
     We could use simple object literal,
     but constructors with stable-order this initialization enforce "hidden-classes" v8 optimization

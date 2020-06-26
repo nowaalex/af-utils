@@ -2,10 +2,11 @@ import React from "react";
 import Table from "./index";
 import r from "lodash/random";
 import times from "lodash/times";
+import faker from "faker";
 
 export default { title: "Table" };
 
-const DEFAULT_ROW_COUNT = 50000;
+const DEFAULT_ROW_COUNT = 5000;
 
 const columns = [
     {
@@ -14,25 +15,32 @@ const columns = [
         sort: "numeric"
     },
     {
-        dataKey: "b",
-        label: "b"
+        dataKey: "country",
+        label: "country",
+        sort: "locale"
     },
     {
-        dataKey: "c",
-        label: "c"
+        dataKey: "name",
+        label: "name",
+        sort: "locale"
     }
 ];
+
+const rows = times( DEFAULT_ROW_COUNT, index => ({
+    a: index,
+    country: faker.address.country(),
+    name: faker.name.firstName(),
+    height: r( 40, 200 )
+}));
 
 export const FixedTable = () => (
     <Table
         fixedSize
-        getRowData={
-            index => ({
-                a: index,
-                b: `cell_b_row: ${index}`,
-                c: `cell_c_row: ${index}`
-            })
-        }
+        getRowData={i => rows[ i ]}
+        totals={{
+            a: [ "sum" ],
+            country: [ "count" ]
+        }}
         rowCount={DEFAULT_ROW_COUNT}
         columns={columns}
     />

@@ -14,9 +14,24 @@ const Thead = ({ trRef, getCellStyle, ...props }) => {
             throw new Error( "colIndex attr missing" );
         }
 
-        if( API.columns[ colIndex ].sort ){
-            const directionSign = e.target.getAttribute( "aria-sort" ) === "ascending" ? -1 : 1;
-            API.setSortParams( colIndex, directionSign );
+        const { sort, dataKey } = API.columns[ colIndex ];
+
+        if( e.ctrlKey ){
+            API.Rows.modifyAggregators({
+                group: API.Rows.aggregators.group && API.Rows.aggregators.group.dataKey === dataKey ? null : {
+                    dataKey,
+                    value: ""
+                }
+            });
+        }
+        else if( sort ){
+            const value = e.target.getAttribute( "aria-sort" ) === "ascending" ? "descending" : "ascending";
+            API.Rows.modifyAggregators({
+                sort: {
+                    dataKey,
+                    value
+                }
+            });
         }
     }, []);
 

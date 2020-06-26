@@ -7,7 +7,7 @@ import { css } from "@emotion/core";
 
 export default { title: "List" };
 
-const DEFAULT_ROW_COUNT = 50000;
+const DEFAULT_ROW_COUNT = 5000;
 
 export const FixedRowHeightList = () => (
     <List
