@@ -51,7 +51,7 @@ const Table = ({
         estimatedRowHeight,
         totals,
         columns,
-        totalRows: Math.max( rowCount, 0 )
+        rowCount
     });
 
     /*

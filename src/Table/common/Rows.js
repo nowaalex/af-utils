@@ -40,8 +40,6 @@ const Rows = ({ getRowExtraProps, getCellExtraProps, RowComponent, CellComponent
 
     const API = useApi();
 
-    console.log( "Gg", API)
-
     return getVisibleRows(
         API.Rows.flat,
         API.startIndex,

@@ -1,4 +1,4 @@
 import createTable from "./createTable";
-import FixedSizeList from "./FixedSizeList";
+import FixedSizeScrollableRows from "./FixedSizeScrollableRows";
 
-export default createTable( FixedSizeList );
+export default createTable( FixedSizeScrollableRows );

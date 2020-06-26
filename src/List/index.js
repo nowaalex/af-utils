@@ -40,7 +40,7 @@ const List = ({
         getRowKey,
         overscanRowsCount,
         estimatedRowHeightFallback: estimatedRowHeight,
-        totalRows: rowCount
+        rowCount
     });
 
     return (

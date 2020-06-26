@@ -27,12 +27,12 @@ import times from "lodash/times";
 
 class RowsComplex {
 
-    constructor( table ){
-        this.table = table;
+    constructor( parent ){
+        this.parent = parent;
     }
 
     @observable
-    modifiers = {
+    aggregators = {
         group: [],
         filter: [
             {
@@ -45,18 +45,18 @@ class RowsComplex {
     };
 
     @computed get columnsByDataKey(){
-        return keyBy( this.table.columns, "dataKey" );
+        return keyBy( this.parent.columns, "dataKey" );
     }
 
     @computed get rowIndexesArray(){
-        return times( this.table.totalRows );
+        return times( this.parent.rowCount );
     }
 
     @computed get filtered(){
 
-        const { columnsByDataKey, table } = this;
-        const { getCellData, getRowData } = table;
-        const { filter } = this.modifiers;
+        const { columnsByDataKey, parent } = this;
+        const { getCellData, getRowData } = parent;
+        const { filter } = this.aggregators;
 
         if( !getCellData || !filter.length ){
             return this.rowIndexesArray;
@@ -74,7 +74,7 @@ class RowsComplex {
 /*
     @computed get grouped(){
 
-        const { group } = this.modifiers;
+        const { group } = this.aggregators;
 
         return groupBy( this.filtered, i => {
             const row = getRowData( i );
@@ -85,6 +85,10 @@ class RowsComplex {
 
     @computed get flat(){
         return this.filtered;
+    }
+
+    @computed get visibleRowCount(){
+        return this.flat.length;
     }
 }
 

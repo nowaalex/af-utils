@@ -10,7 +10,7 @@ const BodyTable = ({ children }) => {
         <table
             children={children}
             className="afvscr-main-table"
-            aria-rowcount={API.totalRows}
+            aria-rowcount={API.rowCount}
             aria-colcount={API.columns.length}
         />
     );

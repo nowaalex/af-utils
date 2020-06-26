@@ -1,7 +1,6 @@
-import { observable, computed } from "mobx";
+import { observable, extendObservable, computed } from "mobx";
 import add from "lodash/add";
 import subtract from "lodash/subtract";
-import Rows from "./RowsComplex";
 import RowsComplex from "./RowsComplex";
 
 const OrderedRowsCache = Uint32Array;
@@ -30,9 +29,9 @@ const getSorter = ( getRowData, fieldName, method, getCellData, directionSign ) 
     };
 };
 
-const reduceRange = ( totalRows, dataKey, getRowData, getCellData, startValue, getNewRes ) => {
+const reduceRange = ( rowCount, dataKey, getRowData, getCellData, startValue, getNewRes ) => {
     let res = startValue;
-    for( let i = 0, rowData, cellData; i < totalRows; i++ ){
+    for( let i = 0, rowData, cellData; i < rowCount; i++ ){
         rowData = getRowData( i );
         cellData = getCellData( rowData, i, dataKey );
         res = getNewRes( res, cellData );
@@ -53,23 +52,9 @@ class TotalsCachePart {
 /*
     can't extend from both FixedSizeList and VariableSizeList, so exporting compositor
 */
-const createTable = ( BaseClass, constructorCallback ) => class extends BaseClass {
+const createTable = BaseClass => class extends BaseClass {
 
     Rows = new RowsComplex( this );
-
-    @observable
-    columns = [];
-
-    @observable
-    totals = {};
-
-    @observable
-    headlessMode = false;
-
-    @observable
-    getCellData = null;
-
-    tbodyColumnWidths = null;
 
     refreshTotalsForColumnRaw( dataKey, cellDataGetter ){
         const curTotals = this.totals && this.totals[ dataKey ];
@@ -85,19 +70,19 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
                 oldVal = curCachePart[ totalType ];
                 switch( totalType ){
                     case "count":
-                        newVal = this.totalRows;
+                        newVal = this.rowCount;
                         break;
                     case "sum":
                     case "average":
                         if( tmpSum === undefined ){
-                            tmpSum = reduceRange( this.totalRows, dataKey, this.getRowData, cellDataGetter, 0, add );
+                            tmpSum = reduceRange( this.rowCount, dataKey, this.getRowData, cellDataGetter, 0, add );
                         }
-                        newVal = totalType === "sum" ? tmpSum : tmpSum / this.totalRows;
+                        newVal = totalType === "sum" ? tmpSum : tmpSum / this.rowCount;
                         break;
                     case "min":
                     case "max":
                         newVal = reduceRange(
-                            this.totalRows,
+                            this.rowCount,
                             dataKey,
                             this.getRowData,
                             cellDataGetter,
@@ -123,21 +108,20 @@ const createTable = ( BaseClass, constructorCallback ) => class extends BaseClas
         return this;
     }
 
-
-    resetColumnWidthsCache(){
-        this.tbodyColumnWidths = new TbodyColumnWidthsCache( this.columns.length );
-    }
-
-    refreshColumnWidthsSum(){
-        this.tbodyColumnWidthsSum = this.tbodyColumnWidths.reduce( add );
+    @computed get tbodyColumnWidthsSum(){
+        return this.tbodyColumnWidths.reduce( add );
     }
 
     constructor(){
         super();
 
-        if( constructorCallback ){
-            constructorCallback( this );
-        }
+        extendObservable( this, {
+            columns: [],
+            totals: {},
+            headlessMode: false,
+            getCellData: null,
+            tbodyColumnWidths: []
+        });
     }
 
     destructor(){

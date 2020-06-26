@@ -5,7 +5,7 @@ describe( "Segments tree works correctly", () => {
     const VList = new VariableSizeList();
 
     test( "It initializes properly", () => {
-        VList.set( "totalRows", 50 ).set( "estimatedRowHeight", 5 );
+        VList.set( "rowCount", 50 ).set( "estimatedRowHeight", 5 );
         expect(VList.getDistanceBetweenIndexes( 2, 7)).toEqual(25);
     });
 
@@ -29,7 +29,7 @@ describe( "Segments tree works correctly", () => {
     `(
         "Reallocates ok for [ $rowCount * $rowHeight, randomNumber: $randomNumber, randomIndex: $randomIndex ]",
         ({ rowCount, rowHeight, randomNumber, randomIndex }) => {
-            VList.set( "totalRows", rowCount ).set( "estimatedRowHeight", rowHeight );
+            VList.set( "rowCount", rowCount ).set( "estimatedRowHeight", rowHeight );
             expect(VList.getDistanceBetweenIndexes( 0, rowCount )).toEqual( rowCount * rowHeight );
 
             if( rowCount ){
@@ -42,7 +42,7 @@ describe( "Segments tree works correctly", () => {
     );
 
     test.each`
-        totalRows | expectedCacheSize
+        rowCount | expectedCacheSize
         ${-1}     | ${2}
         ${0}      | ${2}
         ${1}      | ${64}
@@ -50,9 +50,9 @@ describe( "Segments tree works correctly", () => {
         ${100}    | ${256}
         ${129}    | ${512}
     `(
-        "Cache reallocation works ok for: { totalRows: $totalRows, expectedCacheSize: $expectedCacheSize }",
-        ({ totalRows, expectedCacheSize }) => {
-            VList.set( "totalRows", totalRows );
+        "Cache reallocation works ok for: { rowCount: $rowCount, expectedCacheSize: $expectedCacheSize }",
+        ({ rowCount, expectedCacheSize }) => {
+            VList.set( "rowCount", rowCount );
             expect(VList.sTree.length).toEqual( expectedCacheSize );
         }
     );

@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 const HeaderCells = () => {
 
     const { columns, Rows } = useApi();
-    const { dataKey: sortDataKey, value: sortValue } = Rows.modifiers.sort;
+    const { dataKey: sortDataKey, value: sortValue } = Rows.aggregators.sort;
 
     return columns.map(({ dataKey, title, sort, label, visibility }, j ) => visibility === "hidden" ? null : (
         <th
