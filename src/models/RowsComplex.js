@@ -64,13 +64,7 @@ class RowsComplex {
     }
 
     @observable
-    aggregators = {
-        group: {
-            dataKey: "country",
-            value: "",
-            type: "default"
-        }
-    };
+    aggregators = {};
 
     @action
     modifyAggregators( arg ){
@@ -113,7 +107,7 @@ class RowsComplex {
 
         const { group } = this.aggregators;
 
-        if( !group ){
+        if( !group || !group.dataKey ){
             return {
                 all: this.filtered
             };
@@ -135,7 +129,7 @@ class RowsComplex {
     @computed get sorted(){
         const { columnsByDataKey, aggregators: { sort }, parent } = this;
 
-        if( sort ){
+        if( sort && sort.dataKey ){
             const { dataKey, value } = sort;
             const { getCellData, getRowData } = parent;
             const col = columnsByDataKey[ dataKey ];
