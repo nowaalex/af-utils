@@ -8,11 +8,13 @@ const Thead = ({ trRef, getCellStyle, ...props }) => {
 
     const clickHandler = useCallback( e => {
 
-        const colIndex = parseInt( e.target.getAttribute( "aria-colindex" ), 10 ) - 1;
+        const node = e.target.closest( "[aria-colindex]" );
 
-        if( process.env.NODE_ENV !== "production" && Number.isNaN( colIndex ) ){
+        if( process.env.NODE_ENV !== "production" && !node ){
             throw new Error( "colIndex attr missing" );
         }
+
+        const colIndex = parseInt( node.getAttribute( "aria-colindex" ), 10 ) - 1;
 
         const { sort, dataKey } = API.columns[ colIndex ];
 
@@ -23,7 +25,7 @@ const Thead = ({ trRef, getCellStyle, ...props }) => {
             });
         }
         else if( sort ){
-            const value = e.target.getAttribute( "aria-sort" ) === "ascending" ? "descending" : "ascending";
+            const value = node.getAttribute( "aria-sort" ) === "ascending" ? "descending" : "ascending";
             API.Rows.aggregators.setSorting({
                 dataKey,
                 value

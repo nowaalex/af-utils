@@ -1,4 +1,4 @@
-import { extendObservable, computed } from "mobx";
+import { extendObservable, reaction, computed } from "mobx";
 import add from "lodash/add";
 import RowsComplex from "./RowsComplex";
 
@@ -23,9 +23,13 @@ const createTable = BaseClass => class extends BaseClass {
             getCellData: null,
             tbodyColumnWidths: []
         });
+
+        this.dispose = reaction(() => this.Rows.sorted, () => this.scrollToStart() );
     }
 
     destructor(){
+        this.Rows.destructor();
+        this.dispose();
         super.destructor();
     }
 }

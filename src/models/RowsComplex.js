@@ -1,4 +1,4 @@
-import { computed, action, observable } from "mobx";
+import { computed, action, reaction, observable } from "mobx";
 import groupBy from "lodash/groupBy";
 import mapValues from "lodash/mapValues";
 import keyBy from "lodash/keyBy";
@@ -6,26 +6,7 @@ import times from "lodash/times";
 import reduce from "lodash/reduce";
 import toPairs from "lodash/toPairs";
 
-/*
-    {
-        filter: [
-            {
-                dataKey: "example",
-                value: "ssss",
-            }
-        ],
-        group: {
-            dataKey: "example2",
-            value: "",
-            type: "default"
-        },
-        sort: {
-            dataKey: "example3",
-            value: "ascending",
-            type: "numeric"
-        }
-    }
-*/
+const ALL_KEY = "ALL" + Math.random().toString( 36 );
 
 class TotalsCachePart {
 
@@ -56,6 +37,25 @@ class TotalsCachePart {
         return this.sum / this.count;
     }
 };
+
+
+/*
+
+[
+    [
+        1,
+        2,
+        5,
+        7,
+        8
+    ],
+    [
+        3,
+        10,
+        18
+    ]
+]
+*/
 
 class Aggregators {
 
@@ -90,9 +90,26 @@ class Aggregators {
 
 class RowsComplex {
 
-    constructor( parent ){
+    constructor( parent ){1
         this.parent = parent;
+
+        this.dispose = reaction(
+            () => this.aggregators.group,
+            () => this.expandedGroups.clear()
+        );
     }
+
+    destructor(){
+        this.dispose();
+    }
+
+    @action
+    setExpandedState( v, boolFlag ){
+        this.expandedGroups[ boolFlag ? "add" : "delete" ]( v );
+    }
+
+    @observable
+    expandedGroups = new Set();
 
     @observable
     aggregators = new Aggregators();
@@ -135,7 +152,7 @@ class RowsComplex {
 
         if( !group || !group.dataKey ){
             return {
-                all: this.filtered
+                [ALL_KEY]: this.filtered
             };
         }
 
@@ -184,7 +201,12 @@ class RowsComplex {
 
     @computed get flat(){
         return reduce( this.sorted, ( result, groupArr, groupName ) => {
-            result.push( groupName, ...groupArr );
+            if( groupName !== ALL_KEY ){
+                result.push( groupName );
+            }
+            if( this.expandedGroups.has( groupName ) || groupName === ALL_KEY ){
+                result.push( ...groupArr );
+            }
             return result;
         }, []);
     }
