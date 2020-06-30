@@ -1,12 +1,13 @@
-import { computed, action, reaction, observable } from "mobx";
+import { computed, action, reaction, toJS, observable } from "mobx";
 import groupBy from "lodash/groupBy";
 import mapValues from "lodash/mapValues";
 import keyBy from "lodash/keyBy";
 import times from "lodash/times";
 import reduce from "lodash/reduce";
 import toPairs from "lodash/toPairs";
-
-const ALL_KEY = "ALL" + Math.random().toString( 36 );
+import updateWith from "lodash/updateWith";
+import get from "lodash/get";
+import setWith from "lodash/setWith";
 
 class TotalsCachePart {
 
@@ -62,12 +63,13 @@ class Aggregators {
     @observable
     filtersByDataKey = {};
 
+    /* Order is important in grouping */
+    @observable
+    groups = [];
+
     @computed get filtersList(){
         return toPairs( this.filtersByDataKey ).filter( p => p[ 1 ] );
     }
-
-    @observable
-    group = null;
 
     @observable
     sort = null;
@@ -82,11 +84,57 @@ class Aggregators {
         this.sort = typeof v === "function" ? v( this.sort ) : v;
     }
 
+    hasGroupingForDataKey( dataKey ){
+        return this.groups.includes( dataKey );
+    }
+
     @action
-    setGrouping( v ){
-        this.group = typeof v === "function" ? v( this.group ) : v;
+    addGrouping( dataKey ){
+        if( !this.hasGroupingForDataKey( dataKey ) ){
+            this.groups.push( dataKey );
+        }
+    }
+
+    @action
+    removeGrouping( dataKey ){
+        this.groups.remove( dataKey );
+    }
+
+    @action
+    toggleGrouping( dataKey ){
+        if( this.hasGroupingForDataKey( dataKey ) ){
+            this.removeGrouping( dataKey );
+        }
+        else{
+            this.addGrouping( dataKey );
+        }
     }
 };
+
+const objectSetter = nsObject => typeof nsObject === "object" ? nsObject : {};
+
+const flattenGroupedStructure = ( obj, expandedGroups, rowIndexes = [], groupKeyPaths = [], stack = [] ) => {
+
+    if( Array.isArray( obj ) ){
+        rowIndexes.push( ...obj );
+    }
+    else{
+        let curStack;
+        for( let k in obj ){
+            curStack = stack.concat( k );
+            rowIndexes.push( -groupKeyPaths.push( curStack ) );
+            if( !!get( expandedGroups, curStack ) ){
+                flattenGroupedStructure( obj[ k ], expandedGroups, rowIndexes, groupKeyPaths, curStack );
+            }
+        }
+    }
+    
+    
+    return {
+        rowIndexes,
+        groupKeyPaths
+    };
+}
 
 class RowsComplex {
 
@@ -94,8 +142,8 @@ class RowsComplex {
         this.parent = parent;
 
         this.dispose = reaction(
-            () => this.aggregators.group,
-            () => this.expandedGroups.clear()
+            () => !!this.aggregators.groups.length,
+            () => this.expandedGroups = {}
         );
     }
 
@@ -105,11 +153,15 @@ class RowsComplex {
 
     @action
     setExpandedState( v, boolFlag ){
-        this.expandedGroups[ boolFlag ? "add" : "delete" ]( v );
+        setWith( this.expandedGroups, v, boolFlag, objectSetter );
+    }
+
+    isGroupExpanded( path ){
+        return !!get( this.expandedGroups, path );
     }
 
     @observable
-    expandedGroups = new Set();
+    expandedGroups = {};
 
     @observable
     aggregators = new Aggregators();
@@ -148,31 +200,34 @@ class RowsComplex {
 
     @computed get grouped(){
 
-        const { group } = this.aggregators;
+        const { groups } = this.aggregators;
 
-        if( !group || !group.dataKey ){
-            return {
-                [ALL_KEY]: this.filtered
-            };
+        if( !groups.length ){
+            return this.filtered;
         }
 
-        const { dataKey } = group;
         const { columnsByDataKey, parent } = this;
         const { getCellData, getRowData } = parent;
 
-        const col = columnsByDataKey[ dataKey ];
-
-        return groupBy( this.filtered, i => {
-            const row = getRowData( i );
-            const cellData = row && ( col.getCellData || getCellData )( row, i, dataKey );
-            return cellData;
-        });
+        /* multilevel grouping */
+        return this.filtered.reduce(( acc, v ) => {
+            const row = getRowData( v );
+            return updateWith(
+                acc,
+                row && groups.map( dataKey => {
+                    const col = columnsByDataKey[ dataKey ];
+                    return ( col.getCellData || getCellData )( row, v, dataKey );
+                }),
+                indexes => indexes ? indexes.push( v ) && indexes : [ v ],
+                objectSetter
+            )
+        }, {});
     }
 
     @computed get sorted(){
         const { columnsByDataKey, aggregators: { sort }, parent } = this;
 
-        if( sort && sort.dataKey ){
+       /* if( sort && sort.dataKey ){
             const { dataKey, value } = sort;
             const { getCellData, getRowData } = parent;
             const col = columnsByDataKey[ dataKey ];
@@ -194,25 +249,17 @@ class RowsComplex {
                 }
                 return 0;
             }));
-        }
+        }*/
         
         return this.grouped;
     }
 
     @computed get flat(){
-        return reduce( this.sorted, ( result, groupArr, groupName ) => {
-            if( groupName !== ALL_KEY ){
-                result.push( groupName );
-            }
-            if( this.expandedGroups.has( groupName ) || groupName === ALL_KEY ){
-                result.push( ...groupArr );
-            }
-            return result;
-        }, []);
+        return flattenGroupedStructure( this.sorted, this.expandedGroups );
     }
 
     @computed get visibleRowCount(){
-        return this.flat.length;
+        return this.flat.rowIndexes.length;
     }
 }
 

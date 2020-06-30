@@ -4,20 +4,20 @@ import { observer } from "mobx-react-lite";
 import useApi from "../../useApi";
 import { getRowProps } from "../../utils/extraPropsGetters";
 
-const GroupRow = ({ columns, groupKey, rowIndex }) => {
-    const API = useApi();
+const GroupRow = ({ columns, groupPath, rowIndex }) => {
+    const { Rows } = useApi();
 
-    const expanded = API.Rows.expandedGroups.has( groupKey );
+    const expanded = Rows.isGroupExpanded( groupPath );
+    const last = groupPath.length - 1;
 
     return (
         <tr {...getRowProps(null,rowIndex)}>
-            <td colSpan={columns.length} className="afvscr-group-cell">
-                <button onClick={() => API.Rows.setExpandedState( groupKey, !expanded )}>
+            <td colSpan={columns.length} className="afvscr-group-cell" style={{ textIndent: ( groupPath.length - 1 ) * 1.5 + "em" }}>
+                <button onClick={() => Rows.setExpandedState( groupPath, !expanded )}>
                     {expanded ? "-" : "+"}
                 </button>
                 &nbsp;
-                {API.Rows.aggregators.group.dataKey}:&nbsp;
-                {groupKey}
+                {Rows.columnsByDataKey[Rows.aggregators.groups[ last ]].label}:&nbsp;{groupPath[ last ]}
             </td>
         </tr>
     );
@@ -26,7 +26,7 @@ const GroupRow = ({ columns, groupKey, rowIndex }) => {
 GroupRow.propTypes = {
     columns: PropTypes.array.isRequired,
     rowIndex: PropTypes.number.isRequired,
-    groupKey: PropTypes.string.isRequired
+    groupPath: PropTypes.array.isRequired
 };
 
 export default observer( GroupRow );

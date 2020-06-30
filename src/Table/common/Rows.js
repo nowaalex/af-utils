@@ -4,7 +4,7 @@ import useApi from "../../useApi";
 import GroupRow from "./GroupRow";
 
 const getVisibleRows = (
-    orderedRows,
+    { rowIndexes, groupKeyPaths },
     rangeFrom,
     rangeTo,
     columns,
@@ -17,18 +17,18 @@ const getVisibleRows = (
     CellComponent
 ) => {
     const result = [];
-    for( let rowKey, idx; rangeFrom < rangeTo; rangeFrom++ ){
-        idx = orderedRows[ rangeFrom ];
+    for( let tmp, idx; rangeFrom < rangeTo; rangeFrom++ ){
+        idx = rowIndexes[ rangeFrom ];
 
-        if( typeof idx === "number" ){
-            rowKey = getRowKey ? getRowKey( idx ) : idx;
+        if( idx >= 0 ){
+            tmp = getRowKey ? getRowKey( idx ) : idx;
             result.push(
                 <RowComponent
                     getRowExtraProps={getRowExtraProps}
                     getCellExtraProps={getCellExtraProps}
                     rowIndex={rangeFrom}
                     rowDataIndex={idx}
-                    key={rowKey}
+                    key={tmp}
                     columns={columns}
                     getRowData={getRowData}
                     getCellData={getCellData}
@@ -37,10 +37,11 @@ const getVisibleRows = (
             );
         }
         else {
+            tmp = groupKeyPaths[~idx];
             result.push(
                 <GroupRow
-                    key={`group_${idx}`}
-                    groupKey={idx}
+                    key={`group_${tmp.join("/")}`}
+                    groupPath={tmp}
                     columns={columns}
                     rowIndex={rangeFrom}
                 />

@@ -19,10 +19,7 @@ const Thead = ({ trRef, getCellStyle, ...props }) => {
         const { sort, dataKey } = API.columns[ colIndex ];
 
         if( e.ctrlKey ){
-            API.Rows.aggregators.setGrouping( group => group && group.dataKey === dataKey ? null : {
-                dataKey,
-                value: ""
-            });
+            API.Rows.aggregators.toggleGrouping( dataKey );
         }
         else if( sort ){
             const value = node.getAttribute( "aria-sort" ) === "ascending" ? "descending" : "ascending";
