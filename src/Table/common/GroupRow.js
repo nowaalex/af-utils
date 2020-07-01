@@ -5,10 +5,11 @@ import useApi from "../../useApi";
 import { getRowProps } from "../../utils/extraPropsGetters";
 
 const GroupRow = ({ columns, groupPath, rowIndex }) => {
-    const { Rows } = useApi();
+    const { totals, Rows } = useApi();
 
     const expanded = Rows.isGroupExpanded( groupPath );
     const last = groupPath.length - 1;
+    const TT = Rows.groupTotals[ groupPath.join( "." ) ];
 
     return (
         <tr {...getRowProps(null,rowIndex)}>
@@ -18,6 +19,13 @@ const GroupRow = ({ columns, groupPath, rowIndex }) => {
                 </button>
                 &nbsp;
                 {Rows.columnsByDataKey[Rows.aggregators.groups[ last ]].label}:&nbsp;{groupPath[ last ]}
+                {columns.map( c => {
+                    const t = totals[ c.dataKey ];
+                    if( !t ){
+                        return null;
+                    }
+                    return t.map( totalName => <span key={totalName}>{c.dataKey}_{totalName}: {TT[c.dataKey][totalName]}, </span> );
+                })}
             </td>
         </tr>
     );
