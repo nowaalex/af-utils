@@ -12,7 +12,7 @@ export default { title: "Table" };
 
 export const FixedTable = () => {
 
-    const rows = times( 90000, index => ({
+    const rows = times( 90, index => ({
         a: index,
         country: faker.address.country(),
         name: faker.name.firstName(),

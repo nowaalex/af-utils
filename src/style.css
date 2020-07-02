@@ -132,8 +132,30 @@
 
 .afvscr-group-cell {
     font-weight: 500;
+    text-align: left;
 }
 
+/*
 .afvscr-summary {
     text-transform: capitalize;
+}
+*/
+
+.afvscr-group-summaries {
+    display: inline-flex;
+    flex-flow: row nowrap;
+}
+
+.afvscr-group-summaries:not(:empty):before {
+    margin-left: 0.5em;
+    content: "(";
+}
+
+.afvscr-group-summaries:not(:empty):after {
+    content: ")";
+}
+
+.afvscr-group-summaries > .afvscr-summary:not(:last-child):after{
+    content: ",";
+    margin-right: 0.5em;
 }

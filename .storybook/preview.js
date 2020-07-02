@@ -1,3 +1,4 @@
+import React from "react";
 import "normalize.css";
 import "../src/style.css";
 import "mobx-react-lite/batchingForReactDom";

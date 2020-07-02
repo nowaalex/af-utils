@@ -7,8 +7,6 @@ import RowsComplex from "./RowsComplex";
 */
 const createTable = BaseClass => class extends BaseClass {
 
-    Rows = new RowsComplex( this );
-
     @computed get tbodyColumnWidthsSum(){
         return this.tbodyColumnWidths.reduce( add );
     }
@@ -23,6 +21,8 @@ const createTable = BaseClass => class extends BaseClass {
             getCellData: null,
             tbodyColumnWidths: []
         });
+
+        this.Rows = new RowsComplex( this );
 
         this.dispose = reaction(() => this.Rows.sorted, () => this.scrollToStart() );
     }

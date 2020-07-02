@@ -1,9 +1,0 @@
-/*#__PURE__*/
-
-/***/
-
-// ESM COMPAT FLAG
-
-// EXTERNAL MODULE: ./node_modules/@emotion/core/dist/core.browser.esm.js + 10 modules
-
-// EXTERNAL MODULE: ./node_modules/react/index.js

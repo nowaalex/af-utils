@@ -5,7 +5,6 @@ import keyBy from "lodash/keyBy";
 import times from "lodash/times";
 import reduce from "lodash/reduce";
 import toPairs from "lodash/toPairs";
-import fromPairs from "lodash/fromPairs";
 import updateWith from "lodash/updateWith";
 import get from "lodash/get";
 import setWith from "lodash/setWith";
@@ -49,24 +48,32 @@ class TotalsCachePart2 {
         this.groupPath = groupPath;
     }
 
+    countRecursively( byFieldName ){
+        return reduce( this.group, ( totalCount, groupValue, key ) => {
+            return totalCount + this.rows.getGroupTotals( this.groupPath.concat( key ) )[ this.dataKey ][ byFieldName ];
+        }, 0 );
+    }
+
     @computed get group(){
         return get( this.rows.grouped, this.groupPath );
     }
 
     @computed get count(){
-        return this.group ? this.group.length : 0;
+        return Array.isArray( this.group ) ? this.group.length : this.countRecursively( "count" );
     }
 
     @computed get sum(){
-        let res = 0;
-        const { rows: { columnsByDataKey, parent }, dataKey } = this;
-        const col = columnsByDataKey[ dataKey ];
-        const { getCellData, getRowData } = parent;
-        const fn = col.getCellData || getCellData;
-        return sumBy( this.group, i => {
-            const row = getRowData( i );
-            return fn( row, i, dataKey );
-        });
+        if( Array.isArray( this.group ) ){
+            const { rows: { columnsByDataKey, parent }, dataKey } = this;
+            const col = columnsByDataKey[ dataKey ];
+            const { getCellData, getRowData } = parent;
+            const fn = col.getCellData || getCellData;
+            return sumBy( this.group, i => {
+                const row = getRowData( i );
+                return fn( row, i, dataKey );
+            });
+        }
+        return this.countRecursively( "sum" );
     }
 
     @computed get average(){
@@ -173,17 +180,23 @@ const flattenGroupedStructure = ( obj, expandedGroups, rowIndexes = [], groupKey
 
 class RowsComplex {
 
-    constructor( parent ){1
+    constructor( parent ){
         this.parent = parent;
 
         this.dispose = reaction(
             () => !!this.aggregators.groups.length,
             () => this.expandedGroups = {}
         );
+
+        this.dispose2 = reaction(
+            () => this.grouped,
+            () => this.groupTotals.clear()
+        );
     }
 
     destructor(){
         this.dispose();
+        this.dispose2();
     }
 
     @action
@@ -293,11 +306,19 @@ class RowsComplex {
         return flattenGroupedStructure( this.sorted, this.expandedGroups );
     }
 
-    @computed get groupTotals(){
-        return fromPairs( this.flat.groupKeyPaths.map( p => [
-            p.join("."),
-            mapValues( this.parent.totals, ( v, k ) => new TotalsCachePart2( this, p, k ) )
-        ]));
+    groupTotals = new Map();
+
+    getGroupTotals( path ){
+        const finalPath = path.join( "." );
+        let res = this.groupTotals.get( finalPath );
+        if( !res ){
+            res = mapValues(
+                this.parent.totals,
+                ( v, k ) => new TotalsCachePart2( this, path, k )
+            );
+            this.groupTotals.set( finalPath, res );
+        }
+        return res;
     }
 
     @computed get visibleRowCount(){

@@ -16,6 +16,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
     disposeCallbacks = [];
 
+
     @computed({ keepAlive: true }) get N(){
         /* Nearest pow of 2 to visibleRowCount. 56 >= 64, 67 => 128, etc. */
         const { visibleRowCount } = this.Rows;
@@ -82,6 +83,9 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
         });
 
         this.disposeCallbacks.push(
+            autorun(() => {
+                this.estimatedRowHeight = this.estimatedRowHeightFallback;
+            }),
             autorun(() => {
 
                 const { rowCount, estimatedRowHeight } = this;
