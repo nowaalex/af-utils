@@ -49,7 +49,7 @@ const Table = ({
         getRowKey,
         overscanRowsCount,
         estimatedRowHeight,
-        totals,
+        totals: totals || {},
         columns,
         rowCount
     });
