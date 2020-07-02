@@ -13,7 +13,7 @@ const FooterCells = ({ TotalsCellComponent }) => {
             return null;
         }
 
-        const curTotals = totals[ dataKey ];
+        const curTotals = totals && totals[ dataKey ];
         const curTotalsCache = totalsCache[ dataKey ];
 
         return (

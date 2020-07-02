@@ -12,6 +12,8 @@ const GroupRow = ({ columns, groupPath, rowIndex }) => {
     const last = groupPath.length - 1;
     const TT = Rows.getGroupTotals( groupPath );
 
+    const { label } = Rows.columnsByDataKey[Rows.aggregators.groups[ last ]];
+
     return (
         <tr {...getRowProps(null,rowIndex)}>
             <td colSpan={columns.length} className="afvscr-group-cell" style={{ paddingLeft: ( groupPath.length - 1 ) * 1.5 + "em" }}>
@@ -19,13 +21,13 @@ const GroupRow = ({ columns, groupPath, rowIndex }) => {
                     {expanded ? "-" : "+"}
                 </button>
                 &nbsp;
-                {Rows.columnsByDataKey[Rows.aggregators.groups[ last ]].label}:&nbsp;{groupPath[ last ]}
+                {label}:&nbsp;{groupPath[ last ]}
                 <div className="afvscr-group-summaries">
                     {columns.map(({ dataKey, formatTotal }) => (
                         <TotalsCell
                             key={dataKey}
                             summaryName={dataKey}
-                            cellTotals={totals[dataKey]}
+                            cellTotals={totals&&totals[dataKey]}
                             totalsCache={TT[dataKey]}
                             formatTotal={formatTotal}
                         />

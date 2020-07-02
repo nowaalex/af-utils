@@ -215,7 +215,7 @@ class RowsComplex {
     aggregators = new Aggregators();
 
     @computed get totalsCache(){
-        return mapValues( this.parent.totals, ( v, k ) => new TotalsCachePart( this, k ) );
+        return this.parent.totals ? mapValues( this.parent.totals, ( v, k ) => new TotalsCachePart( this, k ) ) : {};
     }
 
     @computed get columnsByDataKey(){
@@ -312,10 +312,10 @@ class RowsComplex {
         const finalPath = path.join( "." );
         let res = this.groupTotals.get( finalPath );
         if( !res ){
-            res = mapValues(
+            res = this.parent.totals ? mapValues(
                 this.parent.totals,
                 ( v, k ) => new TotalsCachePart2( this, path, k )
-            );
+            ) : {};
             this.groupTotals.set( finalPath, res );
         }
         return res;
