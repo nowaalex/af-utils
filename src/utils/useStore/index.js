@@ -17,18 +17,16 @@ const useStore = ( StoreConstructor, dataRef, propsToMerge ) => {
         Store = finalDataRef.current = new StoreConstructor();
     }
 
+    Store.merge({
+        ...propsToMerge,
+        rowsContainerNode: rowsContainerRef.current,
+        scrollContainerNode: scrollContainerRef.current
+    });
+
     if( dataRef ){
         dataRef.current = Store;
     }
-
-    useEffect(() => {
-        Store.merge({
-            ...propsToMerge,
-            rowsContainerNode: rowsContainerRef.current,
-            scrollContainerNode: scrollContainerRef.current
-        });
-    });
-
+    
     useEffect(() => () => {
         Store.destructor();
     }, [ Store ]);
