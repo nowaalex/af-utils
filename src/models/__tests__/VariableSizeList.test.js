@@ -1,11 +1,20 @@
 import VariableSizeList from "../VariableSizeList";
 
+
+
 describe( "Segments tree works correctly", () => {
 
+    beforeEach(() => {
+        jest.spyOn(console, "log").mockImplementation(() => {});
+    });
+    
     const VList = new VariableSizeList();
 
     test( "It initializes properly", () => {
-        VList.set( "rowCount", 50 ).set( "estimatedRowHeight", 5 );
+        VList.merge({
+            rowCount: 50,
+            estimatedRowHeight: 5
+        });
         expect(VList.getDistanceBetweenIndexes( 2, 7)).toEqual(25);
     });
 
@@ -29,7 +38,10 @@ describe( "Segments tree works correctly", () => {
     `(
         "Reallocates ok for [ $rowCount * $rowHeight, randomNumber: $randomNumber, randomIndex: $randomIndex ]",
         ({ rowCount, rowHeight, randomNumber, randomIndex }) => {
-            VList.set( "rowCount", rowCount ).set( "estimatedRowHeight", rowHeight );
+            VList.merge({
+                rowCount,
+                estimatedRowHeight: rowHeight
+            });
             expect(VList.getDistanceBetweenIndexes( 0, rowCount )).toEqual( rowCount * rowHeight );
 
             if( rowCount ){
@@ -52,7 +64,7 @@ describe( "Segments tree works correctly", () => {
     `(
         "Cache reallocation works ok for: { rowCount: $rowCount, expectedCacheSize: $expectedCacheSize }",
         ({ rowCount, expectedCacheSize }) => {
-            VList.set( "rowCount", rowCount );
+            VList.merge({ rowCount });
             expect(VList.sTree.length).toEqual( expectedCacheSize );
         }
     );

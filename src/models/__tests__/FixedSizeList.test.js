@@ -5,7 +5,10 @@ describe( "FixedSizeList model works correctly", () => {
     const FList = new FixedSizeList();
 
     test( "It initializes properly", () => {
-        FList.set( "rowCount", 50 ).set( "estimatedRowHeight", 5 );
+        FList.merge({
+            rowCount: 50,
+            estimatedRowHeight: 5
+        });
         expect(FList.widgetScrollHeight).toEqual(250);
     });
 
