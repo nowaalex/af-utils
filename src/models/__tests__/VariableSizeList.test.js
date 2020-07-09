@@ -1,13 +1,11 @@
 import VariableSizeList from "../VariableSizeList";
 
-
-
 describe( "Segments tree works correctly", () => {
 
     beforeEach(() => {
         jest.spyOn(console, "log").mockImplementation(() => {});
     });
-    
+
     const VList = new VariableSizeList();
 
     test( "It initializes properly", () => {

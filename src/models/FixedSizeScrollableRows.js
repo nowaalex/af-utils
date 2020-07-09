@@ -3,7 +3,7 @@ import ScrollableRowsBase from "./ScrollableRowsBase";
 
 class FixedSizeScrollableRows extends ScrollableRowsBase {
 
-    @computed({ keepAlive: true }) get estimatedRowHeight(){
+    @computed get estimatedRowHeight(){
         if( this.widgetWidth ){
             const node = this.rowsContainerNode;
 

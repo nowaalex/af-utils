@@ -107,8 +107,6 @@
 
 /* multilevel grouping */
 
-/* these two are received later */
-
 /*#__PURE__*/
 
 /***/

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, Fragment, useState, useCallback } from "react";
 import { css } from "@emotion/core";
 import { observable, runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -138,5 +138,60 @@ export const LiveUpdatingTable = () => {
                 n3: [ "sum", "average" ]
             }}
         />
+    );
+};
+
+export const AddRows = () => {
+
+    const getRow = useCallback( index => ({
+        a: index,
+        country: faker.address.country(),
+        name: faker.name.firstName(),
+        height: r( 40, 200 )
+    }), []);
+
+    const [ rows ] = useState(() => times( 90, getRow ));
+
+    const [,up] = useState();
+
+    const getRowData = useCallback( i => rows[ i ], []);
+
+    const add = useCallback(() => {
+        for( let j = 0; j < 3000; j++ ){
+            rows.push( getRow( j ) );
+        }
+        up(performance.now());
+    }, []);
+
+    return (
+        <Fragment>
+            <button onClick={add}>A</button>
+            <Table
+                getRowData={getRowData}
+                totals={{
+                    a: [ "sum" ],
+                    country: [ "count" ]
+                }}
+                rowCount={rows.length}
+                columns={[
+                    {
+                        dataKey: "a",
+                        label: "a",
+                        sort: "numeric"
+                    },
+                    {
+                        dataKey: "country",
+                        label: "country",
+                        sort: "locale"
+                    },
+                    {
+                        dataKey: "name",
+                        label: "name",
+                        sort: "locale"
+                    }
+                ]}
+            />
+        </Fragment>
+
     );
 };

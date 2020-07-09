@@ -17,13 +17,13 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
     disposeCallbacks = [];
 
 
-    @computed({ keepAlive: true }) get N(){
+    @computed get N(){
         /* Nearest pow of 2 to visibleRowCount. 56 >= 64, 67 => 128, etc. */
         const { visibleRowCount } = this.Rows;
         return visibleRowCount > 0 ? 2 << Math.log2( visibleRowCount + MIN_TREE_CACHE_OFFSET ) : 1;
     }
 
-    @computed({ keepAlive: true }) get sTree(){
+    @computed get sTree(){
         // Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
         if( process.env.NODE_ENV !== "production" ){
             console.log( "New tree cache. Size:", this.N );
