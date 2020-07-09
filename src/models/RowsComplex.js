@@ -1,5 +1,4 @@
 import { computed, action, reaction, autorun, toJS, observable } from "mobx";
-import groupBy from "lodash/groupBy";
 import mapValues from "lodash/mapValues";
 import keyBy from "lodash/keyBy";
 import times from "lodash/times";
@@ -323,7 +322,7 @@ class RowsComplex {
     }
 
     @computed get visibleRowCount(){
-        return this.flat.rowIndexes.length;
+        return this.parent.rowCount && this.flat.rowIndexes.length;
     }
 }
 

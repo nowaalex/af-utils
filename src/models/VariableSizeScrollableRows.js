@@ -121,77 +121,73 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
                         shouldResetInvisibleRowHeights: true
                     });
                 }
-            }),
+            }, { delay: 200 }),
             autorun(() => {
                 this.rowsDomObserver.disconnect();
                 if( this.rowsContainerNode ){
                     this.rowsDomObserver.observe( this.rowsContainerNode, { childList: true, subtree: true });
                 }
             }),
-            reaction(
-                () => this.lastRowsRenderTimeStamp * this.widgetWidth,
-                () => {
-                    const node = this.rowsContainerNode;
-    
-                    if( node ){
-                        const { sTree, N } = this;
+            autorun(() => {
+                const node = this.rowsContainerNode;
+
+                if( node && this.lastRowsRenderTimeStamp ){
+                    const { sTree, N } = this;
+                    
+                    let l = -1,
+                        r = -1,
+                        rowHeightsSum = 0,
+                        rowCounter = 0;
+        
+                    /*
+                        Some benchmarks inspire me to use nextElementSibling
+                        https://jsperf.com/nextsibling-vs-childnodes-increment/2
+                    */
+                    for( let child = node.firstElementChild, newHeight, index; child; child = child.nextElementSibling, rowCounter++ ){
                         
-                        let l = -1,
-                            r = -1,
-                            rowHeightsSum = 0,
-                            rowCounter = 0;
-            
                         /*
-                            Some benchmarks inspire me to use nextElementSibling
-                            https://jsperf.com/nextsibling-vs-childnodes-increment/2
+                            * aria-rowindex is counted from 1 according to w3c spec;
+                            * parseInt with radix is 2x faster, then +, -, etc.
+                                https://jsperf.com/number-vs-parseint-vs-plus/116
                         */
-                        for( let child = node.firstElementChild, newHeight, index; child; child = child.nextElementSibling, rowCounter++ ){
-                            
-                            /*
-                                * aria-rowindex is counted from 1 according to w3c spec;
-                                * parseInt with radix is 2x faster, then +, -, etc.
-                                  https://jsperf.com/number-vs-parseint-vs-plus/116
-                            */
-                            index = parseInt( child.getAttribute( "aria-rowindex" ), 10 ) - 1;
-            
-                            if( process.env.NODE_ENV !== "production" && Number.isNaN( index ) ){
-                                throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
-                            }
-            
-                            newHeight = child.offsetHeight;
-                            rowHeightsSum += newHeight;
-            
-                            if( sTree[ N + index ] !== newHeight ){
-                                // console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)
-                                sTree[ N + index ] = newHeight;
-                                
-                                if( l === -1 ){
-                                    l = index;
-                                }
-                                
-                                r = index;
-                            }
+                        index = parseInt( child.getAttribute( "aria-rowindex" ), 10 ) - 1;
+        
+                        if( process.env.NODE_ENV !== "production" && Number.isNaN( index ) ){
+                            throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
                         }
-             
-                        if( l !== -1 ){
-                            if( process.env.NODE_ENV !== "production" ){
-                                console.log( "Updating heights in range: %d - %d", l, r );
+        
+                        newHeight = child.offsetHeight;
+                        rowHeightsSum += newHeight;
+        
+                        if( sTree[ N + index ] !== newHeight ){
+                            // console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)
+                            sTree[ N + index ] = newHeight;
+                            
+                            if( l === -1 ){
+                                l = index;
                             }
-            
-                            if( this.shouldResetInvisibleRowHeights ){
-                                this.merge({
-                                    estimatedRowHeight: Math.round( rowHeightsSum / rowCounter ),
-                                    shouldResetInvisibleRowHeights: false
-                                });
-                            }
-                            else{
-                                this.calculateParentsInRange( l, r )
-                            }
+                            
+                            r = index;
                         }
                     }
-                },
-                { delay: ROW_MEASUREMENT_DEBOUNCE_INTERVAL }
-            )
+            
+                    if( l !== -1 ){
+                        if( process.env.NODE_ENV !== "production" ){
+                            console.log( "Updating heights in range: %d - %d", l, r );
+                        }
+        
+                        if( this.shouldResetInvisibleRowHeights ){
+                            this.merge({
+                                estimatedRowHeight: Math.round( rowHeightsSum / rowCounter ),
+                                shouldResetInvisibleRowHeights: false
+                            });
+                        }
+                        else{
+                            this.calculateParentsInRange( l, r )
+                        }
+                    }
+                }
+            }, { delay: ROW_MEASUREMENT_DEBOUNCE_INTERVAL })
         );
     }
 
