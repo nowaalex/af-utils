@@ -1,4 +1,4 @@
 import createTable from "./createTable";
-import VariableSizeList from "./VariableSizeList";
+import VariableSizeScrollableRows from "./VariableSizeScrollableRows";
 
-export default createTable( VariableSizeList );
+export default createTable( VariableSizeScrollableRows );

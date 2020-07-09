@@ -1,0 +1,11 @@
+/* harmony default export */
+
+/* harmony import */
+
+/***/
+
+// ESM COMPAT FLAG
+
+// EXTERNAL MODULE: ./node_modules/react-router/esm/react-router.js + 3 modules
+
+// EXTERNAL MODULE: ./node_modules/react/index.js

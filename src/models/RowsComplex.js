@@ -1,4 +1,4 @@
-import { computed, action, reaction, toJS, observable } from "mobx";
+import { computed, action, reaction, autorun, toJS, observable } from "mobx";
 import groupBy from "lodash/groupBy";
 import mapValues from "lodash/mapValues";
 import keyBy from "lodash/keyBy";
@@ -188,10 +188,11 @@ class RowsComplex {
             () => this.expandedGroups = {}
         );
 
-        this.dispose2 = reaction(
-            () => this.grouped,
-            () => this.groupTotals.clear()
-        );
+        this.dispose2 = autorun(() => {
+            if( this.parent.rowCount && this.grouped ){
+                this.groupTotals.clear();
+            }
+        });
     }
 
     destructor(){

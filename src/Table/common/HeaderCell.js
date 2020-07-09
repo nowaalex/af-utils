@@ -6,6 +6,7 @@ import { reaction } from "mobx";
 const HeaderCell = ({ column, index }) => {
 
     const { Rows: { aggregators } } = useApi();
+    
     const { sort } = aggregators;
     const { sort: colSort, label, title, dataKey } = column;
 

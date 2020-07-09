@@ -67,8 +67,10 @@ class ScrollableRowsBase {
         Object.assign( this, params );
     }
     
-    constructor(){
+    constructor( RowsConstructor ){
         
+        this.Rows = new RowsConstructor( this );
+
         extendObservable( this, BASIC_OBSERVABLE_FIELDS, {
             rowsContainerNode: observable.ref,
             scrollContainerNode: observable.ref

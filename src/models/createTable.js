@@ -12,7 +12,7 @@ const createTable = BaseClass => class extends BaseClass {
     }
 
     constructor(){
-        super();
+        super( RowsComplex );
 
         extendObservable( this, {
             columns: [],
@@ -21,8 +21,6 @@ const createTable = BaseClass => class extends BaseClass {
             getCellData: null,
             tbodyColumnWidths: []
         });
-
-        this.Rows = new RowsComplex( this );
 
         this.dispose = reaction(() => this.Rows.sorted, () => this.scrollToStart() );
     }

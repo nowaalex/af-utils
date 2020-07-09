@@ -65,8 +65,8 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
         return [ 0, 0 ];
     }
 
-    constructor(){
-        super();
+    constructor( RowsConstructor ){
+        super( RowsConstructor );
 
         extendObservable( this, {
             estimatedRowHeight: 0,
