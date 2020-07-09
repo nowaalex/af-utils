@@ -83,9 +83,15 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
         });
 
         this.disposeCallbacks.push(
-            autorun(() => {
-                this.estimatedRowHeight = this.estimatedRowHeightFallback;
-            }),
+            reaction(
+                () => this.estimatedRowHeightFallback,
+                h => {
+                    if( !this.estimatedRowHeight ){
+                        this.estimatedRowHeight = h;
+                    }
+                },
+                { fireImmediately: true }
+            ),
             autorun(() => {
 
                 const { rowCount, estimatedRowHeight } = this;
