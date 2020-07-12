@@ -11,36 +11,6 @@ import sumBy from "lodash/sumBy";
 
 class TotalsCachePart {
 
-    constructor( rows, dataKey ){
-        this.rows = rows;
-        this.dataKey = dataKey;
-    }
-
-    @computed get count(){
-        return this.rows.parent.rowCount;
-    }
-
-    @computed get sum(){
-        let res = 0;
-        const { rows: { columnsByDataKey, parent }, dataKey } = this;
-        const col = columnsByDataKey[ dataKey ];
-        const { getCellData, getRowData, rowCount } = parent;
-        const fn = col.getCellData || getCellData;
-        for( let i = 0, row, cellData; i < rowCount; i++ ){
-            row = getRowData( i );
-            cellData = fn( row, i, dataKey );
-            res += cellData;
-        }
-        return res;
-    }
-
-    @computed get average(){
-        return this.sum / this.count;
-    }
-};
-
-class TotalsCachePart2 {
-
     constructor( rows, groupPath, dataKey ){
         this.rows = rows;
         this.dataKey = dataKey;
@@ -48,8 +18,9 @@ class TotalsCachePart2 {
     }
 
     countRecursively( byFieldName ){
-        return reduce( this.group, ( totalCount, groupValue, key ) => {
-            return totalCount + this.rows.getGroupTotals( this.groupPath.concat( key ) )[ this.dataKey ][ byFieldName ];
+        const { group, rows, groupPath, dataKey } = this;
+        return reduce( group, ( totalCount, groupValue, key ) => {
+            return totalCount + rows.getGroupTotals( groupPath.concat( key ) )[ dataKey ][ byFieldName ];
         }, 0 );
     }
 
@@ -152,6 +123,19 @@ class Aggregators {
     }
 };
 
+const getSorter = coef => ( a, b ) => {
+    if( a > b ){
+        return coef;
+    }
+    if( a < b ){
+        return -coef;
+    }
+    return 0;
+}
+
+const ascSorter = getSorter( 1 );
+const descSorter = getSorter( -1 );
+
 const objectSetter = nsObject => typeof nsObject === "object" ? nsObject : {};
 
 const flattenGroupedStructure = ( obj, expandedGroups, rowIndexes = [], groupKeyPaths = [], stack = [] ) => {
@@ -161,7 +145,8 @@ const flattenGroupedStructure = ( obj, expandedGroups, rowIndexes = [], groupKey
     }
     else{
         let curStack;
-        for( let k in obj ){
+        const sortedKeys = Object.keys( obj ).sort( ascSorter );
+        for( let k of sortedKeys ){
             curStack = stack.concat( k );
             rowIndexes.push( -groupKeyPaths.push( curStack ) );
             if( !!get( expandedGroups, curStack ) ){
@@ -211,11 +196,10 @@ class RowsComplex {
     @observable
     expandedGroups = {};
 
-    @observable
     aggregators = new Aggregators();
 
     @computed get totalsCache(){
-        return this.parent.totals ? mapValues( this.parent.totals, ( v, k ) => new TotalsCachePart( this, k ) ) : {};
+        return this.parent.totals ? mapValues( this.parent.totals, ( v, k ) => new TotalsCachePart( this, [], k ) ) : {};
     }
 
     @computed get columnsByDataKey(){
@@ -314,7 +298,7 @@ class RowsComplex {
         if( !res ){
             res = this.parent.totals ? mapValues(
                 this.parent.totals,
-                ( v, k ) => new TotalsCachePart2( this, path, k )
+                ( v, k ) => new TotalsCachePart( this, path, k )
             ) : {};
             this.groupTotals.set( finalPath, res );
         }
