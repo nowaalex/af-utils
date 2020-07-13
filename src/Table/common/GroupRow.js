@@ -6,13 +6,13 @@ import { getRowProps } from "../../utils/extraPropsGetters";
 import TotalsCell from "./TotalsCell";
 
 const GroupRow = ({ columns, groupPath, rowIndex }) => {
-    const { totals, Rows } = useApi();
+    const { totals, Rows, columnsByDataKey } = useApi();
 
     const expanded = Rows.isGroupExpanded( groupPath );
     const last = groupPath.length - 1;
     const TT = Rows.getGroupTotals( groupPath );
 
-    const { label } = Rows.columnsByDataKey[Rows.aggregators.groups[ last ]];
+    const { label } = columnsByDataKey[Rows.aggregators.groups[ last ]];
 
     return (
         <tr {...getRowProps(null,rowIndex)}>

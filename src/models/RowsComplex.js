@@ -1,6 +1,5 @@
-import { computed, action, reaction, autorun, toJS, observable } from "mobx";
+import { computed, action, reaction, autorun, observable } from "mobx";
 import mapValues from "lodash/mapValues";
-import keyBy from "lodash/keyBy";
 import times from "lodash/times";
 import reduce from "lodash/reduce";
 import toPairs from "lodash/toPairs";
@@ -34,13 +33,11 @@ class TotalsCachePart {
 
     @computed get sum(){
         if( Array.isArray( this.group ) ){
-            const { rows: { columnsByDataKey, parent }, dataKey } = this;
-            const col = columnsByDataKey[ dataKey ];
-            const { getCellData, getRowData } = parent;
-            const fn = col.getCellData || getCellData;
+            const { rows: { parent: { getRowData, columnsByDataKey } }, dataKey } = this;
+            const { getCellData } = columnsByDataKey[ dataKey ];
             return sumBy( this.group, i => {
                 const row = getRowData( i );
-                return fn( row, i, dataKey );
+                return getCellData( row, i, dataKey );
             });
         }
         return this.countRecursively( "sum" );
@@ -123,34 +120,41 @@ class Aggregators {
     }
 };
 
-const getSorter = coef => ( a, b ) => {
-    if( a > b ){
-        return coef;
-    }
-    if( a < b ){
-        return -coef;
-    }
-    return 0;
-}
-
-const ascSorter = getSorter( 1 );
-const descSorter = getSorter( -1 );
-
 const objectSetter = nsObject => typeof nsObject === "object" ? nsObject : {};
 
-const flattenGroupedStructure = ( obj, expandedGroups, rowIndexes = [], groupKeyPaths = [], stack = [] ) => {
+const flattenGroupedStructure = ( obj, sort, getRowData, column, expandedGroups, rowIndexes = [], groupKeyPaths = [], stack = [] ) => {
 
     if( Array.isArray( obj ) ){
+        if( sort ){
+            const { dataKey, value } = sort;
+            const sign = value === "ascending" ? 1 : -1;
+            obj.sort(( a, b ) => {
+                const row1 = getRowData( a );
+                const row2 = getRowData( b );
+                if( !row1 || !row2 ){
+                    return 0;
+                }
+                const cell1 = column.getCellData( row1, a, dataKey );
+                const cell2 = column.getCellData( row2, b, dataKey );
+                if( cell1 > cell2 ){
+                    return sign;
+                }
+                if( cell1 < cell2 ){
+                    return -sign;
+                }
+                return 0;
+            });
+        }
+        
         rowIndexes.push( ...obj );
     }
     else{
         let curStack;
-        const sortedKeys = Object.keys( obj ).sort( ascSorter );
-        for( let k of sortedKeys ){
+        for( let k in obj ){
             curStack = stack.concat( k );
             rowIndexes.push( -groupKeyPaths.push( curStack ) );
             if( !!get( expandedGroups, curStack ) ){
-                flattenGroupedStructure( obj[ k ], expandedGroups, rowIndexes, groupKeyPaths, curStack );
+                flattenGroupedStructure( obj[ k ], sort, getRowData, column, expandedGroups, rowIndexes, groupKeyPaths, curStack );
             }
         }
     }
@@ -199,11 +203,7 @@ class RowsComplex {
     aggregators = new Aggregators();
 
     @computed get totalsCache(){
-        return this.parent.totals ? mapValues( this.parent.totals, ( v, k ) => new TotalsCachePart( this, [], k ) ) : {};
-    }
-
-    @computed get columnsByDataKey(){
-        return keyBy( this.parent.columns, "dataKey" );
+        return mapValues( this.parent.totals || {}, ( v, k ) => new TotalsCachePart( this, [], k ) );
     }
 
     @computed get rowIndexesArray(){
@@ -212,19 +212,17 @@ class RowsComplex {
 
     @computed get filtered(){
 
-        const { columnsByDataKey, parent } = this;
-        const { getCellData, getRowData } = parent;
+        const { getRowData, columnsByDataKey } = this.parent;
         const { filtersList } = this.aggregators;
 
-        if( !getCellData || !filtersList.length ){
+        if( !filtersList.length ){
             return this.rowIndexesArray;
         }
 
         return this.rowIndexesArray.filter( i => {
             const row = getRowData( i );
             return filtersList.every(([ dataKey, value ]) => {
-                const col = columnsByDataKey[ dataKey ];
-                const cellData = row && ( col.getCellData || getCellData )( row, i, dataKey );
+                const cellData = row && columnsByDataKey[ dataKey ].getCellData( row, i, dataKey )
                 return cellData === undefined || ( "" + cellData ).toLowerCase().includes( value.toLowerCase() );
             });
         });
@@ -238,56 +236,24 @@ class RowsComplex {
             return this.filtered;
         }
 
-        const { columnsByDataKey, parent } = this;
-        const { getCellData, getRowData } = parent;
+        const { getRowData, columnsByDataKey } = this.parent;
 
         /* multilevel grouping */
         return this.filtered.reduce(( acc, v ) => {
             const row = getRowData( v );
             return updateWith(
                 acc,
-                row && groups.map( dataKey => {
-                    const col = columnsByDataKey[ dataKey ];
-                    return ( col.getCellData || getCellData )( row, v, dataKey );
-                }),
+                row && groups.map( dataKey => columnsByDataKey[ dataKey ].getCellData( row, v, dataKey )),
                 indexes => indexes ? indexes.push( v ) && indexes : [ v ],
                 objectSetter
             )
         }, {});
     }
 
-    @computed get sorted(){
-        const { columnsByDataKey, aggregators: { sort }, parent } = this;
-
-       /* if( sort && sort.dataKey ){
-            const { dataKey, value } = sort;
-            const { getCellData, getRowData } = parent;
-            const col = columnsByDataKey[ dataKey ];
-            const fn = col.getCellData || getCellData;
-            const sign = value === "ascending" ? 1 : -1;
-            return mapValues( this.grouped, v => v.sort(( a, b ) => {
-                const row1 = getRowData( a );
-                const row2 = getRowData( b );
-                if( !row1 || !row2 ){
-                    return 0;
-                }
-                const cell1 = fn( row1, a, dataKey );
-                const cell2 = fn( row2, b, dataKey );
-                if( cell1 > cell2 ){
-                    return sign;
-                }
-                if( cell1 < cell2 ){
-                    return -sign;
-                }
-                return 0;
-            }));
-        }*/
-        
-        return this.grouped;
-    }
-
     @computed get flat(){
-        return flattenGroupedStructure( this.sorted, this.expandedGroups );
+        const { columnsByDataKey, getRowData } = this.parent;
+        const { sort } = this.aggregators;
+        return flattenGroupedStructure( this.grouped, sort, getRowData, sort && columnsByDataKey[ sort.dataKey ], this.expandedGroups );
     }
 
     groupTotals = new Map();
@@ -296,10 +262,10 @@ class RowsComplex {
         const finalPath = path.join( "." );
         let res = this.groupTotals.get( finalPath );
         if( !res ){
-            res = this.parent.totals ? mapValues(
-                this.parent.totals,
+            res = mapValues(
+                this.parent.totals || {},
                 ( v, k ) => new TotalsCachePart( this, path, k )
-            ) : {};
+            );
             this.groupTotals.set( finalPath, res );
         }
         return res;

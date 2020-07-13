@@ -9,7 +9,6 @@ const getVisibleRows = (
     rangeTo,
     columns,
     getRowData,
-    getCellData,
     getRowKey,
     getRowExtraProps,
     getCellExtraProps,
@@ -31,7 +30,6 @@ const getVisibleRows = (
                     key={tmp}
                     columns={columns}
                     getRowData={getRowData}
-                    getCellData={getCellData}
                     CellComponent={CellComponent}
                 />
             );
@@ -59,9 +57,8 @@ const Rows = ({ getRowExtraProps, getCellExtraProps, RowComponent, CellComponent
         API.Rows.flat,
         API.startIndex,
         API.endIndex,
-        API.columns,
+        API.normalizedColumns,
         API.getRowData,
-        API.getCellData,
         API.getRowKey,
         getRowExtraProps,
         getCellExtraProps,
