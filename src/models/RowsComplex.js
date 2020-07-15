@@ -19,7 +19,7 @@ class TotalsCachePart {
     countRecursively( byFieldName ){
         const { group, rows, groupPath, dataKey } = this;
         return reduce( group, ( totalCount, groupValue, key ) => {
-            return totalCount + rows.getGroupTotals( groupPath.concat( key ) )[ dataKey ][ byFieldName ];
+            return totalCount + rows.getGroupTotals( groupPath ? groupPath.concat( key ) : [ key ] )[ dataKey ][ byFieldName ];
         }, 0 );
     }
 
