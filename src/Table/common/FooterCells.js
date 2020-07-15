@@ -7,6 +7,9 @@ const FooterCells = ({ TotalsCellComponent }) => {
 
     const { columns, totals, Rows: { totalsCache } } = useApi();
 
+    console.log( 3333, totalsCache)
+
+
     return columns.map(({ dataKey, formatTotal, visibility }, j ) => {
 
         if( visibility === "hidden" ){

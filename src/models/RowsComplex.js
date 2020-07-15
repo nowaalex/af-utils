@@ -24,7 +24,7 @@ class TotalsCachePart {
     }
 
     @computed get group(){
-        return get( this.rows.grouped, this.groupPath );
+        return this.groupPath ? get( this.rows.grouped, this.groupPath ) : this.rows.grouped;
     }
 
     @computed get count(){
@@ -35,10 +35,7 @@ class TotalsCachePart {
         if( Array.isArray( this.group ) ){
             const { rows: { parent: { getRowData, columnsByDataKey } }, dataKey } = this;
             const { getCellData } = columnsByDataKey[ dataKey ];
-            return sumBy( this.group, i => {
-                const row = getRowData( i );
-                return getCellData( row, i, dataKey );
-            });
+            return sumBy( this.group, i => getCellData( getRowData( i ), i, dataKey ));
         }
         return this.countRecursively( "sum" );
     }
@@ -203,7 +200,7 @@ class RowsComplex {
     aggregators = new Aggregators();
 
     @computed get totalsCache(){
-        return mapValues( this.parent.totals || {}, ( v, k ) => new TotalsCachePart( this, [], k ) );
+        return mapValues( this.parent.totals || {}, ( v, k ) => new TotalsCachePart( this, null, k ) );
     }
 
     @computed get rowIndexesArray(){
