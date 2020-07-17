@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useLayoutEffect } from "react";
 
 /*
     dataRef is to call Data methods from outside( Data.scrollTo(), etc. ).
@@ -21,7 +21,7 @@ const useStore = ( StoreConstructor, dataRef, propsToMerge ) => {
         dataRef.current = Store;
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         Store.merge({
             ...propsToMerge,
             rowsContainerNode: rowsContainerRef.current,
