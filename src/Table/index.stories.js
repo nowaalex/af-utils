@@ -141,10 +141,11 @@ export const LiveUpdatingTable = () => {
     );
 };
 
-export const AddRows = () => {
+export const AddRemoveRows = () => {
 
     const getRow = useCallback( index => ({
         a: index,
+        k: Math.random(),
         country: faker.address.country(),
         name: faker.name.firstName(),
         height: r( 40, 200 )
@@ -156,6 +157,8 @@ export const AddRows = () => {
 
     const getRowData = useCallback( i => rows[ i ], []);
 
+    const getRowKey = useCallback( i => rows[ i ].k, []);
+
     const add = useCallback(() => {
         for( let j = 0; j < 3000; j++ ){
             rows.push( getRow( j ) );
@@ -163,11 +166,18 @@ export const AddRows = () => {
         up(performance.now());
     }, []);
 
+    const remove = useCallback(() => {
+        rows.splice( 1, 1 );
+        up(performance.now());
+    }, []);
+
     return (
         <Fragment>
-            <button onClick={add}>A</button>
+            <button onClick={add}>Append 3000 rows</button>
+            <button onClick={remove}>Remove 2nd row</button>
             <Table
                 getRowData={getRowData}
+                getRowKey={getRowKey}
                 totals={{
                     a: [ "sum" ],
                     country: [ "count" ]

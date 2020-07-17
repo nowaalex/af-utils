@@ -27,12 +27,16 @@ class TotalsCachePart {
         return this.groupPath ? get( this.rows.grouped, this.groupPath ) : this.rows.grouped;
     }
 
+    @computed get isShallow(){
+        return Array.isArray( this.group );
+    }
+
     @computed get count(){
-        return Array.isArray( this.group ) ? this.group.length : this.countRecursively( "count" );
+        return this.isShallow ? this.group.length : this.countRecursively( "count" );
     }
 
     @computed get sum(){
-        if( Array.isArray( this.group ) ){
+        if( this.isShallow ){
             const { rows: { parent: { getRowData, columnsByDataKey } }, dataKey } = this;
             const { getCellData } = columnsByDataKey[ dataKey ];
             return sumBy( this.group, i => getCellData( getRowData( i ), i, dataKey ));
