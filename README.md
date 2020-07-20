@@ -16,7 +16,6 @@ https://nowaalex.github.io/af-virtual-scroll/website/
 * available height and width are calculated and observed automatically
 * `scrollToRow(rowIndex)` method is available
 * fixed and auto table layout mode
-* -N ... 0 rowCount handling available via `rowCountWarningsTable` prop
 * `useApi` can give any table subcomponent access to global API
 * renders `table`, `tr`, `td`, `th`, so default table styling, border collapsing, etc. can be easily applied.
 

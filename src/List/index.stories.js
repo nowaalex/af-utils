@@ -9,14 +9,6 @@ export default { title: "List" };
 
 const DEFAULT_ROW_COUNT = 5000;
 
-export const FixedRowHeightList = () => (
-    <List
-        fixedSize
-        getRowData={i => `row ${i}`}
-        rowCount={DEFAULT_ROW_COUNT}
-    />
-);
-
 const dynamicListRowHeights = times( DEFAULT_ROW_COUNT, () => r( 50, 250 ) );
 
 export const DynamicRowHeightList = () => (
@@ -32,6 +24,6 @@ export const DynamicRowHeightList = () => (
                 </div>
             )
         }
-        rowCount={DEFAULT_ROW_COUNT}
+        rows={dynamicListRowHeights}
     />
 );

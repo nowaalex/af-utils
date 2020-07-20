@@ -6,7 +6,7 @@ const getRowDataInitial = () => {
 }
 
 const BASIC_OBSERVABLE_FIELDS = {
-    rowCount: 0,
+    rows: { length: 0 },
     overscanRowsCount: 0,
     estimatedRowHeightFallback: 0,
 

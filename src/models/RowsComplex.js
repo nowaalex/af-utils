@@ -10,21 +10,21 @@ import sumBy from "lodash/sumBy";
 
 class TotalsCachePart {
 
-    constructor( rows, groupPath, dataKey ){
-        this.rows = rows;
+    constructor( rowsObject, groupPath, dataKey ){
+        this.rowsObject = rowsObject;
         this.dataKey = dataKey;
         this.groupPath = groupPath;
     }
 
     countRecursively( byFieldName ){
-        const { group, rows, groupPath, dataKey } = this;
+        const { group, rowsObject, groupPath, dataKey } = this;
         return reduce( group, ( totalCount, groupValue, key ) => {
-            return totalCount + rows.getGroupTotals( groupPath ? groupPath.concat( key ) : [ key ] )[ dataKey ][ byFieldName ];
+            return totalCount + rowsObject.getGroupTotals( groupPath ? groupPath.concat( key ) : [ key ] )[ dataKey ][ byFieldName ];
         }, 0 );
     }
 
     @computed get group(){
-        return this.groupPath ? get( this.rows.grouped, this.groupPath ) : this.rows.grouped;
+        return this.groupPath ? get( this.rowsObject.grouped, this.groupPath ) : this.rowsObject.grouped;
     }
 
     @computed get isShallow(){
@@ -37,7 +37,7 @@ class TotalsCachePart {
 
     @computed get sum(){
         if( this.isShallow ){
-            const { rows: { parent: { getRowData, columnsByDataKey } }, dataKey } = this;
+            const { rowsObject: { parent: { getRowData, columnsByDataKey } }, dataKey } = this;
             const { getCellData } = columnsByDataKey[ dataKey ];
             return sumBy( this.group, i => getCellData( getRowData( i ), i, dataKey ));
         }
@@ -163,7 +163,8 @@ const flattenGroupedStructure = ( obj, sort, getRowData, column, expandedGroups,
     
     return {
         rowIndexes,
-        groupKeyPaths
+        groupKeyPaths,
+        length: rowIndexes.length
     };
 }
 
@@ -178,7 +179,7 @@ class RowsComplex {
         );
 
         this.dispose2 = autorun(() => {
-            if( this.parent.rowCount && this.grouped ){
+            if( parent.rows && parent.rows.length && this.grouped ){
                 this.groupTotals.clear();
             }
         });
@@ -208,7 +209,7 @@ class RowsComplex {
     }
 
     @computed get rowIndexesArray(){
-        return times( this.parent.rowCount );
+        return times( this.parent.rows ? this.parent.rows.length : 0 );
     }
 
     @computed get filtered(){
@@ -273,7 +274,7 @@ class RowsComplex {
     }
 
     @computed get visibleRowCount(){
-        return this.parent.rowCount && this.flat.rowIndexes.length;
+        return this.flat.length;
     }
 }
 

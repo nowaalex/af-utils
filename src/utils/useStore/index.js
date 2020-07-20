@@ -29,7 +29,6 @@ const useStore = ( StoreConstructor, dataRef, propsToMerge ) => {
         });
     });
     
-    
     useEffect(() => () => {
         Store.destructor();
     }, [ Store ]);

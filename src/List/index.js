@@ -12,7 +12,6 @@ import RowComponentDefault from "./common/Row";
 import Rows from "./common/Rows";
 
 import Scroller from "../common/Scroller";
-import RowCountWarningContainerDefault from "../common/RowCountWarningContainer";
 
 import commonPropTypes from "../commonPropTypes";
 import commonDefaultProps from "../commonDefaultProps";
@@ -25,10 +24,8 @@ const List = ({
     getRowKey,
     getRowExtraProps,
     estimatedRowHeight,
-    rowCount,
+    rows,
     overscanRowsCount,
-    rowCountWarningsTable,
-    RowCountWarningContainer,
     RowComponent = RowComponentDefault,
     dataRef,
     className,
@@ -40,36 +37,26 @@ const List = ({
         getRowKey,
         overscanRowsCount,
         estimatedRowHeightFallback: estimatedRowHeight,
-        rowCount
+        rows
     });
 
     return (
         <Context.Provider value={Store}>
-            { rowCount > 0 ? (
-                <ScrollContainer
-                    className={cx("afvscr-list-wrapper",className)}
-                    ref={scrollContainerRef}
-                    {...props}
-                >
-                    <Scroller Component="div" />
-                    <div ref={rowsContainerRef}>
-                        <Rows RowComponent={RowComponent} getRowExtraProps={getRowExtraProps} />
-                    </div>
-                </ScrollContainer>
-            ) : rowCountWarningsTable ? (
-                <RowCountWarningContainer>
-                    {rowCountWarningsTable[rowCount]}
-                </RowCountWarningContainer>
-            ) : null }
+            <ScrollContainer
+                className={cx("afvscr-list-wrapper",className)}
+                ref={scrollContainerRef}
+                {...props}
+            >
+                <Scroller Component="div" />
+                <div ref={rowsContainerRef}>
+                    <Rows RowComponent={RowComponent} getRowExtraProps={getRowExtraProps} />
+                </div>
+            </ScrollContainer>
         </Context.Provider>
     );
 };
 
-List.propTypes = {
-    ...commonPropTypes,
-    RowCountWarningContainer: PropTypes.elementType,
-    rowCountWarningsTable: PropTypes.object
-};
+List.propTypes = commonPropTypes;
 
 List.defaultProps = {
     ...commonDefaultProps,
@@ -81,8 +68,7 @@ List.defaultProps = {
         memo(observer(RowComponentDefault)) will do the trick.
     */
     
-    RowComponent: memo( RowComponentDefault ),
-    RowCountWarningContainer: RowCountWarningContainerDefault,
+    RowComponent: memo( RowComponentDefault )
 };
 
 export default memo( List );

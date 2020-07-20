@@ -10,7 +10,7 @@ class RowsSimple {
     }
 
     get visibleRowCount(){
-        return this.parent.rowCount;
+        return this.parent.rows.length;
     }
 }
 

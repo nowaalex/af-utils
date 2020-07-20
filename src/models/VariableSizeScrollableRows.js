@@ -94,15 +94,16 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
             ),
             autorun(() => {
 
-                const { rowCount, estimatedRowHeight } = this;
+                const { rows, estimatedRowHeight } = this;
 
                 //superdirty
-                if( !estimatedRowHeight || !rowCount ){
+                if( !estimatedRowHeight || !rows ){
                     return;
                 }
 
                 const { sTree, N, Rows: { visibleRowCount } } = this;
-                sTree.fill( estimatedRowHeight, N, N + visibleRowCount );
+                /* todo: optimize this shit by using visibleRowCount */
+                sTree.fill( estimatedRowHeight, 0, N * 2 );
                 /*
                     Trees are not always ideally allocated, gaps are possible.
                     Classical way for calculating parents is much simpler,

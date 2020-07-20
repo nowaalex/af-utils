@@ -12,8 +12,6 @@ import RowComponentDefault from "./common/Row";
 import CellComponentDefault from "./common/Cell";
 import TotalsCellComponentDefault from "./common/TotalsCell";
 
-import RowCountWarningContainerDefault from "../common/RowCountWarningContainer";
-
 import NonStickyComponent from "./NonSticky";
 import StickyComponent from "./Sticky";
 
@@ -31,11 +29,9 @@ const Table = ({
     getRowKey,
     getRowExtraProps,
     getCellExtraProps,
-    rowCount,
+    rows,
     overscanRowsCount,
-    rowCountWarningsTable,
     headless,
-    RowCountWarningContainer,
     dataRef,
     nonSticky,
     className,
@@ -51,7 +47,7 @@ const Table = ({
         estimatedRowHeight,
         totals,
         columns,
-        rowCount
+        rows
     });
 
     /*
@@ -62,20 +58,14 @@ const Table = ({
 
     return (
         <Context.Provider value={Store}>
-            { rowCount > 0 ? (
-                <ComponentVariant
-                    className={cx("afvscr-table-wrapper",className)}
-                    scrollContainerRef={scrollContainerRef}
-                    getRowExtraProps={getRowExtraProps}
-                    getCellExtraProps={getCellExtraProps}
-                    tbodyRef={tbodyRef}
-                    {...props}
-                />
-            ) : rowCountWarningsTable ? (
-                <RowCountWarningContainer>
-                    {rowCountWarningsTable[rowCount]}
-                </RowCountWarningContainer>
-            ) : null }
+            <ComponentVariant
+                className={cx("afvscr-table-wrapper",className)}
+                scrollContainerRef={scrollContainerRef}
+                getRowExtraProps={getRowExtraProps}
+                getCellExtraProps={getCellExtraProps}
+                tbodyRef={tbodyRef}
+                {...props}
+            />
         </Context.Provider>
     );
 }
@@ -119,10 +109,7 @@ Table.propTypes = {
     HeaderRowComponent: PropTypes.elementType,
     CellComponent: PropTypes.elementType,
     getCellData: PropTypes.func,
-    TotalsCellComponent: PropTypes.elementType,
-
-    RowCountWarningContainer: PropTypes.elementType,
-    rowCountWarningsTable: PropTypes.object
+    TotalsCellComponent: PropTypes.elementType
 };
 
 Table.defaultProps = {
@@ -136,8 +123,7 @@ Table.defaultProps = {
     RowComponent: memo( RowComponentDefault ),
     CellComponent: CellComponentDefault,
     getCellData: ( rowData, rowIndex, dataKey ) => rowData[ dataKey ],
-    TotalsCellComponent: TotalsCellComponentDefault,
-    RowCountWarningContainer: RowCountWarningContainerDefault,
+    TotalsCellComponent: TotalsCellComponentDefault
 };
 
 export default memo( Table );

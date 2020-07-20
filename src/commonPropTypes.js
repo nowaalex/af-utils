@@ -7,7 +7,7 @@ const commonPropTypes = {
     className: PropTypes.string,
     RowComponent: PropTypes.elementType,
     fixedSize: PropTypes.bool,
-    rowCount: PropTypes.number,
+    rows: PropTypes.object,
     overscanRowsCount: PropTypes.number,
     estimatedRowHeight: PropTypes.number
 };

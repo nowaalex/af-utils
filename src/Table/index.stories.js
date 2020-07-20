@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment, useState, useCallback } from "react";
 import { css } from "@emotion/core";
 import { observable, runInAction } from "mobx";
-import { observer } from "mobx-react-lite";
+import { observer, useObserver, useLocalStore } from "mobx-react-lite";
 import Table from "./index";
 import r from "lodash/random";
 import times from "lodash/times";
@@ -141,7 +141,7 @@ export const LiveUpdatingTable = () => {
     );
 };
 
-export const AddRemoveRows = () => {
+export const AddRemoveRows = () => useObserver(() => {
 
     const getRow = useCallback( index => ({
         a: index,
@@ -151,30 +151,30 @@ export const AddRemoveRows = () => {
         height: r( 40, 200 )
     }), []);
 
-    const [ rows ] = useState(() => times( 90, getRow ));
-
-    const [,up] = useState();
-
-    const getRowData = useCallback( i => rows[ i ], []);
-
-    const getRowKey = useCallback( i => rows[ i ].k, []);
-
-    const add = useCallback(() => {
-        for( let j = 0; j < 3000; j++ ){
-            rows.push( getRow( j ) );
+    const rows = useLocalStore(() => ({
+        list: times( 90, getRow ),
+        get length(){
+            return rows.list.length;
+        },
+        add(){
+            for( let j = 0; j < 3000; j++ ){
+                rows.list.push( getRow( j ) );
+            }
+        },
+        remove(){
+            rows.list.splice( 1, 1 );
+            rows.list.pop();
         }
-        up(performance.now());
-    }, []);
+    }));
 
-    const remove = useCallback(() => {
-        rows.splice( 1, 1 );
-        up(performance.now());
-    }, []);
+    const getRowData = useCallback( i => rows.list[ i ], []);
+
+    const getRowKey = useCallback( i => rows.list[ i ].k, []);
 
     return (
         <Fragment>
-            <button onClick={add}>Append 3000 rows</button>
-            <button onClick={remove}>Remove 2nd row</button>
+            <button onClick={() => rows.add()}>Append 3000 rows</button>
+            <button onClick={() => rows.remove()}>Remove 2nd row</button>
             <Table
                 getRowData={getRowData}
                 getRowKey={getRowKey}
@@ -182,7 +182,7 @@ export const AddRemoveRows = () => {
                     a: [ "sum" ],
                     country: [ "count" ]
                 }}
-                rowCount={rows.length}
+                rows={rows}
                 columns={[
                     {
                         dataKey: "a",
@@ -202,6 +202,5 @@ export const AddRemoveRows = () => {
                 ]}
             />
         </Fragment>
-
     );
-};
+});
