@@ -6,7 +6,7 @@ const getRowDataInitial = () => {
 }
 
 const BASIC_OBSERVABLE_FIELDS = {
-    rows: { length: 0 },
+    rows: [],
     overscanRowsCount: 0,
     estimatedRowHeightFallback: 0,
 
@@ -48,7 +48,6 @@ class ScrollableRowsBase {
         }
         
         const [ newEndIndex ] = this.getVisibleRangeStart( this.scrollTop + this.widgetHeight );
-
         /*
             getVisibleRangeStart works by "strict less" algo. It is good for startIndex,
             but for endIndex we need "<=", so adding 1 artificially.
@@ -69,12 +68,12 @@ class ScrollableRowsBase {
     
     constructor( RowsConstructor ){
         
-        this.Rows = new RowsConstructor( this );
-
         extendObservable( this, BASIC_OBSERVABLE_FIELDS, {
             rowsContainerNode: observable.ref,
             scrollContainerNode: observable.ref
         });
+
+        this.Rows = new RowsConstructor( this );
         /*
         this
             .on( "#widgetScrollHeight", this.increaseEndIndexIfNeeded )

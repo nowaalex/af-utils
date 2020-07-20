@@ -1,10 +1,6 @@
 import ScrollableRowsBase from "./ScrollableRowsBase";
-import { observable, extendObservable, computed, autorun, action, runInAction, reaction } from "mobx";
-
-/*
-    We should always have some extra space for new rows. We do not want to reallocate cache every time.
-*/
-const MIN_TREE_CACHE_OFFSET = 15;
+import SegmentsTree from "./SegmentsTree";
+import { extendObservable, autorun, action, runInAction, reaction } from "mobx";
 
 const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 200;
 
@@ -16,50 +12,24 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
     disposeCallbacks = [];
 
-
-    @computed get N(){
-        /* Nearest pow of 2 to visibleRowCount. 56 >= 64, 67 => 128, etc. */
-        const { visibleRowCount } = this.Rows;
-        return visibleRowCount > 0 ? 2 << Math.log2( visibleRowCount + MIN_TREE_CACHE_OFFSET ) : 1;
-    }
-
-    @computed get sTree(){
-        // Uint16 cannot be used here, because array stores intermediate sums, which can be huge.
-        if( process.env.NODE_ENV !== "production" ){
-            console.log( "New tree cache. Size:", this.N );
-        }
-        return new Uint32Array( this.N << 1 );
-    }
+    sTree = new SegmentsTree();
 
     calculateParentsInRange( startIndex, endIndex ){
-        const { sTree, N } = this;
-    
-        for( endIndex += N, startIndex += N; endIndex >>= 1; ){
-            for( let i = startIndex >>= 1; i <= endIndex; i++ ){
-                sTree[ i ] = sTree[ i << 1 ] + sTree[ i << 1 | 1 ];
-            }
-        }
+        this.sTree.calculateParentsInRange( startIndex, endIndex );
+        this.syncWidgetScrollHeight();
+    }
 
-        /* In segments tree 1 node is always sum of all elements */
-        this.merge({ widgetScrollHeight: sTree[ 1 ] });
+    @action
+    syncWidgetScrollHeight(){
+        this.widgetScrollHeight = this.sTree.height;
     }
    
     getVisibleRangeStart( dist ){
 
-        const { widgetScrollHeight, estimatedRowHeight, sTree, N } = this;
+        const { widgetScrollHeight, estimatedRowHeight, sTree } = this;
 
         if( widgetScrollHeight && estimatedRowHeight ){
-            let nodeIndex = 1, v;
-
-            while( nodeIndex < N ){
-                v = sTree[ nodeIndex <<= 1 ];
-                if( dist >= v ){
-                    dist -= v;
-                    nodeIndex |= 1;
-                }
-            }
-    
-            return [ nodeIndex - N, dist ];
+            return sTree.getStartPositionForSum( dist );
         }
         
         return [ 0, 0 ];
@@ -93,28 +63,8 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
                 { fireImmediately: true }
             ),
             autorun(() => {
-
-                const { rows, estimatedRowHeight } = this;
-
-                //superdirty
-                if( !estimatedRowHeight || !rows ){
-                    return;
-                }
-
-                const { sTree, N, Rows: { visibleRowCount } } = this;
-                /* todo: optimize this shit by using visibleRowCount */
-                sTree.fill( estimatedRowHeight, 0, N * 2 );
-                /*
-                    Trees are not always ideally allocated, gaps are possible.
-                    Classical way for calculating parents is much simpler,
-                    but can do much more work(summing zeros) in such conditions. Commented classic algo:
-            
-                    for( let i = N + visibleRowCount >> 1, j; i > 0; --i ){
-                        j = i << 1;
-                        sTree[ i ] = sTree[ j ] + sTree[ j | 1 ];
-                    }
-                */
-                this.calculateParentsInRange( 0, visibleRowCount );
+                this.sTree.reallocateIfNeeded( this.rows.length, this.estimatedRowHeight );
+                this.syncWidgetScrollHeight();
             }),
             autorun(() => {
                 if( this.widgetWidth ){
@@ -133,7 +83,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
                 const node = this.rowsContainerNode;
 
                 if( node && this.lastRowsRenderTimeStamp ){
-                    const { sTree, N } = this;
+                    const { sTree } = this;
                     
                     let l = -1,
                         r = -1,
@@ -160,9 +110,9 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
                         newHeight = child.offsetHeight;
                         rowHeightsSum += newHeight;
         
-                        if( sTree[ N + index ] !== newHeight ){
+                        if( sTree.get( index ) !== newHeight ){
                             // console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)
-                            sTree[ N + index ] = newHeight;
+                            sTree.set( index, newHeight );
                             
                             if( l === -1 ){
                                 l = index;
@@ -203,20 +153,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
             return 0;
         }
 
-        const { sTree, N } = this;
-        let res = 0;
-
-        for( startIndex += N, endIndex += N; startIndex < endIndex; startIndex >>= 1, endIndex >>= 1 ){
-            if( startIndex & 1 ){
-                res += sTree[ startIndex++ ];
-            }
-
-            if( endIndex & 1 ){
-                res += sTree[ --endIndex ]; 
-            }
-        };
-
-        return res; 
+        return this.sTree.getDistanceBetweenIndexes( startIndex, endIndex );
     }
 };
 
