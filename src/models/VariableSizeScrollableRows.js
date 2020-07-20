@@ -48,7 +48,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
         this.disposeCallbacks.push(
             autorun(() => {
-                this.sTree.reallocateIfNeeded( this.rows.length, this.estimatedRowHeight );
+                this.sTree.reallocateIfNeeded( this.Rows.visibleRowCount, this.estimatedRowHeight );
                 this.syncWidgetScrollHeight();
             }),
             autorun(() => {
