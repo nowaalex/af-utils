@@ -1,21 +1,19 @@
-const MIN_TREE_CACHE_OFFSET = 15;
-
-const getN = ( cacheSize, minCacheOffset ) => 2 << Math.log2( cacheSize + minCacheOffset );
-
 class SegmentsTree {
 
-    constructor( minCacheOffset = MIN_TREE_CACHE_OFFSET ){
-        this.minCacheOffset = minCacheOffset;
+    constructor( minCacheOffset ){
+        this.minCacheOffset = minCacheOffset || 15;
         this.cacheSize = 0;
         this.N = 0;
         this.cache = new Uint32Array( 1 );
+        this.l = +Infinity;
+        this.r = -Infinity;
     }
 
     reallocateIfNeeded( cacheSize, defaultValue ){
         const currentCacheSize = this.cacheSize;
         if( cacheSize !== currentCacheSize ){
             this.cacheSize = cacheSize;
-            const newN = getN( cacheSize, this.minCacheOffset );
+            const newN = 2 << Math.log2( cacheSize, this.minCacheOffset );
             if( newN !== this.N ){
                 this.N = newN;
                 this.cache = new Uint32Array( newN << 1 );
@@ -43,16 +41,31 @@ class SegmentsTree {
         }
     }
 
-    get height(){
+    get total(){
         return this.cache[ 1 ];
     }
 
-    get( index ){
-        return this.cache[ this.N + index ];
+    set( index, value ){
+        const { cache, N } = this;
+        if( cache[ N + index ] !== value ){
+            cache[ N + index ] = value;
+            this.l = Math.min( this.l, index );
+            this.r = Math.max( this.r, index );
+        }
     }
 
-    set( index, value ){
-        this.cache[ this.N + index ] = value;
+    flush(){
+        const { l, r } = this;
+        if( !Number.isFinite( l ) ){
+            if( process.env.NODE_ENV !== "production" ){
+                console.log( "Updating heights in range: %d - %d", l, r );
+            }
+            this.calculateParentsInRange( l, r );
+            this.l = +Infinity;
+            this.r = -Infinity;
+            return true;
+        }
+        return false;
     }
 
     getStartPositionForSum( dist ){

@@ -5,26 +5,6 @@ const getRowDataInitial = () => {
     throw new Error( "getRowData must be provided" );
 }
 
-const BASIC_OBSERVABLE_FIELDS = {
-    rows: [],
-    overscanRowsCount: 0,
-    estimatedRowHeightFallback: 0,
-
-    scrollLeft: 0,
-    scrollTop: 0,
-
-    widgetHeight: 0,
-    widgetWidth: 0,
-
-    getRowKey: undefined,
-    getRowData: getRowDataInitial,
-
-    rowsContainerNode: null,
-    scrollContainerNode: null
-};
-
-const END_INDEX_CHECK_INTERVAL = 400;
-
 class ScrollableRowsBase {
 
     @computed get visibleRangeStart(){
@@ -68,37 +48,32 @@ class ScrollableRowsBase {
     
     constructor( RowsConstructor ){
         
-        extendObservable( this, BASIC_OBSERVABLE_FIELDS, {
+        extendObservable( this, {
+            rows: [],
+            overscanRowsCount: 0,
+            estimatedRowHeight: 0,
+        
+            scrollLeft: 0,
+            scrollTop: 0,
+        
+            widgetHeight: 0,
+            widgetWidth: 0,
+        
+            getRowKey: undefined,
+            getRowData: getRowDataInitial,
+        
+            rowsContainerNode: null,
+            scrollContainerNode: null
+        }, {
             rowsContainerNode: observable.ref,
             scrollContainerNode: observable.ref
         });
 
         this.Rows = new RowsConstructor( this );
-        /*
-        this
-            .on( "#widgetScrollHeight", this.increaseEndIndexIfNeeded )
-            .on( "#endIndex", this.increaseEndIndexIfNeeded.cancel );
-        */
     }
 
     
-
-    /*
-        Column heights may change during scroll/width-change
-    */
- 
- /*   increaseEndIndexIfNeededSync(){
-        const currentVisibleDist = this.getDistanceBetweenIndexes( this.startIndex, this.endIndex );
-        if( this.widgetHeight > this.virtualTopOffset + currentVisibleDist - this.scrollTop ){
-            this.updateEndIndex();
-        }
-    }
-
-    increaseEndIndexIfNeeded = debounce( this.increaseEndIndexIfNeededSync, END_INDEX_CHECK_INTERVAL );
-*/
-    destructor(){
-       // this.increaseEndIndexIfNeeded.cancel();
-    }
+    destructor(){}
 
     scrollToRow( index ){
         const node = this.scrollContainerNode;

@@ -1,6 +1,6 @@
 import ScrollableRowsBase from "./ScrollableRowsBase";
 import SegmentsTree from "./SegmentsTree";
-import { extendObservable, autorun, action, runInAction, reaction } from "mobx";
+import { extendObservable, autorun, action, runInAction } from "mobx";
 
 const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 200;
 
@@ -14,14 +14,9 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
     sTree = new SegmentsTree();
 
-    calculateParentsInRange( startIndex, endIndex ){
-        this.sTree.calculateParentsInRange( startIndex, endIndex );
-        this.syncWidgetScrollHeight();
-    }
-
     @action
     syncWidgetScrollHeight(){
-        this.widgetScrollHeight = this.sTree.height;
+        this.widgetScrollHeight = this.sTree.total;
     }
    
     getVisibleRangeStart( dist ){
@@ -39,7 +34,6 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
         super( RowsConstructor );
 
         extendObservable( this, {
-            estimatedRowHeight: 0,
             widgetScrollHeight: 0,
             lastRowsRenderTimeStamp: 0,
         
@@ -53,15 +47,6 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
         });
 
         this.disposeCallbacks.push(
-            reaction(
-                () => this.estimatedRowHeightFallback,
-                h => {
-                    if( !this.estimatedRowHeight ){
-                        this.estimatedRowHeight = h;
-                    }
-                },
-                { fireImmediately: true }
-            ),
             autorun(() => {
                 this.sTree.reallocateIfNeeded( this.rows.length, this.estimatedRowHeight );
                 this.syncWidgetScrollHeight();
@@ -85,9 +70,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
                 if( node && this.lastRowsRenderTimeStamp ){
                     const { sTree } = this;
                     
-                    let l = -1,
-                        r = -1,
-                        rowHeightsSum = 0,
+                    let rowHeightsSum = 0,
                         rowCounter = 0;
         
                     /*
@@ -109,33 +92,17 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
         
                         newHeight = child.offsetHeight;
                         rowHeightsSum += newHeight;
-        
-                        if( sTree.get( index ) !== newHeight ){
-                            // console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)
-                            sTree.set( index, newHeight );
-                            
-                            if( l === -1 ){
-                                l = index;
-                            }
-                            
-                            r = index;
-                        }
+                        sTree.set( index, newHeight );
                     }
-            
-                    if( l !== -1 ){
-                        if( process.env.NODE_ENV !== "production" ){
-                            console.log( "Updating heights in range: %d - %d", l, r );
-                        }
-        
-                        if( this.shouldResetInvisibleRowHeights ){
-                            this.merge({
-                                estimatedRowHeight: Math.round( rowHeightsSum / rowCounter ),
-                                shouldResetInvisibleRowHeights: false
-                            });
-                        }
-                        else{
-                            this.calculateParentsInRange( l, r )
-                        }
+    
+                    if( this.shouldResetInvisibleRowHeights ){
+                        this.merge({
+                            estimatedRowHeight: Math.round( rowHeightsSum / rowCounter ),
+                            shouldResetInvisibleRowHeights: false
+                        });
+                    }
+                    else if( sTree.flush() ){
+                        this.syncWidgetScrollHeight();
                     }
                 }
             }, { delay: ROW_MEASUREMENT_DEBOUNCE_INTERVAL })

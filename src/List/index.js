@@ -36,7 +36,7 @@ const List = ({
         getRowData,
         getRowKey,
         overscanRowsCount,
-        estimatedRowHeightFallback: estimatedRowHeight,
+        estimatedRowHeight,
         rows
     });
 

@@ -1,24 +1,28 @@
-import { computed } from "mobx";
+import { computed, autorun } from "mobx";
 import ScrollableRowsBase from "./ScrollableRowsBase";
 
 class FixedSizeScrollableRows extends ScrollableRowsBase {
 
-    @computed get estimatedRowHeight(){
-        if( this.widgetWidth ){
-            const node = this.rowsContainerNode;
+    constructor( RowsConstructor ){
+        super( RowsConstructor );
 
-            if( node ){
-                const { firstElementChild } = node;
-                if( firstElementChild ){
-                    return firstElementChild.offsetHeight;
+        this.dispose = autorun(() => {
+            if( this.widgetWidth ){
+                const node = this.rowsContainerNode;
+    
+                if( node ){
+                    const { firstElementChild } = node;
+                    if( firstElementChild ){
+                        this.estimatedRowHeight = firstElementChild.offsetHeight;
+                    }
                 }
             }
-        }
-        return this.estimatedRowHeightFallback;
+        }, { delay: 200 });
     }
 
-    set estimatedRowHeight( value ){
-        this.estimatedRowHeightFallback = value;
+    desctructor(){
+        this.dispose();
+        super.destructor();
     }
 
     @computed get widgetScrollHeight(){

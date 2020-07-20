@@ -27,10 +27,6 @@
       */
 
 /*
-      Column heights may change during scroll/width-change
-  */
-
-/*
       For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
       If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
       memo(observer(RowComponentDefault)) will do the trick.
@@ -43,16 +39,6 @@
 /*
       tabIndex="0" is for proper keyboard nav
       https://bugzilla.mozilla.org/show_bug.cgi?id=1346159
-  */
-
-/*   increaseEndIndexIfNeededSync(){
-         const currentVisibleDist = this.getDistanceBetweenIndexes( this.startIndex, this.endIndex );
-         if( this.widgetHeight > this.virtualTopOffset + currentVisibleDist - this.scrollTop ){
-             this.updateEndIndex();
-         }
-     }
-  
-     increaseEndIndexIfNeeded = debounce( this.increaseEndIndexIfNeededSync, END_INDEX_CHECK_INTERVAL );
   */
 
 /* avoiding double destructurization via getExtraProps, so making prop object once */
@@ -69,8 +55,4 @@
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
 
-// console.log( "%d| was: %d; is: %d", index, sTree[N+index],newHeight)
-
 // extracted by mini-css-extract-plugin
-
-// this.increaseEndIndexIfNeeded.cancel();

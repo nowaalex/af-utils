@@ -27,7 +27,7 @@ export const FixedTable = () => {
                 a: [ "sum" ],
                 country: [ "count" ]
             }}
-            rowCount={rows.length}
+            rows={rows}
             columns={[
                 {
                     dataKey: "a",
@@ -130,7 +130,7 @@ export const LiveUpdatingTable = () => {
             CellComponent={CellComponent}
             getRowData={getRowData}
             getRowExtraProps={ r => ({ style: { lineHeight: r.n4 + "px" }})}
-            rowCount={rowCount}
+            rows={rows}
             columns={columns}
             totals={{
                 n1: [ "sum", "average", "count" ],
