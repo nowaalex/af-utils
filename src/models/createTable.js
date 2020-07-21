@@ -11,7 +11,7 @@ const createTable = BaseClass => class extends BaseClass {
     }
 
     @computed get normalizedColumns(){
-        return this.columns.map( column => {
+        return this.columns ? this.columns.map( column => {
             const finalColumn = typeof column === "string" ? { dataKey: column } : { ...column };
             
             if( !finalColumn.getCellData ){
@@ -23,7 +23,7 @@ const createTable = BaseClass => class extends BaseClass {
             }
 
             return finalColumn;
-        });
+        }) : [];
     }
 
     @computed get columnsByDataKey(){
