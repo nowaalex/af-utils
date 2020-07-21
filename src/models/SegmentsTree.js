@@ -56,7 +56,7 @@ class SegmentsTree {
 
     flush(){
         const { l, r } = this;
-        if( !Number.isFinite( l ) ){
+        if( Number.isFinite( l ) ){
             if( process.env.NODE_ENV !== "production" ){
                 console.log( "Updating heights in range: %d - %d", l, r );
             }

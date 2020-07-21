@@ -36,7 +36,6 @@ class TotalsCachePart {
     }
 
     @computed get sum(){
-        return 0;
         if( this.isShallow ){
             const { rowsObject: { parent: { getRowData, columnsByDataKey } }, dataKey } = this;
             const { getCellData } = columnsByDataKey[ dataKey ];
