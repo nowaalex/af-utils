@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { useLayoutEffect, memo } from "react";
 import PropTypes from "prop-types";
 
 import isPositionStickySupported from "../utils/isPositionStickySupported";
@@ -19,6 +19,8 @@ import commonPropTypes from "../commonPropTypes";
 import commonDefaultProps from "../commonDefaultProps";
 import cx from "../utils/cx";
 
+import castArray from "lodash/castArray";
+
 const Table = ({
     fixedSize,
     estimatedRowHeight,
@@ -35,6 +37,8 @@ const Table = ({
     dataRef,
     nonSticky,
     className,
+    initialGrouping,
+    initialExpandedGroups,
     ...props
 }) => {
 
@@ -49,6 +53,15 @@ const Table = ({
         columns,
         rows
     });
+
+    useLayoutEffect(() => {
+        if( initialGrouping ){
+            Store.Rows.aggregators.addGrouping( ...castArray( initialGrouping ) );
+            if( initialExpandedGroups ){
+                Store.Rows.resetExpandedState( initialExpandedGroups )
+            }
+        }
+    }, [ Store ]);
 
     /*
         Only cells inside thead/tfoot can be sticky.
@@ -109,7 +122,10 @@ Table.propTypes = {
     HeaderRowComponent: PropTypes.elementType,
     CellComponent: PropTypes.elementType,
     getCellData: PropTypes.func,
-    TotalsCellComponent: PropTypes.elementType
+    TotalsCellComponent: PropTypes.elementType,
+
+    initialGrouping: PropTypes.oneOfType([ PropTypes.string, PropTypes.array ]),
+    initialExpandedGroups: PropTypes.object
 };
 
 Table.defaultProps = {

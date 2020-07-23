@@ -99,15 +99,19 @@ class Aggregators {
     }
 
     @action
-    addGrouping( dataKey ){
-        if( !this.hasGroupingForDataKey( dataKey ) ){
-            this.groups.push( dataKey );
+    addGrouping( ...dataKeys ){
+        for( let dataKey of dataKeys ){
+            if( !this.hasGroupingForDataKey( dataKey ) ){
+                this.groups.push( dataKey );
+            }
         }
     }
 
     @action
-    removeGrouping( dataKey ){
-        this.groups.remove( dataKey );
+    removeGrouping( ...dataKeys ){
+        for( let dataKey of dataKeys ){
+            this.groups.remove( dataKey );
+        }
     }
 
     @action
@@ -199,6 +203,11 @@ class RowsComplex {
         return !!get( this.expandedGroups, path );
     }
 
+    @action
+    resetExpandedState( expandedGroups ){
+        this.expandedGroups = expandedGroups;
+    }
+
     @observable
     expandedGroups = {};
 
@@ -245,7 +254,7 @@ class RowsComplex {
             const row = getRowData( v );
             return updateWith(
                 acc,
-                row && groups.map( dataKey => columnsByDataKey[ dataKey ].getCellData( row, v, dataKey )),
+                row && groups.map( dataKey => "" + columnsByDataKey[ dataKey ].getCellData( row, v, dataKey )),
                 indexes => indexes ? indexes.push( v ) && indexes : [ v ],
                 objectSetter
             )

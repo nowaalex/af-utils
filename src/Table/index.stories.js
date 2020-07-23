@@ -28,6 +28,10 @@ export const FixedTable = () => {
                 country: [ "count" ]
             }}
             rows={rows}
+            initialGrouping="a"
+            initialExpandedGroups={{
+                "1": true
+            }}
             columns={[
                 {
                     dataKey: "a",
