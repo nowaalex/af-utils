@@ -3,7 +3,7 @@ import useApi from "../../useApi";
 import { observer } from "mobx-react-lite";
 import HeaderCell from "./HeaderCell";
 
-const HeaderCells = () => useApi().normalizedColumns.map(( column, j ) => (
+const HeaderCells = () => useApi().normalizedColumns.map(( column, j ) => column.visibility === "hidden" ? null : (
     <HeaderCell
         key={column.dataKey}
         column={column}
