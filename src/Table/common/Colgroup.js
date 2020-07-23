@@ -4,11 +4,11 @@ import useApi from "../../useApi";
 
 const Colgroup = ({ useTbodyWidths }) => {
 
-    const { columns, tbodyColumnWidths } = useApi();
+    const { normalizedVisibleColumns, tbodyColumnWidths } = useApi();
 
     return (
         <colgroup>
-            {columns.map(({ dataKey, background, visibility, border, width }, j ) => visibility !== "hidden" ? (
+            {normalizedVisibleColumns.map(({ dataKey, background, visibility, border, width }, j ) => (
                 <col
                     key={dataKey}
                     style={{
@@ -17,7 +17,7 @@ const Colgroup = ({ useTbodyWidths }) => {
                         border
                     }}
                 />
-            ) : null )}
+            ))}
         </colgroup>
     );
 };

@@ -141,6 +141,20 @@
 }
 */
 
+.afvscr-group-state-indicator {
+    user-select: none;
+    cursor: pointer;
+    padding-right: 0.9em;
+}
+
+.afvscr-group-state-indicator:before {
+    content: "\025B8";
+}
+
+.afvscr-group-state-indicator[data-expanded]:before{
+    content: "\025BE";
+}
+
 .afvscr-group-summaries {
     display: inline-flex;
     flex-flow: row nowrap;

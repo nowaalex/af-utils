@@ -9,10 +9,6 @@ const Row = ({ columns, CellComponent, getRowData, getRowExtraProps, getCellExtr
     return (
         <tr {...getRowProps(rowData,rowIndex,rowDataIndex,getRowExtraProps)}>
             {columns.map(( column, columnIndex ) => {
-                if( column.visibility === "hidden" ){
-                    return null;
-                }
-
                 const FinalCellComponent = column.CellComponent || CellComponent;
 
                 return (

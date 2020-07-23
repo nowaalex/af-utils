@@ -57,7 +57,7 @@ const Rows = ({ getRowExtraProps, getCellExtraProps, RowComponent, CellComponent
         API.Rows.flat,
         API.startIndex,
         API.endIndex,
-        API.normalizedColumns,
+        API.normalizedVisibleColumns,
         API.getRowData,
         API.getRowKey,
         getRowExtraProps,

@@ -5,13 +5,9 @@ import useApi from "../../useApi";
 
 const FooterCells = ({ TotalsCellComponent }) => {
 
-    const { columns, totals, Rows: { totalsCache } } = useApi();
+    const { normalizedVisibleColumns, totals, Rows: { totalsCache } } = useApi();
 
-    return columns.map(({ dataKey, formatTotal, visibility }, j ) => {
-
-        if( visibility === "hidden" ){
-            return null;
-        }
+    return normalizedVisibleColumns.map(({ dataKey, formatTotal }, j ) => {
 
         const curTotals = totals && totals[ dataKey ];
         const curTotalsCache = totalsCache[ dataKey ];

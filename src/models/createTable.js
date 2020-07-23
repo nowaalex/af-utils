@@ -26,6 +26,10 @@ const createTable = BaseClass => class extends BaseClass {
         }) : [];
     }
 
+    @computed get normalizedVisibleColumns(){
+        return this.normalizedColumns.filter( column => column.visibility !== "hidden" );
+    }
+
     @computed get columnsByDataKey(){
         return keyBy( this.normalizedColumns, "dataKey" );
     }

@@ -5,7 +5,6 @@ import reduce from "lodash/reduce";
 import toPairs from "lodash/toPairs";
 import updateWith from "lodash/updateWith";
 import get from "lodash/get";
-import setWith from "lodash/setWith";
 import sumBy from "lodash/sumBy";
 
 class TotalsCachePart {
@@ -195,10 +194,10 @@ class RowsComplex {
     }
 
     @action
-    setExpandedState( v, boolFlag ){
-        setWith( this.expandedGroups, v, boolFlag, objectSetter );
+    toggleExpandedState( path ){
+        updateWith( this.expandedGroups, path, v => !v, objectSetter );
     }
-
+    
     isGroupExpanded( path ){
         return !!get( this.expandedGroups, path );
     }
