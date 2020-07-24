@@ -8,7 +8,7 @@ const Colgroup = ({ useTbodyWidths }) => {
 
     return (
         <colgroup>
-            {normalizedVisibleColumns.map(({ dataKey, background, visibility, border, width }, j ) => (
+            {normalizedVisibleColumns.map(({ dataKey, background, border, width }, j ) => (
                 <col
                     key={dataKey}
                     style={{

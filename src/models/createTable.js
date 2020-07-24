@@ -5,7 +5,7 @@ import keyBy from "lodash/keyBy";
 import RowsComplex from "./RowsComplex";
 
 function getGroupNameDefault( value ){
-    return this.label + "\u00A0" + ":" + value;
+    return this.label + ":" + "\u00A0" + value;
 }
 
 const createTable = BaseClass => class extends BaseClass {
@@ -28,6 +28,10 @@ const createTable = BaseClass => class extends BaseClass {
 
             if( !finalColumn.getGroupName ){
                 finalColumn.getGroupName = getGroupNameDefault;
+            }
+
+            if( !finalColumn.countSummaryName ){
+                finalColumn.countSummaryName = "Total";
             }
 
             return finalColumn;

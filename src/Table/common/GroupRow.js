@@ -5,10 +5,11 @@ import useApi from "../../useApi";
 import { getRowProps } from "../../utils/extraPropsGetters";
 import TotalsCell from "./TotalsCell";
 
-const TotalCells = observer(({ columns, totals, totalsCache }) => columns.map(({ dataKey, formatTotal }) => (
+const TotalCells = observer(({ columns, totals, totalsCache }) => columns.map(({ dataKey, label, countSummaryName, formatTotal }) => (
     <TotalsCell
         key={dataKey}
-        summaryName={dataKey}
+        summaryName={label}
+        countSummaryName={countSummaryName}
         cellTotals={totals&&totals[dataKey]}
         totalsCache={totalsCache[dataKey]}
         formatTotal={formatTotal}

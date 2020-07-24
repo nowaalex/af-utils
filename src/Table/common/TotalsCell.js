@@ -3,10 +3,10 @@ import { observer } from "mobx-react-lite";
 
 const NBSP = "\u00A0";
 
-const Total = observer(({ cache, showSummaryType, summaryType, summaryName, formatTotal }) => {
+const Total = observer(({ cache, showSummaryType, summaryType, summaryName, countSummaryName, formatTotal }) => {
     const res = cache[ summaryType ];
 
-    let finalSummaryString = summaryName;
+    let finalSummaryString = summaryType === "count" ? countSummaryName : summaryName;
 
     if( showSummaryType ){
         finalSummaryString += NBSP + summaryType;
@@ -25,7 +25,7 @@ const Total = observer(({ cache, showSummaryType, summaryType, summaryName, form
     ) : null;
 });
 
-const TotalsCell = ({ cellTotals, totalsCache, summaryName, formatTotal }) => {
+const TotalsCell = ({ cellTotals, totalsCache, summaryName, countSummaryName, formatTotal }) => {
 
     if( !cellTotals || !totalsCache ){
         return null;
@@ -36,6 +36,7 @@ const TotalsCell = ({ cellTotals, totalsCache, summaryName, formatTotal }) => {
             <Total
                 summaryType={cellTotals[0]}
                 summaryName={summaryName}
+                countSummaryName={countSummaryName}
                 cache={totalsCache}
                 formatTotal={formatTotal}
             />
@@ -48,6 +49,7 @@ const TotalsCell = ({ cellTotals, totalsCache, summaryName, formatTotal }) => {
             showSummaryType
             summaryType={summaryType}
             summaryName={summaryName}
+            countSummaryName={countSummaryName}
             cache={totalsCache}
             formatTotal={formatTotal}
         />
@@ -55,7 +57,8 @@ const TotalsCell = ({ cellTotals, totalsCache, summaryName, formatTotal }) => {
 };
 
 TotalsCell.defaultProps = {
-    summaryName: ""
+    summaryName: "",
+    countSummaryName: ""
 };
 
 export default observer( TotalsCell );
