@@ -31,13 +31,14 @@ const GroupRow = ({ columns, groupPath, rowIndex }) => {
     const { totals, Rows, columnsByDataKey } = useApi();
 
     const last = groupPath.length - 1;
-    const { label } = columnsByDataKey[Rows.aggregators.groups[ last ]];
+    const column = columnsByDataKey[Rows.aggregators.groups[ last ]];
+    const groupName = column.getGroupName( groupPath[ last ] );
 
     return (
         <tr {...getRowProps(null,rowIndex)}>
             <td colSpan={columns.length} className="afvscr-group-cell">
                 <GroupStateIndicator Rows={Rows} groupPath={groupPath} />
-                {label}:&nbsp;{groupPath[ last ]}
+                {groupName}
                 <div className="afvscr-group-summaries">
                     <TotalCells
                         columns={columns}

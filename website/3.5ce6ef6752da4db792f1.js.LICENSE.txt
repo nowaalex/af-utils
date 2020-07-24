@@ -46,6 +46,23 @@
 		 */
 
 /**
+		 * Returns the Prism language of the given element set by a `language-xxxx` or `lang-xxxx` class.
+		 *
+		 * If no language is set for the element or the element is `null` or `undefined`, `none` will be returned.
+		 *
+		 * @param {Element} element
+		 * @returns {string}
+		 */
+
+/**
+		 * Returns the script element that is currently executing.
+		 *
+		 * This does __not__ work for line script element.
+		 *
+		 * @returns {HTMLScriptElement | null}
+		 */
+
+/**
      * Adds an inlined language to markup.
      *
      * An example of an inlined language is CSS with `<style>` tags.
@@ -58,18 +75,75 @@
      */
 
 /**
+ * @param {LinkedList<T>} list
+ * @returns {T[]}
+ * @template T
+ */
+
+/**
+ * @param {string} text
+ * @param {LinkedList<string | Token>} tokenList
+ * @param {any} grammar
+ * @param {LinkedListNode<string | Token>} startNode
+ * @param {number} startPos
+ * @param {boolean} [oneshot=false]
+ * @param {string} [target]
+ */
+
+/**
+ * @template T
+ */
+
+/**
+ * @typedef LinkedListNode
+ * @property {T} value
+ * @property {LinkedListNode<T> | null} prev The previous node.
+ * @property {LinkedListNode<T> | null} next The next node.
+ * @template T
+ */
+
+/**
+ * Adds a new node with the given value to the list.
+ * @param {LinkedList<T>} list
+ * @param {LinkedListNode<T>} node
+ * @param {T} value
+ * @returns {LinkedListNode<T>} The added node.
+ * @template T
+ */
+
+/**
  * Prism: Lightweight, robust, elegant syntax highlighting
  * MIT license http://www.opensource.org/licenses/mit-license.php/
  * @author Lea Verou http://lea.verou.me
  */
 
+/**
+ * Removes `count` nodes after the given node. The given node will not be removed.
+ * @param {LinkedList<T>} list
+ * @param {LinkedListNode<T>} node
+ * @param {number} count
+ * @template T
+ */
+
+/** @type {LinkedListNode<T>} */
+
 /***/
+
+//
+
+//    at Global code (http://localhost/components/prism-core.js:606:1)
+
+//    at _.util.currentScript (http://localhost/components/prism-core.js:119:5)
 
 //  '.'
 
 //  ';'
 
+// (inclusive).
+
 // @flow
+
+// A stack will look like this:
 
 // ASCII digits.
 
@@ -92,6 +166,8 @@
 // And merge text with adjacent text
 
 // Attribute or property.
+
+// CONCATENATED MODULE: ./node_modules/react-syntax-highlighter/dist/esm/checkForListedLanguage.js
 
 // CONCATENATED MODULE: ./node_modules/react-syntax-highlighter/dist/esm/create-element.js
 
@@ -123,6 +199,8 @@
 
 // Create.
 
+// DOMContentLoaded event because there might be some plugins or languages which have also been deferred and they
+
 // Deep clone a language definition (e.g. to extend it)
 
 // Do not duplicate registrations.
@@ -131,15 +209,15 @@
 
 // Does nothing when `queue` is empty.
 
-// Don’t cache length as it changes during the loop
-
 // EXTERNAL MODULE: ./node_modules/react-syntax-highlighter/node_modules/@babel/runtime/helpers/objectWithoutProperties.js
 
 // EXTERNAL MODULE: ./node_modules/refractor/core.js
 
-// Ensure the algorithm walks over the first character and the end (inclusive).
+// Ensure the algorithm walks over the first character and the end
 
 // Ensure the last empty entry is seen.
+
+// Error
 
 // Expose.
 
@@ -153,6 +231,8 @@
 
 // Get current position.
 
+// Get file src url from stack. Specifically works with the format of stack traces in IE.
+
 // Handle anything other than an ampersand, including newlines and EOF.
 
 // Handle list values.
@@ -165,11 +245,15 @@
 
 // Hyperscript compatible DSL for creating virtual hast trees.
 
+// IE11 workaround
+
 // If so, we cache that as the last viable named reference.
 
-// If strarr[i] is a Token, then the match starts inside another Token, which is invalid
-
 // If the decoded string is equal to the input, the entity was not valid
+
+// If the document state is "interactive" and the prism.js script is deferred, then we'll also use the
+
+// If the document state is "loading", then we'll use DOMContentLoaded.
 
 // If the previous character was a newline.
 
@@ -193,8 +277,6 @@
 
 // Macro invoked before each entity and at the end of `value`.
 
-// Move the index i to the element in strarr that is closest to from
-
 // Named entity.
 
 // No characters are consumed, and nothing is returned.
@@ -202,8 +284,6 @@
 // Non-standard Properties.
 
 // Not a character reference.
-
-// Number of tokens to delete and replace with the new match
 
 // Numerical entity.
 
@@ -227,7 +307,9 @@
 
 // Register bundled grammars.
 
-// Return the reduced nodes, and any possible warnings.
+// Return the reduced nodes.
+
+// See https://github.com/PrismJS/prism/issues/2102
 
 // See: https://html.spec.whatwg.org/#other-elements,-attributes-and-apis
 
@@ -363,11 +445,17 @@
 
 // `options.padRight` (default: `false`) pads a space to the right of each token.
 
+// adjust pos (and p)
+
 // ampersand followed by an octothorp).
 
 // ampersands are included.
 
 // assume that the matching was incomplete
+
+// assumes that node != list.tail && values.length >= 0
+
+// been loaded when Prism.highlightAll() is executed, depending on how fast resources are loaded.
 
 // by an alternative.
 
@@ -379,27 +467,65 @@
 
 // character, is hexadecimal.
 
+// determine largest line number so that we can force minWidth on all linenumber elements
+
 // eslint-disable-next-line complexity
 
 // eslint-disable-next-line max-depth
 
+// figure out whether we're using lowlight/highlight or refractor/prism
+
+// find the last node which is affected by this match
+
+// find the node that contains the match
+
 // hack for components to work correctly in node.js
+
+// if it's the first line
+
+// if it's the last line
 
 // invalid.
 
 // istanbul ignore next - Don't allow Prism to run on page load in browser or
 
+// iterate the token list and keep track of the current token/string position
+
+// lowlight/highlight?
+
+// might take longer one animation frame to execute which can create a race condition where only some plugins have
+
+// minimally necessary styling for line numbers
+
+// must be refractor/prism, then
+
 // normal characters), and move the pointer to their end.
+
+// only highlight.js has the highlightAuto method
 
 // parsing and the entity to decode was not a semicolon (`&semi;`), we can
 
+// prep custom styling
+
+// replace with the new match
+
 // result in the string `¬it;`.  When we encounter a trailing semicolon after
 
+// the current node is a Token, then the match starts inside another Token, which is invalid
+
 // the reference.
+
+// then attempt highlighting accordingly
+
+// this is the to parameter of removeBetween
+
+// this will not work for inline scripts
 
 // to start messaging from workers.
 
 // warning.
+
+// we'll get the src of the current script by parsing IE11's error stack trace
 
 // which leads to situations where parsing the assumed entity of &notit; will
 
