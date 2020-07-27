@@ -37,6 +37,7 @@ const Table = ({
     dataRef,
     nonSticky,
     className,
+    filtering,
     initialGrouping,
     initialExpandedGroups,
     ...props
@@ -62,6 +63,14 @@ const Table = ({
             }
         }
     }, [ Store ]);
+
+    useLayoutEffect(() => {
+        if( filtering ){
+            for( let k in filtering ){
+                Store.Rows.aggregators.setFiltering( k, filtering[ k ] );
+            }
+        }
+    }, [ Store, filtering ]);
 
     /*
         Only cells inside thead/tfoot can be sticky.
@@ -125,7 +134,8 @@ Table.propTypes = {
     TotalsCellComponent: PropTypes.elementType,
 
     initialGrouping: PropTypes.oneOfType([ PropTypes.string, PropTypes.array ]),
-    initialExpandedGroups: PropTypes.object
+    initialExpandedGroups: PropTypes.object,
+    filtering: PropTypes.object
 };
 
 Table.defaultProps = {
