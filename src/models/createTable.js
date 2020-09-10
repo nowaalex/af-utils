@@ -1,5 +1,4 @@
-import { extendObservable, reaction, computed } from "mobx";
-import add from "lodash/add";
+import { extendObservable, reaction, computed, comparer } from "mobx";
 import startCase from "lodash/startCase";
 import keyBy from "lodash/keyBy";
 import RowsComplex from "./RowsComplex";
@@ -10,11 +9,7 @@ function getGroupNameDefault( value ){
 
 const createTable = BaseClass => class extends BaseClass {
 
-    @computed get tbodyColumnWidthsSum(){
-        return this.tbodyColumnWidths.reduce( add );
-    }
-
-    @computed get normalizedColumns(){
+    @computed({ equals: comparer.shallow }) get normalizedColumns(){
         return this.columns ? this.columns.map( column => {
             const finalColumn = typeof column === "string" ? { dataKey: column } : { ...column };
             
@@ -38,11 +33,11 @@ const createTable = BaseClass => class extends BaseClass {
         }) : [];
     }
 
-    @computed get normalizedVisibleColumns(){
+    @computed({ equals: comparer.shallow }) get normalizedVisibleColumns(){
         return this.normalizedColumns.filter( column => column.visibility !== "hidden" );
     }
 
-    @computed get columnsByDataKey(){
+    @computed({ equals: comparer.shallow }) get columnsByDataKey(){
         return keyBy( this.normalizedColumns, "dataKey" );
     }
 
@@ -52,9 +47,7 @@ const createTable = BaseClass => class extends BaseClass {
         extendObservable( this, {
             columns: [],
             totals: {},
-            headlessMode: false,
-            getCellData: null,
-            tbodyColumnWidths: []
+            getCellData: null
         });
 
         this.dispose = reaction(() => this.Rows.sorted, () => this.scrollToStart() );

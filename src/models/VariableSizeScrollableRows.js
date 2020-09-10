@@ -71,13 +71,10 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
                     const { sTree } = this;
                     
                     let rowHeightsSum = 0,
-                        rowCounter = 0;
-        
-                    /*
-                        Some benchmarks inspire me to use nextElementSibling
-                        https://jsperf.com/nextsibling-vs-childnodes-increment/2
-                    */
-                    for( let child = node.firstElementChild, newHeight, index; child; child = child.nextElementSibling, rowCounter++ ){
+                        newHeight,
+                        index;
+
+                    for( let child of node.children ){
                         
                         /*
                             * aria-rowindex is counted from 1 according to w3c spec;
@@ -97,7 +94,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
     
                     if( this.shouldResetInvisibleRowHeights ){
                         this.merge({
-                            estimatedRowHeight: Math.round( rowHeightsSum / rowCounter ),
+                            estimatedRowHeight: Math.round( rowHeightsSum / node.children.length ),
                             shouldResetInvisibleRowHeights: false
                         });
                     }

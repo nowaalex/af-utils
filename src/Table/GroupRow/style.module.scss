@@ -1,0 +1,35 @@
+
+.summaries {
+    display: inline-flex;
+    flex-flow: row nowrap;
+
+    &:not(:empty) {
+        &:before {
+            margin-left: 0.5em;
+            content: "(";
+        }
+        
+        &:after {
+            content: ")";
+        }
+    }
+}
+
+.groupCell {
+    font-weight: 500;
+    text-align: left;
+}
+
+.groupStateIndicator {
+    user-select: none;
+    cursor: pointer;
+    padding-right: 0.9em;
+
+    &:before {
+        content: "\025B8";
+    }
+
+    &[data-expanded]:before{
+        content: "\025BE";
+    }
+}

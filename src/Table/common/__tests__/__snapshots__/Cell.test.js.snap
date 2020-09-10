@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Table DefaultCellComponent renders ok Performs initial render with default props 1`] = `"<td aria-colindex=\\"2\\">data1</td>"`;
-
-exports[`Table DefaultCellComponent renders ok renders &nbsp; when cellData is empty 1`] = `"<td aria-colindex=\\"2\\">&nbsp;</td>"`;

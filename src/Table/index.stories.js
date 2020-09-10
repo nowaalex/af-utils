@@ -1,12 +1,11 @@
 import React, { useEffect, Fragment, useState, useCallback } from "react";
-import { css } from "@emotion/core";
 import { observable, runInAction } from "mobx";
 import { observer, useObserver, useLocalStore } from "mobx-react-lite";
 import Table from "./index";
 import r from "lodash/random";
 import times from "lodash/times";
 import faker from "faker";
-import DefaultCellComponent from "./common/Cell";
+import DefaultCellComponent from "./Cell";
 
 export default { title: "Table" };
 
@@ -57,20 +56,8 @@ export const LiveUpdatingTable = () => {
 
     const CellComponent = observer(DefaultCellComponent);
 
-    const hueBlockCss = css`
-        padding: 0.5em;
-        border-radius: 5px;
-    `;
-
-    const wrapperCss = css`
-        thead th, tfoot td {
-            background: #fff;
-        }
-    `;
-
     const renderHue = cellData => (
         <div
-            css={hueBlockCss}
             style={{ background: `hsl(${cellData},90%,70%)` }}
         >
             hue:&nbsp;{cellData}
@@ -130,7 +117,6 @@ export const LiveUpdatingTable = () => {
 
     return (
         <Table
-            css={wrapperCss}
             CellComponent={CellComponent}
             getRowData={getRowData}
             getRowExtraProps={ r => ({ style: { lineHeight: r.n4 + "px" }})}

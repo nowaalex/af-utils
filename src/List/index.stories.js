@@ -3,8 +3,6 @@ import List from "./index";
 import r from "lodash/random";
 import times from "lodash/times";
 
-import { css } from "@emotion/core";
-
 export default { title: "List" };
 
 const DEFAULT_ROW_COUNT = 5000;

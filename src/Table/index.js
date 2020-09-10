@@ -1,25 +1,39 @@
-import React, { useLayoutEffect, memo } from "react";
+import React, { useLayoutEffect, useCallback, useEffect, memo } from "react";
 import PropTypes from "prop-types";
 
-import isPositionStickySupported from "../utils/isPositionStickySupported";
 import Context from "../Context";
 import useStore from "../utils/useStore";
 
 import FixedSizeTableStore from "../models/FixedSizeTable";
 import VariableSizeTableStore from "../models/VariableSizeTable";
 
-import RowComponentDefault from "./common/Row";
-import CellComponentDefault from "./common/Cell";
-import TotalsCellComponentDefault from "./common/TotalsCell";
 
-import NonStickyComponent from "./NonSticky";
-import StickyComponent from "./Sticky";
 
 import commonPropTypes from "../commonPropTypes";
 import commonDefaultProps from "../commonDefaultProps";
 import cx from "../utils/cx";
 
 import castArray from "lodash/castArray";
+
+import ScrollContainer from "../common/ScrollContainer";
+import Scroller from "../common/Scroller";
+
+import Rows from "./Rows";
+import Colgroup from "./Colgroup";
+import RowComponentDefault from "./Row";
+import CellComponentDefault from "./Cell";
+import TotalsCellComponentDefault from "./TotalsCell";
+import BodyTable from "./BodyTable";
+import FooterCells from "./FooterCells";
+import HeaderCells from "./HeaderCells";
+
+import css from "./style.module.scss";
+
+/*
+    Todo:
+        measure thead & tfoot heights in order to properly calculate available space for rows
+*/
+
 
 const Table = ({
     fixedSize,
@@ -35,16 +49,17 @@ const Table = ({
     overscanRowsCount,
     headless,
     dataRef,
-    nonSticky,
     className,
     filtering,
     initialGrouping,
     initialExpandedGroups,
+    RowComponent,
+    CellComponent,
+    TotalsCellComponent,
     ...props
 }) => {
 
     const [ Store, scrollContainerRef, tbodyRef ] = useStore( fixedSize ? FixedSizeTableStore : VariableSizeTableStore, dataRef, {
-        headlessMode: headless,
         getRowData,
         getCellData,
         getRowKey,
@@ -72,22 +87,86 @@ const Table = ({
         }
     }, [ Store, filtering ]);
 
-    /*
-        Only cells inside thead/tfoot can be sticky.
-        If thead/tfoot are hidden - we can easily render lighter StickyComponent to avoid extra wrappers
-    */
-    const ComponentVariant = ( headless && !totals ) || ( !nonSticky && isPositionStickySupported() ) ? StickyComponent : NonStickyComponent;
+    const clickHandler = useCallback( e => {
 
+        const node = e.target.closest( "[aria-colindex]" );
+
+        if( process.env.NODE_ENV !== "production" && !node ){
+            throw new Error( "colIndex attr missing" );
+        }
+
+        const colIndex = parseInt( node.getAttribute( "aria-colindex" ), 10 ) - 1;
+
+        const { sort, dataKey } = Store.columns[ colIndex ];
+
+        if( e.ctrlKey ){
+            Store.Rows.aggregators.toggleGrouping( dataKey );
+        }
+        else if( sort ){
+            const value = node.getAttribute( "aria-sort" ) === "ascending" ? "descending" : "ascending";
+            Store.Rows.aggregators.setSorting({
+                dataKey,
+                value
+            });
+        }
+    }, []);
+
+
+    if( process.env.NODE_ENV !== "production" ){
+        /*
+            https://bugs.chromium.org/p/chromium/issues/detail?id=702927
+        */
+
+        const areTotalsPresent = totals && totals.length !== 0;
+
+        useEffect(() => {
+            if( !headless || areTotalsPresent ){
+                /* TODO: tests fail without this if */
+                if( scrollContainerRef.current ){
+                    const table = scrollContainerRef.current.querySelector( "table" );
+                    const tableStyle = getComputedStyle( table );
+    
+                    if( tableStyle.borderCollapse === "collapse" ){
+                        console.warn(
+                            "You use sticky table version. Due to special border behavior when scrolling, use border-collpase: separate.%o",
+                            "https://bugs.chromium.org/p/chromium/issues/detail?id=702927"
+                        );
+                    }
+                }
+            }
+        }, [ headless, areTotalsPresent ]);
+    }
+    
     return (
         <Context.Provider value={Store}>
-            <ComponentVariant
-                className={cx("afvscr-table-wrapper",className)}
-                scrollContainerRef={scrollContainerRef}
-                getRowExtraProps={getRowExtraProps}
-                getCellExtraProps={getCellExtraProps}
-                tbodyRef={tbodyRef}
-                {...props}
-            />
+            <ScrollContainer ref={scrollContainerRef} className={cx(css.wrapper,className)} {...props}>
+                <BodyTable>
+                    <Colgroup />
+                    {headless?null:(
+                        <thead onClick={clickHandler}>
+                            <tr>
+                                <HeaderCells />
+                            </tr>
+                        </thead>
+                    )}
+                    <Scroller as="tbody" />
+                    <tbody ref={tbodyRef}>
+                        <Rows
+                            getRowExtraProps={getRowExtraProps}
+                            getCellExtraProps={getCellExtraProps}
+                            RowComponent={RowComponent}
+                            CellComponent={CellComponent}
+                        />
+                    </tbody>
+                    {totals && (
+                        <tfoot className={className}>
+                            <tr>
+                                <FooterCells TotalsCellComponent={TotalsCellComponent} />
+                            </tr>
+                        </tfoot>
+                    )}
+                </BodyTable>
+            </ScrollContainer>
         </Context.Provider>
     );
 }
@@ -125,10 +204,8 @@ Table.propTypes = {
         PropTypes.array
     ),
     
-    nonSticky: PropTypes.bool,
     headless: PropTypes.bool,
 
-    HeaderRowComponent: PropTypes.elementType,
     CellComponent: PropTypes.elementType,
     getCellData: PropTypes.func,
     TotalsCellComponent: PropTypes.elementType,

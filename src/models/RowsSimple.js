@@ -1,8 +1,3 @@
-import { computed } from "mobx";
-import groupBy from "lodash/groupBy";
-import keyBy from "lodash/keyBy";
-import times from "lodash/times";
-
 class RowsSimple {
 
     constructor( parent ){

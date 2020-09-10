@@ -64,9 +64,6 @@ class ScrollableRowsBase {
         
             rowsContainerNode: null,
             scrollContainerNode: null
-        }, {
-            rowsContainerNode: observable.ref,
-            scrollContainerNode: observable.ref
         });
 
         this.Rows = new RowsConstructor( this );

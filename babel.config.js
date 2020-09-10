@@ -1,5 +1,4 @@
 const plugins = [
-    "emotion",
     [ "@babel/plugin-proposal-decorators", { "legacy": true }],
     [ "@babel/plugin-proposal-class-properties", { loose: true }],
     [ "@babel/plugin-proposal-object-rest-spread", { loose: true, useBuiltIns: true }],
@@ -24,9 +23,6 @@ module.exports = api => {
     else{
         presetEnvOptions.modules = false;
         plugins.push([ "@babel/plugin-transform-runtime", { useESModules: true }]);
-        if( !api.env( "lib" ) ){
-            presets.push( "@emotion/babel-preset-css-prop" );
-        }
     }
 
     presets.push([ "@babel/preset-env", presetEnvOptions ]);

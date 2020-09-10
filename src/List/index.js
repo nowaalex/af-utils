@@ -8,15 +8,13 @@ import VariableSizeListStore from "../models/VariableSizeList";
 import FixedSizeListStore from "../models/FixedSizeList";
 
 import ScrollContainer from "../common/ScrollContainer";
-import RowComponentDefault from "./common/Row";
-import Rows from "./common/Rows";
-
 import Scroller from "../common/Scroller";
+
+import RowComponentDefault from "./Row";
+import Rows from "./Rows";
 
 import commonPropTypes from "../commonPropTypes";
 import commonDefaultProps from "../commonDefaultProps";
-
-import cx from "../utils/cx";
 
 const List = ({
     fixedSize,
@@ -43,11 +41,11 @@ const List = ({
     return (
         <Context.Provider value={Store}>
             <ScrollContainer
-                className={cx("afvscr-list-wrapper",className)}
+                className={className}
                 ref={scrollContainerRef}
                 {...props}
             >
-                <Scroller Component="div" />
+                <Scroller as="div" />
                 <div ref={rowsContainerRef}>
                     <Rows RowComponent={RowComponent} getRowExtraProps={getRowExtraProps} />
                 </div>
