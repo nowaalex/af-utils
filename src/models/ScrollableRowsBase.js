@@ -13,7 +13,7 @@ class ScrollableRowsBase {
 
     @computed get startIndex(){
 
-        if( !this.estimatedRowHeight ){
+        if( !this.estimatedRowHeightFinal ){
             return 0;
         }
 
@@ -23,7 +23,7 @@ class ScrollableRowsBase {
 
     @computed get endIndex(){
 
-        if( !this.estimatedRowHeight ){
+        if( !this.estimatedRowHeightFinal ){
             return 0;
         }
         
@@ -40,6 +40,10 @@ class ScrollableRowsBase {
         const overscanOffset = this.getDistanceBetweenIndexes( this.startIndex, newVisibleStartIndex );
         return this.scrollTop - remainder - overscanOffset;
     }
+
+    @computed get estimatedRowHeightFinal(){
+        return this.estimatedRowHeightCalculated || this.estimatedRowHeight;
+    }
     
     @action
     merge( params ){
@@ -52,6 +56,7 @@ class ScrollableRowsBase {
             rows: [],
             overscanRowsCount: 0,
             estimatedRowHeight: 0,
+            estimatedRowHeightCalculated: 0,
         
             scrollLeft: 0,
             scrollTop: 0,

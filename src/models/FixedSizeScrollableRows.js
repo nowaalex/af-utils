@@ -13,7 +13,7 @@ class FixedSizeScrollableRows extends ScrollableRowsBase {
                 if( node ){
                     const { firstElementChild } = node;
                     if( firstElementChild ){
-                        this.estimatedRowHeight = firstElementChild.offsetHeight;
+                        this.estimatedRowHeightCalculated = firstElementChild.offsetHeight;
                     }
                 }
             }
@@ -26,16 +26,16 @@ class FixedSizeScrollableRows extends ScrollableRowsBase {
     }
 
     @computed get widgetScrollHeight(){
-        return this.estimatedRowHeight * this.Rows.visibleRowCount;
+        return this.estimatedRowHeightFinal * this.Rows.visibleRowCount;
     }
 
     getVisibleRangeStart( distance ){
-        const { estimatedRowHeight } = this;
-        return estimatedRowHeight ? [ distance / estimatedRowHeight | 0, distance % estimatedRowHeight ] : [ 0, 0 ];
+        const { estimatedRowHeightFinal } = this;
+        return estimatedRowHeightFinal ? [ distance / estimatedRowHeightFinal | 0, distance % estimatedRowHeightFinal ] : [ 0, 0 ];
     }
 
     getDistanceBetweenIndexes( startIndex, endIndex ){
-        return this.estimatedRowHeight * ( endIndex - startIndex );
+        return this.estimatedRowHeightFinal * ( endIndex - startIndex );
     }
 };
 

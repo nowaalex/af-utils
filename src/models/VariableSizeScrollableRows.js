@@ -21,9 +21,9 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
    
     getVisibleRangeStart( dist ){
 
-        const { widgetScrollHeight, estimatedRowHeight, sTree } = this;
+        const { widgetScrollHeight, estimatedRowHeightFinal, sTree } = this;
 
-        if( widgetScrollHeight && estimatedRowHeight ){
+        if( widgetScrollHeight && estimatedRowHeightFinal ){
             return sTree.getStartPositionForSum( dist );
         }
         
@@ -48,7 +48,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
         this.disposeCallbacks.push(
             autorun(() => {
-                this.sTree.reallocateIfNeeded( this.rows.length && this.Rows.visibleRowCount, this.estimatedRowHeight );
+                this.sTree.reallocateIfNeeded( this.rows.length && this.Rows.visibleRowCount, this.estimatedRowHeightFinal );
                 this.syncWidgetScrollHeight();
             }),
             autorun(() => {
@@ -94,7 +94,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
     
                     if( this.shouldResetInvisibleRowHeights ){
                         this.merge({
-                            estimatedRowHeight: Math.round( rowHeightsSum / node.children.length ),
+                            estimatedRowHeightCalculated: Math.round( rowHeightsSum / node.children.length ),
                             shouldResetInvisibleRowHeights: false
                         });
                     }
@@ -113,7 +113,7 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
     getDistanceBetweenIndexes( startIndex, endIndex ){
 
-        if( !this.estimatedRowHeight ){
+        if( !this.estimatedRowHeightFinal ){
             return 0;
         }
 
