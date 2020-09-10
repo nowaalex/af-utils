@@ -37,4 +37,9 @@
     thead th {
         top: 0;
     }
+
+    tfoot td,
+    tfoot th {
+        bottom: 0;
+    }
 }
