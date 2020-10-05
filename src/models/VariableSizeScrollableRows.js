@@ -1,6 +1,6 @@
 import ScrollableRowsBase from "./ScrollableRowsBase";
 import SegmentsTree from "./SegmentsTree";
-import { extendObservable, autorun, action, runInAction } from "mobx";
+import { extendObservable, autorun, makeObservable, action, runInAction } from "mobx";
 
 const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 200;
 
@@ -14,7 +14,6 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
     sTree = new SegmentsTree();
 
-    @action
     syncWidgetScrollHeight(){
         this.widgetScrollHeight = this.sTree.total;
     }
@@ -32,6 +31,10 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
 
     constructor( RowsConstructor ){
         super( RowsConstructor );
+
+        makeObservable( this, {
+            syncWidgetScrollHeight: action
+        })
 
         extendObservable( this, {
             widgetScrollHeight: 0,

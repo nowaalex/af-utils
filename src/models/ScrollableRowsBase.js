@@ -1,4 +1,4 @@
-import { extendObservable, computed, action, observable } from "mobx";
+import { extendObservable, makeAutoObservable, makeObservable, action, computed } from "mobx";
 import clamp from "lodash/clamp";
 
 const getRowDataInitial = () => {
@@ -7,11 +7,11 @@ const getRowDataInitial = () => {
 
 class ScrollableRowsBase {
 
-    @computed get visibleRangeStart(){
+    get visibleRangeStart(){
         return this.getVisibleRangeStart( this.scrollTop );
     }
 
-    @computed get startIndex(){
+    get startIndex(){
 
         if( !this.estimatedRowHeightFinal ){
             return 0;
@@ -21,7 +21,7 @@ class ScrollableRowsBase {
         return Math.max( 0, newVisibleStartIndex - this.overscanRowsCount );
     }
 
-    @computed get endIndex(){
+    get endIndex(){
 
         if( !this.estimatedRowHeightFinal ){
             return 0;
@@ -35,23 +35,31 @@ class ScrollableRowsBase {
         return Math.min( newEndIndex + 1 + this.overscanRowsCount, this.Rows.visibleRowCount );
     }
 
-    @computed get virtualTopOffset(){
+    get virtualTopOffset(){
         const [ newVisibleStartIndex, remainder ] = this.visibleRangeStart;
         const overscanOffset = this.getDistanceBetweenIndexes( this.startIndex, newVisibleStartIndex );
         return this.scrollTop - remainder - overscanOffset;
     }
 
-    @computed get estimatedRowHeightFinal(){
+    get estimatedRowHeightFinal(){
         return this.estimatedRowHeightCalculated || this.estimatedRowHeight;
     }
     
-    @action
     merge( params ){
         Object.assign( this, params );
     }
     
     constructor( RowsConstructor ){
         
+        makeObservable( this, {
+            visibleRangeStart: computed,
+            startIndex: computed,
+            endIndex: computed,
+            virtualTopOffset: computed,
+            estimatedRowHeightFinal: computed,
+            merge: action
+        });
+
         extendObservable( this, {
             rows: [],
             overscanRowsCount: 0,

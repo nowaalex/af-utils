@@ -1,13 +1,16 @@
 import React, { useEffect, Fragment, useState, useCallback } from "react";
 import { observable, runInAction } from "mobx";
-import { observer, useObserver, useLocalStore } from "mobx-react-lite";
+import { observer, Observer, useLocalObservable } from "mobx-react-lite";
 import Table from "./index";
 import r from "lodash/random";
 import times from "lodash/times";
 import faker from "faker";
 import DefaultCellComponent from "./Cell";
 
-export default { title: "Table" };
+export default {
+    title: "Table",
+    component: Table
+};
 
 export const FixedTable = () => {
 
@@ -131,7 +134,7 @@ export const LiveUpdatingTable = () => {
     );
 };
 
-export const AddRemoveRows = () => useObserver(() => {
+export const AddRemoveRows = () => {
 
     const getRow = useCallback( index => ({
         a: index,
@@ -141,7 +144,7 @@ export const AddRemoveRows = () => useObserver(() => {
         height: r( 40, 200 )
     }), []);
 
-    const rows = useLocalStore(() => ({
+    const rows = useLocalObservable(() => ({
         list: times( 90, getRow ),
         get length(){
             return rows.list.length;
@@ -162,35 +165,39 @@ export const AddRemoveRows = () => useObserver(() => {
     const getRowKey = useCallback( i => rows.list[ i ].k, []);
 
     return (
-        <Fragment>
-            <button onClick={() => rows.add()}>Append 3000 rows</button>
-            <button onClick={() => rows.remove()}>Remove 2nd row</button>
-            <Table
-                getRowData={getRowData}
-                getRowKey={getRowKey}
-                totals={{
-                    a: [ "sum" ],
-                    country: [ "count" ]
-                }}
-                rows={rows}
-                columns={[
-                    {
-                        dataKey: "a",
-                        label: "a",
-                        sort: "numeric"
-                    },
-                    {
-                        dataKey: "country",
-                        label: "country",
-                        sort: "locale"
-                    },
-                    {
-                        dataKey: "name",
-                        label: "name",
-                        sort: "locale"
-                    }
-                ]}
-            />
-        </Fragment>
+        <Observer>
+            {() => (
+                <Fragment>
+                    <button onClick={() => rows.add()}>Append 3000 rows</button>
+                    <button onClick={() => rows.remove()}>Remove 2nd row</button>
+                    <Table
+                        getRowData={getRowData}
+                        getRowKey={getRowKey}
+                        totals={{
+                            a: [ "sum" ],
+                            country: [ "count" ]
+                        }}
+                        rows={rows}
+                        columns={[
+                            {
+                                dataKey: "a",
+                                label: "a",
+                                sort: "numeric"
+                            },
+                            {
+                                dataKey: "country",
+                                label: "country",
+                                sort: "locale"
+                            },
+                            {
+                                dataKey: "name",
+                                label: "name",
+                                sort: "locale"
+                            }
+                        ]}
+                    />
+                </Fragment>
+            )}
+        </Observer>
     );
-});
+};

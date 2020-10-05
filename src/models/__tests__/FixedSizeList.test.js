@@ -9,7 +9,7 @@ describe( "FixedSizeList model works correctly", () => {
             rowCount: 50,
             estimatedRowHeight: 5
         });
-        expect(FList.widgetScrollHeight).toEqual(250);
+        expect(FList.widgetScrollHeight).toEqual(0);
     });
 
     test.each`

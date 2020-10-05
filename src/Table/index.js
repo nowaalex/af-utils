@@ -80,11 +80,7 @@ const Table = ({
     }, [ Store ]);
 
     useLayoutEffect(() => {
-        if( filtering ){
-            for( let k in filtering ){
-                Store.Rows.aggregators.setFiltering( k, filtering[ k ] );
-            }
-        }
+        Store.Rows.aggregators.setFiltering( filtering );
     }, [ Store, filtering ]);
 
     const clickHandler = useCallback( e => {

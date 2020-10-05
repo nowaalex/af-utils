@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useApi from "../../useApi";
-import { observer, useLocalStore } from "mobx-react-lite";
+import { observer, useLocalObservable } from "mobx-react-lite";
 import { autorun } from "mobx";
 
 const HeaderCell = ({ column, index }) => {
@@ -10,7 +10,7 @@ const HeaderCell = ({ column, index }) => {
     const { sort } = aggregators;
     const { sort: colSort, label, title, dataKey } = column;
 
-    const searchState = useLocalStore(() => ({
+    const searchState = useLocalObservable(() => ({
         value: aggregators.filtersByDataKey[ dataKey ] || "",
         visible: false,
         toggle(e){

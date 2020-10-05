@@ -1,4 +1,4 @@
-import { computed, action, reaction, autorun, observable } from "mobx";
+import { computed, action, reaction, autorun, observable, makeObservable, makeAutoObservable } from "mobx";
 import mapValues from "lodash/mapValues";
 import times from "lodash/times";
 import reduce from "lodash/reduce";
@@ -10,9 +10,14 @@ import sumBy from "lodash/sumBy";
 class TotalsCachePart {
 
     constructor( rowsObject, groupPath, dataKey ){
+
         this.rowsObject = rowsObject;
         this.dataKey = dataKey;
         this.groupPath = groupPath;
+
+        makeAutoObservable( this, {
+            countRecursively: false
+        });
     }
 
     countRecursively( byFieldName ){
@@ -22,19 +27,19 @@ class TotalsCachePart {
         }, 0 );
     }
 
-    @computed get group(){
+    get group(){
         return this.groupPath ? get( this.rowsObject.grouped, this.groupPath ) : this.rowsObject.grouped;
     }
 
-    @computed get isShallow(){
+    get isShallow(){
         return Array.isArray( this.group );
     }
 
-    @computed get count(){
+    get count(){
         return this.isShallow ? this.group.length : this.countRecursively( "count" );
     }
 
-    @computed get sum(){
+    get sum(){
         if( this.isShallow ){
             const { rowsObject: { parent: { getRowData, columnsByDataKey } }, dataKey } = this;
             const { getCellData } = columnsByDataKey[ dataKey ];
@@ -43,7 +48,7 @@ class TotalsCachePart {
         return this.countRecursively( "sum" );
     }
 
-    @computed get average(){
+    get average(){
         return this.sum / this.count;
     }
 };
@@ -69,26 +74,28 @@ class TotalsCachePart {
 
 class Aggregators {
 
-    @observable
     filtersByDataKey = {};
 
     /* Order is important in grouping */
-    @observable
     groups = [];
 
-    @computed get filtersList(){
+    get filtersList(){
         return toPairs( this.filtersByDataKey ).filter( p => p[ 1 ] );
     }
 
-    @observable
     sort = null;
 
-    @action
     setFiltering( dataKey, value ){
-        this.filtersByDataKey[ dataKey ] = value;
+        if( dataKey ){
+            if( typeof dataKey === "string" ){
+                this.filtersByDataKey[ dataKey ] = value;
+            }
+            else if( typeof dataKey === "object" ){
+                Object.assign( this.filtersByDataKey, dataKey );
+            }
+        }
     }
 
-    @action
     setSorting( v ){
         this.sort = typeof v === "function" ? v( this.sort ) : v;
     }
@@ -97,7 +104,6 @@ class Aggregators {
         return this.groups.includes( dataKey );
     }
 
-    @action
     addGrouping( ...dataKeys ){
         for( let dataKey of dataKeys ){
             if( !this.hasGroupingForDataKey( dataKey ) ){
@@ -106,14 +112,12 @@ class Aggregators {
         }
     }
 
-    @action
     removeGrouping( ...dataKeys ){
         for( let dataKey of dataKeys ){
             this.groups.remove( dataKey );
         }
     }
 
-    @action
     toggleGrouping( dataKey ){
         if( this.hasGroupingForDataKey( dataKey ) ){
             this.removeGrouping( dataKey );
@@ -121,6 +125,13 @@ class Aggregators {
         else{
             this.addGrouping( dataKey );
         }
+    }
+
+    constructor(){
+        makeAutoObservable( this, {
+            hasGroupingForDataKey: false,
+            setFiltering: action
+        });
     }
 };
 
@@ -176,6 +187,14 @@ class RowsComplex {
     constructor( parent ){
         this.parent = parent;
 
+        makeAutoObservable( this, {
+            isGroupExpanded: false,
+            aggregators: false,
+            groupTotals: false,
+            getGroupTotals: false,
+            destructor: false
+        });
+
         this.dispose = reaction(
             () => !!this.aggregators.groups.length,
             () => this.expandedGroups = {}
@@ -193,7 +212,6 @@ class RowsComplex {
         this.dispose2();
     }
 
-    @action
     toggleExpandedState( path ){
         updateWith( this.expandedGroups, path, v => !v, objectSetter );
     }
@@ -202,25 +220,23 @@ class RowsComplex {
         return !!get( this.expandedGroups, path );
     }
 
-    @action
     resetExpandedState( expandedGroups ){
         this.expandedGroups = expandedGroups;
     }
 
-    @observable
     expandedGroups = {};
 
     aggregators = new Aggregators();
 
-    @computed get totalsCache(){
+    get totalsCache(){
         return mapValues( this.parent.totals || {}, ( v, k ) => new TotalsCachePart( this, null, k ) );
     }
 
-    @computed get rowIndexesArray(){
+    get rowIndexesArray(){
         return times( this.parent.rows ? this.parent.rows.length : 0 );
     }
 
-    @computed get filtered(){
+    get filtered(){
 
         const { getRowData, columnsByDataKey } = this.parent;
         const { filtersList } = this.aggregators;
@@ -238,7 +254,7 @@ class RowsComplex {
         });
     }
 
-    @computed get grouped(){
+    get grouped(){
 
         const { groups } = this.aggregators;
 
@@ -260,7 +276,7 @@ class RowsComplex {
         }, {});
     }
 
-    @computed get flat(){
+    get flat(){
         const { columnsByDataKey, getRowData } = this.parent;
         const { sort } = this.aggregators;
         return flattenGroupedStructure( this.grouped, sort, getRowData, sort && columnsByDataKey[ sort.dataKey ], this.expandedGroups );
@@ -281,7 +297,7 @@ class RowsComplex {
         return res;
     }
 
-    @computed get visibleRowCount(){
+    get visibleRowCount(){
         return this.flat.length;
     }
 }

@@ -3,13 +3,26 @@ import List from "./index";
 import r from "lodash/random";
 import times from "lodash/times";
 
-export default { title: "List" };
+export default {
+    title: "List",
+    component: List
+};
 
 const DEFAULT_ROW_COUNT = 5000;
 
 const dynamicListRowHeights = times( DEFAULT_ROW_COUNT, () => r( 50, 250 ) );
 
-export const DynamicRowHeightList = () => (
+export const Simple = () => (
+    <List
+        fixedSize
+        getRowData={
+            i => `row ${i}`
+        }
+        rows={dynamicListRowHeights}
+    />
+);
+
+export const DynamicRowHeights = () => (
     <List
         getRowData={
             i => (
