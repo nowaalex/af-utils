@@ -4,7 +4,7 @@
 `npm install --save af-virtual-scroll`
 
 ### Website
-https://nowaalex.github.io/af-virtual-scroll/website/
+https://nowaalex.github.io/af-virtual-scroll/.out
 
 ### Features
 * All heights are calculated automatically, so there is no need to provide them.
