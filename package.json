@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "storybook": "start-storybook",
-    "build-storybook": "build-storybook -c .storybook -o .out",
+    "build-storybook": "build-storybook -c .storybook -o website",
     "start": "webpack-dev-server --env.ASSETS_PATH=/",
     "build": "rollup --config rollup.config.js",
     "test": "jest",
