@@ -1,4 +1,4 @@
-import { extendObservable, reaction, computed, comparer } from "mobx";
+import { extendObservable, reaction, makeObservable, computed, comparer } from "mobx";
 import startCase from "lodash/startCase";
 import keyBy from "lodash/keyBy";
 import RowsComplex from "./RowsComplex";
@@ -9,7 +9,7 @@ function getGroupNameDefault( value ){
 
 const createTable = BaseClass => class extends BaseClass {
 
-    @computed({ equals: comparer.shallow }) get normalizedColumns(){
+    get normalizedColumns(){
         return this.columns ? this.columns.map( column => {
             const finalColumn = typeof column === "string" ? { dataKey: column } : { ...column };
             
@@ -33,16 +33,22 @@ const createTable = BaseClass => class extends BaseClass {
         }) : [];
     }
 
-    @computed({ equals: comparer.shallow }) get normalizedVisibleColumns(){
+    get normalizedVisibleColumns(){
         return this.normalizedColumns.filter( column => column.visibility !== "hidden" );
     }
 
-    @computed({ equals: comparer.shallow }) get columnsByDataKey(){
+    get columnsByDataKey(){
         return keyBy( this.normalizedColumns, "dataKey" );
     }
 
     constructor(){
         super( RowsComplex );
+
+        makeObservable( this, {
+            normalizedColumns: computed({ equals: comparer.shallow }),
+            normalizedVisibleColumns: computed({ equals: comparer.shallow }),
+            columnsByDataKey: computed({ equals: comparer.shallow })
+        });
 
         extendObservable( this, {
             columns: [],
