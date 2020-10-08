@@ -1,6 +1,6 @@
 import ScrollableRowsBase from "./ScrollableRowsBase";
 import SegmentsTree from "./SegmentsTree";
-import { extendObservable, autorun, makeObservable, action, runInAction } from "mobx";
+import { observable, autorun, makeObservable, action, runInAction } from "mobx";
 
 const ROW_MEASUREMENT_DEBOUNCE_INTERVAL = 200;
 
@@ -29,24 +29,25 @@ class VariableSizeScrollableRows extends ScrollableRowsBase {
         return [ 0, 0 ];
     }
 
+    widgetScrollHeight = 0;
+    lastRowsRenderTimeStamp = 0;
+
+    /*
+        When all row heights are different,
+        we must "predict" them on the left of startIndex and on the right of endIndex(where they are invisible),
+        basing on what we know: heights between startIndex and endIndex.
+        Using simple average by default.
+    */
+    shouldResetInvisibleRowHeights = true;
+
     constructor( RowsConstructor ){
         super( RowsConstructor );
 
         makeObservable( this, {
+            widgetScrollHeight: observable,
+            lastRowsRenderTimeStamp: observable,
+            shouldResetInvisibleRowHeights: observable,
             syncWidgetScrollHeight: action
-        })
-
-        extendObservable( this, {
-            widgetScrollHeight: 0,
-            lastRowsRenderTimeStamp: 0,
-        
-            /*
-                When all row heights are different,
-                we must "predict" them on the left of startIndex and on the right of endIndex(where they are invisible),
-                basing on what we know: heights between startIndex and endIndex.
-                Using simple average by default.
-            */
-            shouldResetInvisibleRowHeights: true
         });
 
         this.disposeCallbacks.push(

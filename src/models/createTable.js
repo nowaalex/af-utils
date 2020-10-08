@@ -1,4 +1,4 @@
-import { extendObservable, reaction, makeObservable, computed, comparer } from "mobx";
+import { observable, reaction, makeObservable, computed, comparer } from "mobx";
 import startCase from "lodash/startCase";
 import keyBy from "lodash/keyBy";
 import RowsComplex from "./RowsComplex";
@@ -41,19 +41,20 @@ const createTable = BaseClass => class extends BaseClass {
         return keyBy( this.normalizedColumns, "dataKey" );
     }
 
+    columns = [];
+    totals = {};
+    getCellData = null;
+
     constructor(){
         super( RowsComplex );
 
         makeObservable( this, {
+            getCellData: observable,
+            totals: observable,
+            columns: observable.shallow,
             normalizedColumns: computed({ equals: comparer.shallow }),
             normalizedVisibleColumns: computed({ equals: comparer.shallow }),
             columnsByDataKey: computed({ equals: comparer.shallow })
-        });
-
-        extendObservable( this, {
-            columns: [],
-            totals: {},
-            getCellData: null
         });
 
         this.dispose = reaction(() => this.Rows.sorted, () => this.scrollToStart() );

@@ -41,6 +41,11 @@ export const FixedTable = () => {
                     sort: "numeric"
                 },
                 {
+                    dataKey: "b",
+                    label: "a+1",
+                    getCellData: ({ a }) => a + 1
+                },
+                {
                     dataKey: "country",
                     label: "country",
                     sort: "locale"
