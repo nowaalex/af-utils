@@ -1,4 +1,11 @@
 const plugins = [
+    [ "module-resolver", {
+        root: [ "./src" ],
+        extensions: [ ".js", ".css", ".scss" ],
+        alias: {
+            "lodash-es": "lodash"
+        }
+    }],
     [ "@babel/plugin-proposal-decorators", { "legacy": true }],
     [ "@babel/plugin-proposal-class-properties", { loose: true }],
     [ "@babel/plugin-proposal-object-rest-spread", { loose: true, useBuiltIns: true }],
@@ -7,7 +14,9 @@ const plugins = [
     }]
 ];
 
-const presets = [ "@babel/preset-react" ];
+const presets = [
+    [ "@babel/preset-react", { "runtime": "automatic" }]
+];
 
 module.exports = api => {
 

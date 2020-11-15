@@ -1,0 +1,35 @@
+import { useState, useRef, useEffect } from "react";
+
+/*
+    dataRef is to call Data methods from outside( Data.scrollTo(), etc. ).
+    As it is not dom-related, I decided to avoid forwardRef
+*/
+const useStore = ( StoreConstructor, dataRef, propsToMerge ) => {
+
+    const [ rowsContainerNode, rowsContainerRef ] = useState();
+
+    const finalDataRef = useRef();
+
+    let Store = finalDataRef.current;
+
+    if( !( Store instanceof StoreConstructor ) ){
+        Store = finalDataRef.current = new StoreConstructor( propsToMerge );
+    }
+
+    if( dataRef ){
+        dataRef.current = Store;
+    }
+
+    useEffect(() => {
+        Store.merge({
+            ...propsToMerge,
+            rowsContainerNode
+        });
+    });
+    
+    useEffect(() => () => Store.destructor(), [ Store ]);
+
+    return [ Store, rowsContainerRef ];
+};
+
+export default useStore;

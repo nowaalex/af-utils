@@ -28,6 +28,8 @@ module.exports = {
         "no-nested-ternary": [ 0 ],
         "import/prefer-default-export": [ 0 ],
         "no-cond-assign": [ 0 ],
-        "max-classes-per-file": [ 5 ]
+        "max-classes-per-file": [ 5 ],
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off"
     }
 }

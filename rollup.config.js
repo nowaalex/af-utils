@@ -10,14 +10,15 @@ fs.rmdirSync( OUTPUT_DIR, { recursive: true });
 
 export default {
     input: {
+        /*
         Table: "src/Table/index.js",
         TableRow: "src/Table/Row/index.js",
         TableCell: "src/Table/Cell/index.js",
         TableTotalsCell: "src/Table/TotalsCell/index.js",
-
-        List: "src/List/index.js",
-        ListRow: "src/List/Row/index.js",
-        useApi: "src/useApi/index.js",
+*/
+        List: "src/components/List/index.js",
+        ListRow: "src/components/List/Row/index.js",
+        useApi: "src/hooks/useApi/index.js",
     },
     output: {
         format: "es",
@@ -31,7 +32,7 @@ export default {
             use: [ "sass" ],
             extensions: [ ".scss", ".css" ],
             modules: {
-                generateScopedName: "[hash:base64:10]",
+                generateScopedName: "[hash:base64:7]",
             }
         }),
         babel({ babelHelpers: "runtime" }),
