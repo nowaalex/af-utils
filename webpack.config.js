@@ -23,11 +23,6 @@ module.exports = () => {
 			path: path.resolve(__dirname, "build"),
 			filename: shouldCompress ? "[contenthash].js" : "[name].[id].js"
 		},
-		resolve: {
-			alias: {
-				"lodash-es": "lodash"
-			}
-		},
 		optimization: {
 			/* otherwise chunks are broken */
 			realContentHash: false,

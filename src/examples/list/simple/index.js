@@ -1,4 +1,4 @@
-import List from "components/List";
+import List from "af-virtual-scroll/List";
 import styled from "styled-components";
 
 const StyledList = styled(List)`
