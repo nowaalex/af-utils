@@ -9,11 +9,11 @@ const StyledList = styled(List)`
     width: 600px;
 `;
 
-const DEFAULT_ROW_COUNT = 60;
+const DEFAULT_ROW_COUNT = 60000;
 
 const VariableSizeList = () => {
 
-    const [ dynamicListRowHeights ] = useState(() => times( DEFAULT_ROW_COUNT, () => r( 50, 250 ) ))
+    const [ dynamicListRowHeights ] = useState(() => times( DEFAULT_ROW_COUNT, () => r( 100, 200 ) ))
     return (
         <StyledList
             getRowData={
@@ -21,7 +21,7 @@ const VariableSizeList = () => {
                     <div style={{
                         lineHeight: `${dynamicListRowHeights[i]}px`,
                         borderTop: "1px solid #666",
-                        background: `hsl(${r(0,360)},${r(30,80)}%,${r(30,80)}%)`
+                        background: `hsl(${i*11%360},60%,60%)`
                     }}>
                         row {i}:&nbsp;{dynamicListRowHeights[i]}px
                     </div>

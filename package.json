@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "start": "NODE_ENV=development PROD=false webpack serve",
+    "build:website": "NODE_ENV=production PROD=true webpack --mode=production",
     "build": "rollup --config rollup.config.js",
     "test": "jest",
     "clear-test-cache": "jest --clearCache"
@@ -82,6 +83,7 @@
     "faker": "^5.1.0",
     "glob": "^7.1.6",
     "globby": "^11.0.1",
+    "highlight.js": "^10.3.2",
     "html-webpack-plugin": "^4.5.0",
     "jest": "^26.6.3",
     "jest-emotion": "^11.0.0",
@@ -114,10 +116,10 @@
     "webpack-dev-server": "^3.11.0"
   },
   "peerDependencies": {
-    "mobx": "^5.15.4",
-    "mobx-react-lite": "^2.0.7",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "mobx": "^6.0.4",
+    "mobx-react-lite": "^3.1.6",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
