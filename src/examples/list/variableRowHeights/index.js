@@ -5,8 +5,9 @@ import times from "lodash/times";
 import r from "lodash/random";
 
 const StyledList = styled(List)`
-    flex: 1 1 10em;
-    min-width: 150px;
+    flex: 1 1 20em;
+    min-width: 12em;
+    max-width: 36em;
 `;
 
 const StyledRow = styled.div`

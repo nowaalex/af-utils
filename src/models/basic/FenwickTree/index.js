@@ -5,17 +5,17 @@
 
 class FenwickTree {
 
-    constructor( defaultInitialValue = 20 ){
+    constructor( defaultInitialValue = 0 ){
         this.N = 0;
         this.total = 0;
         this.dVal = defaultInitialValue;
-        this.cache = this.vCache = [];
+        this.C = [];
     }
 
     sum( r ){
         let result = 0;
         for ( ; r > 0; r -= r & -r ){
-            result += this.cache[ r ];
+            result += this.C[ r ];
         }
         return result;
     }    
@@ -28,49 +28,42 @@ class FenwickTree {
             if( nk > this.N ){
                 continue;
             }
-            if( v === this.cache[ nk ] ){
+            if( v === this.C[ nk ] ){
                 return nk;
             }
-            if( v > this.cache[ nk ] ) {
+            if( v > this.C[ nk ] ) {
                 k = nk;
-                v -= this.cache[ k ];
+                v -= this.C[ k ];
             }
         }
 
         return k;
     }
 
-    growIfNeeded( N ){
+    grow( N ){
         const prevN = this.N;
 
         if( N > prevN ){
             this.N = N;
-            const oldCache = this.cache;
-            const oldVCache = this.vCache;
-            this.vCache = new Uint32Array( N );
-            this.cache = new Uint32Array( N + 1 );
-            this.cache.set( oldCache );
-            this.vCache.set( oldVCache );
-            this.vCache.fill( this.dVal, prevN );
-            for( let j = prevN; j < N; j++ ){
-                this.update( j, this.dVal );
+            const oldCache = this.C;
+            
+            // we use beautiful r & -r algo, so array is 1-indexed
+            this.C = new Uint32Array( N + 1 );
+            this.C.set( oldCache );
+            
+            if( this.dVal ){
+                for( let j = prevN; j < N; j++ ){
+                    this.update( j, this.dVal );
+                }
             }
         }
     }
 
     update( i, delta ){
         for ( i++; i <= this.N; i += i & -i ){
-            this.cache[ i ] += delta;
+            this.C[ i ] += delta;
         }
         this.total += delta;
-    }
-
-    set( i, value ){
-        const delta = value - this.vCache[ i ];
-        if( delta ){
-            this.vCache[ i ] = value;
-            this.update( i, delta );
-        }
     }
 }
 

@@ -10,6 +10,8 @@ class DifferentHeight extends BaseClass {
         super.destructor();
     }
 
+    rowHeights = [];
+
     constructor( initialValues ){
         super();
 
@@ -20,19 +22,27 @@ class DifferentHeight extends BaseClass {
         this.fTree = new FenwickTree( initialValues && initialValues.estimatedRowHeight || this.estimatedRowHeight );
 
         this
-            .addListeners( this.growTree, "rowsQuantity" )
+            .addListeners( this.grow, "rowsQuantity" )
             .addListeners( this.updateDomObserver, "rowsContainerNode" )
-            .addListeners( this.updateStartIndex, "rowsQuantity", "scrollTop", "overscanRowsCount" )
-            .addListeners( this.updateEndIndex, "rowsQuantity", "scrollTop", "widgetHeight", "overscanRowsCount" )
-            .addListeners( this.updateWidgetScrollHeight, "scrollTop", "rowsQuantity" )
-            .addListeners( this.updateVirtualTopOffset, "startIndex", "rowsQuantity" )
+            .addListeners( this.updateStartIndex, "scrollTop", "overscanRowsCount", "::cache-changed" )
+            .addListeners( this.updateEndIndex, "rowsQuantity", "scrollTop", "widgetHeight", "overscanRowsCount", "::cache-changed" )
+            .addListeners( this.updateWidgetScrollHeight, "::cache-changed" )
+            .addListeners( this.updateVirtualTopOffset, "startIndex", "::cache-changed" )
             .merge( initialValues );
         
         this.rowsDomObserver = new MutationObserver( this.updateRowHeightsThrottled );
     }
 
-    growTree(){
-        this.fTree.growIfNeeded( this.rowsQuantity );
+    grow(){
+        const oldLength = this.rowHeights.length;
+
+        if( this.rowsQuantity > oldLength ){
+            const oldRowHeights = this.rowHeights;
+            this.rowHeights = new Uint32Array( this.rowsQuantity );
+            this.rowHeights.set( oldRowHeights );
+            this.rowHeights.fill( this.estimatedRowHeight, oldLength );
+            this.fTree.grow( this.rowsQuantity );
+        }
     }
 
     updateDomObserver(){
@@ -64,7 +74,7 @@ class DifferentHeight extends BaseClass {
 
         if( node ){
             
-            let index;
+            let index, height, diff, cacheChanged = false;
 
             for( let child of node.children ){
                 
@@ -74,12 +84,25 @@ class DifferentHeight extends BaseClass {
                         https://jsperf.com/number-vs-parseint-vs-plus/116
                 */
                 index = Number.parseInt( child.getAttribute( "aria-rowindex" ), 10 ) - 1;
-
+                
                 if( process.env.NODE_ENV !== "production" && Number.isNaN( index ) ){
                     throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
                 }
 
-                this.fTree.set( index, child.offsetHeight );
+                height = child.offsetHeight;
+                diff = height - this.rowHeights[ index ];
+
+                if( diff ){
+                    this.rowHeights[ index ] = height;
+                    this.fTree.update( index, diff );
+                    if( !cacheChanged ){
+                        cacheChanged = true;
+                    }
+                }                
+            }
+
+            if( cacheChanged ){
+                this.emit( "::cache-changed" );
             }
         }
     }

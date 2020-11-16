@@ -6,17 +6,17 @@ describe( "FenwickTree works ok", () => {
 
         const fTree = new FenwickTree();
 
-        fTree.growIfNeeded( 7 );
+        fTree.grow( 7 );
 
-        fTree.set( 0, 10 );
-        fTree.set( 1, 20 );
-        fTree.set( 2, 30 );
-        fTree.set( 3, 40 );
-        fTree.set( 4, 50 );
+        fTree.update( 0, 10 );
+        fTree.update( 1, 20 );
+        fTree.update( 2, 30 );
+        fTree.update( 3, 40 );
+        fTree.update( 4, 50 );
 
         expect( fTree.sum( 4 ) ).toBe( 100 );
 
-        fTree.set( 1, 56 );
+        fTree.update( 1, 36 );
 
         expect( fTree.sum( 2 ) ).toBe( 66 );
 

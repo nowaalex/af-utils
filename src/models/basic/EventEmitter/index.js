@@ -59,7 +59,7 @@ class EventEmitter {
             }
             else{
                 for( let cb of eventsList ){
-                    cb();
+                    cb.call( this );
                 }
             }
         }
