@@ -2,6 +2,7 @@ class FenwickTree {
 
     constructor(){
         this.N = 0;
+        this.total = 0;
         this.dVal = 20;
         this.cache = this.vCache = [];
     }
@@ -12,8 +13,7 @@ class FenwickTree {
             result += this.cache[ r ];
         }
         return result;
-    }
-    
+    }    
 
     find( v ){
         let k = 0;
@@ -57,6 +57,7 @@ class FenwickTree {
         for ( i++; i <= this.N; i += i & -i ){
             this.cache[ i ] += delta;
         }
+        this.total += delta;
     }
 
     set( i, value ){

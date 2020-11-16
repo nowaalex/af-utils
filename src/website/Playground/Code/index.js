@@ -9,6 +9,7 @@ hljs.registerLanguage( "javascript", javascript );
 
 const Code = ({ children }) => {    
     const ref = useRef();
+
     useEffect(() => {
         hljs.highlightBlock( ref.current );
     }, [ children ]);
@@ -21,4 +22,4 @@ const Code = ({ children }) => {
 }
 
 
-export default Code;
+export default memo( Code );

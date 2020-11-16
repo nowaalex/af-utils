@@ -9,7 +9,7 @@ const StyledList = styled(List)`
     width: 600px;
 `;
 
-const DEFAULT_ROW_COUNT = 60000;
+const DEFAULT_ROW_COUNT = 600000;
 
 const VariableSizeList = () => {
 

@@ -19,7 +19,7 @@ const List = ({
     estimatedRowHeight,
     rowsQuantity,
     overscanRowsCount,
-    RowComponent = RowComponentDefault,
+    RowComponent,
     dataRef,
     className,
     ...props

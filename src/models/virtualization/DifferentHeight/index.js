@@ -49,7 +49,7 @@ class DifferentHeight extends BaseClass {
     }
 
     updateWidgetScrollHeight(){
-        this.set( "widgetScrollHeight", this.fTree.sum( this.rowsQuantity ) );
+        this.set( "widgetScrollHeight", this.fTree.total );
     }
 
     updateVirtualTopOffset(){
