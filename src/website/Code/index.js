@@ -1,4 +1,5 @@
 import { useEffect, useRef, memo } from "react";
+import cx from "utils/cx";
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
 import xml from "highlight.js/lib/languages/xml";
@@ -13,7 +14,7 @@ hljs.registerLanguage( "xml", xml );
         highlight.js works badly with jsx. Maybe switch to prism?
 */
 
-const Code = ({ children }) => {    
+const Code = ({ children, className }) => {    
     const ref = useRef();
 
     useEffect(() => {
@@ -21,7 +22,7 @@ const Code = ({ children }) => {
     }, [ children ]);
 
     return (
-        <code ref={ref} className={css.wrapper}>
+        <code ref={ref} className={cx(css.wrapper,className)}>
             {children}
         </code>
     );

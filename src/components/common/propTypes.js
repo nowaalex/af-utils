@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const propTypes = {
+const commonPropTypes = {
 
     rowsQuantity: PropTypes.number.isRequired,
 
@@ -9,7 +9,6 @@ const propTypes = {
      * @returns {any} row element children
      */
     getRowData: PropTypes.func.isRequired,
-
 
     /**
      * If sorting/filtering/grouping may happen, it is recommended to include this callback.
@@ -20,7 +19,6 @@ const propTypes = {
      */
     getRowKey: PropTypes.func,
 
-
     /**
      * @param {object} rowData, returned by getRowData
      * @param {number} rowIndex
@@ -28,18 +26,15 @@ const propTypes = {
      */
     getRowExtraProps: PropTypes.func,
 
-
     /**
      * appended to outermost wrapper
     */
     className: PropTypes.string,
 
-
     /**
      * Should be used, if you need to surround it by HOC, such as mobx observer
      */
     RowComponent: PropTypes.elementType,
-
 
     /**
      * If true - simpler and faster calculations are used, but you MUST guarantee,
@@ -47,13 +42,11 @@ const propTypes = {
      */
     fixed: PropTypes.bool,
 
-
     /**
      * Maximum number of rows, rendered above and below viewport.
      * Normally should not be overriden.
      */
     overscanRowsCount: PropTypes.number,
-
 
     /**
      * This number will not be used as an only source of truth.
@@ -63,4 +56,4 @@ const propTypes = {
     estimatedRowHeight: PropTypes.number
 }
 
-export default propTypes;
+export default commonPropTypes;

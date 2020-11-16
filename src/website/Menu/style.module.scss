@@ -5,9 +5,14 @@
 }
 
 .link {
+    display: block;
     padding: 0.5em 1em;
     color: inherit;
     text-decoration: none;
+}
+
+.header {
+    padding-left: 0.5em;
 }
 
 .activeLink {

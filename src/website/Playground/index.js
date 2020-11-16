@@ -1,7 +1,6 @@
-import { memo, lazy, Suspense } from "react";
+import { memo } from "react";
+import Code from "../Code";
 import css from "./style.module.scss";
-
-const Code = lazy(() => import( "./Code" ));
 
 const Playground = ({ example, code }) => {
     
@@ -11,9 +10,7 @@ const Playground = ({ example, code }) => {
     return (
         <div className={css.wrapper}>
             <Component />
-            <Suspense fallback="Loading code...">
-                <Code>{codeString}</Code>
-            </Suspense>
+            <Code>{codeString}</Code>
         </div>
     );
 }

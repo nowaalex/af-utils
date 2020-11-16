@@ -18,6 +18,8 @@ export default {
 */
         List: "src/components/List/index.js",
         ListRow: "src/components/List/Row/index.js",
+        Table: "src/components/Table/index.js",
+        TableRow: "src/components/Table/Row/index.js",
         useApi: "src/hooks/useApi/index.js",
     },
     output: {

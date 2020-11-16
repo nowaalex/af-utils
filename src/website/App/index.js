@@ -1,5 +1,6 @@
 import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Menu from "../Menu";
+import Docs from "../Docs";
 import Playground from "../Playground";
 import css from "./style.module.scss";
 
@@ -26,6 +27,8 @@ const App = () => (
             <Menu items={menuItems} />
             <Switch>
                 <Route path="/examples/:example(.+)" render={renderPlayground} />
+                <Route path="/docs/:docPage" component={Docs} />
+                <Redirect to="/examples" />
             </Switch>
         </div>
     </Router>

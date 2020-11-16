@@ -1,7 +1,7 @@
 $playground-background-color: #3b4048;
 
 .wrapper {
-    --playground-background-color: #{$playground-background-color};
+    background: #{$playground-background-color};
 
     display: flex;
     flex-flow: row nowrap;
