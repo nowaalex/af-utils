@@ -1,18 +1,20 @@
 import { memo } from "react";
-import PropTypes from "prop-types";
 
 import Context from "Context";
 import useModel from "hooks/useModel";
 
-import FixedSizeListStore from "models/virtualization/DifferentHeight";
+import VariableHeightsStore from "models/lists/VariableHeight";
+import FixedHeightsStore from "models/lists/FixedHeight";
 
 import ScrollContainer from "../common/ScrollContainer";
 import Scroller from "../common/Scroller";
+import commonPropTypes from "../common/propTypes";
 
 import RowComponentDefault from "./Row";
 import Rows from "./Rows";
 
 const List = ({
+    fixed,
     getRowData,
     getRowKey,
     getRowExtraProps,
@@ -25,7 +27,7 @@ const List = ({
     ...props
 }) => {
 
-    const [ Store, rowsContainerRef ] = useModel( FixedSizeListStore, dataRef, {
+    const [ Store, rowsContainerRef ] = useModel( fixed ? FixedHeightsStore : VariableHeightsStore, dataRef, {
         getRowData,
         getRowKey,
         overscanRowsCount,
@@ -45,7 +47,10 @@ const List = ({
     );
 };
 
+List.propTypes = commonPropTypes;
+
 List.defaultProps = {
+    fixed: false,
     estimatedRowHeight: 20,
     overscanRowsCount: 4,
     /*

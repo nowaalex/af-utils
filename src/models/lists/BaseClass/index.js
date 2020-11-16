@@ -6,7 +6,7 @@ class BaseClass extends EventEmitter {
     scrollTop = 0;
     scrollLeft = 0;
     rowsQuantity = 0;
-    overscanRowsCount = 2;
+    overscanRowsCount = 0;
     widgetHeight = 0;
     widgetWidth = 0;
     estimatedRowHeight = 20;

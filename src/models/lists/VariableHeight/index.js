@@ -2,7 +2,12 @@ import BaseClass from "../BaseClass";
 import FenwickTree from "models/basic/FenwickTree";
 import throttle from "utils/throttle";
 
-class DifferentHeight extends BaseClass {    
+/*
+    TODO:
+        when estimatedRowHeight is not correct, scroll behavior is weird here
+*/
+
+class VariableHeight extends BaseClass {    
 
     destructor(){
         this.rowsDomObserver.disconnect();
@@ -26,7 +31,7 @@ class DifferentHeight extends BaseClass {
             .addListeners( this.updateDomObserver, "rowsContainerNode" )
             .addListeners( this.updateStartIndex, "scrollTop", "overscanRowsCount", "::cache-changed" )
             .addListeners( this.updateEndIndex, "rowsQuantity", "scrollTop", "widgetHeight", "overscanRowsCount", "::cache-changed" )
-            .addListeners( this.updateWidgetScrollHeight, "::cache-changed" )
+            .addListeners( this.updateWidgetScrollHeight, "rowsQuantity", "::cache-changed" )
             .addListeners( this.updateVirtualTopOffset, "startIndex", "::cache-changed" )
             .merge( initialValues );
         
@@ -71,7 +76,6 @@ class DifferentHeight extends BaseClass {
     updateRowHeights(){
         const node = this.rowsContainerNode;
 
-
         if( node ){
             
             let index, height, diff, cacheChanged = false;
@@ -110,4 +114,4 @@ class DifferentHeight extends BaseClass {
     updateRowHeightsThrottled = throttle( this.updateRowHeights, 200, this );
 }
 
-export default DifferentHeight;
+export default VariableHeight;

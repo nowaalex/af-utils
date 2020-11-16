@@ -1,6 +1,6 @@
 import BaseClass from "../BaseClass";
 
-class EqualHeight extends BaseClass {
+class FixedHeight extends BaseClass {
 
     constructor( initialValues ){
         super();
@@ -42,4 +42,4 @@ class EqualHeight extends BaseClass {
     }
 }
 
-export default EqualHeight;
+export default FixedHeight;

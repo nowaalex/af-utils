@@ -8,7 +8,8 @@ import List from "af-virtual-scroll/List";
 
 const SimpleList = () => (
     <List
-        style={{ minWidth: 200, maxWidth: 400 }}
+        fixed
+        style={{ minWidth: 200 }}
         getRowData={i => `row ${i}`}
         rowsQuantity={1000}
     />

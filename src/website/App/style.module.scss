@@ -1,6 +1,27 @@
+$playground-background-color: #3b4048;
+
 .wrapper {
+    --playground-background-color: #{$playground-background-color};
+
     display: flex;
     flex-flow: row nowrap;
     height: 100vh;
     color: #c5c5c5;
+
+    th {
+        background: #{$playground-background-color};
+    }
+
+    table {
+        border-collapse: collapse;
+        border: none;
+    }
+
+    th, td {
+        padding: 0.5em;
+    }
+
+    td {
+        border: 1px solid #c5c5c5;
+    }
 }
