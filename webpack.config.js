@@ -80,7 +80,9 @@ module.exports = () => {
 				filename: shouldCompress ? "[contenthash].css" : "[name].css",
 				chunkFilename: shouldCompress ? "[contenthash].css" : "[id].css"
 			}),
-			new HtmlWebpackPlugin()
+			new HtmlWebpackPlugin({
+                title: "af-virtual-scroll"
+            })
 		].concat(
 			shouldCompress
 				? [

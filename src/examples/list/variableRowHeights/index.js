@@ -5,29 +5,36 @@ import times from "lodash/times";
 import r from "lodash/random";
 
 const StyledList = styled(List)`
-    height: 80vh;
-    width: 600px;
+    flex: 1 1 10em;
+    min-width: 150px;
 `;
 
-const DEFAULT_ROW_COUNT = 600000;
+const StyledRow = styled.div`
+    border-top: 1px solid #666;
+    color: #000;
+    text-align: center;
+`;
+
+const DEFAULT_ROW_COUNT = 100000;
 
 const VariableSizeList = () => {
 
-    const [ dynamicListRowHeights ] = useState(() => times( DEFAULT_ROW_COUNT, () => r( 100, 200 ) ))
+    const [ dynamicListRowHeights ] = useState(() => times( DEFAULT_ROW_COUNT, () => r( 100, 200 ) ));
+
     return (
         <StyledList
             getRowData={
                 i => (
-                    <div style={{
+                    <StyledRow style={{
                         lineHeight: `${dynamicListRowHeights[i]}px`,
-                        borderTop: "1px solid #666",
                         background: `hsl(${i*11%360},60%,60%)`
                     }}>
                         row {i}:&nbsp;{dynamicListRowHeights[i]}px
-                    </div>
+                    </StyledRow>
                 )
             }
-            overscanRowsCount={10}
+            estimatedRowHeight={150}
+            overscanRowsCount={5}
             rowsQuantity={DEFAULT_ROW_COUNT}
         />
     );

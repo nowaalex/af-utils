@@ -1,9 +1,14 @@
+/*
+    TODO:
+        try to find O(N) initialization algorithm instead of O(NlogN)
+*/
+
 class FenwickTree {
 
-    constructor(){
+    constructor( defaultInitialValue = 20 ){
         this.N = 0;
         this.total = 0;
-        this.dVal = 20;
+        this.dVal = defaultInitialValue;
         this.cache = this.vCache = [];
     }
 

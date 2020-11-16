@@ -1,6 +1,16 @@
 .wrapper {
-    padding: 0 1em;
-    border-right: 1px solid #000;
     display: flex;
     flex-flow: column nowrap;
+    background: #2c313a;
+}
+
+.link {
+    padding: 0.5em 1em;
+    color: inherit;
+    text-decoration: none;
+}
+
+.activeLink {
+    color: #e5c07b;
+    background: #3b4048;
 }

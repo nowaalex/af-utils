@@ -2,10 +2,7 @@ import BaseClass from "../BaseClass";
 import FenwickTree from "models/basic/FenwickTree";
 import throttle from "utils/throttle";
 
-class DifferentHeight extends BaseClass {
-
-    fTree = new FenwickTree();
-    
+class DifferentHeight extends BaseClass {    
 
     destructor(){
         this.rowsDomObserver.disconnect();
@@ -16,10 +13,15 @@ class DifferentHeight extends BaseClass {
     constructor( initialValues ){
         super();
 
+        /*
+            Tree must be initialized after super() and before all listeners.
+            Otherwise we could not get defaultInitialValue at right time.
+        */
+        this.fTree = new FenwickTree( initialValues && initialValues.estimatedRowHeight || this.estimatedRowHeight );
+
         this
             .addListeners( this.growTree, "rowsQuantity" )
             .addListeners( this.updateDomObserver, "rowsContainerNode" )
-            
             .addListeners( this.updateStartIndex, "rowsQuantity", "scrollTop", "overscanRowsCount" )
             .addListeners( this.updateEndIndex, "rowsQuantity", "scrollTop", "widgetHeight", "overscanRowsCount" )
             .addListeners( this.updateWidgetScrollHeight, "scrollTop", "rowsQuantity" )

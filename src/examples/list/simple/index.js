@@ -1,13 +1,14 @@
 import List from "af-virtual-scroll/List";
-import styled from "styled-components";
 
-const StyledList = styled(List)`
-    height: 400px;
-    width: 400px;
-`;
+
+/*
+    Initial dimensions are not required, but flex-grow/min-width/smth. should be set,
+    because otherwise List may collapse to zero-width
+*/
 
 const SimpleList = () => (
-    <StyledList
+    <List
+        style={{ minWidth: 200 }}
         getRowData={i => `row ${i}`}
         rowsQuantity={1000}
     />
