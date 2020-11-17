@@ -3,14 +3,8 @@ import useModelSubscription from "hooks/useModelSubscription";
 
 const HEADER_CELLS_SUBSCRIPTIONS = [ "normalizedVisibleColumns" ];
 
-const HeaderCells = () => useModelSubscription( HEADER_CELLS_SUBSCRIPTIONS ).normalizedVisibleColumns.map(({ label, dataKey, title }, index ) => (
-    <th
-        key={dataKey}
-        title={title}
-        aria-colindex={index+1}
-    >
-        {label}
-    </th>
+const HeaderCells = ({ HeaderCell }) => useModelSubscription( HEADER_CELLS_SUBSCRIPTIONS ).normalizedVisibleColumns.map( column => (
+    <HeaderCell key={column.dataKey} column={column} />
 ));
 
-export default memo( HeaderCells, () => true );
+export default memo( HeaderCells );

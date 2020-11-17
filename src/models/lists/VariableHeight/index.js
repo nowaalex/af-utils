@@ -78,23 +78,13 @@ class VariableHeight extends BaseClass {
 
         if( node ){
             
-            let index, height, diff, cacheChanged = false;
+            let index = this.renderedStartIndex, height, diff, cacheChanged = false;
 
             for( let child of node.children ){
-                
-                /*
-                    * aria-rowindex is counted from 1 according to w3c spec;
-                    * parseInt with radix is 2x faster, then +, -, etc.
-                        https://jsperf.com/number-vs-parseint-vs-plus/116
-                */
-                index = Number.parseInt( child.getAttribute( "aria-rowindex" ), 10 ) - 1;
-                
-                if( process.env.NODE_ENV !== "production" && Number.isNaN( index ) ){
-                    throw new Error( "aria-rowindex attribute must be present on each row. Look at default Row implementations." );
-                }
-
+     
                 height = child.offsetHeight;
                 diff = height - this.rowHeights[ index ];
+
 
                 if( diff ){
                     this.rowHeights[ index ] = height;
@@ -102,7 +92,9 @@ class VariableHeight extends BaseClass {
                     if( !cacheChanged ){
                         cacheChanged = true;
                     }
-                }                
+                }
+                
+                index++;
             }
 
             if( cacheChanged ){

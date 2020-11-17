@@ -1,55 +1,22 @@
-import { memo } from "react";
+import { memo, useLayoutEffect } from "react";
 import useModelSubscription from "hooks/useModelSubscription";
+import { getCellData } from "../renderers";
 
-const getVisibleRows = (
-    rangeFrom,
-    rangeTo,
-    columns,
-    getRowData,
-    getRowKey,
-    getRowExtraProps,
-    getCellExtraProps,
-    RowComponent,
-    CellComponent
-) => {
-    const result = [];
-    for( let key; rangeFrom < rangeTo; rangeFrom++ ){
+const ROWS_SUBSCRIPTIONS = [ "startIndex", "endIndex", "normalizedVisibleColumns" ];
 
-        key = getRowKey ? getRowKey( rangeFrom ) : rangeFrom;
-
-        result.push(
-            <RowComponent
-                getRowExtraProps={getRowExtraProps}
-                getCellExtraProps={getCellExtraProps}
-                rowIndex={rangeFrom}
-                rowDataIndex={rangeFrom}
-                key={key}
-                columns={columns}
-                getRowData={getRowData}
-                CellComponent={CellComponent}
-            />
-        );
-    }
-    return result;
-};
-
-const ROWS_SUBSCRIPTIONS = [ "startIndex", "endIndex", "normalizedVisibleColumns", "getRowData", "getRowKey" ];
-
-const Rows = ({ getRowExtraProps, getCellExtraProps, RowComponent, CellComponent }) => {
+const Rows = ({ renderRow, getRowData, getCelData, renderCell, CellsList, Cell }) => {
 
     const API = useModelSubscription( ROWS_SUBSCRIPTIONS );
+    const { startIndex, endIndex, normalizedVisibleColumns } = API;
+    const result = [];
 
-    return getVisibleRows(
-        API.startIndex,
-        API.endIndex,
-        API.normalizedVisibleColumns,
-        API.getRowData,
-        API.getRowKey,
-        getRowExtraProps,
-        getCellExtraProps,
-        RowComponent,
-        CellComponent
-    );
+    for( let i = startIndex; i < endIndex; i++ ){
+        result.push( renderRow( i, normalizedVisibleColumns, getRowData, getCellData, renderCell, CellsList, Cell ) );
+    }
+
+    useLayoutEffect(() => API.setRenderedStartIndex( startIndex ));
+
+    return result;
 };
 
 export default memo( Rows );

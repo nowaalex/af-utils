@@ -16,10 +16,16 @@ import Scroller from "../common/Scroller";
 
 import Rows from "./Rows";
 import Colgroup from "./Colgroup";
-import RowComponentDefault from "./Row";
-import CellComponentDefault from "./Cell";
-import BodyTable from "./BodyTable";
 import HeaderCells from "./HeaderCells";
+
+import {
+    renderRow,
+    getCellData,
+    renderCell,
+    CellsList,
+    Cell,
+    HeaderCell
+} from "./renderers";
 
 import css from "./style.module.scss";
 
@@ -35,27 +41,21 @@ const Table = ({
     estimatedRowHeight,
     columns,
     getRowData,
+    renderRow,
     getCellData,
-    getRowKey,
-    getRowExtraProps,
-    getCellExtraProps,
+    renderCell,
+    CellsList,
+    Cell,
+    HeaderCell,
     rowsQuantity,
     overscanRowsCount,
     headless,
     dataRef,
     className,
-    filtering,
-    initialGrouping,
-    initialExpandedGroups,
-    RowComponent,
-    CellComponent,
     ...props
 }) => {
 
     const [ Store, rowsContainerRef ] = useModel( fixed ? FixedTable : VariableTable, dataRef, {
-        getRowData,
-        getCellData,
-        getRowKey,
         overscanRowsCount,
         estimatedRowHeight,
         columns,
@@ -65,25 +65,27 @@ const Table = ({
     return (
         <Context.Provider value={Store}>
             <ScrollContainer className={cx(css.wrapper,className)} {...props}>
-                <BodyTable>
+                <table className={css.bodyTable}>
                     <Colgroup />
                     {headless?null:(
                         <thead>
                             <tr>
-                                <HeaderCells />
+                                <HeaderCells HeaderCell={HeaderCell} />
                             </tr>
                         </thead>
                     )}
                     <Scroller as={<tbody />} />
                     <tbody ref={rowsContainerRef}>
                         <Rows
-                            getRowExtraProps={getRowExtraProps}
-                            getCellExtraProps={getCellExtraProps}
-                            RowComponent={RowComponent}
-                            CellComponent={CellComponent}
+                            getRowData={getRowData}
+                            getCellData={getCellData}
+                            renderRow={renderRow}
+                            renderCell={renderCell}
+                            CellsList={CellsList}
+                            Cell={Cell}
                         />
                     </tbody>
-                </BodyTable>
+                </table>
             </ScrollContainer>
         </Context.Provider>
     );
@@ -117,13 +119,16 @@ Table.propTypes = {
         ])
     ).isRequired,
 
-    getCellExtraProps: PropTypes.func,
+    getRowData: PropTypes.func.isRequired,
 
-    
-    headless: PropTypes.bool,
-
-    CellComponent: PropTypes.elementType,
+    renderRow: PropTypes.func,
     getCellData: PropTypes.func,
+    renderCell: PropTypes.func,
+    CellsList: PropTypes.elementType,
+    Cell: PropTypes.elementType,
+    HeaderCell: PropTypes.elementType,
+
+    headless: PropTypes.bool,
 };
 
 Table.defaultProps = {
@@ -132,13 +137,12 @@ Table.defaultProps = {
     estimatedRowHeight: 20,
     overscanRowsCount: 4,
 
-    //    For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
-    //    If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
-    //    memo(observer(RowComponentDefault)) will do the trick.
-    
-    RowComponent: memo( RowComponentDefault ),
-    CellComponent: CellComponentDefault,
-    getCellData: ( rowData, rowIndex, dataKey ) => rowData[ dataKey ],
+    renderRow,
+    getCellData,
+    renderCell,
+    CellsList,
+    Cell,
+    HeaderCell
 };
 
 export default memo( Table );

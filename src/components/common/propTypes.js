@@ -4,37 +4,11 @@ const commonPropTypes = {
 
     rowsQuantity: PropTypes.number.isRequired,
 
-    /**
-     * @param {number} rowIndex
-     * @returns {any} row element children
-     */
-    getRowData: PropTypes.func.isRequired,
-
-    /**
-     * If sorting/filtering/grouping may happen, it is recommended to include this callback.
-     * Otherwise default key, based on rowIndex, is used.
-     * 
-     * @param {number} rowIndex
-     * @returns {number|string} unique row key
-     */
-    getRowKey: PropTypes.func,
-
-    /**
-     * @param {object} rowData, returned by getRowData
-     * @param {number} rowIndex
-     * @returns {object} Object of props, assigned to row element wrapper
-     */
-    getRowExtraProps: PropTypes.func,
 
     /**
      * appended to outermost wrapper
     */
     className: PropTypes.string,
-
-    /**
-     * Should be used, if you need to surround it by HOC, such as mobx observer
-     */
-    RowComponent: PropTypes.elementType,
 
     /**
      * If true - simpler and faster calculations are used, but you MUST guarantee,

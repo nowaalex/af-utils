@@ -13,22 +13,33 @@ const StyledTable = styled(Table)`
 
 const DEFAULT_ROW_COUNT = 100000;
 
+
 const VariableSizeTable = () => {
 
     const [ dynamicListRowHeights ] = useState(() => times( DEFAULT_ROW_COUNT, () => r( 100, 200 ) ));
 
+    const columns = [
+        {
+            dataKey: "a",
+            render: ( cellData, rowData, rowIndex ) => (
+                <div style={{
+                    color: "#000",
+                    textAlign: "center",
+                    lineHeight: `${dynamicListRowHeights[rowIndex]}px`,
+                    background: `hsl(${rowIndex*11%360},60%,60%)`
+                }}>
+                    {cellData}
+                </div>
+            )
+        },
+        "b",
+        "c"
+    ];
+
     return (
         <StyledTable
             getRowData={i => ({ a: `cell_a_${i}`, b: `cell_b_${i}`, c: `cell_c_${i}` })}
-            columns={[ "a", "b", "c" ]}
-            getCellExtraProps={( rowData, colIndex, rowIndex ) => ({
-                style: {
-                    color: "#000",
-                    textAlign: "center",
-                    height: `${dynamicListRowHeights[rowIndex]}px`,
-                    background: `hsl(${rowIndex*11%360},${(colIndex+1)* Math.round( 50 / 3 ) + 45}%,60%)`
-                }
-            })}
+            columns={columns}
             estimatedRowHeight={150}
             overscanRowsCount={5}
             rowsQuantity={DEFAULT_ROW_COUNT}

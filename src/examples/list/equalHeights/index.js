@@ -6,13 +6,12 @@ import List from "af-virtual-scroll/List";
     because otherwise List may collapse to zero-width
 */
 
+const wrapperStyle = { minWidth: 200 };
+
 const SimpleList = () => (
-    <List
-        fixed
-        style={{ minWidth: 200 }}
-        getRowData={i => `row ${i}`}
-        rowsQuantity={1000}
-    />
+    <List fixed style={wrapperStyle} rowsQuantity={1000}>
+        {i => <div key={i}>row {i}</div>}
+    </List>
 );
 
 export default SimpleList;

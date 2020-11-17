@@ -43,3 +43,10 @@
         bottom: 0;
     }
 }
+
+.bodyTable {
+    /* assuming that table would be used full-stretch mostly */
+    flex: 1 1 auto;
+    table-layout: fixed;
+    min-width: 100%;
+}

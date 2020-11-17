@@ -16,28 +16,27 @@ const StyledRow = styled.div`
     text-align: center;
 `;
 
-const DEFAULT_ROW_COUNT = 100000;
+const DEFAULT_ROW_COUNT = 200000;
 
 const VariableSizeList = () => {
 
-    const [ dynamicListRowHeights ] = useState(() => times( DEFAULT_ROW_COUNT, () => r( 100, 200 ) ));
+    const [ dynamicListRowHeights ] = useState(() => times( DEFAULT_ROW_COUNT, () => r( 50, 100 ) ));
 
     return (
         <StyledList
-            getRowData={
-                i => (
-                    <StyledRow style={{
-                        lineHeight: `${dynamicListRowHeights[i]}px`,
-                        background: `hsl(${i*11%360},60%,60%)`
-                    }}>
-                        row {i}:&nbsp;{dynamicListRowHeights[i]}px
-                    </StyledRow>
-                )
-            }
-            estimatedRowHeight={150}
+            estimatedRowHeight={75}
             overscanRowsCount={5}
             rowsQuantity={DEFAULT_ROW_COUNT}
-        />
+        >
+            {i => (
+                <StyledRow key={i} style={{
+                    lineHeight: `${dynamicListRowHeights[i]}px`,
+                    background: `hsl(${i*11%360},60%,60%)`
+                }}>
+                    row {i}:&nbsp;{dynamicListRowHeights[i]}px
+                </StyledRow>
+            )}
+        </StyledList>
     );
 }
 

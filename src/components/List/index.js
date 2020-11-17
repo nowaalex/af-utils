@@ -1,4 +1,5 @@
 import { memo } from "react";
+import PropTypes from "prop-types";
 
 import Context from "Context";
 import useModel from "hooks/useModel";
@@ -10,26 +11,20 @@ import ScrollContainer from "../common/ScrollContainer";
 import Scroller from "../common/Scroller";
 import commonPropTypes from "../common/propTypes";
 
-import RowComponentDefault from "./Row";
 import Rows from "./Rows";
 
 const List = ({
     fixed,
-    getRowData,
-    getRowKey,
-    getRowExtraProps,
+    children,
     estimatedRowHeight,
     rowsQuantity,
     overscanRowsCount,
-    RowComponent,
     dataRef,
     className,
     ...props
 }) => {
 
     const [ Store, rowsContainerRef ] = useModel( fixed ? FixedHeightsStore : VariableHeightsStore, dataRef, {
-        getRowData,
-        getRowKey,
         overscanRowsCount,
         estimatedRowHeight,
         rowsQuantity
@@ -40,26 +35,27 @@ const List = ({
             <ScrollContainer className={className} {...props}>
                 <Scroller as={<div />} />
                 <div ref={rowsContainerRef}>
-                    <Rows RowComponent={RowComponent} getRowExtraProps={getRowExtraProps} />
+                    <Rows renderRow={children} />
                 </div>
             </ScrollContainer>
         </Context.Provider>
     );
 };
 
-List.propTypes = commonPropTypes;
+List.propTypes = {
+    ...commonPropTypes,
+
+    /**
+     * @param {number} rowIndex
+     * @returns {any} row element children
+     */
+    children: PropTypes.func.isRequired
+}
 
 List.defaultProps = {
     fixed: false,
     estimatedRowHeight: 20,
-    overscanRowsCount: 4,
-    /*
-        For 90% non-reactive solutions, which only provide new getRowData when data is changed, memo is ok.
-        If RowComponent should be wrapped my mobx observer - non-memo version should be imported.
-        memo(observer(RowComponentDefault)) will do the trick.
-    */
-    
-    RowComponent: memo( RowComponentDefault )
+    overscanRowsCount: 4
 };
 
 export default memo( List );

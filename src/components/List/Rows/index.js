@@ -1,43 +1,21 @@
-import { memo } from "react";
+import { memo, useLayoutEffect } from "react";
 import useModelSubscription from "hooks/useModelSubscription";
 
-const getVisibleRows = (
-    rangeFrom,
-    rangeTo,
-    getRowData,
-    getRowKey,
-    getRowExtraProps,
-    RowComponent
-) => {
+const ROWS_SUBSCRIPTIONS = [ "startIndex", "endIndex" ];
+
+const Rows = ({ renderRow }) => {
+
+    const API = useModelSubscription( ROWS_SUBSCRIPTIONS );
+    const { startIndex, endIndex } = API;
     const result = [];
-    for( let rowKey; rangeFrom < rangeTo; rangeFrom++ ){
-        rowKey = getRowKey ? getRowKey( rangeFrom ) : rangeFrom;
-        result.push(
-            <RowComponent
-                getRowExtraProps={getRowExtraProps}
-                rowIndex={rangeFrom}
-                key={rowKey}
-                getRowData={getRowData}
-            />
-        );
+
+    for( let i = startIndex; i < endIndex; i++ ){
+        result.push( renderRow( i ) );
     }
+
+    useLayoutEffect(() => API.setRenderedStartIndex( startIndex ));
+
     return result;
-};
-
-const ROWS_SUBSCRIPTIONS = [ "startIndex", "endIndex", "getRowData", "getRowKey" ]
-
-const Rows = ({ getRowExtraProps, RowComponent }) => {
-
-    const { startIndex, endIndex, getRowData, getRowKey } = useModelSubscription( ROWS_SUBSCRIPTIONS );
-
-    return getVisibleRows(
-        startIndex,
-        endIndex,
-        getRowData,
-        getRowKey,
-        getRowExtraProps,
-        RowComponent
-    );
 };
 
 export default memo( Rows );

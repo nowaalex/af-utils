@@ -11,14 +11,17 @@ class BaseClass extends EventEmitter {
     widgetWidth = 0;
     estimatedRowHeight = 20;
     rowsContainerNode = null;
-    getRowData = null;
-    getRowKey = null;
 
     /* Calculated inside model */
+    renderedStartIndex = 0;
     startIndex = 0;
     endIndex = 0;
     virtualTopOffset = 0;
     widgetScrollHeight = 0;
+
+    setRenderedStartIndex( i ){
+        this.renderedStartIndex = i;
+    }
 
     set( key, value ){
         if( this[ key ] !== value ){

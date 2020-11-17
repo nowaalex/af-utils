@@ -26,7 +26,7 @@ const App = () => (
         <div className={css.wrapper}>
             <Menu items={menuItems} />
             <Switch>
-                <Route path="/examples/:example(.+)" render={renderPlayground} />
+                <Route path="/examples/:example(.+)?" render={renderPlayground} />
                 <Route path="/docs/:docPage" component={Docs} />
                 <Redirect to="/examples" />
             </Switch>
