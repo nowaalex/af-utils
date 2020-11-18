@@ -26,14 +26,18 @@ export const renderCell = ( rowData, rowIndex, column, Cell ) => (
     </td>
 );
 
-export const HeaderCell = ({ column, onClick }) => (
-    <th title={column.title} onClick={onClick && ( e => onClick( column, e ) )}>
-        {column.label}
-    </th>
+export const renderTheadContents = columns => (
+    <tr>
+        {columns.map( column => (
+            <th key={column.dataKey}>
+                {column.label}
+            </th>
+        ))}
+    </tr>
 );
 
 export const CellsList = ({ rowIndex, columns, getRowData, renderCell, Cell }) => {
-    const rowData = getRowData( rowIndex )
+    const rowData = getRowData( rowIndex );
     return columns.map( column => renderCell( rowData, rowIndex, column, Cell ));
 }
 

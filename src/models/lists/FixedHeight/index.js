@@ -10,7 +10,7 @@ class FixedHeight extends BaseClass {
         this
             .on( this.updateRowHeight, "widgetWidth", "widgetHeight", "rowsContainerNode", "rowsQuantity" )
             .on( this.updateStartIndex, "scrollTop", "rowHeight", "overscanRowsCount" )
-            .on( this.updateEndIndex, "scrollTop", "widgetHeight", "rowHeight", "overscanRowsCount" )
+            .on( this.updateEndIndex, "scrollTop", "widgetHeight", "rowHeight", "overscanRowsCount", "rowsQuantity" )
             .on( this.updateWidgetScrollHeight, "rowHeight", "rowsQuantity" )
             .on( this.updateVirtualTopOffset, "startIndex", "rowHeight" )
             .merge( initialValues );        

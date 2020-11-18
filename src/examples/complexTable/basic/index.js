@@ -1,10 +1,19 @@
 import Table from  "af-virtual-scroll/ComplexTable";
 
+const faker = require( "faker" );
+
+const rows = Array.from({ length: 1000 }, (v, i) => ({
+    i,
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    country: faker.address.country()
+}))
+
 const SimpleTable = () => (
     <Table
-        rowsQuantity={1000}
-        getRowData={i => ({ a: `cell_a_${i}`, b: `cell_b_${i}`, c: `cell_c_${i}` })}
-        columns={[ "a", "b", "c" ]}
+        rowsQuantity={rows.length}
+        getRowData={i => rows[ i ]}
+        columns={[ "i", "firstName", "lastName", "country" ]}
     />
 );
 

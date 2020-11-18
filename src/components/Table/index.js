@@ -15,14 +15,14 @@ import Scroller from "../common/Scroller";
 
 import Rows from "./Rows";
 import Colgroup from "./Colgroup";
-import HeaderCells from "./HeaderCells";
+import HeaderRows from "./HeaderRows";
 
 import {
     renderRow,
     renderCell,
+    renderTheadContents,
     CellsList,
-    Cell,
-    HeaderCell
+    Cell
 } from "./renderers";
 
 import css from "./style.module.scss";
@@ -42,15 +42,14 @@ const Table = ({
     getRowData,
     renderRow,
     renderCell,
+    renderTheadContents,
     CellsList,
     Cell,
-    HeaderCell,
     rowsQuantity,
     overscanRowsCount,
     headless,
     dataRef,
     className,
-    onHeaderCellClick,
     ...props
 }) => {
 
@@ -68,9 +67,7 @@ const Table = ({
                     <Colgroup />
                     {headless?null:(
                         <thead>
-                            <tr>
-                                <HeaderCells onClick={onHeaderCellClick} HeaderCell={HeaderCell} />
-                            </tr>
+                            <HeaderRows renderTheadContents={renderTheadContents} />
                         </thead>
                     )}
                     <Scroller as={<tbody />} />
@@ -120,9 +117,9 @@ Table.propTypes = {
 
     renderRow: PropTypes.func,
     renderCell: PropTypes.func,
+    renderTheadContents: PropTypes.func,
     CellsList: PropTypes.elementType,
     Cell: PropTypes.elementType,
-    HeaderCell: PropTypes.elementType,
 
     headless: PropTypes.bool,
 };
@@ -135,9 +132,9 @@ Table.defaultProps = {
 
     renderRow,
     renderCell,
+    renderTheadContents,
     CellsList,
-    Cell,
-    HeaderCell
+    Cell
 };
 
 export default memo( Table );

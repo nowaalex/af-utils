@@ -31,7 +31,6 @@ class VariableHeight extends BaseClass {
             .on( this.updateDomObserver, "rowsContainerNode" )
             .on( this.updateStartIndex, "scrollTop", "overscanRowsCount", "::cache-changed" )
             .on( this.updateEndIndex, "rowsQuantity", "scrollTop", "widgetHeight", "overscanRowsCount", "::cache-changed" )
-            .on( this.updateWidgetScrollHeight, "rowsQuantity", "::cache-changed" )
             .on( this.updateVirtualTopOffset, "startIndex", "::cache-changed" )
             .merge( initialValues );
         
@@ -46,8 +45,10 @@ class VariableHeight extends BaseClass {
             this.rowHeights = new Uint32Array( this.rowsQuantity );
             this.rowHeights.set( oldRowHeights );
             this.rowHeights.fill( this.estimatedRowHeight, oldLength );
-            this.fTree.grow( this.rowsQuantity );
         }
+
+        this.fTree.setN( this.rowsQuantity );
+        this.set( "widgetScrollHeight", this.fTree.sum( this.rowsQuantity ) );
     }
 
     updateDomObserver(){
@@ -65,10 +66,6 @@ class VariableHeight extends BaseClass {
         this.set( "endIndex", Math.min( this.rowsQuantity, this.fTree.find( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount ) );
     }
 
-    updateWidgetScrollHeight(){
-        this.set( "widgetScrollHeight", this.fTree.total );
-    }
-
     updateVirtualTopOffset(){
         this.set( "virtualTopOffset", this.fTree.sum( this.startIndex ) );
     }
@@ -78,17 +75,21 @@ class VariableHeight extends BaseClass {
 
         if( node ){
             
-            let index = this.renderedStartIndex, height, diff, cacheChanged = false;
+            let index = this.renderedStartIndex,
+                height,
+                diff,
+                totalDiff = 0,
+                cacheChanged = false;
 
             for( let child of node.children ){
      
                 height = child.offsetHeight;
                 diff = height - this.rowHeights[ index ];
 
-
                 if( diff ){
                     this.rowHeights[ index ] = height;
                     this.fTree.update( index, diff );
+                    totalDiff += diff;
                     if( !cacheChanged ){
                         cacheChanged = true;
                     }
@@ -99,6 +100,7 @@ class VariableHeight extends BaseClass {
 
             if( cacheChanged ){
                 this.emit( "::cache-changed" );
+                this.set( "widgetScrollHeight", this.widgetScrollHeight + totalDiff );
             }
         }
     }
