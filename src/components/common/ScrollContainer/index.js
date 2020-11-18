@@ -10,11 +10,7 @@ const ScrollContainer = ({ className, children, onScroll, ...props }) => {
     const API = useApi();
 
     const scrollHandler = useCallback( e => {
-        const { scrollTop, scrollLeft } = e.target;
-        API.merge({
-            scrollLeft,
-            scrollTop
-        });
+        API.set( "scrollTop", e.target.scrollTop );
         if( onScroll ){
             onScroll( e );
         }
@@ -27,10 +23,11 @@ const ScrollContainer = ({ className, children, onScroll, ...props }) => {
             if( entries.length === 1 ){
                 const { width, height } = entries[ 0 ].contentRect;
 
-                API.merge({
-                    widgetHeight: Math.round( height ),
-                    widgetWidth: Math.round( width )
-                });
+                API
+                    .startBatch()
+                    .set( "widgetHeight", Math.round( height ) )
+                    .set( "widgetWidth", Math.round( width ) )
+                    .endBatch();
             }
         });
 

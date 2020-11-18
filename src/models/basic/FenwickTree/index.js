@@ -19,6 +19,10 @@ class FenwickTree {
         return result;
     }    
 
+    /*
+        TODO:
+            there is a way to optimize this by doing l >> 1 instead of l-- and 1 << l
+    */
     find( v ){
         let k = 0;
 

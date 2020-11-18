@@ -4,7 +4,6 @@ class BaseClass extends PubSub {
 
     /* Provided from renderer */
     scrollTop = 0;
-    scrollLeft = 0;
     rowsQuantity = 0;
     overscanRowsCount = 0;
     widgetHeight = 0;
