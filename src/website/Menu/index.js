@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { VscGithub } from "react-icons/vsc";
+import { ImNpm } from "react-icons/im";
 import css from "./style.module.scss";
 
 const Menu = ({ items }) => (
@@ -20,8 +22,16 @@ const Menu = ({ items }) => (
         </nav>
     
         <h2 className={css.header}>Links</h2>
-        <a href="https://github.com/nowaalex/af-virtual-scroll" target="_blank" className={css.link}>Github</a>
-        <a href="https://www.npmjs.com/package/af-virtual-scroll" target="_blank" className={css.link}>Npm</a>
+
+        
+        <a href="https://github.com/nowaalex/af-virtual-scroll" target="_blank" className={css.link}>
+            <VscGithub />
+            Github
+        </a>
+        <a href="https://www.npmjs.com/package/af-virtual-scroll" target="_blank" className={css.link}>
+            <ImNpm />
+            Npm
+        </a>
     </div>
 );
 

@@ -99,8 +99,11 @@ class VariableHeight extends BaseClass {
             }
 
             if( cacheChanged ){
-                this.emit( "::cache-changed" );
-                this.set( "widgetScrollHeight", this.widgetScrollHeight + totalDiff );
+                this
+                    .startBatch()
+                    .emit( "::cache-changed" )
+                    .set( "widgetScrollHeight", this.widgetScrollHeight + totalDiff )
+                    .endBatch();
             }
         }
     }

@@ -30,8 +30,7 @@ import css from "./style.module.scss";
 /*
     Todo:
         * measure thead & tfoot heights in order to properly calculate available space for rows
-        * think about border-collapse offsetHeight issue
-        * maybe throw border-collapse
+        * think about border-collapse offsetHeight issue ( maybe throw border-collapse )
 */
 
 

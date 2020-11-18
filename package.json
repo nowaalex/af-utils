@@ -98,6 +98,7 @@
     "raw-loader": "^4.0.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-icons": "^3.11.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-test-renderer": "^17.0.1",

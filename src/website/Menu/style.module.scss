@@ -5,10 +5,17 @@
 }
 
 .link {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 0.5em 1em;
     color: inherit;
     text-decoration: none;
+
+    & > svg {
+        width: auto;
+        height: 1.5em;
+        margin-right: 1em;
+    }
 }
 
 .header {
