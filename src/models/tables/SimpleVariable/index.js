@@ -1,6 +1,6 @@
 import VariableHeight from "../../lists/VariableHeight";
-import createSimple from "../mixins/createSimple";
+import createTable from "../createTable";
 
-const SimpleVariable = createSimple( VariableHeight );
+const SimpleVariable = createTable( VariableHeight );
 
 export default SimpleVariable;

@@ -1,6 +1,6 @@
-import EventEmitter from "../../basic/EventEmitter";
+import PubSub from "../../basic/PubSub";
 
-class BaseClass extends EventEmitter {
+class BaseClass extends PubSub {
 
     /* Provided from renderer */
     scrollTop = 0;
@@ -21,25 +21,6 @@ class BaseClass extends EventEmitter {
 
     setRenderedStartIndex( i ){
         this.renderedStartIndex = i;
-    }
-
-    set( key, value ){
-        if( this[ key ] !== value ){
-            this[ key ] = value;
-            this.emit( key );
-        }
-        return this;
-    }
-
-    merge( obj ){
-        if( obj ){
-            this.startBatch();
-            for( let k in obj ){
-                this.set( k, obj[ k ] );
-            }
-            this.endBatch();
-        }
-        return this;
     }
 }
 

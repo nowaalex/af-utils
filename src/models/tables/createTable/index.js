@@ -5,7 +5,6 @@ const createSimple = ListClass => class extends ListClass {
 
     /* Provided from renderer */
     columns = [];
-    getCellData = null;
     
     /* Calculated inside model */
     normalizedColumns = [];
@@ -17,10 +16,6 @@ const createSimple = ListClass => class extends ListClass {
             "normalizedColumns",
             this.columns ? this.columns.map( column => {
                 const finalColumn = typeof column === "string" ? { dataKey: column } : { ...column };
-                
-                if( !finalColumn.getCellData ){
-                    finalColumn.getCellData = this.getCellData;
-                }
 
                 if( !finalColumn.label ){
                     finalColumn.label = startCase( finalColumn.dataKey );
@@ -43,9 +38,9 @@ const createSimple = ListClass => class extends ListClass {
         super( initialValues );
 
         this
-            .addListeners( this.updateNormalizedColumns, "columns", "getCellData" )
-            .addListeners( this.updateNormalizedVisibleColumns, "normalizedColumns" )
-            .addListeners( this.updateColumnsByDataKey, "normalizedColumns" )
+            .on( this.updateNormalizedColumns, "columns" )
+            .on( this.updateNormalizedVisibleColumns, "normalizedColumns" )
+            .on( this.updateColumnsByDataKey, "normalizedColumns" )
             .merge( initialValues );   
     }
 }

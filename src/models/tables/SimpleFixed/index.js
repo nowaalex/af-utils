@@ -1,6 +1,6 @@
 import FixedHeight from "../../lists/FixedHeight";
-import createSimple from "../mixins/createSimple";
+import createTable from "../createTable";
 
-const SimpleFixed = createSimple( FixedHeight );
+const SimpleFixed = createTable( FixedHeight );
 
 export default SimpleFixed;

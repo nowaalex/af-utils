@@ -4,47 +4,43 @@
 */
 const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
 
-export const renderRow = ( rowIndex, columns, getRowData, getCellData, renderCell, CellsList, Cell ) => (
+export const renderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => (
     <tr key={rowIndex}>
         <CellsList
             rowIndex={rowIndex}
             columns={columns}
             getRowData={getRowData}
-            getCellData={getCellData}
             renderCell={renderCell}
             Cell={Cell}
         />
     </tr>
 );
 
-export const renderCell = ( rowData, rowIndex, column, getCellData, Cell ) => (
+export const renderCell = ( rowData, rowIndex, column, Cell ) => (
     <td key={column.dataKey}>
         <Cell
             rowData={rowData}
             rowIndex={rowIndex}
             column={column}
-            getCellData={getCellData}
         />
     </td>
 );
 
-export const getCellData = ( rowData, rowIndex, dataKey ) => rowData[ dataKey ];
-
-export const HeaderCell = ({ column }) => (
-    <th title={column.title}>
+export const HeaderCell = ({ column, onClick }) => (
+    <th title={column.title} onClick={onClick && ( e => onClick( column, e ) )}>
         {column.label}
     </th>
 );
 
-export const CellsList = ({ rowIndex, columns, getRowData, getCellData, renderCell, Cell }) => {
+export const CellsList = ({ rowIndex, columns, getRowData, renderCell, Cell }) => {
     const rowData = getRowData( rowIndex )
-    return columns.map( column => renderCell( rowData, rowIndex, column, getCellData, Cell ));
+    return columns.map( column => renderCell( rowData, rowIndex, column, Cell ));
 }
 
-export const Cell = ({ rowData, rowIndex, column, getCellData }) => {
-    const { render, getEmptyCellData, dataKey, format, getCellData: getCellData2 } = column;
+export const Cell = ({ rowData, rowIndex, column }) => {
+    const { render, getEmptyCellData, dataKey, format } = column;
 
-    let cellData = rowData && ( getCellData || getCellData2)( rowData, rowIndex, dataKey );
+    let cellData = rowData && rowData[ dataKey ];
     
     if( cellData === undefined || cellData === "" ){
         cellData = getEmptyCellData ? getEmptyCellData( rowIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;

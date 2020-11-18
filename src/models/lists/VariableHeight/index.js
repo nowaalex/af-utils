@@ -27,12 +27,12 @@ class VariableHeight extends BaseClass {
         this.fTree = new FenwickTree( initialValues && initialValues.estimatedRowHeight || this.estimatedRowHeight );
 
         this
-            .addListeners( this.grow, "rowsQuantity" )
-            .addListeners( this.updateDomObserver, "rowsContainerNode" )
-            .addListeners( this.updateStartIndex, "scrollTop", "overscanRowsCount", "::cache-changed" )
-            .addListeners( this.updateEndIndex, "rowsQuantity", "scrollTop", "widgetHeight", "overscanRowsCount", "::cache-changed" )
-            .addListeners( this.updateWidgetScrollHeight, "rowsQuantity", "::cache-changed" )
-            .addListeners( this.updateVirtualTopOffset, "startIndex", "::cache-changed" )
+            .on( this.grow, "rowsQuantity" )
+            .on( this.updateDomObserver, "rowsContainerNode" )
+            .on( this.updateStartIndex, "scrollTop", "overscanRowsCount", "::cache-changed" )
+            .on( this.updateEndIndex, "rowsQuantity", "scrollTop", "widgetHeight", "overscanRowsCount", "::cache-changed" )
+            .on( this.updateWidgetScrollHeight, "rowsQuantity", "::cache-changed" )
+            .on( this.updateVirtualTopOffset, "startIndex", "::cache-changed" )
             .merge( initialValues );
         
         this.rowsDomObserver = new MutationObserver( this.updateRowHeightsThrottled );

@@ -8,11 +8,11 @@ class FixedHeight extends BaseClass {
         this.rowHeight = this.estimatedRowHeight;
 
         this
-            .addListeners( this.updateRowHeight, "widgetWidth", "widgetHeight", "rowsContainerNode", "rowsQuantity" )
-            .addListeners( this.updateStartIndex, "scrollTop", "rowHeight", "overscanRowsCount" )
-            .addListeners( this.updateEndIndex, "scrollTop", "widgetHeight", "rowHeight", "overscanRowsCount" )
-            .addListeners( this.updateWidgetScrollHeight, "rowHeight", "rowsQuantity" )
-            .addListeners( this.updateVirtualTopOffset, "startIndex", "rowHeight" )
+            .on( this.updateRowHeight, "widgetWidth", "widgetHeight", "rowsContainerNode", "rowsQuantity" )
+            .on( this.updateStartIndex, "scrollTop", "rowHeight", "overscanRowsCount" )
+            .on( this.updateEndIndex, "scrollTop", "widgetHeight", "rowHeight", "overscanRowsCount" )
+            .on( this.updateWidgetScrollHeight, "rowHeight", "rowsQuantity" )
+            .on( this.updateVirtualTopOffset, "startIndex", "rowHeight" )
             .merge( initialValues );        
     }
 

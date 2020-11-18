@@ -10,7 +10,6 @@ import useModel from "hooks/useModel";
 import FixedTable from "models/tables/SimpleFixed";
 import VariableTable from "models/tables/SimpleVariable";
 
-
 import ScrollContainer from "../common/ScrollContainer";
 import Scroller from "../common/Scroller";
 
@@ -20,7 +19,6 @@ import HeaderCells from "./HeaderCells";
 
 import {
     renderRow,
-    getCellData,
     renderCell,
     CellsList,
     Cell,
@@ -33,6 +31,7 @@ import css from "./style.module.scss";
     Todo:
         * measure thead & tfoot heights in order to properly calculate available space for rows
         * think about border-collapse offsetHeight issue
+        * maybe throw border-collapse
 */
 
 
@@ -42,7 +41,6 @@ const Table = ({
     columns,
     getRowData,
     renderRow,
-    getCellData,
     renderCell,
     CellsList,
     Cell,
@@ -52,6 +50,7 @@ const Table = ({
     headless,
     dataRef,
     className,
+    onHeaderCellClick,
     ...props
 }) => {
 
@@ -70,7 +69,7 @@ const Table = ({
                     {headless?null:(
                         <thead>
                             <tr>
-                                <HeaderCells HeaderCell={HeaderCell} />
+                                <HeaderCells onClick={onHeaderCellClick} HeaderCell={HeaderCell} />
                             </tr>
                         </thead>
                     )}
@@ -78,7 +77,6 @@ const Table = ({
                     <tbody ref={rowsContainerRef}>
                         <Rows
                             getRowData={getRowData}
-                            getCellData={getCellData}
                             renderRow={renderRow}
                             renderCell={renderCell}
                             CellsList={CellsList}
@@ -101,7 +99,6 @@ Table.propTypes = {
                 dataKey: PropTypes.string.isRequired,
 
                 // for details see CellComponent implementation
-                getCellData: PropTypes.func,
                 getEmptyCellData: PropTypes.func,
                 format: PropTypes.func,
                 render: PropTypes.func,
@@ -122,7 +119,6 @@ Table.propTypes = {
     getRowData: PropTypes.func.isRequired,
 
     renderRow: PropTypes.func,
-    getCellData: PropTypes.func,
     renderCell: PropTypes.func,
     CellsList: PropTypes.elementType,
     Cell: PropTypes.elementType,
@@ -138,7 +134,6 @@ Table.defaultProps = {
     overscanRowsCount: 4,
 
     renderRow,
-    getCellData,
     renderCell,
     CellsList,
     Cell,

@@ -5,7 +5,8 @@ const plugins = [
         alias: {
             "lodash-es": "lodash",
             "af-virtual-scroll/List": "./src/components/List",
-            "af-virtual-scroll/Table": "./src/components/Table"
+            "af-virtual-scroll/Table": "./src/components/Table",
+            "af-virtual-scroll/ComplexTable": "./src/components/ComplexTable"
         }
     }],
     [ "@babel/plugin-proposal-decorators", { "legacy": true }],
