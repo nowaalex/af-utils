@@ -10,12 +10,6 @@ fs.rmdirSync( OUTPUT_DIR, { recursive: true });
 
 export default {
     input: {
-        /*
-        Table: "src/Table/index.js",
-        TableRow: "src/Table/Row/index.js",
-        TableCell: "src/Table/Cell/index.js",
-        TableTotalsCell: "src/Table/TotalsCell/index.js",
-*/
         List: "src/components/List/index.js",
         Table: "src/components/Table/index.js",
         ComplexTable: "src/components/ComplexTable/index.js",

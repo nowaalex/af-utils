@@ -6,7 +6,7 @@ import List from "af-virtual-scroll/List";
     because otherwise List may collapse to zero-width
 */
 
-const wrapperStyle = { minWidth: 200 };
+const wrapperStyle = { minWidth: 200, maxWidth: 400 };
 
 const SimpleList = () => (
     <List fixed style={wrapperStyle} rowsQuantity={1000}>

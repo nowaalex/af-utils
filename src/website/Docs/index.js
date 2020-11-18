@@ -9,7 +9,9 @@ const Docs = () => {
 
     if( docPage === "commonPropTypes" ){
         return (
-            <Code className={css.wrapper}>{commonPropTypes}</Code>
+            <Code className={css.wrapper}>
+                {commonPropTypes}
+            </Code>
         );
     }
     
