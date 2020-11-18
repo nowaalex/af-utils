@@ -2,9 +2,6 @@ import { useReducer } from "react";
 
 const increment = x => x + 1;
 
-const useForceUpdate = () => {
-    const [ , forceUpdate ] = useReducer( increment, 0 );
-    return forceUpdate;
-}
+const useForceUpdate = () => useReducer( increment, 0 )[ 1 ];
 
 export default useForceUpdate;
