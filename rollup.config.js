@@ -18,6 +18,7 @@ export default {
 */
         List: "src/components/List/index.js",
         Table: "src/components/Table/index.js",
+        ComplexTable: "src/components/ComplexTable/index.js",
         tableRenderers: "src/components/Table/renderers.js",
         useApi: "src/hooks/useApi/index.js",
     },

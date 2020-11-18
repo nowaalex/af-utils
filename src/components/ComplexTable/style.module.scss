@@ -1,0 +1,14 @@
+.wrapper {
+    th[data-sortable]{
+        cursor: pointer;
+        user-select: none;
+    }
+    
+    th[aria-sort="ascending"]::after{
+        content: " ↑";
+    }
+    
+    th[aria-sort="descending"]::after{
+        content: " ↓";
+    }
+}

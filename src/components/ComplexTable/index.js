@@ -2,8 +2,10 @@ import { Fragment, useState, useEffect, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import RowsAggregator from "models/tables/RowsAggregator";
 import Table from "../Table";
+import cx from "utils/cx";
+import css from "./style.module.scss";
 
-const ComplexTable = ({ rowsQuantity, getRowData, ...props }) => {
+const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
 
     const propsToMerge = {
         rowsQuantity,
@@ -49,6 +51,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, ...props }) => {
             getRowData={getRowData}
             renderRow={renderRow}
             renderTheadContents={renderTheadContents}
+            className={cx(css.wrapper,className)}
             {...props}
         />
     );

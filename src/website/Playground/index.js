@@ -1,15 +1,16 @@
-import { memo } from "react";
+import { memo, Suspense } from "react";
 import Code from "../Code";
 import css from "./style.module.scss";
 
-const Playground = ({ example, code }) => {
+const Playground = ({ Example, code }) => {
     
     const { default: codeString } = code;
-    const { default: Component } = example;
 
     return (
         <div className={css.wrapper}>
-            <Component />
+            <Suspense fallback="Loading example...">
+                <Example />
+            </Suspense>
             <Code>{codeString}</Code>
         </div>
     );
