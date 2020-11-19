@@ -103,16 +103,10 @@ class ListBase extends PubSub {
     }
 
     /* Calculated inside model */
-    renderedStartIndex = 0;
     startIndex = 0;
     endIndex = 0;
     virtualTopOffset = 0;
     widgetScrollHeight = 0;
-
-    setRenderedStartIndex( v ){
-        this.renderedStartIndex = v;
-        /* No event needs to be emitted here; */
-    }
 }
 
 export default ListBase;

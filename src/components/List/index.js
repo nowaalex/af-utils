@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import PropTypes from "prop-types";
 
 import Context from "Context";
@@ -26,16 +26,21 @@ const List = ({
 
     const [ rowsContainerNode, rowsContainerRef ] = useState();
 
-    const Store = useModel( fixed ? FixedHeightsStore : VariableHeightsStore, dataRef );
-
-    useEffect(() => Store.setViewParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode ));
+    const Store = useModel(
+        fixed ? FixedHeightsStore : VariableHeightsStore,
+        dataRef,
+        estimatedRowHeight,
+        overscanRowsCount,
+        rowsQuantity,
+        rowsContainerNode
+    );
 
     return (
         <Context.Provider value={Store}>
             <ScrollContainer className={className} {...props}>
-                <Scroller as={<div />} />
+                <Scroller as="div" />
                 <div ref={rowsContainerRef}>
-                    <Rows renderRow={children} />
+                    <Rows renderRow={children} /> 
                 </div>
             </ScrollContainer>
         </Context.Provider>

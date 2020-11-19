@@ -22,8 +22,6 @@ const Menu = ({ items }) => (
         </nav>
     
         <h2 className={css.header}>Links</h2>
-
-        
         <a href="https://github.com/nowaalex/af-virtual-scroll" target="_blank" className={css.link}>
             <VscGithub />
             Github

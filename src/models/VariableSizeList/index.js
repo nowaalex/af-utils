@@ -14,18 +14,11 @@ import {
         maybe MutationObserver is not needed?
 */
 
-class VariableSizeList extends ListBase {    
-
-    destructor(){
-        this.rowsDomObserver.disconnect();
-        this.updateRowHeightsThrottled.cancel();
-        super.destructor();
-    }
-
+class VariableSizeList extends ListBase {
+    
     rowHeights = [];
     fTree = [];
     
-
     constructor(){
         super();
 
@@ -34,6 +27,12 @@ class VariableSizeList extends ListBase {
             .on( this.updateDomObserver, ROWS_CONTAINER_NODE );
             
         this.rowsDomObserver = new MutationObserver( this.updateRowHeightsThrottled );
+    }
+
+    destructor(){
+        this.rowsDomObserver.disconnect();
+        this.updateRowHeightsThrottled.cancel();
+        super.destructor();
     }
 
     grow(){
@@ -64,7 +63,7 @@ class VariableSizeList extends ListBase {
                     try to find O(N) initialization algorithm instead of O(NlogN)
             */
             for( let j = oldCacheLen; j < this.rowsQuantity; j++ ){
-                this.update( j, this.estimatedRowHeight );
+                this.updateRowHeight( j, this.estimatedRowHeight );
             }
         }
 
@@ -118,7 +117,7 @@ class VariableSizeList extends ListBase {
         return this;
     }
 
-    update( i, delta ){
+    updateRowHeight( i, delta ){
         for ( i++; i <= this.rowsQuantity; i += i & -i ){
             this.fTree[ i ] += delta;
         }
@@ -128,8 +127,8 @@ class VariableSizeList extends ListBase {
         const node = this.rowsContainerNode;
 
         if( node ){
-            
-            let index = this.renderedStartIndex,
+
+            let index = this.startIndex,
                 height,
                 diff,
                 totalDiff = 0,
@@ -142,7 +141,7 @@ class VariableSizeList extends ListBase {
 
                 if( diff ){
                     this.rowHeights[ index ] = height;
-                    this.update( index, diff );
+                    this.updateRowHeight( index, diff );
                     totalDiff += diff;
                     if( !cacheChanged ){
                         cacheChanged = true;

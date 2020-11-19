@@ -1,10 +1,9 @@
-import { memo, useEffect, useState, useMemo } from "react";
+import { memo, useState, useMemo } from "react";
 import PropTypes from "prop-types";
-
-import startCase from "lodash/startCase";
 
 import commonPropTypes from "../common/propTypes";
 import cx from "utils/cx";
+import startCase from "utils/startCase";
 
 import Context from "Context";
 import useModel from "hooks/useModel";
@@ -34,7 +33,6 @@ import css from "./style.module.scss";
         * think about border-collapse offsetHeight issue ( maybe throw border-collapse )
 */
 
-
 const Table = ({
     fixed,
     estimatedRowHeight,
@@ -55,9 +53,14 @@ const Table = ({
 
     const [ rowsContainerNode, rowsContainerRef ] = useState();
 
-    const Store = useModel( fixed ? FixedHeightsStore : VariableHeightsStore, dataRef );
-
-    useEffect(() => Store.setViewParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode ));
+    const Store = useModel(
+        fixed ? FixedHeightsStore : VariableHeightsStore,
+        dataRef,
+        estimatedRowHeight,
+        overscanRowsCount,
+        rowsQuantity,
+        rowsContainerNode
+    );
 
     const normalizedVisibleColumns = useMemo(() => columns.map( column => {
         const finalColumn = typeof column === "string" ? { dataKey: column } : { ...column };
@@ -67,7 +70,7 @@ const Table = ({
         }
 
         return finalColumn;
-    }), [ columns ]);
+    }), [ columns ]);   
     
     return (
         <Context.Provider value={Store}>
@@ -79,7 +82,7 @@ const Table = ({
                             {renderTheadContents(normalizedVisibleColumns)}
                         </thead>
                     )}
-                    <Scroller as={<tbody />} />
+                    <Scroller as="tbody" />
                     <tbody ref={rowsContainerRef}>
                         <Rows
                             columns={normalizedVisibleColumns}

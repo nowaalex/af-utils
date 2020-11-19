@@ -30,7 +30,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
     const { sortedIndexes } = m;
 
     const renderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => (
-        <tr key={rowIndex}>
+        <tr key={sortedIndexes[rowIndex]}>
             <CellsList
                 rowIndex={sortedIndexes[rowIndex]}
                 columns={columns}

@@ -2,5 +2,5 @@
     /* tbody can be a scroller */
     display: block !important;
     visibility: hidden !important;
-    pointer-events: none;
+    pointer-events: none !important;
 }

@@ -69,11 +69,7 @@ class RowsAggregator {
     }
 
     get orderedIndexes(){
-        const arr = new Uint32Array( this.rowsQuantity );
-        for( let j = 0; j < this.rowsQuantity; j++ ){
-            arr[ j ] = j;
-        }
-        return arr;
+        return Array.from({ length: this.rowsQuantity }, ( v, i ) => i );
     }
 
     get grouped(){
@@ -81,10 +77,11 @@ class RowsAggregator {
     }
 
     get filteredIndexes(){
+        const { filtersMap, orderedIndexes } = this;
         if( this.filtersMap.size ){
-            const filteredIndexesArray = this.orderedIndexes.filter( idx => {
+            const filteredIndexesArray = orderedIndexes.filter( idx => {
                 const row = this.getRowData( idx );
-                for( let [ dataKey, value ] of this.filtersMap ){
+                for( let [ dataKey, value ] of filtersMap ){
                     if( !String( row[ dataKey ] ).toLowerCase().includes( value ) ){
                         return false;
                     }
@@ -92,14 +89,14 @@ class RowsAggregator {
                 return true;
             });
 
-            return filteredIndexesArray.length === this.rowsQuantity ? this.orderedIndexes : filteredIndexesArray;
+            return filteredIndexesArray;
         }
         return this.orderedIndexes;
     }
 
     get sortedIndexes(){
         const { sortDataKey, sortDirection } = this;
-        
+
         return sortDataKey === "" ? this.filteredIndexes : this.filteredIndexes.sort(( a, b ) => {
             const row1 = this.getRowData( a );
             const row2 = this.getRowData( b );
@@ -117,7 +114,9 @@ class RowsAggregator {
     constructor(){
         makeAutoObservable( this, {
             shallowGroupsStore: false,
-            sortedIndexes: computed({ equals: () => false })
+            sortedIndexes: computed({ equals: () => false }),
+            filteredIndexes: computed({ equals: () => false }),
+            orderedIndexes: computed({ equals: () => false }),
         });
     }
 

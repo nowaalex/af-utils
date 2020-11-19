@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
     dataRef is to call Data methods from outside( Data.scrollTo(), etc. ).
     As it is not dom-related, I decided to avoid forwardRef
 */
-const useStore = ( StoreConstructor, dataRef ) => {
+const useStore = ( StoreConstructor, dataRef, estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode ) => {
 
     const finalDataRef = useRef();
 
@@ -17,6 +17,12 @@ const useStore = ( StoreConstructor, dataRef ) => {
     if( dataRef ){
         dataRef.current = Store;
     }
+
+    Store.startBatch().setViewParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode );
+
+    useEffect(() => {
+        Store.endBatch();
+    });
     
     useEffect(() => () => Store.destructor(), [ Store ]);
 

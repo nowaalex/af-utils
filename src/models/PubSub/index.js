@@ -2,9 +2,14 @@ import { EVENTS_ARRAY_LENGTH } from "constants/events";
 
 class PubSub {
 
+    /* All callbacks are known in advance, so we can allocate in construcror */
     _E = Array.from({ length: EVENTS_ARRAY_LENGTH }, () => []);
-    _cQueue = new Set();
-    _b = 0;
+
+    /* query of callbacks, that should run after batch end */
+    _Q = new Set();
+
+    /* depth of batch */
+    inBatch = 0;
 
     on( callBack, ...events ){
         if( process.env.NODE_ENV !== "production" ){
@@ -19,10 +24,10 @@ class PubSub {
     }
 
     destructor(){
-        for( let j = 0; j < EVENTS_ARRAY_LENGTH; j++ ){
-            this._E[ j ] = [];
+        for( let events of this._E ){
+            events.splice( 0 );
         }
-        this._cQueue.clear();
+        this._Q.clear();
     }
 
     off( callBack, ...events ){
@@ -32,10 +37,19 @@ class PubSub {
         return this;
     }
 
+    queue( cb ){
+        if( process.env.NODE_ENV !== "production" ){
+            if( !this.inBatch ){
+                console.error( "trying to add event to batch queue, while inBatch is 0" );
+            }
+        }
+        this._Q.add( cb );
+    }
+
     e( evt ){
-        if( this._b ){
+        if( this.inBatch ){
             for( let cb of this._E[ evt ] ){
-                this._cQueue.add( cb );
+                this._Q.add( cb );
             }
         }
         else{
@@ -49,16 +63,16 @@ class PubSub {
     /* inspired by mobx */
 
     startBatch(){
-        this._b++;
+        this.inBatch++;
         return this;
     }
 
     endBatch(){
-        if( !--this._b ){
-            for( let cb of this._cQueue ){
+        if( !--this.inBatch ){
+            for( let cb of this._Q ){
                 cb.call( this );
             }
-            this._cQueue.clear();
+            this._Q.clear();
         }
         return this;
     }

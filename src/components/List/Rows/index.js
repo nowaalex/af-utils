@@ -1,16 +1,11 @@
-import { memo, useLayoutEffect } from "react";
-import useModelSubscription from "hooks/useModelSubscription";
+import { memo } from "react";
+import { START_INDEX, END_INDEX } from "constants/events";
+import useSubscription from "hooks/useSubscription";
 
-import {
-    START_INDEX,
-    END_INDEX
-} from "constants/events";
+const E = [ START_INDEX, END_INDEX ];
 
-const ROWS_SUBSCRIPTIONS = [ START_INDEX, END_INDEX ];
+const Rows = ({ renderRow }) => useSubscription( API => {
 
-const Rows = ({ renderRow }) => {
-
-    const API = useModelSubscription( ROWS_SUBSCRIPTIONS );
     const { startIndex, endIndex } = API;
     const result = [];
 
@@ -18,9 +13,7 @@ const Rows = ({ renderRow }) => {
         result.push( renderRow( i ) );
     }
 
-    useLayoutEffect(() => API.setRenderedStartIndex( startIndex ));
-
     return result;
-};
+}, E );
 
 export default memo( Rows );

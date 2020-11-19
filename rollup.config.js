@@ -55,5 +55,5 @@ export default {
             }
         })
     ],
-    external: [ "react", "react-dom", "lodash", "mobx", "mobx-react-lite" ]
+    external: [ "react", "react-dom", "mobx", "mobx-react-lite" ]
 };
