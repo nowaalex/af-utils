@@ -42,6 +42,30 @@ class BaseClass extends PubSub {
             .on( this.updateVirtualTopOffset, START_INDEX, CACHED_ROWS_HEIGHT );
     }
 
+    updateStartIndex(){
+        const v = Math.max( 0, this.getStartIndex() - this.overscanRowsCount );
+        if( v !== this.startIndex ){
+            this.startIndex = v;
+            this.e( START_INDEX );
+        }
+    }
+
+    updateEndIndex(){
+        const v = Math.min( this.rowsQuantity, this.getEndIndex() + this.overscanRowsCount );
+        if( v !== this.endIndex ){
+            this.endIndex = v;
+            this.e( END_INDEX );
+        }
+    }
+
+    updateVirtualTopOffset(){
+        const v = this.getVirtualTopOffset();
+        if( v !== this.virtualTopOffset ){
+            this.virtualTopOffset = v;
+            this.e( VIRTUAL_TOP_OFFSET );
+        }
+    }
+
     setWidgetDimensions( width, height ){
         this.startBatch();
         if( width !== this.widgetWidth ){

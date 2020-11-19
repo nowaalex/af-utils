@@ -34,20 +34,16 @@ class FixedHeight extends BaseClass {
             .on( this.updateWidgetScrollHeight, CACHED_ROWS_HEIGHT, ROWS_QUANTITY );
     }
 
-    updateStartIndex(){
-        const v = Math.max( 0, Math.floor( this.scrollTop / this.rowHeight ) - this.overscanRowsCount );
-        if( v !== this.startIndex ){
-            this.startIndex = v;
-            this.e( START_INDEX );
-        }
+    getStartIndex(){
+        return Math.floor( this.scrollTop / this.rowHeight );
     }
 
-    updateEndIndex(){
-        const v = Math.min( this.rowsQuantity, Math.floor( ( this.scrollTop + this.widgetHeight ) / this.rowHeight ) + this.overscanRowsCount );
-        if( v !== this.endIndex ){
-            this.endIndex = v;
-            this.e( END_INDEX );
-        }
+    getEndIndex(){
+        return Math.floor( ( this.scrollTop + this.widgetHeight ) / this.rowHeight );
+    }
+
+    getVirtualTopOffset(){
+        return this.startIndex * this.rowHeight;
     }
 
     updateWidgetScrollHeight(){
@@ -55,14 +51,6 @@ class FixedHeight extends BaseClass {
         if( v !== this.widgetScrollHeight ){
             this.widgetScrollHeight = v;
             this.e( WIDGET_SCROLL_HEIGHT );
-        }
-    }
-
-    updateVirtualTopOffset(){
-        const v = this.startIndex * this.rowHeight;
-        if( v !== this.virtualTopOffset ){
-            this.virtualTopOffset = v;
-            this.e( VIRTUAL_TOP_OFFSET );
         }
     }
 

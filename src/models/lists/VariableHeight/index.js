@@ -19,6 +19,7 @@ import {
 /*
     TODO:
         when estimatedRowHeight is not correct, scroll behavior is weird here
+        maybe MutationObserver is not needed?
 */
 
 class VariableHeight extends BaseClass {    
@@ -70,28 +71,16 @@ class VariableHeight extends BaseClass {
         }
     }
 
-    updateStartIndex(){
-        const v = Math.max( 0, this.fTree.find( this.scrollTop ) - this.overscanRowsCount );
-        if( v !== this.startIndex ){
-            this.startIndex = v;
-            this.e( START_INDEX );
-        }
+    getStartIndex(){
+        return this.fTree.find( this.scrollTop );
     }
 
-    updateEndIndex(){
-        const v = Math.min( this.rowsQuantity, this.fTree.find( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount );
-        if( v !== this.endIndex ){
-            this.endIndex = v;
-            this.e( END_INDEX );
-        }
+    getEndIndex(){
+        return this.fTree.find( this.scrollTop + this.widgetHeight );
     }
 
-    updateVirtualTopOffset(){
-        const v = this.fTree.sum( this.startIndex );
-        if( v !== this.virtualTopOffset ){
-            this.virtualTopOffset = v;
-            this.e( VIRTUAL_TOP_OFFSET );
-        }
+    getVirtualTopOffset(){
+        return this.fTree.sum( this.startIndex );
     }
 
     setWidgetScrollHeight( v ){
