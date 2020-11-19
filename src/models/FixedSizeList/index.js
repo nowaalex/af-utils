@@ -1,4 +1,4 @@
-import BaseClass from "../BaseClass";
+import ListBase from "../ListBase";
 
 import {
     START_INDEX,
@@ -14,7 +14,7 @@ import {
     CACHED_ROWS_HEIGHT,
 } from "constants/events";
 
-class FixedHeight extends BaseClass {
+class FixedSizeList extends ListBase {
 
     rowHeight = 0;
 
@@ -33,11 +33,11 @@ class FixedHeight extends BaseClass {
             .on( this.updateWidgetScrollHeight, CACHED_ROWS_HEIGHT, ROWS_QUANTITY );
     }
 
-    pxToIndex( px ){
-        return Math.floor( px / this.rowHeight );
+    getIndex( offset ){
+        return Math.floor( offset / this.rowHeight );
     }
 
-    indexToPx( index ){
+    getOffset( index ){
         return index * this.rowHeight;
     }
 
@@ -62,4 +62,4 @@ class FixedHeight extends BaseClass {
     }
 }
 
-export default FixedHeight;
+export default FixedSizeList;

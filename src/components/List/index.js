@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import Context from "Context";
 import useModel from "hooks/useModel";
 
-import VariableHeightsStore from "models/lists/VariableHeight";
-import FixedHeightsStore from "models/lists/FixedHeight";
+import VariableHeightsStore from "models/VariableSizeList";
+import FixedHeightsStore from "models/FixedSizeList";
 
 import ScrollContainer from "../common/ScrollContainer";
 import Scroller from "../common/Scroller";

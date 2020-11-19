@@ -1,4 +1,4 @@
-import PubSub from "../../basic/PubSub";
+import PubSub from "../PubSub";
 
 import {
     START_INDEX,
@@ -14,7 +14,7 @@ import {
     CACHED_ROWS_HEIGHT,
 } from "constants/events";
 
-class BaseClass extends PubSub {
+class ListBase extends PubSub {
 
     /* Provided from renderer */
     scrollTop = 0;
@@ -42,7 +42,7 @@ class BaseClass extends PubSub {
     }
 
     updateStartIndex(){
-        const v = Math.max( 0, this.indexToPx( this.scrollTop ) - this.overscanRowsCount );
+        const v = Math.max( 0, this.getIndex( this.scrollTop ) - this.overscanRowsCount );
         if( v !== this.startIndex ){
             this.startIndex = v;
             this.e( START_INDEX );
@@ -50,7 +50,7 @@ class BaseClass extends PubSub {
     }
 
     updateEndIndex(){
-        const v = Math.min( this.rowsQuantity, this.indexToPx( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount );
+        const v = Math.min( this.rowsQuantity, this.getIndex( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount );
         if( v !== this.endIndex ){
             this.endIndex = v;
             this.e( END_INDEX );
@@ -58,7 +58,7 @@ class BaseClass extends PubSub {
     }
 
     updateVirtualTopOffset(){
-        const v = this.pxToIndex( this.startIndex );
+        const v = this.getOffset( this.startIndex );
         if( v !== this.virtualTopOffset ){
             this.virtualTopOffset = v;
             this.e( VIRTUAL_TOP_OFFSET );
@@ -115,4 +115,4 @@ class BaseClass extends PubSub {
     }
 }
 
-export default BaseClass;
+export default ListBase;

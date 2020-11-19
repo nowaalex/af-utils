@@ -1,16 +1,8 @@
-import BaseClass from "../BaseClass";
-import FenwickTree from "models/basic/FenwickTree";
+import ListBase from "../ListBase";
 import throttle from "utils/throttle";
 
 import {
-    START_INDEX,
-    END_INDEX,
-    SCROLL_TOP,
     ROWS_QUANTITY,
-    OVERSCAN_ROWS_COUNT,
-    WIDGET_WIDTH,
-    WIDGET_HEIGHT,
-    VIRTUAL_TOP_OFFSET,
     WIDGET_SCROLL_HEIGHT,
     ROWS_CONTAINER_NODE,
     CACHED_ROWS_HEIGHT,
@@ -22,7 +14,7 @@ import {
         maybe MutationObserver is not needed?
 */
 
-class VariableHeight extends BaseClass {    
+class VariableSizeList extends ListBase {    
 
     destructor(){
         this.rowsDomObserver.disconnect();
@@ -31,7 +23,14 @@ class VariableHeight extends BaseClass {
     }
 
     rowHeights = [];
-    fTree = new FenwickTree();
+
+    /*
+        Fenwick tree
+        TODO:
+            try to find O(N) initialization algorithm instead of O(NlogN)
+    */
+    fTree = [];
+    
 
     constructor(){
         super();
@@ -53,13 +52,23 @@ class VariableHeight extends BaseClass {
             this.rowHeights.fill( this.estimatedRowHeight, oldLength );
         }
 
-        if( process.env.NODE_ENV !== "production" ){
-            if( !this.estimatedRowHeight ){
-                console.warn( "estimatedRowHeight must be provided here" );
+        const oldCache = this.fTree;
+        const oldCacheLen = oldCache.length;
+    
+        if( this.rowsQuantity + 1 > oldCacheLen ){
+            this.fTree = new Uint32Array( this.rowsQuantity + 1 );
+            this.fTree.set( oldCache );
+
+            if( process.env.NODE_ENV !== "production" ){
+                if( !this.estimatedRowHeight ){
+                    console.warn( "estimatedRowHeight must be provided here" );
+                }
+            }
+
+            for( let j = oldCacheLen; j < this.rowsQuantity; j++ ){
+                this.update( j, this.estimatedRowHeight );
             }
         }
-
-        this.fTree.setN( this.rowsQuantity, this.estimatedRowHeight );
 
         this.setWidgetScrollHeight( this.getOffset( this.rowsQuantity ) );
     }
@@ -71,12 +80,36 @@ class VariableHeight extends BaseClass {
         }
     }
 
-    getIndex( topOffset ){
-        return this.fTree.find( topOffset );
+    /*
+        TODO:
+            there is a way to optimize this by doing l >> 1 instead of l-- and 1 << l
+    */
+    getIndex( offset ){
+        let k = 0;
+
+        for( let l = 31 - Math.clz32( this.rowsQuantity ), nk; l >= 0; l-- ){
+            nk = k + ( 1 << l );
+            if( nk > this.rowsQuantity ){
+                continue;
+            }
+            if( offset === this.fTree[ nk ] ){
+                return nk;
+            }
+            if( offset > this.fTree[ nk ] ) {
+                k = nk;
+                offset -= this.fTree[ k ];
+            }
+        }
+
+        return k;
     }
 
     getOffset( index ){
-        return this.fTree.sum( index );
+        let result = 0;
+        for ( ; index > 0; index -= index & -index ){
+            result += this.fTree[ index ];
+        }
+        return result;
     }
 
     setWidgetScrollHeight( v ){
@@ -85,6 +118,12 @@ class VariableHeight extends BaseClass {
             this.e( WIDGET_SCROLL_HEIGHT );
         }
         return this;
+    }
+
+    update( i, delta ){
+        for ( i++; i <= this.rowsQuantity; i += i & -i ){
+            this.fTree[ i ] += delta;
+        }
     }
 
     updateRowHeights(){
@@ -105,7 +144,7 @@ class VariableHeight extends BaseClass {
 
                 if( diff ){
                     this.rowHeights[ index ] = height;
-                    this.fTree.update( index, diff );
+                    this.update( index, diff );
                     totalDiff += diff;
                     if( !cacheChanged ){
                         cacheChanged = true;
@@ -128,4 +167,4 @@ class VariableHeight extends BaseClass {
     updateRowHeightsThrottled = throttle( this.updateRowHeights, 200, this );
 }
 
-export default VariableHeight;
+export default VariableSizeList;
