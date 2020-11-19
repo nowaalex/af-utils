@@ -33,16 +33,12 @@ class FixedHeight extends BaseClass {
             .on( this.updateWidgetScrollHeight, CACHED_ROWS_HEIGHT, ROWS_QUANTITY );
     }
 
-    getStartIndex(){
-        return Math.floor( this.scrollTop / this.rowHeight );
+    pxToIndex( px ){
+        return Math.floor( px / this.rowHeight );
     }
 
-    getEndIndex(){
-        return Math.floor( ( this.scrollTop + this.widgetHeight ) / this.rowHeight );
-    }
-
-    getVirtualTopOffset(){
-        return this.startIndex * this.rowHeight;
+    indexToPx( index ){
+        return index * this.rowHeight;
     }
 
     updateWidgetScrollHeight(){

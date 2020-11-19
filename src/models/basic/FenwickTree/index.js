@@ -43,9 +43,8 @@ class FenwickTree {
     }
 
     setN( N, defaultValue ){
-        const prevN = this.N;
 
-        if( N !== prevN ){
+        if( N !== this.N ){
             
             this.N = N;
             const oldCache = this.C;

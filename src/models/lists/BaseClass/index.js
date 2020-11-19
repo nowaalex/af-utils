@@ -42,7 +42,7 @@ class BaseClass extends PubSub {
     }
 
     updateStartIndex(){
-        const v = Math.max( 0, this.getStartIndex() - this.overscanRowsCount );
+        const v = Math.max( 0, this.indexToPx( this.scrollTop ) - this.overscanRowsCount );
         if( v !== this.startIndex ){
             this.startIndex = v;
             this.e( START_INDEX );
@@ -50,7 +50,7 @@ class BaseClass extends PubSub {
     }
 
     updateEndIndex(){
-        const v = Math.min( this.rowsQuantity, this.getEndIndex() + this.overscanRowsCount );
+        const v = Math.min( this.rowsQuantity, this.indexToPx( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount );
         if( v !== this.endIndex ){
             this.endIndex = v;
             this.e( END_INDEX );
@@ -58,7 +58,7 @@ class BaseClass extends PubSub {
     }
 
     updateVirtualTopOffset(){
-        const v = this.getVirtualTopOffset();
+        const v = this.pxToIndex( this.startIndex );
         if( v !== this.virtualTopOffset ){
             this.virtualTopOffset = v;
             this.e( VIRTUAL_TOP_OFFSET );

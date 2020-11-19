@@ -61,7 +61,7 @@ class VariableHeight extends BaseClass {
 
         this.fTree.setN( this.rowsQuantity, this.estimatedRowHeight );
 
-        this.setWidgetScrollHeight( this.fTree.sum( this.rowsQuantity ) );
+        this.setWidgetScrollHeight( this.getOffset( this.rowsQuantity ) );
     }
 
     updateDomObserver(){
@@ -71,16 +71,12 @@ class VariableHeight extends BaseClass {
         }
     }
 
-    getStartIndex(){
-        return this.fTree.find( this.scrollTop );
+    getIndex( topOffset ){
+        return this.fTree.find( topOffset );
     }
 
-    getEndIndex(){
-        return this.fTree.find( this.scrollTop + this.widgetHeight );
-    }
-
-    getVirtualTopOffset(){
-        return this.fTree.sum( this.startIndex );
+    getOffset( index ){
+        return this.fTree.sum( index );
     }
 
     setWidgetScrollHeight( v ){
