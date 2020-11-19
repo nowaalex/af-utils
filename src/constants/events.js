@@ -9,6 +9,5 @@ export const VIRTUAL_TOP_OFFSET         = 7;
 export const WIDGET_SCROLL_HEIGHT       = 8;
 export const ROWS_CONTAINER_NODE        = 9;
 export const CACHED_ROWS_HEIGHT         = 10;
-export const ESTIMATED_ROW_HEIGHT       = 11;
 
-export const EVENTS_ARRAY_LENGTH        = 12;
+export const EVENTS_ARRAY_LENGTH        = 11;

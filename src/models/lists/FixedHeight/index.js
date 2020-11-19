@@ -10,7 +10,6 @@ import {
     WIDGET_HEIGHT,
     VIRTUAL_TOP_OFFSET,
     WIDGET_SCROLL_HEIGHT,
-    ESTIMATED_ROW_HEIGHT,
     ROWS_CONTAINER_NODE,
     CACHED_ROWS_HEIGHT,
 } from "constants/events";
@@ -30,7 +29,7 @@ class FixedHeight extends BaseClass {
         super();
 
         this
-            .on( this.updateRowHeight, WIDGET_WIDTH, WIDGET_HEIGHT, ROWS_CONTAINER_NODE, ROWS_QUANTITY, ESTIMATED_ROW_HEIGHT )
+            .on( this.updateRowHeight, WIDGET_WIDTH, WIDGET_HEIGHT, ROWS_CONTAINER_NODE, ROWS_QUANTITY )
             .on( this.updateWidgetScrollHeight, CACHED_ROWS_HEIGHT, ROWS_QUANTITY );
     }
 

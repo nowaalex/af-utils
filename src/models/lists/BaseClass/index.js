@@ -10,7 +10,6 @@ import {
     WIDGET_HEIGHT,
     VIRTUAL_TOP_OFFSET,
     WIDGET_SCROLL_HEIGHT,
-    ESTIMATED_ROW_HEIGHT,
     ROWS_CONTAINER_NODE,
     CACHED_ROWS_HEIGHT,
 } from "constants/events";
@@ -80,12 +79,10 @@ class BaseClass extends PubSub {
     }
 
     setViewParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode ){
-        this.startBatch();
 
-        if( estimatedRowHeight !== this.estimatedRowHeight ){
-            this.estimatedRowHeight = estimatedRowHeight;
-            this.e( ESTIMATED_ROW_HEIGHT );
-        }
+        this.estimatedRowHeight = estimatedRowHeight;
+
+        this.startBatch();
 
         if( overscanRowsCount !== this.overscanRowsCount ){
             this.overscanRowsCount = overscanRowsCount;
