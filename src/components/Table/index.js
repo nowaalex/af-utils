@@ -1,5 +1,7 @@
-import { memo } from "react";
+import { memo, useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
+
+import startCase from "lodash/startCase";
 
 import commonPropTypes from "../common/propTypes";
 import cx from "utils/cx";
@@ -7,15 +9,14 @@ import cx from "utils/cx";
 import Context from "Context";
 import useModel from "hooks/useModel";
 
-import FixedTable from "models/tables/SimpleFixed";
-import VariableTable from "models/tables/SimpleVariable";
+import VariableHeightsStore from "models/lists/VariableHeight";
+import FixedHeightsStore from "models/lists/FixedHeight";
 
 import ScrollContainer from "../common/ScrollContainer";
 import Scroller from "../common/Scroller";
 
 import Rows from "./Rows";
 import Colgroup from "./Colgroup";
-import HeaderRows from "./HeaderRows";
 
 import {
     renderRow,
@@ -52,26 +53,36 @@ const Table = ({
     ...props
 }) => {
 
-    const [ Store, rowsContainerRef ] = useModel( fixed ? FixedTable : VariableTable, dataRef, {
-        overscanRowsCount,
-        estimatedRowHeight,
-        columns,
-        rowsQuantity
-    });
+    const [ rowsContainerNode, rowsContainerRef ] = useState();
+
+    const Store = useModel( fixed ? FixedHeightsStore : VariableHeightsStore, dataRef );
+
+    useEffect(() => Store.setViewParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode ));
+
+    const normalizedVisibleColumns = useMemo(() => columns.map( column => {
+        const finalColumn = typeof column === "string" ? { dataKey: column } : { ...column };
+
+        if( !finalColumn.label ){
+            finalColumn.label = startCase( finalColumn.dataKey );
+        }
+
+        return finalColumn;
+    }), [ columns ]);
     
     return (
         <Context.Provider value={Store}>
             <ScrollContainer className={cx(css.wrapper,className)} {...props}>
                 <table className={css.bodyTable}>
-                    <Colgroup />
+                    <Colgroup columns={normalizedVisibleColumns} />
                     {headless?null:(
                         <thead>
-                            <HeaderRows renderTheadContents={renderTheadContents} />
+                            {renderTheadContents(normalizedVisibleColumns)}
                         </thead>
                     )}
                     <Scroller as={<tbody />} />
                     <tbody ref={rowsContainerRef}>
                         <Rows
+                            columns={normalizedVisibleColumns}
                             getRowData={getRowData}
                             renderRow={renderRow}
                             renderCell={renderCell}

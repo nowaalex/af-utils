@@ -1,7 +1,12 @@
 import { memo, useLayoutEffect } from "react";
 import useModelSubscription from "hooks/useModelSubscription";
 
-const ROWS_SUBSCRIPTIONS = [ "startIndex", "endIndex" ];
+import {
+    START_INDEX,
+    END_INDEX
+} from "constants/events";
+
+const ROWS_SUBSCRIPTIONS = [ START_INDEX, END_INDEX ];
 
 const Rows = ({ renderRow }) => {
 

@@ -2,7 +2,9 @@ import { cloneElement, memo } from "react";
 import useModelSubscription from "hooks/useModelSubscription";
 import css from "./style.module.scss";
 
-const SCROLLER_SUBSCRIPTIONS = [ "virtualTopOffset" ];
+import { VIRTUAL_TOP_OFFSET } from "constants/events";
+
+const SCROLLER_SUBSCRIPTIONS = [ VIRTUAL_TOP_OFFSET ];
 
 const Scroller = ({ as: Component }) => {
 

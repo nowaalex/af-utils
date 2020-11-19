@@ -2,6 +2,20 @@ import BaseClass from "../BaseClass";
 import FenwickTree from "models/basic/FenwickTree";
 import throttle from "utils/throttle";
 
+import {
+    START_INDEX,
+    END_INDEX,
+    SCROLL_TOP,
+    ROWS_QUANTITY,
+    OVERSCAN_ROWS_COUNT,
+    WIDGET_WIDTH,
+    WIDGET_HEIGHT,
+    VIRTUAL_TOP_OFFSET,
+    WIDGET_SCROLL_HEIGHT,
+    ROWS_CONTAINER_NODE,
+    CACHED_ROWS_HEIGHT,
+} from "constants/events";
+
 /*
     TODO:
         when estimatedRowHeight is not correct, scroll behavior is weird here
@@ -16,24 +30,15 @@ class VariableHeight extends BaseClass {
     }
 
     rowHeights = [];
+    fTree = new FenwickTree();
 
-    constructor( initialValues ){
+    constructor(){
         super();
 
-        /*
-            Tree must be initialized after super() and before all listeners.
-            Otherwise we could not get defaultInitialValue at right time.
-        */
-        this.fTree = new FenwickTree( initialValues && initialValues.estimatedRowHeight || this.estimatedRowHeight );
-
         this
-            .on( this.grow, "rowsQuantity" )
-            .on( this.updateDomObserver, "rowsContainerNode" )
-            .on( this.updateStartIndex, "scrollTop", "overscanRowsCount", "::cache-changed" )
-            .on( this.updateEndIndex, "rowsQuantity", "scrollTop", "widgetHeight", "overscanRowsCount", "::cache-changed" )
-            .on( this.updateVirtualTopOffset, "startIndex", "::cache-changed" )
-            .merge( initialValues );
-        
+            .on( this.grow, ROWS_QUANTITY )
+            .on( this.updateDomObserver, ROWS_CONTAINER_NODE );
+            
         this.rowsDomObserver = new MutationObserver( this.updateRowHeightsThrottled );
     }
 
@@ -47,8 +52,15 @@ class VariableHeight extends BaseClass {
             this.rowHeights.fill( this.estimatedRowHeight, oldLength );
         }
 
-        this.fTree.setN( this.rowsQuantity );
-        this.set( "widgetScrollHeight", this.fTree.sum( this.rowsQuantity ) );
+        if( process.env.NODE_ENV !== "production" ){
+            if( !this.estimatedRowHeight ){
+                console.warn( "estimatedRowHeight must be provided here" );
+            }
+        }
+
+        this.fTree.setN( this.rowsQuantity, this.estimatedRowHeight );
+
+        this.setWidgetScrollHeight( this.fTree.sum( this.rowsQuantity ) );
     }
 
     updateDomObserver(){
@@ -59,15 +71,35 @@ class VariableHeight extends BaseClass {
     }
 
     updateStartIndex(){
-        this.set( "startIndex", Math.max( 0, this.fTree.find( this.scrollTop ) - this.overscanRowsCount ) );
+        const v = Math.max( 0, this.fTree.find( this.scrollTop ) - this.overscanRowsCount );
+        if( v !== this.startIndex ){
+            this.startIndex = v;
+            this.e( START_INDEX );
+        }
     }
 
     updateEndIndex(){
-        this.set( "endIndex", Math.min( this.rowsQuantity, this.fTree.find( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount ) );
+        const v = Math.min( this.rowsQuantity, this.fTree.find( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount );
+        if( v !== this.endIndex ){
+            this.endIndex = v;
+            this.e( END_INDEX );
+        }
     }
 
     updateVirtualTopOffset(){
-        this.set( "virtualTopOffset", this.fTree.sum( this.startIndex ) );
+        const v = this.fTree.sum( this.startIndex );
+        if( v !== this.virtualTopOffset ){
+            this.virtualTopOffset = v;
+            this.e( VIRTUAL_TOP_OFFSET );
+        }
+    }
+
+    setWidgetScrollHeight( v ){
+        if( v !== this.widgetScrollHeight ){
+            this.widgetScrollHeight = v;
+            this.e( WIDGET_SCROLL_HEIGHT );
+        }
+        return this;
     }
 
     updateRowHeights(){
@@ -101,8 +133,8 @@ class VariableHeight extends BaseClass {
             if( cacheChanged ){
                 this
                     .startBatch()
-                    .emit( "::cache-changed" )
-                    .set( "widgetScrollHeight", this.widgetScrollHeight + totalDiff )
+                    .e( CACHED_ROWS_HEIGHT )
+                    .setWidgetScrollHeight( this.widgetScrollHeight + totalDiff )
                     .endBatch();
             }
         }

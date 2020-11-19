@@ -10,7 +10,7 @@ const ScrollContainer = ({ className, children, onScroll, ...props }) => {
     const API = useApi();
 
     const scrollHandler = useCallback( e => {
-        API.set( "scrollTop", e.target.scrollTop );
+        API.setScrollTop( e.target.scrollTop );
         if( onScroll ){
             onScroll( e );
         }
@@ -22,12 +22,7 @@ const ScrollContainer = ({ className, children, onScroll, ...props }) => {
         const R = new ResizeObserver( entries => {
             if( entries.length === 1 ){
                 const { width, height } = entries[ 0 ].contentRect;
-
-                API
-                    .startBatch()
-                    .set( "widgetHeight", Math.round( height ) )
-                    .set( "widgetWidth", Math.round( width ) )
-                    .endBatch();
+                API.setWidgetDimensions( Math.round( width ), Math.round( height ) );
             }
         });
 

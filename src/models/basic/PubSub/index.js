@@ -1,80 +1,62 @@
+import { EVENTS_ARRAY_LENGTH } from "constants/events";
+
 class PubSub {
 
-    _E = Object.create( null );
+    _E = Array.from({ length: EVENTS_ARRAY_LENGTH }, () => []);
     _cQueue = new Set();
-    _b = false;
+    _b = 0;
 
     on( callBack, ...events ){
+        if( process.env.NODE_ENV !== "production" ){
+            if( !callBack ){
+                console.error( "Empty callback" ); 
+            }
+        }
         for( let evt of events ){
-            ( this._E[ evt ] || ( this._E[ evt ] = [] ) ).push( callBack );
+            this._E[ evt ].push( callBack );
         }
         return this;
     }
 
     destructor(){
-        this._E = Object.create( null );
+        for( let j = 0; j < EVENTS_ARRAY_LENGTH; j++ ){
+            this._E[ j ] = [];
+        }
         this._cQueue.clear();
     }
 
     off( callBack, ...events ){
         for( let evt of events ){
-            const eventsList = this._E[ evt ];
-            if( eventsList ){
-                eventsList.splice( eventsList.indexOf( callBack ) >>> 0, 1 );
-            }
+            this._E[ evt ].splice( this._E[ evt ].indexOf( callBack ) >>> 0, 1 );
         }
         return this;
     }
 
     startBatch(){
-        this._b = true;
+        this._b++;
         return this;
     }
 
     endBatch(){
-        for( let cb of this._cQueue ){
-            cb.call( this );
-        }
-        this._cQueue.clear();
-        this._b = false;
-        return this;
-    }
-
-    emit( evt ){
-        const eventsList = this._E[ evt ];
-        if( eventsList ){
-            if( this._b ){
-                for( let cb of eventsList ){
-                    this._cQueue.add( cb );
-                }
+        if( !--this._b ){
+            for( let cb of this._cQueue ){
+                cb.call( this );
             }
-            else{
-                for( let cb of eventsList ){
-                    cb.call( this );
-                }
-            }
+            this._cQueue.clear();
         }
         return this;
     }
 
-    
-    /* TODO: maybe move these two out of here? */
-
-    set( key, value ){
-        if( this[ key ] !== value ){
-            this[ key ] = value;
-            this.emit( key );
-        }
-        return this;
-    }
-
-    merge( obj ){
-        if( obj ){
-            this.startBatch();
-            for( let k in obj ){
-                this.set( k, obj[ k ] );
+    e( evt ){
+        if( this._b ){
+            for( let cb of this._E[ evt ] ){
+                this._cQueue.add( cb );
             }
-            this.endBatch();
+        }
+        else{
+            for( let cb of this._E[ evt ] ){
+                cb.call( this );
+            }
         }
         return this;
     }

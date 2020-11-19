@@ -1,8 +1,15 @@
 import fs from "fs";
 import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
+import replace from "@rollup/plugin-replace";
 import postcss from "rollup-plugin-postcss";
 import { terser } from "rollup-plugin-terser";
+
+import * as inlinedConstants from "./src/constants/events";
+
+const removeInlinedConstantsImports = () => ({
+    transform: code => code.replace( /import\s+{[^}]+}\s+from\s+["']constants\/events["'];/g, "" )
+});
 
 const OUTPUT_DIR = "lib";
 
@@ -23,6 +30,11 @@ export default {
         hoistTransitiveImports: false
     },
     plugins: [
+        removeInlinedConstantsImports(),
+        replace({
+            exclude: /constants\/events/,
+            ...inlinedConstants
+        }),
         postcss({
             extract: "style.css",
             use: [ "sass" ],

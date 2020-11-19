@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import Context from "Context";
@@ -24,11 +24,11 @@ const List = ({
     ...props
 }) => {
 
-    const [ Store, rowsContainerRef ] = useModel( fixed ? FixedHeightsStore : VariableHeightsStore, dataRef, {
-        overscanRowsCount,
-        estimatedRowHeight,
-        rowsQuantity
-    });
+    const [ rowsContainerNode, rowsContainerRef ] = useState();
+
+    const Store = useModel( fixed ? FixedHeightsStore : VariableHeightsStore, dataRef );
+
+    useEffect(() => Store.setViewParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode ));
 
     return (
         <Context.Provider value={Store}>

@@ -5,9 +5,8 @@
 
 class FenwickTree {
 
-    constructor( defaultInitialValue = 0 ){
+    constructor(){
         this.N = 0;
-        this.dVal = defaultInitialValue;
         this.C = [];
     }
 
@@ -43,7 +42,7 @@ class FenwickTree {
         return k;
     }
 
-    setN( N ){
+    setN( N, defaultValue ){
         const prevN = this.N;
 
         if( N !== prevN ){
@@ -56,9 +55,9 @@ class FenwickTree {
                 this.C = new Uint32Array( N + 1 );
                 this.C.set( oldCache );
 
-                if( this.dVal ){
+                if( defaultValue ){
                     for( let j = oldCacheLen; j < N; j++ ){
-                        this.update( j, this.dVal );
+                        this.update( j, defaultValue );
                     }
                 }
             }
