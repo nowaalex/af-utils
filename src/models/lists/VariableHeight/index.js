@@ -35,7 +35,7 @@ class VariableHeight extends BaseClass {
 
     constructor(){
         super();
-console.log( 55, this)
+
         this
             .on( this.grow, ROWS_QUANTITY )
             .on( this.updateDomObserver, ROWS_CONTAINER_NODE );
