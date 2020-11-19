@@ -1,14 +1,21 @@
-.wrapper {
-    th[data-sortable]{
-        cursor: pointer;
-        user-select: none;
-    }
-    
-    th[aria-sort="ascending"]::after{
+.sortableHeader {
+    cursor: pointer;
+    user-select: none;
+
+    &[aria-sort="ascending"]::after{
         content: " ↑";
     }
     
-    th[aria-sort="descending"]::after{
+    &[aria-sort="descending"]::after{
         content: " ↓";
     }
+
+    margin-bottom: 0.3em;
+}
+
+.input {
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
 }

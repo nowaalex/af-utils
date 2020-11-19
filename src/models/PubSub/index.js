@@ -32,6 +32,22 @@ class PubSub {
         return this;
     }
 
+    e( evt ){
+        if( this._b ){
+            for( let cb of this._E[ evt ] ){
+                this._cQueue.add( cb );
+            }
+        }
+        else{
+            for( let cb of this._E[ evt ] ){
+                cb.call( this );
+            }
+        }
+        return this;
+    }
+
+    /* inspired by mobx */
+
     startBatch(){
         this._b++;
         return this;
@@ -43,20 +59,6 @@ class PubSub {
                 cb.call( this );
             }
             this._cQueue.clear();
-        }
-        return this;
-    }
-
-    e( evt ){
-        if( this._b ){
-            for( let cb of this._E[ evt ] ){
-                this._cQueue.add( cb );
-            }
-        }
-        else{
-            for( let cb of this._E[ evt ] ){
-                cb.call( this );
-            }
         }
         return this;
     }

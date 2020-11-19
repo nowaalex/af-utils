@@ -9,7 +9,7 @@ const Menu = ({ items }) => (
         <nav>
             {items.map( item => (
                 <NavLink activeClassName={css.activeLink} className={css.link} to={item} key={item}>
-                    {item}
+                    {item.replace( "/examples/", "" )}
                 </NavLink>
             ))}
         </nav>

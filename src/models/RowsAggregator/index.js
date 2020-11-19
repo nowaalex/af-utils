@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx"; 
+import { makeAutoObservable, computed } from "mobx"; 
 
 const groupBy = ( seq, getRowData, dataKey ) => seq.reduce(( map, v ) => {
     const key = getRowData( v )[ dataKey ];
@@ -37,6 +37,7 @@ class RowsAggregator {
     filtersMap = new Map();
     groupKeys = [];
     sortDataKey = "";
+    sortDirection = -1;
 
     shallowGroupsStore = new Map();
 
@@ -50,6 +51,9 @@ class RowsAggregator {
     }
 
     setSorting( dataKey ){
+        if( this.sortDataKey === dataKey ){
+            this.sortDirection *= -1;
+        }
         this.sortDataKey = dataKey;
     }
 
@@ -94,7 +98,7 @@ class RowsAggregator {
     }
 
     get sortedIndexes(){
-        const { sortDataKey } = this;
+        const { sortDataKey, sortDirection } = this;
         
         return sortDataKey === "" ? this.filteredIndexes : this.filteredIndexes.sort(( a, b ) => {
             const row1 = this.getRowData( a );
@@ -103,18 +107,17 @@ class RowsAggregator {
             if( row1 && row2 ){
                 const v1 = row1[ sortDataKey ];
                 const v2 = row2[ sortDataKey ];
-                return v1 > v2 ? 1 : v1 < v2 ? -1 : 0;
+                return v1 > v2 ? sortDirection : v1 < v2 ? -sortDirection : 0;
             }
 
-            return row1 ? 1 : row2 ? -1 : 0;
+            return row1 ? sortDirection : row2 ? -sortDirection : 0;
         });
     }
 
-    constructor( initialValues ){
-        Object.assign( this, initialValues );
-
+    constructor(){
         makeAutoObservable( this, {
-            shallowGroupsStore: false
+            shallowGroupsStore: false,
+            sortedIndexes: computed({ equals: () => false })
         });
     }
 

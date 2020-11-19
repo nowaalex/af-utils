@@ -23,12 +23,6 @@ class VariableSizeList extends ListBase {
     }
 
     rowHeights = [];
-
-    /*
-        Fenwick tree
-        TODO:
-            try to find O(N) initialization algorithm instead of O(NlogN)
-    */
     fTree = [];
     
 
@@ -65,6 +59,10 @@ class VariableSizeList extends ListBase {
                 }
             }
 
+            /*
+                TODO:
+                    try to find O(N) initialization algorithm instead of O(NlogN)
+            */
             for( let j = oldCacheLen; j < this.rowsQuantity; j++ ){
                 this.update( j, this.estimatedRowHeight );
             }
