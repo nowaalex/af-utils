@@ -46,7 +46,7 @@ class PubSub {
         this._Q.add( cb );
     }
 
-    e( evt ){
+    emit( evt ){
         if( this.inBatch ){
             for( let cb of this._E[ evt ] ){
                 this._Q.add( cb );

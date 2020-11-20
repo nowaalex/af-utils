@@ -19,6 +19,8 @@ const ScrollContainer = ({ className, children, onScroll, ...props }) => {
     useEffect(() => {
         const el = ref.current;
 
+        API.setScrollContainerNode( el );
+
         const R = new ResizeObserver( entries => {
             if( entries.length === 1 ){
                 const { width, height } = entries[ 0 ].contentRect;

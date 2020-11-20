@@ -24,11 +24,16 @@ class ListBase extends PubSub {
     widgetWidth = 0;
     estimatedRowHeight = 0;
     rowsContainerNode = null;
+    scrollContainerNode = null;
+
+    setScrollContainerNode( node ){
+        this.scrollContainerNode = node;
+    }
 
     setScrollTop( v ){
         if( v !== this.scrollTop ){
             this.scrollTop = v;
-            this.e( SCROLL_TOP );
+            this.emit( SCROLL_TOP );
         }
     }
 
@@ -41,11 +46,20 @@ class ListBase extends PubSub {
             .on( this.updateVirtualTopOffset, START_INDEX, CACHED_ROWS_HEIGHT );
     }
 
+    scrollToRow( rowIndex ){
+        if( this.scrollContainerNode ){
+            this.scrollContainerNode.scrollTop = this.getOffset( rowIndex );
+        }
+        else if( process.env.NODE_ENV !== "production" ){
+            console.error( "scrollContainerNode is not set" );
+        }
+    }
+
     updateStartIndex(){
         const v = Math.max( 0, this.getIndex( this.scrollTop ) - this.overscanRowsCount );
         if( v !== this.startIndex ){
             this.startIndex = v;
-            this.e( START_INDEX );
+            this.emit( START_INDEX );
         }
     }
 
@@ -53,7 +67,7 @@ class ListBase extends PubSub {
         const v = Math.min( this.rowsQuantity, this.getIndex( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount );
         if( v !== this.endIndex ){
             this.endIndex = v;
-            this.e( END_INDEX );
+            this.emit( END_INDEX );
         }
     }
 
@@ -61,7 +75,7 @@ class ListBase extends PubSub {
         const v = this.getOffset( this.startIndex );
         if( v !== this.virtualTopOffset ){
             this.virtualTopOffset = v;
-            this.e( VIRTUAL_TOP_OFFSET );
+            this.emit( VIRTUAL_TOP_OFFSET );
         }
     }
 
@@ -69,11 +83,11 @@ class ListBase extends PubSub {
         this.startBatch();
         if( width !== this.widgetWidth ){
             this.widgetWidth = width;
-            this.e( WIDGET_WIDTH );
+            this.emit( WIDGET_WIDTH );
         }
         if( height !== this.widgetHeight ){
             this.widgetHeight = height;
-            this.e( WIDGET_HEIGHT );
+            this.emit( WIDGET_HEIGHT );
         }
         this.endBatch();
     }
@@ -86,17 +100,17 @@ class ListBase extends PubSub {
 
         if( overscanRowsCount !== this.overscanRowsCount ){
             this.overscanRowsCount = overscanRowsCount;
-            this.e( OVERSCAN_ROWS_COUNT );
+            this.emit( OVERSCAN_ROWS_COUNT );
         }
 
         if( rowsQuantity !== this.rowsQuantity ){
             this.rowsQuantity = rowsQuantity;
-            this.e( ROWS_QUANTITY );
+            this.emit( ROWS_QUANTITY );
         }
 
         if( rowsContainerNode !== this.rowsContainerNode ){
             this.rowsContainerNode = rowsContainerNode;
-            this.e( ROWS_CONTAINER_NODE );
+            this.emit( ROWS_CONTAINER_NODE );
         }
 
         this.endBatch();

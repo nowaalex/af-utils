@@ -112,7 +112,7 @@ class VariableSizeList extends ListBase {
     setWidgetScrollHeight( v ){
         if( v !== this.widgetScrollHeight ){
             this.widgetScrollHeight = v;
-            this.e( WIDGET_SCROLL_HEIGHT );
+            this.emit( WIDGET_SCROLL_HEIGHT );
         }
         return this;
     }
@@ -154,7 +154,7 @@ class VariableSizeList extends ListBase {
             if( cacheChanged ){
                 this
                     .startBatch()
-                    .e( CACHED_ROWS_HEIGHT )
+                    this.emit( CACHED_ROWS_HEIGHT )
                     .setWidgetScrollHeight( this.widgetScrollHeight + totalDiff )
                     .endBatch();
             }

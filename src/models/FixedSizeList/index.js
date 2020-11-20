@@ -21,7 +21,7 @@ class FixedSizeList extends ListBase {
     setRowHeight( v ){
         if( v !== this.rowHeight ){
             this.rowHeight = v;
-            this.e( CACHED_ROWS_HEIGHT );
+            this.emit( CACHED_ROWS_HEIGHT );
         }
     }
 
@@ -45,7 +45,7 @@ class FixedSizeList extends ListBase {
         const v = this.rowHeight * this.rowsQuantity;
         if( v !== this.widgetScrollHeight ){
             this.widgetScrollHeight = v;
-            this.e( WIDGET_SCROLL_HEIGHT );
+            this.emit( WIDGET_SCROLL_HEIGHT );
         }
     }
 
