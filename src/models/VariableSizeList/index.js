@@ -27,6 +27,7 @@ class VariableSizeList extends ListBase {
         super();
 
         this
+            /* must be done before events, attached in ListBase */
             .prependListener( this.grow, ROWS_QUANTITY )
             .on( this.updateDomObserver, ROWS_CONTAINER_NODE );
             
@@ -49,15 +50,15 @@ class VariableSizeList extends ListBase {
         this.resetCachedHeights();
     }
 
-    resetCachedHeights(){
-        this.rowHeights.fill( this.estimatedRowHeight );
+    resetCachedHeights( rowHeight = this.estimatedRowHeight ){
+        this.rowHeights.fill( rowHeight );
 
         /* Filling FenwickTee with 1 value  */
         for ( let i = 1; i <= this.rowsQuantity; i++ ){
-            this.fTree[ i ] = this.estimatedRowHeight * ( i & -i );
+            this.fTree[ i ] = rowHeight * ( i & -i );
         }
 
-        this.setWidgetScrollHeight( this.estimatedRowHeight * this.rowsQuantity );
+        this.setWidgetScrollHeight( rowHeight * this.rowsQuantity );
     }
 
     updateDomObserver(){

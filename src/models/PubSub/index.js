@@ -11,18 +11,20 @@ class PubSub {
     /* depth of batch */
     inBatch = 0;
 
-    on( callBack, ...events ){
+    _on( callBack, events, shouldPrepend ){
+        const fn = shouldPrepend ? Array.prototype.unshift : Array.prototype.push;
         for( let evt of events ){
-            this._E[ evt ].push( callBack );
+            fn.call( this._E[ evt ], callBack );
         }
         return this;
     }
 
+    on( callBack, ...events ){
+        return this._on( callBack, events, false );
+    }
+
     prependListener( callBack, ...events ){
-        for( let evt of events ){
-            this._E[ evt ].unshift( callBack );
-        }
-        return this;
+        return this._on( callBack, events, true );
     }
 
     destructor(){
