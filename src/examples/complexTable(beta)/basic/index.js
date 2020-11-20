@@ -11,11 +11,11 @@ const rows = Array.from({ length: 10000 }, (v, i) => ({
 /* Math.random is not the best option, because same rowIndex should produce same height */
 const getPureRandomLineHeight = rowIndex => 20 + ( rowIndex % 53 ) + ( rowIndex % 87 );
 
-const SimpleTable = () => (
+const ComplexTable = () => (
     <Table
         rowsQuantity={rows.length}
         getRowData={i => rows[ i ]}
-        estimatedRowHeight={60}
+        estimatedRowHeight={30}
         columns={[
             {
                 dataKey: "i",
@@ -37,4 +37,4 @@ const SimpleTable = () => (
     />
 );
 
-export default SimpleTable;
+export default ComplexTable;

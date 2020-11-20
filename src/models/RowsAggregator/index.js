@@ -1,31 +1,8 @@
 import { makeAutoObservable, computed } from "mobx"; 
-
-const groupBy = ( seq, getRowData, dataKey ) => seq.reduce(( map, v ) => {
-    const key = getRowData( v )[ dataKey ];
-    let arr = map.get( key );
-    if( arr ){
-        arr.push( v );
-    }
-    else {
-        map.set( key, [ v ]);
-    }
-    return map;
-}, new Map() );
-
-const changeValues = ( map, cb, restGroupingKeys, getRowData ) => {
-    for( let [ k, v ] of map ){
-        map.set( k, cb( v, restGroupingKeys, getRowData ) );
-    }
-    return map;
-}
-
-const multiGroupBy = ( seq, keys, getRowData ) => keys.length ? changeValues(
-    groupBy( seq, getRowData, keys[ 0 ] ),
-    multiGroupBy,
-    keys.slice( 1 ),
-    getRowData
-) : seq;
-
+import multiGroupBy from "./utils/multiGroupBy";
+import sortGroups from "./utils/sortGroups";
+import flattenGroups from "./utils/flattenGroups";
+import getSorter from "./utils/getSorter";
 
 class RowsAggregator {
 
@@ -61,7 +38,6 @@ class RowsAggregator {
         if( !this.groupKeys.includes( dataKey ) ){
             this.groupKeys.push( dataKey );
         }
-        console.log( "ff", this.grouped )
     }
 
     removeGrouping( dataKey ){
@@ -74,6 +50,15 @@ class RowsAggregator {
 
     get grouped(){
         return multiGroupBy( this.filteredIndexes, this.groupKeys, this.getRowData );
+    }
+
+    get groupedSorted(){
+        sortGroups( this.grouped, this.getRowData, this.sortDataKey, this.sortDirection, this.groupKeys.length );
+        return this.grouped;
+    }
+
+    get flattenedGroups(){
+        return flattenGroups( this.groupedSorted );
     }
 
     get filteredIndexes(){
@@ -94,29 +79,31 @@ class RowsAggregator {
         return this.orderedIndexes;
     }
 
-    get sortedIndexes(){
-        const { sortDataKey, sortDirection } = this;
+    get noGroupsSortedIndexes(){
+        return this.filteredIndexes.sort( getSorter( this.getRowData, this.sortDataKey, this.sortDirection ) );
+    }
 
-        return sortDataKey === "" ? this.filteredIndexes : this.filteredIndexes.sort(( a, b ) => {
-            const row1 = this.getRowData( a );
-            const row2 = this.getRowData( b );
+    get groupsSortedIndexes(){
+        return this.flattenedGroups.rowIndexes;
+    }
 
-            if( row1 && row2 ){
-                const v1 = row1[ sortDataKey ];
-                const v2 = row2[ sortDataKey ];
-                return v1 > v2 ? sortDirection : v1 < v2 ? -sortDirection : 0;
-            }
+    get hasGrouping(){
+        return !!this.groupKeys.length;
+    }
 
-            return row1 ? sortDirection : row2 ? -sortDirection : 0;
-        });
+    get finalIndexes(){
+        return this.hasGrouping ? this.groupsSortedIndexes : this.noGroupsSortedIndexes;
     }
 
     constructor(){
         makeAutoObservable( this, {
             shallowGroupsStore: false,
-            sortedIndexes: computed({ equals: () => false }),
+            groupedSorted: computed({ equals: () => false }),
+            groupsSortedIndexes: computed({ equals: () => false }),
+            noGroupsSortedIndexes: computed({ equals: () => false }),
+            finalIndexes: computed({ equals: () => false }),
             filteredIndexes: computed({ equals: () => false }),
-            orderedIndexes: computed({ equals: () => false }),
+            orderedIndexes: computed({ equals: () => false })
         });
     }
 

@@ -12,13 +12,15 @@ class PubSub {
     inBatch = 0;
 
     on( callBack, ...events ){
-        if( process.env.NODE_ENV !== "production" ){
-            if( !callBack ){
-                console.error( "Empty callback" ); 
-            }
-        }
         for( let evt of events ){
             this._E[ evt ].push( callBack );
+        }
+        return this;
+    }
+
+    prependListener( callBack, ...events ){
+        for( let evt of events ){
+            this._E[ evt ].unshift( callBack );
         }
         return this;
     }

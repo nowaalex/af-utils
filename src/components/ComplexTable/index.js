@@ -27,12 +27,12 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
 
     const [ m ] = useState(() => new RowsAggregator());
 
-    const { sortedIndexes } = m;
+    const { finalIndexes, hasGrouping } = m;
 
-    const renderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => (
-        <tr key={sortedIndexes[rowIndex]}>
+    const normalRenderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => (
+        <tr key={finalIndexes[rowIndex]}>
             <CellsList
-                rowIndex={sortedIndexes[rowIndex]}
+                rowIndex={finalIndexes[rowIndex]}
                 columns={columns}
                 getRowData={getRowData}
                 renderCell={renderCell}
@@ -40,6 +40,23 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
             />
         </tr>
     );
+
+    let renderRow;
+
+    if( hasGrouping ){
+        const { groupValues } = m.flattenedGroups;
+        renderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => {
+            const realRowIndex = finalIndexes[ rowIndex ];
+            return realRowIndex < 0 ? (
+                <tr key={realRowIndex}>
+                    <td colSpan={columns.length}>{realRowIndex}&nbsp;{groupValues[~realRowIndex]}</td>
+                </tr>
+            ) : normalRenderRow( rowIndex, columns, getRowData, renderCell, CellsList, Cell );
+        }
+    }
+    else{
+        renderRow = normalRenderRow;
+    }
 
     const renderTheadContents = columns => (
         <tr>
@@ -54,9 +71,10 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
 
     useEffect(() => m.merge({ rowsQuantity, getRowData }));
 
+    console.log( "LEN", finalIndexes.length );
     return (
         <Table
-            rowsQuantity={sortedIndexes.length}
+            rowsQuantity={finalIndexes.length}
             getRowData={getRowData}
             renderRow={renderRow}
             renderTheadContents={renderTheadContents}

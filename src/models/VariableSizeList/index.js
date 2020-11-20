@@ -12,18 +12,22 @@ import {
     TODO:
         when estimatedRowHeight is not correct, scroll behavior is weird here
         maybe MutationObserver is not needed?
+        perform resetCacheHeights from useEffect on rowRenderer change
 */
 
 class VariableSizeList extends ListBase {
     
     rowHeights = [];
     fTree = [];
+
+    /* just to avoid Math.clz32 calculations on every getIndex call */
+    rowsQuantityClzStart = 0;
     
     constructor(){
         super();
 
         this
-            .on( this.grow, ROWS_QUANTITY )
+            .prependListener( this.grow, ROWS_QUANTITY )
             .on( this.updateDomObserver, ROWS_CONTAINER_NODE );
             
         this.rowsDomObserver = new MutationObserver( this.updateRowHeightsThrottled );
@@ -36,38 +40,24 @@ class VariableSizeList extends ListBase {
     }
 
     grow(){
-        const oldLength = this.rowHeights.length;
+        const { rowsQuantity } = this;
+        if( rowsQuantity > this.rowHeights.length ){
+            this.rowHeights = new Uint32Array( rowsQuantity );
+            this.fTree = new Uint32Array( rowsQuantity + 1 );
+        }
+        this.rowsQuantityClzStart = 31 - Math.clz32( rowsQuantity );
+        this.resetCachedHeights();
+    }
 
-        if( this.rowsQuantity > oldLength ){
-            const oldRowHeights = this.rowHeights;
-            this.rowHeights = new Uint32Array( this.rowsQuantity );
-            this.rowHeights.set( oldRowHeights );
-            this.rowHeights.fill( this.estimatedRowHeight, oldLength );
+    resetCachedHeights(){
+        this.rowHeights.fill( this.estimatedRowHeight );
+
+        /* Filling FenwickTee with 1 value  */
+        for ( let i = 1; i <= this.rowsQuantity; i++ ){
+            this.fTree[ i ] = this.estimatedRowHeight * ( i & -i );
         }
 
-        const oldCache = this.fTree;
-        const oldCacheLen = oldCache.length;
-    
-        if( this.rowsQuantity + 1 > oldCacheLen ){
-            this.fTree = new Uint32Array( this.rowsQuantity + 1 );
-            this.fTree.set( oldCache );
-
-            if( process.env.NODE_ENV !== "production" ){
-                if( !this.estimatedRowHeight ){
-                    console.warn( "estimatedRowHeight must be provided here" );
-                }
-            }
-
-            /*
-                TODO:
-                    try to find O(N) initialization algorithm instead of O(NlogN)
-            */
-            for( let j = oldCacheLen; j < this.rowsQuantity; j++ ){
-                this.updateRowHeight( j, this.estimatedRowHeight );
-            }
-        }
-
-        this.setWidgetScrollHeight( this.getOffset( this.rowsQuantity ) );
+        this.setWidgetScrollHeight( this.estimatedRowHeight * this.rowsQuantity );
     }
 
     updateDomObserver(){
@@ -84,7 +74,7 @@ class VariableSizeList extends ListBase {
     getIndex( offset ){
         let k = 0;
 
-        for( let l = 31 - Math.clz32( this.rowsQuantity ), nk; l >= 0; l-- ){
+        for( let l = this.rowsQuantityClzStart, nk; l >= 0; l-- ){
             nk = k + ( 1 << l );
             if( nk > this.rowsQuantity ){
                 continue;
@@ -154,7 +144,7 @@ class VariableSizeList extends ListBase {
             if( cacheChanged ){
                 this
                     .startBatch()
-                    this.emit( CACHED_ROWS_HEIGHT )
+                    .emit( CACHED_ROWS_HEIGHT )
                     .setWidgetScrollHeight( this.widgetScrollHeight + totalDiff )
                     .endBatch();
             }
