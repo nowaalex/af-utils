@@ -23,7 +23,14 @@
     "test": "jest",
     "clear-test-cache": "jest --clearCache"
   },
-  "main": "lib/index.js",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "main": "./lib/index.js",
+  "exports": {
+    "./": "./lib/"
+  },
   "files": [
     "lib",
     "package.json"
