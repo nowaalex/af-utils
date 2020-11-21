@@ -20,8 +20,11 @@ class VariableSizeList extends ListBase {
     rowHeights = [];
     fTree = [];
 
-    /* just to avoid Math.clz32 calculations on every getIndex call */
-    rowsQuantityClzStart = 0;
+    /*
+        most significant bit of this.rowsQuantity;
+        caching it to avoid Math.clz32 calculations on every getIndex call
+    */
+    msb = 0;
     
     constructor(){
         super();
@@ -46,8 +49,8 @@ class VariableSizeList extends ListBase {
             this.rowHeights = new Uint32Array( rowsQuantity );
             this.fTree = new Uint32Array( rowsQuantity + 1 );
         }
-        /* most significant bit of this.rowsQuantity */
-        this.msb = 1 << ( 31 - Math.clz32( rowsQuantity ) );
+        
+        this.msb = 1 << 31 - Math.clz32( rowsQuantity );
         this.resetCachedHeights();
     }
 
