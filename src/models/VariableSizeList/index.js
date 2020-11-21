@@ -46,14 +46,15 @@ class VariableSizeList extends ListBase {
             this.rowHeights = new Uint32Array( rowsQuantity );
             this.fTree = new Uint32Array( rowsQuantity + 1 );
         }
-        this.rowsQuantityClzStart = 31 - Math.clz32( rowsQuantity );
+        /* most significant bit of this.rowsQuantity */
+        this.msb = 1 << ( 31 - Math.clz32( rowsQuantity ) );
         this.resetCachedHeights();
     }
 
     resetCachedHeights( rowHeight = this.estimatedRowHeight ){
         this.rowHeights.fill( rowHeight );
 
-        /* Filling FenwickTee with 1 value  */
+        /* Filling FenwickTee with single value  */
         for ( let i = 1; i <= this.rowsQuantity; i++ ){
             this.fTree[ i ] = rowHeight * ( i & -i );
         }
@@ -68,28 +69,24 @@ class VariableSizeList extends ListBase {
         }
     }
 
-    /*
-        TODO:
-            there is a way to optimize this by doing l >> 1 instead of l-- and 1 << l
-    */
     getIndex( offset ){
-        let k = 0;
-
-        for( let l = this.rowsQuantityClzStart, nk; l >= 0; l-- ){
-            nk = k + ( 1 << l );
-            if( nk > this.rowsQuantity ){
+        let index = 0;
+        
+        for( let bitMask = this.msb, tempIndex; bitMask; bitMask >>= 1 ){
+            tempIndex = index + bitMask;
+            if( tempIndex > this.rowsQuantity ){
                 continue;
             }
-            if( offset === this.fTree[ nk ] ){
-                return nk;
+            if( offset === this.fTree[ tempIndex ] ){
+                return tempIndex;
             }
-            if( offset > this.fTree[ nk ] ) {
-                k = nk;
-                offset -= this.fTree[ k ];
+            if( offset > this.fTree[ tempIndex ] ) {
+                index = tempIndex;
+                offset -= this.fTree[ index ];
             }
         }
 
-        return k;
+        return index;
     }
 
     getOffset( index ){
