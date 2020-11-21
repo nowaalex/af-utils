@@ -4,7 +4,7 @@ import useApi from "hooks/useApi";
 import HeightProvider from "../HeightProvider";
 import css from "./style.module.scss";
 
-const ScrollContainer = ({ className, children }) => {
+const ScrollContainer = ({ className, children, ...props }) => {
 
     const ref = useRef();
     const API = useApi();
@@ -32,6 +32,7 @@ const ScrollContainer = ({ className, children }) => {
     */
     return (
         <div
+            {...props}
             ref={ref}
             tabIndex="0"
             className={cx(css.wrapper,className)}
