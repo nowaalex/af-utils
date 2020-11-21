@@ -47,8 +47,7 @@ const Table = ({
     overscanRowsCount,
     headless,
     dataRef,
-    className,
-    ...props
+    className
 }) => {
 
     const [ rowsContainerNode, rowsContainerRef ] = useState();
@@ -74,7 +73,7 @@ const Table = ({
     
     return (
         <Context.Provider value={Store}>
-            <ScrollContainer className={cx(css.wrapper,className)} {...props}>
+            <ScrollContainer className={cx(css.wrapper,className)}>
                 <table className={css.bodyTable}>
                     <Colgroup columns={normalizedVisibleColumns} />
                     {headless?null:(

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import RowsAggregator from "models/RowsAggregator";
 import Table from "../Table";
@@ -27,35 +27,25 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
 
     const [ m ] = useState(() => new RowsAggregator());
 
-    const { finalIndexes, hasGrouping } = m;
+    const { finalIndexes } = m;
 
-    const normalRenderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => (
-        <tr key={finalIndexes[rowIndex]}>
-            <CellsList
-                rowIndex={finalIndexes[rowIndex]}
-                columns={columns}
-                getRowData={getRowData}
-                renderCell={renderCell}
-                Cell={Cell}
-            />
-        </tr>
-    );
-
-    let renderRow;
-
-    if( hasGrouping ){
-        const { groupValues } = m.flattenedGroups;
-        renderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => {
-            const realRowIndex = finalIndexes[ rowIndex ];
-            return realRowIndex < 0 ? (
-                <tr key={realRowIndex}>
-                    <td colSpan={columns.length}>{realRowIndex}&nbsp;{groupValues[~realRowIndex]}</td>
-                </tr>
-            ) : normalRenderRow( rowIndex, columns, getRowData, renderCell, CellsList, Cell );
-        }
-    }
-    else{
-        renderRow = normalRenderRow;
+    const renderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => {
+        const realRowIndex = finalIndexes[ rowIndex ];
+        return (
+            <tr key={realRowIndex}>
+                {realRowIndex < 0 ? (
+                    <td colSpan={columns.length}>{realRowIndex}&nbsp;{m.flattenedGroups.groupValues[~realRowIndex]}</td>
+                ) : (
+                    <CellsList
+                        rowIndex={realRowIndex}
+                        columns={columns}
+                        getRowData={getRowData}
+                        renderCell={renderCell}
+                        Cell={Cell}
+                    />
+                )}
+            </tr>
+        );
     }
 
     const renderTheadContents = columns => (
@@ -71,7 +61,6 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
 
     useEffect(() => m.merge({ rowsQuantity, getRowData }));
 
-    console.log( "LEN", finalIndexes.length );
     return (
         <Table
             rowsQuantity={finalIndexes.length}

@@ -1,20 +1,13 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, memo, useEffect } from "react";
 import cx from "utils/cx";
 import useApi from "hooks/useApi";
 import HeightProvider from "../HeightProvider";
 import css from "./style.module.scss";
 
-const ScrollContainer = ({ className, children, onScroll, ...props }) => {
+const ScrollContainer = ({ className, children }) => {
 
     const ref = useRef();
     const API = useApi();
-
-    const scrollHandler = useCallback( e => {
-        API.setScrollTop( e.target.scrollTop );
-        if( onScroll ){
-            onScroll( e );
-        }
-    }, [ onScroll ]);
 
     useEffect(() => {
         const el = ref.current;
@@ -38,11 +31,17 @@ const ScrollContainer = ({ className, children, onScroll, ...props }) => {
         https://bugzilla.mozilla.org/show_bug.cgi?id=1346159
     */
     return (
-        <div tabIndex="0" className={cx(css.wrapper,className)} ref={ref} onScroll={scrollHandler} {...props}>
+        <div
+            ref={ref}
+            tabIndex="0"
+            className={cx(css.wrapper,className)}
+            ref={ref}
+            onScroll={e => API.setScrollTop( e.target.scrollTop )}
+        >
             <HeightProvider />
             {children}
         </div>
     );
 };
 
-export default ScrollContainer;
+export default memo( ScrollContainer );

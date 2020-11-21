@@ -20,8 +20,7 @@ const List = ({
     rowsQuantity,
     overscanRowsCount,
     dataRef,
-    className,
-    ...props
+    className
 }) => {
 
     const [ rowsContainerNode, rowsContainerRef ] = useState();
@@ -37,7 +36,7 @@ const List = ({
 
     return (
         <Context.Provider value={Store}>
-            <ScrollContainer className={className} {...props}>
+            <ScrollContainer className={className}>
                 <Scroller as="div" />
                 <div ref={rowsContainerRef}>
                     <Rows renderRow={children} /> 
