@@ -1,21 +1,23 @@
 import { useParams } from "react-router-dom";
-import Code from "../Code";
-import commonPropTypes from "!!raw-loader!./../../components/common/propTypes.js";
+import List from "./List";
+import Table from "./Table";
 import css from "./style.module.scss";
+
+const Pages = {
+    list: List,
+    table: Table
+}
 
 const Docs = () => {
 
     const { docPage } = useParams();
-
-    if( docPage === "commonPropTypes" ){
-        return (
-            <Code className={css.wrapper}>
-                {commonPropTypes}
-            </Code>
-        );
-    }
+    const Component = Pages[ docPage ];
     
-    return null;
+    return (
+        <div className={css.wrapper}>
+            {Component ? <Component /> : "Doc page not found"}
+        </div>
+    )
 }
 
 export default Docs;

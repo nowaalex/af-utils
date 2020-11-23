@@ -16,8 +16,13 @@ const Menu = ({ items }) => (
 
         <h2 className={css.header}>Docs</h2>
         <nav>
-            <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/commonPropTypes">
-                Common PropTypes
+            <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/list">
+                List
+            </NavLink>
+        </nav>
+        <nav>
+            <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/table">
+                Table
             </NavLink>
         </nav>
     

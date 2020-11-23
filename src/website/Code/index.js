@@ -1,27 +1,11 @@
-import { useEffect, useRef, memo } from "react";
-import cx from "utils/cx";
-import hljs from "highlight.js/lib/core";
-import javascript from "highlight.js/lib/languages/javascript";
-import xml from "highlight.js/lib/languages/xml";
-import "highlight.js/styles/vs2015.css";
-import css from "./style.module.scss";
+import { Suspense, lazy } from "react";
 
-hljs.registerLanguage( "javascript", javascript );
-hljs.registerLanguage( "xml", xml );
+const RawCode = lazy(() => import( "./Raw" ));
 
-const Code = ({ children, className }) => {    
-    const ref = useRef();
+const Code = props => (
+    <Suspense fallback="Loading code component...">
+        <RawCode {...props} />
+    </Suspense>
+);
 
-    useEffect(() => {
-        hljs.highlightBlock( ref.current );
-    }, [ children ]);
-
-    return (
-        <code ref={ref} className={cx(css.wrapper,className)}>
-            {children}
-        </code>
-    );
-}
-
-
-export default memo( Code );
+export default Code;

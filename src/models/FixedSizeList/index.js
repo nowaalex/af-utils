@@ -1,4 +1,5 @@
 import ListBase from "../ListBase";
+import throttle from "utils/throttle";
 
 import {
     START_INDEX,
@@ -28,11 +29,16 @@ class FixedSizeList extends ListBase {
     constructor(){
         super();
 
-        this.on( this.updateRowHeight, WIDGET_WIDTH, WIDGET_HEIGHT, ROWS_CONTAINER_NODE, ROWS_QUANTITY );
+        this.on( this.updateRowHeightThrottled, WIDGET_WIDTH, WIDGET_HEIGHT, ROWS_CONTAINER_NODE, ROWS_QUANTITY );
+    }
+
+    destructor(){
+        this.updateRowHeightThrottled.cancel();
+        super.destructor();
     }
 
     getIndex( offset ){
-        return Math.floor( offset / this.rowHeight );
+        return this.rowHeight && Math.floor( offset / this.rowHeight );
     }
 
     getOffset( index ){
@@ -47,9 +53,11 @@ class FixedSizeList extends ListBase {
             }
         }
         else {
-            this.setRowHeight( this.estimatedRowHeight )
+            this.setRowHeight( this.estimatedRowHeight );
         }
     }
+    
+    updateRowHeightThrottled = throttle( this.updateRowHeight, 200, this );
 }
 
 export default FixedSizeList;

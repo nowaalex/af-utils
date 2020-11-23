@@ -128,7 +128,17 @@ Table.propTypes = {
 
     getRowData: PropTypes.func.isRequired,
 
+    /**
+     * @param {number} rowIndex
+     * @param {array} columns
+     * @param {function} getRowData
+     * @param {function} renderCell
+     * @param {React.Component} CellsList
+     * @param {React.Component} Cell
+     * @returns {any} one row element child. Fragments are not supported.
+     */
     renderRow: PropTypes.func,
+
     renderCell: PropTypes.func,
     renderTheadContents: PropTypes.func,
     CellsList: PropTypes.elementType,

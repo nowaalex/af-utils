@@ -1,0 +1,1 @@
+export const PROPS_ORDER = [ "name", "type", "required", "defaultValue", "description" ];

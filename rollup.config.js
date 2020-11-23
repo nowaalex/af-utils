@@ -17,8 +17,11 @@ fs.rmdirSync( OUTPUT_DIR, { recursive: true });
 
 export default {
     input: {
-        index: "src/index.js",
-        ComplexTable: "src/components/ComplexTable/index.js"
+        List: "src/components/List/index.js",
+        Table: "src/components/Table/index.js",
+        ComplexTable: "src/components/ComplexTable/index.js",
+        useApi: "src/hooks/useApi/index.js",
+        renderers: "src/components/Table/renderers.js"
     },
     output: {
         format: "es",

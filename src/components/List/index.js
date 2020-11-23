@@ -51,7 +51,7 @@ List.propTypes = {
 
     /**
      * @param {number} rowIndex
-     * @returns {any} row element children
+     * @returns {any} one row element child. Fragments are not supported.
      */
     children: PropTypes.func.isRequired
 }

@@ -20,7 +20,7 @@ module.exports = () => {
 		entry: "./src/website/index.js",
 		output: {
 			publicPath: "/",
-			path: path.resolve(__dirname, "build"),
+			path: path.resolve(__dirname, "w"),
 			filename: shouldCompress ? "[contenthash].js" : "[name].[id].js"
 		},
 		optimization: {

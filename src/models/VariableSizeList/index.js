@@ -4,6 +4,9 @@ import throttle from "utils/throttle";
 import {
     ROWS_QUANTITY,
     WIDGET_SCROLL_HEIGHT,
+    WIDGET_WIDTH,
+    START_INDEX,
+    END_INDEX,
     ROWS_CONTAINER_NODE,
     CACHED_ROWS_HEIGHT,
 } from "constants/events";
@@ -11,7 +14,6 @@ import {
 /*
     TODO:
         when estimatedRowHeight is not correct, scroll behavior is weird here
-        maybe MutationObserver is not needed?
         perform resetCacheHeights from useEffect on rowRenderer change
 */
 
@@ -32,23 +34,23 @@ class VariableSizeList extends ListBase {
         this
             /* must be done before events, attached in ListBase */
             .prependListener( this.grow, ROWS_QUANTITY )
-            .on( this.updateDomObserver, ROWS_CONTAINER_NODE );
-            
-        this.rowsDomObserver = new MutationObserver( this.updateRowHeightsThrottled );
+            .prependListener( this.updateMsb, ROWS_QUANTITY )
+            .on( this.updateRowHeightsThrottled, ROWS_CONTAINER_NODE, WIDGET_WIDTH, START_INDEX, END_INDEX );            
     }
 
     destructor(){
-        this.rowsDomObserver.disconnect();
         this.updateRowHeightsThrottled.cancel();
         super.destructor();
+    }
+
+    updateMsb(){
+        this.msb = 1 << 31 - Math.clz32( this.rowsQuantity );
     }
 
     grow(){
         const { rowsQuantity } = this;
 
         const curRowHeighsLength = this.rowHeights.length;
-
-        this.msb = 1 << 31 - Math.clz32( rowsQuantity );
 
         if( rowsQuantity > curRowHeighsLength ){
 
@@ -93,13 +95,6 @@ class VariableSizeList extends ListBase {
         }
 
         this.emit( CACHED_ROWS_HEIGHT );
-    }
-
-    updateDomObserver(){
-        this.rowsDomObserver.disconnect();
-        if( this.rowsContainerNode ){
-            this.rowsDomObserver.observe( this.rowsContainerNode, { childList: true, subtree: true });
-        }
     }
 
     getIndex( offset ){
