@@ -41,6 +41,7 @@ class ListBase extends PubSub {
         super()
 
         this
+            .on( this.updateWidgetScrollHeight, CACHED_ROWS_HEIGHT, ROWS_QUANTITY )
             .on( this.updateStartIndex, SCROLL_TOP, CACHED_ROWS_HEIGHT, OVERSCAN_ROWS_COUNT )
             .on( this.updateEndIndex, ROWS_QUANTITY, SCROLL_TOP, WIDGET_HEIGHT, OVERSCAN_ROWS_COUNT, CACHED_ROWS_HEIGHT )
             .on( this.updateVirtualTopOffset, START_INDEX, CACHED_ROWS_HEIGHT );
@@ -76,6 +77,14 @@ class ListBase extends PubSub {
         if( v !== this.virtualTopOffset ){
             this.virtualTopOffset = v;
             this.emit( VIRTUAL_TOP_OFFSET );
+        }
+    }
+
+    updateWidgetScrollHeight(){
+        const v = this.getOffset( this.rowsQuantity );
+        if( v !== this.widgetScrollHeight ){
+            this.widgetScrollHeight = v;
+            this.emit( WIDGET_SCROLL_HEIGHT );
         }
     }
 

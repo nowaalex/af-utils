@@ -28,9 +28,7 @@ class FixedSizeList extends ListBase {
     constructor(){
         super();
 
-        this
-            .on( this.updateRowHeight, WIDGET_WIDTH, WIDGET_HEIGHT, ROWS_CONTAINER_NODE, ROWS_QUANTITY )
-            .on( this.updateWidgetScrollHeight, CACHED_ROWS_HEIGHT, ROWS_QUANTITY );
+        this.on( this.updateRowHeight, WIDGET_WIDTH, WIDGET_HEIGHT, ROWS_CONTAINER_NODE, ROWS_QUANTITY );
     }
 
     getIndex( offset ){
@@ -39,14 +37,6 @@ class FixedSizeList extends ListBase {
 
     getOffset( index ){
         return index * this.rowHeight;
-    }
-
-    updateWidgetScrollHeight(){
-        const v = this.rowHeight * this.rowsQuantity;
-        if( v !== this.widgetScrollHeight ){
-            this.widgetScrollHeight = v;
-            this.emit( WIDGET_SCROLL_HEIGHT );
-        }
     }
 
     updateRowHeight(){

@@ -45,13 +45,48 @@ class VariableSizeList extends ListBase {
 
     grow(){
         const { rowsQuantity } = this;
-        if( rowsQuantity > this.rowHeights.length ){
+
+        const curRowHeighsLength = this.rowHeights.length;
+
+        this.msb = 1 << 31 - Math.clz32( rowsQuantity );
+
+        if( rowsQuantity > curRowHeighsLength ){
+
+            const oldRowHeights = this.rowHeights;
+            
             this.rowHeights = new Uint32Array( rowsQuantity );
             this.fTree = new Uint32Array( rowsQuantity + 1 );
-        }
-        
-        this.msb = 1 << 31 - Math.clz32( rowsQuantity );
-        this.resetCachedHeights();
+
+            if( curRowHeighsLength ){
+                /* heights cache is not empty */
+                this.rowHeights.set( oldRowHeights );
+                this.rowHeights.fill( this.estimatedRowHeight, curRowHeighsLength );
+
+
+                /* 
+                    Creating fenwick tree from an array in linear time;
+                    It is much more efficient, than calling updateRowHeight N times.
+                */
+
+                this.fTree.set( this.rowHeights, 1 );
+
+                for( let i = 1, j; i <= rowsQuantity; i++ ){
+                    j = i + ( i & -i );
+                    if( j <= rowsQuantity ){
+                        this.fTree[ j ] += this.fTree[ i ];
+                    }
+                }
+
+                /*
+                    TODO:
+                        normally CACHED_ROWS_HEIGHT event must be emitted here; 
+                        but now this would lead to calling of updateWidgetScrollHeight twice.
+                */
+            }
+            else {
+                this.resetCachedHeights();
+            }
+        }        
     }
 
     resetCachedHeights( rowHeight = this.estimatedRowHeight ){
@@ -62,7 +97,7 @@ class VariableSizeList extends ListBase {
             this.fTree[ i ] = rowHeight * ( i & -i );
         }
 
-        this.setWidgetScrollHeight( rowHeight * this.rowsQuantity );
+        this.emit( CACHED_ROWS_HEIGHT );
     }
 
     updateDomObserver(){
@@ -100,14 +135,6 @@ class VariableSizeList extends ListBase {
         return result;
     }
 
-    setWidgetScrollHeight( v ){
-        if( v !== this.widgetScrollHeight ){
-            this.widgetScrollHeight = v;
-            this.emit( WIDGET_SCROLL_HEIGHT );
-        }
-        return this;
-    }
-
     updateRowHeight( i, delta ){
         for ( i++; i <= this.rowsQuantity; i += i & -i ){
             this.fTree[ i ] += delta;
@@ -120,20 +147,17 @@ class VariableSizeList extends ListBase {
         if( node ){
 
             let index = this.startIndex,
-                height,
                 diff,
-                totalDiff = 0,
                 cacheChanged = false;
 
             for( let child of node.children ){
      
-                height = child.offsetHeight;
-                diff = height - this.rowHeights[ index ];
+                diff = child.offsetHeight - this.rowHeights[ index ];
 
                 if( diff ){
-                    this.rowHeights[ index ] = height;
+                    this.rowHeights[ index ] += diff;
                     this.updateRowHeight( index, diff );
-                    totalDiff += diff;
+                    
                     if( !cacheChanged ){
                         cacheChanged = true;
                     }
@@ -143,11 +167,7 @@ class VariableSizeList extends ListBase {
             }
 
             if( cacheChanged ){
-                this
-                    .startBatch()
-                    .emit( CACHED_ROWS_HEIGHT )
-                    .setWidgetScrollHeight( this.widgetScrollHeight + totalDiff )
-                    .endBatch();
+                this.emit( CACHED_ROWS_HEIGHT );
             }
         }
     }
