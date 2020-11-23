@@ -40,7 +40,7 @@ describe( "VariableSizeList works ok", () => {
             for( let j = 0, diff; j < ROWS_QUANTITY; j++ ){
                 diff = r( 5 - i, 20 );
                 sum += diff;
-                VSList.updateRowHeight( j, diff );
+                VSList.updateRowHeight( j + 1, diff );
                 ROW_HEIGHTS[ j ] += diff;
             }
 

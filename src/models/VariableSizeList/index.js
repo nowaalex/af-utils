@@ -130,8 +130,9 @@ class VariableSizeList extends ListBase {
         return result;
     }
 
+    /* i starts from 1 here */
     updateRowHeight( i, delta ){
-        for ( i++; i <= this.rowsQuantity; i += i & -i ){
+        for ( ; i <= this.rowsQuantity; i += i & -i ){
             this.fTree[ i ] += delta;
         }
     }
@@ -150,12 +151,14 @@ class VariableSizeList extends ListBase {
                 diff = child.offsetHeight - this.rowHeights[ index ];
 
                 if( diff ){
+                    cacheChanged = true;
                     this.rowHeights[ index ] += diff;
-                    this.updateRowHeight( index, diff );
-                    
-                    if( !cacheChanged ){
-                        cacheChanged = true;
-                    }
+
+                    /*
+                        TODO:
+                            maybe buffer these updates somehow?
+                    */
+                    this.updateRowHeight( index + 1, diff );                  
                 }
                 
                 index++;
