@@ -58,7 +58,6 @@ class VariableSizeList extends ListBase {
             this.fTree = new Uint32Array( rowsQuantity + 1 );
 
             if( curRowHeighsLength ){
-                /* heights cache is not empty */
                 this.rowHeights.set( oldRowHeights );
                 this.rowHeights.fill( this.estimatedRowHeight, curRowHeighsLength );
 
@@ -77,11 +76,7 @@ class VariableSizeList extends ListBase {
                     }
                 }
 
-                /*
-                    TODO:
-                        normally CACHED_ROWS_HEIGHT event must be emitted here; 
-                        but now this would lead to calling of updateWidgetScrollHeight twice.
-                */
+                this.emit( CACHED_ROWS_HEIGHT );
             }
             else {
                 this.resetCachedHeights();

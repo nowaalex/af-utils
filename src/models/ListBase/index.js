@@ -33,7 +33,11 @@ class ListBase extends PubSub {
     setScrollTop( v ){
         if( v !== this.scrollTop ){
             this.scrollTop = v;
-            this.emit( SCROLL_TOP );
+            
+            this
+                .startBatch()
+                .emit( SCROLL_TOP )
+                .endBatch();
         }
     }
 
