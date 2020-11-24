@@ -44,9 +44,7 @@ export default {
                 beautify: true
             },
             module: true,
-            compress: {
-                passes: 3
-            }
+            mangle: false
         })
     ],
     external: [ "react", "react-dom", "mobx", "mobx-react-lite" ]

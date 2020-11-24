@@ -1,8 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const CompressionPlugin = require("compression-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -82,16 +80,6 @@ module.exports = () => {
 			new HtmlWebpackPlugin({
                 title: "af-virtual-scroll"
             })
-		].concat(
-			shouldCompress
-				? [
-						new CompressionPlugin(),
-						new BundleAnalyzerPlugin({
-							analyzerMode: "static",
-							reportFilename: "bundleAnalyzer.html"
-						})
-				]
-				: []
-		)
+		]
 	};
 }
