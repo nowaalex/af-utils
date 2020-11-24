@@ -1,6 +1,6 @@
 {
   "name": "af-virtual-scroll",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "React components for rendering large scrollable data",
   "repository": {
     "type": "git",
@@ -19,7 +19,8 @@
   "scripts": {
     "start": "NODE_ENV=development PROD=false BASE_URL=/ webpack serve",
     "build:website": "NODE_ENV=production BASE_URL=/af-virtual-scroll/w/ PROD=true webpack --mode=production",
-    "build": "rollup --config rollup.config.js && cp package.json lib",
+    "build": "rollup --config rollup.config.js",
+    "prepare": "yarn run build",
     "test": "jest",
     "clear-test-cache": "jest --clearCache"
   },
@@ -27,7 +28,11 @@
     "node": ">=14.0.0",
     "npm": ">=6.0.0"
   },
-  "main": "index.js",
+  "files": [
+    "lib/*"
+  ],
+  "main": "lib/index.js",
+  "module": "lib/index.js",
   "keywords": [
     "react",
     "reactjs",

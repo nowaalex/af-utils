@@ -1,4 +1,4 @@
-import List from "af-virtual-scroll/List";
+import { List } from "af-virtual-scroll";
 
 
 /*

@@ -1,4 +1,4 @@
-import Table from  "af-virtual-scroll/Table";
+import { Table } from  "af-virtual-scroll";
 
 const SimpleTable = () => (
     <Table

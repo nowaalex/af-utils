@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Table from  "af-virtual-scroll/Table";
+import { Table } from  "af-virtual-scroll";
 import styled from "styled-components";
 import times from "lodash/times";
 import r from "lodash/random";

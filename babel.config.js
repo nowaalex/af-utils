@@ -3,10 +3,7 @@ const plugins = [
         root: [ "./src" ],
         extensions: [ ".js", ".css", ".scss" ],
         alias: {
-            "lodash-es": "lodash",
-            "af-virtual-scroll/List": "./src/components/List",
-            "af-virtual-scroll/Table": "./src/components/Table",
-            "af-virtual-scroll/ComplexTable": "./src/components/ComplexTable"
+            "af-virtual-scroll": "./src/index",
         }
     }],
     [ "@babel/plugin-proposal-decorators", { "legacy": true }],
