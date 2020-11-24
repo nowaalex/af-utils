@@ -1,0 +1,599 @@
+/*
+ Modernizr 3.0.0pre (Custom Build) | MIT
+*/
+
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+/* binding */
+
+/* default */
+
+/* default.estimatedRowHeight */
+
+/* default.fixed.toString */
+
+/* default.overscanRowsCount */
+
+/* eslint-disable no-unused-vars */
+
+/* eslint-disable-next-line jsx-a11y/anchor-has-content */
+
+/* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
+
+/* harmony default export */
+
+/* harmony export */
+
+/* import() */
+
+/* webpack/runtime/css loading */
+
+/* webpack/runtime/jsonp chunk loading */
+
+/* webpack/runtime/load script */
+
+/*#__PURE__*/
+
+/**
+ * A <Link> wrapper that knows if it's "active" or not.
+ */
+
+/**
+ * Attach the keys as a property of the regexp.
+ *
+ * @param  {!RegExp} re
+ * @param  {Array}   keys
+ * @return {!RegExp}
+ */
+
+/**
+ * Compile a string to a template function for the path.
+ *
+ * @param  {string}             str
+ * @param  {Object=}            options
+ * @return {!function(Object=, Object=)}
+ */
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Copyright 2015, Yahoo! Inc.
+ * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+ */
+
+/**
+ * Create a path regexp from string input.
+ *
+ * @param  {string}  path
+ * @param  {!Array}  keys
+ * @param  {!Object} options
+ * @return {!RegExp}
+ */
+
+/**
+ * Creates a history object that stores locations in memory.
+ */
+
+/**
+ * Creates a history object that uses the HTML5 history API including
+ * pushState, replaceState, and the popstate event.
+ */
+
+/**
+ * Encode the asterisk parameter. Similar to `pretty`, but allows slashes.
+ *
+ * @param  {string}
+ * @return {string}
+ */
+
+/**
+ * Escape a regular expression string.
+ *
+ * @param  {string} str
+ * @return {string}
+ */
+
+/**
+ * Escape the capturing group by escaping special characters and meaning.
+ *
+ * @param  {string} group
+ * @return {string}
+ */
+
+/**
+ * Expose `pathToRegexp`.
+ */
+
+/**
+ * Expose a function for taking tokens and returning a RegExp.
+ *
+ * @param  {!Array}          tokens
+ * @param  {(Array|Object)=} keys
+ * @param  {Object=}         options
+ * @return {!RegExp}
+ */
+
+/**
+ * Expose a method for transforming tokens into the path function.
+ */
+
+/**
+ * Get the flags for a regexp from the options.
+ *
+ * @param  {Object} options
+ * @return {string}
+ */
+
+/**
+ * Normalize the given path string, returning a regular expression.
+ *
+ * An empty array can be passed in for the keys, which will hold the
+ * placeholder key descriptions. For example, using `/user/:id`, `keys` will
+ * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
+ *
+ * @param  {(string|RegExp|Array)} path
+ * @param  {(Array|Object)=}       keys
+ * @param  {Object=}               options
+ * @return {!RegExp}
+ */
+
+/**
+ * Parse a string for the raw tokens.
+ *
+ * @param  {string}  str
+ * @param  {Object=} options
+ * @return {!Array}
+ */
+
+/**
+ * Prettier encoding of URI path segments.
+ *
+ * @param  {string}
+ * @return {string}
+ */
+
+/**
+ * Public API for generating a URL pathname from a path and parameters.
+ */
+
+/**
+ * Public API for matching a URL pathname to a path.
+ */
+
+/**
+ * Pull out keys from a regexp.
+ *
+ * @param  {!RegExp} path
+ * @param  {!Array}  keys
+ * @return {!RegExp}
+ */
+
+/**
+ * Returns true if a given popstate event is an extraneous WebKit event.
+ * Accounts for the fact that Chrome on iOS fires real popstate events
+ * containing undefined state when pressing the back button.
+ */
+
+/**
+ * Returns true if the HTML5 history API is supported. Taken from Modernizr.
+ *
+ * https://github.com/Modernizr/Modernizr/blob/master/LICENSE
+ * https://github.com/Modernizr/Modernizr/blob/master/feature-detects/history.js
+ * changed to avoid false negatives for Windows Phones: https://github.com/reactjs/react-router/issues/586
+ */
+
+/**
+ * The main path matching regexp utility.
+ *
+ * @type {RegExp}
+ */
+
+/**
+ * The public API for a <Router> that stores location in memory.
+ */
+
+/**
+ * The public API for a <Router> that uses HTML5 history.
+ */
+
+/**
+ * The public API for a <Router> that uses window.location.hash.
+ */
+
+/**
+ * The public API for matching a single path and rendering.
+ */
+
+/**
+ * The public API for navigating programmatically with a component.
+ */
+
+/**
+ * The public API for prompting the user before navigating away from a screen.
+ */
+
+/**
+ * The public API for rendering a history-aware <a>.
+ */
+
+/**
+ * The public API for rendering the first <Route> that matches.
+ */
+
+/**
+ * The public top-level API for a "static" <Router>, so-called because it
+ * can't actually change the current location. Instead, it just records
+ * location changes in a context object. Useful mainly in testing and
+ * server-rendering scenarios.
+ */
+
+/**
+ * Transform an array into a regexp.
+ *
+ * @param  {!Array}  path
+ * @param  {Array}   keys
+ * @param  {!Object} options
+ * @return {!RegExp}
+ */
+
+/** @license React v0.20.1
+ * scheduler.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v16.13.1
+ * react-is.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.1
+ * react-dom.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.1
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.1
+ * react.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @type {!Array} */
+
+/** @type {!Object} */
+
+/** @type {string} */
+
+/************************************************************************/
+
+/******/
+
+/***/
+
+//
+
+// "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
+
+// "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
+
+// "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
+
+// 0 means "already installed".
+
+// A hashchange doesn't always == location change.
+
+// About 1.5x faster than the two-arg version of Array#splice()
+
+// Avoid failures from read-only properties
+
+// By explicitly using `prop-types` you are opting into new production behavior.
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
+
+// CONCATENATED MODULE: ./node_modules/history/esm/history.js
+
+// CONCATENATED MODULE: ./node_modules/mini-create-react-context/dist/esm/index.js
+
+// CONCATENATED MODULE: ./node_modules/react-router-dom/esm/react-router-dom.js
+
+// CONCATENATED MODULE: ./node_modules/resolve-pathname/esm/resolve-pathname.js
+
+// CONCATENATED MODULE: ./node_modules/tiny-invariant/dist/tiny-invariant.esm.js
+
+// CONCATENATED MODULE: ./node_modules/value-equal/esm/value-equal.js
+
+// CONCATENATED MODULE: ./src/website/Docs/common/PropsRows/index.js
+
+// CONCATENATED MODULE: ./src/website/Docs/common/props.js
+
+// CONCATENATED MODULE: ./src/website/Menu/style.module.scss
+
+// Check if module is in cache
+
+// Compile all the patterns before compilation.
+
+// Compile all the tokens into regexps.
+
+// Create a new module (and put it into the cache)
+
+// DCE check should happen before ReactDOM bundle executes so that
+
+// Detect buggy property enumeration order in older V8 versions.
+
+// DevTools can report bad minification during injection.
+
+// DevTools shouldn't crash React, no matter what.
+
+// EXTERNAL MODULE: ./node_modules/path-to-regexp/index.js
+
+// EXTERNAL MODULE: ./node_modules/prop-types/index.js
+
+// EXTERNAL MODULE: ./node_modules/react-dom/index.js
+
+// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
+
+// EXTERNAL MODULE: ./src/components/common/defaultProps.js
+
+// Ensure the hash is encoded properly before doing anything else.
+
+// Ensure we always have a properly-encoded hash.
+
+// Execute the module function
+
+// IE 11 sometimes throws when accessing window.history.state
+
+// If the path exists, push it onto the end.
+
+// Ignore already escaped sequences.
+
+// Ignore extraneous popstate events in WebKit.
+
+// Ignore this change; we already setState in push/replace.
+
+// Important!
+
+// In non-strict mode we allow a slash at the end of match. If the path to
+
+// Instead, we just default to 0 for keys we don't know.
+
+// Instead, we just default to 0 for paths we don't know.
+
+// Iterate over the tokens and create our regexp string.
+
+// JSONP chunk loading for javascript
+
+// Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+
+// Match Express-style parameters and un-named parameters with a prefix
+
+// Match any characters still remaining.
+
+// Match escaped characters that would otherwise appear in future matches.
+
+// Mimic the behavior of DOM histories by
+
+// One-arg form: push(location)
+
+// Otherwise, if either of them == null they are not equal.
+
+// Preact uses an empty array as children by
+
+// Prepend partial segment prefixes.
+
+// Promise = chunk loading, 0 = chunk loaded
+
+// Public interface
+
+// Push the current path onto the tokens.
+
+// React 15 compat
+
+// React v16.11 and below
+
+// React v16.12 and above
+
+// Resolve incomplete/relative pathname relative to current location.
+
+// Return false from a transition hook to cancel the transition.
+
+// Return the exports of the module
+
+// See https://github.com/ReactTraining/history/pull/289
+
+// TODO: If another transition starts while we're still confirming
+
+// TODO: We could probably make this more reliable by
+
+// Test for strict equality first.
+
+// The chunk loading function for additional chunks
+
+// The module cache
+
+// The require function
+
+// This allows the user to escape special characters that won't transform.
+
+// This file contains only the entry chunk.
+
+// This function allow to reference all chunks
+
+// This function allow to reference async chunks
+
+// This implementation is based heavily on node's url.parse
+
+// This is a bit of a hack. We have to start listening for location
+
+// Two-arg form: push(path, state)
+
+// Use a negative lookahead to match only capturing groups.
+
+// Verify that the code above has been dead code eliminated (DCE'd).
+
+// We can't use window.location.hash here because it's not
+
+// We cannot tell if a hashchange was caused by a PUSH, so we'd
+
+// We cannot tell if a hashchange was caused by a REPLACE, so we'd
+
+// We don't expect any of the above to throw, but better to be safe.
+
+// We should still report in case we break this code.
+
+// We use React.Children.forEach instead of React.Children.toArray().find()
+
+// When rendering in a static context,
+
+// When there is no prior location and pathname is empty, set it to /
+
+// a Promise means "currently loading".
+
+// all chunks have JS
+
+// and optional suffixes. Matches appear as:
+
+// avoid mem leaks in IE.
+
+// avoid mem leaks.
+
+// best way to handle this.
+
+// causing a render after a cancelled POP.
+
+// changes here in the constructor in case there are any <Redirect>s
+
+// component at different URLs.
+
+// consistent across browsers - Firefox will pre-decode it!
+
+// create error before stack unwound to get useful stacktrace later
+
+// default, so use null if that's the case.
+
+// define __esModule on exports
+
+// define getter functions for harmony exports
+
+// don't hoist over string (html) components
+
+// eslint-disable-line no-alert
+
+// eslint-disable-line no-new-wrappers
+
+// expose the modules object (__webpack_modules__)
+
+// extracted by mini-css-extract-plugin
+
+// get a new location before the <Router> is mounted.
+
+// getDefaultExport function for compatibility with non-harmony modules
+
+// here because toArray adds keys to all child elements and we do not want
+
+// http://fb.me/prop-types-in-prod
+
+// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+
+// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+
+// ignore everything but left clicks
+
+// in non-ending mode, where "/test/" shouldn't match "/test//route".
+
+// install a JSONP callback for chunk loading
+
+// is that other hash histories in the page will consider it a POP.
+
+// is valid at the end of a path match, not in the middle. This is important
+
+// keeping a list of keys we've seen in sessionStorage.
+
+// keeping a list of paths we've seen in sessionStorage.
+
+// loadScript function to load a script via script tag
+
+// match already ends with a slash, we remove it for consistency. The slash
+
+// no HMR
+
+// no HMR manifest
+
+// no baseURI
+
+// no deferred startup
+
+// no module.id needed
+
+// no module.loaded needed
+
+// no prefetching
+
+// no preloaded
+
+// object to store loaded and loading chunks
+
+// on the initial render. If there are, they will replace/push when
+
+// onClick prevented default
+
+// rather setState here and ignore the hashchange. The caveat here
+
+// set the new location immediately.
+
+// setup Promise in chunk cache
+
+// start chunk loading
+
+// the matched portion of the URL
+
+// the path used to match
+
+// the previous one, we may end up in a weird state. Figure out the
+
+// they mount and since cDM fires in children before parents, we may
+
+// to is absolute
+
+// to is relative, drop the filename
+
+// to trigger an unmount/remount for two <Route>s that render the same
+
+// undefined = chunk not loaded, null = chunk preloaded/prefetched
+
+// webpackBootstrap
+
+// whether or not we matched exactly
