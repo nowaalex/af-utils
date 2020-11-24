@@ -3,6 +3,7 @@ import PropsTable from "../common/PropsTable";
 import PropsRows from "../common/PropsRows";
 import commonProps from "../common/props";
 import Code from "../../Code";
+import Styling from "../common/Styling";
 import codeString from "!!raw-loader!../../../../src/components/Table/renderers.js";
 
 const props = [
@@ -53,6 +54,7 @@ const props = [
 
 const List = () => (
     <Fragment>
+        <Styling />
         <h2>PropTypes</h2>
         <PropsTable>
             <PropsRows propsList={props} />
