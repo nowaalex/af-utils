@@ -1,3 +1,0 @@
-/*! For license information please see b7d9861596b694d9ebc5.js.LICENSE.txt */
-(self.webpackChunkaf_virtual_scroll=self.webpackChunkaf_virtual_scroll||[]).push([[776],{82092:(l,a,c)=>{"use strict";c.r(a),c.d(a,{default:()=>t});var e=c(85893),s=c(34550);const t=()=>(0,e.jsx)(s.Z,{rowsQuantity:1e3,getRowData:l=>({a:"cell_a_"+l,b:"cell_b_"+l,c:"cell_c_"+l}),columns:["a","b","c"]})}}]);
-//# sourceMappingURL=b7d9861596b694d9ebc5.js.map

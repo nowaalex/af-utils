@@ -46,7 +46,7 @@ class FixedSizeList extends ListBase {
     }
 
     updateRowHeight(){
-        if( this.widgetWidth && this.widgetHeight && this.rowsContainerNode && this.rowsQuantity ){
+        if( this.rowsContainerNode && this.rowsQuantity ){
             const { firstElementChild } = this.rowsContainerNode;
             if( firstElementChild ){
                 this.setRowHeight( firstElementChild.offsetHeight );

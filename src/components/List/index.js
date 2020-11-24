@@ -10,6 +10,7 @@ import FixedHeightsStore from "models/FixedSizeList";
 import ScrollContainer from "../common/ScrollContainer";
 import Scroller from "../common/Scroller";
 import commonPropTypes from "../common/propTypes";
+import commonDefaultProps from "../common/defaultProps";
 
 import Rows from "./Rows";
 
@@ -56,10 +57,6 @@ List.propTypes = {
     children: PropTypes.func.isRequired
 }
 
-List.defaultProps = {
-    fixed: false,
-    estimatedRowHeight: 20,
-    overscanRowsCount: 4
-};
+List.defaultProps = commonDefaultProps;
 
 export default memo( List );

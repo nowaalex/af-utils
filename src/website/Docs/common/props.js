@@ -1,3 +1,5 @@
+import commonDefaultProps from "../../../components/common/defaultProps";
+
 const commonProps = [
     {
         name: "rowsQuantity",
@@ -12,7 +14,7 @@ const commonProps = [
     {
         name: "fixed",
         type: "bool",
-        defaultValue: "false",
+        defaultValue: commonDefaultProps.fixed.toString(),
         description: `
             true - you guarantee, that all children have same height and is determined by first rendered child.
             false - special cache is created, which allows rows to have different height.
@@ -21,13 +23,14 @@ const commonProps = [
     {
         name: "overscanRowsCount",
         type: "number",
-        defaultValue: 4,
+        defaultValue: commonDefaultProps.overscanRowsCount,
         description: `Maximum number of rows, rendered above and below viewport.
         Normally should not be overriden.`
     },
     {
         name: "estimatedRowHeight",
         type: "number",
+        defaultValue: commonDefaultProps.estimatedRowHeight,
         description: `
             This number will NOT be used as an only source of truth.
             It is just a hint to minimize number of waste renders

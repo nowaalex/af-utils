@@ -2,6 +2,8 @@ import { memo, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 
 import commonPropTypes from "../common/propTypes";
+import commonDefaultProps from "../common/defaultProps";
+
 import cx from "utils/cx";
 import startCase from "utils/startCase";
 
@@ -148,10 +150,8 @@ Table.propTypes = {
 };
 
 Table.defaultProps = {
+    ...commonDefaultProps,
     headless: false,
-    fixed: false,
-    estimatedRowHeight: 20,
-    overscanRowsCount: 4,
 
     renderRow,
     renderCell,
