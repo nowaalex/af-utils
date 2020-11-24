@@ -27,7 +27,7 @@ const renderPlayground = routeProps => {
 };
 
 const App = () => (
-    <Router>
+    <Router basename={process.env.BASE_URL}>
         <div className={css.wrapper}>
             <Menu items={menuItems} />
             <Switch>

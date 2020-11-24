@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "start": "NODE_ENV=development PROD=false webpack serve",
-    "build:website": "NODE_ENV=production PROD=true webpack --mode=production",
+    "build:website": "NODE_ENV=production BASE_URL=/af-virtual-scroll/w/ PROD=true webpack --mode=production",
     "build": "rollup --config rollup.config.js",
     "test": "jest",
     "clear-test-cache": "jest --clearCache"

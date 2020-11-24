@@ -19,7 +19,7 @@ module.exports = () => {
 		target: "browserslist",
 		entry: "./src/website/index.js",
 		output: {
-			publicPath: "/",
+			publicPath: env.BASE_URL || "/",
 			path: path.resolve(__dirname, "w"),
 			filename: shouldCompress ? "[contenthash].js" : "[name].[id].js"
 		},
@@ -72,7 +72,7 @@ module.exports = () => {
 			historyApiFallback: true
 		},
 		plugins: [
-			new webpack.EnvironmentPlugin([ "NODE_ENV" ]),
+			new webpack.EnvironmentPlugin([ "NODE_ENV", "BASE_URL" ]),
 			new CleanWebpackPlugin(),
 			new MiniCssExtractPlugin({
 				ignoreOrder: true,
