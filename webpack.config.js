@@ -19,7 +19,7 @@ module.exports = () => {
 		target: "browserslist",
 		entry: "./src/website/index.js",
 		output: {
-			publicPath: env.BASE_URL || "/",
+			publicPath: env.BASE_URL,
 			path: path.resolve(__dirname, "w"),
 			filename: shouldCompress ? "[contenthash].js" : "[name].[id].js"
 		},
