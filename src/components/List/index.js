@@ -8,7 +8,6 @@ import VariableHeightsStore from "models/VariableSizeList";
 import FixedHeightsStore from "models/FixedSizeList";
 
 import ScrollContainer from "../common/ScrollContainer";
-import Scroller from "../common/Scroller";
 import commonPropTypes from "../common/propTypes";
 import commonDefaultProps from "../common/defaultProps";
 
@@ -38,10 +37,7 @@ const List = ({
     return (
         <Context.Provider value={Store}>
             <ScrollContainer {...props}>
-                <Scroller as="div" />
-                <div ref={rowsContainerRef}>
-                    <Rows renderRow={children} /> 
-                </div>
+                <Rows dataRef={rowsContainerRef} renderRow={children} /> 
             </ScrollContainer>
         </Context.Provider>
     );

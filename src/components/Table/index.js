@@ -14,8 +14,8 @@ import VariableHeightsStore from "models/VariableSizeList";
 import FixedHeightsStore from "models/FixedSizeList";
 
 import ScrollContainer from "../common/ScrollContainer";
-import Scroller from "../common/Scroller";
 
+import Scroller from "./Scroller";
 import Rows from "./Rows";
 import Colgroup from "./Colgroup";
 
@@ -84,7 +84,7 @@ const Table = ({
                             {renderTheadContents(normalizedVisibleColumns)}
                         </thead>
                     )}
-                    <Scroller as="tbody" />
+                    <Scroller />
                     <tbody ref={rowsContainerRef}>
                         <Rows
                             columns={normalizedVisibleColumns}
