@@ -4,15 +4,10 @@ import throttle from "utils/throttle";
 import {
     START_INDEX,
     END_INDEX,
-    SCROLL_TOP,
     ROWS_QUANTITY,
-    OVERSCAN_ROWS_COUNT,
     WIDGET_WIDTH,
     WIDGET_HEIGHT,
-    VIRTUAL_TOP_OFFSET,
     WIDGET_SCROLL_HEIGHT,
-    ROWS_CONTAINER_NODE,
-    CACHED_ROWS_HEIGHT,
 } from "constants/events";
 
 class FixedSizeList extends ListBase {
@@ -22,14 +17,14 @@ class FixedSizeList extends ListBase {
     setRowHeight( v ){
         if( v !== this.rowHeight ){
             this.rowHeight = v;
-            this.emit( CACHED_ROWS_HEIGHT );
+            this.remeasure();
         }
     }
 
     constructor(){
         super();
 
-        this.on( this.updateRowHeightThrottled, WIDGET_WIDTH, WIDGET_HEIGHT, ROWS_CONTAINER_NODE, ROWS_QUANTITY );
+        this.on( this.updateRowHeightThrottled, WIDGET_WIDTH, WIDGET_HEIGHT, ROWS_QUANTITY );
     }
 
     destructor(){
@@ -47,13 +42,7 @@ class FixedSizeList extends ListBase {
 
     updateRowHeight(){
         if( this.rowsContainerNode && this.rowsQuantity ){
-            const { firstElementChild } = this.rowsContainerNode;
-            if( firstElementChild ){
-                this.setRowHeight( firstElementChild.offsetHeight );
-            }
-        }
-        else {
-            this.setRowHeight( this.estimatedRowHeight );
+            this.setRowHeight( this.rowsContainerNode.firstElementChild?.offsetHeight || 0 );
         }
     }
     

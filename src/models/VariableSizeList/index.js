@@ -3,12 +3,9 @@ import throttle from "utils/throttle";
 
 import {
     ROWS_QUANTITY,
-    WIDGET_SCROLL_HEIGHT,
     WIDGET_WIDTH,
     START_INDEX,
     END_INDEX,
-    ROWS_CONTAINER_NODE,
-    CACHED_ROWS_HEIGHT,
 } from "constants/events";
 
 /*
@@ -34,8 +31,7 @@ class VariableSizeList extends ListBase {
         this
             /* must be done before events, attached in ListBase */
             .prependListener( this.grow, ROWS_QUANTITY )
-            .prependListener( this.updateMsb, ROWS_QUANTITY )
-            .on( this.updateRowHeightsThrottled, ROWS_CONTAINER_NODE, WIDGET_WIDTH, START_INDEX, END_INDEX );            
+            .on( this.updateRowHeightsThrottled, WIDGET_WIDTH, START_INDEX, END_INDEX );            
     }
 
     destructor(){
@@ -43,12 +39,10 @@ class VariableSizeList extends ListBase {
         super.destructor();
     }
 
-    updateMsb(){
-        this.msb = this.rowsQuantity && 1 << 31 - Math.clz32( this.rowsQuantity );
-    }
-
     grow(){
         const { rowsQuantity } = this;
+        
+        this.msb = rowsQuantity && 1 << 31 - Math.clz32( rowsQuantity );
 
         const curRowHeighsLength = this.rowHeights.length;
 
@@ -78,7 +72,7 @@ class VariableSizeList extends ListBase {
                     }
                 }
 
-                this.emit( CACHED_ROWS_HEIGHT );
+                this.remeasure();
             }
             else {
                 this.resetCachedHeights();
@@ -87,6 +81,8 @@ class VariableSizeList extends ListBase {
     }
 
     resetCachedHeights( rowHeight = this.estimatedRowHeight ){
+
+        this.estimatedRowHeight = rowHeight;
         this.rowHeights.fill( rowHeight );
 
         /* Filling FenwickTee with single value  */
@@ -94,7 +90,7 @@ class VariableSizeList extends ListBase {
             this.fTree[ i ] = rowHeight * ( i & -i );
         }
 
-        this.emit( CACHED_ROWS_HEIGHT );
+        this.remeasure();
     }
 
     getIndex( offset ){
@@ -168,7 +164,7 @@ class VariableSizeList extends ListBase {
             }
 
             if( cacheChanged ){
-                this.emit( CACHED_ROWS_HEIGHT );
+                this.remeasure();
             }
         }
     }

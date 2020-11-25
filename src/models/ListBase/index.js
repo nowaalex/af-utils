@@ -3,15 +3,10 @@ import PubSub from "../PubSub";
 import {
     START_INDEX,
     END_INDEX,
-    SCROLL_TOP,
     ROWS_QUANTITY,
-    OVERSCAN_ROWS_COUNT,
     WIDGET_WIDTH,
     WIDGET_HEIGHT,
-    VIRTUAL_TOP_OFFSET,
     WIDGET_SCROLL_HEIGHT,
-    ROWS_CONTAINER_NODE,
-    CACHED_ROWS_HEIGHT,
 } from "constants/events";
 
 class ListBase extends PubSub {
@@ -19,7 +14,8 @@ class ListBase extends PubSub {
     /* Provided from renderer */
     scrollTop = 0;
     rowsQuantity = 0;
-    overscanRowsCount = 0;
+    /* must not be >= 1 */
+    overscanRowsCount = 2;
     widgetHeight = 0;
     widgetWidth = 0;
     estimatedRowHeight = 0;
@@ -33,22 +29,50 @@ class ListBase extends PubSub {
     setScrollTop( v ){
         if( v !== this.scrollTop ){
             this.scrollTop = v;
-            
-            this
-                .startBatch()
-                .emit( SCROLL_TOP )
-                .endBatch();
+            this.remeasureVisibleRange();
         }
+    }
+
+    updateEndIndex(){
+        const endIndex = Math.min( this.rowsQuantity, this.getIndex( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount );
+
+        if( endIndex !== this.endIndex ){
+            this.endIndex = endIndex;
+            this.emit( END_INDEX );
+        }
+
+        return this;
+    }
+
+    remeasureVisibleRange(){
+
+        const startIndex = Math.max( 0, Math.min( this.rowsQuantity, this.getIndex( this.scrollTop ) ) - this.overscanRowsCount );
+
+        if( startIndex !== this.startIndex ){
+            this.startIndex = startIndex;
+            this.virtualTopOffset = this.getOffset( startIndex );
+            this.emit( START_INDEX );
+        }
+
+        return this.updateEndIndex();
+    }
+
+
+    /* must be called when row height/heights change */
+    remeasure(){
+        return this
+            .startBatch()
+            .updateWidgetScrollHeight()
+            .remeasureVisibleRange()
+            .endBatch();
     }
 
     constructor(){
         super()
 
         this
-            .on( this.updateWidgetScrollHeight, CACHED_ROWS_HEIGHT, ROWS_QUANTITY )
-            .on( this.updateStartIndex, SCROLL_TOP, CACHED_ROWS_HEIGHT, OVERSCAN_ROWS_COUNT )
-            .on( this.updateEndIndex, ROWS_QUANTITY, SCROLL_TOP, WIDGET_HEIGHT, OVERSCAN_ROWS_COUNT, CACHED_ROWS_HEIGHT )
-            .on( this.updateVirtualTopOffset, START_INDEX, CACHED_ROWS_HEIGHT );
+            .on( this.updateWidgetScrollHeight, ROWS_QUANTITY )
+            .on( this.updateEndIndex, ROWS_QUANTITY );
     }
 
     scrollToRow( rowIndex ){
@@ -60,36 +84,13 @@ class ListBase extends PubSub {
         }
     }
 
-    updateStartIndex(){
-        const v = Math.max( 0, this.getIndex( this.scrollTop ) - this.overscanRowsCount );
-        if( v !== this.startIndex ){
-            this.startIndex = v;
-            this.emit( START_INDEX );
-        }
-    }
-
-    updateEndIndex(){
-        const v = Math.min( this.rowsQuantity, this.getIndex( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount );
-        if( v !== this.endIndex ){
-            this.endIndex = v;
-            this.emit( END_INDEX );
-        }
-    }
-
-    updateVirtualTopOffset(){
-        const v = this.getOffset( this.startIndex );
-        if( v !== this.virtualTopOffset ){
-            this.virtualTopOffset = v;
-            this.emit( VIRTUAL_TOP_OFFSET );
-        }
-    }
-
     updateWidgetScrollHeight(){
         const v = this.getOffset( this.rowsQuantity );
         if( v !== this.widgetScrollHeight ){
             this.widgetScrollHeight = v;
             this.emit( WIDGET_SCROLL_HEIGHT );
         }
+        return this;
     }
 
     setWidgetDimensions( width, height ){
@@ -100,6 +101,7 @@ class ListBase extends PubSub {
         }
         if( height !== this.widgetHeight ){
             this.widgetHeight = height;
+            this.updateEndIndex();
             this.emit( WIDGET_HEIGHT );
         }
         this.endBatch();
@@ -108,22 +110,18 @@ class ListBase extends PubSub {
     setViewParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode ){
 
         this.estimatedRowHeight = estimatedRowHeight;
+        this.rowsContainerNode = rowsContainerNode;
 
         this.startBatch();
 
         if( overscanRowsCount !== this.overscanRowsCount ){
             this.overscanRowsCount = overscanRowsCount;
-            this.emit( OVERSCAN_ROWS_COUNT );
+            this.queue( this.remeasureVisibleRange );
         }
 
         if( rowsQuantity !== this.rowsQuantity ){
             this.rowsQuantity = rowsQuantity;
             this.emit( ROWS_QUANTITY );
-        }
-
-        if( rowsContainerNode !== this.rowsContainerNode ){
-            this.rowsContainerNode = rowsContainerNode;
-            this.emit( ROWS_CONTAINER_NODE );
         }
 
         this.endBatch();
