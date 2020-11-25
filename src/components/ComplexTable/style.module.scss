@@ -1,3 +1,9 @@
+.wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1 1 auto;
+}
+
 .sortableHeader {
     cursor: pointer;
     user-select: none;
@@ -18,4 +24,16 @@
     box-sizing: border-box;
     width: 100%;
     min-width: 0;
+}
+
+.groupsPanel {
+    display: flex;
+    margin: 0.3em 0;
+    flex: 0 0 auto;
+    flex-flow: row nowrap;
+}
+
+.groupLabel {
+    margin: 0 1em;
+    user-select: none;
 }

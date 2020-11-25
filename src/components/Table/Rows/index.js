@@ -7,6 +7,7 @@ const E = [ START_INDEX, END_INDEX ];
 const Rows = ({ columns, renderRow, getRowData, renderCell, CellsList, Cell }) => useSubscription( API => {
 
     const { startIndex, endIndex } = API;
+
     const result = [];
 
     for( let i = startIndex; i < endIndex; i++ ){

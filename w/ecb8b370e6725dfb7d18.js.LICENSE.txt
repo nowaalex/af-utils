@@ -172,7 +172,13 @@ String.prototype.capitalize = function () { //v1.0
 };
 */
 
+/* .DndContext.Provider */
+
+/* .createDndContext */
+
 /* 2002/01/09 modified by Makoto Matsumoto             */
+
+/* DndContext */
 
 /* In the previous versions, MSBs of the seed affect   */
 
@@ -194,9 +200,13 @@ String.prototype.capitalize = function () { //v1.0
 
 /* constants should be scoped inside the class */
 
+/* default */
+
 /* divided by 2^32 */
 
 /* divided by 2^32-1 */
+
+/* eslint-disable-next-line @typescript-eslint/no-this-alias */
 
 /* for generated name */
 
@@ -216,7 +226,15 @@ String.prototype.capitalize = function () { //v1.0
 
 /* getDependencyTree */
 
+/* globals self */
+
+/* harmony default export */
+
 /* harmony export */
+
+/* harmony import */
+
+/* harmony reexport (checked) */
 
 /* if init_genrand() has not been called, */
 
@@ -226,6 +244,8 @@ String.prototype.capitalize = function () { //v1.0
 
 /* initializes mt[N] with a seed */
 
+/* invariant */
+
 /* istanbul ignore next */
 
 /* key_length is its length */
@@ -234,6 +254,8 @@ String.prototype.capitalize = function () { //v1.0
 
 /* mag01[x] = x * MATRIX_A  for x=0,1 */
 
+/* module decorator */
+
 /* most significant w-r bits */
 
 /* moved outside of genrand_int32() by jwatte 2010-11-17; generate less garbage */
@@ -241,6 +263,10 @@ String.prototype.capitalize = function () { //v1.0
 /* mti==N+1 means mt[N] is not initialized */
 
 /* only MSBs of the array mt[].                        */
+
+/* reexport */
+
+/* reexport safe */
 
 /* see #1208 */
 
@@ -254,6 +280,15 @@ String.prototype.capitalize = function () { //v1.0
          * On timer based implementation we don't really need this object,
          * but we keep the same api
          */
+
+/**
+       * The minimal observable subscription method.
+       * @param {Object} observer Any object that can be used as an observer.
+       * The observer object should have a `next` method.
+       * @returns {subscription} An object with an `unsubscribe` method that can
+       * be used to unsubscribe the observable from the store, and prevent further
+       * emission of values from the observable.
+       */
 
 /**
      * Latest 'uncommitted reactions' cleanup timer handle.
@@ -359,6 +394,30 @@ String.prototype.capitalize = function () { //v1.0
    */
 
 /**
+   * Adds a change listener. It will be called any time an action is dispatched,
+   * and some part of the state tree may potentially have changed. You may then
+   * call `getState()` to read the current state tree inside the callback.
+   *
+   * You may call `dispatch()` from a change listener, with the following
+   * caveats:
+   *
+   * 1. The subscriptions are snapshotted just before every `dispatch()` call.
+   * If you subscribe or unsubscribe while the listeners are being invoked, this
+   * will not have any effect on the `dispatch()` that is currently in progress.
+   * However, the next `dispatch()` call, whether nested or not, will use a more
+   * recent snapshot of the subscription list.
+   *
+   * 2. The listener should not expect to see all state changes, as the state
+   * might have been updated multiple times during a nested `dispatch()` before
+   * the listener is called. It is, however, guaranteed that all subscribers
+   * registered before the `dispatch()` started will be called with the latest
+   * state by the time it exits.
+   *
+   * @param {Function} listener A callback to be invoked on every dispatch.
+   * @returns {Function} A function to remove this change listener.
+   */
+
+/**
    * Create a new atom. For debugging purposes it is recommended to give it a name.
    * The onBecomeObserved and onBecomeUnobserved callbacks can be used for resource management.
    */
@@ -386,6 +445,36 @@ String.prototype.capitalize = function () { //v1.0
    * @method faker.finance.creditCardNumber
    * @param {string} provider | scheme
   */
+
+/**
+   * Dispatches an action. It is the only way to trigger a state change.
+   *
+   * The `reducer` function, used to create the store, will be called with the
+   * current state tree and the given `action`. Its return value will
+   * be considered the **next** state of the tree, and the change listeners
+   * will be notified.
+   *
+   * The base implementation only supports plain object actions. If you want to
+   * dispatch a Promise, an Observable, a thunk, or something else, you need to
+   * wrap your store creating function into the corresponding middleware. For
+   * example, see the documentation for the `redux-thunk` package. Even the
+   * middleware will eventually dispatch plain object actions using this method.
+   *
+   * @param {Object} action A plain object representing “what changed”. It is
+   * a good idea to keep actions serializable so you can record and replay user
+   * sessions, or use the time travelling `redux-devtools`. An action must have
+   * a `type` property which may not be `undefined`. It is a good idea to use
+   * string constants for action types.
+   *
+   * @returns {Object} For convenience, the same action object you dispatched.
+   *
+   * Note that, if you use a custom middleware, it may wrap `dispatch()` to
+   * return something else (for example, a Promise you can await).
+   */
+
+/**
+   * Generate profiling statistics for the HTML5Backend.
+   */
 
 /**
    * Generates a random localized city name. The format string can contain any
@@ -441,6 +530,19 @@ String.prototype.capitalize = function () { //v1.0
    */
 
 /**
+   * If the global context was used to store the DND context
+   * then where theres no more references to it we should
+   * clean it up to avoid memory leaks
+   */
+
+/**
+   * Interoperability point for observable/reactive libraries.
+   * @returns {observable} A minimal observable of state changes.
+   * For more information, see the observable proposal:
+   * https://github.com/tc39/proposal-observable
+   */
+
+/**
    * Invoke this method _after_ this method has changed to signal mobx that all its observers should invalidate.
    */
 
@@ -453,6 +555,23 @@ String.prototype.capitalize = function () { //v1.0
    * Observes this object. Triggers for the events 'add', 'update' and 'delete'.
    * See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/observe
    * for callback details
+   */
+
+/**
+   * Reads the state tree managed by the store.
+   *
+   * @returns {any} The current state tree of your application.
+   */
+
+/**
+   * Replaces the reducer currently used by the store to calculate the state.
+   *
+   * You might need this if your app implements code splitting and you want to
+   * load some of the reducers dynamically. You might also need this if you
+   * implement a hot reloading mechanism for Redux.
+   *
+   * @param {Function} nextReducer The reducer for the store to use instead.
+   * @returns {void}
    */
 
 /**
@@ -482,6 +601,14 @@ String.prototype.capitalize = function () { //v1.0
 /**
    * Returns the current value of this computed value.
    * Will evaluate its computation first if needed.
+   */
+
+/**
+   * This makes a shallow copy of currentListeners so we can use
+   * nextListeners as a temporary list while dispatching.
+   *
+   * This prevents any bugs around consumers calling
+   * subscribe/unsubscribe in the middle of a dispatch.
    */
 
 /**
@@ -1911,6 +2038,13 @@ String.prototype.capitalize = function () { //v1.0
  */
 
 /**
+ *
+ * @param monitor The monitor to collect state from
+ * @param collect The collecting function
+ * @param onUpdate A method to invoke when updates occur
+ */
+
+/**
  * (c) Michel Weststrate 2015 - 2020
  * MIT Licensed
  *
@@ -1926,6 +2060,19 @@ String.prototype.capitalize = function () { //v1.0
  * - types/   All the magic that is need to have observable objects, arrays and values is in this folder. Including the modifiers like `asFlat`.
  * - utils/   Utility stuff.
  *
+ */
+
+/**
+ * @param {any} obj The object to inspect.
+ * @returns {boolean} True if the argument appears to be a plain object.
+ */
+
+/**
+ * A React component that provides the React-DnD context
+ */
+
+/**
+ * A hook to retrieve the DragDropManager from Context
  */
 
 /**
@@ -1955,10 +2102,86 @@ String.prototype.capitalize = function () { //v1.0
  */
 
 /**
+ * Calls a task as soon as possible after returning, in its own event, with priority
+ * over other events like animation, reflow, and repaint. An error thrown from an
+ * event will not interrupt, nor even substantially slow down the processing of
+ * other events, but will be rather postponed to a lower priority event.
+ * @param {{call}} task A callable object, typically a function that takes no
+ * arguments.
+ */
+
+/**
+ * Coordinate subtraction
+ * @param a The first coordinate
+ * @param b The second coordinate
+ */
+
+/**
+ * Create the React Context
+ */
+
+/**
+ * Creates a Redux store that holds the state tree.
+ * The only way to change the data in the store is to call `dispatch()` on it.
+ *
+ * There should only be a single store in your app. To specify how different
+ * parts of the state tree respond to actions, you may combine several reducers
+ * into a single reducer function by using `combineReducers`.
+ *
+ * @param {Function} reducer A function that returns the next state tree, given
+ * the current state tree and the action to handle.
+ *
+ * @param {any} [preloadedState] The initial state. You may optionally specify it
+ * to hydrate the state from the server in universal apps, or to restore a
+ * previously serialized user session.
+ * If you use `combineReducers` to produce the root reducer function, this must be
+ * an object with the same shape as `combineReducers` keys.
+ *
+ * @param {Function} [enhancer] The store enhancer. You may optionally specify it
+ * to enhance the store with third-party capabilities such as middleware,
+ * time travel, persistence, etc. The only store enhancer that ships with Redux
+ * is `applyMiddleware()`.
+ *
+ * @returns {Store} A Redux store that lets you read the state, dispatch actions
+ * and subscribe to changes.
+ */
+
+/**
  * Creates a named reactive view and keeps it alive, so that the view is always
  * updated if one of the dependencies changes, even when the view is not further used by something else.
  * @param view The reactive view
  * @returns disposer function, which can be used to stop the view from being updated in the future.
+ */
+
+/**
+ * Creates the context object we're providing
+ * @param backend
+ * @param context
+ */
+
+/**
+ * Determine if two cartesian coordinate offsets are equal
+ * @param offsetA
+ * @param offsetB
+ */
+
+/**
+ * Determines if the given handler IDs are dirty or not.
+ *
+ * @param dirtyIds The set of dirty handler ids
+ * @param handlerIds The set of handler ids to check
+ */
+
+/**
+ * Determines if two arrays of items are equal
+ * @param a The first array of items
+ * @param b The second array of items
+ */
+
+/**
+ * Determines the x,y offset between the client offset and the initial client offset
+ *
+ * @param state The offset state to compute from
  */
 
 /**
@@ -2010,6 +2233,22 @@ String.prototype.capitalize = function () { //v1.0
  */
 
 /**
+ * Prints a warning in the console if it exists.
+ *
+ * @param {String} message The warning message.
+ * @returns {void}
+ */
+
+/**
+ * Returns the cartesian distance of the drag source component's position, based on its position
+ * at the time when the current drag operation has started, and the movement difference.
+ *
+ * Returns null if no item is being dragged.
+ *
+ * @param state The offset state to compute from
+ */
+
+/**
  * Returns the following: own keys, prototype keys & own symbol keys, if they are enumerable.
  */
 
@@ -2040,6 +2279,17 @@ String.prototype.capitalize = function () { //v1.0
  */
 
 /**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+/**
  * We use class to make it easier to detect in heap snapshots by name
  */
 
@@ -2056,6 +2306,22 @@ String.prototype.capitalize = function () { //v1.0
  */
 
 /**
+ * drop-in replacement for _.get
+ * @param obj
+ * @param path
+ * @param defaultValue
+ */
+
+/**
+ * drop-in replacement for _.isString
+ * @param input
+ */
+
+/**
+ * drop-in replacement for _.without
+ */
+
+/**
  * litecoinAddress
  *
  * @method  faker.finance.litecoinAddress
@@ -2067,8 +2333,32 @@ String.prototype.capitalize = function () { //v1.0
  */
 
 /**
+ * repalcement for _.xor
+ * @param itemsA
+ * @param itemsB
+ */
+
+/**
+ * replacement for _.intersection
+ * @param itemsA
+ * @param itemsB
+ */
+
+/**
  * timers, gc-style, uncommitted reaction cleanup
  */
+
+/**
+ * useDragSource hook
+ * @param sourceSpec The drag source specification *
+ */
+
+/**
+ * useDropTarget Hook
+ * @param spec The drop target specification
+ */
+
+/** @class */
 
 /** Merge another object into this object, returns this. */
 
@@ -2101,11 +2391,15 @@ String.prototype.capitalize = function () { //v1.0
 
 //         "lowestObserverState is wrong for " +
 
+//         channel.port2.postMessage(0);
+
 //         const id = list[i].__mapid
 
 //         if (i) {
 
 //         list.length === 0 || Object.keys(map).length === list.length - 1,
+
+//         setImmediate(callback);
 
 //         }
 
@@ -2114,6 +2408,8 @@ String.prototype.capitalize = function () { //v1.0
 //     )
 
 //     // it's expensive so better not run it in produciton. but temporarily helpful for testing
+
+//     channel.port1.onmessage = callback;
 
 //     const l = list.length
 
@@ -2129,11 +2425,21 @@ String.prototype.capitalize = function () { //v1.0
 
 //     invariant(
 
+//     return function requestCall() {
+
 //     throw new Error(
+
+//     var channel = new MessageChannel();
 
 //     }
 
+//     };
+
 //    since it wouldn't be a callable function anymore
+
+//   * https://github.com/react-dnd/react-dnd/issues/869
+
+//   * https://github.com/react-dnd/react-dnd/pull/928
 
 //   0: it was set to 0 in last loop. don't need to do anything.
 
@@ -2151,17 +2457,33 @@ String.prototype.capitalize = function () { //v1.0
 
 // !globalState.trackingDerivatpion &&
 
+// "drop and blow away the whole document" action.
+
 // #2432 - reduce behavior depends on arguments.length
 
 // (It triggers warnings in StrictMode, for a start.)
 
 // (then we can remove the weird short circuiting as well..)
 
+// - Android 4-4.3
+
+// - Chrome 26-34
+
+// - Firefox 14-29
+
+// - Internet Explorer 11
+
+// - Safari 6-7
+
 // - allow interceptors to run and potentially prevent individual operations
 
 // - don't _keysAtom.reportChanged if the keys of resulting map are indentical (order matters!)
 
 // - don't recreate observables that already exist in original map (so we don't destroy existing subscriptions)
+
+// - iPad Safari 6-7.1
+
+// - iPhone Safari 7-7.1
 
 // - note that result map may differ from replacement map due to the interceptors
 
@@ -2172,6 +2494,8 @@ String.prototype.capitalize = function () { //v1.0
 // 2. forwardRef converts the function into an actual component, so we can't let the baseComponent do it
 
 // 5018 xxxx xxxx xxxx xxL
+
+// <div ref={node => connectDragSource(connectDropTarget(node))}/>
 
 // @action
 
@@ -2189,6 +2513,10 @@ String.prototype.capitalize = function () { //v1.0
 
 // @ts-ignore
 
+// A native item (such as URL) dragged from inside the document
+
+// A native item (such as file or URL) dragged from outside the document
+
 // A shallow dependency has changed since last computation and the derivation
 
 // Add or update value
@@ -2197,15 +2525,79 @@ String.prototype.capitalize = function () { //v1.0
 
 // Added max, min range functionality, Marak Squires Sept 11 2014
 
+// Advance the index before calling the task. This ensures that we will
+
+// Align at the center
+
 // An `egal` comparison is performed for other numeric values.
+
+// An exception thrown by a task will permanently interrupt the processing of
 
 // Annation: action("name") & @action("name")
 
+// Any reducers that existed in both the new and old rootReducer
+
+// Array-as-queue is good enough here, since we are just dealing with exceptions.
+
 // Assume equality for cyclic structures. The algorithm for detecting cyclic
+
+// Avoid crashing if we missed a drop event or our previous drag died
 
 // BUT if we're a component that hasn't yet got to the useEffect()
 
 // But: https://github.com/mobxjs/mobx/issues/1556
+
+// CONCATENATED MODULE: ./node_modules/@react-dnd/asap/dist/esm/browser/asap.js
+
+// CONCATENATED MODULE: ./node_modules/@react-dnd/asap/dist/esm/browser/raw.js
+
+// CONCATENATED MODULE: ./node_modules/@react-dnd/shallowequal/dist/shallowequal.esm.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/DragDropManagerImpl.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/DragDropMonitorImpl.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/HandlerRegistryImpl.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/beginDrag.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/drop.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/endDrag.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/hover.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/index.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/local/setClientOffset.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/publishDragSource.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/types.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/registry.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/contracts.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/factories.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/reducers/dirtyHandlerIds.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/reducers/dragOffset.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/reducers/dragOperation.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/reducers/index.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/reducers/refCount.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/reducers/stateId.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/utils/dirtiness.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/utils/js_utils.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/utils/matchesType.js
 
 // CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/observer.js
 
@@ -2223,6 +2615,62 @@ String.prototype.capitalize = function () { //v1.0
 
 // CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/reactionCleanupTrackingCommon.js
 
+// CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/EnterLeaveCounter.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/HTML5BackendImpl.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/MonotonicInterpolant.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/NativeDragSources/NativeDragSource.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/NativeDragSources/getDataFromDataTransfer.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/NativeDragSources/index.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/NativeTypes.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/OptionsReader.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/utils/js_utils.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/DndContext.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/DragSourceMonitorImpl.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/DropTargetMonitorImpl.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/SourceConnector.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/TargetConnector.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/registration.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/wrapConnectorHooks.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/index.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/drag.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/drop.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/useCollector.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/useMonitorOutput.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDrag.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDragDropManager.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDrop.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/utils/cloneWithRef.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/utils/isRef.js
+
+// CONCATENATED MODULE: ./node_modules/symbol-observable/es/index.js
+
+// CONCATENATED MODULE: ./node_modules/symbol-observable/es/ponyfill.js
+
 // Called by Atom when its value changes
 
 // Called by ComputedValue when it recalculate and its value changed
@@ -2230,6 +2678,10 @@ String.prototype.capitalize = function () { //v1.0
 // Called on first mount only
 
 // Check for possible key order change
+
+// Check the node either in the main document or in the current context
+
+// Check the target ids at the innermost position. If they are valid, add them
 
 // Choose a random provider
 
@@ -2249,6 +2701,10 @@ String.prototype.capitalize = function () { //v1.0
 
 // Credit cards are in a object structure
 
+// Custom components can no longer be wrapped directly in React DnD 2.0
+
+// Cut out early if the target id has not been set. This should prevent errors
+
 // Deal with range `[min-max]` (only works with numbers for now)
 
 // Deal with range repeat `{min,max}`
@@ -2265,17 +2721,41 @@ String.prototype.capitalize = function () { //v1.0
 
 // Delete prevented by interceptor
 
+// Dock to the bottom
+
+// Dock to the left
+
+// Dock to the right
+
+// Dock to the top
+
 // Doesn't seem we need this condition:
+
+// Don't emit hover in `dragenter` on Firefox due to an edge case.
+
+// Don't publish the source just yet (see why below)
+
+// Don't show a nice cursor but still prevent default
 
 // Don't want the source array exposed to modification, so return a copy
 
 // EXPORTS
 
+// EXTERNAL MODULE: ./node_modules/@react-dnd/invariant/dist/invariant.esm.js
+
 // EXTERNAL MODULE: ./node_modules/mobx/dist/mobx.esm.js
+
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/common/DndContext.js + 31 modules
 
 // EXTERNAL MODULE: ./node_modules/react/index.js
 
+// EXTERNAL MODULE: ./node_modules/symbol-observable/es/index.js + 1 modules
+
 // Ensure that both objects contain the same number of properties before comparing deep equality.
+
+// Equivalent to push, but avoids a function call.
+
+// Even if we were, there is another bug in Internet Explorer 10.
 
 // Exhaust primitive checks
 
@@ -2283,9 +2763,31 @@ String.prototype.capitalize = function () { //v1.0
 
 // Finally block can return (or yield) stuff..
 
+// Finally call hover on all matching targets.
+
+// Firefox can dispatch this event in an infinite loop
+
+// Firefox only cares if it's an image, but WebKit also wants it to be detached.
+
+// Firefox won't drag without setting data
+
 // First render for this component (or first time since a previous
 
+// For other targets, ask IE
+
+// For reasons explained above, we are also unable to use `setImmediate`
+
 // From Immer utils
+
+// Get consecutive differences and slopes
+
+// Get degree-1 coefficients
+
+// Get degree-2 and degree-3 coefficients
+
+// Get the draggable source
+
+// Get the source client offset
 
 // Go through all new observables and check diffValue: (now it should be unique)
 
@@ -2299,25 +2801,65 @@ String.prototype.capitalize = function () { //v1.0
 
 // Hide this extra level by increasing the depth.
 
+// However, `flush` does not make any arrangements to be called again if an
+
+// However, if we ever elect to use timers in Safari, the prevalent work-around
+
+// However, since this timer gets frequently dropped in Firefox
+
+// IE doesn't support MIME types in setData
+
+// IE requires this to fire dragover events
+
 // Ideally we use for..of here, but the downcompiled version is really slow...
 
 // Identical objects are equal. `0 === -0`, but they aren't identical.
 
+// If a task throws an exception, `flush` ensures that its state will remain
+
 // If anyone actually needs to optimize this specific code path, please open a support issue on github
+
+// If by this time no drag source reacted, tell browser not to drag.
+
+// If child drag source refuses drag but parent agrees,
 
 // If parameters are populated here, they are always going to be of string type
 
+// If passed a ReactElement, clone it and attach this function as a ref.
+
 // If size differs, keys are definitely modified
+
+// If the target changes position as the result of `dragenter`, Firefox
 
 // If there is no coordinate, the best we can do is return a random GPS coordinate.
 
+// If we call `asap` within tasks scheduled by `asap`, the queue will
+
 // Implementation requirements:
 
+// In a web browser, exceptions are not fatal. However, to avoid
+
+// In some cases the user may want to override this behavior, e.g.
+
+// Initialize the coordinates using the client offset
+
+// Initialize the full coordinates
+
 // Initializing stack of traversed objects.
+
+// Inputs and textareas should be selectable
+
+// Instead, we periodically shift 1024 tasks off the queue.
 
 // Interceptor can modify the array, copy it to avoid concurrent modification, see #1950
 
 // Internal recursive comparison function for `isEqual`.
+
+// Interpolate
+
+// It also neatly avoids a situation where render() returns null
+
+// It is not sufficient to assign `setImmediate` to `requestFlush` because
 
 // It is used to specify a word in context, which may differ from a stand-alone word
 
@@ -2325,9 +2867,17 @@ String.prototype.capitalize = function () { //v1.0
 
 // It's time to tidy up this leaked reaction.
 
+// Its name will be periodically randomized to break any code that
+
+// Its name will be periodically randomized to break any code that depends on
+
+// Just let it drag. It's a native type (URL or text) and will be picked up in
+
 // Keep longitude in range [-180, 180]
 
 // Linear search. Performance is inversely proportional to the number of
+
+// Looks like a Safari bug: dataTransfer.types is null, but there was no draggable.
 
 // Loop through all the candidate leaked reactions; those older
 
@@ -2337,13 +2887,27 @@ String.prototype.capitalize = function () { //v1.0
 
 // Make the range inclusive of the max value
 
+// Manually shift all values starting at the index back to the
+
 // Maps and Sets are unwrapped to arrays of entry-pairs, adding an incidental level.
 
 // Merge entries
 
 // Modules 10 straight summation.
 
+// Multiple actions are dispatched here, which is why this doesn't return an action
+
+// Must use `global` or `self` instead of `window` to work in both frames and web
+
+// MutationObservers are desirable because they have high priority and work
+
+// MutationObservers, so we don't need to fall back in that case.
+
 // N.B: unminified as it is used by MST
+
+// NAMESPACE OBJECT: ./node_modules/react-dnd-html5-backend/dist/esm/NativeTypes.js
+
+// Never forget.
 
 // No Array.fill everywhere...
 
@@ -2359,6 +2923,12 @@ String.prototype.capitalize = function () { //v1.0
 
 // Observable has changed, meaning we want to re-render
 
+// Once a flush has been requested, no further calls to `requestFlush` are
+
+// Only IE requires us to explicitly say
+
+// Only proceed if we have not handled it already.
+
 // Optimization: cache meta data, especially for members from prototypes?
 
 // Optimization: we don't need the intermediate objects and could have a completely custom administration for DynamicObjects,
@@ -2369,6 +2939,10 @@ String.prototype.capitalize = function () { //v1.0
 
 // Possibly include param to function that allows user to choose between distributions.
 
+// Prevent default "drop and blow away the whole document" action.
+
+// Prevent leaking memory for long chains of recursive calls to `asap`.
+
 // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
 
 // Property "abbr_context" is optional, if not set then "abbr" will be used instead
@@ -2377,7 +2951,13 @@ String.prototype.capitalize = function () { //v1.0
 
 // Radius of the Earth (http://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html)
 
+// RawTasks are recycled to reduce GC churn.
+
 // Re-create the reaction
+
+// Rearrange xs and ys so that xs is sorted
+
+// Receiving a mouse event in the middle of a dragging operation
 
 // Recursively compare objects and arrays.
 
@@ -2385,17 +2965,33 @@ String.prototype.capitalize = function () { //v1.0
 
 // Remove the first object from the stack of traversed objects.
 
+// Remove those targetIds that don't match the targetType.  This
+
 // Report and delegate to dehanced array
 
 // Returns all own keys, including non-enumerable and symbolic
 
 // Romanian
 
+// SSR Fix (https://github.com/react-dnd/react-dnd/pull/813
+
+// Safari 6 and 6.1 for desktop, iPad, and iPhone are the only browsers that
+
+// Safari 6.0 has a problem where timers will get lost while the user is
+
+// Safari 6.0.5 (at least) intermittently fails to create message ports on a
+
+// Search for the interval x is in, returning the corresponding y if x is one of the original xs
+
 // See perf test 'computed memoization'
 
 // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
 
+// See:
+
 // See: https://github.com/andykog/mobx-devtools/
+
+// Show user-specified drop effect.
 
 // Some new observed derivations may become stale during this derivation computation
 
@@ -2407,19 +3003,39 @@ String.prototype.capitalize = function () { //v1.0
 
 // Source: https://unicode.org/cldr/trac/browser/trunk/common/main/pt_PT.xml?rev=14409#L491
 
+// Store drag source node so we can check whether
+
 // Strings, numbers, regular expressions, dates, and booleans are compared by value.
 
 // TODO: change all these methods that accept a boolean to instead accept an options hash.
 
 // TODO: have ability to return specific type of word? As in: noun, adjective, verb, etc
 
+// TODO: if we ever make a react-native version of this,
+
 // TODO: implement either a gaussian/uniform distribution of points in cicular region.
 
 // TODO: why is this in a different place than the spyReport() function? in all other observables it's called in the same place
 
+// TODO: wire options into createSourceConnector
+
+// Test for A's keys different from B.
+
 // The addition could have been prevent by interceptor
 
+// The browsers will use the image intrinsic size under different conditions.
+
+// The drag preview may either be attached via ref or connect function
+
+// The drop target may either be attached via ref or connect function
+
+// The flush function processes all tasks that have been scheduled with
+
+// The message channel technique was discovered by Malte Ubl and was the
+
 // The reaction we set up in our render has been disposed.
+
+// The rightmost point in the dataset should give an exact result
 
 // The update could have been prevented by interceptor
 
@@ -2429,6 +3045,10 @@ String.prototype.capitalize = function () { //v1.0
 
 // There chould be multiple formats
 
+// They are implemented in all modern browsers.
+
+// This action has a similiar effect to ActionTypes.INIT.
+
 // This allows us to control the execution of the cleanup timer
 
 // This approach will likely result in a higher density of points near the center.
@@ -2436,6 +3056,20 @@ String.prototype.capitalize = function () { //v1.0
 // This can be due to bad timings of renderings, e.g. our
 
 // This fixes #1796, because deleting a prop that has an
+
+// This helps us achieve a neat API where user doesn't even know that refs
+
+// This hook exists purely for testing purposes.
+
+// This is for `asap.js` only.
+
+// This is needed because the drag preview needs to be drawn or else it fires an 'mousemove' event
+
+// This is probably a native item type we don't understand.
+
+// This is the reason such behavior is strictly opt-in.
+
+// This is useful to prevent an error thrown in a task from stalling the event
 
 // This time we are not capturing the char befor `[]`
 
@@ -2445,6 +3079,10 @@ String.prototype.capitalize = function () { //v1.0
 
 // Typescript workaround to make sure ObservableArray extends Array
 
+// UNUSED EXPORTS: NativeTypes, getEmptyImage
+
+// UNUSED EXPORTS: useDragDropManager, useDragLayer
+
 // Unwrap any wrapped objects.
 
 // Upcast is 'safe' here, because if dep is IObservable, `dependenciesState` will be undefined,
@@ -2453,19 +3091,35 @@ String.prototype.capitalize = function () { //v1.0
 
 // Use correctly ordered map
 
+// Use custom drag image if user specifies it.
+
+// Use the fastest means possible to execute a task in its own turn, with
+
 // Used by JSON.stringify
 
 // Used by computed when its dependency changed, but we don't wan't to immediately recompute.
+
+// Usually we want to publish it in the next tick so that browser
 
 // Was a new key added?
 
 // Was the key removed?
 
+// We dispatch a timeout with a specified delay of 0 for engines that
+
 // We have reached useEffect(), so we're mounted, and can trigger an update
 
 // We haven't yet reached useEffect(), so we'll need to trigger a re-render
 
+// We need to wait before we start listening for mousemove events.
+
+// We queue errors to ensure they are thrown in right order (FIFO).
+
 // We will want to know whether a new key is added
+
+// We wrap tasks with recyclable task objects.  A task object implements
+
+// We'll have to wait for @3x to see if this is entirely correct
 
 // We've definitely already been mounted at this point
 
@@ -2475,7 +3129,19 @@ String.prototype.capitalize = function () { //v1.0
 
 // When FinalizationRegistry in use, this this is no-op
 
+// When a store is created, an "INIT" action is dispatched so that every
+
+// When passed a node, call the hook straight away.
+
+// When using a custom drag layer, the only way to prevent
+
+// Whichever timer succeeds will cancel both timers and
+
 // While running reactions, new reactions might be triggered.
+
+// Work around @2x coordinate discrepancies in browsers
+
+// Work around Safari 8 positioning bug
 
 // Workaround problem in Float point arithmetics for e.g. 6681493 / 0.01
 
@@ -2483,7 +3149,21 @@ String.prototype.capitalize = function () { //v1.0
 
 // `NaN`s are equivalent, but non-reflexive.
 
+// `call`, just like a function.
+
 // `null` or `undefined` only equal to itself (strict comparison).
+
+// `process.on("uncaughtException")` or by a domain.
+
+// `rawAsap` unless and until one of those tasks throws an exception.
+
+// `requestFlush` is implemented using a strategy based on data collected from
+
+// `requestFlush` requests that the high priority event queue be flushed as
+
+// `setImmediate` must be called *by name* and therefore must be wrapped in a
+
+// `setTimeout` does not call the passed callback if the delay is less than
 
 // action("name", fn() {})
 
@@ -2499,17 +3179,27 @@ String.prototype.capitalize = function () { //v1.0
 
 // an async iterator
 
+// an event 20 times per second until it succeeds.
+
 // and `derivation` is an observer of `obj`
 
 // and also we want to preserve existing values
+
+// and height. In this case, though, returning null from render()
 
 // and modified a little at july 20, 2006, but there are not any substantial differences.
 
 // and skip either the internal values map, or the base object with its property descriptors!
 
+// and the components are attached to dnd-core
+
 // anyway, so removed it in V6
 
 // apply modifier
+
+// approximately 7 in web workers in Firefox 8 through 18, and sometimes not
+
+// are being used under the hood.
 
 // array will be trimmed by bindDependencies
 
@@ -2527,15 +3217,29 @@ String.prototype.capitalize = function () { //v1.0
 
 // before using this version, create at least one instance of MersenneTwister19937 class, and initialize the each state, given below in c comments, of all the instances.
 
+// begin flushing on the next task the task throws an error.
+
+// beginning of the queue.
+
+// between events.
+
 // but it is unclear why the hack is need as MobX never changed the prototype
 
 // but store them in the values map instead, using a special symbol to denote "not existing"
 
 // by default preserve previous allow
 
+// call `rawAsap.requestFlush` if an exception is thrown.
+
+// can reliably accommodate that request. This will usually be snapped
+
 // changed by interceptor. Same applies for other Set and Map api's.
 
+// cheap lodash replacements
+
 // check performance stats!
+
+// closure.
 
 // common error handler for messages
 
@@ -2546,6 +3250,8 @@ String.prototype.capitalize = function () { //v1.0
 // computed(expr, options?)
 
 // conform: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/observe
+
+// consistent and will resume where it left off when called again.
 
 // console.log('attempting to parse', str);
 
@@ -2569,6 +3275,8 @@ String.prototype.capitalize = function () { //v1.0
 
 // deleting last observer
 
+// depends on its existence.
+
 // disposed during last run. Clean up everything that was bound after the dispose call.
 
 // disposer function
@@ -2577,13 +3285,35 @@ String.prototype.capitalize = function () { //v1.0
 
 // don't have to recompute on every dependency change, but only when it's needed
 
+// dragenter handler.
+
 // during tracking it's an array with new observed observers
 
 // eat anything that promise would do, it's cancelled!
 
+// either ensure that no exceptions are thrown from your task, or to manually
+
+// empty
+
 // equivalent to `new String("5")`.
 
 // eslint-disable-next-line
+
+// eslint-disable-next-line no-console
+
+// eslint-disable-next-line no-prototype-builtins
+
+// even then.
+
+// events in browsers.
+
+// every available SauceLabs Selenium web driver worker at time of writing.
+
+// exception is thrown by a task, that the task queue will continue flushing as
+
+// exception is thrown.
+
+// execute the callback.
 
 // execute the provided method to find a potential satifised value
 
@@ -2592,6 +3322,8 @@ String.prototype.capitalize = function () { //v1.0
 // extract method name from between the {{ }} that we found
 
 // find first matching {{ and }}
+
+// fixes shallow isOver which would only be non-shallow because of
 
 // flow(fn)
 
@@ -2605,6 +3337,10 @@ String.prototype.capitalize = function () { //v1.0
 
 // function invariantObservers(observable: IObservable) {
 
+// function makeRequestCallFromMessageChannel(callback) {
+
+// function makeRequestCallFromSetImmediate(callback) {
+
 // generates fake data for many computer systems properties
 
 // get specific ext by mime-type
@@ -2613,9 +3349,19 @@ String.prototype.capitalize = function () { //v1.0
 
 // got dropped, and we don't want to make state changes then.
 
+// grow, but to avoid an O(n) walk for every task we execute, we don't
+
 // hasMap, not hashMap >-).
 
+// have WebKitMutationObserver but not un-prefixed MutationObserver.
+
 // having this state is second big optimization:
+
+// http://www.nonblocking.io/2011/06/windownexttick.html
+
+// https://docs.google.com/spreadsheets/d/1mG-5UYGup5qxGdEMWkhP6BWCz053NUb2E1QoUTU16uA/edit#gid=783724593
+
+// https://github.com/react-dnd/react-dnd/issues/1310
 
 // https://stackoverflow.com/a/37865170
 
@@ -2633,9 +3379,13 @@ String.prototype.capitalize = function () { //v1.0
 
 // if disposed while running, clean up later. Maybe not optimal, but rare case
 
+// if dragend handler does something like showing an alert.
+
 // if incoming str parameter is not provided, return error message
 
 // if no {{ and }} is found, we are done
+
+// if nothing has changed then don't resubscribe
 
 // if the client passed in a different separator than `:`, 
 
@@ -2651,7 +3401,11 @@ String.prototype.capitalize = function () { //v1.0
 
 // ignore pure setters
 
+// immediately in some browsers.
+
 // in particular locales first and last names split by gender,
+
+// in the same tick for the source element, and browser freaks out.
 
 // in this program, procedure descriptions and comments of original source code were not removed.
 
@@ -2681,11 +3435,19 @@ String.prototype.capitalize = function () { //v1.0
 
 // invariantShouldCompute(derivation)
 
+// is able to screenshot the current (not yet dragging) state.
+
+// is to add a scroll event listener that calls for a flush.
+
 // it is an observable already, done
+
+// it is removed from DOM and trigger endDrag manually.
 
 // it's possible in the future that some users may want to scope found per function call instead of faker instance
 
 // iterator should handle this correctly
+
+// its existence.
 
 // just extend Map? See also https://gist.github.com/nestharus/13b4d74f2ef4a2f4357dbd3fc23c1e54
 
@@ -2695,17 +3457,27 @@ String.prototype.capitalize = function () { //v1.0
 
 // lines commented with //c// were originally descriptions of c procedure. and a few following lines are appropriate JavaScript descriptions.
 
+// lower priority turn.
+
 // make sure we start listening to future keys
 
 // map
 
 // maybe it can be cancelled :)
 
+// means it has ended and the drag source node disappeared from DOM,
+
+// memoized from props
+
 // millisecond representations. Note that invalid dates with millisecond representations
 
 // mobx versions
 
+// mutation observers, so that implementation is used instead.
+
 // n.b. base case is not used for actual typings or exported in the typing files
+
+// necessary until the next `flush` completes.
 
 // never turn into an observable
 
@@ -2714,6 +3486,8 @@ String.prototype.capitalize = function () { //v1.0
 // no shallow dependency changed since last computation
 
 // nodes we are looking at. Our value depends on these nodes
+
+// non-matching targets.
 
 // normal autorun
 
@@ -2737,13 +3511,25 @@ String.prototype.capitalize = function () { //v1.0
 
 // optimization: this could be cached per prototype!
 
+// original foundation for this library.
+
 // out of bounds
+
+// page's first load. Thankfully, this version of Safari supports
 
 // pre allocate array allocation + room for variation in deps
 
 // prettier-ignore
 
+// priority over other events including IO, animation, reflow, and redraw
+
+// public for test
+
+// queue if the exception handled by Node.js’s
+
 // randomly pick from the many faker methods that can generate words
+
+// rawAsap provides everything we need except exception management.
 
 // re-throw any exceptions caught during rendering
 
@@ -2759,7 +3545,13 @@ String.prototype.capitalize = function () { //v1.0
 
 // reduce mime-types to those with file-extensions
 
+// reducer returns their initial state. This effectively populates
+
+// ref objects should be passed straight through without wrapping
+
 // reject our original promise
+
+// reliably everywhere they are implemented.
 
 // replace ### with random numbers
 
@@ -2767,13 +3559,19 @@ String.prototype.capitalize = function () { //v1.0
 
 // return Reflect.ownKeys(this.values) as any
 
+// return the node so it can be chained (e.g. when within callback refs
+
 // return the response recursively until we are done finding all tags
 
 // reverse by default mutates in place before returning the result
 
+// scrolling. This problem does not impact ASAP because Safari 6.0 supports
+
 // second conditions is to recognize actions
 
 // see above comment of firstName method
+
+// shift tasks off the queue after they have been executed.
 
 // short circuit, here, we will do this again in a later makeObservable call
 
@@ -2784,6 +3582,12 @@ String.prototype.capitalize = function () { //v1.0
 // since we are requiring the top level of faker, load all locales by default
 
 // since we might actually be dealing with an object or array,
+
+// slowing down the queue of pending tasks, we rethrow the error in a
+
+// so that we don't need to depend on findDOMNode() from react-dom.
+
+// so the browser didn't dispatch the dragend event.
 
 // so they have had no chance to propagate staleness (#916)
 
@@ -2807,6 +3611,10 @@ String.prototype.capitalize = function () { //v1.0
 
 // something that can be converted and mutated?
 
+// soon as possible, but if you use `rawAsap` directly, you are responsible to
+
+// soon as possible.
+
 // sort by default mutates in place before returning the result
 
 // source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1734
@@ -2823,6 +3631,8 @@ String.prototype.capitalize = function () { //v1.0
 
 // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
 
+// subsequent tasks. The higher level `asap` function ensures that if an
+
 // support single exclude argument as string
 
 // switch min and max
@@ -2835,9 +3645,19 @@ String.prototype.capitalize = function () { //v1.0
 
 // the batch is actually about to finish, all unobserving should happen here.
 
+// the default drag preview from drawing in IE is to screenshot
+
+// the dragging state in which the node itself has zero opacity
+
+// the initial state tree.
+
+// the new state tree with any relevant data from the old one.
+
 // there chould be multiple formats
 
 // there could be a throwing finally block
+
+// there. The easy solution is to only fire `hover` in `dragover` on FF.
 
 // this is the prop that gets proxied, so can't replace it!
 
@@ -2855,19 +3675,35 @@ String.prototype.capitalize = function () { //v1.0
 
 // time the script started
 
+// to a 4 milisecond delay, but once we're flushing, there's no delay
+
 // to allow future observable changes to trigger re-renders
 
 // to check for cycles
 
+// to enable drag and drop
+
 // to force it to run at awkward times in unit tests.
+
+// to the result
+
+// to work around IE not supporting custom drag previews.
 
 // translated by y. okada on July 17, 2006.
 
 // true for autoAction
 
+// undefined on initial render
+
 // undefined value won't retrigger a observer (no visible effect),
 
+// under any circumstances.
+
 // unique nested structures.
+
+// update the collected properties after the first render
+
+// use parent's node as drag image. Neither works in IE though.
 
 // used by MST ot get undehanced value
 
@@ -2883,25 +3719,43 @@ String.prototype.capitalize = function () { //v1.0
 
 // we converge to no remaining reactions after a while.
 
+// we don't care about invariant's own frame
+
 // we have to use forwardRef here because:
 
 // we must randomly pick a name from either gender array so faker.name.firstName will return the correct locale data ( and not fallback )
 
+// we want drag drop operation to start
+
 // we will use it if it is in the list of acceptable separators (dash or no separator)
+
+// we'll need to consider how to pull off dev-tooling
 
 // when (and if) useEffect() arrives.
 
 // where is the property declared?
 
+// where the user has an older version of dnd-core like in
+
 // which goes against all good practices. Let's not change the array in place!
 
 // which makes it both a 'derivation' and a 'mutation'.
 
+// will abruptly end the dragging, which is not obvious.
+
 // will need to recompute when it's needed next.
+
+// will receive the previous state. This effectively populates
 
 // will require to check first if UP_TO_DATE or POSSIBLY_STALE
 
+// will still happily dispatch `dragover` despite target being no longer
+
 // won't recalculate derivation
+
+// workers, we enlist an interval handle that will try to fire
+
+// workers. `global` is a provision of Browserify, Mr, Mrs, or Mop.
 
 // }
 
@@ -2911,6 +3765,8 @@ String.prototype.capitalize = function () { //v1.0
 
 //# sourceMappingURL=createTimerBasedReactionCleanupTracking.js.map
 
+//# sourceMappingURL=invariant.esm.js.map
+
 //# sourceMappingURL=mobx.esm.js.map
 
 //# sourceMappingURL=observer.js.map
@@ -2918,6 +3774,8 @@ String.prototype.capitalize = function () { //v1.0
 //# sourceMappingURL=printDebugValue.js.map
 
 //# sourceMappingURL=reactionCleanupTracking.js.map
+
+//# sourceMappingURL=shallowequal.esm.js.map
 
 //# sourceMappingURL=staticRendering.js.map
 

@@ -8,6 +8,10 @@
 
 /* Calculated inside model */
 
+/* DndProvider */
+
+/* HTML5Backend */
+
 /* Math.random is not the best option, because same rowIndex should produce same height */
 
 /* Provided from renderer */
@@ -28,6 +32,8 @@
 
 /***/
 
+// CONCATENATED MODULE: ./src/components/ComplexTable/index.js
+
 // CONCATENATED MODULE: ./src/components/ComplexTable/style.module.scss
 
 // CONCATENATED MODULE: ./src/examples/complexTable(beta)/basic/index.js
@@ -44,6 +50,10 @@
 
 // EXTERNAL MODULE: ./node_modules/faker/index.js
 
+// EXTERNAL MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/index.js + 12 modules
+
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/index.js
+
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 
 // EXTERNAL MODULE: ./src/components/Table/index.js + 5 modules
@@ -51,3 +61,5 @@
 // EXTERNAL MODULE: ./src/utils/cx/index.js
 
 // extracted by mini-css-extract-plugin
+
+//return this.orderedIndexes;

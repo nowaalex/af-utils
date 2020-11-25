@@ -53,7 +53,9 @@ class RowsAggregator {
     }
 
     get groupedSorted(){
-        sortGroups( this.grouped, this.getRowData, this.sortDataKey, this.sortDirection, this.groupKeys.length );
+        if( this.sortDataKey ){
+            sortGroups( this.grouped, this.getRowData, this.sortDataKey, this.sortDirection, this.groupKeys.length );
+        }
         return this.grouped;
     }
 
@@ -62,12 +64,13 @@ class RowsAggregator {
     }
 
     get filteredIndexes(){
+        //return this.orderedIndexes;
         const { filtersMap, orderedIndexes } = this;
         if( this.filtersMap.size ){
             const filteredIndexesArray = orderedIndexes.filter( idx => {
                 const row = this.getRowData( idx );
                 for( let [ dataKey, value ] of filtersMap ){
-                    if( !String( row[ dataKey ] ).toLowerCase().includes( value ) ){
+                    if( !( "" + row[ dataKey ] ).toLowerCase().includes( value ) ){
                         return false;
                     }
                 }
@@ -76,11 +79,12 @@ class RowsAggregator {
 
             return filteredIndexesArray;
         }
-        return this.orderedIndexes;
+        return orderedIndexes;
     }
 
+    
     get noGroupsSortedIndexes(){
-        return this.filteredIndexes.sort( getSorter( this.getRowData, this.sortDataKey, this.sortDirection ) );
+        return this.sortDataKey ? this.filteredIndexes.sort( getSorter( this.getRowData, this.sortDataKey, this.sortDirection ) ) : this.filteredIndexes;
     }
 
     get groupsSortedIndexes(){
@@ -92,6 +96,7 @@ class RowsAggregator {
     }
 
     get finalIndexes(){
+
         return this.hasGrouping ? this.groupsSortedIndexes : this.noGroupsSortedIndexes;
     }
 

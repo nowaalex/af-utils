@@ -374,6 +374,8 @@ object-assign
 
 // Execute the module function
 
+// Flag the module as loaded
+
 // IE 11 sometimes throws when accessing window.history.state
 
 // If the path exists, push it onto the end.
@@ -555,10 +557,6 @@ object-assign
 // no baseURI
 
 // no deferred startup
-
-// no module.id needed
-
-// no module.loaded needed
 
 // no prefetching
 

@@ -44,7 +44,7 @@ class VariableSizeList extends ListBase {
     }
 
     updateMsb(){
-        this.msb = 1 << 31 - Math.clz32( this.rowsQuantity );
+        this.msb = this.rowsQuantity && 1 << 31 - Math.clz32( this.rowsQuantity );
     }
 
     grow(){
