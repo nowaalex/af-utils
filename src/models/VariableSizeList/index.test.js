@@ -25,13 +25,22 @@ const getIndexUnoptimized = offset => {
     return index;
 }
 
-describe( "VariableSizeList works ok", () => {
+describe( "VariableSizeList works", () => {
 
-    test( "it sums ok", () => {
+    const VSList = new VariableSizeList();
 
-        const VSList = new VariableSizeList();
+    test( "Default rowsQuantity is zero", () => {
+        expect( VSList.rowsQuantity ).toEqual( 0 );
+    });
+
+    test( "Calcultions with zero rowsQuantity work correctly", () => {
+        expect( VSList.getIndex( 0 ) ).toEqual( 0 );
+        expect( VSList.getOffset( 0 ) ).toEqual( 0 );
+    });
+
+    test( "Summation works correctly", () => {
+
         VSList.setViewParams( 0, 2, ROWS_QUANTITY, null );
-
 
         for( let i = 0, sum; i < UPDATES_QUANTITY; i++ ){
 
@@ -53,4 +62,4 @@ describe( "VariableSizeList works ok", () => {
             }
         }
     });
-})
+});

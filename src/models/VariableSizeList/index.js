@@ -118,10 +118,18 @@ class VariableSizeList extends ListBase {
     }
 
     getOffset( index ){
+        if( process.env.NODE_ENV !== "production" ){
+            if( index > this.rowsQuantity ){
+                throw new Error( "index must not be > rowsQuantity" );
+            }
+        }
+
         let result = 0;
+
         for ( ; index > 0; index -= index & -index ){
             result += this.fTree[ index ];
         }
+
         return result;
     }
 
