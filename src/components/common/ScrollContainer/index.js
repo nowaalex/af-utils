@@ -16,8 +16,7 @@ const ScrollContainer = ({ className, children, ...props }) => {
 
         const R = new ResizeObserver( entries => {
             if( entries.length === 1 ){
-                const { width, height } = entries[ 0 ].contentRect;
-                API.setWidgetDimensions( Math.round( width ), Math.round( height ) );
+                API.setWidgetHeight( Math.round( entries[ 0 ].contentRect.height ) );
             }
         });
 

@@ -5,8 +5,6 @@ import {
     START_INDEX,
     END_INDEX,
     ROWS_QUANTITY,
-    WIDGET_WIDTH,
-    WIDGET_HEIGHT,
     WIDGET_SCROLL_HEIGHT,
 } from "constants/events";
 

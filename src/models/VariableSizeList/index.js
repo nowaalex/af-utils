@@ -2,7 +2,6 @@ import ListBase from "../ListBase";
 
 import {
     ROWS_QUANTITY,
-    WIDGET_WIDTH,
     START_INDEX,
     END_INDEX,
 } from "constants/events";

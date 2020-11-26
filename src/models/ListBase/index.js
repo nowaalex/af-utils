@@ -5,8 +5,6 @@ import {
     START_INDEX,
     END_INDEX,
     ROWS_QUANTITY,
-    WIDGET_WIDTH,
-    WIDGET_HEIGHT,
     WIDGET_SCROLL_HEIGHT,
 } from "constants/events";
 
@@ -18,7 +16,6 @@ class ListBase extends PubSub {
     /* must not be >= 1 */
     overscanRowsCount = 2;
     widgetHeight = 0;
-    widgetWidth = 0;
     estimatedRowHeight = 0;
     rowsContainerNode = null;
     scrollContainerNode = null;
@@ -31,6 +28,13 @@ class ListBase extends PubSub {
         if( v !== this.scrollTop ){
             this.scrollTop = v;
             this.updateVisibleRange();
+        }
+    }
+
+    setWidgetHeight( height ){
+        if( height !== this.widgetHeight ){
+            this.widgetHeight = height;
+            this.updateEndIndex().measureRowsThrottled();
         }
     }
 
@@ -70,9 +74,8 @@ class ListBase extends PubSub {
         super()
 
         this
-            .on( this.measureRowsThrottled, WIDGET_HEIGHT, WIDGET_WIDTH )
             .on( this.updateWidgetScrollHeight, ROWS_QUANTITY )
-            .on( this.updateEndIndex, WIDGET_HEIGHT, ROWS_QUANTITY );
+            .on( this.updateEndIndex, ROWS_QUANTITY );
     }
 
     destructor(){
@@ -98,16 +101,7 @@ class ListBase extends PubSub {
         return this;
     }
 
-    setWidgetDimensions( width, height ){
-        if( width !== this.widgetWidth ){
-            this.widgetWidth = width;
-            this.emit( WIDGET_WIDTH );
-        }
-        if( height !== this.widgetHeight ){
-            this.widgetHeight = height;
-            this.emit( WIDGET_HEIGHT );
-        }
-    }
+    
 
     setViewParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode ){
 
