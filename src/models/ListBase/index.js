@@ -31,11 +31,13 @@ class ListBase extends PubSub {
         }
     }
 
-    setWidgetHeight( height ){
+    setWidgetDimensions( height ){
         if( height !== this.widgetHeight ){
             this.widgetHeight = height;
-            this.updateEndIndex().measureRowsThrottled();
+            this.updateEndIndex();
         }
+
+        this.measureRowsThrottled();
     }
 
     updateEndIndex(){
