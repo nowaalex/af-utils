@@ -16,7 +16,7 @@ class RowsAggregator {
     sortDataKey = "";
     sortDirection = -1;
 
-    shallowGroupsStore = new Map();
+    collapsedGroups = new Set();
 
     setFiltering( dataKey, value ){
         if( value ){
@@ -37,11 +37,25 @@ class RowsAggregator {
     addGrouping( dataKey ){
         if( !this.groupKeys.includes( dataKey ) ){
             this.groupKeys.push( dataKey );
+            this.collapsedGroups.clear();
+        }
+    }
+
+    toggleCollapsedGroup( idx ){
+        if( this.collapsedGroups.has( idx ) ){
+            this.collapsedGroups.delete( idx );
+        }
+        else{
+            this.collapsedGroups.add( idx );
         }
     }
 
     removeGrouping( dataKey ){
-        this.groupKeys.splice( this.groupKeys.indexOf( dataKey ) >>> 0, 1 );
+        const idx = this.groupKeys.indexOf( dataKey );
+        if( idx !== -1 ){
+            this.groupKeys.splice( idx, 1 );
+            this.collapsedGroups.clear();
+        }
     }
 
     get orderedIndexes(){
@@ -60,7 +74,7 @@ class RowsAggregator {
     }
 
     get flattenedGroups(){
-        return flattenGroups( this.groupedSorted );
+        return flattenGroups( this.groupedSorted, this.collapsedGroups );
     }
 
     get filteredIndexes(){
@@ -96,13 +110,11 @@ class RowsAggregator {
     }
 
     get finalIndexes(){
-
         return this.hasGrouping ? this.groupsSortedIndexes : this.noGroupsSortedIndexes;
     }
 
     constructor(){
         makeAutoObservable( this, {
-            shallowGroupsStore: false,
             groupedSorted: computed({ equals: () => false }),
             groupsSortedIndexes: computed({ equals: () => false }),
             noGroupsSortedIndexes: computed({ equals: () => false }),

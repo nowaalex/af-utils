@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import RowsAggregator from "models/RowsAggregator";
 import Table from "../Table";
@@ -56,6 +56,18 @@ const GroupsPanel = observer(({ m }) => {
     );
 });
 
+const GroupCell = observer(({ m, idx }) => {
+
+    const isCollapsed = m.collapsedGroups.has( idx );
+
+    return m.hasGrouping ? (
+        <Fragment>
+            <span onClick={() => m.toggleCollapsedGroup( idx )}>{isCollapsed ? "+" : "-"}</span>
+            &nbsp;{m.flattenedGroups.groupValues[~idx]}
+        </Fragment>
+    ) : null;
+});
+
 const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
 
     const [ m ] = useState(() => new RowsAggregator());
@@ -67,7 +79,9 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
         return (
             <tr key={realRowIndex}>
                 {realRowIndex < 0 ? (
-                    <td colSpan={columns.length}>{realRowIndex}&nbsp;{m.flattenedGroups.groupValues[~realRowIndex]}</td>
+                    <td colSpan={columns.length}>
+                        <GroupCell m={m} idx={realRowIndex} />
+                    </td>
                 ) : (
                     <CellsList
                         rowIndex={realRowIndex}
