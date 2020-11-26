@@ -1,5 +1,4 @@
 import ListBase from "../ListBase";
-import throttle from "utils/throttle";
 
 import {
     ROWS_QUANTITY,
@@ -31,17 +30,12 @@ class VariableSizeList extends ListBase {
         this
             /* must be done before events, attached in ListBase */
             .prependListener( this.grow, ROWS_QUANTITY )
-            .on( this.updateRowHeightsThrottled, WIDGET_WIDTH, START_INDEX, END_INDEX );            
-    }
-
-    destructor(){
-        this.updateRowHeightsThrottled.cancel();
-        super.destructor();
+            .on( this.measureRowsThrottled, START_INDEX, END_INDEX );            
     }
 
     grow(){
         const { rowsQuantity } = this;
-        
+
         this.msb = rowsQuantity && 1 << 31 - Math.clz32( rowsQuantity );
 
         const curRowHeighsLength = this.rowHeights.length;
@@ -136,7 +130,7 @@ class VariableSizeList extends ListBase {
         }
     }
 
-    updateRowHeights(){
+    measureRows(){
         const node = this.rowsContainerNode;
 
         if( node ){
@@ -168,8 +162,6 @@ class VariableSizeList extends ListBase {
             }
         }
     }
-
-    updateRowHeightsThrottled = throttle( this.updateRowHeights, 200, this );
 }
 
 export default VariableSizeList;

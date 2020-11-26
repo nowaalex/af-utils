@@ -24,13 +24,9 @@ class FixedSizeList extends ListBase {
     constructor(){
         super();
 
-        this.on( this.updateRowHeightThrottled, WIDGET_WIDTH, WIDGET_HEIGHT, ROWS_QUANTITY );
+        this.on( this.measureRowsThrottled, ROWS_QUANTITY );
     }
 
-    destructor(){
-        this.updateRowHeightThrottled.cancel();
-        super.destructor();
-    }
 
     getIndex( offset ){
         return this.rowHeight && Math.floor( offset / this.rowHeight );
@@ -40,13 +36,11 @@ class FixedSizeList extends ListBase {
         return index * this.rowHeight;
     }
 
-    updateRowHeight(){
+    measureRows(){
         if( this.rowsContainerNode && this.rowsQuantity ){
             this.setRowHeight( this.rowsContainerNode.firstElementChild?.offsetHeight || 0 );
         }
-    }
-    
-    updateRowHeightThrottled = throttle( this.updateRowHeight, 200, this );
+    }    
 }
 
 export default FixedSizeList;

@@ -1,4 +1,5 @@
 import PubSub from "../PubSub";
+import throttle from "utils/throttle";
 
 import {
     START_INDEX,
@@ -29,7 +30,7 @@ class ListBase extends PubSub {
     setScrollTop( v ){
         if( v !== this.scrollTop ){
             this.scrollTop = v;
-            this.remeasureVisibleRange();
+            this.updateVisibleRange();
         }
     }
 
@@ -44,7 +45,7 @@ class ListBase extends PubSub {
         return this;
     }
 
-    remeasureVisibleRange(){
+    updateVisibleRange(){
 
         const startIndex = Math.max( 0, Math.min( this.rowsQuantity, this.getIndex( this.scrollTop ) ) - this.overscanRowsCount );
 
@@ -61,18 +62,22 @@ class ListBase extends PubSub {
     /* must be called when row height/heights change */
     remeasure(){
         return this
-            .startBatch()
             .updateWidgetScrollHeight()
-            .remeasureVisibleRange()
-            .endBatch();
+            .updateVisibleRange();
     }
 
     constructor(){
         super()
 
         this
+            .on( this.measureRowsThrottled, WIDGET_HEIGHT, WIDGET_WIDTH )
             .on( this.updateWidgetScrollHeight, ROWS_QUANTITY )
-            .on( this.updateEndIndex, ROWS_QUANTITY );
+            .on( this.updateEndIndex, WIDGET_HEIGHT, ROWS_QUANTITY );
+    }
+
+    destructor(){
+        this.measureRowsThrottled.cancel();
+        super.destructor();
     }
 
     scrollToRow( rowIndex ){
@@ -94,17 +99,14 @@ class ListBase extends PubSub {
     }
 
     setWidgetDimensions( width, height ){
-        this.startBatch();
         if( width !== this.widgetWidth ){
             this.widgetWidth = width;
             this.emit( WIDGET_WIDTH );
         }
         if( height !== this.widgetHeight ){
             this.widgetHeight = height;
-            this.updateEndIndex();
             this.emit( WIDGET_HEIGHT );
         }
-        this.endBatch();
     }
 
     setViewParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode ){
@@ -116,7 +118,7 @@ class ListBase extends PubSub {
 
         if( overscanRowsCount !== this.overscanRowsCount ){
             this.overscanRowsCount = overscanRowsCount;
-            this.queue( this.remeasureVisibleRange );
+            this.queue( this.updateVisibleRange );
         }
 
         if( rowsQuantity !== this.rowsQuantity ){
@@ -126,6 +128,8 @@ class ListBase extends PubSub {
 
         this.endBatch();
     }
+
+    measureRowsThrottled = throttle( this.measureRows, 200, this );
 
     /* Calculated inside model */
     startIndex = 0;
