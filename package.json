@@ -31,6 +31,10 @@
   "files": [
     "lib/*"
   ],
+  "exports": {
+    "import": "./lib/index.js",
+    "default": "./lib/index.js"
+  },
   "main": "lib/index.js",
   "module": "lib/index.js",
   "keywords": [
