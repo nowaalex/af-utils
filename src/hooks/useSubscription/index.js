@@ -4,7 +4,7 @@ import useApi from "../useApi";
 
 const useSubscription = ( callBack, events ) => {
     
-    const prevRenrerRef = useRef( null );
+    const prevRenderRef = useRef( null );
     const API = useApi();
     const forceUpdate = useForceUpdate();
     
@@ -21,10 +21,10 @@ const useSubscription = ( callBack, events ) => {
         API.queue( forceUpdate );
     }
     else{
-        prevRenrerRef.current = callBack( API );
+        prevRenderRef.current = callBack( API );
     }
     
-    return prevRenrerRef.current;
+    return prevRenderRef.current;
 }
 
 export default useSubscription;
