@@ -19,10 +19,11 @@ const Menu = ({ items }) => (
             <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/list">
                 List
             </NavLink>
-        </nav>
-        <nav>
             <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/table">
                 Table
+            </NavLink>
+            <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/complexTable">
+                ComplexTable
             </NavLink>
         </nav>
     

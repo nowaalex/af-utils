@@ -120,11 +120,10 @@ Table.propTypes = {
                 format: PropTypes.func,
                 render: PropTypes.func,
                 formatTotal: PropTypes.func,
-
+                totals: PropTypes.string,
                 visibility: PropTypes.oneOf([ "visible", "hidden" ]),
 
                 // column props, affecting colgroup > col tags
-                totals: PropTypes.string,
                 background: PropTypes.string,
                 border: PropTypes.string,
                 width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),

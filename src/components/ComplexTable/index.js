@@ -36,23 +36,50 @@ const HeaderInput = observer(({ m, dataKey }) => (
     />
 ));
 
-const SummaryCell = observer(({ m, type, dataKey }) => {
+const getCount = rowIndexes => {
 
-    const { filteredIndexes, getRowData } = m;
+    let total = 0;
+
+    if( Array.isArray( rowIndexes ) ){
+        total += rowIndexes.length;
+    }
+    else {
+        for( let nested of rowIndexes.values() ){
+            total += getCount( nested );
+        }
+    }
+
+    return total;
+}
+
+const getSum = ( rowIndexes, dataKey, getRowData ) => {
+
+    let total = 0;
+
+    if( Array.isArray( rowIndexes ) ){
+        let row;
+        for( let j of rowIndexes ){
+            row = getRowData( j );
+            total += row[ dataKey ];
+        }
+    }
+    else {
+        for( let nested of rowIndexes.values() ){
+            total += getSum( nested, dataKey, getRowData );
+        }
+    }
+
+    return total;
+}
+
+const SummaryCell = observer(({ m, type, dataKey, rowIndexes }) => {
 
     if( type === "count" ){
-        return filteredIndexes.length;
+        return getCount( rowIndexes );
     }
 
     if( type === "sum" ){
-        let res = 0;
-
-        for( let j of filteredIndexes ){
-            row = getRowData( j );
-            res += row[ dataKey ];
-        }
-
-        return res;
+        return getSum( rowIndexes, dataKey, m.getRowData )
     }
 
     return null;
@@ -78,16 +105,37 @@ const GroupsPanel = observer(({ m }) => {
     );
 });
 
-const GroupCell = observer(({ m, idx }) => {
+const getInMap = ( map, path ) => path.split( "." ).reduce(( res, key ) => res.get( key ), map );
+
+const GroupCell = observer(({ m, columns, idx }) => {
 
     const isCollapsed = m.collapsedGroups.has( idx );
 
-    return m.hasGrouping ? (
-        <Fragment>
-            <span onClick={() => m.toggleCollapsedGroup( idx )}>{isCollapsed ? "+" : "-"}</span>
-            &nbsp;{m.flattenedGroups.groupValues[~idx]}
-        </Fragment>
-    ) : null;
+    if( m.hasGrouping ){
+
+        const groupValue = m.flattenedGroups.groupValues[~idx];
+
+        return groupValue ? (
+            <Fragment>
+                <span onClick={() => m.toggleCollapsedGroup( idx )}>{isCollapsed ? "+" : "-"}</span>
+                &nbsp;{groupValue}
+                {columns.map( col => col.totals ? (
+                    <span key={col.dataKey}>
+                        {col.label}:
+                        &nbsp;
+                        <SummaryCell
+                            m={m}
+                            type={col.totals}
+                            dataKey={col.dataKey}
+                            rowIndexes={getInMap(m.grouped,groupValue)}
+                        />
+                    </span>
+                ) : null)}
+            </Fragment>
+        ) : null;
+    }
+
+    return null;
 });
 
 const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
@@ -102,7 +150,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
             <tr key={realRowIndex}>
                 {realRowIndex < 0 ? (
                     <td colSpan={columns.length}>
-                        <GroupCell m={m} idx={realRowIndex} />
+                        <GroupCell m={m} idx={realRowIndex} columns={columns} />
                     </td>
                 ) : (
                     <CellsList
@@ -131,7 +179,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
             <tr>
                 {normalizedVisibleColumns.map(({ dataKey, totals }) => (
                     <td key={dataKey}>
-                        <SummaryCell m={m} dataKey={dataKey} type={totals} />
+                        <SummaryCell m={m} dataKey={dataKey} type={totals} rowIndexes={m.filteredIndexes} />
                     </td>
                 ))}
             </tr>

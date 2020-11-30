@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
 import List from "./List";
 import Table from "./Table";
+import ComplexTable from "./ComplexTable";
 import css from "./style.module.scss";
 
 const Pages = {
     list: List,
-    table: Table
+    table: Table,
+    complexTable: ComplexTable
 }
 
 const Docs = () => {
