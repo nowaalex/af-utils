@@ -25,7 +25,7 @@ const getIndexUnoptimized = offset => {
     return index;
 }
 
-describe( "VariableSizeList works", () => {
+describe( "VariableSizeList model works", () => {
 
     const VSList = new VariableSizeList();
 
