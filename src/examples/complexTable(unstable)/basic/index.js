@@ -31,7 +31,10 @@ const ComplexTable = () => (
                     </div>
                 )
             },
-            "firstName",
+            {
+                dataKey: "firstName",
+                totals: "count"
+            },
             "lastName",
             "country"
         ]}

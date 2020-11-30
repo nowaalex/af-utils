@@ -37,3 +37,17 @@
     margin: 0 1em;
     user-select: none;
 }
+
+.columnSummaries {
+    margin-left: 1em;
+    &:before {
+        content: "(";
+    }
+    &:after {
+        content: ")"
+    }
+
+    & > :not(:last-child):after {
+        content: ", ";
+    }
+}

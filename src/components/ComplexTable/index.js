@@ -105,7 +105,7 @@ const GroupsPanel = observer(({ m }) => {
     );
 });
 
-const getInMap = ( map, path ) => path.split( "." ).reduce(( res, key ) => res.get( key ), map );
+const getInMap = ( map, path ) => path.reduce(( res, key ) => res.get( key ), map );
 
 const GroupCell = observer(({ m, columns, idx }) => {
 
@@ -113,26 +113,46 @@ const GroupCell = observer(({ m, columns, idx }) => {
 
     if( m.hasGrouping ){
 
-        const groupValue = m.flattenedGroups.groupValues[~idx];
+        const groupPath = m.flattenedGroups.groupValues[~idx];
 
-        return groupValue ? (
-            <Fragment>
-                <span onClick={() => m.toggleCollapsedGroup( idx )}>{isCollapsed ? "+" : "-"}</span>
-                &nbsp;{groupValue}
-                {columns.map( col => col.totals ? (
-                    <span key={col.dataKey}>
-                        {col.label}:
-                        &nbsp;
-                        <SummaryCell
-                            m={m}
-                            type={col.totals}
-                            dataKey={col.dataKey}
-                            rowIndexes={getInMap(m.grouped,groupValue)}
-                        />
+        if( groupPath ){
+
+            const lastGroupIndex = groupPath.length - 1;
+            const groupKey = m.groupKeys[lastGroupIndex];
+            const groupLabel = columns.find( c => c.dataKey === groupKey ).label;
+
+            return (
+                <Fragment>
+                    <span
+                        onClick={() => m.toggleCollapsedGroup( idx )}
+                        style={{
+                            marginLeft: `${(lastGroupIndex)*2}em`
+                        }}
+                    >
+                        {isCollapsed ? "+" : "-"}
                     </span>
-                ) : null)}
-            </Fragment>
-        ) : null;
+                    &nbsp;
+                    {groupLabel}:&nbsp;{groupPath[lastGroupIndex]}
+                    {columns.length ? (
+                        <span className={css.columnSummaries}>
+                            {columns.map( col => col.totals ? (
+                                <span key={col.dataKey}>
+                                    {col.label}:
+                                    &nbsp;
+                                    <SummaryCell
+                                        m={m}
+                                        type={col.totals}
+                                        dataKey={col.dataKey}
+                                        rowIndexes={getInMap(m.grouped,groupPath)}
+                                    />
+                                </span>
+                            ) : null)}
+                        </span>
+                    ) : null}
+                </Fragment>
+            );
+        }
+        
     }
 
     return null;
