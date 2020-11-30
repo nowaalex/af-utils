@@ -22,7 +22,8 @@ import Colgroup from "./Colgroup";
 import {
     renderRow,
     renderCell,
-    renderTheadContents,
+    renderHeaderCells,
+    renderFooter,
     CellsList,
     Cell
 } from "./renderers";
@@ -42,7 +43,8 @@ const Table = ({
     getRowData,
     renderRow,
     renderCell,
-    renderTheadContents,
+    renderHeaderCells,
+    renderFooter,
     CellsList,
     Cell,
     rowsQuantity,
@@ -72,16 +74,18 @@ const Table = ({
         }
 
         return finalColumn;
-    }), [ columns ]);   
-    
+    }), [ columns ]);  
+        
     return (
         <Context.Provider value={Store}>
             <ScrollContainer className={cx(css.wrapper,className)} {...props}>
                 <table className={css.bodyTable}>
                     <Colgroup columns={normalizedVisibleColumns} />
-                    {headless?null:(
+                    {headless ? null : (
                         <thead>
-                            {renderTheadContents(normalizedVisibleColumns)}
+                            <tr>
+                                {renderHeaderCells(normalizedVisibleColumns)}
+                            </tr>
                         </thead>
                     )}
                     <Scroller />
@@ -95,6 +99,7 @@ const Table = ({
                             Cell={Cell}
                         />
                     </tbody>
+                    {renderFooter( normalizedVisibleColumns )}
                 </table>
             </ScrollContainer>
         </Context.Provider>
@@ -119,6 +124,7 @@ Table.propTypes = {
                 visibility: PropTypes.oneOf([ "visible", "hidden" ]),
 
                 // column props, affecting colgroup > col tags
+                totals: PropTypes.string,
                 background: PropTypes.string,
                 border: PropTypes.string,
                 width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
@@ -140,9 +146,9 @@ Table.propTypes = {
      * @returns {any} one row element child. Fragments are not supported.
      */
     renderRow: PropTypes.func,
-
+    renderFooter: PropTypes.func,
     renderCell: PropTypes.func,
-    renderTheadContents: PropTypes.func,
+    renderHeaderCells: PropTypes.func,
     CellsList: PropTypes.elementType,
     Cell: PropTypes.elementType,
 
@@ -155,7 +161,8 @@ Table.defaultProps = {
 
     renderRow,
     renderCell,
-    renderTheadContents,
+    renderHeaderCells,
+    renderFooter,
     CellsList,
     Cell
 };

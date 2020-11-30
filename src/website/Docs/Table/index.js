@@ -19,7 +19,7 @@ const props = [
         required: true,
     },
     {
-        span: 5,
+        span: 6,
         name: "renderRow",
         type: "function",
         description: "See renderers implementation"
@@ -30,7 +30,12 @@ const props = [
         description: null
     },
     {
-        name: "renderTheadContents",
+        name: "renderHeaderCells",
+        type: "function",
+        description: null
+    },
+    {
+        name: "renderFooter",
         type: "function",
         description: null
     },

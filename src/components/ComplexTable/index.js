@@ -36,6 +36,28 @@ const HeaderInput = observer(({ m, dataKey }) => (
     />
 ));
 
+const SummaryCell = observer(({ m, type, dataKey }) => {
+
+    const { filteredIndexes, getRowData } = m;
+
+    if( type === "count" ){
+        return filteredIndexes.length;
+    }
+
+    if( type === "sum" ){
+        let res = 0;
+
+        for( let j of filteredIndexes ){
+            row = getRowData( j );
+            res += row[ dataKey ];
+        }
+
+        return res;
+    }
+
+    return null;
+});
+
 const GroupsPanel = observer(({ m }) => {
 
     const [ collectedProps, dropRef ] = useDrop({
@@ -95,18 +117,26 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
         );
     }
 
-    const renderTheadContents = columns => (
-        <tr>
-            {columns.map(({ dataKey, label }) => (
-                <th key={dataKey}>
-                    <HeaderLabel m={m} dataKey={dataKey} label={label} />
-                    <HeaderInput m={m} dataKey={dataKey} />
-                </th>
-            ))}
-        </tr>        
-    );
+    const renderHeaderCells = columns => columns.map(({ dataKey, label }) => (
+        <th key={dataKey}>
+            <HeaderLabel m={m} dataKey={dataKey} label={label} />
+            <HeaderInput m={m} dataKey={dataKey} />
+        </th>
+    ));  
 
     useEffect(() => m.merge({ rowsQuantity, getRowData }));
+
+    const renderFooter = normalizedVisibleColumns => normalizedVisibleColumns.some( col => !!col.totals ) ? (
+        <tfoot>
+            <tr>
+                {normalizedVisibleColumns.map(({ dataKey, totals }) => (
+                    <td key={dataKey}>
+                        <SummaryCell m={m} dataKey={dataKey} type={totals} />
+                    </td>
+                ))}
+            </tr>
+        </tfoot>
+    ) : null;
 
     return (
         <DndProvider backend={HTML5Backend}>
@@ -116,7 +146,8 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
                     rowsQuantity={finalIndexes.length}
                     getRowData={getRowData}
                     renderRow={renderRow}
-                    renderTheadContents={renderTheadContents}
+                    renderHeaderCells={renderHeaderCells}
+                    renderFooter={renderFooter}
                     {...props}
                 />
             </div>

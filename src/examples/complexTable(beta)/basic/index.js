@@ -19,6 +19,7 @@ const ComplexTable = () => (
         columns={[
             {
                 dataKey: "i",
+                totals: "count",
                 render: ( cellData, rowData, rowIndex ) => (
                     <div style={{
                         color: "#000",

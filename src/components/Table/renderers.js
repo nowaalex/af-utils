@@ -26,15 +26,13 @@ export const renderCell = ( rowData, rowIndex, column, Cell ) => (
     </td>
 );
 
-export const renderTheadContents = columns => (
-    <tr>
-        {columns.map( column => (
-            <th key={column.dataKey}>
-                {column.label}
-            </th>
-        ))}
-    </tr>
-);
+export const renderHeaderCells = columns => columns.map( column => (
+    <th key={column.dataKey}>
+        {column.label}
+    </th>
+));
+
+export const renderFooter = normalizedVisibleColumns => null;
 
 export const CellsList = ({ rowIndex, columns, getRowData, renderCell, Cell }) => {
     const rowData = getRowData( rowIndex );
