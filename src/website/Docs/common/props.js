@@ -1,10 +1,12 @@
+import { Fragment } from "react";
 import commonDefaultProps from "../../../components/common/defaultProps";
 
 const commonProps = [
     {
         name: "rowsQuantity",
         type: "number",
-        required: true
+        required: true,
+        description: "must be > 0"
     },
     {
         name: "className",
@@ -15,10 +17,18 @@ const commonProps = [
         name: "fixed",
         type: "bool",
         defaultValue: commonDefaultProps.fixed.toString(),
-        description: `
-            true - you guarantee, that all children have same height and is determined by first rendered child.
-            false - special cache is created, which allows rows to have different height.
-        `
+        description: (
+                <Fragment>
+                <p>
+                    <strong>true</strong> - you guarantee, that all children have same height and is determined by first rendered child.
+                </p>
+                <p>
+                    <strong>false</strong> - special cache is created, which allows rows to have different height.
+                    In this case maximum rowsQuantity value is limited to <strong>2_147_483_647</strong> (maximum int32 value),
+                    because row heights cache uses bitwise operations.
+                </p>
+            </Fragment>
+        )
     },
     {
         name: "overscanRowsCount",

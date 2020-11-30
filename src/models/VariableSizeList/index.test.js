@@ -38,6 +38,11 @@ describe( "VariableSizeList works", () => {
         expect( VSList.getOffset( 0 ) ).toEqual( 0 );
     });
 
+    test( "Setting rowsQuantity > max(int32) or < 0 throws error", () => {
+        expect(() => VSList.setViewParams( 0, 2, -1, null )).toThrow();
+        expect(() => VSList.setViewParams( 0, 2, 0x7fffffff + 1, null )).toThrow();
+    });
+
     test( "Summation works correctly", () => {
 
         VSList.setViewParams( 0, 2, ROWS_QUANTITY, null );

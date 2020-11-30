@@ -35,6 +35,10 @@ class VariableSizeList extends ListBase {
     grow(){
         const { rowsQuantity } = this;
 
+        if( rowsQuantity < 0 || rowsQuantity > 0x7fffffff ){
+            throw new Error( `Wrong rowsQuantity: ${rowsQuantity}. Must be 0...2_147_483_647.` )
+        }
+
         this.msb = rowsQuantity && 1 << 31 - Math.clz32( rowsQuantity );
 
         const curRowHeighsLength = this.rowHeights.length;
