@@ -6,12 +6,6 @@ import {
     END_INDEX,
 } from "constants/events";
 
-/*
-    TODO:
-        when estimatedRowHeight is not correct, scroll behavior is weird here
-        perform resetCacheHeights from useEffect on rowRenderer change
-*/
-
 class VariableSizeList extends ListBase {
     
     rowHeights = [];
@@ -50,50 +44,32 @@ class VariableSizeList extends ListBase {
             this.rowHeights = new Uint32Array( rowsQuantity );
             this.fTree = new Uint32Array( rowsQuantity + 1 );
 
-            if( curRowHeighsLength ){
-                this.rowHeights.set( oldRowHeights );
-                this.rowHeights.fill( this.estimatedRowHeight, curRowHeighsLength );
+            this.rowHeights.set( oldRowHeights );
+            this.rowHeights.fill( this.estimatedRowHeight, curRowHeighsLength );
 
 
-                /* 
-                    Creating fenwick tree from an array in linear time;
-                    It is much more efficient, than calling updateRowHeight N times.
-                */
+            /* 
+                Creating fenwick tree from an array in linear time;
+                It is much more efficient, than calling updateRowHeight N times.
+            */
 
-                this.fTree.set( this.rowHeights, 1 );
+            this.fTree.set( this.rowHeights, 1 );
 
-                for( let i = 1, j; i <= rowsQuantity; i++ ){
-                    j = i + ( i & -i );
-                    if( j <= rowsQuantity ){
-                        this.fTree[ j ] += this.fTree[ i ];
-                    }
+            for( let i = 1, j; i <= rowsQuantity; i++ ){
+                j = i + ( i & -i );
+                if( j <= rowsQuantity ){
+                    this.fTree[ j ] += this.fTree[ i ];
                 }
+            }
 
-                this.remeasure();
-            }
-            else {
-                this.resetCachedHeights();
-            }
+            this.remeasure();
         }        
-    }
-
-    resetCachedHeights( rowHeight = this.estimatedRowHeight ){
-
-        this.estimatedRowHeight = rowHeight;
-        this.rowHeights.fill( rowHeight );
-
-        /* Filling FenwickTee with single value  */
-        for ( let i = 1; i <= this.rowsQuantity; i++ ){
-            this.fTree[ i ] = rowHeight * ( i & -i );
-        }
-
-        this.remeasure();
     }
 
     getIndex( offset ){
         let index = 0;
         
-        for( let bitMask = this.msb, tempIndex; bitMask; bitMask >>= 1 ){
+        for( let bitMask = this.msb, tempIndex; bitMask !== 0; bitMask >>= 1 ){
             tempIndex = index + bitMask;
             if( tempIndex > this.rowsQuantity ){
                 continue;
@@ -102,8 +78,8 @@ class VariableSizeList extends ListBase {
                 return tempIndex;
             }
             if( offset > this.fTree[ tempIndex ] ) {
+                offset -= this.fTree[ tempIndex ];
                 index = tempIndex;
-                offset -= this.fTree[ index ];
             }
         }
 
@@ -126,9 +102,14 @@ class VariableSizeList extends ListBase {
         return result;
     }
 
-    /* i starts from 1 here */
+    /*
+        i starts from 1 here;
+
+        TODO:
+            * we can put < this.rowsQuantity here, but in this case grow must be optimized
+    */
     updateRowHeight( i, delta ){
-        for ( ; i <= this.rowsQuantity; i += i & -i ){
+        for ( ; i < this.fTree.length; i += i & -i ){
             this.fTree[ i ] += delta;
         }
     }
