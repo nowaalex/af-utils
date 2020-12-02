@@ -3,6 +3,7 @@ import faker from "faker";
 
 const rows = Array.from({ length: 10000 }, (v, i) => ({
     i,
+    fixedRange: i % 9,
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     country: faker.address.country()
@@ -30,6 +31,10 @@ const ComplexTable = () => (
                         {cellData}
                     </div>
                 )
+            },
+            {
+                dataKey: "fixedRange",
+                priorityGroupValues: [ 4, 7, 5 ]
             },
             {
                 dataKey: "firstName",

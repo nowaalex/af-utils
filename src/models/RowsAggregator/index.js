@@ -78,7 +78,6 @@ class RowsAggregator {
     }
 
     get filteredIndexes(){
-        //return this.orderedIndexes;
         const { filtersMap, orderedIndexes } = this;
         if( this.filtersMap.size ){
             const filteredIndexesArray = orderedIndexes.filter( idx => {

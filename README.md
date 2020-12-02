@@ -1,5 +1,7 @@
 # af-virtual-scroll
 
+[Demo image](https://nowaalex.github.io/af-virtual-scroll/preview.gif)
+
 ### Install
 `npm install --save af-virtual-scroll`
 
