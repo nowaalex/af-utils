@@ -61,5 +61,3 @@
 // EXTERNAL MODULE: ./src/utils/cx/index.js
 
 // extracted by mini-css-extract-plugin
-
-//return this.orderedIndexes;

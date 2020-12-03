@@ -2,6 +2,11 @@
     Hmm, I can't put here more than ~ 3 000 000. Maybe need to put one more row in case this height is > 3 000 000
 */
 
+/*
+    Spread operator will kill pure annotation comment, and tree-shaking will fail.
+    So Object.assign is a must
+*/
+
 /* END_INDEX */
 
 /* START_INDEX */

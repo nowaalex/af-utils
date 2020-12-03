@@ -3,6 +3,13 @@ import { VscGithub } from "react-icons/vsc";
 import { ImNpm } from "react-icons/im";
 import css from "./style.module.scss";
 
+const DOCS_STRUCTURE = [
+    [ "List", "/docs/list" ],
+    [ "Table", "/docs/table" ],
+    [ "ComplexTable", "/docs/complexTable" ],
+    [ "Bundle Size", "/docs/bundleSize" ]
+];
+
 const Menu = ({ items }) => (
     <div className={css.wrapper}>
         <h2 className={css.header}>Examples</h2>
@@ -24,6 +31,9 @@ const Menu = ({ items }) => (
             </NavLink>
             <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/complexTable">
                 ComplexTable
+            </NavLink>
+            <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/bundleSize">
+                Bundle Size
             </NavLink>
         </nav>
     

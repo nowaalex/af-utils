@@ -1,7 +1,6 @@
 import { memo, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 
-import commonPropTypes from "../common/propTypes";
 import commonDefaultProps from "../common/defaultProps";
 
 import cx from "utils/cx";
@@ -107,7 +106,11 @@ const Table = ({
 }
 
 Table.propTypes = {
-    ...commonPropTypes,
+    rowsQuantity: PropTypes.number.isRequired,
+    className: PropTypes.string,
+    fixed: PropTypes.bool,
+    overscanRowsCount: PropTypes.number,
+    estimatedRowHeight: PropTypes.number,
     columns: PropTypes.arrayOf(
         PropTypes.oneOfType([
             PropTypes.string,
@@ -154,8 +157,11 @@ Table.propTypes = {
     headless: PropTypes.bool,
 };
 
-Table.defaultProps = {
-    ...commonDefaultProps,
+/*
+    Spread operator will kill pure annotation comment, and tree-shaking will fail.
+    So Object.assign is a must
+*/
+Table.defaultProps = /*#__PURE__*/ Object.assign({}, commonDefaultProps, {
     headless: false,
 
     renderRow,
@@ -164,6 +170,6 @@ Table.defaultProps = {
     renderFooter,
     CellsList,
     Cell
-};
+});
 
 export default memo( Table );

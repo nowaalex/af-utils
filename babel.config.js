@@ -3,14 +3,14 @@ const plugins = [
         root: [ "./src" ],
         extensions: [ ".js", ".css", ".scss" ],
         alias: {
-            "af-virtual-scroll": "./src/index",
+            "af-virtual-scroll": "./src/index.esm.js",
         }
     }],
     [ "@babel/plugin-proposal-decorators", { "legacy": true }],
     [ "@babel/plugin-proposal-class-properties", { loose: true }],
     [ "@babel/plugin-proposal-object-rest-spread", { loose: true, useBuiltIns: true }],
     [ "transform-react-remove-prop-types", {
-        mode: "wrap"
+        mode: "unsafe-wrap"
     }]
 ];
 

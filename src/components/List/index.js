@@ -8,7 +8,6 @@ import VariableHeightsStore from "models/VariableSizeList";
 import FixedHeightsStore from "models/FixedSizeList";
 
 import ScrollContainer from "../common/ScrollContainer";
-import commonPropTypes from "../common/propTypes";
 import commonDefaultProps from "../common/defaultProps";
 
 import Rows from "./Rows";
@@ -44,7 +43,11 @@ const List = ({
 };
 
 List.propTypes = {
-    ...commonPropTypes,
+    rowsQuantity: PropTypes.number.isRequired,
+    className: PropTypes.string,
+    fixed: PropTypes.bool,
+    overscanRowsCount: PropTypes.number,
+    estimatedRowHeight: PropTypes.number,
 
     /**
      * @param {number} rowIndex

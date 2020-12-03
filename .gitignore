@@ -11,6 +11,7 @@ desktop.ini
 **/build/
 **/lib
 **/dist/
+**/treeshake_bundles/
 
 *.log
 npm-debug.log*

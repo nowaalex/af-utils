@@ -9,7 +9,7 @@ import { useDrag, useDrop, DndProvider } from "react-dnd";
 
 const HEADER_DND_TYPE = "h";
 
-const HeaderLabel = observer(({ m, dataKey, label }) => {
+const HeaderLabel = /*#__PURE__*/ observer(({ m, dataKey, label }) => {
 
     const [ collectedProps, dragRef ] = useDrag({ item: {
         type: HEADER_DND_TYPE,
@@ -28,7 +28,7 @@ const HeaderLabel = observer(({ m, dataKey, label }) => {
     );
 });
 
-const HeaderInput = observer(({ m, dataKey }) => (
+const HeaderInput = /*#__PURE__*/ observer(({ m, dataKey }) => (
     <input
         className={css.input}
         value={m.filtersMap.get( dataKey )||""}
@@ -72,7 +72,7 @@ const getSum = ( rowIndexes, dataKey, getRowData ) => {
     return total;
 }
 
-const SummaryCell = observer(({ m, type, dataKey, rowIndexes }) => {
+const SummaryCell = /*#__PURE__*/ observer(({ m, type, dataKey, rowIndexes }) => {
 
     if( type === "count" ){
         return getCount( rowIndexes );
@@ -85,7 +85,7 @@ const SummaryCell = observer(({ m, type, dataKey, rowIndexes }) => {
     return null;
 });
 
-const GroupsPanel = observer(({ m }) => {
+const GroupsPanel = /*#__PURE__*/ observer(({ m }) => {
 
     const [ collectedProps, dropRef ] = useDrop({
         accept: HEADER_DND_TYPE,
@@ -107,7 +107,7 @@ const GroupsPanel = observer(({ m }) => {
 
 const getInMap = ( map, path ) => path.reduce(( res, key ) => res.get( key ), map );
 
-const GroupCell = observer(({ m, columns, idx }) => {
+const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
 
     const isCollapsed = m.collapsedGroups.has( idx );
 
@@ -223,4 +223,4 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
     );
 }
 
-export default observer( ComplexTable );
+export default /*#__PURE__*/ observer( ComplexTable );
