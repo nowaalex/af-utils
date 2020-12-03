@@ -1,6 +1,6 @@
 {
   "name": "af-virtual-scroll",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "description": "React components for rendering large scrollable data",
   "repository": {
     "type": "git",
@@ -31,10 +31,6 @@
   "files": [
     "lib/*"
   ],
-  "exports": {
-    "import": "./lib/index.esm.js",
-    "default": "./lib/index.esm.js"
-  },
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "keywords": [
