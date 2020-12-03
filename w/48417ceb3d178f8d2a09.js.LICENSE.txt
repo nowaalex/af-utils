@@ -18,6 +18,8 @@
 
 /* binding */
 
+/* comparer.structural */
+
 /* computed */
 
 /* default */
@@ -58,6 +60,6 @@
 
 // EXTERNAL MODULE: ./src/components/Table/index.js + 7 modules
 
-// EXTERNAL MODULE: ./src/utils/cx/index.js
+// EXTERNAL MODULE: ./src/hooks/useNormalizedTableColumns/index.js
 
 // extracted by mini-css-extract-plugin

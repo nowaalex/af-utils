@@ -1,4 +1,4 @@
-import { makeAutoObservable, computed } from "mobx"; 
+import { makeAutoObservable, comparer, computed } from "mobx"; 
 import multiGroupBy from "./utils/multiGroupBy";
 import sortGroups from "./utils/sortGroups";
 import flattenGroups from "./utils/flattenGroups";
@@ -9,6 +9,8 @@ class RowsAggregator {
     /* Provided from renderer */
     rowsQuantity = 0;
     getRowData = null;
+    columns = [];
+    compact = true;
 
     /* Calculated inside model */
     filtersMap = new Map();
@@ -17,6 +19,11 @@ class RowsAggregator {
     sortDirection = -1;
 
     collapsedGroups = new Set();
+
+
+    get priorityGroupValuesArray(){
+        return this.groupKeys.map( dataKey => this.columns.find( c => c.dataKey === dataKey ).priorityGroupValues || [] );
+    }
 
     setFiltering( dataKey, value ){
         if( value ){
@@ -27,11 +34,19 @@ class RowsAggregator {
         }
     }
 
+    toggleCompact(){
+        this.compact = !this.compact;
+    }
+
     setSorting( dataKey ){
         if( this.sortDataKey === dataKey ){
             this.sortDirection *= -1;
         }
         this.sortDataKey = dataKey;
+    }
+
+    setGrouping( dataKeysArray ){
+        this.groupKeys = dataKeysArray;
     }
 
     addGrouping( dataKey ){
@@ -63,7 +78,7 @@ class RowsAggregator {
     }
 
     get grouped(){
-        return multiGroupBy( this.filteredIndexes, this.groupKeys, this.getRowData );
+        return multiGroupBy( this.filteredIndexes, this.groupKeys, this.getRowData, this.priorityGroupValuesArray );
     }
 
     get groupedSorted(){
@@ -114,6 +129,7 @@ class RowsAggregator {
 
     constructor(){
         makeAutoObservable( this, {
+            priorityGroupValuesArray: computed({ equals: comparer.structural }),
             groupedSorted: computed({ equals: () => false }),
             groupsSortedIndexes: computed({ equals: () => false }),
             noGroupsSortedIndexes: computed({ equals: () => false }),

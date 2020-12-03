@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import RowsAggregator from "models/RowsAggregator";
 import Table from "../Table";
+import useNormalizedTableColumns from "hooks/useNormalizedTableColumns";
 import cx from "utils/cx";
 import css from "./style.module.scss";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -21,6 +22,7 @@ const HeaderLabel = /*#__PURE__*/ observer(({ m, dataKey, label }) => {
             ref={dragRef}
             className={css.sortableHeader}
             onClick={() => m.setSorting( dataKey )}
+            onDoubleClick={ e => e.ctrlKey && m.toggleCompact()}
             aria-sort={m.sortDataKey === dataKey?(m.sortDirection===1?"ascending":"descending"):undefined}
         >
             {label}
@@ -28,7 +30,7 @@ const HeaderLabel = /*#__PURE__*/ observer(({ m, dataKey, label }) => {
     );
 });
 
-const HeaderInput = /*#__PURE__*/ observer(({ m, dataKey }) => (
+const HeaderInput = /*#__PURE__*/ observer(({ m, dataKey }) => m.compact ? null : (
     <input
         className={css.input}
         value={m.filtersMap.get( dataKey )||""}
@@ -45,7 +47,9 @@ const getCount = rowIndexes => {
     }
     else {
         for( let nested of rowIndexes.values() ){
-            total += getCount( nested );
+            if( nested ){
+                total += getCount( nested );
+            }
         }
     }
 
@@ -65,7 +69,9 @@ const getSum = ( rowIndexes, dataKey, getRowData ) => {
     }
     else {
         for( let nested of rowIndexes.values() ){
-            total += getSum( nested, dataKey, getRowData );
+            if( nested ){
+                total += getSum( nested, dataKey, getRowData );
+            }
         }
     }
 
@@ -94,7 +100,7 @@ const GroupsPanel = /*#__PURE__*/ observer(({ m }) => {
         }
     });
 
-    return (
+    return m.compact ? null : (
         <div className={css.groupsPanel} ref={dropRef}>
             {m.groupKeys.length ? m.groupKeys.map( groupKey => (
                 <div className={css.groupLabel} key={groupKey} onDoubleClick={() => m.removeGrouping( groupKey )}>
@@ -158,7 +164,7 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
     return null;
 });
 
-const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
+const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }) => {
 
     const [ m ] = useState(() => new RowsAggregator());
 
@@ -190,9 +196,21 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
             <HeaderLabel m={m} dataKey={dataKey} label={label} />
             <HeaderInput m={m} dataKey={dataKey} />
         </th>
-    ));  
+    ));
 
-    useEffect(() => m.merge({ rowsQuantity, getRowData }));
+    const normalizedColumns = useNormalizedTableColumns( columns );
+
+    useEffect(() => m.merge({ rowsQuantity, getRowData, columns: normalizedColumns }));
+
+    useEffect(() => {
+        const initialGroupingKeys = normalizedColumns
+            .slice()
+            .sort(( a, b ) => ( a.initialGrouingIndex || 0 ) - ( b.initialGrouingIndex || 0 ) )
+            .filter( col => col.initialGroupingIndex )
+            .map( col => col.dataKey );
+
+        m.setGrouping( initialGroupingKeys );
+    }, []);
 
     const renderFooter = normalizedVisibleColumns => normalizedVisibleColumns.some( col => !!col.totals ) ? (
         <tfoot>
@@ -211,6 +229,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, ...props }) => {
             <div className={cx(css.wrapper,className)}>
                 <GroupsPanel m={m} />
                 <Table
+                    columns={normalizedColumns}
                     rowsQuantity={finalIndexes.length}
                     getRowData={getRowData}
                     renderRow={renderRow}

@@ -8,6 +8,7 @@ import startCase from "utils/startCase";
 
 import Context from "Context";
 import useModel from "hooks/useModel";
+import useNormalizedTableColumns from "hooks/useNormalizedTableColumns";
 
 import VariableHeightsStore from "models/VariableSizeList";
 import FixedHeightsStore from "models/FixedSizeList";
@@ -65,32 +66,29 @@ const Table = ({
         rowsContainerNode
     );
 
-    const normalizedVisibleColumns = useMemo(() => columns.map( column => {
-        const finalColumn = typeof column === "string" ? { dataKey: column } : { ...column };
-
-        if( !finalColumn.label ){
-            finalColumn.label = startCase( finalColumn.dataKey );
-        }
-
-        return finalColumn;
-    }), [ columns ]);  
+    const normalizedVisibleColumns = useNormalizedTableColumns( columns );
+    
+    const finalColumns = useMemo(() => normalizedVisibleColumns.map( column => ({
+        label: startCase( column.dataKey ),
+        ...column
+    })), normalizedVisibleColumns );
         
     return (
         <Context.Provider value={Store}>
             <ScrollContainer className={cx(css.wrapper,className)} {...props}>
                 <table className={css.bodyTable}>
-                    <Colgroup columns={normalizedVisibleColumns} />
+                    <Colgroup columns={finalColumns} />
                     {headless ? null : (
                         <thead>
                             <tr>
-                                {renderHeaderCells(normalizedVisibleColumns)}
+                                {renderHeaderCells(finalColumns)}
                             </tr>
                         </thead>
                     )}
                     <Scroller />
                     <tbody ref={rowsContainerRef}>
                         <Rows
-                            columns={normalizedVisibleColumns}
+                            columns={finalColumns}
                             getRowData={getRowData}
                             renderRow={renderRow}
                             renderCell={renderCell}
@@ -98,7 +96,7 @@ const Table = ({
                             Cell={Cell}
                         />
                     </tbody>
-                    {renderFooter( normalizedVisibleColumns )}
+                    {renderFooter( finalColumns )}
                 </table>
             </ScrollContainer>
         </Context.Provider>

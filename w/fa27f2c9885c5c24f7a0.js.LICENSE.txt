@@ -72,6 +72,8 @@
 
 /* must not be >= 1 */
 
+/* rounding via bitwise hacks like |0 may not work here, because number may be > max(int32) */
+
 /*#__PURE__*/
 
 /***/

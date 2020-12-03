@@ -1,4 +1,4 @@
-const multiGroupBy = ( indexesArray, groupDataKeysList, getRowData ) => {
+const multiGroupBy = ( indexesArray, groupDataKeysList, getRowData, priorityGroupValuesArray ) => {
 
     const lastGroupIndex = groupDataKeysList.length - 1;
 
@@ -30,6 +30,11 @@ const multiGroupBy = ( indexesArray, groupDataKeysList, getRowData ) => {
             tmpInnerObject = innerObject.get( cellValue );
             if( !tmpInnerObject ){
                 tmpInnerObject = new Map();
+                for( let priorityValue of priorityGroupValuesArray[ i ] ){
+                    if( !innerObject.has( priorityValue ) ){
+                        innerObject.set( priorityValue, null );
+                    }
+                }
                 innerObject.set( cellValue, tmpInnerObject );
             }
             innerObject = tmpInnerObject;
@@ -42,6 +47,11 @@ const multiGroupBy = ( indexesArray, groupDataKeysList, getRowData ) => {
             tmpInnerObject.push( rowIndex );
         }
         else {
+            for( let priorityValue of priorityGroupValuesArray[ lastGroupIndex ] ){
+                if( !innerObject.has( priorityValue  ) ){
+                    innerObject.set( priorityValue, null );
+                }
+            }
             innerObject.set( cellValue, [ rowIndex ]);
         }
     }

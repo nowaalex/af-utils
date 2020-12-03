@@ -1,11 +1,6 @@
 import ListBase from "../ListBase";
 
-import {
-    START_INDEX,
-    END_INDEX,
-    ROWS_QUANTITY,
-    WIDGET_SCROLL_HEIGHT,
-} from "constants/events";
+import { ROWS_QUANTITY } from "constants/events";
 
 class FixedSizeList extends ListBase {
 
@@ -26,7 +21,8 @@ class FixedSizeList extends ListBase {
 
 
     getIndex( offset ){
-        return this.rowHeight && Math.floor( offset / this.rowHeight );
+        /* rounding via bitwise hacks like |0 may not work here, because number may be > max(int32) */
+        return this.rowHeight && Math.trunc( offset / this.rowHeight );
     }
 
     getOffset( index ){

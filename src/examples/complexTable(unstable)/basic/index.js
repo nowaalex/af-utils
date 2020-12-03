@@ -34,10 +34,13 @@ const ComplexTable = () => (
             },
             {
                 dataKey: "fixedRange",
-                priorityGroupValues: [ 4, 7, 5 ]
+                initialGroupingIndex: 1,
+                priorityGroupValues: [ 4, 7, 71, 5 ]
             },
             {
                 dataKey: "firstName",
+                initialGroupingIndex: 2,
+                priorityGroupValues: [ "Dennis" ],
                 totals: "count"
             },
             "lastName",
