@@ -31,7 +31,7 @@ class ListBase extends PubSub {
         }
     }
 
-    setWidgetDimensions( height ){
+    setWidgetHeight( height ){
         if( height !== this.widgetHeight ){
             this.widgetHeight = height;
             this.updateEndIndex();

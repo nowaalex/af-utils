@@ -5,6 +5,7 @@ import replace from "@rollup/plugin-replace";
 import postcss from "rollup-plugin-postcss";
 import virtual from "@rollup/plugin-virtual";
 import fileSize from "rollup-plugin-filesize";
+import { terser } from "rollup-plugin-terser";
 
 import * as inlinedConstants from "./src/constants/events";
 
@@ -43,6 +44,13 @@ export default [
                 }
             }),
             babel({ babelHelpers: "runtime" }),
+            terser({
+                format: {
+                    beautify: true,
+                    preserve_annotations: true,
+                    comments: "all"
+                }
+            }),
             commonjs()
         ],
         external: [ "react", "react-dom", "mobx", "mobx-react-lite" ]

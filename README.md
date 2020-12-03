@@ -15,7 +15,7 @@ https://nowaalex.github.io/af-virtual-scroll/w/
 * `scrollToRow(rowIndex)` method is available
 * `useApi` can give any table subcomponent access to global API
 * renders `table`, `tr`, `td`, `th`, so default table styling, border collapsing, etc. can be easily applied
-* about 3KB gzipped size
+* < 3KB gzipped
 
 ### Basic usage
 ```javascript
