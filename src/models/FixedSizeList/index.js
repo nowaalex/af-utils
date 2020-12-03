@@ -1,5 +1,4 @@
 import ListBase from "../ListBase";
-import throttle from "utils/throttle";
 
 import {
     START_INDEX,
