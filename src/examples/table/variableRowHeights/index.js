@@ -21,6 +21,7 @@ const VariableSizeTable = () => {
     const columns = [
         {
             dataKey: "a",
+            label: "a",
             render: ( cellData, rowData, rowIndex ) => (
                 <div style={{
                     color: "#000",
@@ -32,8 +33,8 @@ const VariableSizeTable = () => {
                 </div>
             )
         },
-        "b",
-        "c"
+        { dataKey: "b", label: "b" },
+        { dataKey: "c", label: "c" }
     ];
 
     return (

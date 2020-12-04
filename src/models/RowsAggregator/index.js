@@ -3,7 +3,6 @@ import multiGroupBy from "./utils/multiGroupBy";
 import sortGroups from "./utils/sortGroups";
 import flattenGroups from "./utils/flattenGroups";
 import getSorter from "./utils/getSorter";
-import normalizeTableColumn from "utils/normalizeTableColumn";
 
 class RowsAggregator {
 
@@ -21,16 +20,12 @@ class RowsAggregator {
 
     collapsedGroups = new Set();
 
-    get normalizedColumns(){
-        return this.columns.map( normalizeTableColumn );
-    }
-
     get visibleColumns(){
-        return this.normalizedColumns.filter( col => !this.groupKeys.includes( col.dataKey ) );
+        return this.columns.filter( col => !this.groupKeys.includes( col.dataKey ) );
     }
 
     get priorityGroupValuesArray(){
-        return this.groupKeys.map( dataKey => this.normalizedColumns.find( c => c.dataKey === dataKey ).priorityGroupValues || [] );
+        return this.groupKeys.map( dataKey => this.columns.find( c => c.dataKey === dataKey ).priorityGroupValues || [] );
     }
 
     setFiltering( dataKey, value ){
@@ -137,7 +132,6 @@ class RowsAggregator {
 
     constructor(){
         makeAutoObservable( this, {
-            normalizedColumns: computed({ equals: comparer.structural }),
             visibleColumns: computed({ equals: comparer.structural }),
             priorityGroupValuesArray: computed({ equals: comparer.structural }),
             groupedSorted: computed({ equals: () => false }),

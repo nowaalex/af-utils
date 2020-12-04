@@ -4,11 +4,9 @@ import PropTypes from "prop-types";
 import commonDefaultProps from "../common/defaultProps";
 
 import cx from "utils/cx";
-import startCase from "utils/startCase";
 
 import Context from "Context";
 import useModel from "hooks/useModel";
-import normalizeTableColumn from "utils/normalizeTableColumn";
 
 import VariableHeightsStore from "models/VariableSizeList";
 import FixedHeightsStore from "models/FixedSizeList";
@@ -66,31 +64,23 @@ const Table = ({
         rowsQuantity,
         rowsContainerNode
     );
-    
-    const finalColumns = useMemo(() => columns.map( column => {
-        const col = normalizeTableColumn( column );
-        return {
-            label: startCase( col.dataKey ),
-            ...col
-        };
-    }), [ columns ]);
         
     return (
         <Context.Provider value={Store}>
             <ScrollContainer className={cx(css.wrapper,className)} {...props}>
                 <table className={css.bodyTable}>
-                    <Colgroup columns={finalColumns} />
+                    <Colgroup columns={columns} />
                     {headless ? null : (
                         <thead>
                             <tr>
-                                {renderHeaderCells(finalColumns)}
+                                {renderHeaderCells(columns)}
                             </tr>
                         </thead>
                     )}
                     <Scroller />
                     <tbody ref={rowsContainerRef}>
                         <Rows
-                            columns={finalColumns}
+                            columns={columns}
                             getRowData={getRowData}
                             getRowProps={getRowProps}
                             Row={Row}
@@ -99,7 +89,7 @@ const Table = ({
                             Cell={Cell}
                         />
                     </tbody>
-                    {renderFooter( finalColumns )}
+                    {renderFooter( columns )}
                 </table>
             </ScrollContainer>
         </Context.Provider>

@@ -20,6 +20,7 @@ const ComplexTable = () => (
         columns={[
             {
                 dataKey: "i",
+                label: "i",
                 totals: "sum",
                 render: ( cellData, rowData, rowIndex ) => (
                     <div style={{
@@ -34,17 +35,19 @@ const ComplexTable = () => (
             },
             {
                 dataKey: "fixedRange",
+                label: "FR",
                 initialGroupingIndex: 1,
                 priorityGroupValues: [ 4, 7, 71, 5 ]
             },
             {
                 dataKey: "firstName",
+                label: "first name",
                 initialGroupingIndex: 2,
                 priorityGroupValues: [ "Dennis" ],
                 totals: "count"
             },
-            "lastName",
-            "country"
+            { dataKey: "lastName", label: "last name" },
+            { dataKey: "country", label: "country" }
         ]}
     />
 );
