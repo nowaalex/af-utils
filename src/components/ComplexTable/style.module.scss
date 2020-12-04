@@ -37,6 +37,17 @@
     user-select: none;
 }
 
+.groupToggler {
+    &:before {
+        cursor: pointer;
+        padding-right: 0.3em;
+        content: "\025BE";
+    }
+    &[data-collapsed]:before{
+        content: "\025B8";
+    }
+}
+
 .columnSummaries {
     margin-left: 1em;
     &:before {

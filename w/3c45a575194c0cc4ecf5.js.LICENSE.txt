@@ -1,9 +1,0 @@
-/* .default */
-
-/* harmony export */
-
-/* harmony import */
-
-/*#__PURE__*/
-
-/***/

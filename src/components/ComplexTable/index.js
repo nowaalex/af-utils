@@ -78,14 +78,16 @@ const getSum = ( rowIndexes, dataKey, getRowData ) => {
     return total;
 }
 
-const SummaryCell = /*#__PURE__*/ observer(({ m, type, dataKey, rowIndexes }) => {
+const SummaryCell = /*#__PURE__*/ observer(({ m, column, rowIndexes }) => {
 
-    if( type === "count" ){
+    if( column.totals === "count" ){
         return getCount( rowIndexes );
     }
 
-    if( type === "sum" ){
-        return getSum( rowIndexes, dataKey, m.getRowData )
+    if( column.totals === "sum" ){
+        const sum = getSum( rowIndexes, column.dataKey, m.getRowData );
+        const fn = column.formatTotal || column.format;
+        return fn ? fn( sum ) : sum;
     }
 
     return null;
@@ -125,20 +127,21 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
 
             const lastGroupIndex = groupPath.length - 1;
             const groupKey = m.groupKeys[lastGroupIndex];
-            const groupLabel = columns.find( c => c.dataKey === groupKey ).label;
+            const { getGroupName, label } = columns.find( c => c.dataKey === groupKey );
+            const groupValue = groupPath[lastGroupIndex];
 
             return (
                 <Fragment>
                     <span
+                        className={css.groupToggler}
                         onClick={() => m.toggleCollapsedGroup( idx )}
+                        data-collapsed={isCollapsed?"":undefined}
                         style={{
                             marginLeft: `${(lastGroupIndex)*2}em`
                         }}
-                    >
-                        {isCollapsed ? "+" : "-"}
-                    </span>
+                    />
                     &nbsp;
-                    {groupLabel}:&nbsp;{groupPath[lastGroupIndex]}
+                    {getGroupName?getGroupName(groupValue):label}:&nbsp;{""+groupValue}
                     {columns.length ? (
                         <span className={css.columnSummaries}>
                             {columns.map( col => col.totals ? (
@@ -147,8 +150,7 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
                                     &nbsp;
                                     <SummaryCell
                                         m={m}
-                                        type={col.totals}
-                                        dataKey={col.dataKey}
+                                        column={col}
                                         rowIndexes={getInMap(m.grouped,groupPath)}
                                     />
                                 </span>
@@ -213,9 +215,9 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }
     const renderFooter = normalizedVisibleColumns => normalizedVisibleColumns.some( col => !!col.totals ) ? (
         <tfoot>
             <tr>
-                {normalizedVisibleColumns.map(({ dataKey, totals }) => (
-                    <td key={dataKey}>
-                        <SummaryCell m={m} dataKey={dataKey} type={totals} rowIndexes={m.filteredIndexes} />
+                {normalizedVisibleColumns.map( col => (
+                    <td key={col.dataKey}>
+                        <SummaryCell m={m} column={col} rowIndexes={m.filteredIndexes} />
                     </td>
                 ))}
             </tr>
