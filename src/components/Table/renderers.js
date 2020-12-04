@@ -17,7 +17,7 @@ export const Row = ({ index, columns, getRowData, getRowProps, renderCell, Cell 
 
 export const renderRow = RowProps => <RowProps.Row key={RowProps.index} {...RowProps} />
 
-export const renderCell = ( rowData, rowIndex, column, Cell ) => (
+export const renderCell = ( rowData, rowIndex, column, Cell ) => rowData ? (
     <td key={column.dataKey}>
         <Cell
             rowData={rowData}
@@ -25,7 +25,7 @@ export const renderCell = ( rowData, rowIndex, column, Cell ) => (
             column={column}
         />
     </td>
-);
+) : null;
 
 export const renderHeaderCells = columns => columns.map( column => (
     <th key={column.dataKey}>
@@ -38,7 +38,7 @@ export const renderFooter = normalizedVisibleColumns => null;
 export const Cell = ({ rowData, rowIndex, column }) => {
     const { render, getEmptyCellData, dataKey, format } = column;
 
-    let cellData = rowData && rowData[ dataKey ];
+    let cellData = rowData[ dataKey ];
     
     if( cellData === undefined || cellData === "" ){
         cellData = getEmptyCellData ? getEmptyCellData( rowIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;

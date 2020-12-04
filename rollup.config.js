@@ -44,13 +44,6 @@ export default [
                 }
             }),
             babel({ babelHelpers: "runtime" }),
-            terser({
-                format: {
-                    beautify: true,
-                    preserve_annotations: true,
-                    comments: "all"
-                }
-            }),
             commonjs()
         ],
         external: [ "react", "react-dom", "mobx", "mobx-react-lite" ]
@@ -71,6 +64,7 @@ export default [
             replace({
                 "process.env.NODE_ENV": JSON.stringify( "production" )
             }),
+            terser(),
             fileSize()
         ],
         output: {
