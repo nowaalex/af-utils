@@ -4,14 +4,22 @@ import { START_INDEX, END_INDEX } from "constants/events";
 
 const E = [ START_INDEX, END_INDEX ];
 
-const Rows = ({ columns, renderRow, getRowData, renderCell, CellsList, Cell }) => useSubscription( API => {
+const Rows = ({ columns, renderRow, Row, getRowData, getRowProps, renderCell, Cell }) => useSubscription( API => {
 
     const { startIndex, endIndex } = API;
 
     const result = [];
 
     for( let i = startIndex; i < endIndex; i++ ){
-        result.push( renderRow( i, columns, getRowData, renderCell, CellsList, Cell ) );
+        result.push(renderRow({
+            index: i,
+            columns,
+            getRowData,
+            getRowProps,
+            renderCell,
+            Cell,
+            Row
+        }));
     }
 
     return result;

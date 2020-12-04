@@ -20,8 +20,8 @@ const props = [
     },
     {
         span: 6,
-        name: "renderRow",
-        type: "function",
+        name: "Row",
+        type: "React element",
         description: "See renderers implementation"
     },
     {
@@ -40,14 +40,19 @@ const props = [
         description: null
     },
     {
-        name: "CellsList",
+        name: "Cell",
         type: "elementType",
         description: null
     },
     {
-        name: "Cell",
-        type: "elementType",
+        name: "renderRow",
+        type: "function",
         description: null
+    },
+    {
+        name: "getRowProps",
+        type: "function",
+        description: "returns object of tr props or undefined. This callback is executed every Row rerender, so hooks also can be called inside."
     },
     {
         name: "headless",

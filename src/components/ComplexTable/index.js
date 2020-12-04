@@ -170,24 +170,22 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }
 
     const { finalIndexes } = m;
 
-    const renderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => {
-        const realRowIndex = finalIndexes[ rowIndex ];
-        return (
-            <tr key={realRowIndex}>
-                {realRowIndex < 0 ? (
-                    <td colSpan={columns.length}>
-                        <GroupCell m={m} idx={realRowIndex} columns={columns} />
-                    </td>
-                ) : (
-                    <CellsList
-                        rowIndex={realRowIndex}
-                        columns={columns}
-                        getRowData={getRowData}
-                        renderCell={renderCell}
-                        Cell={Cell}
-                    />
-                )}
+    const renderRow = RowProps => {
+
+        const realRowIndex = finalIndexes[ RowProps.index ];
+
+        return realRowIndex < 0 ? (
+            <tr key={RowProps.index}>
+                <td colSpan={RowProps.columns.length}>
+                    <GroupCell m={m} idx={realRowIndex} columns={RowProps.columns} />
+                </td>
             </tr>
+        ) : (
+            <RowProps.Row
+                {...RowProps}
+                key={RowProps.index}
+                index={realRowIndex}
+            />
         );
     }
 

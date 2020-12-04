@@ -21,10 +21,10 @@ import Colgroup from "./Colgroup";
 
 import {
     renderRow,
+    Row,
     renderCell,
     renderHeaderCells,
     renderFooter,
-    CellsList,
     Cell
 } from "./renderers";
 
@@ -41,11 +41,12 @@ const Table = ({
     estimatedRowHeight,
     columns,
     getRowData,
+    getRowProps,
     renderRow,
+    Row,
     renderCell,
     renderHeaderCells,
     renderFooter,
-    CellsList,
     Cell,
     rowsQuantity,
     overscanRowsCount,
@@ -90,9 +91,10 @@ const Table = ({
                         <Rows
                             columns={finalColumns}
                             getRowData={getRowData}
+                            getRowProps={getRowProps}
+                            Row={Row}
                             renderRow={renderRow}
                             renderCell={renderCell}
-                            CellsList={CellsList}
                             Cell={Cell}
                         />
                     </tbody>
@@ -135,21 +137,11 @@ Table.propTypes = {
     ).isRequired,
 
     getRowData: PropTypes.func.isRequired,
-
-    /**
-     * @param {number} rowIndex
-     * @param {array} columns
-     * @param {function} getRowData
-     * @param {function} renderCell
-     * @param {React.Component} CellsList
-     * @param {React.Component} Cell
-     * @returns {any} one row element child. Fragments are not supported.
-     */
-    renderRow: PropTypes.func,
+    getRowProps: PropTypes.func,
     renderFooter: PropTypes.func,
     renderCell: PropTypes.func,
     renderHeaderCells: PropTypes.func,
-    CellsList: PropTypes.elementType,
+    Row: PropTypes.elementType,
     Cell: PropTypes.elementType,
 
     headless: PropTypes.bool,
@@ -163,10 +155,10 @@ Table.defaultProps = /*#__PURE__*/ Object.assign({}, commonDefaultProps, {
     headless: false,
 
     renderRow,
+    Row,
     renderCell,
     renderHeaderCells,
     renderFooter,
-    CellsList,
     Cell
 });
 

@@ -4,17 +4,18 @@
 */
 const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
 
-export const renderRow = ( rowIndex, columns, getRowData, renderCell, CellsList, Cell ) => (
-    <tr key={rowIndex}>
-        <CellsList
-            rowIndex={rowIndex}
-            columns={columns}
-            getRowData={getRowData}
-            renderCell={renderCell}
-            Cell={Cell}
-        />
-    </tr>
-);
+export const Row = ({ index, columns, getRowData, getRowProps, renderCell, Cell }) => {
+
+    const rowData = getRowData( index );
+
+    return (
+        <tr {...(getRowProps&&getRowProps(rowData,index))}>
+            {columns.map( column => renderCell( rowData, index, column, Cell ))}
+        </tr>
+    );
+}
+
+export const renderRow = RowProps => <RowProps.Row key={RowProps.index} {...RowProps} />
 
 export const renderCell = ( rowData, rowIndex, column, Cell ) => (
     <td key={column.dataKey}>
@@ -33,11 +34,6 @@ export const renderHeaderCells = columns => columns.map( column => (
 ));
 
 export const renderFooter = normalizedVisibleColumns => null;
-
-export const CellsList = ({ rowIndex, columns, getRowData, renderCell, Cell }) => {
-    const rowData = getRowData( rowIndex );
-    return columns.map( column => renderCell( rowData, rowIndex, column, Cell ));
-}
 
 export const Cell = ({ rowData, rowIndex, column }) => {
     const { render, getEmptyCellData, dataKey, format } = column;
