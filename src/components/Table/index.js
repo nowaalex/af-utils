@@ -8,7 +8,7 @@ import startCase from "utils/startCase";
 
 import Context from "Context";
 import useModel from "hooks/useModel";
-import useNormalizedTableColumns from "hooks/useNormalizedTableColumns";
+import normalizeTableColumn from "utils/normalizeTableColumn";
 
 import VariableHeightsStore from "models/VariableSizeList";
 import FixedHeightsStore from "models/FixedSizeList";
@@ -66,13 +66,14 @@ const Table = ({
         rowsQuantity,
         rowsContainerNode
     );
-
-    const normalizedVisibleColumns = useNormalizedTableColumns( columns );
     
-    const finalColumns = useMemo(() => normalizedVisibleColumns.map( column => ({
-        label: startCase( column.dataKey ),
-        ...column
-    })), normalizedVisibleColumns );
+    const finalColumns = useMemo(() => columns.map( column => {
+        const col = normalizeTableColumn( column );
+        return {
+            label: startCase( col.dataKey ),
+            ...col
+        };
+    }), [ columns ]);
         
     return (
         <Context.Provider value={Store}>
@@ -124,7 +125,6 @@ Table.propTypes = {
                 render: PropTypes.func,
                 formatTotal: PropTypes.func,
                 totals: PropTypes.string,
-                visibility: PropTypes.oneOf([ "visible", "hidden" ]),
 
                 // column props, affecting colgroup > col tags
                 background: PropTypes.string,

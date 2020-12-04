@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import RowsAggregator from "models/RowsAggregator";
 import Table from "../Table";
-import useNormalizedTableColumns from "hooks/useNormalizedTableColumns";
 import cx from "utils/cx";
 import css from "./style.module.scss";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -127,7 +126,8 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
 
             const lastGroupIndex = groupPath.length - 1;
             const groupKey = m.groupKeys[lastGroupIndex];
-            const { getGroupName, label } = columns.find( c => c.dataKey === groupKey );
+            /* hidden columns also must be included */
+            const { getGroupName, label } = m.normalizedColumns.find( c => c.dataKey === groupKey );
             const groupValue = groupPath[lastGroupIndex];
 
             return (
@@ -198,12 +198,10 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }
         </th>
     ));
 
-    const normalizedColumns = useNormalizedTableColumns( columns );
-
-    useEffect(() => m.merge({ rowsQuantity, getRowData, columns: normalizedColumns }));
+    useEffect(() => m.merge({ rowsQuantity, getRowData, columns }));
 
     useEffect(() => {
-        const initialGroupingKeys = normalizedColumns
+        const initialGroupingKeys = m.visibleColumns
             .slice()
             .sort(( a, b ) => ( a.initialGrouingIndex || 0 ) - ( b.initialGrouingIndex || 0 ) )
             .filter( col => col.initialGroupingIndex )
@@ -229,7 +227,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }
             <div className={cx(css.wrapper,className)}>
                 <GroupsPanel m={m} />
                 <Table
-                    columns={normalizedColumns}
+                    columns={m.visibleColumns}
                     rowsQuantity={finalIndexes.length}
                     getRowData={getRowData}
                     renderRow={renderRow}
