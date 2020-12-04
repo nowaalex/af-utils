@@ -127,7 +127,7 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
             const lastGroupIndex = groupPath.length - 1;
             const groupKey = m.groupKeys[lastGroupIndex];
             /* hidden columns also must be included */
-            const { getGroupName, label } = m.normalizedColumns.find( c => c.dataKey === groupKey );
+            const { getGroupName, label } = m.columns.find( c => c.dataKey === groupKey );
             const groupValue = groupPath[lastGroupIndex];
 
             return (
