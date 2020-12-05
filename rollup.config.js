@@ -36,7 +36,6 @@ export default [
             }),
             postcss({
                 extract: "style.css",
-                minimize: true,
                 use: [ "sass" ],
                 extensions: [ ".scss", ".css" ],
                 modules: {

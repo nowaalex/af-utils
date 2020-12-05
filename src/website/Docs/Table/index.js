@@ -19,15 +19,10 @@ const props = [
         required: true,
     },
     {
-        span: 6,
+        span: 5,
         name: "Row",
         type: "React element",
         description: "See renderers implementation"
-    },
-    {
-        name: "renderCell",
-        type: "function",
-        description: null
     },
     {
         name: "renderHeaderCells",

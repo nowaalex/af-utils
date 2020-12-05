@@ -20,7 +20,6 @@ import Colgroup from "./Colgroup";
 import {
     renderRow,
     Row,
-    renderCell,
     renderHeaderCells,
     renderFooter,
     Cell
@@ -42,7 +41,6 @@ const Table = ({
     getRowProps,
     renderRow,
     Row,
-    renderCell,
     renderHeaderCells,
     renderFooter,
     Cell,
@@ -85,7 +83,6 @@ const Table = ({
                             getRowProps={getRowProps}
                             Row={Row}
                             renderRow={renderRow}
-                            renderCell={renderCell}
                             Cell={Cell}
                         />
                     </tbody>
@@ -110,7 +107,6 @@ Table.propTypes = {
                 dataKey: PropTypes.string.isRequired,
 
                 // for details see CellComponent implementation
-                getEmptyCellData: PropTypes.func,
                 format: PropTypes.func,
                 render: PropTypes.func,
                 formatTotal: PropTypes.func,
@@ -129,7 +125,6 @@ Table.propTypes = {
     getRowData: PropTypes.func.isRequired,
     getRowProps: PropTypes.func,
     renderFooter: PropTypes.func,
-    renderCell: PropTypes.func,
     renderHeaderCells: PropTypes.func,
     Row: PropTypes.elementType,
     Cell: PropTypes.elementType,
@@ -146,7 +141,6 @@ Table.defaultProps = /*#__PURE__*/ Object.assign({}, commonDefaultProps, {
 
     renderRow,
     Row,
-    renderCell,
     renderHeaderCells,
     renderFooter,
     Cell

@@ -4,28 +4,26 @@
 */
 const DEFAULT_EMPTY_CELL_CONTENT = "\u00A0";
 
-export const Row = ({ index, columns, getRowData, getRowProps, renderCell, Cell }) => {
+export const Row = ({ index, columns, getRowData, getRowProps, Cell }) => {
 
     const rowData = getRowData( index );
 
     return (
         <tr {...(getRowProps&&getRowProps(rowData,index))}>
-            {columns.map( column => renderCell( rowData, index, column, Cell ))}
+            {rowData ? columns.map( column => (
+                <td key={column.dataKey}>
+                    <Cell rowData={rowData} column={column} />
+                </td>
+            )) : (
+                <td colSpan={columns.length}>
+                    {DEFAULT_EMPTY_CELL_CONTENT}
+                </td>
+            )}
         </tr>
     );
 }
 
 export const renderRow = RowProps => <RowProps.Row key={RowProps.index} {...RowProps} />
-
-export const renderCell = ( rowData, rowIndex, column, Cell ) => rowData ? (
-    <td key={column.dataKey}>
-        <Cell
-            rowData={rowData}
-            rowIndex={rowIndex}
-            column={column}
-        />
-    </td>
-) : null;
 
 export const renderHeaderCells = columns => columns.map( column => (
     <th key={column.dataKey}>
@@ -35,21 +33,21 @@ export const renderHeaderCells = columns => columns.map( column => (
 
 export const renderFooter = normalizedVisibleColumns => null;
 
-export const Cell = ({ rowData, rowIndex, column }) => {
-    const { render, getEmptyCellData, dataKey, format } = column;
+export const Cell = ({ rowData, column }) => {
+    const { render, dataKey, format } = column;
 
     let cellData = rowData[ dataKey ];
     
-    if( cellData === undefined || cellData === "" ){
-        cellData = getEmptyCellData ? getEmptyCellData( rowIndex, column ) : DEFAULT_EMPTY_CELL_CONTENT;
+    if( cellData === undefined ){
+        return DEFAULT_EMPTY_CELL_CONTENT;
     }
-    else{
-        if( format ){
-            cellData = format( cellData, rowData );
-        }
-        if( render ){
-            cellData = render( cellData, rowData, rowIndex, column );
-        }
+
+    if( render ){
+        return render( cellData, rowData );
+    }
+
+    if( format ){
+        return format( cellData );
     }
 
     return cellData;

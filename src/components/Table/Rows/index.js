@@ -4,7 +4,7 @@ import { START_INDEX, END_INDEX } from "constants/events";
 
 const E = [ START_INDEX, END_INDEX ];
 
-const Rows = ({ columns, renderRow, Row, getRowData, getRowProps, renderCell, Cell }) => useSubscription( API => {
+const Rows = ({ columns, renderRow, Row, getRowData, getRowProps, Cell }) => useSubscription( API => {
 
     const { startIndex, endIndex } = API;
 
@@ -16,7 +16,6 @@ const Rows = ({ columns, renderRow, Row, getRowData, getRowProps, renderCell, Ce
             columns,
             getRowData,
             getRowProps,
-            renderCell,
             Cell,
             Row
         }));
