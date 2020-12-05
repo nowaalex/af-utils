@@ -9,7 +9,7 @@ import { useDrag, useDrop, DndProvider } from "react-dnd";
 
 const HEADER_DND_TYPE = "h";
 
-const HeaderLabel = /*#__PURE__*/ observer(({ m, dataKey, label }) => {
+const HeaderLabel = /*#__PURE__*/ observer(({ m, dataKey, label, i }) => {
 
     const [ collectedProps, dragRef ] = useDrag({ item: {
         type: HEADER_DND_TYPE,
@@ -21,9 +21,9 @@ const HeaderLabel = /*#__PURE__*/ observer(({ m, dataKey, label }) => {
             ref={dragRef}
             className={css.sortableHeader}
             onClick={() => m.setSorting( dataKey )}
-            onDoubleClick={ e => e.ctrlKey && m.toggleCompact()}
             aria-sort={m.sortDataKey === dataKey?(m.sortDirection===1?"ascending":"descending"):undefined}
         >
+            {i === 0 ? <span data-collapsed={m.compact?"":undefined} onClick={() => m.toggleCompact()} className={css.compactToggler} /> : null}
             {label}
         </div>
     );
@@ -105,7 +105,7 @@ const GroupsPanel = /*#__PURE__*/ observer(({ m }) => {
         <div className={css.groupsPanel} ref={dropRef}>
             {m.groupKeys.length ? m.groupKeys.map( groupKey => (
                 <div className={css.groupLabel} key={groupKey} onDoubleClick={() => m.removeGrouping( groupKey )}>
-                    {groupKey}
+                    {m.columns.find( col => col.dataKey === groupKey ).label }
                 </div>
             )) : "Drag column headers here to group by column" }
         </div>
@@ -191,9 +191,9 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }
         );
     }
 
-    const renderHeaderCells = columns => columns.map(({ dataKey, label }) => (
+    const renderHeaderCells = columns => columns.map(({ dataKey, label }, i ) => (
         <th key={dataKey}>
-            <HeaderLabel m={m} dataKey={dataKey} label={label} />
+            <HeaderLabel m={m} dataKey={dataKey} label={label} i={i} />
             <HeaderInput m={m} dataKey={dataKey} />
         </th>
     ));

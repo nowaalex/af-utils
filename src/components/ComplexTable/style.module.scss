@@ -4,9 +4,13 @@
     flex: 1 1 auto;
 }
 
+.noUserSelect {
+    user-select: none;
+}
+
 .sortableHeader {
     cursor: pointer;
-    user-select: none;
+    composes: noUserSelect;
 
     &[aria-sort="ascending"]::after{
         content: " ↑";
@@ -33,11 +37,26 @@
 }
 
 .groupLabel {
+    composes: noUserSelect;
     margin: 0 1em;
-    user-select: none;
+}
+
+.compactToggler {
+    composes: noUserSelect;
+    font-size: 1.2em;
+    font-weight: 100;
+    &:before {
+        cursor: pointer;
+        padding-right: 0.3em;
+        content: "\02296";
+    }
+    &[data-collapsed]:before {
+        content: "\02295";
+    }
 }
 
 .groupToggler {
+    composes: noUserSelect;
     &:before {
         cursor: pointer;
         padding-right: 0.3em;
