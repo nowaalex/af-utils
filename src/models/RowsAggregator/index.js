@@ -100,6 +100,9 @@ class RowsAggregator {
         if( this.filtersMap.size ){
             const filteredIndexesArray = orderedIndexes.filter( idx => {
                 const row = this.getRowData( idx );
+                if( !row ){
+                    return false;
+                }
                 for( let [ dataKey, value ] of filtersMap ){
                     if( !( "" + row[ dataKey ] ).toLowerCase().includes( value ) ){
                         return false;

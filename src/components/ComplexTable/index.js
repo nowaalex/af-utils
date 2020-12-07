@@ -63,7 +63,9 @@ const getSum = ( rowIndexes, dataKey, getRowData ) => {
         let row;
         for( let j of rowIndexes ){
             row = getRowData( j );
-            total += row[ dataKey ];
+            if( row ){
+                total += row[ dataKey ];
+            }
         }
     }
     else {
