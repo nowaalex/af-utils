@@ -18,6 +18,10 @@ const multiGroupBy = ( indexesArray, groupDataKeysList, getRowData, priorityGrou
         */
         const row = getRowData( rowIndex );
 
+        if( !row ){
+            continue;
+        }
+
         let innerObject = groupsMap,
             tmpInnerObject,
             cellValue;
