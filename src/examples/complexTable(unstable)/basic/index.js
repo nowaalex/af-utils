@@ -22,12 +22,12 @@ const ComplexTable = () => (
                 dataKey: "i",
                 label: "i",
                 totals: "sum",
-                render: ( cellData, rowData, rowIndex ) => (
+                render: cellData => (
                     <div style={{
                         color: "#000",
                         textAlign: "center",
-                        lineHeight: `${getPureRandomLineHeight(rowIndex)}px`,
-                        background: `hsl(${rowIndex*11%360},60%,60%)`
+                        lineHeight: `${getPureRandomLineHeight(cellData)}px`,
+                        background: `hsl(${cellData*11%360},60%,60%)`
                     }}>
                         {cellData}
                     </div>

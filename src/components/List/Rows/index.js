@@ -17,7 +17,7 @@ const Rows = ({ dataRef, renderRow }) => useSubscription( API => {
         <div ref={dataRef} style={{ transform: `translateY(${virtualTopOffset}px)` }}>
             {result}
         </div>
-    )
+    );
 }, E );
 
 export default memo( Rows );
