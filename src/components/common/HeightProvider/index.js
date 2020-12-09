@@ -4,10 +4,9 @@ import { WIDGET_SCROLL_HEIGHT } from "constants/events";
 
 const E = [ WIDGET_SCROLL_HEIGHT ];
 
-const HeightProvider = ({ children }) => useSubscription( API => (
+const HeightProvider = () => useSubscription( API => (
     <div
         className={css.wrapper}
-        children={children}
         style={{ height: API.widgetScrollHeight }}
     />
 ), E );

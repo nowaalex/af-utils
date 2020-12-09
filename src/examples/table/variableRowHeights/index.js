@@ -22,12 +22,12 @@ const VariableSizeTable = () => {
         {
             dataKey: "a",
             label: "a",
-            render: ( cellData, rowData, rowIndex ) => (
+            render: ( cellData ) => (
                 <div style={{
                     color: "#000",
                     textAlign: "center",
-                    lineHeight: `${dynamicListRowHeights[rowIndex]}px`,
-                    background: `hsl(${rowIndex*11%360},60%,60%)`
+                    lineHeight: `${dynamicListRowHeights[cellData]}px`,
+                    background: `hsl(${cellData*11%360},60%,60%)`
                 }}>
                     {cellData}
                 </div>
@@ -39,7 +39,7 @@ const VariableSizeTable = () => {
 
     return (
         <StyledTable
-            getRowData={i => ({ a: `cell_a_${i}`, b: `cell_b_${i}`, c: `cell_c_${i}` })}
+            getRowData={i => ({ a: i, b: `cell_b_${i}`, c: `cell_c_${i}` })}
             columns={columns}
             estimatedRowHeight={150}
             overscanRowsCount={5}

@@ -36,9 +36,8 @@ const ScrollContainer = ({ className, children, ...props }) => {
             ref={ref}
             onScroll={e => API.setScrollTop( e.target.scrollTop )}
         >
-            <HeightProvider>
-                {children}
-            </HeightProvider>
+            <HeightProvider />
+            {children}
         </div>
     );
 };
