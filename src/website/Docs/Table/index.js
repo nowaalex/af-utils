@@ -30,7 +30,7 @@ const props = [
         description: null
     },
     {
-        name: "renderFooter",
+        name: "renderTfootContent",
         type: "function",
         description: null
     },

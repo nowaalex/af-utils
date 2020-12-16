@@ -58,7 +58,7 @@
 
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 
-// EXTERNAL MODULE: ./src/components/Table/index.js + 6 modules
+// EXTERNAL MODULE: ./src/components/Table/index.js + 7 modules
 
 // EXTERNAL MODULE: ./src/utils/cx/index.js
 

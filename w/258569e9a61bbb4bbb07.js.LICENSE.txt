@@ -25,7 +25,7 @@
 
 // CONCATENATED MODULE: ./src/components/Table/Scroller/index.js
 
-// CONCATENATED MODULE: ./src/components/Table/Scroller/style.module.scss
+// CONCATENATED MODULE: ./src/components/common/ExtraHeight/index.js
 
 // EXPORTS
 
@@ -36,5 +36,3 @@
 // EXTERNAL MODULE: ./src/constants/events.js
 
 // EXTERNAL MODULE: ./src/hooks/useSubscription/index.js + 1 modules
-
-// extracted by mini-css-extract-plugin

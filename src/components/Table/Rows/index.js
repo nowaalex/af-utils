@@ -4,6 +4,7 @@ import { START_INDEX, END_INDEX } from "constants/events";
 
 const E = [ START_INDEX, END_INDEX ];
 
+/* can't use transform translate because of fucking borders */
 const Rows = ({ columns, renderRow, Row, getRowData, getRowProps, Cell }) => useSubscription( API => {
 
     const { startIndex, endIndex } = API;

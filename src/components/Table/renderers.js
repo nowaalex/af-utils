@@ -31,8 +31,6 @@ export const renderHeaderCells = columns => columns.map( column => (
     </th>
 ));
 
-export const renderFooter = normalizedVisibleColumns => null;
-
 export const Cell = ({ rowData, column }) => {
     const { render, dataKey, format } = column;
 

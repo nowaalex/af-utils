@@ -21,10 +21,17 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
+td {
     padding: 0.5em;
 }
 
+
 table, td, th {
     border: 1px solid #c5c5c5;
+}
+
+thead th, tfoot td {
+    border-style: none;
+    padding: 2em;
+    background: #5b5f7d;
 }

@@ -1,4 +1,4 @@
-import { memo, useState, useMemo } from "react";
+import { memo, useState } from "react";
 import PropTypes from "prop-types";
 
 import commonDefaultProps from "../common/defaultProps";
@@ -12,6 +12,7 @@ import VariableHeightsStore from "models/VariableSizeList";
 import FixedHeightsStore from "models/FixedSizeList";
 
 import ScrollContainer from "../common/ScrollContainer";
+import ExtraHeight from "../common/ExtraHeight";
 
 import Scroller from "./Scroller";
 import Rows from "./Rows";
@@ -21,7 +22,6 @@ import {
     renderRow,
     Row,
     renderHeaderCells,
-    renderFooter,
     Cell
 } from "./renderers";
 
@@ -29,7 +29,6 @@ import css from "./style.module.scss";
 
 /*
     Todo:
-        * measure thead & tfoot heights in order to properly calculate available space for rows
         * think about border-collapse offsetHeight issue ( maybe throw border-collapse )
 */
 
@@ -42,7 +41,7 @@ const Table = ({
     renderRow,
     Row,
     renderHeaderCells,
-    renderFooter,
+    renderTfootContent,
     Cell,
     rowsQuantity,
     overscanRowsCount,
@@ -69,11 +68,13 @@ const Table = ({
                 <table className={css.bodyTable}>
                     <Colgroup columns={columns} />
                     {headless ? null : (
-                        <thead>
-                            <tr>
-                                {renderHeaderCells(columns)}
-                            </tr>
-                        </thead>
+                        <ExtraHeight>
+                            <thead>
+                                <tr>
+                                    {renderHeaderCells(columns)}
+                                </tr>
+                            </thead>
+                        </ExtraHeight>
                     )}
                     <Scroller />
                     <tbody ref={rowsContainerRef}>
@@ -86,7 +87,13 @@ const Table = ({
                             Cell={Cell}
                         />
                     </tbody>
-                    {renderFooter( columns )}
+                    {renderTfootContent ? (
+                        <ExtraHeight>
+                            <tfoot>
+                                {renderTfootContent( columns )}
+                            </tfoot>
+                        </ExtraHeight>
+                    ) : null}
                 </table>
             </ScrollContainer>
         </Context.Provider>
@@ -124,7 +131,7 @@ Table.propTypes = {
 
     getRowData: PropTypes.func.isRequired,
     getRowProps: PropTypes.func,
-    renderFooter: PropTypes.func,
+    renderTfootContent: PropTypes.func,
     renderHeaderCells: PropTypes.func,
     Row: PropTypes.elementType,
     Cell: PropTypes.elementType,
@@ -142,7 +149,6 @@ Table.defaultProps = /*#__PURE__*/ Object.assign({}, commonDefaultProps, {
     renderRow,
     Row,
     renderHeaderCells,
-    renderFooter,
     Cell
 });
 

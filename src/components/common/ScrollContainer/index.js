@@ -30,7 +30,6 @@ const ScrollContainer = ({ className, children, ...props }) => {
     return (
         <div
             {...props}
-            ref={ref}
             tabIndex="0"
             className={cx(css.wrapper,className)}
             ref={ref}

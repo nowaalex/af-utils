@@ -6,17 +6,26 @@ import {
     END_INDEX,
     ROWS_QUANTITY,
     WIDGET_SCROLL_HEIGHT,
+    WIDGET_EXTRA_STICKY_HEIGHT
 } from "constants/events";
 
 class ListBase extends PubSub {
 
     /* Provided from renderer */
     scrollTop = 0;
+
     rowsQuantity = 0;
+
     /* must not be >= 1 */
     overscanRowsCount = 2;
+
     widgetHeight = 0;
+
+    /* sticky elements ( for example table header/footer ) must influence ONLY on widgetScrollHeight */
+    extraStickyHeight = 0;
+
     estimatedRowHeight = 0;
+
     rowsContainerNode = null;
     scrollContainerNode = null;
 
@@ -38,6 +47,13 @@ class ListBase extends PubSub {
         }
 
         this.measureRowsThrottled();
+    }
+
+    updateExtraStickyHeight( delta ){
+        if( delta ){
+            this.extraStickyHeight += delta;
+            this.emit( WIDGET_EXTRA_STICKY_HEIGHT );
+        }
     }
 
     updateEndIndex(){

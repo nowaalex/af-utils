@@ -20,7 +20,7 @@ const commonProps = [
         description: (
                 <Fragment>
                 <p>
-                    <strong>true</strong> - you guarantee, that all children have same height and is determined by first rendered child.
+                    <strong>true</strong> - you guarantee, that all children(except sticky ones) have same height and is determined by first rendered child.
                 </p>
                 <p>
                     <strong>false</strong> - special cache is created, which allows rows to have different height.

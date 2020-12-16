@@ -216,16 +216,14 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }
         m.setGrouping( initialGroupingKeys );
     }, []);
 
-    const renderFooter = normalizedVisibleColumns => normalizedVisibleColumns.some( col => !!col.totals ) ? (
-        <tfoot>
-            <tr>
-                {normalizedVisibleColumns.map( col => (
-                    <td key={col.dataKey}>
-                        <SummaryCell m={m} column={col} rowIndexes={m.filteredIndexes} />
-                    </td>
-                ))}
-            </tr>
-        </tfoot>
+    const renderTfootContent = normalizedVisibleColumns => normalizedVisibleColumns.some( col => !!col.totals ) ? (
+        <tr>
+            {normalizedVisibleColumns.map( col => (
+                <td key={col.dataKey}>
+                    <SummaryCell m={m} column={col} rowIndexes={m.filteredIndexes} />
+                </td>
+            ))}
+        </tr>
     ) : null;
 
     return (
@@ -238,7 +236,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }
                     getRowData={getRowData}
                     renderRow={renderRow}
                     renderHeaderCells={renderHeaderCells}
-                    renderFooter={renderFooter}
+                    renderTfootContent={renderTfootContent}
                     {...props}
                 />
             </div>
