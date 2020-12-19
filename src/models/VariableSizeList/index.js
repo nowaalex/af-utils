@@ -102,14 +102,9 @@ class VariableSizeList extends ListBase {
         return result;
     }
 
-    /*
-        i starts from 1 here;
-
-        TODO:
-            * we can put < this.rowsQuantity here, but in this case grow must be optimized
-    */
-    updateRowHeight( i, delta ){
-        for ( ; i < this.fTree.length; i += i & -i ){
+    /* i starts from 1 here; */
+    updateRowHeight( i, delta, limitTreeLiftingIndex ){
+        for ( ; i < limitTreeLiftingIndex; i += i & -i ){
             this.fTree[ i ] += delta;
         }
     }
@@ -121,27 +116,26 @@ class VariableSizeList extends ListBase {
 
             let index = this.startIndex,
                 diff,
-                cacheChanged = false;
+                buff = 0;
+            
+            /* We can batch-update fenwick tree, if we know, that all indexes are updated in +1 - order. */
+            const lim = Math.min( this.fTree.length, 1 << 32 - Math.clz32( this.endIndex - 1 ) );
 
             for( let child of node.children ){
      
                 diff = child.offsetHeight - this.rowHeights[ index ];
 
                 if( diff ){
-                    cacheChanged = true;
                     this.rowHeights[ index ] += diff;
-
-                    /*
-                        TODO:
-                            maybe buffer these updates somehow?
-                    */
-                    this.updateRowHeight( index + 1, diff );                  
+                    buff += diff;
+                    this.updateRowHeight( index + 1, diff, lim );                  
                 }
                 
                 index++;
             }
 
-            if( cacheChanged ){
+            if( buff ){
+                this.updateRowHeight( lim, buff, this.fTree.length );
                 this.remeasure();
             }
         }

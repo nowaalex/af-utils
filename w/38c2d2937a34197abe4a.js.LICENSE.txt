@@ -1,18 +1,7 @@
 /*
-              TODO:
-                  maybe buffer these updates somehow?
-          */
-
-/*
         Somebody tried to rerender, while we were in batch.
         On batch finish component definitely must be rerendered.
     */
-
-/*
-      i starts from 1 here;
-       TODO:
-          * we can put < this.rowsQuantity here, but in this case grow must be optimized
-  */
 
 /*
       most significant bit of this.rowsQuantity;
@@ -56,6 +45,8 @@
 
 /* WIDGET_SCROLL_HEIGHT */
 
+/* We can batch-update fenwick tree, if we know, that all indexes are updated in +1 - order. */
+
 /* binding */
 
 /* default */
@@ -65,6 +56,8 @@
 /* harmony export */
 
 /* harmony import */
+
+/* i starts from 1 here; */
 
 /* inspired by mobx */
 

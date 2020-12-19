@@ -1,4 +1,4 @@
-import { useRef, memo, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import cx from "utils/cx";
 import useApi from "hooks/useApi";
 import HeightProvider from "../HeightProvider";
@@ -41,4 +41,4 @@ const ScrollContainer = ({ className, children, ...props }) => {
     );
 };
 
-export default memo( ScrollContainer );
+export default ScrollContainer;
