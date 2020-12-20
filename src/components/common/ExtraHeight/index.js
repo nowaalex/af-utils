@@ -1,4 +1,5 @@
 import { useState, cloneElement, useEffect } from "react";
+import { observe, unobserve } from "utils/heightObserver";
 import useApi from "hooks/useApi";
 
 const ExtraStickyHeight = ({ children }) => {
@@ -10,16 +11,13 @@ const ExtraStickyHeight = ({ children }) => {
         if( el ){
             let prevHeight = 0;
 
-            const R = new ResizeObserver( entries => {
-                const roundedHeight = Math.round( entries[ 0 ].contentRect.height );
-                API.updateExtraStickyHeight( roundedHeight - prevHeight );
-                prevHeight = roundedHeight;
+            observe( el, height => {
+                API.updateExtraStickyHeight( height - prevHeight );
+                prevHeight = height;
             });
     
-            R.observe( el );
-    
             return () => {
-                R.unobserve( el );
+                unobserve( el );
                 API.updateExtraStickyHeight( -prevHeight );
             }
         }

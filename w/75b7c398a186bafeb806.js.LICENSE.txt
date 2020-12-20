@@ -67,9 +67,13 @@
 
 /* must not be >= 1 */
 
+/* observe */
+
 /* rounding via bitwise hacks like |0 may not work here, because number may be > max(int32) */
 
 /* sticky elements ( for example table header/footer ) must influence ONLY on widgetScrollHeight */
+
+/* unobserve */
 
 /*#__PURE__*/
 

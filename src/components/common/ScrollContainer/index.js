@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import cx from "utils/cx";
+import { observe, unobserve } from "utils/heightObserver";
 import useApi from "hooks/useApi";
 import HeightProvider from "../HeightProvider";
 import css from "./style.module.scss";
@@ -14,13 +15,9 @@ const ScrollContainer = ({ className, children, ...props }) => {
 
         API.setScrollContainerNode( el );
 
-        const R = new ResizeObserver( entries => {
-            API.setWidgetHeight( Math.round( entries[ 0 ].contentRect.height ) );
-        });
+        observe( el, height => API.setWidgetHeight( height ) );
 
-        R.observe( el );
-
-        return () => R.unobserve( el );
+        return () => unobserve( el );
     }, []);
     
     /*

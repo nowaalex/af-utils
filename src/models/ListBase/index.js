@@ -57,7 +57,8 @@ class ListBase extends PubSub {
     }
 
     updateEndIndex(){
-        const endIndex = Math.min( this.rowsQuantity, this.getIndex( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount );
+
+        const endIndex = Math.min( this.getIndex( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount, this.rowsQuantity );
 
         if( endIndex !== this.endIndex ){
             this.endIndex = endIndex;
@@ -69,7 +70,7 @@ class ListBase extends PubSub {
 
     updateVisibleRange(){
 
-        const startIndex = Math.max( 0, Math.min( this.rowsQuantity, this.getIndex( this.scrollTop ) ) - this.overscanRowsCount );
+        const startIndex = Math.max( 0, this.getIndex( this.scrollTop ) - this.overscanRowsCount );
 
         if( startIndex !== this.startIndex ){
             this.startIndex = startIndex;
