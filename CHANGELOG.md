@@ -1,3 +1,5 @@
+# 2.4.5 - 2020-12-23
+* now getRowProps is fired only when rowData is not empty
 # 2.4.4 - 2020-12-20
 * made one ResizeObserver instance for all components
 

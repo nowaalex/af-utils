@@ -9,7 +9,7 @@ export const Row = ({ index, columns, getRowData, getRowProps, Cell }) => {
     const rowData = getRowData( index );
 
     return (
-        <tr {...(getRowProps&&getRowProps(rowData,index))}>
+        <tr {...(rowData&&getRowProps&&getRowProps(rowData,index))}>
             {rowData ? columns.map( column => (
                 <td key={column.dataKey}>
                     <Cell rowData={rowData} column={column} />
