@@ -129,7 +129,7 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
             const lastGroupIndex = groupPath.length - 1;
             const groupKey = m.groupKeys[lastGroupIndex];
             /* hidden columns also must be included */
-            const { getGroupLabel, label } = m.columns.find( c => c.dataKey === groupKey );
+            const { getGroupLabel, label, format } = m.columns.find( c => c.dataKey === groupKey );
             const groupValue = groupPath[lastGroupIndex];
 
             return (
@@ -145,7 +145,7 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
                     &nbsp;
                     {getGroupLabel?getGroupLabel(groupValue):(
                         <Fragment>
-                            {label}:&nbsp;{""+groupValue}
+                            {label}:&nbsp;{format?format(groupValue):""+groupValue}
                         </Fragment>
                     )}
                     {columns.length ? (
