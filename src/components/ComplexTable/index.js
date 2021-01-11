@@ -114,6 +114,7 @@ const GroupsPanel = /*#__PURE__*/ observer(({ m, GroupLabel }) => {
             {m.groupKeys.length ? m.groupKeys.map( groupKey => (
                 <GroupLabel
                     key={groupKey}
+                    groupKey={groupKey}
                     columns={m.columns}
                     onRemove={() => m.removeGrouping( groupKey )}
                 />
