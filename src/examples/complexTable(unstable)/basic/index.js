@@ -35,6 +35,7 @@ const ComplexTable = () => (
             },
             {
                 dataKey: "fixedRange",
+                format: v => `fr ${v}`,
                 label: "FR",
                 initialGroupingIndex: 1,
                 priorityGroupValues: [ 4, 7, 71, 5 ]

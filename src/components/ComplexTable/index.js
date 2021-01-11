@@ -94,7 +94,13 @@ const SummaryCell = /*#__PURE__*/ observer(({ m, column, rowIndexes }) => {
     return null;
 });
 
-const GroupsPanel = /*#__PURE__*/ observer(({ m }) => {
+const GroupLabelDefault = ({ groupKey, columns, onRemove }) => (
+    <div className={css.groupLabel} onDoubleClick={onRemove}>
+        {columns.find( col => col.dataKey === groupKey ).label}
+    </div>
+);
+
+const GroupsPanel = /*#__PURE__*/ observer(({ m, GroupLabel }) => {
 
     const [ collectedProps, dropRef ] = useDrop({
         accept: HEADER_DND_TYPE,
@@ -106,9 +112,11 @@ const GroupsPanel = /*#__PURE__*/ observer(({ m }) => {
     return m.compact ? null : (
         <div className={css.groupsPanel} ref={dropRef}>
             {m.groupKeys.length ? m.groupKeys.map( groupKey => (
-                <div className={css.groupLabel} key={groupKey} onDoubleClick={() => m.removeGrouping( groupKey )}>
-                    {m.columns.find( col => col.dataKey === groupKey ).label }
-                </div>
+                <GroupLabel
+                    key={groupKey}
+                    columns={m.columns}
+                    onRemove={() => m.removeGrouping( groupKey )}
+                />
             )) : "Drag column headers here to group by column" }
         </div>
     );
@@ -172,7 +180,7 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
     return null;
 });
 
-const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }) => {
+const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel = GroupLabelDefault, ...props }) => {
 
     const [ m ] = useState(() => new RowsAggregator());
 
@@ -229,7 +237,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, ...props }
     return (
         <DndProvider backend={HTML5Backend}>
             <div className={cx(css.wrapper,className)}>
-                <GroupsPanel m={m} />
+                <GroupsPanel m={m} GroupLabel={GroupLabel} />
                 <Table
                     columns={m.visibleColumns}
                     rowsQuantity={finalIndexes.length}
