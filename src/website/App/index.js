@@ -1,5 +1,7 @@
 import { lazy } from "react";
 import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 import Menu from "../Menu";
 import Docs from "../Docs";
 import Playground from "../Playground";
@@ -27,16 +29,18 @@ const renderPlayground = routeProps => {
 };
 
 const App = () => (
-    <Router basename={process.env.BASE_URL}>
-        <div className={css.wrapper}>
-            <Menu items={menuItems} />
-            <Switch>
-                <Route path="/examples/:example(.+)?" render={renderPlayground} />
-                <Route path="/docs/:docPage" component={Docs} />
-                <Redirect to="/examples" />
-            </Switch>
-        </div>
-    </Router>
+    <DndProvider backend={HTML5Backend}>
+        <Router basename={process.env.BASE_URL}>
+            <div className={css.wrapper}>
+                <Menu items={menuItems} />
+                <Switch>
+                    <Route path="/examples/:example(.+)?" render={renderPlayground} />
+                    <Route path="/docs/:docPage" component={Docs} />
+                    <Redirect to="/examples" />
+                </Switch>
+            </div>
+        </Router>
+    </DndProvider>
 );
 
 export default App;

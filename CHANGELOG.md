@@ -1,3 +1,5 @@
+# 2.4.8 - 2021-01-18
+* removed DndProvider, because react-dnd has bugs with nested providers.
 # 2.4.7 - 2021-01-11
 * upgraded rollup, webpack and ComplexTable
 # 2.4.5 - 2020-12-23

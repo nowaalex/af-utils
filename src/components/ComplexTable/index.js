@@ -4,8 +4,7 @@ import RowsAggregator from "models/RowsAggregator";
 import Table from "../Table";
 import cx from "utils/cx";
 import css from "./style.module.scss";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { useDrag, useDrop, DndProvider } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 
 const HEADER_DND_TYPE = "h";
 
@@ -235,21 +234,23 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel
         </tr>
     ) : null;
 
+    /*
+                Normally must be wrapped with DndProvider, but nested providers throw error.
+                Waiting for react-dnd release, which would fix this
+    */
     return (
-        <DndProvider backend={HTML5Backend}>
-            <div className={cx(css.wrapper,className)}>
-                <GroupsPanel m={m} GroupLabel={GroupLabel} />
-                <Table
-                    columns={m.visibleColumns}
-                    rowsQuantity={finalIndexes.length}
-                    getRowData={getRowData}
-                    renderRow={renderRow}
-                    renderHeaderCells={renderHeaderCells}
-                    renderTfootContent={renderTfootContent}
-                    {...props}
-                />
-            </div>
-        </DndProvider> 
+        <div className={cx(css.wrapper,className)}>
+            <GroupsPanel m={m} GroupLabel={GroupLabel} />
+            <Table
+                columns={m.visibleColumns}
+                rowsQuantity={finalIndexes.length}
+                getRowData={getRowData}
+                renderRow={renderRow}
+                renderHeaderCells={renderHeaderCells}
+                renderTfootContent={renderTfootContent}
+                {...props}
+            />
+        </div>
     );
 }
 
