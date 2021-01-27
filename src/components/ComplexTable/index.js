@@ -205,8 +205,8 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel
         );
     }
 
-    const renderHeaderCells = columns => columns.map(({ dataKey, label }, i ) => (
-        <th key={dataKey}>
+    const renderHeaderCells = columns => columns.map(({ dataKey, label, minWidth }, i ) => (
+        <th key={dataKey} style={{ minWidth }}>
             <HeaderLabel m={m} dataKey={dataKey} label={label} i={i} />
             <HeaderInput m={m} dataKey={dataKey} />
         </th>

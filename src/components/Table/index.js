@@ -123,6 +123,9 @@ Table.propTypes = {
                 background: PropTypes.string,
                 border: PropTypes.string,
                 width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
+                
+                // works pretty shitty in col tag
+                minWidth: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
                 CellComponent: PropTypes.elementType,
                 getCellExtraProps: PropTypes.func
             })
