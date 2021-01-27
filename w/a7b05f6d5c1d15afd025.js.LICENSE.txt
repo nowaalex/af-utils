@@ -25,6 +25,8 @@
 
 /* default */
 
+/* hack to change renderRow by link */
+
 /* harmony default export */
 
 /* makeAutoObservable */

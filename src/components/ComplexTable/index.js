@@ -184,6 +184,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel
 
     const [ m ] = useState(() => new RowsAggregator());
 
+    /* hack to change renderRow by link */
     const { finalIndexes } = m;
 
     const renderRow = RowProps => {
@@ -212,7 +213,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel
         </th>
     ));
 
-    useEffect(() => m.merge({ rowsQuantity, getRowData, columns }));
+    useEffect(() => m.merge({ rowsQuantity, getRowData, columns }), [ rowsQuantity, getRowData, columns ]);
 
     useEffect(() => {
         const initialGroupingKeys = m.visibleColumns

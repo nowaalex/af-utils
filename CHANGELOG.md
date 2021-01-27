@@ -1,4 +1,4 @@
-# 2.4.9 - 2021-01-27
+# 2.5.0 - 2021-01-27
 * added table column minWith prop.
 # 2.4.8 - 2021-01-18
 * removed DndProvider, because react-dnd has bugs with nested providers.

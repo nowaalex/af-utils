@@ -136,13 +136,7 @@ class RowsAggregator {
     constructor(){
         makeAutoObservable( this, {
             visibleColumns: computed({ equals: comparer.structural }),
-            priorityGroupValuesArray: computed({ equals: comparer.structural }),
-            groupedSorted: computed({ equals: () => false }),
-            groupsSortedIndexes: computed({ equals: () => false }),
-            noGroupsSortedIndexes: computed({ equals: () => false }),
-            finalIndexes: computed({ equals: () => false }),
-            filteredIndexes: computed({ equals: () => false }),
-            orderedIndexes: computed({ equals: () => false })
+            priorityGroupValuesArray: computed({ equals: comparer.structural })
         });
     }
 
