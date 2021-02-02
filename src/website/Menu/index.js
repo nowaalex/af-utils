@@ -4,6 +4,7 @@ import { ImNpm } from "react-icons/im";
 import css from "./style.module.scss";
 
 const DOCS_STRUCTURE = [
+    [ "Getting started", "/docs/why" ],
     [ "List", "/docs/list" ],
     [ "Table", "/docs/table" ],
     [ "ComplexTable", "/docs/complexTable" ],
@@ -11,7 +12,18 @@ const DOCS_STRUCTURE = [
 ];
 
 const Menu = ({ items }) => (
+    
     <div className={css.wrapper}>
+
+        <h2 className={css.header}>Docs</h2>
+        <nav>
+            {DOCS_STRUCTURE.map(([ label, url ]) => (
+                <NavLink key={url} activeClassName={css.activeLink} className={css.link} to={url}>
+                    {label}
+                </NavLink>
+            ))}
+        </nav>
+    
         <h2 className={css.header}>Examples</h2>
         <nav>
             {items.map( item => (
@@ -21,22 +33,7 @@ const Menu = ({ items }) => (
             ))}
         </nav>
 
-        <h2 className={css.header}>Docs</h2>
-        <nav>
-            <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/list">
-                List
-            </NavLink>
-            <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/table">
-                Table
-            </NavLink>
-            <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/complexTable">
-                ComplexTable
-            </NavLink>
-            <NavLink activeClassName={css.activeLink} className={css.link} to="/docs/bundleSize">
-                Bundle Size
-            </NavLink>
-        </nav>
-    
+        
         <h2 className={css.header}>Links</h2>
         <a href="https://github.com/nowaalex/af-virtual-scroll" target="_blank" className={css.link}>
             <VscGithub />

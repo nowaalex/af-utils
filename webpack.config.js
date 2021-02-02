@@ -4,6 +4,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyPlugin = require( "copy-webpack-plugin" );
 const webpack = require( "webpack" );
 
 module.exports = () => {
@@ -79,7 +80,12 @@ module.exports = () => {
 			}),
 			new HtmlWebpackPlugin({
                 title: "af-virtual-scroll"
-            })
+			}),
+			new CopyPlugin({
+				patterns: [
+				  { from: "./src/website/google/", to: path.resolve(__dirname, "w") },
+				],
+			}),
 		]
 	};
 }

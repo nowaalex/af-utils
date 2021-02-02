@@ -3,9 +3,11 @@ import List from "./List";
 import Table from "./Table";
 import ComplexTable from "./ComplexTable";
 import BundleSize from "./BundleSize";
+import Why from "./Why";
 import css from "./style.module.scss";
 
 const Pages = {
+    why: Why,
     list: List,
     table: Table,
     complexTable: ComplexTable,

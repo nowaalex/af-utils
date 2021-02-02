@@ -3040,6 +3040,8 @@ String.prototype.capitalize = function () { //v1.0
 
 // prevents accidental field redefinition in subclass
 
+// provides ability to disable safeDescriptors for prototypes
+
 // randomly pick from the many faker methods that can generate words
 
 // re-throw any exceptions caught during rendering

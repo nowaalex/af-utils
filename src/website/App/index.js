@@ -36,7 +36,7 @@ const App = () => (
                 <Switch>
                     <Route path="/examples/:example(.+)?" render={renderPlayground} />
                     <Route path="/docs/:docPage" component={Docs} />
-                    <Redirect to="/examples" />
+                    <Redirect to="/docs/why" />
                 </Switch>
             </div>
         </Router>
