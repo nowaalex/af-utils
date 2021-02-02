@@ -1,0 +1,3347 @@
+/*
+
+   this index.js file is used for including the faker library as a CommonJS module, instead of a bundle
+
+   you can include the faker library into your existing node.js application by requiring the entire /faker directory
+
+    var faker = require(./faker);
+    var randomName = faker.name.findName();
+
+   you can also simply include the "faker.js" file which is the auto-generated bundled version of the faker library
+
+    var faker = require(./customAppPath/faker);
+    var randomName = faker.name.findName();
+
+
+  if you plan on modifying the faker library you should be performing your changes in the /lib/ directory
+
+*/
+
+/*
+
+Copyright (c) 2012-2014 Jeffrey Mealo
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+------------------------------------------------------------------------------------------------------------------------
+
+Based loosely on Luka Pusic's PHP Script: http://360percents.com/posts/php-random-user-agent-generator/
+
+The license for that script is as follows:
+
+"THE BEER-WARE LICENSE" (Revision 42):
+
+<pusic93@gmail.com> wrote this file. As long as you retain this notice you can do whatever you want with this stuff.
+If we meet some day, and you think this stuff is worth it, you can buy me a beer in return. Luka Pusic
+
+*/
+
+/*
+
+The MIT License (MIT)
+
+Copyright (c) 2014 Jonathan Ong me@jongleberry.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+Definitions from mime-db v1.21.0
+For updates check: https://github.com/jshttp/mime-db/blob/master/db.json
+
+*/
+
+/*
+      * password-generator ( function )
+      * Copyright(c) 2011-2013 Bermi Ferrer <bermi@bermilabs.com>
+      * MIT Licensed
+      */
+
+/*
+   * functions that do alter the internal structure of the array, (based on lib.es6.d.ts)
+   * since these functions alter the inner structure of the array, the have side effects.
+   * Because the have side effects, they should not be used in computed function,
+   * and for that reason the do not call dependencyState.notifyObserved
+   */
+
+/*
+   A C-program for MT19937, with initialization improved 2002/1/26.
+   Coded by Takuji Nishimura and Makoto Matsumoto.
+
+   Before using, initialize the state by using init_genrand(seed)
+   or init_by_array(init_key, key_length).
+
+   Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions
+   are met:
+
+     1. Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+     3. The names of its contributors may not be used to endorse or promote
+        products derived from this software without specific prior written
+        permission.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+   Any feedback is very welcome.
+   http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
+   email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
+*/
+
+/*
+  fake.js - generator method for combining faker methods based on string input
+
+*/
+
+/*
+  self.categories = function(num) {
+      var categories = [];
+
+      do {
+          var category = faker.random.arrayElement(faker.definitions.commerce.department);
+          if(categories.indexOf(category) === -1) {
+              categories.push(category);
+          }
+      } while(categories.length < num);
+
+      return categories;
+  };
+
+  */
+
+/*
+  self.mergeCategories = function(categories) {
+      var separator = faker.definitions.separator || " &";
+      // TODO: find undefined here
+      categories = categories || faker.definitions.commerce.categories;
+      var commaSeparated = categories.slice(0, -1).join(', ');
+
+      return [commaSeparated, categories[categories.length - 1]].join(separator + " ");
+  };
+  */
+
+/*
+String.prototype.capitalize = function () { //v1.0
+    return this.replace(/\w+/g, function (a) {
+        return a.charAt(0).toUpperCase() + a.substr(1).toLowerCase();
+    });
+};
+*/
+
+/* 2002/01/09 modified by Makoto Matsumoto             */
+
+/* DndContext */
+
+/* In the previous versions, MSBs of the seed affect   */
+
+/* Period parameters */
+
+/* Reaction */
+
+/* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
+
+/* Tempering */
+
+/* These real versions are due to Isaku Wada, 2002/01/09 added */
+
+/* a default initial seed is used */
+
+/* binding */
+
+/* configure */
+
+/* constant vector a */
+
+/* constants should be scoped inside the class */
+
+/* divided by 2^32 */
+
+/* divided by 2^32-1 */
+
+/* for generated name */
+
+/* generate N words at one time */
+
+/* generates a random number on (0,1)-real-interval */
+
+/* generates a random number on [0,0x7fffffff]-interval */
+
+/* generates a random number on [0,0xffffffff]-interval */
+
+/* generates a random number on [0,1) with 53-bit resolution*/
+
+/* generates a random number on [0,1)-real-interval */
+
+/* generates a random number on [0,1]-real-interval */
+
+/* getDependencyTree */
+
+/* harmony export */
+
+/* harmony import */
+
+/* harmony reexport (checked) */
+
+/* if init_genrand() has not been called, */
+
+/* init_key is the array for initializing keys */
+
+/* initialize by an array with array-length */
+
+/* initializes mt[N] with a seed */
+
+/* invariant */
+
+/* istanbul ignore next */
+
+/* key_length is its length */
+
+/* least significant r bits */
+
+/* mag01[x] = x * MATRIX_A  for x=0,1 */
+
+/* makeObservable */
+
+/* most significant w-r bits */
+
+/* moved outside of genrand_int32() by jwatte 2010-11-17; generate less garbage */
+
+/* mti==N+1 means mt[N] is not initialized */
+
+/* only MSBs of the array mt[].                        */
+
+/* reexport */
+
+/* reexport safe */
+
+/* see #1208 */
+
+/* slight change for C++, 2004/2/26 */
+
+/* the array for the state vector  */
+
+/*#__PURE__*/
+
+/**
+         * On timer based implementation we don't really need this object,
+         * but we keep the same api
+         */
+
+/**
+     * Latest 'uncommitted reactions' cleanup timer handle.
+     */
+
+/**
+     * Only to be used by test functions; do not export outside of mobx-react-lite
+     */
+
+/**
+     * Reactions created by components that have yet to be fully mounted.
+     */
+
+/**
+     * Return a random time zone
+     * @method faker.address.timeZone
+     */
+
+/**
+     * Run by the cleanup timer to dispose any outstanding reactions
+     */
+
+/**
+     * Simple optimization, give each derivation run an unique id (runId)
+     * Check if last time this observable was accessed the same runId is used
+     * if this is the case, the relation is already known
+     */
+
+/**
+     * avatar
+     *
+     * @method faker.image.lorempicsum.avatar
+     */
+
+/**
+     * genre
+     *
+     * @method faker.music.genre
+     */
+
+/**
+     * image
+     *
+     * @param {number} width
+     * @param {number} height
+     * @param {boolean} grayscale
+     * @param {number} blur 1-10
+     * @method faker.image.lorempicsum.image
+     * @description search image from unsplash
+     */
+
+/**
+     * imageBlurred
+     *
+     * @param {number} width
+     * @param {number} height
+     * @param {number} blur 1-10
+     * @method faker.image.lorempicsum.imageBlurred
+     * @description search blurred image from unsplash
+     */
+
+/**
+     * imageGrayscaled
+     *
+     * @param {number} width
+     * @param {number} height
+     * @param {boolean} grayscale
+     * @method faker.image.lorempicsum.imageGrayscaled
+     * @description search grayscale image from unsplash
+     */
+
+/**
+     * imageRandomSeeded
+     *
+     * @param {number} width
+     * @param {number} height
+     * @param {boolean} grayscale
+     * @param {number} blur 1-10
+     * @param {string} seed
+     * @method faker.image.lorempicsum.imageRandomSeeded
+     * @description search same random image from unsplash, based on a seed
+     */
+
+/**
+     * imageUrl
+     *
+     * @param {number} width
+     * @param {number} height
+     * @param {boolean} grayscale
+     * @param {number} blur 1-10
+     * @param {string} seed
+     * @method faker.image.lorempicsum.imageUrl
+     */
+
+/**
+    * parse string patterns in a similar way to RegExp
+    *
+    * e.g. "#{3}test[1-5]" -> "###test4"
+    *
+    * @method faker.helpers.regexpStyleStringParse
+    * @param {string} string
+    */
+
+/**
+   *  direction
+   *
+   * @method faker.address.direction
+   * @param {Boolean} useAbbr return direction abbreviation. defaults to false
+   */
+
+/**
+   * @param {PropertyKey} key
+   * @param {Annotation|boolean} annotation true - infer from object or it's prototype, false - ignore
+   */
+
+/**
+   * @param {PropertyKey} key
+   * @param {PropertyDescriptor} descriptor
+   * @param {Annotation|boolean} annotation true - infer from descriptor, false - copy as is
+   * @param {boolean} proxyTrap whether it's called from proxy trap
+   * @returns {boolean|null} true on success, false on failure (proxyTrap + non-configurable), null when cancelled by interceptor
+   */
+
+/**
+   * @param {PropertyKey} key
+   * @param {PropertyDescriptor} descriptor
+   * @param {boolean} proxyTrap whether it's called from proxy trap
+   * @returns {boolean|null} true on success, false on failure (proxyTrap + non-configurable), null when cancelled by interceptor
+   */
+
+/**
+   * @param {PropertyKey} key
+   * @param {any} value
+   * @param {Annotation|boolean} annotation true - infer from descriptor, false - copy as is
+   * @param {boolean} proxyTrap whether it's called from proxy trap
+   * @returns {boolean|null} true on success, false on failure (proxyTrap + non-configurable), null when cancelled by interceptor
+   */
+
+/**
+   * Create a new atom. For debugging purposes it is recommended to give it a name.
+   * The onBecomeObserved and onBecomeUnobserved callbacks can be used for resource management.
+   */
+
+/**
+   * Create a new computed value based on a function expression.
+   *
+   * The `name` property is for debug purposes only.
+   *
+   * The `equals` property specifies the comparer function to use to determine if a newly produced
+   * value differs from the previous value. Two comparers are provided in the library; `defaultComparer`
+   * compares based on identity comparison (===), and `structuralComparer` deeply compares the structure.
+   * Structural comparison can be convenient if you always produce a new aggregated object and
+   * don't want to notify observers if it is structurally the same.
+   * This is useful for working with vectors, mouse coordinates etc.
+   */
+
+/**
+   * Credit card CVV
+   * @method faker.finance.creditCardCVV
+  */
+
+/**
+   * Credit card number
+   * @method faker.finance.creditCardNumber
+   * @param {string} provider | scheme
+  */
+
+/**
+   * Generates a random localized city name. The format string can contain any
+   * method provided by faker wrapped in `{{}}`, e.g. `{{name.firstName}}` in
+   * order to build the city name.
+   *
+   * If no format string is provided one of the following is randomly used:
+   *
+   * * `{{address.cityPrefix}} {{name.firstName}}{{address.citySuffix}}`
+   * * `{{address.cityPrefix}} {{name.firstName}}`
+   * * `{{name.firstName}}{{address.citySuffix}}`
+   * * `{{name.lastName}}{{address.citySuffix}}`
+   *
+   * @method faker.address.city
+   * @param {String} format
+   */
+
+/**
+   * Generates random zipcode from format. If format is not specified, the
+   * locale's zip format is used.
+   *
+   * @method faker.address.zipCode
+   * @param {String} format
+   */
+
+/**
+   * Generates random zipcode from state abbreviation. If state abbreviation is
+   * not specified, a random zip code is generated according to the locale's zip format.
+   * Only works for locales with postcode_by_state definition. If a locale does not
+   * have a postcode_by_state definition, a random zip code is generated according
+   * to the locale's zip format.
+   *
+   * @method faker.address.zipCodeByState
+   * @param {String} state
+   */
+
+/**
+   * Generator method for combining faker methods based on string input
+   *
+   * __Example:__
+   *
+   * ```
+   * console.log(faker.fake('{{name.lastName}}, {{name.firstName}} {{name.suffix}}'));
+   * //outputs: "Marks, Dean Sr."
+   * ```
+   *
+   * This will interpolate the format string with the value of methods
+   * [name.lastName]{@link faker.name.lastName}, [name.firstName]{@link faker.name.firstName},
+   * and [name.suffix]{@link faker.name.suffix}
+   *
+   * @method faker.fake
+   * @param {string} str
+   */
+
+/**
+   * Invoke this method _after_ this method has changed to signal mobx that all its observers should invalidate.
+   */
+
+/**
+   * Invoke this method to notify mobx that your atom has been used somehow.
+   * Returns true if there is currently a reactive context.
+   */
+
+/**
+   * Observes this object. Triggers for the events 'add', 'update' and 'delete'.
+   * See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/observe
+   * for callback details
+   */
+
+/**
+   * Return a random localized city prefix
+   * @method faker.address.cityPrefix
+   */
+
+/**
+   * Return a random localized city suffix
+   *
+   * @method faker.address.citySuffix
+   */
+
+/**
+   * Returns a random localized street address
+   *
+   * @method faker.address.streetAddress
+   * @param {Boolean} useFullAddress
+   */
+
+/**
+   * Returns a random localized street name
+   *
+   * @method faker.address.streetName
+   */
+
+/**
+   * Returns the current value of this computed value.
+   * Will evaluate its computation first if needed.
+   */
+
+/**
+   * abbreviation
+   *
+   * @method faker.hacker.abbreviation
+   */
+
+/**
+   * abstract
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.abstract
+   */
+
+/**
+   * abstract
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.abstract
+   */
+
+/**
+   * account
+   *
+   * @method faker.finance.account
+   * @param {number} length
+   */
+
+/**
+   * accountName
+   *
+   * @method faker.finance.accountName
+   */
+
+/**
+   * adjective
+   *
+   * @method faker.hacker.adjective
+   */
+
+/**
+   * alpha. returns lower/upper alpha characters based count and upcase options
+   *
+   * @method faker.random.alpha
+   * @param {mixed} options // defaults to { count: 1, upcase: false }
+   */
+
+/**
+   * alphaNumeric
+   *
+   * @method faker.random.alphaNumeric
+   * @param {number} count defaults to 1
+   */
+
+/**
+   * amount
+   *
+   * @method faker.finance.amount
+   * @param {number} min
+   * @param {number} max
+   * @param {number} dec
+   * @param {string} symbol
+   *
+   * @return {string}
+   */
+
+/**
+   * animals
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.animals
+   */
+
+/**
+   * animals
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.animals
+   */
+
+/**
+   * avatar
+   *
+   * @method faker.image.avatar
+   */
+
+/**
+   * avatar
+   *
+   * @method faker.image.lorempixel.avatar
+   */
+
+/**
+   * avatar
+   *
+   * @method faker.image.unsplash.avatar
+   */
+
+/**
+   * avatar
+   *
+   * @method faker.internet.avatar
+   */
+
+/**
+   * backward-compatibility
+   *
+   * @method faker.helpers.randomize
+   * @param {array} array
+   */
+
+/**
+   * between
+   *
+   * @method faker.date.between
+   * @param {date} from
+   * @param {date} to
+   */
+
+/**
+   * bic
+   *
+   * @method  faker.finance.bic
+   */
+
+/**
+   * bitcoinAddress
+   *
+   * @method  faker.finance.bitcoinAddress
+   */
+
+/**
+   * boolean
+   *
+   * @method faker.random.boolean
+   */
+
+/**
+   * branch
+   *
+   * @method faker.git.branch
+   */
+
+/**
+   * bs
+   *
+   * @method faker.company.bs
+   */
+
+/**
+   * bsAdjective
+   *
+   * @method faker.company.bsAdjective
+   */
+
+/**
+   * bsBuzz
+   *
+   * @method faker.company.bsBuzz
+   */
+
+/**
+   * bsNoun
+   *
+   * @method faker.company.bsNoun
+   */
+
+/**
+   * buildings
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} keyword
+   * @method faker.image.unsplash.buildings
+   */
+
+/**
+   * business
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.business
+   */
+
+/**
+   * business
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.business
+   */
+
+/**
+   * cardinal direction
+   *
+   * @method faker.address.cardinalDirection
+   * @param {Boolean} useAbbr return direction abbreviation. defaults to false
+   */
+
+/**
+   * catchPhrase
+   *
+   * @method faker.company.catchPhrase
+   */
+
+/**
+   * catchPhraseAdjective
+   *
+   * @method faker.company.catchPhraseAdjective
+   */
+
+/**
+   * catchPhraseDescriptor
+   *
+   * @method faker.company.catchPhraseDescriptor
+   */
+
+/**
+   * catchPhraseNoun
+   *
+   * @method faker.company.catchPhraseNoun
+   */
+
+/**
+   * cats
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.cats
+   */
+
+/**
+   * cats
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.cats
+   */
+
+/**
+   * city
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.city
+   */
+
+/**
+   * city
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.city
+   */
+
+/**
+   * collation
+   *
+   * @method faker.database.collation
+   */
+
+/**
+   * color
+   *
+   * @method faker.commerce.color
+   */
+
+/**
+   * color
+   *
+   * @method faker.internet.color
+   * @param {number} baseRed255
+   * @param {number} baseGreen255
+   * @param {number} baseBlue255
+   */
+
+/**
+   * color
+   *
+   * @method faker.vehicle.color
+   */
+
+/**
+   * column
+   *
+   * @method faker.database.column
+   */
+
+/**
+   * commitEntry
+   *
+   * @method faker.git.commitEntry
+   * @param {object} options
+   */
+
+/**
+   * commitMessage
+   *
+   * @method faker.git.commitMessage
+   */
+
+/**
+   * commitSha
+   *
+   * @method faker.git.commitSha
+   */
+
+/**
+   * commonFileName
+   *
+   * @method faker.system.commonFileName
+   * @param {string} ext
+   * @param {string} type
+   */
+
+/**
+   * companyName
+   *
+   * @method faker.company.companyName
+   * @param {string} format
+   */
+
+/**
+   * companySuffix
+   *
+   * @method faker.company.companySuffix
+   */
+
+/**
+   * contextualCard
+   *
+   * @method faker.helpers.contextualCard
+   */
+
+/**
+   * country
+   *
+   * @method faker.address.country
+   */
+
+/**
+   * countryCode
+   *
+   * @method faker.address.countryCode
+   * @param {string} alphaCode default alpha-2
+   */
+
+/**
+   * county
+   *
+   * @method faker.address.county
+   */
+
+/**
+   * createCard
+   *
+   * @method faker.helpers.createCard
+   */
+
+/**
+   * createTransaction
+   *
+   * @method faker.helpers.createTransaction
+   */
+
+/**
+   * currencyCode
+   *
+   * @method faker.finance.currencyCode
+   */
+
+/**
+   * currencyName
+   *
+   * @method faker.finance.currencyName
+   */
+
+/**
+   * currencySymbol
+   *
+   * @method faker.finance.currencySymbol
+   */
+
+/**
+   * dataUri
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} color
+   * @method faker.image.dataUri
+   */
+
+/**
+   * department
+   *
+   * @method faker.commerce.department
+   */
+
+/**
+   * description
+   *
+   * @method  faker.finance.transactionDescription
+   */
+
+/**
+   * domainName
+   *
+   * @method faker.internet.domainName
+   */
+
+/**
+   * domainSuffix
+   *
+   * @method faker.internet.domainSuffix
+   */
+
+/**
+   * domainWord
+   *
+   * @method faker.internet.domainWord
+   */
+
+/**
+   * email
+   *
+   * @method faker.internet.email
+   * @param {string} firstName
+   * @param {string} lastName
+   * @param {string} provider
+   */
+
+/**
+   * engine
+   *
+   * @method faker.database.engine
+   */
+
+/**
+   * ethereumAddress
+   *
+   * @method  faker.finance.ethereumAddress
+   */
+
+/**
+   * exampleEmail
+   *
+   * @method faker.internet.exampleEmail
+   * @param {string} firstName
+   * @param {string} lastName
+   */
+
+/**
+   * fashion
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.fashion
+   */
+
+/**
+   * fashion
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.fashion
+   */
+
+/**
+   * fileExt
+   *
+   * @method faker.system.fileExt
+   * @param {string} mimeType
+   */
+
+/**
+   * findName
+   *
+   * @method findName
+   * @param {string} firstName
+   * @param {string} lastName
+   * @param {mixed} gender
+   * @memberof faker.name
+   */
+
+/**
+   * firstName
+   *
+   * @method firstName
+   * @param {mixed} gender
+   * @memberof faker.name
+   */
+
+/**
+   * food
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.food
+   */
+
+/**
+   * food
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.food
+   */
+
+/**
+   * food
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} keyword
+   * @method faker.image.unsplash.food
+   */
+
+/**
+   * fuel
+   *
+   * @method faker.vehicle.fuel
+   */
+
+/**
+   * future
+   *
+   * @method faker.date.future
+   * @param {number} years
+   * @param {date} refDate
+   */
+
+/**
+   * gender
+   *
+   * @method gender
+   * @memberof faker.name
+   */
+
+/**
+   * generates a file name with extension or optional type
+   *
+   * @method faker.system.fileName
+   * @param {string} ext
+   * @param {string} type
+   */
+
+/**
+   * generates a space separated list of words
+   *
+   * @method faker.lorem.words
+   * @param {number} num number of words, defaults to 3
+   */
+
+/**
+   * generates a word of a specified length
+   *
+   * @method faker.lorem.word
+   * @param {number} length length of the word that should be returned. Defaults to a random length
+   */
+
+/**
+   * hexaDecimal
+   *
+   * @method faker.random.hexaDecimal
+   * @param {number} count defaults to 1
+   */
+
+/**
+   * iban
+   *
+   * @method  faker.finance.iban
+   */
+
+/**
+   * image
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.image
+   */
+
+/**
+   * image
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.image
+   */
+
+/**
+   * image
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} keyword
+   * @method faker.image.unsplash.image
+   * @description search image from unsplash
+   */
+
+/**
+   * imageUrl
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} category
+   * @param {boolean} randomize
+   * @method faker.image.imageUrl
+   */
+
+/**
+   * imageUrl
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} category
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.imageUrl
+   */
+
+/**
+   * imageUrl
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} category
+   * @param {string} keyword
+   * @method faker.image.unsplash.imageUrl
+   */
+
+/**
+   * ingverb
+   *
+   * @method faker.hacker.ingverb
+   */
+
+/**
+   * internal, use schedule() if you intend to kick off a reaction
+   */
+
+/**
+   * ip
+   *
+   * @method faker.internet.ip
+   */
+
+/**
+   * ipv6
+   *
+   * @method faker.internet.ipv6
+   */
+
+/**
+   * jobArea
+   *
+   * @method jobArea
+   * @memberof faker.name
+   */
+
+/**
+   * jobDescriptor
+   *
+   * @method jobDescriptor
+   * @memberof faker.name
+   */
+
+/**
+   * jobTitle
+   *
+   * @method jobTitle
+   * @memberof faker.name
+   */
+
+/**
+   * jobType
+   *
+   * @method jobType
+   * @memberof faker.name
+   */
+
+/**
+   * lastName
+   *
+   * @method lastName
+   * @param {mixed} gender
+   * @memberof faker.name
+   */
+
+/**
+   * latitude
+   *
+   * @method faker.address.latitude
+   * @param {Double} max default is 90
+   * @param {Double} min default is -90
+   * @param {number} precision default is 4
+   */
+
+/**
+   * locale
+   *
+   * @method faker.random.image
+   */
+
+/**
+   * locale
+   *
+   * @method faker.random.locale
+   */
+
+/**
+   * longitude
+   *
+   * @method faker.address.longitude
+   * @param {Double} max default is 180
+   * @param {Double} min default is -180
+   * @param {number} precision default is 4
+   */
+
+/**
+   * mac
+   *
+   * @method faker.internet.mac
+   * @param {string} sep
+   */
+
+/**
+   * manufacturer
+   *
+   * @method faker.vehicle.manufacturer
+   */
+
+/**
+   * mask
+   *
+   * @method faker.finance.mask
+   * @param {number} length
+   * @param {boolean} parens
+   * @param {boolean} ellipsis
+   */
+
+/**
+   * middleName
+   *
+   * @method middleName
+   * @param {mixed} gender
+   * @memberof faker.name
+   */
+
+/**
+   * mimeType
+   *
+   * @method faker.system.mimeType
+   */
+
+/**
+   * model
+   *
+   * @method faker.vehicle.model
+   */
+
+/**
+   * month
+   *
+   * @method faker.date.month
+   * @param {object} options
+   */
+
+/**
+   * mustache
+   *
+   * @method faker.helpers.mustache
+   * @param {string} str
+   * @param {object} data
+   */
+
+/**
+   * nature
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.nature
+   */
+
+/**
+   * nature
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.nature
+   */
+
+/**
+   * nature
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} keyword
+   * @method faker.image.unsplash.nature
+   */
+
+/**
+   * nightlife
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.nightlife
+   */
+
+/**
+   * nightlife
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.nightlife
+   */
+
+/**
+   * noun
+   *
+   * @method faker.hacker.noun
+   */
+
+/**
+   * objects
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} keyword
+   * @method faker.image.unsplash.objects
+   */
+
+/**
+   * ordinal direction
+   *
+   * @method faker.address.ordinalDirection
+   * @param {Boolean} useAbbr return direction abbreviation. defaults to false
+   */
+
+/**
+   * paragraph
+   *
+   * @method faker.lorem.paragraph
+   * @param {number} sentenceCount defaults to 3
+   */
+
+/**
+   * paragraphs
+   *
+   * @method faker.lorem.paragraphs
+   * @param {number} paragraphCount defaults to 3
+   * @param {string} separator defaults to `'\n \r'`
+   */
+
+/**
+   * parses string for a symbol and replace it with a random number from 1-10
+   *
+   * @method faker.helpers.replaceSymbolWithNumber
+   * @param {string} string
+   * @param {string} symbol defaults to `"#"`
+   */
+
+/**
+   * parses string for symbols (numbers or letters) and replaces them appropriately (# will be replaced with number,
+   * ? with letter and * will be replaced with number or letter)
+   *
+   * @method faker.helpers.replaceSymbols
+   * @param {string} string
+   */
+
+/**
+   * password
+   *
+   * @method faker.internet.password
+   * @param {number} len
+   * @param {boolean} memorable
+   * @param {string} pattern
+   * @param {string} prefix
+   */
+
+/**
+   * past
+   *
+   * @method faker.date.past
+   * @param {number} years
+   * @param {date} refDate
+   */
+
+/**
+   * people
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.people
+   */
+
+/**
+   * people
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.people
+   */
+
+/**
+   * people
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} keyword
+   * @method faker.image.unsplash.people
+   */
+
+/**
+   * phoneFormats
+   *
+   * @method faker.phone.phoneFormats
+   */
+
+/**
+   * phoneNumber
+   *
+   * @method faker.phone.phoneNumber
+   * @param {string} format
+   * @memberOf faker.phone
+   */
+
+/**
+   * phoneNumberFormat
+   *
+   * @method faker.phone.phoneFormatsArrayIndex
+   * @param phoneFormatsArrayIndex
+   * @memberOf faker.phone
+   */
+
+/**
+   * phrase
+   *
+   * @method faker.hacker.phrase
+   */
+
+/**
+   * prefix
+   *
+   * @method prefix
+   * @param {mixed} gender
+   * @memberof faker.name
+   */
+
+/**
+   * price
+   *
+   * @method faker.commerce.price
+   * @param {number} min
+   * @param {number} max
+   * @param {number} dec
+   * @param {string} symbol
+   *
+   * @return {string}
+   */
+
+/**
+   * product
+   *
+   * @method faker.commerce.product
+   */
+
+/**
+   * productAdjective
+   *
+   * @method faker.commerce.productAdjective
+   */
+
+/**
+   * productDescription
+   *
+   * @method faker.commerce.productDescription
+   */
+
+/**
+   * productMaterial
+   *
+   * @method faker.commerce.productMaterial
+   */
+
+/**
+   * productName
+   *
+   * @method faker.commerce.productName
+   */
+
+/**
+   * protocol
+   *
+   * @method faker.internet.protocol
+   */
+
+/**
+   * randomWords
+   *
+   * @method faker.random.words
+   * @param {number} count defaults to a random value between 1 and 3
+   */
+
+/**
+   * recent
+   *
+   * @method faker.date.recent
+   * @param {number} days
+   * @param {date} refDate
+   */
+
+/**
+   * recent
+   *
+   * @method faker.time.recent
+   * @param {string} outputType - 'abbr' || 'wide' || 'unix' (default choice)
+   */
+
+/**
+   * replace symbols in a credit card schems including Luhn checksum
+   *
+   * @method faker.helpers.replaceCreditCardSymbols
+   * @param {string} string
+   * @param {string} symbol
+   */
+
+/**
+   * returns a commonly used file extension based on optional type
+   *
+   * @method faker.system.commonFileExt
+   * @param {string} type
+   */
+
+/**
+   * returns a commonly used file type
+   *
+   * @method faker.system.commonFileType
+   */
+
+/**
+   * returns a single random floating-point number based on a max number or range
+   *
+   * @method faker.random.float
+   * @param {mixed} options
+   */
+
+/**
+   * returns a single random number based on a max number or range
+   *
+   * @method faker.random.number
+   * @param {mixed} options {min, max, precision}
+   */
+
+/**
+   * returns any file type available as mime-type
+   *
+   * @method faker.system.fileType
+   */
+
+/**
+   * returns directory path
+   *
+   * @method faker.system.directoryPath
+   */
+
+/**
+   * returns file path
+   *
+   * @method faker.system.filePath
+   */
+
+/**
+   * returns lines of lorem separated by `'\n'`
+   *
+   * @method faker.lorem.lines
+   * @param {number} lineCount defaults to a random number between 1 and 5
+   */
+
+/**
+   * returns random text based on a random lorem method
+   *
+   * @method faker.lorem.text
+   * @param {number} times
+   */
+
+/**
+   * routingNumber
+   *
+   * @method faker.finance.routingNumber
+   */
+
+/**
+   * secondaryAddress
+   *
+   * @method faker.address.secondaryAddress
+   */
+
+/**
+   * semver
+   *
+   * @method faker.system.semver
+   */
+
+/**
+   * sentence
+   *
+   * @method faker.lorem.sentence
+   * @param {number} wordCount defaults to a random number between 3 and 10
+   * @param {number} range
+   */
+
+/**
+   * sentences
+   *
+   * @method faker.lorem.sentences
+   * @param {number} sentenceCount defautls to a random number between 2 and 6
+   * @param {string} separator defaults to `' '`
+   */
+
+/**
+   * shortSha
+   *
+   * @method faker.git.shortSha
+   */
+
+/**
+   * slug
+   *
+   * @method faker.lorem.slug
+   * @param {number} wordCount number of words, defaults to 3
+   */
+
+/**
+   * slugifies string
+   *
+   * @method faker.helpers.slugify
+   * @param {string} string
+   */
+
+/**
+   * soon
+   *
+   * @method faker.date.soon
+   * @param {number} days
+   * @param {date} refDate
+   */
+
+/**
+   * sports
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.sports
+   */
+
+/**
+   * sports
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.sports
+   */
+
+/**
+   * state
+   *
+   * @method faker.address.state
+   * @param {Boolean} useAbbr
+   */
+
+/**
+   * stateAbbr
+   *
+   * @method faker.address.stateAbbr
+   */
+
+/**
+   * streetPrefix
+   *
+   * @method faker.address.streetPrefix
+   */
+
+/**
+   * streetSuffix
+   *
+   * @method faker.address.streetSuffix
+   */
+
+/**
+   * suffix
+   *
+   * @method suffix
+   * @memberof faker.name
+   */
+
+/**
+   * suffixes
+   *
+   * @method faker.company.suffixes
+   */
+
+/**
+   * takes an array and randomizes it in place then returns it
+   * 
+   * uses the modern version of the Fisher–Yates algorithm
+   *
+   * @method faker.helpers.shuffle
+   * @param {array} o
+   */
+
+/**
+   * takes an array and returns a random element of the array
+   *
+   * @method faker.random.arrayElement
+   * @param {array} array
+   */
+
+/**
+   * takes an array and returns a subset with random elements of the array
+   *
+   * @method faker.random.arrayElements
+   * @param {array} array
+   * @param {number} count number of elements to pick
+   */
+
+/**
+   * takes an object and returns the randomly key or value
+   *
+   * @method faker.random.objectElement
+   * @param {object} object
+   * @param {mixed} field
+   */
+
+/**
+   * technics
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.technics
+   */
+
+/**
+   * technics
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.technics
+   */
+
+/**
+   * technology
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {string} keyword
+   * @method faker.image.unsplash.technology
+   */
+
+/**
+   * title
+   *
+   * @method title
+   * @memberof faker.name
+   */
+
+/**
+   * transactionType
+   *
+   * @method faker.finance.transactionType
+   */
+
+/**
+   * transport
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.lorempixel.transport
+   */
+
+/**
+   * transport
+   *
+   * @param {number} width
+   * @param {number} height
+   * @param {boolean} randomize
+   * @method faker.image.transport
+   */
+
+/**
+   * type
+   *
+   * @method faker.database.type
+   */
+
+/**
+   * type
+   *
+   * @method faker.vehicle.type
+   */
+
+/**
+   * unique
+   *
+   * @method unique
+   */
+
+/**
+   * url
+   *
+   * @method faker.internet.url
+   */
+
+/**
+   * userAgent
+   *
+   * @method faker.internet.userAgent
+   */
+
+/**
+   * userCard
+   *
+   * @method faker.helpers.userCard
+   */
+
+/**
+   * userName
+   *
+   * @method faker.internet.userName
+   * @param {string} firstName
+   * @param {string} lastName
+   */
+
+/**
+   * uuid
+   *
+   * @method faker.random.uuid
+   */
+
+/**
+   * vehicle
+   *
+   * @method faker.vehicle.vehicle
+   */
+
+/**
+   * verb
+   *
+   * @method faker.hacker.verb
+   */
+
+/**
+   * vin
+   *
+   * @method faker.vehicle.vin
+   */
+
+/**
+   * weekday
+   *
+   * @param {object} options
+   * @method faker.date.weekday
+   */
+
+/**
+   * word
+   *
+   * @method faker.random.word
+   * @param {string} type
+   */
+
+/**
+ *
+ * @namespace faker
+ */
+
+/**
+ *
+ * @namespace faker.address
+ */
+
+/**
+ *
+ * @namespace faker.internet
+ */
+
+/**
+ *
+ * @namespace faker.name
+ */
+
+/**
+ *
+ * @namespace faker.random
+ */
+
+/**
+ *
+ * @namespace faker.system
+ */
+
+/**
+ *
+ * @namespace faker.unique
+ */
+
+/**
+ *
+ * @param monitor The monitor to collect state from
+ * @param collect The collecting function
+ * @param onUpdate A method to invoke when updates occur
+ */
+
+/**
+ * (c) Michel Weststrate 2015 - 2020
+ * MIT Licensed
+ *
+ * Welcome to the mobx sources! To get an global overview of how MobX internally works,
+ * this is a good place to start:
+ * https://medium.com/@mweststrate/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254#.xvbh6qd74
+ *
+ * Source folders:
+ * ===============
+ *
+ * - api/     Most of the public static methods exposed by the module can be found here.
+ * - core/    Implementation of the MobX algorithm; atoms, derivations, reactions, dependency trees, optimizations. Cool stuff can be found here.
+ * - types/   All the magic that is need to have observable objects, arrays and values is in this folder. Including the modifiers like `asFlat`.
+ * - utils/   Utility stuff.
+ *
+ */
+
+/**
+ * A hook to retrieve the DragDropManager from Context
+ */
+
+/**
+ * A node in the state dependency root that observes other nodes, and can be observed itself.
+ *
+ * ComputedValue will remember the result of the computation for the duration of the batch, or
+ * while being observed.
+ *
+ * During this time it will recompute only when one of its direct dependencies changed,
+ * but only when it is being accessed with `ComputedValue.get()`.
+ *
+ * Implementation description:
+ * 1. First time it's being accessed it will compute and remember result
+ *    give back remembered result until 2. happens
+ * 2. First time any deep dependency change, propagate POSSIBLY_STALE to all observers, wait for 3.
+ * 3. When it's being accessed, recompute if any shallow dependency changed.
+ *    if result changed: propagate STALE to all observers, that were POSSIBLY_STALE from the last step.
+ *    go to step 2. either way
+ *
+ * If at any point it's outside batch and it isn't observed: reset everything and go to 1.
+ */
+
+/**
+ * Batch starts a transaction, at least for purposes of memoizing ComputedValues when nothing else does.
+ * During a batch `onBecomeUnobserved` will be called at most once per observable.
+ * Avoids unnecessary recalculations.
+ */
+
+/**
+ * Collects annotations from prototypes and stores them on target (instance)
+ */
+
+/**
+ * Creates a function that acts as
+ * - decorator
+ * - annotation object
+ */
+
+/**
+ * Creates a named reactive view and keeps it alive, so that the view is always
+ * updated if one of the dependencies changes, even when the view is not further used by something else.
+ * @param view The reactive view
+ * @returns disposer function, which can be used to stop the view from being updated in the future.
+ */
+
+/**
+ * During a transaction no views are updated until the end of the transaction.
+ * The transaction will be run synchronously nonetheless.
+ *
+ * @param action a function that updates some reactive state
+ * @returns any value that was returned by the 'action' parameter.
+ */
+
+/**
+ * Executes the provided function `f` and tracks which observables are being accessed.
+ * The tracking information is stored on the `derivation` object and the derivation is registered
+ * as observer of any of the accessed observables.
+ */
+
+/**
+ * FinalizationRegistry-based uncommitted reaction cleanup
+ */
+
+/**
+ * Finds out whether any dependency of the derivation has actually changed.
+ * If dependenciesState is 1 then it will recalculate dependencies,
+ * if any dependency changed it will propagate it by changing dependenciesState to 2.
+ *
+ * By iterating over the dependencies in the same order that they were reported and
+ * stopping on the first change, all the recalculations are only called for ComputedValues
+ * that will be tracked by derivation. That is because we assume that if the first x
+ * dependencies of the derivation doesn't change then the derivation should run the same way
+ * up until accessing x-th dependency.
+ */
+
+/**
+ * Infers the best fitting annotation from property descriptor or false if the field shoudn't be annotated
+ * - getter(+setter) -> computed
+ * - setter w/o getter -> false (ignore)
+ * - flow -> false (ignore)
+ * - generator -> flow
+ * - action -> false (ignore)
+ * - function -> action (optionally bound)
+ * - other -> defaultAnnotation
+ */
+
+/**
+ * Magic number alert!
+ * Defines within how many times a reaction is allowed to re-trigger itself
+ * until it is assumed that this is gonna be a never ending loop...
+ */
+
+/**
+ * Makes sure that the provided function is invoked at most once.
+ */
+
+/**
+ * NOTE: current propagation mechanism will in case of self reruning autoruns behave unexpectedly
+ * It will propagate changes to observers from previous run
+ * It's hard or maybe impossible (with reasonable perf) to get it right with current approach
+ * Hopefully self reruning autoruns aren't a feature people should depend on
+ * Also most basic use cases should be ok
+ */
+
+/**
+ * Returns the following: own enumerable keys and symbols.
+ */
+
+/**
+ * Stores annotation to prototype,
+ * so it can be inspected later by `makeObservable` called from constructor
+ */
+
+/**
+ * The frequency with which we'll check for leaked reactions.
+ */
+
+/**
+ * The minimum time before we'll clean up a Reaction created in a render
+ * for a component that hasn't managed to run its effects. This needs to
+ * be big enough to ensure that a component won't turn up and have its
+ * effects run without being re-rendered.
+ */
+
+/**
+ * These values will persist if global state is reset
+ */
+
+/**
+ * This array buffer contains two lists of properties, so that all arrays
+ * can recycle their property definitions, which significantly improves performance of creating
+ * properties on the fly.
+ */
+
+/**
+ * Turns an object, array or function into a reactive structure.
+ * @param v the value which should become observable.
+ */
+
+/**
+ * We use class to make it easier to detect in heap snapshots by name
+ */
+
+/**
+ * Wrap function from prototype
+ * Without this, everything works as well, but this works
+ * faster as everything works on unproxied values
+ */
+
+/**
+ * diffs newObserving with observing.
+ * update observing to be newObserving with unique observables
+ * notify observers that become observed/unobserved
+ */
+
+/**
+ * litecoinAddress
+ *
+ * @method  faker.finance.litecoinAddress
+ */
+
+/**
+ * needed to keep `lowestObserverState` correct. when changing from (2 or 1) to 0
+ *
+ */
+
+/**
+ * timers, gc-style, uncommitted reaction cleanup
+ */
+
+/**
+ * useDragSource hook
+ * @param sourceSpec The drag source specification *
+ */
+
+/**
+ * useDropTarget Hook
+ * @param spec The drop target specification
+ */
+
+/** Merge another object into this object, returns this. */
+
+/** string repeat helper, alternative to String.prototype.repeat.... See PR #382
+   *
+   * @method faker.helpers.repeatString
+   * @param {string} string
+   * @param {number} num
+   */
+
+/***/
+
+//
+
+//             " < " +
+
+//             " because " +
+
+//             invariant(!(id in map), "INTERNAL ERROR observer on index 0 shouldn't be held in map.") // for performance
+
+//             invariant(map[id] === i, "INTERNAL ERROR maps derivation.__mapid to index in list") // for performance
+
+//             min +
+
+//             msg +
+
+//             observable.lowestObserverState
+
+//         "INTERNAL ERROR there is no junk in map"
+
+//         "lowestObserverState is wrong for " +
+
+//         const id = list[i].__mapid
+
+//         if (i) {
+
+//         list.length === 0 || Object.keys(map).length === list.length - 1,
+
+//         }
+
+//         } else {
+
+//     )
+
+//     // it's expensive so better not run it in produciton. but temporarily helpful for testing
+
+//     const l = list.length
+
+//     const list = observable.observers
+
+//     const map = observable.observersIndexes
+
+//     const min = getObservers(observable).reduce((a, b) => Math.min(a, b.dependenciesState), 2)
+
+//     for (let i = 0; i < l; i++) {
+
+//     if (min >= observable.lowestObserverState) return // <- the only assumption about `lowestObserverState`
+
+//     invariant(
+
+//     throw new Error(
+
+//     }
+
+//    since it wouldn't be a callable function anymore
+
+//   0: it was set to 0 in last loop. don't need to do anything.
+
+//   0: it's not in new observables, unobserve it
+
+//   1: it keeps being observed, don't want to notify it. change to 0
+
+//   1: it wasn't observed, let's observe it. set back to 0
+
+//  Export a simplified function to generate random numbers
+
+//  Export the twister class
+
+//  Exports: Public API
+
+// !globalState.trackingDerivatpion &&
+
+// "decorate should work with Object.create"
+
+// "in" as it may still exist in proto
+
+// #2432 - reduce behavior depends on arguments.length
+
+// (It triggers warnings in StrictMode, for a start.)
+
+// - allow interceptors to run and potentially prevent individual operations
+
+// - don't _keysAtom.reportChanged if the keys of resulting map are indentical (order matters!)
+
+// - don't recreate observables that already exist in original map (so we don't destroy existing subscriptions)
+
+// - note that result map may differ from replacement map due to the interceptors
+
+// - respect ordering of replacement map
+
+// - typically it's used with simple data objects
+
+// - when symbolic/non-enumerable keys are relevant Reflect.ownKeys works as expected
+
+// 1. it cannot go before memo, only after it
+
+// 2. forwardRef converts the function into an actual component, so we can't let the baseComponent do it
+
+// 5018 xxxx xxxx xxxx xxL
+
+// 9/2018 - Added faker random to ensure mersenne and seed
+
+// <div ref={node => connectDragSource(connectDropTarget(node))}/>
+
+// @action
+
+// @computed
+
+// @computed({ options })
+
+// @flow
+
+// @observable someProp;
+
+// @override must override something
+
+// @ts-ignore
+
+// A prototype could have been annotated already by other constructor,
+
+// A shallow dependency has changed since last computation and the derivation
+
+// ADD interceptor
+
+// Add or update value
+
+// Add the first object to the stack of traversed objects.
+
+// Added max, min range functionality, Marak Squires Sept 11 2014
+
+// Allow re-annotating this field
+
+// Also prevents rewriting in subclass constructor
+
+// An `egal` comparison is performed for other numeric values.
+
+// Annotate
+
+// Array
+
+// Assume equality for cyclic structures. The algorithm for detecting cyclic
+
+// BUT if we're a component that hasn't yet got to the useEffect()
+
+// Bind automatically inferred actions?
+
+// But: https://github.com/mobxjs/mobx/issues/1556
+
+// CONCATENATED MODULE: ./node_modules/@react-dnd/shallowequal/dist/shallowequal.esm.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/index.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/observer.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/useAsObservableSource.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/useObserver.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/FinalizationRegistryWrapper.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/assertEnvironment.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/createReactionCleanupTrackingUsingFinalizationRegister.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/createTimerBasedReactionCleanupTracking.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/observerBatching.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/printDebugValue.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/reactionCleanupTracking.js
+
+// CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/reactionCleanupTrackingCommon.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/DragSourceMonitorImpl.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/DropTargetMonitorImpl.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/SourceConnector.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/TargetConnector.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/registration.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/wrapConnectorHooks.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/index.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/drag.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/drop.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/useCollector.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/useMonitorOutput.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDrag.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDragDropManager.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDrop.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/utils/cloneWithRef.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/utils/isRef.js
+
+// Cache the annotation.
+
+// Called by Atom when its value changes
+
+// Called by ComputedValue when it recalculate and its value changed
+
+// Called on first mount only
+
+// Check for possible key order change
+
+// Choose a random provider
+
+// Clear observable
+
+// Coerce dates and booleans to numeric primitive values. Dates are compared by their
+
+// Compare `[[Class]]` names.
+
+// Compare array lengths to determine if a deep comparison is necessary.
+
+// Concurrently iterating/deleting keys
+
+// Convert to map so we can do quick key lookups
+
+// Copied from https://github.com/jashkenas/underscore/blob/5c237a7c682fb68fd5378203f0bf22dce1624854/underscore.js#L1186-L1289
+
+// Copy props from proto as well, see test:
+
+// Create a Getter for all definitions.foo.bar properties
+
+// Credit cards are in a object structure
+
+// Custom components can no longer be wrapped directly in React DnD 2.0
+
+// Cut out early if the target id has not been set. This should prevent errors
+
+// Deal with range `[min-max]` (only works with numbers for now)
+
+// Deal with range repeat `{min,max}`
+
+// Deal with repeat `{num}`
+
+// Decorator annotations are collected from whole prototype chain.
+
+// Deep compare each member
+
+// Deep compare objects.
+
+// Deep compare the contents, ignoring non-numeric properties.
+
+// Default to decorators
+
+// Define
+
+// Delete
+
+// Delete keys that don't exist in replacement map
+
+// Delete prevented by interceptor
+
+// Don't annotate protos if bound
+
+// Don't use .has(key) - we care about own
+
+// Don't want the source array exposed to modification, so return a copy
+
+// EXPORTS
+
+// EXTERNAL MODULE: ./node_modules/@react-dnd/invariant/dist/invariant.esm.js
+
+// EXTERNAL MODULE: ./node_modules/mobx/dist/mobx.esm.js
+
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/common/DndContext.js + 31 modules
+
+// EXTERNAL MODULE: ./node_modules/react-dom/index.js
+
+// EXTERNAL MODULE: ./node_modules/react/index.js
+
+// Ensure that both objects contain the same number of properties before comparing deep equality.
+
+// Exhaust primitive checks
+
+// Existing prop
+
+// FIXME: this is strange passing in an array index.
+
+// Failure or intercepted
+
+// Finally block can return (or yield) stuff..
+
+// First render for this component (or first time since a previous
+
+// From Immer utils
+
+// Go through all new observables and check diffValue: (now it should be unique)
+
+// Go through all old observables and check diffValue: (it is unique after last bindDependencies)
+
+// Got a change before first mount, force an update
+
+// Great. We've already got our reaction from our render;
+
+// Hence we work with two variables and check whether
+
+// Hide this extra level by increasing the depth.
+
+// However we don't have to worry about missing prop,
+
+// Ideally we use for..of here, but the downcompiled version is really slow...
+
+// Identical objects are equal. `0 === -0`, but they aren't identical.
+
+// If anyone actually needs to optimize this specific code path, please open a support issue on github
+
+// If original descriptor becomes relevant, move this to annotation directly
+
+// If parameters are populated here, they are always going to be of string type
+
+// If passed a ReactElement, clone it and attach this function as a ref.
+
+// If size differs, keys are definitely modified
+
+// If there is no coordinate, the best we can do is return a random GPS coordinate.
+
+// Ignore override
+
+// Implementation requirements:
+
+// Inherited is fine - annotation cannot differ in subclass
+
+// Initializing stack of traversed objects.
+
+// Instance or bound
+
+// Intercept
+
+// Intercepted
+
+// Interceptor can modify the array, copy it to avoid concurrent modification, see #1950
+
+// Internal recursive comparison function for `isEqual`.
+
+// It is used to specify a word in context, which may differ from a stand-alone word
+
+// It's done here since we only need them for objects and arrays comparison.
+
+// It's time to tidy up this leaked reaction.
+
+// Keep first because the operation can be intercepted
+
+// Keep longitude in range [-180, 180]
+
+// Key doesn't exist yet, subscribe for it in case it's added later
+
+// Linear search. Performance is inversely proportional to the number of
+
+// Loop through all the candidate leaked reactions; those older
+
+// Make sure callbacks recieve correct array arg #2326
+
+// Make the range inclusive of the max value
+
+// Map
+
+// Maps and Sets are unwrapped to arrays of entry-pairs, adding an incidental level.
+
+// Merge entries
+
+// Modules 10 straight summation.
+
+// N.B: unminified as it is used by MST
+
+// No Array.fill everywhere...
+
+// No such prop
+
+// Non-configurable for classes
+
+// Non-observable
+
+// Non-obsevable, therefore non-writable
+
+// Not found (false means ignore)
+
+// Not supported in IE, so there are not going to be symbol props anyway...
+
+// Note we can do this only because annotation and field can't change.
+
+// Note: we experience a small performance hit here due to JSON.parse try / catch
+
+// Note: without polyfill for ownKeys, symbols won't be picked up
+
+// Notify
+
+// Notify "has" observers
+
+// Notify "keys/entries/values" observers
+
+// Notify (value possibly changed by ObservableValue)
+
+// Notify spies/listeners
+
+// Notify: autorun(() => obj[key]), see #1796
+
+// Object(NaN) is equivalent to NaN.
+
+// Objects with different constructors are not equivalent, but `Object`s or `Array`s
+
+// Observable has changed, meaning we want to re-render
+
+// Optimization (avoids visiting protos)
+
+// Optimization: don't pull the value unless we will need it
+
+// Optimization: we don't need the intermediate objects and could have a completely custom administration for DynamicObjects,
+
+// Optimization: we use this frequently
+
+// Polyfill needed for Hermes and IE, see https://github.com/facebook/hermes/issues/274
+
+// Possibly include param to function that allows user to choose between distributions.
+
+// Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
+
+// Property "abbr_context" is optional, if not set then "abbr" will be used instead
+
+// Property "wide_context" is optional, if not set then "wide" will be used instead
+
+// Prototype
+
+// Pull descriptors first, so we don't have to deal with props added by administration ($mobx)
+
+// Radius of the Earth (http://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html)
+
+// Re-create the reaction
+
+// Recursively compare objects and arrays.
+
+// RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
+
+// Remove applied decorator annotation so we don't try to apply it again in subclass constructor
+
+// Remove the first object from the stack of traversed objects.
+
+// Report and delegate to dehanced array
+
+// Returns all own keys, including non-enumerable and symbolic
+
+// Returns enumerable && own, but unfortunately keysAtom will report on ANY key change.
+
+// Romanian
+
+// See perf test 'computed memoization'
+
+// See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
+
+// See: https://github.com/andykog/mobx-devtools/
+
+// Set
+
+// Skip key subscription outside derivation
+
+// Some new observed derivations may become stale during this derivation computation
+
+// Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1799
+
+// Source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/en.xml#L1847
+
+// Source: https://unicode.org/cldr/trac/browser/trunk/common/main/pt.xml?rev=14409#L1811
+
+// Source: https://unicode.org/cldr/trac/browser/trunk/common/main/pt_PT.xml?rev=14409#L491
+
+// Strings, numbers, regular expressions, dates, and booleans are compared by value.
+
+// TODO: change all these methods that accept a boolean to instead accept an options hash.
+
+// TODO: have ability to return specific type of word? As in: noun, adjective, verb, etc
+
+// TODO: implement either a gaussian/uniform distribution of points in cicular region.
+
+// TODO: why is this in a different place than the spyReport() function? in all other observables it's called in the same place
+
+// TODO: wire options into createSourceConnector
+
+// Test for A's keys different from B.
+
+// The addition could have been prevent by interceptor
+
+// The drag preview may either be attached via ref or connect function
+
+// The drop target may either be attached via ref or connect function
+
+// The reaction we set up in our render has been disposed.
+
+// The update could have been prevented by interceptor
+
+// The user chose an optional scheme
+
+// The working of observer is explained step by step in this talk: https://www.youtube.com/watch?v=cPF4iBedoF0&feature=youtu.be&t=1307
+
+// There chould be multiple formats
+
+// There is no way to distinguish between Object.keys(object) and Reflect.ownKeys(object) - both are handled by ownKeys trap.
+
+// This allows us to control the execution of the cleanup timer
+
+// This approach will likely result in a higher density of points near the center.
+
+// This can be due to bad timings of renderings, e.g. our
+
+// This helps us achieve a neat API where user doesn't even know that refs
+
+// This time we are not capturing the char before `[]`
+
+// Throw on missing key, except for decorators:
+
+// Trampolining, if runReactions are already running, new reactions will be picked up
+
+// Trap for "in"
+
+// Tried storing newObserving, or observing, or both as Set, but performance didn't come close...
+
+// Typescript workaround to make sure ObservableArray extends Array
+
+// UNUSED EXPORTS: Observer, clearTimers, enableStaticRendering, isObserverBatched, isUsingStaticRendering, observerBatching, useAsObservableSource, useLocalObservable, useLocalStore, useObserver, useStaticRendering
+
+// UNUSED EXPORTS: useDragDropManager, useDragLayer
+
+// Unwrap any wrapped objects.
+
+// Upcast is 'safe' here, because if dep is IObservable, `dependenciesState` will be undefined,
+
+// Use a user provided seed if it exists
+
+// Use correctly ordered map
+
+// Used anytime annotation is not explicitely provided
+
+// Used by JSON.stringify
+
+// Used by computed when its dependency changed, but we don't wan't to immediately recompute.
+
+// Was a new key added?
+
+// Was the key removed?
+
+// We can either over-report in Object.keys(object) or under-report in Reflect.ownKeys(object)
+
+// We choose to over-report in Object.keys(object), because:
+
+// We could also place it on furthest proto, shoudn't matter
+
+// We have reached useEffect(), so we're mounted, and can trigger an update
+
+// We haven't yet reached useEffect(), so we'll need to trigger a re-render
+
+// We need a copy as we will remove annotation from the list once it's applied.
+
+// We will want to know whether a new key is added
+
+// We've definitely already been mounted at this point
+
+// We've just finished a round of cleanups but there are still
+
+// Weex proto freeze protection was here,
+
+// When FinalizationRegistry in use, this this is no-op
+
+// When called from super() some props may not exist yet.
+
+// When passed a node, call the hook straight away.
+
+// While running reactions, new reactions might be triggered.
+
+// Workaround problem in Float point arithmetics for e.g. 6681493 / 0.01
+
+// _keysAtom.reportChanged() was already called
+
+// `NaN`s are equivalent, but non-reflexive.
+
+// `null` or `undefined` only equal to itself (strict comparison).
+
+// action("name") & @action("name")
+
+// action("name", fn() {})
+
+// action(fn() {})
+
+// add a new item
+
+// add entry at the beginning of the result map
+
+// all we need to do is to record that it's now mounted,
+
+// already observable - ignore
+
+// an almost straight conversion from the original program, mt19937ar.c,
+
+// an async iterator
+
+// and `derivation` is an observer of `obj`
+
+// and also we want to preserve existing values
+
+// and modified a little at july 20, 2006, but there are not any substantial differences.
+
+// and skip either the internal values map, or the base object with its property descriptors!
+
+// and the components are attached to dnd-core
+
+// and we don't want to end up with partially annotated proto chain
+
+// anyway, so removed it in V6
+
+// apply modifier
+
+// are being used under the hood.
+
+// array will be trimmed by bindDependencies
+
+// assign options
+
+// assign the function from the module.function namespace
+
+// assumes that annotation.make_/.extend_ works the same for plain objects
+
+// at this point derivation is not holding any data about dependency tree
+
+// based on awesome response : http://stackoverflow.com/questions/43044/algorithm-to-randomly-generate-an-aesthetically-pleasing-color-palette
+
+// based on https://github.com/mridgway/hoist-non-react-statics/blob/master/src/index.js
+
+// because the decorator must have been applied to something.
+
+// before being run or (outside batch and not being observed)
+
+// before using this version, create at least one instance of MersenneTwister19937 class, and initialize the each state, given below in c comments, of all the instances.
+
+// but it is unclear why the hack is need as MobX never changed the prototype
+
+// by default preserve previous allow
+
+// changed by interceptor. Same applies for other Set and Map api's.
+
+// common error handler for messages
+
+// component was paused for a _very_ long time, and our
+
+// computed values are automatically teared down when the last observer leaves
+
+// computed(expr, options?)
+
+// conform: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/observe
+
+// console.log('attempting to parse', str);
+
+// console.log('conflict', result);
+
+// console.log(now - startTime)
+
+// const IF_AVAILABLE = "ifavailable"
+
+// currently only ComputedValue will propagate POSSIBLY_STALE
+
+// currently uniqueness is global to entire faker instance
+
+// debounced autorun
+
+// default `noop` listener will not initialize the hook Set
+
+// default symbol is '#'
+
+// default values required for calling method without arguments
+
+// delete prop (do first, may fail)
+
+// deleting last observer
+
+// disposed during last run. Clean up everything that was bound after the dispose call.
+
+// disposer function
+
+// don't allow state changes during computation
+
+// don't have to recompute on every dependency change, but only when it's needed
+
+// during tracking it's an array with new observed observers
+
+// eat anything that promise would do, it's cancelled!
+
+// equivalent to `new String("5")`.
+
+// eslint-disable-next-line
+
+// eslint-disable-next-line no-prototype-builtins
+
+// execute the provided method to find a potential satifised value
+
+// extract method name from between the {{ }} that we found
+
+// find first matching {{ and }}
+
+// flow(fn)
+
+// for computed, value is undefined
+
+// for effective unobserving. BaseAtom has true, for extra optimization, so its onBecomeUnobserved never gets called, because it's not needed
+
+// for example: {{name.firstName}}
+
+// from different frames are.
+
+// function invariantLOS(observable: IObservable, msg: string) {
+
+// function invariantObservers(observable: IObservable) {
+
+// generates fake data for many computer systems properties
+
+// get specific ext by mime-type
+
+// global results store
+
+// got dropped, and we don't want to make state changes then.
+
+// hasMap, not hashMap >-).
+
+// having this state is second big optimization:
+
+// https://github.com/mobxjs/mobx/pull/2641#issuecomment-737292058
+
+// https://github.com/react-dnd/react-dnd/issues/1310
+
+// https://stackoverflow.com/a/37865170
+
+// ideally, value = change.value would be done here, so that values can be
+
+// if (typeof range == 'undefined') { range = 7; }
+
+// if ComputedValue `obj` actually changed it will be computed and propagated to its observers.
+
+// if disposed while running, clean up later. Maybe not optimal, but rare case
+
+// if incoming str parameter is not provided, return error message
+
+// if no {{ and }} is found, we are done
+
+// if nothing has changed then don't resubscribe
+
+// if the client passed in a different separator than `:`, 
+
+// if the key deletion is prevented by interceptor
+
+// if the result has not been previously found, add it to the found array and return the value as it's unique
+
+// if this observable had reactive observers, trigger the hooks
+
+// if zip format is not specified, use the zip format defined for the locale
+
+// in particular locales first and last names split by gender,
+
+// in the majority of cases
+
+// in this program, procedure descriptions and comments of original source code were not removed.
+
+// intercept
+
+// invariant(derivation.dependenciesState !== IDerivationState.NOT_TRACKING, "INTERNAL ERROR bindDependencies expects derivation.dependenciesState !== -1");
+
+// invariant(globalState.inBatch > 0, "INTERNAL ERROR clearObserving should be called only inside batch");
+
+// invariant(globalState.inBatch > 0, "INTERNAL ERROR, remove should be called only inside batch");
+
+// invariant(node.dependenciesState !== -1, "INTERNAL ERROR, can add only dependenciesState !== -1");
+
+// invariant(observable._observers.indexOf(node) !== -1, "INTERNAL ERROR remove already removed node");
+
+// invariant(observable._observers.indexOf(node) === -1, "INTERNAL ERROR add already added node");
+
+// invariant(observable._observers.length === 0, "INTERNAL ERROR, should only queue for unobservation unobserved observables");
+
+// invariantLOS(observable, "changed start");
+
+// invariantLOS(observable, "confirmed start");
+
+// invariantLOS(observable, "maybe start");
+
+// invariantObservers(observable);
+
+// invariantShouldCompute(derivation)
+
+// it is an observable already, done
+
+// it's possible in the future that some users may want to scope found per function call instead of faker instance
+
+// iterator should handle this correctly
+
+// just extend Map? See also https://gist.github.com/nestharus/13b4d74f2ef4a2f4357dbd3fc23c1e54
+
+// lines commented with /* and */ are original comments.
+
+// lines commented with // are additional comments in this JavaScript version.
+
+// lines commented with //c// were originally descriptions of c procedure. and a few following lines are appropriate JavaScript descriptions.
+
+// map
+
+// maybe it can be cancelled :)
+
+// millisecond representations. Note that invalid dates with millisecond representations
+
+// mobx versions
+
+// must pass "undefined" for { key: undefined }
+
+// n.b. base case is not used for actual typings or exported in the typing files
+
+// never turn into an observable
+
+// newObserving shouldn't be needed outside tracking (statement moved down to work around FF bug, see #614)
+
+// no shallow dependency changed since last computation
+
+// nodes we are looking at. Our value depends on these nodes
+
+// normal autorun
+
+// not hitting the condition
+
+// notify spy & observers
+
+// null (intercepted) -> true (success)
+
+// numeric string
+
+// of `NaN` are not equivalent.
+
+// onBecomeObservedListeners
+
+// other object - ignore
+
+// out of bounds
+
+// plain object
+
+// pre allocate array allocation + room for variation in deps
+
+// prettier-ignore
+
+// prevents accidental field redefinition in subclass
+
+// provides ability to disable safeDescriptors for prototypes
+
+// randomly pick from the many faker methods that can generate words
+
+// re-throw any exceptions caught during rendering
+
+// reaction from an abandoned render was disposed).
+
+// reaction got cleaned up
+
+// reactions could create reactions...
+
+// reduce
+
+// reduce mime-types to those with file-extensions
+
+// ref objects should be passed straight through without wrapping
+
+// reject our original promise
+
+// replace ### with random numbers
+
+// replace [4-9] with a random number in range etc...
+
+// rest of the proto chain must be annotated already
+
+// return the node so it can be chained (e.g. when within callback refs
+
+// return the response recursively until we are done finding all tags
+
+// reverse by default mutates in place before returning the result
+
+// see above comment of firstName method
+
+// since JSON.parse threw an error, assume parameters was actually a string
+
+// since we are requiring the top level of faker, load all locales by default
+
+// since we might actually be dealing with an object or array,
+
+// so that we don't need to depend on findDOMNode() from react-dom.
+
+// so they have had no chance to propagate staleness (#916)
+
+// so use value from _data map (instead of replacement map)
+
+// some deep dependency changed, but don't know if shallow dependency changed
+
+// some leak candidates outstanding.
+
+// some locale datasets ( like ru ) have first_name split by gender. since the name.first_name field does not exist in these datasets,
+
+// some locale datasets ( like ru ) have last_name split by gender. i have no idea how last names can have genders, but also i do not speak russian
+
+// some time from now to N days ago, in milliseconds
+
+// some time from now to N days later, in milliseconds
+
+// some time from now to N years ago, in milliseconds
+
+// some time from now to N years later, in milliseconds
+
+// something that can be converted and mutated?
+
+// sort by default mutates in place before returning the result
+
+// source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1734
+
+// source: http://unicode.org/cldr/trac/browser/tags/release-27/common/main/ru.xml#L1825
+
+// split the method into module and function
+
+// stage, we might be a component that _started_ to render, but
+
+// state propagation can occur outside of action/reactive context #2195
+
+// strange issue with the node_min_test failing for captialize, please fix and add faker.lorem.back
+
+// structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
+
+// support single exclude argument as string
+
+// switch min and max
+
+// than CLEANUP_LEAKED_REACTIONS_AFTER_MILLIS get tidied.
+
+// the `unique` module
+
+// the batch is actually about to finish, all unobserving should happen here.
+
+// there chould be multiple formats
+
+// there could be a throwing finally block
+
+// this is the prop that gets proxied, so can't replace it!
+
+// this is what makes mobx fast
+
+// this means that faker should currently *never* return duplicate values across all API methods when using `Faker.unique`
+
+// this process happens recursively, this computed might be the last observabe of another, etc..
+
+// this program is a JavaScript version of Mersenne Twister, with concealment and encapsulation in class,
+
+// thus we keep consistency by passing 0 as male and 1 as female
+
+// time the script started
+
+// to allow future observable changes to trigger re-renders
+
+// to check for cycles
+
+// to force it to run at awkward times in unit tests.
+
+// translated by y. okada on July 17, 2006.
+
+// true for autoAction
+
+// unique nested structures.
+
+// update the collected properties after the first render
+
+// used by MST ot get undehanced value
+
+// valid for arrays as well
+
+// value might have been changed
+
+// var startTime = 0;
+
+// we always attempt to the parse the incoming parameters into JSON
+
+// we are not interested in the value *or* exception at this moment, but if there is one, notify all
+
+// we converge to no remaining reactions after a while.
+
+// we have to use forwardRef here because:
+
+// we must randomly pick a name from either gender array so faker.name.firstName will return the correct locale data ( and not fallback )
+
+// we will use it if it is in the list of acceptable separators (dash or no separator)
+
+// when (and if) useEffect() arrives.
+
+// where the user has an older version of dnd-core like in
+
+// which goes against all good practices. Let's not change the array in place!
+
+// which makes it both a 'derivation' and a 'mutation'.
+
+// will need to recompute when it's needed next.
+
+// will require to check first if UP_TO_DATE or POSSIBLY_STALE
+
+// won't recalculate derivation
+
+// }
+
+//# sourceMappingURL=FinalizationRegistryWrapper.js.map
+
+//# sourceMappingURL=assertEnvironment.js.map
+
+//# sourceMappingURL=createReactionCleanupTrackingUsingFinalizationRegister.js.map
+
+//# sourceMappingURL=createTimerBasedReactionCleanupTracking.js.map
+
+//# sourceMappingURL=index.js.map
+
+//# sourceMappingURL=mobx.esm.js.map
+
+//# sourceMappingURL=observerBatching.js.map
+
+//# sourceMappingURL=printDebugValue.js.map
+
+//# sourceMappingURL=reactionCleanupTracking.js.map
+
+//# sourceMappingURL=shallowequal.esm.js.map
+
+//# sourceMappingURL=staticRendering.js.map
+
+//# sourceMappingURL=useObserver.js.map
+
+//@ts-ignore
+
+//Fall back to non-gendered names if they exist and gender wasn't specified
+
+//NOTE: this returns a string representation of the value, if you want a number use parseFloat and no symbol
+
+//TODO: add a ranged date method
+
+//TODO: implement for letters e.g. [0-9a-zA-Z] etc.
+
+//c//	+ init_key[j] + j; /* non linear */
+
+//c//#define LOWER_MASK 0x7fffffffUL /* least significant r bits */
+
+//c//#define M 397
+
+//c//#define MATRIX_A 0x9908b0dfUL   /* constant vector a */
+
+//c//#define N 624
+
+//c//#define UPPER_MASK 0x80000000UL /* most significant w-r bits */
+
+//c//(1812433253 * (mt[mti-1] ^ (mt[mti-1] >> 30)) + mti);
+
+//c//- i; /* non linear */
+
+//c//double genrand_real1(void)
+
+//c//double genrand_real2(void)
+
+//c//double genrand_real3(void)
+
+//c//double genrand_res53(void)
+
+//c//init_genrand(19650218);
+
+//c//init_genrand(5489); /* a default initial seed is used */
+
+//c//int i, j, k;
+
+//c//int kk;
+
+//c//long genrand_int31(void)
+
+//c//mt[0]= s & 0xffffffff;
+
+//c//mt[N-1] = mt[M-1] ^ (y >> 1) ^ mag01[y & 0x1];
+
+//c//mt[i] &= 0xffffffff; /* for WORDSIZE > 32 machines */
+
+//c//mt[i] = (mt[i] ^ ((mt[i-1] ^ (mt[i-1] >> 30)) * 1566083941))
+
+//c//mt[i] = (mt[i] ^ ((mt[i-1] ^ (mt[i-1] >> 30)) * 1664525))
+
+//c//mt[kk] = mt[kk+(M-N)] ^ (y >> 1) ^ mag01[y & 0x1];
+
+//c//mt[kk] = mt[kk+M] ^ (y >> 1) ^ mag01[y & 0x1];
+
+//c//mt[mti] &= 0xffffffff;
+
+//c//return ((genrand_int32()) + 0.5)*(1.0/4294967296.0);
+
+//c//return (genrand_int32()>>1);
+
+//c//return genrand_int32()*(1.0/4294967295.0);
+
+//c//return genrand_int32()*(1.0/4294967296.0);
+
+//c//static int mti=N+1; /* mti==N+1 means mt[N] is not initialized */
+
+//c//static unsigned long mag01[2]={0x0UL, MATRIX_A};
+
+//c//static unsigned long mt[N]; /* the array for the state vector  */
+
+//c//unsigned long genrand_int32(void)
+
+//c//unsigned long y;
+
+//c//void init_by_array(unsigned long init_key[], int key_length)
+
+//c//void init_genrand(unsigned long s)
+
+//c//y = (mt[N-1]&UPPER_MASK)|(mt[0]&LOWER_MASK);
+
+//c//y = (mt[kk]&UPPER_MASK)|(mt[kk+1]&LOWER_MASK);
+
+//c//y ^= (y << 15) & 0xefc60000;
+
+//c//y ^= (y << 7) & 0x9d2c5680;
+
+//c//y ^= (y >> 11);
+
+//c//y ^= (y >> 18);
+
+//calling rnd() with no arguments is identical to rnd(0, 100)
+
+//console.log(currentIterations)
+
+//create a template for length
+
+//dots = 2 returns .x.y where x & y are between 0 and 9
+
+//generate a random revision
+
+//generate random numbers
+
+//http://msdn.microsoft.com/en-us/library/ie/ms537503(v=vs.85).aspx
+
+//http://www.opera.com/docs/history/
+
+//https://developer.mozilla.org/en-US/docs/Gecko_user_agent_string_reference
+
+//min and max take in minimum and maximum amounts, dec is the decimal place you want rounded to, symbol is $, €, £, etc
+
+//prefix with ellipsis
+
+//return  faker.lorem.words(wordCount + Helpers.randomNumber(range)).join(' ').capitalize();
+
+//returns a random element from array (a), even weighting
+
+//returns a random key from the passed object; keys are weighted by the decimal probability in their value
+
+//set defaults

@@ -1,3 +1,0 @@
-/*! For license information please see e26eea79d04379bdedf6.js.LICENSE.txt */
-(self.webpackChunkaf_virtual_scroll=self.webpackChunkaf_virtual_scroll||[]).push([[8],{63349:function(e,t,a){"use strict";function n(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}a.d(t,{Z:function(){return n}})},40610:function(e,t,a){"use strict";a.r(t);var n=a(85893),l=a(87113);t.default=function(){return(0,n.jsx)(l.Z,{fixed:!0,rowsQuantity:1e3,getRowData:function(e){return{a:"cell_a_"+e,b:"cell_b_"+e,c:"cell_c_"+e}},columns:[{dataKey:"a",label:"a",width:"100em"},{dataKey:"b",label:"b"},{dataKey:"c",label:"c"}]})}}}]);
-//# sourceMappingURL=e26eea79d04379bdedf6.js.map

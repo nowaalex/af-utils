@@ -1,4 +1,4 @@
-# 2.5.2 - 2021-02-02
+# 2.5.3 - 2021-02-02
 * docs website & repo structure minor changes + upgraded browserslist
 # 2.5.0 - 2021-01-27
 * added table column minWith prop.

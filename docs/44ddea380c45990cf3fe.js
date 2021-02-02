@@ -1,0 +1,3 @@
+/*! For license information please see 44ddea380c45990cf3fe.js.LICENSE.txt */
+(self.webpackChunkaf_virtual_scroll=self.webpackChunkaf_virtual_scroll||[]).push([[266],{32857:(e,s,c)=>{"use strict";c.d(s,{Z:()=>r});const r=(e,s)=>s?`${e} ${s}`:e},65266:(e,s,c)=>{"use strict";c.r(s),c.d(s,{default:()=>d});var r=c(85893),t=c(67294),a=c(32857),l=c(47802),n=c.n(l),u=c(96344),i=c.n(u),f=c(42157),h=c.n(f);const o="_1c-yU_hC37vm4nxQtDbatf";n().registerLanguage("javascript",i()),n().registerLanguage("xml",h());const g=({children:e,className:s})=>{const c=(0,t.useRef)();return(0,t.useEffect)((()=>{n().highlightBlock(c.current)}),[e]),(0,r.jsx)("code",{ref:c,className:(0,a.Z)(o,s),children:e})},d=(0,t.memo)(g)}}]);
+//# sourceMappingURL=44ddea380c45990cf3fe.js.map
