@@ -6,7 +6,7 @@
 `npm install --save af-virtual-scroll`
 
 ### Website
-https://nowaalex.github.io/af-virtual-scroll/w/
+https://nowaalex.github.io/af-virtual-scroll/
 
 ### Features
 * All dimensions are calculated automatically, so there is no need to provide them.

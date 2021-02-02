@@ -19,7 +19,7 @@ module.exports = () => {
 		entry: "./src/website/index.js",
 		output: {
 			publicPath: env.BASE_URL,
-			path: path.resolve(__dirname, "w"),
+			path: path.resolve(__dirname, "docs"),
 			filename: shouldCompress ? "[contenthash].js" : "[name].[id].js"
 		},
 		optimization: {
@@ -83,7 +83,7 @@ module.exports = () => {
 			}),
 			new CopyPlugin({
 				patterns: [
-				  { from: "./src/website/google/", to: path.resolve(__dirname, "w") },
+				  	{ from: "./src/website/google/", to: path.resolve(__dirname, "docs") },
 				],
 			}),
 		]
