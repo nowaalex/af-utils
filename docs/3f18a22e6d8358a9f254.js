@@ -1,0 +1,3 @@
+/*! For license information please see 3f18a22e6d8358a9f254.js.LICENSE.txt */
+(self.webpackChunkaf_virtual_scroll=self.webpackChunkaf_virtual_scroll||[]).push([[455],{63349:function(e,a,t){"use strict";function n(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}t.d(a,{Z:function(){return n}})},33862:function(e,a,t){"use strict";t.r(a);var n=t(85893),l=t(87113);a.default=function(){return(0,n.jsx)(l.Z,{fixed:!0,headless:!0,rowsQuantity:1e3,getRowData:function(e){return{a:"cell_a_"+e,b:"cell_b_"+e,c:"cell_c_"+e}},columns:[{dataKey:"a",label:"a"},{dataKey:"b",label:"b"},{dataKey:"c",label:"c"}]})}}}]);
+//# sourceMappingURL=3f18a22e6d8358a9f254.js.map

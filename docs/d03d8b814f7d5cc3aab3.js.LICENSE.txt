@@ -1,0 +1,52 @@
+/*
+              Normally must be wrapped with DndProvider, but nested providers throw error.
+              Waiting for react-dnd release, which would fix this
+  */
+
+/*
+        It is better to start from indexes iteration, not from groups, to minimize getRowData calls
+    */
+
+/*
+        We could put everything in one loop, but last iteration is different.
+    */
+
+/* Calculated inside model */
+
+/* Provided from renderer */
+
+/* binding */
+
+/* comparer.structural */
+
+/* computed */
+
+/* default */
+
+/* harmony default export */
+
+/* makeAutoObservable */
+
+/* observer */
+
+/*#__PURE__*/
+
+/***/
+
+// CONCATENATED MODULE: ./src/components/ComplexTable/index.js
+
+// CONCATENATED MODULE: ./src/models/RowsAggregator/index.js
+
+// CONCATENATED MODULE: ./src/models/RowsAggregator/utils/flattenGroups/index.js
+
+// CONCATENATED MODULE: ./src/models/RowsAggregator/utils/multiGroupBy/index.js
+
+// CONCATENATED MODULE: ./src/models/RowsAggregator/utils/sortGroups/index.js
+
+// ESM COMPAT FLAG
+
+// EXPORTS
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
+
+// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js

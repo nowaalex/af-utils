@@ -1,0 +1,94 @@
+/*
+        Somebody tried to rerender, while we were in batch.
+        On batch finish component definitely must be rerendered.
+    */
+
+/*
+      most significant bit of this.rowsQuantity;
+      caching it to avoid Math.clz32 calculations on every getIndex call
+  */
+
+/*
+      tabIndex="0" is for proper keyboard nav
+      https://bugzilla.mozilla.org/show_bug.cgi?id=1346159
+  */
+
+/*
+    dataRef is to call Data methods from outside( Data.scrollTo(), etc. ).
+    As it is not dom-related, I decided to avoid forwardRef
+*/
+
+/* 
+          Creating fenwick tree from an array in linear time;
+          It is much more efficient, than calling updateRowHeight N times.
+      */
+
+/* .END_INDEX */
+
+/* .ROWS_QUANTITY */
+
+/* .START_INDEX */
+
+/* .default */
+
+/* END_INDEX */
+
+/* EVENTS_ARRAY_LENGTH */
+
+/* Provided from renderer */
+
+/* ROWS_QUANTITY */
+
+/* START_INDEX */
+
+/* WIDGET_EXTRA_STICKY_HEIGHT */
+
+/* WIDGET_SCROLL_HEIGHT */
+
+/* We can batch-update fenwick tree, if we know, that all indexes are updated in +1 - order. */
+
+/* binding */
+
+/* default */
+
+/* harmony default export */
+
+/* harmony export */
+
+/* harmony import */
+
+/* i starts from 1 here; */
+
+/* inspired by mobx */
+
+/* must be called when row height/heights change */
+
+/* must be done before events, attached in ListBase */
+
+/* must not be >= 1 */
+
+/* observe */
+
+/* rounding via bitwise hacks like |0 may not work here, because number may be > max(int32) */
+
+/* sticky elements ( for example table header/footer ) must influence ONLY on widgetScrollHeight */
+
+/* unobserve */
+
+/*#__PURE__*/
+
+/***/
+
+// CONCATENATED MODULE: ./src/models/PubSub/index.js
+
+// EXPORTS
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
+
+// EXTERNAL MODULE: ./node_modules/react/index.js
+
+// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
