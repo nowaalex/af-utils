@@ -1,3 +1,5 @@
+# 2.5.1 - 2021-02-02
+* docs website & repo structure minor changes
 # 2.5.0 - 2021-01-27
 * added table column minWith prop.
 # 2.4.8 - 2021-01-18
