@@ -1,4 +1,4 @@
-import { ComplexTable as Table } from  "af-virtual-scroll";
+import Table from "af-virtual-scroll/lib/ComplexTable";
 import faker from "faker";
 
 const rows = Array.from({ length: 10000 }, (v, i) => ({

@@ -1,3 +1,5 @@
+# 2.5.4 - 2021-02-03
+* Changed exports structure
 # 2.5.3 - 2021-02-02
 * docs website & repo structure minor changes + upgraded browserslist
 # 2.5.0 - 2021-01-27

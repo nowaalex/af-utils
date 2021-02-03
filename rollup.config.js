@@ -21,7 +21,10 @@ fs.rmdirSync( BUNDLE_TREESHAKE_STATS_OUTPUT_DIR, { recursive: true });
 
 export default [
     {
-        input: "src/index.esm.js",
+        input: {
+            "index.esm": "src/index.esm.js",
+            ComplexTable: "src/components/ComplexTable/index.js"
+        },
         output: {
             format: "es",
             dir: OUTPUT_DIR,

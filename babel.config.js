@@ -3,7 +3,8 @@ const plugins = [
         root: [ "./src" ],
         extensions: [ ".js", ".css", ".scss" ],
         alias: {
-            "af-virtual-scroll": "./src/index.esm.js",
+            "af-virtual-scroll$": "./src/index.esm.js",
+            "af-virtual-scroll/lib/ComplexTable": "./src/components/ComplexTable/index.js"
         }
     }],
     [ "@babel/plugin-proposal-decorators", { "legacy": true }],
