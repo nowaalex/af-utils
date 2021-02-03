@@ -83,7 +83,8 @@ module.exports = () => {
 			}),
 			new CopyPlugin({
 				patterns: [
-				  	{ from: "./src/website/google/", to: path.resolve(__dirname, "docs") },
+					  { from: "./src/website/google/", to: path.resolve(__dirname, "docs") },
+					  { from: "./src/website/preview.gif", to: path.resolve(__dirname, "docs") }
 				],
 			}),
 		]
