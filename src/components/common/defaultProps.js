@@ -1,6 +1,6 @@
 const commonDefaultProps = {
     fixed: false,
-    overscanRowsCount: 4,
+    overscanRowsCount: 2,
     estimatedRowHeight: 20
 };
 

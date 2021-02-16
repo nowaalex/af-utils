@@ -42,7 +42,6 @@ const VariableSizeTable = () => {
             getRowData={i => ({ a: i, b: `cell_b_${i}`, c: `cell_c_${i}` })}
             columns={columns}
             estimatedRowHeight={150}
-            overscanRowsCount={5}
             rowsQuantity={DEFAULT_ROW_COUNT}
         />
     );

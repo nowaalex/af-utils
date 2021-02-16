@@ -19,6 +19,7 @@ const List = ({
     rowsQuantity,
     overscanRowsCount,
     dataRef,
+    onRangeEndMove,
     ...props
 }) => {
 
@@ -30,7 +31,8 @@ const List = ({
         estimatedRowHeight,
         overscanRowsCount,
         rowsQuantity,
-        rowsContainerNode
+        rowsContainerNode,
+        onRangeEndMove
     );
 
     return (
@@ -48,6 +50,7 @@ List.propTypes = {
     fixed: PropTypes.bool,
     overscanRowsCount: PropTypes.number,
     estimatedRowHeight: PropTypes.number,
+    onRangeEndMove: PropTypes.func,
 
     /**
      * @param {number} rowIndex

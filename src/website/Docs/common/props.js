@@ -46,6 +46,11 @@ const commonProps = [
             It is just a hint to minimize number of waste renders
             and to make scrolling smoother, especially when row heights differ significantly.
         `
+    },
+    {
+        name: "onRangeEndMove",
+        type: "function",
+        description: `Can be used to catch scroll-to-end and react somehow`
     }
 ];
 

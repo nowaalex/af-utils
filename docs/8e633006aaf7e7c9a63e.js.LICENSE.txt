@@ -1,0 +1,68 @@
+/*
+        It is better to start from indexes iteration, not from groups, to minimize getRowData calls
+    */
+
+/*
+        We could put everything in one loop, but last iteration is different.
+    */
+
+/*
+      Normally must be wrapped with DndProvider, but nested providers throw error.
+      Waiting for react-dnd release, which would fix this
+  */
+
+/* Calculated inside model */
+
+/* Math.random is not the best option, because same rowIndex should produce same height */
+
+/* Provided from renderer */
+
+/* binding */
+
+/* comparer.structural */
+
+/* computed */
+
+/* default */
+
+/* hack to change renderRow by link */
+
+/* harmony default export */
+
+/* makeAutoObservable */
+
+/* observer */
+
+/*#__PURE__*/
+
+/***/
+
+// CONCATENATED MODULE: ./src/components/ComplexTable/index.js
+
+// CONCATENATED MODULE: ./src/components/ComplexTable/style.module.scss
+
+// CONCATENATED MODULE: ./src/examples/complexTable(unstable)/basic/index.js
+
+// CONCATENATED MODULE: ./src/models/RowsAggregator/index.js
+
+// CONCATENATED MODULE: ./src/models/RowsAggregator/utils/multiGroupBy/index.js
+
+// ESM COMPAT FLAG
+
+// EXPORTS
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
+
+// EXTERNAL MODULE: ./node_modules/faker/index.js
+
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/index.js
+
+// EXTERNAL MODULE: ./node_modules/react/index.js
+
+// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
+
+// EXTERNAL MODULE: ./src/components/Table/index.js + 7 modules
+
+// EXTERNAL MODULE: ./src/utils/cx/index.js
+
+// extracted by mini-css-extract-plugin

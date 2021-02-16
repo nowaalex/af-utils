@@ -48,6 +48,7 @@ const Table = ({
     headless,
     dataRef,
     className,
+    onRangeEndMove,
     ...props
 }) => {
 
@@ -59,7 +60,8 @@ const Table = ({
         estimatedRowHeight,
         overscanRowsCount,
         rowsQuantity,
-        rowsContainerNode
+        rowsContainerNode,
+        onRangeEndMove
     );
         
     return (
@@ -106,6 +108,7 @@ Table.propTypes = {
     fixed: PropTypes.bool,
     overscanRowsCount: PropTypes.number,
     estimatedRowHeight: PropTypes.number,
+    onRangeEndMove: PropTypes.func,
     columns: PropTypes.arrayOf(
         PropTypes.oneOfType([
             PropTypes.string,

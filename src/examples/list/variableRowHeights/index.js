@@ -25,7 +25,6 @@ const VariableSizeList = () => {
     return (
         <StyledList
             estimatedRowHeight={75}
-            overscanRowsCount={5}
             rowsQuantity={DEFAULT_ROW_COUNT}
         >
             {i => (

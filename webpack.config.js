@@ -23,8 +23,6 @@ module.exports = () => {
 			filename: shouldCompress ? "[contenthash].js" : "[name].[id].js"
 		},
 		optimization: {
-			/* otherwise chunks are broken */
-			realContentHash: false,
 			minimizer: [
 				new TerserPlugin({
 					extractComments: "all",

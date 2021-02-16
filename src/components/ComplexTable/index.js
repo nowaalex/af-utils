@@ -236,8 +236,8 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel
     ) : null;
 
     /*
-                Normally must be wrapped with DndProvider, but nested providers throw error.
-                Waiting for react-dnd release, which would fix this
+        Normally must be wrapped with DndProvider, but nested providers throw error.
+        Waiting for react-dnd release, which would fix this
     */
     return (
         <div className={cx(css.wrapper,className)}>

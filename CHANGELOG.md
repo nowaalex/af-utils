@@ -1,3 +1,5 @@
+# 2.5.6 - 2021-02-16
+* Added onRangeEndMove event, allowing infinite-scroll behavior
 # 2.5.5 - 2021-02-03
 * Changed exports structure & upgraded webpack
 # 2.5.3 - 2021-02-02
