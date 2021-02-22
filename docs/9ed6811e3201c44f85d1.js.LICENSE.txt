@@ -379,6 +379,14 @@
  */
 
 /**
+ * The base implementation of `_.trim`.
+ *
+ * @private
+ * @param {string} string The string to trim.
+ * @returns {string} Returns the trimmed string.
+ */
+
+/**
  * The base implementation of `getTag` without fallbacks for buggy environments.
  *
  * @private
@@ -404,6 +412,15 @@
  */
 
 /**
+ * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
+ * character of `string`.
+ *
+ * @private
+ * @param {string} string The string to inspect.
+ * @returns {number} Returns the index of the last non-whitespace character.
+ */
+
+/**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
@@ -422,6 +439,10 @@
 /** Used for built-in method references. */
 
 /** Used to detect unsigned integer values. */
+
+/** Used to match a single whitespace character. */
+
+/** Used to match leading whitespace. */
 
 /** `Object#toString` result references. */
 

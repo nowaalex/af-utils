@@ -33,6 +33,10 @@
 
 /* observer */
 
+/* useDrag */
+
+/* useDrop */
+
 /*#__PURE__*/
 
 /***/
@@ -55,11 +59,11 @@
 
 // EXTERNAL MODULE: ./node_modules/faker/index.js
 
-// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/index.js
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDrag.js + 2 modules
+
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDrop.js + 2 modules
 
 // EXTERNAL MODULE: ./node_modules/react/index.js
-
-// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 
 // EXTERNAL MODULE: ./src/components/Table/index.js + 7 modules
 

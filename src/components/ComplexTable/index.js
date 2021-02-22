@@ -10,10 +10,10 @@ const HEADER_DND_TYPE = "h";
 
 const HeaderLabel = /*#__PURE__*/ observer(({ m, dataKey, label, i }) => {
 
-    const [ collectedProps, dragRef ] = useDrag({ item: {
+    const [ collectedProps, dragRef ] = useDrag(() => ({ item: {
         type: HEADER_DND_TYPE,
         dataKey
-    }});
+    }}), [ dataKey ]);
 
     return (
         <div
@@ -101,12 +101,12 @@ const GroupLabelDefault = ({ groupKey, columns, onRemove }) => (
 
 const GroupsPanel = /*#__PURE__*/ observer(({ m, GroupLabel }) => {
 
-    const [ collectedProps, dropRef ] = useDrop({
+    const [ collectedProps, dropRef ] = useDrop(() => ({
         accept: HEADER_DND_TYPE,
         drop( item ){
             m.addGrouping( item.dataKey );
         }
-    });
+    }), [ m ]);
 
     return m.compact ? null : (
         <div className={css.groupsPanel} ref={dropRef}>

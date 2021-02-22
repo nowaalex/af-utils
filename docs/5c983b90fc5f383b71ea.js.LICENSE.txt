@@ -5,7 +5,9 @@
    * and for that reason the do not call dependencyState.notifyObserved
    */
 
-/* DndContext */
+/* .DndContext */
+
+/* .invariant */
 
 /* Reaction */
 
@@ -21,9 +23,9 @@
 
 /* harmony import */
 
-/* harmony reexport (checked) */
-
 /* invariant */
+
+/* isRef */
 
 /* istanbul ignore next */
 
@@ -31,9 +33,21 @@
 
 /* reexport */
 
-/* reexport safe */
+/* registerSource */
+
+/* registerTarget */
 
 /* see #1208 */
+
+/* shallowEqual */
+
+/* useDragDropManager */
+
+/* useIsomorphicLayoutEffect */
+
+/* useMonitorOutput */
+
+/* wrapConnectorHooks */
 
 /*#__PURE__*/
 
@@ -327,12 +341,14 @@
 
 /**
  * useDragSource hook
- * @param sourceSpec The drag source specification *
+ * @param sourceSpec The drag source specification (object or function, function preferred)
+ * @param deps The memoization deps array to use when evaluating spec changes
  */
 
 /**
  * useDropTarget Hook
- * @param spec The drop target specification
+ * @param spec The drop target specification (object or function, function preferred)
+ * @param deps The memoization deps array to use when evaluating spec changes
  */
 
 /** Merge another object into this object, returns this. */
@@ -473,8 +489,6 @@
 
 // But: https://github.com/mobxjs/mobx/issues/1556
 
-// CONCATENATED MODULE: ./node_modules/@react-dnd/shallowequal/dist/shallowequal.esm.js
-
 // CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/index.js
 
 // CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/observer.js
@@ -499,37 +513,21 @@
 
 // CONCATENATED MODULE: ./node_modules/mobx-react-lite/es/utils/reactionCleanupTrackingCommon.js
 
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/DragSourceMonitorImpl.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/DropTargetMonitorImpl.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/SourceConnector.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/TargetConnector.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/registration.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/wrapConnectorHooks.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/index.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/drag.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/drop.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/useCollector.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/internal/useMonitorOutput.js
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useCollector.js
 
 // CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDrag.js
 
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDragDropManager.js
-
 // CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useDrop.js
 
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/utils/cloneWithRef.js
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/hooks/useMonitorOutput.js
 
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/utils/isRef.js
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/internals/DragSourceMonitorImpl.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/internals/DropTargetMonitorImpl.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/internals/SourceConnector.js
+
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/internals/TargetConnector.js
 
 // Cache the annotation.
 
@@ -587,9 +585,13 @@
 
 // EXTERNAL MODULE: ./node_modules/@react-dnd/invariant/dist/invariant.esm.js
 
+// EXTERNAL MODULE: ./node_modules/@react-dnd/shallowequal/dist/shallowequal.esm.js
+
 // EXTERNAL MODULE: ./node_modules/mobx/dist/mobx.esm.js
 
-// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/common/DndContext.js + 31 modules
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/hooks/useIsomorphicLayoutEffect.js
+
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/internals/registration.js
 
 // EXTERNAL MODULE: ./node_modules/react-dom/index.js
 
@@ -792,8 +794,6 @@
 // Typescript workaround to make sure ObservableArray extends Array
 
 // UNUSED EXPORTS: Observer, clearTimers, enableStaticRendering, isObserverBatched, isUsingStaticRendering, observerBatching, useAsObservableSource, useLocalObservable, useLocalStore, useObserver, useStaticRendering
-
-// UNUSED EXPORTS: useDragDropManager, useDragLayer
 
 // Unwrap any wrapped objects.
 
@@ -1093,6 +1093,8 @@
 
 // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
 
+// suppress the useLayoutEffect warning on server side.
+
 // than CLEANUP_LEAKED_REACTIONS_AFTER_MILLIS get tidied.
 
 // the batch is actually about to finish, all unobserving should happen here.
@@ -1118,8 +1120,6 @@
 // update the collected properties after the first render
 
 // used by MST ot get undehanced value
-
-// valid for arrays as well
 
 // value might have been changed
 

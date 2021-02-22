@@ -12,8 +12,6 @@ object-assign
 
 /* binding */
 
-/* createDndContext */
-
 /* default */
 
 /* default.estimatedRowHeight */
@@ -35,6 +33,8 @@ object-assign
 /* harmony default export */
 
 /* harmony export */
+
+/* harmony import */
 
 /* import() */
 
@@ -58,6 +58,10 @@ object-assign
        * be used to unsubscribe the observable from the store, and prevent further
        * emission of values from the observable.
        */
+
+/**
+     * Get the root element to use for event subscriptions
+     */
 
 /**
    * Adds a change listener. It will be called any time an action is dispatched,
@@ -161,10 +165,6 @@ object-assign
  */
 
 /**
- * A React component that provides the React-DnD context
- */
-
-/**
  * Attach the keys as a property of the regexp.
  *
  * @param  {!RegExp} re
@@ -253,12 +253,6 @@ object-assign
 /**
  * Creates a history object that uses the HTML5 history API including
  * pushState, replaceState, and the popstate event.
- */
-
-/**
- * Creates the context object we're providing
- * @param backend
- * @param context
  */
 
 /**
@@ -629,12 +623,6 @@ object-assign
 
 // CONCATENATED MODULE: ./node_modules/@react-dnd/asap/dist/esm/browser/raw.js
 
-// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/DragDropManagerImpl.js
-
-// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/DragDropMonitorImpl.js
-
-// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/HandlerRegistryImpl.js
-
 // CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/beginDrag.js
 
 // CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/drop.js
@@ -649,13 +637,17 @@ object-assign
 
 // CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/publishDragSource.js
 
-// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/dragDrop/types.js
-
 // CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/actions/registry.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/classes/DragDropManagerImpl.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/classes/DragDropMonitorImpl.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/classes/HandlerRegistryImpl.js
 
 // CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/contracts.js
 
-// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/factories.js
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/createDragDropManager.js
 
 // CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/reducers/dirtyHandlerIds.js
 
@@ -670,6 +662,8 @@ object-assign
 // CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/reducers/stateId.js
 
 // CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/utils/dirtiness.js
+
+// CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/utils/equality.js
 
 // CONCATENATED MODULE: ./node_modules/dnd-core/dist/esm/utils/js_utils.js
 
@@ -701,9 +695,7 @@ object-assign
 
 // CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/utils/js_utils.js
 
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/DndContext.js
-
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/common/DndProvider.js
+// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/core/DndProvider.js
 
 // CONCATENATED MODULE: ./node_modules/react-icons/lib/esm/iconContext.js
 
@@ -735,8 +727,6 @@ object-assign
 
 // CONCATENATED MODULE: ./src/website/Docs/common/props.js
 
-// CONCATENATED MODULE: ./src/website/Menu/index.js
-
 // CONCATENATED MODULE: ./src/website/Menu/style.module.scss
 
 // Check if module is in cache
@@ -767,15 +757,11 @@ object-assign
 
 // Dock to the top
 
-// Don't emit hover in `dragenter` on Firefox due to an edge case.
-
 // Don't publish the source just yet (see why below)
 
 // Don't show a nice cursor but still prevent default
 
 // EXPORTS
-
-// EXTERNAL MODULE: ./node_modules/@react-dnd/invariant/dist/invariant.esm.js
 
 // EXTERNAL MODULE: ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js
 
@@ -783,11 +769,11 @@ object-assign
 
 // EXTERNAL MODULE: ./node_modules/prop-types/index.js
 
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/core/DndContext.js
+
 // EXTERNAL MODULE: ./node_modules/react-dom/index.js
 
 // EXTERNAL MODULE: ./node_modules/react/index.js
-
-// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 
 // EXTERNAL MODULE: ./node_modules/symbol-observable/es/index.js + 1 modules
 
@@ -847,7 +833,7 @@ object-assign
 
 // If the path exists, push it onto the end.
 
-// If the target changes position as the result of `dragenter`, Firefox
+// If the target changes position as the result of `dragenter`, `dragover` might still
 
 // If we call `asap` within tasks scheduled by `asap`, the queue will
 
@@ -1185,6 +1171,8 @@ object-assign
 
 // get a new location before the <Router> is mounted.
 
+// get dispatched despite target being no longer there. The easy solution is to check
+
 // getDefaultExport function for compatibility with non-harmony modules
 
 // grow, but to avoid an O(n) walk for every task we execute, we don't
@@ -1317,8 +1305,6 @@ object-assign
 
 // the previous one, we may end up in a weird state. Figure out the
 
-// there. The easy solution is to only fire `hover` in `dragover` on FF.
-
 // they mount and since cDM fires in children before parents, we may
 
 // to a 4 milisecond delay, but once we're flushing, there's no delay
@@ -1353,11 +1339,11 @@ object-assign
 
 // whether or not we matched exactly
 
+// whether there actually is a target before firing `hover`.
+
 // will abruptly end the dragging, which is not obvious.
 
 // will receive the previous state. This effectively populates
-
-// will still happily dispatch `dragover` despite target being no longer
 
 // workers, we enlist an interval handle that will try to fire
 

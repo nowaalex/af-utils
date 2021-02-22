@@ -34,6 +34,7 @@ export default [
         plugins: [
             removeInlinedConstantsImports(),
             replace({
+                preventAssignment: true,
                 exclude: /constants\/events/,
                 ...inlinedConstants
             }),
@@ -64,6 +65,7 @@ export default [
                 [fileName]: fileContent
             }),
             replace({
+                preventAssignment: true,
                 "process.env.NODE_ENV": JSON.stringify( "production" )
             }),
             terser({
