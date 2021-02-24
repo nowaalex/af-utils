@@ -47,6 +47,8 @@
 
 /* useMonitorOutput */
 
+/* useOptionalFactory */
+
 /* wrapConnectorHooks */
 
 /*#__PURE__*/
@@ -608,6 +610,8 @@
 // EXTERNAL MODULE: ./node_modules/mobx/dist/mobx.esm.js
 
 // EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/hooks/useIsomorphicLayoutEffect.js
+
+// EXTERNAL MODULE: ./node_modules/react-dnd/dist/esm/hooks/useOptionalFactory.js
 
 // EXTERNAL MODULE: ./node_modules/react-dom/index.js
 

@@ -1,3 +1,5 @@
+# 2.5.9 - 2021-02-24
+* added react-dnd to peer deps
 # 2.5.8 - 2021-02-22
 * Upgraded react-dnd
 # 2.5.7 - 2021-02-22

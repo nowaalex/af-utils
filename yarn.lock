@@ -996,10 +996,10 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.12.13"
 
-"@babel/plugin-transform-runtime@^7.13.5":
-  version "7.13.5"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-7.13.5.tgz#0fbe13d8980f136b77554a7d6893fa7db91dc587"
-  integrity sha512-prZzwuR0C4pCHAkWzBAPSqm7A1kOyE+Fd7IaNqZPfEtWvt6xWmOtgbfmQ1lAZqbvU+4e9DSvf7ldkjClmNbZSQ==
+"@babel/plugin-transform-runtime@^7.13.6":
+  version "7.13.6"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-7.13.6.tgz#c11c806f023d2065bbcc9b751702f4008245951c"
+  integrity sha512-QsTomUTIeOdYrNsOMJRSp2QzGvB1KYD4ePCC8Mei2SuoHScncYS3h1E9PR5gDL7buJmcqIHrWyH6B5GZMgDrRg==
   dependencies:
     "@babel/helper-module-imports" "^7.12.13"
     "@babel/helper-plugin-utils" "^7.13.0"
@@ -1170,10 +1170,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.13.4":
-  version "7.13.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.4.tgz#a2f5b5304d6f98a94053e6737321501347325617"
-  integrity sha512-pZLFG10nRL1hPF9J0/WdxjVuLEanSge8W3Ct+Kls9fNhD4vOi9bhuAU8DdNARvBE9GTg6UhQFcEIF1XhIZd9ZA==
+"@babel/runtime@^7.13.6":
+  version "7.13.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.6.tgz#86e0fad6cbb46a680e21c1aa4748717a058d345a"
+  integrity sha512-Y/DEVhSQ91u27rxq7D0EH/sewS6+x06p/MgO1VppbDHMzYXLZrAR5cFjCom78e9RUw1BQAq6qJg6fXc/ep7glA==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -8654,10 +8654,10 @@ react-dnd-html5-backend@^12.1.0:
   dependencies:
     dnd-core "12.0.1"
 
-react-dnd@^13.0.1:
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-13.0.1.tgz#2e2d688546e8dbe645b904795c1c6ed117b0f856"
-  integrity sha512-CZf+evewMin/54d3WBBBSswfJj8dqD+6wLasJLd+XZlns+MPdvzDkvYDUlvqqxF6gqF15sA99a+ijVHUEGxb2Q==
+react-dnd@^13.1.0:
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-13.1.0.tgz#ab9c181d26b6c22f4e6db43edf6cf9d2bf64f115"
+  integrity sha512-FSocIt/13RdcVqlMRCKmJWATOeRvp3i8SS+LdMkTZIrWplFkqsqutW83NVn5WxL7eYifGD+9VRE/m6Q+aUEDVA==
   dependencies:
     "@react-dnd/invariant" "^2.0.0"
     "@react-dnd/shallowequal" "^2.0.0"
@@ -10668,10 +10668,10 @@ webpack-sources@^2.1.1:
     source-list-map "^2.0.1"
     source-map "^0.6.1"
 
-webpack@^5.24.0:
-  version "5.24.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.24.0.tgz#dbb5017dae053a506d8b909b0b21367d05fd56ee"
-  integrity sha512-ZkDxabL/InAQy9jluQTA8VIB7Gkhsv5uMJdAIz4QP2u4zaOX6+Tig7Jv+WSwhHp9qTnAx0rmn0dVTUPqZGRLbg==
+webpack@^5.24.1:
+  version "5.24.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.24.1.tgz#6b7730bfba1ee94b05d05ef7c32743a35105a744"
+  integrity sha512-eg+6OIt6npUSwbhRQY6XffAixEUSARBf+WAWOxrZwOB4jRbbpMXlridFy/Yt7N0U20Ry1vp/nnDbtN7l1rUdIA==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.46"
