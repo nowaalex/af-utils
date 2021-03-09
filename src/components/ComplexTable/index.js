@@ -10,10 +10,12 @@ const HEADER_DND_TYPE = "h";
 
 const HeaderLabel = /*#__PURE__*/ observer(({ m, dataKey, label, i }) => {
 
-    const [ collectedProps, dragRef ] = useDrag(() => ({ item: {
+    const [ , dragRef ] = useDrag(() => ({
         type: HEADER_DND_TYPE,
-        dataKey
-    }}), [ dataKey ]);
+        item: {
+            dataKey
+        }}
+    ), [ dataKey ]);
 
     return (
         <div
