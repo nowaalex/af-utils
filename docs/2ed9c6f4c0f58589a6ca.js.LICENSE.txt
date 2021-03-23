@@ -494,7 +494,7 @@ object-assign
 
 /** @class */
 
-/** @license React v0.20.1
+/** @license React v0.20.2
  * scheduler.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -512,7 +512,7 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
-/** @license React v17.0.1
+/** @license React v17.0.2
  * react-dom.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -521,7 +521,7 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
-/** @license React v17.0.1
+/** @license React v17.0.2
  * react-jsx-runtime.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -530,7 +530,7 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
-/** @license React v17.0.1
+/** @license React v17.0.2
  * react.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -925,8 +925,6 @@ object-assign
 
 // Prevent leaking memory for long chains of recursive calls to `asap`.
 
-// Promise = chunk loading, 0 = chunk loaded
-
 // Public interface
 
 // Push the current path onto the tokens.
@@ -1068,6 +1066,8 @@ object-assign
 // Work around @2x coordinate discrepancies in browsers
 
 // Work around Safari 8 positioning bug
+
+// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 
 // `call`, just like a function.
 
@@ -1241,7 +1241,7 @@ object-assign
 
 // no baseURI
 
-// no deferred startup
+// no on chunks loaded
 
 // no prefetching
 

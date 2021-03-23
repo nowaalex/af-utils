@@ -1,3 +1,5 @@
+# 2.6.1 - 2021-03-23
+* upgraded deps
 # 2.6.0 - 2021-03-10
 * upgraded deps(react-dnd to version 14 and other minor)
 # 2.5.9 - 2021-02-24

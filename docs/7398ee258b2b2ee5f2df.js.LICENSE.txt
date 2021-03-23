@@ -178,6 +178,11 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 /**
    *
+   * @param {HighlightedHTMLElement} el
+   */
+
+/**
+   *
    * @param {PluginEvent} event
    * @param {any} args
    */
@@ -309,8 +314,14 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 /**
    * Core highlighting function.
    *
-   * @param {string} languageName - the language to use for highlighting
-   * @param {string} code - the code to highlight
+   * OLD API
+   * highlight(lang, code, ignoreIllegals, continuation)
+   *
+   * NEW API
+   * highlight(code, {lang, ignoreIllegals})
+   *
+   * @param {string} codeOrlanguageName - the language to use for highlighting
+   * @param {string | HighlightOptions} optionsOrCode - the code to highlight
    * @param {boolean} [ignoreIllegals] - whether to ignore illegal matches, default is to bail
    * @param {CompiledMode} [continuation] - current continuation mode, if any
    *
@@ -357,6 +368,12 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
    */
 
 /**
+   * Remove a language grammar module
+   *
+   * @param {string} languageName
+   */
+
+/**
    * Takes a string like "<Booger" and checks to see
    * if we can find a matching "</Booger" later in the
    * content.
@@ -376,6 +393,12 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
    */
 
 /**
+   * Upgrades the old highlightBlock plugins to the new
+   * highlightElement API
+   * @param {HLJSPlugin} plugin
+   */
+
+/**
    * auto-highlights all pre>code elements on the page
    */
 
@@ -383,9 +406,9 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
    * private highlight that's used internally and does not fire callbacks
    *
    * @param {string} languageName - the language to use for highlighting
-   * @param {string} code - the code to highlight
-   * @param {boolean} [ignoreIllegals] - whether to ignore illegal matches, default is to bail
-   * @param {CompiledMode} [continuation] - current continuation mode, if any
+   * @param {string} codeToHighlight - the code to highlight
+   * @param {boolean?} [ignoreIllegals] - whether to ignore illegal matches, default is to bail
+   * @param {CompiledMode?} [continuation] - current continuation mode, if any
    * @returns {HighlightResult} - result of the highlight operation
   */
 
@@ -635,6 +658,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 /** */
 
+/** @implements CallbackResponse */
+
 /** @param {Attr} attr */
 
 /** @param {Node} node */
@@ -797,6 +822,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // Adjust the backreference.
 
+// BACKREF_RE matches an open parenthesis or backreference. To avoid
+
 // But a type might: `<Array<Array<number>>`, etc.
 
 // CLONE
@@ -853,9 +880,13 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // So what we do: We execute two matchers, one resuming at the same
 
+// TODO: Remove with v12 API
+
 // TODO: We need negative look-behind support to do this properly
 
 // TODO: remove v12, deprecated
+
+// TODO: remove with v12
 
 // TODO: remove with version 11.0
 
@@ -864,6 +895,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // This is now either a tag or a type.
 
 // Which ever results in a match first is then used. So this 3-4 step
+
+// _ implied for relevance only, do not highlight
 
 // __beforeBegin is considered private API, internal use only
 
@@ -905,8 +938,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // avoids the need to check length every time exec is called
 
-// backreferenceRe matches an open parenthesis or backreference. To avoid
-
 // backreferences so they continue to match.
 
 // beta configuration options, subject to change, welcome to discuss
@@ -918,6 +949,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // built-in plugins, likely to be moved out of core in the future
 
 // but we list only those realistically expected in code display.
+
+// by applying a class name
 
 // calling the `hljs.configure` function.
 
@@ -932,6 +965,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // considered for a potential match
 
 // console.log("match", match[0], match.rule && match.rule.begin)
+
+// continuation not supported at all via the new API
 
 // correct bounding ( ) before the =>.  There could be any number of
 
@@ -1085,6 +1120,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // object attr container
 
+// old API
+
 // only regexes not matched previously will now be
 
 // open tag
@@ -1142,6 +1179,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // spit the "skipped" character that our regex choked on back into the output sequence
 
 // sub-expressions inside also surrounded by parens.
+
+// support for v10 API
 
 // than being forced to use `begin`.  The extension then just moves `match` into
 
