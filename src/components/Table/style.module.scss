@@ -32,8 +32,8 @@
 }
 
 .bodyTable {
-    /* assuming that table would be used full-stretch mostly */
-    flex: 1 1 auto;
+    /* flex-grow on table makes rows to stretch on firefox */
+    flex: 0 1 auto;
     table-layout: fixed;
     min-width: 100%;
 }
