@@ -1,7 +1,5 @@
 /* .default */
 
-/* binding */
-
 /* harmony default export */
 
 /* harmony export */

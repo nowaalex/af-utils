@@ -6,8 +6,6 @@
 
 /* harmony default export */
 
-/* harmony export */
-
 /* n */
 
 /* o */

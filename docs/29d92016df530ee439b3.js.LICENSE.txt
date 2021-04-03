@@ -181,8 +181,6 @@ String.prototype.capitalize = function () { //v1.0
 
 /* a default initial seed is used */
 
-/* binding */
-
 /* constant vector a */
 
 /* constants should be scoped inside the class */
@@ -204,8 +202,6 @@ String.prototype.capitalize = function () { //v1.0
 /* generates a random number on [0,1)-real-interval */
 
 /* generates a random number on [0,1]-real-interval */
-
-/* harmony export */
 
 /* init_key is the array for initializing keys */
 
