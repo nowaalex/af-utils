@@ -2180,6 +2180,26 @@ String.prototype.capitalize = function () { //v1.0
 
 // global results store
 
+// he.app = require("./app");
+
+// he.business = require("./business");
+
+// he.company = require("./company");
+
+// he.database = require("./database");
+
+// he.finance = require("./finance");
+
+// he.hacker = require("./hacker");
+
+// he.internet = require("./internet");
+
+// he.system = require("./system");
+
+// he.team = require("./team");
+
+// he.vehicle = require("./vehicle");
+
 // https://transferwise.com/fr/iban/azerbaijan
 
 // if (typeof range == 'undefined') { range = 7; }

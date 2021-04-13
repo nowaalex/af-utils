@@ -510,11 +510,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 /**
  * @param {string} message
- * @param {any} args
- */
-
-/**
- * @param {string} message
  */
 
 /**
@@ -525,6 +520,10 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 /**
  * @param {string} value
  * @returns {string}
+ */
+
+/**
+ * @type {Record<string, boolean>}
  */
 
 /**

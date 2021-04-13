@@ -1,3 +1,5 @@
+# 2.6.4 - 2021-04-13
+* upgraded deps
 # 2.6.3 - 2021-04-03
 * fixed main entry in package.json
 # 2.6.2 - 2021-03-31

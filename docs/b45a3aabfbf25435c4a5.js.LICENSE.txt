@@ -9,6 +9,12 @@
 
 /* .invariant */
 
+/* Break */
+
+/* Cancel */
+
+/* Continue */
+
 /* Reaction */
 
 /* binding */
@@ -82,13 +88,13 @@
 
 /**
    * @param {PropertyKey} key
-   * @param {Annotation|boolean} annotation true - infer from object or it's prototype, false - ignore
+   * @param {Annotation|boolean} annotation true - use default annotation, false - ignore prop
    */
 
 /**
    * @param {PropertyKey} key
    * @param {PropertyDescriptor} descriptor
-   * @param {Annotation|boolean} annotation true - infer from descriptor, false - copy as is
+   * @param {Annotation|boolean} annotation true - use default annotation, false - copy as is
    * @param {boolean} proxyTrap whether it's called from proxy trap
    * @returns {boolean|null} true on success, false on failure (proxyTrap + non-configurable), null when cancelled by interceptor
    */
@@ -103,7 +109,7 @@
 /**
    * @param {PropertyKey} key
    * @param {any} value
-   * @param {Annotation|boolean} annotation true - infer from descriptor, false - copy as is
+   * @param {Annotation|boolean} annotation true - use default annotation, false - copy as is
    * @param {boolean} proxyTrap whether it's called from proxy trap
    * @returns {boolean|null} true on success, false on failure (proxyTrap + non-configurable), null when cancelled by interceptor
    */
@@ -250,17 +256,6 @@
  * that will be tracked by derivation. That is because we assume that if the first x
  * dependencies of the derivation doesn't change then the derivation should run the same way
  * up until accessing x-th dependency.
- */
-
-/**
- * Infers the best fitting annotation from property descriptor or false if the field shoudn't be annotated
- * - getter(+setter) -> computed
- * - setter w/o getter -> false (ignore)
- * - flow -> false (ignore)
- * - generator -> flow
- * - action -> false (ignore)
- * - function -> action (optionally bound)
- * - other -> defaultAnnotation
  */
 
 /**
@@ -491,9 +486,11 @@
 
 // Assume equality for cyclic structures. The algorithm for detecting cyclic
 
-// BUT if we're a component that hasn't yet got to the useEffect()
+// Assumes makeAutoObservable can be called only once per object and can't be used in subclass
 
-// Bind automatically inferred actions?
+// Assumes that annotation.make_/.extend_ works the same for plain objects
+
+// BUT if we're a component that hasn't yet got to the useEffect()
 
 // But: https://github.com/mobxjs/mobx/issues/1556
 
@@ -563,8 +560,6 @@
 
 // CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/internals/TargetConnector.js
 
-// Cache the annotation.
-
 // Called by Atom when its value changes
 
 // Called by ComputedValue when it recalculate and its value changed
@@ -610,8 +605,6 @@
 // Delete keys that don't exist in replacement map
 
 // Delete prevented by interceptor
-
-// Don't annotate protos if bound
 
 // Don't use .has(key) - we care about own
 
@@ -685,15 +678,9 @@
 
 // Implementation requirements:
 
-// Inherited is fine - annotation cannot differ in subclass
-
 // Initializing stack of traversed objects.
 
-// Instance or bound
-
 // Intercept
-
-// Intercepted
 
 // Interceptor can modify the array, copy it to avoid concurrent modification, see #1950
 
@@ -702,8 +689,6 @@
 // It's done here since we only need them for objects and arrays comparison.
 
 // It's time to tidy up this leaked reaction.
-
-// Keep first because the operation can be intercepted
 
 // Key doesn't exist yet, subscribe for it in case it's added later
 
@@ -731,13 +716,9 @@
 
 // Non-obsevable, therefore non-writable
 
-// Not found (false means ignore)
-
 // Not supported in IE, so there are not going to be symbol props anyway...
 
 // Note that the "Dustbin Stress Test" fails if this is not
-
-// Note we can do this only because annotation and field can't change.
 
 // Note: without polyfill for ownKeys, symbols won't be picked up
 
@@ -759,7 +740,9 @@
 
 // Observable has changed, meaning we want to re-render
 
-// Optimization (avoids visiting protos)
+// Optimization: avoid visiting protos
+
+// Optimization: cache keys on proto
 
 // Optimization: don't pull the value unless we will need it
 
@@ -767,13 +750,9 @@
 
 // Optimization: we use this frequently
 
-// Overrides are not cached, unless `true`, see #2832
-
 // Polyfill needed for Hermes and IE, see https://github.com/facebook/hermes/issues/274
 
 // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
-
-// Prototype
 
 // Pull descriptors first, so we don't have to deal with props added by administration ($mobx)
 
@@ -806,6 +785,10 @@
 // Some new observed derivations may become stale during this derivation computation
 
 // Strings, numbers, regular expressions, dates, and booleans are compared by value.
+
+// TODO make action applicable to setter and delegate to action.extend_
+
+// TODO make action applicable to setter and delegate to action.make_
 
 // TODO: why is this in a different place than the spyReport() function? in all other observables it's called in the same place
 
@@ -849,8 +832,6 @@
 
 // Upcast is 'safe' here, because if dep is IObservable, `dependenciesState` will be undefined,
 
-// Use cached inferred annotations if available (only in classes)
-
 // Use correctly ordered map
 
 // Used anytime annotation is not explicitely provided
@@ -866,8 +847,6 @@
 // We can either over-report in Object.keys(object) or under-report in Reflect.ownKeys(object)
 
 // We choose to over-report in Object.keys(object), because:
-
-// We could also place it on furthest proto, shoudn't matter
 
 // We have reached useEffect(), so we're mounted, and can trigger an update
 
@@ -919,8 +898,6 @@
 
 // and skip either the internal values map, or the base object with its property descriptors!
 
-// and we don't want to end up with partially annotated proto chain
-
 // anyway, so removed it in V6
 
 // apply modifier
@@ -929,8 +906,6 @@
 
 // array will be trimmed by bindDependencies
 
-// assumes that annotation.make_/.extend_ works the same for plain objects
-
 // at this point derivation is not holding any data about dependency tree
 
 // based on https://github.com/mridgway/hoist-non-react-statics/blob/master/src/index.js
@@ -938,6 +913,8 @@
 // because the decorator must have been applied to something.
 
 // before being run or (outside batch and not being observed)
+
+// bound
 
 // but it is unclear why the hack is need as MobX never changed the prototype
 
@@ -999,6 +976,10 @@
 
 // function invariantObservers(observable: IObservable) {
 
+// function on proto -> autoAction/flow
+
+// getter -> computed
+
 // got dropped, and we don't want to make state changes then.
 
 // hasMap, not hashMap >-).
@@ -1016,6 +997,8 @@
 // if ComputedValue `obj` actually changed it will be computed and propagated to its observers.
 
 // if disposed while running, clean up later. Maybe not optimal, but rare case
+
+// if function respect autoBind option
 
 // if nothing has changed then don't resubscribe
 
@@ -1059,6 +1042,8 @@
 
 // just extend Map? See also https://gist.github.com/nestharus/13b4d74f2ef4a2f4357dbd3fc23c1e54
 
+// lone setter -> action setter
+
 // map
 
 // maybe it can be cancelled :)
@@ -1093,9 +1078,13 @@
 
 // onBecomeObservedListeners
 
+// other -> observable
+
 // other object - ignore
 
 // out of bounds
+
+// own
 
 // plain object
 
@@ -1104,6 +1093,12 @@
 // prettier-ignore
 
 // prevents accidental field redefinition in subclass
+
+// proto
+
+// proto[keysSymbol] = new Set<PropertyKey>()
+
+// prototype
 
 // provides ability to disable safeDescriptors for prototypes
 
@@ -1192,6 +1187,8 @@
 // which goes against all good practices. Let's not change the array in place!
 
 // which makes it both a 'derivation' and a 'mutation'.
+
+// will be annotated by subclass constructor
 
 // will need to recompute when it's needed next.
 
