@@ -152,6 +152,7 @@ class ListBase extends PubSub {
         if( !this.rangeEndMoveHandler ){
             this.queue( this.callRangeEndMoveHandler );
         }
+
         this.rangeEndMoveHandler = rangeEndMoveHandler || null;
 
         this.endBatch();

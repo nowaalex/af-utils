@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
 import { observe, unobserve } from "utils/heightObserver";
@@ -19,39 +19,26 @@ const Container = ({
     className,
     ...props
 }) => {
-
-    const [ scrollNode, setScrollNode ] = useState();
-    const finalDataRef = useRef();
-
-    const ModelConstructor = fixed ? FixedHeightsModel : VariableHeightsModel;
-
-    let model = finalDataRef.current;
-
-    if( !( model instanceof ModelConstructor ) ){
-        model = finalDataRef.current = new ModelConstructor();
-    }
-
-    if( dataRef ){
-        dataRef.current = model;
-    }
-
-    model.startBatch().setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, onRangeEndMove );
-
-    useEffect(() => {
-        model.endBatch();
-    });
     
+    const [ scrollNode, setScrollNode ] = useState( null );
+    const [ model ] = useState(() => new ( fixed ? FixedHeightsModel : VariableHeightsModel ));
+
+    useImperativeHandle( dataRef, () => model, []);
+
     useEffect(() => {
         if( scrollNode ){
             model.setScrollContainerNode( scrollNode );
-
             observe( scrollNode, model.setWidgetHeight );
-    
+
             return () => unobserve( scrollNode );
         }
-    }, [ scrollNode, model ]);
+    }, [ scrollNode ]);
 
-    useEffect(() => () => model.destructor(), [ model ]);
+    useEffect(() => {
+        model.setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, onRangeEndMove );
+    });
+
+    useEffect(() => () => model.destructor(), []);
     
     /*
         tabIndex="0" is for proper keyboard nav

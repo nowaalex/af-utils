@@ -1,3 +1,5 @@
+# 2.6.8 - 2021-05-08
+* Refactored Container
 # 2.6.7 - 2021-05-08
 * Fixed Container resizeObserver bug
 # 2.6.6 - 2021-05-08
