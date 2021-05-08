@@ -1,3 +1,5 @@
+# 2.6.6 - 2021-05-08
+* Rows props refactor
 # 2.6.5 - 2021-05-08
 * exported Container, ExtraHeight, Rows,
 * now it's possible to create custom scroll components ( not only List/Table ),

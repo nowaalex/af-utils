@@ -6,7 +6,7 @@ const Events = [ START_INDEX, END_INDEX ];
 
 const spacerKey = Math.random().toString(36);
 
-const Rows = ({ model, renderRow, Spacer = "div", ...rest }) => useSubscription(
+const Rows = ({ model, children, Spacer = "div", ...rest }) => useSubscription(
     model, 
     ({ startIndex, endIndex, virtualTopOffset, setSpacerNode }) => {
 
@@ -21,7 +21,7 @@ const Rows = ({ model, renderRow, Spacer = "div", ...rest }) => useSubscription(
         ];    
         
         for( let i = startIndex; i < endIndex; i++ ){
-            result.push(renderRow( i, rest ));
+            result.push(children( i, rest ));
         }
 
         return result;

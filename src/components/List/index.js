@@ -6,7 +6,7 @@ import Container from "../common/Container";
 
 const List = ({ children, ...props }) => (
     <Container {...props}>
-        {model => <Rows model={model} renderRow={children} />}
+        {model => <Rows model={model}>{children}</Rows>}
     </Container>
 );
 

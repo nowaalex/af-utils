@@ -51,14 +51,15 @@ const Table = ({
                 <tbody>
                     <Rows
                         model={model}
-                        renderRow={renderRow}
                         Spacer="tr"
                         columns={columns}
                         getRowData={getRowData}
                         getRowProps={getRowProps}
                         Row={Row}
                         Cell={Cell}
-                    />
+                    >
+                        {renderRow}
+                    </Rows>
                 </tbody>
                 {renderTfootContent ? (
                     <ExtraHeight model={model}>
