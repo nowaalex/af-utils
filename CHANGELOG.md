@@ -1,3 +1,5 @@
+# 2.6.7 - 2021-05-08
+* Fixed Container resizeObserver bug
 # 2.6.6 - 2021-05-08
 * Rows props refactor
 # 2.6.5 - 2021-05-08

@@ -39,20 +39,20 @@ class ListBase extends PubSub {
         this.spacerNode = node;
     }
 
-    setScrollTop( v ){
-        if( v !== this.scrollTop ){
-            this.scrollTop = v;
-            this.updateVisibleRange();
-        }
-    }
-
-    setWidgetHeight( height ){
+    setWidgetHeight = height => {
         if( height !== this.widgetHeight ){
             this.widgetHeight = height;
             this.updateEndIndex();
         }
 
         this.measureRowsThrottled();
+    }
+
+    setScrollTop( v ){
+        if( v !== this.scrollTop ){
+            this.scrollTop = v;
+            this.updateVisibleRange();
+        }
     }
 
     updateExtraStickyHeight( delta ){

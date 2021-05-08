@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
 import { observe, unobserve } from "utils/heightObserver";
@@ -20,10 +20,10 @@ const Container = ({
     ...props
 }) => {
 
-    const ref = useRef();
+    const [ scrollNode, setScrollNode ] = useState();
     const finalDataRef = useRef();
 
-    const ModelConstructor = fixed ? FixedHeightsModel : VariableHeightsModel
+    const ModelConstructor = fixed ? FixedHeightsModel : VariableHeightsModel;
 
     let model = finalDataRef.current;
 
@@ -41,17 +41,17 @@ const Container = ({
         model.endBatch();
     });
     
-    useEffect(() => () => model.destructor(), [ model ]);
-
     useEffect(() => {
-        const el = ref.current;
+        if( scrollNode ){
+            model.setScrollContainerNode( scrollNode );
 
-        model.setScrollContainerNode( el );
+            observe( scrollNode, model.setWidgetHeight );
+    
+            return () => unobserve( scrollNode );
+        }
+    }, [ scrollNode, model ]);
 
-        observe( el, height => model.setWidgetHeight( height ) );
-
-        return () => unobserve( el );
-    }, []);
+    useEffect(() => () => model.destructor(), [ model ]);
     
     /*
         tabIndex="0" is for proper keyboard nav
@@ -62,7 +62,7 @@ const Container = ({
             {...props}
             tabIndex="0"
             className={cx(css.wrapper,className)}
-            ref={ref}
+            ref={setScrollNode}
             onScroll={e => model.setScrollTop( e.target.scrollTop )}
         >
             <HeightProvider model={model} />
