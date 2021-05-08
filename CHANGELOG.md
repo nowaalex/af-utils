@@ -1,3 +1,5 @@
+# 2.6.9 - 2021-05-08
+* oprimized perf by adding startBatch/endBatch
 # 2.6.8 - 2021-05-08
 * Refactored Container
 # 2.6.7 - 2021-05-08

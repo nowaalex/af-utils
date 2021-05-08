@@ -76,6 +76,8 @@ class ListBase extends PubSub {
 
     updateVisibleRange(){
 
+        this.startBatch();
+        
         const startIndex = Math.max( 0, this.getIndex( this.scrollTop ) - this.overscanRowsCount );
 
         if( startIndex !== this.startIndex ){
@@ -84,15 +86,19 @@ class ListBase extends PubSub {
             this.emit( START_INDEX );
         }
 
-        return this.updateEndIndex();
+        return this
+            .updateEndIndex()
+            .endBatch();
     }
 
 
     /* must be called when row height/heights change */
     remeasure(){
         return this
+            .startBatch()
             .updateWidgetScrollHeight()
-            .updateVisibleRange();
+            .updateVisibleRange()
+            .endBatch();
     }
 
     constructor(){
