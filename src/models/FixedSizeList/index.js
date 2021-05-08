@@ -30,8 +30,8 @@ class FixedSizeList extends ListBase {
     }
 
     measureRows(){
-        if( this.rowsContainerNode && this.rowsQuantity ){
-            this.setRowHeight( this.rowsContainerNode.firstElementChild?.offsetHeight || 0 );
+        if( this.spacerNode && this.rowsQuantity ){
+            this.setRowHeight( this.spacerNode.nextElementSibling?.offsetHeight || 0 );
         }
     }    
 }

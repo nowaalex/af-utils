@@ -1,3 +1,7 @@
+# 2.6.5 - 2021-05-08
+* exported Container, ExtraHeight, Rows,
+* now it's possible to create custom scroll components ( not only List/Table ),
+* optimized library size
 # 2.6.4 - 2021-04-13
 * upgraded deps
 # 2.6.3 - 2021-04-03

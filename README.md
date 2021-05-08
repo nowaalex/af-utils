@@ -13,7 +13,6 @@ https://nowaalex.github.io/af-virtual-scroll/
 * Uses position: sticky for tables
 * mobx - ready
 * `scrollToRow(rowIndex)` method is available
-* `useApi` can give any table subcomponent access to global API
 * renders `table`, `tr`, `td`, `th`, so default table styling, border collapsing, etc. can be easily applied
 * < 3KB gzipped
 

@@ -1,21 +1,11 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import PropTypes from "prop-types";
-
-import commonDefaultProps from "../common/defaultProps";
-
 import cx from "utils/cx";
 
-import Context from "Context";
-import useModel from "hooks/useModel";
-
-import VariableHeightsStore from "models/VariableSizeList";
-import FixedHeightsStore from "models/FixedSizeList";
-
-import ScrollContainer from "../common/ScrollContainer";
+import Rows from "../common/Rows";
+import Container from "../common/Container";
 import ExtraHeight from "../common/ExtraHeight";
 
-import Scroller from "./Scroller";
-import Rows from "./Rows";
 import Colgroup from "./Colgroup";
 
 import {
@@ -33,8 +23,6 @@ import css from "./style.module.scss";
 */
 
 const Table = ({
-    fixed,
-    estimatedRowHeight,
     columns,
     getRowData,
     getRowProps,
@@ -43,72 +31,49 @@ const Table = ({
     renderHeaderCells,
     renderTfootContent,
     Cell,
-    rowsQuantity,
-    overscanRowsCount,
     headless,
-    dataRef,
     className,
-    onRangeEndMove,
     ...props
-}) => {
-
-    const [ rowsContainerNode, rowsContainerRef ] = useState();
-
-    const Store = useModel(
-        fixed ? FixedHeightsStore : VariableHeightsStore,
-        dataRef,
-        estimatedRowHeight,
-        overscanRowsCount,
-        rowsQuantity,
-        rowsContainerNode,
-        onRangeEndMove
-    );
-        
-    return (
-        <Context.Provider value={Store}>
-            <ScrollContainer className={cx(css.wrapper,className)} {...props}>
-                <table className={css.bodyTable}>
-                    <Colgroup columns={columns} />
-                    {headless ? null : (
-                        <ExtraHeight>
-                            <thead>
-                                <tr>
-                                    {renderHeaderCells(columns)}
-                                </tr>
-                            </thead>
-                        </ExtraHeight>
-                    )}
-                    <Scroller />
-                    <tbody ref={rowsContainerRef}>
-                        <Rows
-                            columns={columns}
-                            getRowData={getRowData}
-                            getRowProps={getRowProps}
-                            Row={Row}
-                            renderRow={renderRow}
-                            Cell={Cell}
-                        />
-                    </tbody>
-                    {renderTfootContent ? (
-                        <ExtraHeight>
-                            <tfoot>
-                                {renderTfootContent( columns )}
-                            </tfoot>
-                        </ExtraHeight>
-                    ) : null}
-                </table>
-            </ScrollContainer>
-        </Context.Provider>
-    );
-}
+}) => (
+    <Container className={cx(css.wrapper,className)} {...props}>
+        {model => (
+            <table className={css.bodyTable}>
+                <Colgroup columns={columns} />
+                {headless ? null : (
+                    <ExtraHeight model={model}>
+                        <thead>
+                            <tr>
+                                {renderHeaderCells(columns)}
+                            </tr>
+                        </thead>
+                    </ExtraHeight>
+                )}
+                <tbody>
+                    <Rows
+                        model={model}
+                        renderRow={renderRow}
+                        Spacer="tr"
+                        columns={columns}
+                        getRowData={getRowData}
+                        getRowProps={getRowProps}
+                        Row={Row}
+                        Cell={Cell}
+                    />
+                </tbody>
+                {renderTfootContent ? (
+                    <ExtraHeight model={model}>
+                        <tfoot>
+                            {renderTfootContent( columns )}
+                        </tfoot>
+                    </ExtraHeight>
+                ) : null}
+            </table>
+        )}
+    </Container>
+);
 
 Table.propTypes = {
-    rowsQuantity: PropTypes.number.isRequired,
     className: PropTypes.string,
-    fixed: PropTypes.bool,
-    overscanRowsCount: PropTypes.number,
-    estimatedRowHeight: PropTypes.number,
-    onRangeEndMove: PropTypes.func,
     columns: PropTypes.arrayOf(
         PropTypes.oneOfType([
             PropTypes.string,
@@ -145,17 +110,14 @@ Table.propTypes = {
     headless: PropTypes.bool,
 };
 
-/*
-    Spread operator will kill pure annotation comment, and tree-shaking will fail.
-    So Object.assign is a must
-*/
-Table.defaultProps = /*#__PURE__*/ Object.assign({}, commonDefaultProps, {
+
+Table.defaultProps = {
     headless: false,
 
     renderRow,
     Row,
     renderHeaderCells,
     Cell
-});
+};
 
 export default memo( Table );

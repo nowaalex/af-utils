@@ -26,12 +26,17 @@ class ListBase extends PubSub {
 
     estimatedRowHeight = 0;
 
-    rowsContainerNode = null;
+    spacerNode = null;
     scrollContainerNode = null;
     rangeEndMoveHandler = null;
 
     setScrollContainerNode( node ){
         this.scrollContainerNode = node;
+    }
+
+    /* will ne used as callback, so => */
+    setSpacerNode = node => {
+        this.spacerNode = node;
     }
 
     setScrollTop( v ){
@@ -128,10 +133,9 @@ class ListBase extends PubSub {
         }
     }
 
-    setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rowsContainerNode, rangeEndMoveHandler ){
+    setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rangeEndMoveHandler ){
 
         this.estimatedRowHeight = estimatedRowHeight;
-        this.rowsContainerNode = rowsContainerNode;
 
         this.startBatch();
 

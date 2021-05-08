@@ -39,8 +39,8 @@ describe( "VariableSizeList model works", () => {
     });
 
     test( "Setting rowsQuantity > max(int32) or < 0 throws error", () => {
-        expect(() => VSList.setParams( 0, 2, -1, null, null )).toThrow();
-        expect(() => VSList.setParams( 0, 2, 0x7fffffff + 1, null, null )).toThrow();
+        expect(() => VSList.setParams( 0, 2, -1, null )).toThrow();
+        expect(() => VSList.setParams( 0, 2, 0x7fffffff + 1, null )).toThrow();
     });
 
     test( "Summation works correctly", () => {

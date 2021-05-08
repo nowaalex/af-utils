@@ -15,7 +15,7 @@ describe( "FixedSizeList model works", () => {
 
     test( "Summation works correctly", () => {
 
-        FList.setParams( 0, 2, 100, null, null );
+        FList.setParams( 0, 2, 100, null );
         FList.setRowHeight( 20 );
 
         expect( FList.getOffset( 4 ) ).toBe( 80 );

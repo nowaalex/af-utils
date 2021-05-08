@@ -1,5 +1,7 @@
 import { Fragment } from "react";
-import commonDefaultProps from "../../../components/common/defaultProps";
+import Container from "../../../components/common/Container";
+
+const commonDefaultProps = Container.defaultProps;
 
 const commonProps = [
     {
@@ -12,6 +14,12 @@ const commonProps = [
         name: "className",
         type: "string",
         description: "className, appended to the outermost wrapper"
+    },
+    {
+        name: "as",
+        type: "elementType",
+        description: "Wrapper element",
+        defaultValue: commonDefaultProps.as
     },
     {
         name: "fixed",

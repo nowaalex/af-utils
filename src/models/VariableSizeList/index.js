@@ -110,9 +110,9 @@ class VariableSizeList extends ListBase {
     }
 
     measureRows(){
-        const node = this.rowsContainerNode;
+        let child = this.spacerNode?.nextElementSibling;
 
-        if( node ){
+        if( child ){
 
             let index = this.startIndex,
                 diff,
@@ -121,7 +121,8 @@ class VariableSizeList extends ListBase {
             /* We can batch-update fenwick tree, if we know, that all indexes are updated in +1 - order. */
             const lim = Math.min( this.fTree.length, 1 << 32 - Math.clz32( this.endIndex - 1 ) );
 
-            for( let child of node.children ){
+
+            do {
      
                 diff = child.offsetHeight - this.rowHeights[ index ];
 
@@ -129,10 +130,9 @@ class VariableSizeList extends ListBase {
                     this.rowHeights[ index ] += diff;
                     buff += diff;
                     this.updateRowHeight( index + 1, diff, lim );                  
-                }
-                
-                index++;
+                }                
             }
+            while( ++index < this.endIndex && ( child = child.nextElementSibling ) );
 
             if( buff ){
                 this.updateRowHeight( lim, buff, this.fTree.length );

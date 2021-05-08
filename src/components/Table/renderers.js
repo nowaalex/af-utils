@@ -23,7 +23,7 @@ export const Row = ({ index, columns, getRowData, getRowProps, Cell }) => {
     );
 }
 
-export const renderRow = RowProps => <RowProps.Row key={RowProps.index} {...RowProps} />
+export const renderRow = ( index, RowProps ) => <RowProps.Row key={index} index={index} {...RowProps} />
 
 export const renderHeaderCells = columns => columns.map( column => (
     <th key={column.dataKey} style={{ minWidth: column.minWidth }}>

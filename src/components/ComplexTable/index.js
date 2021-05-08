@@ -189,12 +189,12 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel
     /* hack to change renderRow by link */
     const { finalIndexes } = m;
 
-    const renderRow = RowProps => {
+    const renderRow = ( index, RowProps ) => {
 
-        const realRowIndex = finalIndexes[ RowProps.index ];
+        const realRowIndex = finalIndexes[ index ];
 
         return realRowIndex < 0 ? (
-            <tr key={RowProps.index}>
+            <tr key={index}>
                 <td colSpan={RowProps.columns.length}>
                     <GroupCell m={m} idx={realRowIndex} columns={RowProps.columns} />
                 </td>
@@ -202,7 +202,7 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel
         ) : (
             <RowProps.Row
                 {...RowProps}
-                key={RowProps.index}
+                key={index}
                 index={realRowIndex}
             />
         );
