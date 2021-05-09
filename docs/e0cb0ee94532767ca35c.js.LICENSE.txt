@@ -4,6 +4,8 @@
 
 /* harmony default export */
 
+/* highlightBlock caused deprecated console messages */
+
 /*#__PURE__*/
 
 /***/

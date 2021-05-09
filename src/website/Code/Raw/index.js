@@ -13,7 +13,8 @@ const Code = ({ children, className }) => {
     const ref = useRef();
 
     useEffect(() => {
-        hljs.highlightBlock( ref.current );
+        /* highlightBlock caused deprecated console messages */
+        hljs.highlightElement( ref.current );
     }, [ children ]);
 
     return (
