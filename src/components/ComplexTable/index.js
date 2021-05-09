@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import RowsAggregator from "models/RowsAggregator";
+import RowsAggregator from "models/aggregators/Mobx";
 import Table from "../Table";
 import cx from "utils/cx";
 import css from "./style.module.scss";

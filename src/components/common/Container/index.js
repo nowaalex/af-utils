@@ -39,6 +39,16 @@ const Container = ({
     });
 
     useEffect(() => () => model.destructor(), []);
+
+    if( process.env.NODE_ENV !== "production" ){
+        const AssumedConstructor = fixed ? FixedHeightsModel : VariableHeightsModel;
+        if( !( model instanceof AssumedConstructor ) ){
+            console.warn( `
+                'fixed' prop is taken into account ONLY during initial component mount.
+                All future changes are ignored. You must decide once.`
+            );
+        }
+    }
     
     /*
         tabIndex="0" is for proper keyboard nav

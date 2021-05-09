@@ -11,11 +11,9 @@
       Waiting for react-dnd release, which would fix this
   */
 
-/* Calculated inside model */
-
 /* Math.random is not the best option, because same rowIndex should produce same height */
 
-/* Provided from renderer */
+/* action */
 
 /* binding */
 
@@ -29,7 +27,7 @@
 
 /* harmony default export */
 
-/* makeAutoObservable */
+/* makeObservable */
 
 /* observer */
 
@@ -47,9 +45,11 @@
 
 // CONCATENATED MODULE: ./src/examples/complexTable(unstable)/basic/index.js
 
-// CONCATENATED MODULE: ./src/models/RowsAggregator/index.js
+// CONCATENATED MODULE: ./src/models/aggregators/Base/index.js
 
-// CONCATENATED MODULE: ./src/models/RowsAggregator/utils/multiGroupBy/index.js
+// CONCATENATED MODULE: ./src/models/aggregators/Mobx/index.js
+
+// CONCATENATED MODULE: ./src/models/aggregators/utils/multiGroupBy/index.js
 
 // ESM COMPAT FLAG
 

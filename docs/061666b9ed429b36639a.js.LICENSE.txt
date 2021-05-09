@@ -486,10 +486,6 @@
 
 // Assume equality for cyclic structures. The algorithm for detecting cyclic
 
-// Assumes makeAutoObservable can be called only once per object and can't be used in subclass
-
-// Assumes that annotation.make_/.extend_ works the same for plain objects
-
 // BUT if we're a component that hasn't yet got to the useEffect()
 
 // But: https://github.com/mobxjs/mobx/issues/1556
@@ -739,10 +735,6 @@
 // Objects with different constructors are not equivalent, but `Object`s or `Array`s
 
 // Observable has changed, meaning we want to re-render
-
-// Optimization: avoid visiting protos
-
-// Optimization: cache keys on proto
 
 // Optimization: don't pull the value unless we will need it
 
