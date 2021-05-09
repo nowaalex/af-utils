@@ -76,8 +76,6 @@ object-assign
 
 /* invariant */
 
-/* module decorator */
-
 /* must be >= 1 */
 
 /* must be called when row height/heights change */
@@ -214,6 +212,14 @@ object-assign
 
 /**
  * A <Link> wrapper that knows if it's "active" or not.
+ */
+
+/**
+ * Adapted from React: https://github.com/facebook/react/blob/master/packages/shared/formatProdErrorMessage.js
+ *
+ * Do not require this module directly! Use normal throw error calls. These messages will be replaced with error codes
+ * during build.
+ * @param {number} code
  */
 
 /**
@@ -497,6 +503,13 @@ object-assign
  */
 
 /**
+ * These are private action types reserved by Redux.
+ * For any unknown actions, you must return the current state.
+ * If the current state is undefined, you must return the initial state.
+ * Do not reference these action types directly in your code.
+ */
+
+/**
  * Transform an array into a regexp.
  *
  * @param  {!Array}  path
@@ -671,6 +684,12 @@ object-assign
 
 // By explicitly using `prop-types` you are opting into new production behavior.
 
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
+
 // CONCATENATED MODULE: ./node_modules/@react-dnd/asap/dist/esm/browser/asap.js
 
 // CONCATENATED MODULE: ./node_modules/@react-dnd/asap/dist/esm/browser/raw.js
@@ -723,13 +742,7 @@ object-assign
 
 // CONCATENATED MODULE: ./node_modules/history/esm/history.js
 
-// CONCATENATED MODULE: ./node_modules/history/node_modules/@babel/runtime/helpers/esm/extends.js
-
 // CONCATENATED MODULE: ./node_modules/mini-create-react-context/dist/esm/index.js
-
-// CONCATENATED MODULE: ./node_modules/mini-create-react-context/node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
-
-// CONCATENATED MODULE: ./node_modules/mini-create-react-context/node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
 
 // CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/EnterLeaveCounter.js
 
@@ -757,25 +770,9 @@ object-assign
 
 // CONCATENATED MODULE: ./node_modules/react-router-dom/esm/react-router-dom.js
 
-// CONCATENATED MODULE: ./node_modules/react-router-dom/node_modules/@babel/runtime/helpers/esm/extends.js
-
-// CONCATENATED MODULE: ./node_modules/react-router-dom/node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
-
-// CONCATENATED MODULE: ./node_modules/react-router-dom/node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-
-// CONCATENATED MODULE: ./node_modules/react-router-dom/node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
-
-// CONCATENATED MODULE: ./node_modules/react-router/node_modules/@babel/runtime/helpers/esm/extends.js
-
-// CONCATENATED MODULE: ./node_modules/react-router/node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
-
-// CONCATENATED MODULE: ./node_modules/react-router/node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
+// CONCATENATED MODULE: ./node_modules/redux/es/redux.js
 
 // CONCATENATED MODULE: ./node_modules/resolve-pathname/esm/resolve-pathname.js
-
-// CONCATENATED MODULE: ./node_modules/symbol-observable/es/index.js
-
-// CONCATENATED MODULE: ./node_modules/symbol-observable/es/ponyfill.js
 
 // CONCATENATED MODULE: ./node_modules/tiny-invariant/dist/tiny-invariant.esm.js
 
@@ -837,8 +834,6 @@ object-assign
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
 
-// EXTERNAL MODULE: ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js
-
 // EXTERNAL MODULE: ./node_modules/path-to-regexp/index.js
 
 // EXTERNAL MODULE: ./node_modules/prop-types/index.js
@@ -850,8 +845,6 @@ object-assign
 // EXTERNAL MODULE: ./node_modules/react/index.js
 
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
-
-// EXTERNAL MODULE: ./node_modules/symbol-observable/es/index.js + 1 modules
 
 // EXTERNAL MODULE: ./src/constants/events.js
 
@@ -872,8 +865,6 @@ object-assign
 // Firefox only cares if it's an image, but WebKit also wants it to be detached.
 
 // Firefox won't drag without setting data
-
-// Flag the module as loaded
 
 // For other targets, ask IE
 
@@ -932,6 +923,8 @@ object-assign
 // Initialize the coordinates using the client offset
 
 // Initialize the full coordinates
+
+// Inlined version of the `symbol-observable` polyfill
 
 // Inputs and textareas should be selectable
 
@@ -1316,6 +1309,10 @@ object-assign
 // no HMR manifest
 
 // no baseURI
+
+// no module.id needed
+
+// no module.loaded needed
 
 // no on chunks loaded
 
