@@ -6,6 +6,8 @@ import getSorter from "../utils/getSorter";
 import getFilteredIndexes from "../utils/getFilteredIndexes";
 import Base from "../Base";
 
+const stubFalse = () => false;
+
 class Mobx extends Base {
 
     get visibleColumns(){
@@ -55,16 +57,17 @@ class Mobx extends Base {
         super();
 
         makeObservable( this, {
-            visibleColumns: computed({ equals: comparer.structural }),
-            priorityGroupValuesArray: computed({ equals: comparer.structural }),
             grouped: computed,
             flattenedGroups: computed,
             filteredIndexes: computed,
-            noGroupsSortedIndexes: computed,
             hasGrouping: computed,
-            finalIndexes: computed,
-            noGroupsSortedIndexes: computed({ equals: () => false }),
-            groupedSorted: computed({ equals: () => false }),
+            
+            visibleColumns: computed({ equals: comparer.structural }),
+            priorityGroupValuesArray: computed({ equals: comparer.structural }),
+            
+            finalIndexes: computed({ equals: stubFalse }),
+            noGroupsSortedIndexes: computed({ equals: stubFalse }),
+            groupedSorted: computed({ equals: stubFalse }),
 
             rowsQuantity: true,
             getRowData: true,

@@ -47,8 +47,6 @@
 
 // CONCATENATED MODULE: ./src/models/aggregators/Base/index.js
 
-// CONCATENATED MODULE: ./src/models/aggregators/Mobx/index.js
-
 // CONCATENATED MODULE: ./src/models/aggregators/utils/multiGroupBy/index.js
 
 // ESM COMPAT FLAG

@@ -1,4 +1,4 @@
-# 2.7.0 - 2021-05-10
+# 2.7.1 - 2021-05-10
 * ComplexTable model structure changed + 'fixed' prop change warning added
 # 2.6.9 - 2021-05-08
 * optimized perf by adding startBatch/endBatch
