@@ -1,3 +1,5 @@
+# 2.7.3 - 2021-06-15
+* upgraded deps
 # 2.7.2 - 2021-05-10
 * ComplexTable model structure changed + 'fixed' prop change warning added
 # 2.6.9 - 2021-05-08

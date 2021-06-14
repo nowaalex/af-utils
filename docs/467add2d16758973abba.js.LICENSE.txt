@@ -8,25 +8,13 @@ https://github.com/highlightjs/highlight.js/issues/2880#issuecomment-747275419
 /*
         The lookahead pattern (?=...) ensures that 'begin' only matches
         '<style' as a single word, followed by a whitespace or an
-        ending braket. The '$' is needed for the lexeme to be recognized
-        by hljs.subMode() that tests lexemes outside the stream.
+        ending bracket.
         */
 
 /*
-      On any opening or closing tag of the original markup we first close
-      the entire highlighted node stack, then render the original tag along
-      with all the following original tags at the same offset and then
-      reopen all the tags on the highlighted stack.
-      */
-
-/*
-      Why might be find ourselves here?  Only one occasion now.  An end match that was
-      triggered but could not be completed.  When might this happen?  When an `endSameasBegin`
-      rule sets the end rule to a specific match.  Since the overall mode termination rule that's
-      being used to scan the text isn't recompiled that means that any match that LOOKS like
-      the end (but is not, because it is not an exact match to the beginning) will
-      end up here.  A definite end match, but when `doEndMatch` tries to "reapply"
-      the end rule and fails to match, we wind up here, and just silently ignore the end.
+      Why might be find ourselves here?  An potential end match that was
+      triggered but could not be completed.  IE, `doEndMatch` returned NO_MATCH.
+      (this could be because a callback requests the match be ignored, etc)
 
       This causes no real harm other than stopping a few times too many.
       */
@@ -64,49 +52,38 @@ https://github.com/highlightjs/highlight.js/issues/2880#issuecomment-747275419
   */
 
 /*
-    To avoid starting the stream just before it should stop the order is
-    ensured that original always starts first and closes last:
-
-    if (event1 == 'start' && event2 == 'start')
-      return original;
-    if (event1 == 'start' && event2 == 'stop')
-      return highlighted;
-    if (event1 == 'stop' && event2 == 'start')
-      return original;
-    if (event1 == 'stop' && event2 == 'stop')
-      return highlighted;
-
-    ... which is collapsed to:
-    */
-
-/*
 Language: HTML, XML
 Website: https://www.w3.org/XML/
-Category: common
+Category: common, web
 Audit: 2020
 */
 
 /*
 Language: JavaScript
 Description: JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions.
-Category: common, scripting
+Category: common, scripting, web
 Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+*/
+
+/*
+Syntax highlighting with language autodetection.
+https://highlightjs.org/
 */
 
 /* Interface definition */
 
-/* Stream merging support functions */
-
 /* Utility functions */
 
-/* plugin itself */
+/* harmony default export */
+
+/* harmony export */
 
 /*#__PURE__*/
 
 /**
      *  Process an individual match
      *
-     * @param {string} textBeforeMatch - text preceeding the match (since the last match)
+     * @param {string} textBeforeMatch - text preceding the match (since the last match)
      * @param {EnhancedMatch} [match] - the match itself
      */
 
@@ -118,7 +95,13 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
      */
 
 /**
-     * @param {Mode} mode - new mode to start
+     * @param {CompiledMode} mode
+     * @param {RegExpMatchArray} match
+     */
+
+/**
+     * @param {CompiledMode} mode - new mode to start
+     * @param {RegExpMatchArray} match
      */
 
 /**
@@ -148,7 +131,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 /**
      * Return keyword data if a match is a keyword
      * @param {CompiledMode} mode - current mode
-     * @param {RegExpMatchArray} match - regexp match data
+     * @param {string} matchText - the textual match
      * @returns {KeywordData | false}
      */
 
@@ -164,16 +147,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
     enhanced by merging in any meta-data that was registered with the regex.
     This is how we keep track of which mode matched, and what type of rule
     (`illegal`, `begin`, end, etc).
-  */
-
-/**
-    intended usage: When one language truly requires another
-
-    Unlike `getLanguage`, this will throw when the requested language
-    is not available.
-
-    @param {string} name - name of the language to fetch/require
-    @returns {Language | never}
   */
 
 /**
@@ -204,10 +177,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 /**
    * @param {Emitter & {root: DataNode}} emitter
    * @param {string} name
-   */
-
-/**
-   * @param {Event} event
    */
 
 /**
@@ -266,14 +235,13 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
    * @param {string} text */
 
 /**
-   * Applies highlighting to a DOM node containing code. Accepts a DOM node and
-   * two optional parameters for fixMarkup.
+   * Applies highlighting to a DOM node containing code.
    *
    * @param {HighlightedHTMLElement} element - the HTML element to highlight
   */
 
 /**
-   * Builds a regex with the case sensativility of the current language
+   * Builds a regex with the case sensitivity of the current language
    *
    * @param {RegExp | string} value
    * @param {boolean} [global]
@@ -297,7 +265,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
    *
    * Ex: "for if when while|5"
    *
-   * @param {string} className
+   * @param {string} scopeName
    * @param {Array<string>} keywordList
    */
 
@@ -320,7 +288,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
    * NEW API
    * highlight(code, {lang, ignoreIllegals})
    *
-   * @param {string} codeOrlanguageName - the language to use for highlighting
+   * @param {string} codeOrLanguageName - the language to use for highlighting
    * @param {string | HighlightOptions} optionsOrCode - the code to highlight
    * @param {boolean} [ignoreIllegals] - whether to ignore illegal matches, default is to bail
    * @param {CompiledMode} [continuation] - current continuation mode, if any
@@ -352,12 +320,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
    *
    * @param {CompiledMode} mode
    * @returns {ResumableMultiRegex}
-   */
-
-/**
-   * Highlights to all <pre><code> blocks on a page
-   *
-   * @type {Function & {called?: boolean}}
    */
 
 /**
@@ -448,7 +410,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
   - language (detected language)
   - relevance (int)
   - value (an HTML string with highlighting markup)
-  - second_best (object with the same structure for second-best heuristically
+  - secondBest (object with the same structure for second-best heuristically
     detected language, may be absent)
 
     @param {string} code
@@ -457,21 +419,9 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
   */
 
 /**
-  Note: fixMarkup is deprecated and will be removed entirely in v11
-
-  @param {string} arg
-  @returns {string}
-  */
-
-/**
-  Post-processing of the highlighted markup:
-
-  - replace TABs with something more useful
-  - replace real line-breaks with '<br>' for non-pre containers
-
-    @param {string} html
-    @returns {string}
-  */
+ *
+ * @type {CompilerExt}
+ */
 
 /**
  * @implements {Emitter}
@@ -479,7 +429,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 /**
  * @param {(string | RegExp)[]} regexps
- * @param {string} separator
+ * @param {{joinWith: string}} opts
  * @returns {string}
  */
 
@@ -489,7 +439,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
  */
 
 /**
- * @param {Node} node
+ * @param {CompiledMode} mode
  */
 
 /**
@@ -500,12 +450,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 /**
  * @param {RegExp} re
  * @returns {number}
- */
-
-/**
- * @param {any} original - the original stream
- * @param {any} highlighted - stream of the highlighted source
- * @param {string} value - the original source itself
  */
 
 /**
@@ -524,13 +468,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 /**
  * @type {Record<string, boolean>}
- */
-
-/**
- * @typedef Event
- * @property {'start'|'stop'} event
- * @property {number} offset
- * @property {Node} node
  */
 
 /**
@@ -560,7 +497,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
  * Given the raw result of a language definition (Language), compiles this so
  * that it is ready for highlighting code.
  * @param {Language} language
- * @param {{plugins: HLJSPlugin[]}} opts
  * @returns {CompiledLanguage}
  */
 
@@ -611,6 +547,35 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
  */
 
 /**
+ * Renumbers labeled scope names to account for additional inner match
+ * groups that otherwise would break everything.
+ *
+ * Lets say we 3 match scopes:
+ *
+ *   { 1 => ..., 2 => ..., 3 => ... }
+ *
+ * So what we need is a clean match like this:
+ *
+ *   (a)(b)(c) => [ "a", "b", "c" ]
+ *
+ * But this falls apart with inner match groups:
+ *
+ * (a)(((b)))(c) => ["a", "b", "b", "b", "c" ]
+ *
+ * Our scopes are now "out of alignment" and we're repeating `b` 3 times.
+ * What needs to happen is the numbers are remapped:
+ *
+ *   { 1 => ..., 2 => ..., 5 => ... }
+ *
+ * We also need to know that the ONLY groups that should be output
+ * are 1, 2, and 5.  This function handles this behavior.
+ *
+ * @param {CompiledMode} mode
+ * @param {Array<RegExp>} regexes
+ * @param {{key: "beginScope"|"endScope"}} opts
+ */
+
+/**
  * Returns the proper score for a given keyword
  *
  * Also takes into account comment keywords, which will be scored 0 UNLESS
@@ -653,13 +618,56 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
  * @type {CompilerExt}
  */
 
+/**
+ * this exists only to allow `scope: {}` to be used beside `match:`
+ * Otherwise `beginScope` would necessary and that would look weird
+
+  {
+    match: [ /def/, /\w+/ ]
+    scope: { 1: "keyword" , 2: "title" }
+  }
+
+ * @param {CompiledMode} mode
+ */
+
+/**
+@typedef {import('highlight.js').CallbackResponse} CallbackResponse
+@typedef {import('highlight.js').CompilerExt} CompilerExt
+*/
+
+/**
+@typedef {import('highlight.js').Mode} Mode
+@typedef {import('highlight.js').CompiledMode} CompiledMode
+@typedef {import('highlight.js').Language} Language
+@typedef {import('highlight.js').HLJSApi} HLJSApi
+@typedef {import('highlight.js').HLJSPlugin} HLJSPlugin
+@typedef {import('highlight.js').PluginEvent} PluginEvent
+@typedef {import('highlight.js').HLJSOptions} HLJSOptions
+@typedef {import('highlight.js').LanguageFn} LanguageFn
+@typedef {import('highlight.js').HighlightedHTMLElement} HighlightedHTMLElement
+@typedef {import('highlight.js').BeforeHighlightContext} BeforeHighlightContext
+@typedef {import('highlight.js/private').MatchType} MatchType
+@typedef {import('highlight.js/private').KeywordData} KeywordData
+@typedef {import('highlight.js/private').EnhancedMatch} EnhancedMatch
+@typedef {import('highlight.js/private').AnnotatedError} AnnotatedError
+@typedef {import('highlight.js').AutoHighlightResult} AutoHighlightResult
+@typedef {import('highlight.js').HighlightOptions} HighlightOptions
+@typedef {import('highlight.js').HighlightResult} HighlightResult
+*/
+
+/**
+@typedef {import('highlight.js').Mode} Mode
+@typedef {import('highlight.js').CompiledMode} CompiledMode
+@typedef {import('highlight.js').Language} Language
+@typedef {import('highlight.js').HLJSPlugin} HLJSPlugin
+@typedef {import('highlight.js').CompiledLanguage} CompiledLanguage
+*/
+
 /**  */
 
 /** */
 
 /** @implements CallbackResponse */
-
-/** @param {Attr} attr */
 
 /** @param {Node} node */
 
@@ -670,8 +678,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 /** @type CompiledMode */
 
 /** @type DataNode */
-
-/** @type Event[] */
 
 /** @type HLJSOptions */
 
@@ -687,6 +693,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 /** @type Node */
 
+/** @type Record<number,boolean> */
+
 /** @type Record<string,CompiledMode> */
 
 /** @type Record<string,any> */
@@ -697,7 +705,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 /** @type {CompiledMode} */
 
-/** @type {HLJSPlugin} */
+/** @type {Language} */
 
 /** @type {ModeCallback} */
 
@@ -712,6 +720,16 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 /** @type {T} */
 
 /** @type {{type?: MatchType, index?: number, rule?: Mode}}} */
+
+/** @typedef {import('highlight.js').CallbackResponse} CallbackResponse */
+
+/** @typedef {import('highlight.js').CompiledMode} CompiledMode */
+
+/** @typedef {import('highlight.js').Emitter} Emitter */
+
+/** @typedef {import('highlight.js').ModeCallback} ModeCallback */
+
+/** @typedef {import('highlight.js').Mode} Mode */
 
 /** @typedef {{kind?: string, sublanguage?: boolean, children: Node[]} | string} Node */
 
@@ -767,13 +785,11 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 //   interesting elements
 
-//   let resp = new Response(mode);
-
-//   mode["after:begin"](match, resp);
-
 // "get",
 
 // "plaintext" stand-in so that the code blocks will still get normal
+
+// "programming" type syntax) this gives us a strong signal that we've
 
 // "set",
 
@@ -782,6 +798,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // $keyword = x
 
 // (which will then blow up when regex's `illegal` sees the newline)
+
+// **INTERNAL** Not intended for outside usage
 
 // - [...] elements, where the meaning of parentheses and escapes change
 
@@ -805,8 +823,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // 4. If #2 and #3 result in matches, which came first?
 
-// <comments up next>` and then immediately end after the , because it
-
 // <something>
 
 // <tag ...
@@ -816,8 +832,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // <tag>
 
 // @ts-ignore
-
-// @ts-nocheck
 
 // Adjust the backreference.
 
@@ -834,8 +848,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // DecimalBigIntegerLiteral
 
 // DecimalLiteral
-
-// ES6 class
 
 // EXPAND
 
@@ -855,7 +867,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // HTML should not include another raw `<` inside a tag
 
-// Higlights all when DOMContentLoaded fires
+// It's possible to find something that LOOKS like the start of the
 
 // JS handles these with a special rule
 
@@ -863,11 +875,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // LegacyOctalIntegerLiteral (does not include underscore separators)
 
-// NOTE: this might not work how you think.  We don't actually always
-
 // NonDecimalIntegerLiteral
-
-// Prevent void elements from having an end tag that would actually
 
 // Ref: https://github.com/highlightjs/highlight.js/issues/2140
 
@@ -883,11 +891,15 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // TODO: We need negative look-behind support to do this properly
 
+// TODO: how to include ", (, ) without breaking grammars that use these for
+
 // TODO: remove v12, deprecated
 
 // TODO: remove with v12
 
 // TODO: remove with version 11.0
+
+// TRULY found a comment - vs perhaps scanning with the wrong language.
 
 // The following is because we have no easy way to say "resume scanning at the
 
@@ -903,7 +915,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // `compileMatch` being the perfect small example of now allowing a grammar
 
-// `mode.lexemes` was the old standard before we added and now recommend
+// `no-way`, etc.
 
 // a 0 width match but not a begin/end match so it's not caught by the
 
@@ -919,6 +931,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // all prior rules are also skipped which can result in matching the wrong
 
+// allow beforeMatch to act as a "qualifier" for the match
+
 // allows XML everywhere and makes every XML snippet to have a much larger Markdown
 
 // also surrounded by parens.
@@ -929,33 +943,37 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // an incorrect parse, it additionally matches the following:
 
-// attribute coming up so we don't steal a comma from a potential
+// anonymous function
+
+// at this point modeBuffer should just be the match
 
 // author to write `match` when they desire to match a single expression rather
-
-// avoid possible breakage with v10 clients expecting
 
 // avoids the need to check length every time exec is called
 
 // backreferences so they continue to match.
 
+// begin: /[ ]+([()"]?([A-Za-z'-]{3,}|is|a|I|so|us|[tT][oO]|at|if|in|it|on)[.]?[()":]?([.][ ]|[ ]|\))){3}/
+
+// beginScope just wraps the begin match itself in a scope
+
 // beta configuration options, subject to change, welcome to discuss
 
-// both are not allowed
-
 // bounding ( ).  There could be any number of sub-expressions inside
-
-// built-in plugins, likely to be moved out of core in the future
-
-// but we list only those realistically expected in code display.
 
 // by applying a class name
 
 // calling the `hljs.configure` function.
 
+// catch ... so it won't trigger the property rule below
+
 // close tag
 
 // collapse all our objects back into the parent object
+
+// comment - but then if there is no readable text - good chance it is a
+
+// comment delimiters?
 
 // common variable name
 
@@ -966,6 +984,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // console.log("match", match[0], match.rule && match.rule.begin)
 
 // continuation not supported at all via the new API
+
+// contractions - can't we'd they're let's, etc
 
 // correct bounding ( ) before the =>.  There could be any number of
 
@@ -987,8 +1007,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // doesn't allow spaces in keywords anyways and we still check for the boundary
 
-// double them in the output. There are more void elements in HTML
-
 // eat recursive parens in sub expressions
 
 // eat spaces (not newlines) so we can find
@@ -998,8 +1016,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // edge case for when illegal matches $ (end of line) which is technically
 
 // end parens
-
-// enter this mode and stay.  Instead it might merely match `,
 
 // entire highlighter
 
@@ -1015,13 +1031,15 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // export an "instance" of the highlighter
 
-// fails to find any actual attrs. But this still does the job because
+// false match and not a comment.
 
 // far looking only for "number", ignoring potential string matches (or
 
 // first
 
 // first handler (when ignoreIllegals is true)
+
+// for a visual example please see:
 
 // for exports
 
@@ -1030,6 +1048,8 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // future "booger" matches that might be valid.)
 
 // give it a temporary name if it doesn't have one in the meta-data
+
+// hack to avoid the space from being included. the space is necessary to
 
 // hack: prevents detection of keywords in some circumstances
 
@@ -1041,13 +1061,17 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // https://github.com/highlightjs/highlight.js/issues/1086
 
+// https://github.com/highlightjs/highlight.js/issues/2827
+
+// https://github.com/highlightjs/highlight.js/issues/3149
+
+// https://nodejs.org/api/packages.html#packages_writing_dual_packages_while_avoiding_or_minimizing_hazards
+
 // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
 
 // ie if C++ and Arduino are tied, it's more likely to be C++
 
 // if "booger" is ignored then we'd really need a regex to scan from the
-
-// if (mode["after:begin"]) {
 
 // if a highlight was requested before DOM was loaded, do now
 
@@ -1077,8 +1101,6 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // it from ending too early by matching another }
 
-// it prevents the value contain rule from grabbing this instead and
-
 // join logically computes regexps.join(separator), but fixes the
 
 // just be changing the object it was passed
@@ -1091,6 +1113,10 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // languages that have serious errors are replaced with essentially a
 
+// list of common 1 and 2 letter words in English
+
+// looking like plain text, more likely to be a comment
+
 // make sure we are in the browser environment
 
 // manual scores always win over common keywords
@@ -1101,15 +1127,17 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // match groups that make up the multi-matcher)
 
-// merge all the modes/regexs into our main object
+// match here to prevent the plain text rule below from gobbling up doctags
 
-// named keys representing className (which can then point to a string or array)
+// merge all the modes/regexes into our main object
+
+// named keys representing scopeName (which can then point to a string or array)
+
+// necessary to prevent us gobbling up doctags like /* @author Bob Mcgill */
 
 // nested type?
 
-// no idea what language to use, return raw code
-
-// no more regexs to potentially match here, so we move the cursor forward one
+// no more regexes to potentially match here, so we move the cursor forward one
 
 // no need to move the cursor, we still have additional regexes to try and
 
@@ -1117,7 +1145,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // node.text = node.children.join("");
 
-// object attr container
+// note: this is not an exhaustive list of contractions, just popular ones
 
 // old API
 
@@ -1131,15 +1159,15 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // our matcher is [string, "booger", number]
 
+// output from inside match groups
+
 // parsing) still 3x behind our index then something is very wrong
+
+// pass
 
 // plaintext is always an option
 
-// plugins for frameworks
-
 // position, but the second full matcher starting at the position after:
-
-// prevening this rule from firing when we actually DO have keys.
 
 // prevent this from getting swallowed up by function
 
@@ -1155,17 +1183,21 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // return TokenTree._walk(builder, this.rootNode);
 
+// rule is not matched multiple times
+
 // safe/production mode - swallows more errors, tries to keep running
 
 // score.
+
+// se we still get relevance credit for JS library classes
 
 // self is not valid at the top-level
 
 // since they appear "function like"
 
-// slated to be removed in v11
-
 // so we bail
+
+// so we can't go deleting $pattern from the original on the first
 
 // so you can force a score of 1 if you really insist
 
@@ -1177,9 +1209,9 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // spit the "skipped" character that our regex choked on back into the output sequence
 
-// sub-expressions inside also surrounded by parens.
+// starts conflicts with endsParent which we need to make sure the child
 
-// support for v10 API
+// sub-expressions inside also surrounded by parens.
 
 // than being forced to use `begin`.  The extension then just moves `match` into
 
@@ -1189,15 +1221,13 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // the experience of writing (and reading grammars) a little bit nicer.
 
-// the first key:value pairing
+// the full match begin must be [beforeMatch][begin]
 
 // the plugin can change anything in result to suite it
 
 // the plugin can change the desired language or the code to be highlighted
 
 // thing. Example of matching "booger":
-
-// this avoids needing to use a whole Vue compilation pipeline just
 
 // this does not
 
@@ -1207,13 +1237,11 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // this outer rule makes sure we actually have a WHOLE regex and not simply
 
-// this to always be an integer
+// this tries to find sequences of 3 english words in a row (without any
 
 // this will be extended by TypeScript
 
 // this works
-
-// to build Highlight.js
 
 // trim off any earlier non-relevant match groups (ie, the other regex
 
@@ -1221,11 +1249,7 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // use the second matcher result
 
-// using `keywords.$pattern` to pass the keyword pattern
-
 // was the first match), a simple resume would scan ahead who knows how
-
-// we also need to allow for multiple possible comments inbetween
 
 // we carefully check the opening tag to see if it truly
 
@@ -1233,13 +1257,17 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 // we have to count the parens to make sure we actually have the correct
 
+// we need a copy because keywords might be compiled multiple times
+
 // we need a null object, which inherit will guarantee
 
 // we need this for now for jSX
 
-// we need to look ahead to make sure that we actually have an
-
 // we need to pair up {} inside our subst to prevent
+
+// we should be all text, no child nodes
+
+// we use _emit to keep track of which match groups are "top-level" to avoid double
 
 // we've found a 0 width match and we're stuck, so we need to advance
 
@@ -1252,5 +1280,3 @@ Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 // without requiring any underlying changes to the compiler internals.
 
 // wrap-around to considering all matches again
-
-// }

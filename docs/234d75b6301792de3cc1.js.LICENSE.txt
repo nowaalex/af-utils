@@ -2,6 +2,10 @@
 
 /* default */
 
+/* default.highlightElement */
+
+/* default.registerLanguage */
+
 /* harmony default export */
 
 /* highlightBlock caused deprecated console messages */

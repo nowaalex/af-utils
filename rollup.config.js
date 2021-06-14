@@ -16,8 +16,8 @@ const removeInlinedConstantsImports = () => ({
 const OUTPUT_DIR = "lib";
 const BUNDLE_TREESHAKE_STATS_OUTPUT_DIR = "treeshake_bundles";
 
-fs.rmdirSync( OUTPUT_DIR, { recursive: true });
-fs.rmdirSync( BUNDLE_TREESHAKE_STATS_OUTPUT_DIR, { recursive: true });
+fs.rmSync( OUTPUT_DIR, { recursive: true });
+fs.rmSync( BUNDLE_TREESHAKE_STATS_OUTPUT_DIR, { recursive: true });
 
 export default [
     {
