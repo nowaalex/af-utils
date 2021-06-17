@@ -38,8 +38,10 @@ const Container = ({
         }
     }, [ scrollNode ]);
 
+    model.startBatch().setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity );
+
     useLayoutEffect(() => {
-        model.setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity );
+        model.endBatch();
     });
 
     useEffect(() => {
