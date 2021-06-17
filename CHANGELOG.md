@@ -1,3 +1,5 @@
+# 2.7.4 - 2021-06-17
+* useEffect -> useLayoutEffect in container, which fixes rows removal from list start
 # 2.7.3 - 2021-06-15
 * upgraded deps
 # 2.7.2 - 2021-05-10

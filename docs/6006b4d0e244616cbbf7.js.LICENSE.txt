@@ -862,8 +862,6 @@ object-assign
 
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 
-// EXTERNAL MODULE: ./src/constants/events.js
-
 // Ensure the hash is encoded properly before doing anything else.
 
 // Ensure we always have a properly-encoded hash.

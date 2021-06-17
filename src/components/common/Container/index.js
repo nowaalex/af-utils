@@ -1,6 +1,10 @@
-import { useState, useEffect, useImperativeHandle } from "react";
+import { useState, useEffect, useLayoutEffect, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
+import {
+    END_INDEX,
+    ROWS_QUANTITY
+} from "constants/events";
 import { observe, unobserve } from "utils/heightObserver";
 import HeightProvider from "./HeightProvider";
 import VariableHeightsModel from "models/VariableSizeList";
@@ -34,9 +38,18 @@ const Container = ({
         }
     }, [ scrollNode ]);
 
-    useEffect(() => {
-        model.setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, onRangeEndMove );
+    useLayoutEffect(() => {
+        model.setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity );
     });
+
+    useEffect(() => {
+        if( onRangeEndMove ){
+            const evt = () => onRangeEndMove( model );
+            evt();
+            model.on( evt, ROWS_QUANTITY, END_INDEX );
+            return () => model.off( evt, ROWS_QUANTITY, END_INDEX );
+        }
+    }, [ onRangeEndMove ]);
 
     useEffect(() => () => model.destructor(), []);
 

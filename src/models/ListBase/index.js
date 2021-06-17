@@ -28,7 +28,6 @@ class ListBase extends PubSub {
 
     spacerNode = null;
     scrollContainerNode = null;
-    rangeEndMoveHandler = null;
 
     setScrollContainerNode( node ){
         this.scrollContainerNode = node;
@@ -106,8 +105,7 @@ class ListBase extends PubSub {
 
         this
             .on( this.updateWidgetScrollHeight, ROWS_QUANTITY )
-            .on( this.updateEndIndex, ROWS_QUANTITY )
-            .on( this.callRangeEndMoveHandler, ROWS_QUANTITY, END_INDEX );
+            .on( this.updateEndIndex, ROWS_QUANTITY );
     }
 
     destructor(){
@@ -133,13 +131,7 @@ class ListBase extends PubSub {
         return this;
     }
 
-    callRangeEndMoveHandler(){
-        if( this.rangeEndMoveHandler ){
-            this.rangeEndMoveHandler( this );
-        }
-    }
-
-    setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity, rangeEndMoveHandler ){
+    setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity ){
 
         this.estimatedRowHeight = estimatedRowHeight;
 
@@ -154,12 +146,6 @@ class ListBase extends PubSub {
             this.rowsQuantity = rowsQuantity;
             this.emit( ROWS_QUANTITY );
         }
-
-        if( !this.rangeEndMoveHandler ){
-            this.queue( this.callRangeEndMoveHandler );
-        }
-
-        this.rangeEndMoveHandler = rangeEndMoveHandler || null;
 
         this.endBatch();
     }
