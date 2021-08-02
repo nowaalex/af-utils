@@ -2,8 +2,8 @@ import { Fragment } from "react";
 import css from "./style.module.scss";
 
 const SIZES = [
-    [ "only List",           "6.48 KB", "2.41 KB" ],
-    [ "only Table",          "7.94 KB", "2.95 KB" ],
+    [ "only List",           "6.48 KB", "2.4 KB" ],
+    [ "only Table",          "7.94 KB", "2.94 KB" ],
     [ "List + Table",        "8.07 KB", "2.98 KB" ]
 ];
 

@@ -1,0 +1,1 @@
+{"version":3,"file":"385221cd582c77f621a2.css","mappings":"AAAA,sBACI,wBAEA,8BADA,2BACA","sources":["webpack://af-virtual-scroll/./src/components/common/Rows/style.module.scss"],"sourcesContent":[".spacer {\n    display: block !important;\n    visibility: hidden !important;\n    pointer-events: none !important;\n}"],"names":[],"sourceRoot":""}

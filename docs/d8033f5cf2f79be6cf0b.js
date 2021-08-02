@@ -1,0 +1,3 @@
+/*! For license information please see d8033f5cf2f79be6cf0b.js.LICENSE.txt */
+"use strict";(self.webpackChunkaf_virtual_scroll=self.webpackChunkaf_virtual_scroll||[]).push([[67],{82092:(a,l,e)=>{e.r(l),e.d(l,{default:()=>s});var c=e(14108),t=e(85893);const s=()=>(0,t.jsx)(c.Z,{rowsQuantity:1e3,getRowData:a=>({a:`cell_a_${a}`,b:`cell_b_${a}`,c:`cell_c_${a}`}),columns:[{dataKey:"a",label:"a"},{dataKey:"b",label:"b"},{dataKey:"c",label:"c"}]})}}]);
+//# sourceMappingURL=d8033f5cf2f79be6cf0b.js.map
