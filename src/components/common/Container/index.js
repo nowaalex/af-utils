@@ -5,7 +5,7 @@ import {
     END_INDEX,
     ROWS_QUANTITY
 } from "constants/events";
-import { observe, unobserve } from "utils/heightObserver";
+import { observe, unobserve } from "utils/dimensionsObserver";
 import HeightProvider from "./HeightProvider";
 import VariableHeightsModel from "models/VariableSizeList";
 import FixedHeightsModel from "models/FixedSizeList";
@@ -32,7 +32,7 @@ const Container = ({
     useEffect(() => {
         if( scrollNode ){
             model.setScrollContainerNode( scrollNode );
-            observe( scrollNode, model.setWidgetHeight );
+            observe( scrollNode, model.updateWidgetDimensions );
 
             return () => unobserve( scrollNode );
         }

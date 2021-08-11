@@ -1,5 +1,5 @@
 import { useState, cloneElement, useEffect } from "react";
-import { observe, unobserve } from "utils/heightObserver";
+import { observe, unobserve } from "utils/dimensionsObserver";
 
 const ExtraHeight = ({ model, children }) => {
 
@@ -9,9 +9,9 @@ const ExtraHeight = ({ model, children }) => {
         if( el && model ){
             let prevHeight = 0;
 
-            observe( el, height => {
-                model.updateExtraStickyHeight( height - prevHeight );
-                prevHeight = height;
+            observe( el, ({ offsetHeight }) => {
+                model.updateExtraStickyHeight( offsetHeight - prevHeight );
+                prevHeight = offsetHeight;
             });
     
             return () => {

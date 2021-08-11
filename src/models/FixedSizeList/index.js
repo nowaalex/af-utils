@@ -1,7 +1,5 @@
 import ListBase from "../ListBase";
 
-import { ROWS_QUANTITY } from "constants/events";
-
 class FixedSizeList extends ListBase {
 
     rowHeight = 0;
@@ -12,13 +10,6 @@ class FixedSizeList extends ListBase {
             this.remeasure();
         }
     }
-
-    constructor(){
-        super();
-
-        this.on( this.measureRowsThrottled, ROWS_QUANTITY );
-    }
-
 
     getIndex( offset ){
         /* rounding via bitwise hacks like |0 may not work here, because number may be > max(int32) */

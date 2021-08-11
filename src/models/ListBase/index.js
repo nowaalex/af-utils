@@ -6,7 +6,9 @@ import {
     END_INDEX,
     ROWS_QUANTITY,
     WIDGET_SCROLL_HEIGHT,
-    WIDGET_EXTRA_STICKY_HEIGHT
+    WIDGET_EXTRA_STICKY_HEIGHT,
+    WIDGET_HEIGHT,
+    WIDGET_WIDTH
 } from "constants/events";
 
 class ListBase extends PubSub {
@@ -20,6 +22,7 @@ class ListBase extends PubSub {
     overscanRowsCount = 2;
 
     widgetHeight = 0;
+    widgetWidth = 0;
 
     /* sticky elements ( for example table header/footer ) must influence ONLY on widgetScrollHeight */
     extraStickyHeight = 0;
@@ -38,13 +41,21 @@ class ListBase extends PubSub {
         this.spacerNode = node;
     }
 
-    setWidgetHeight = height => {
-        if( height !== this.widgetHeight ){
-            this.widgetHeight = height;
-            this.updateEndIndex();
+    updateWidgetDimensions = ({ offsetHeight, offsetWidth }) => {
+
+        this.startBatch();
+
+        if( offsetHeight !== this.widgetHeight ){
+            this.widgetHeight = offsetHeight;
+            this.emit( WIDGET_HEIGHT );
         }
 
-        this.measureRowsThrottled();
+        if( offsetWidth !== this.widgetWidth ){
+            this.widgetWidth = offsetWidth;
+            this.emit( WIDGET_WIDTH );
+        }
+
+        this.endBatch();
     }
 
     setScrollTop( v ){
@@ -100,12 +111,15 @@ class ListBase extends PubSub {
             .endBatch();
     }
 
+    measureRowsThrottled = throttle( this.measureRows, 200, this );
+
     constructor(){
         super()
 
         this
+            .on( this.measureRowsThrottled, ROWS_QUANTITY, WIDGET_HEIGHT, WIDGET_WIDTH )
             .on( this.updateWidgetScrollHeight, ROWS_QUANTITY )
-            .on( this.updateEndIndex, ROWS_QUANTITY );
+            .on( this.updateEndIndex, ROWS_QUANTITY, WIDGET_HEIGHT );
     }
 
     destructor(){
@@ -149,8 +163,6 @@ class ListBase extends PubSub {
 
         this.endBatch();
     }
-
-    measureRowsThrottled = throttle( this.measureRows, 200, this );
 
     /* Calculated inside model */
     startIndex = 0;

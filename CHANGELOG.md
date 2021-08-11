@@ -1,3 +1,6 @@
+# 2.8.0 - 2021-08-011
+* upgraded deps
+* recalculating rows dimensions on widget resize
 # 2.7.9 - 2021-08-02
 * upgraded deps
 # 2.7.7 - 2021-06-17

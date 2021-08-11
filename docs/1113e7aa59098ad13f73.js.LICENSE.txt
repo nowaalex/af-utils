@@ -28,6 +28,8 @@ object-assign
           It is much more efficient, than calling updateRowHeight N times.
       */
 
+/* Calculated inside model */
+
 /* DndContext.Provider */
 
 /* END_INDEX */
@@ -44,7 +46,11 @@ object-assign
 
 /* WIDGET_EXTRA_STICKY_HEIGHT */
 
+/* WIDGET_HEIGHT */
+
 /* WIDGET_SCROLL_HEIGHT */
+
+/* WIDGET_WIDTH */
 
 /* We can batch-update fenwick tree, if we know, that all indexes are updated in +1 - order. */
 
