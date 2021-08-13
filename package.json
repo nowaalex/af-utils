@@ -1,6 +1,6 @@
 {
   "name": "af-virtual-scroll",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "description": "React components for rendering large scrollable data",
   "repository": {
     "type": "git",
@@ -79,7 +79,7 @@
     "eslint-import-resolver-webpack": "^0.13.1",
     "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-lodash": "^7.2.0",
+    "eslint-plugin-lodash": "^7.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
@@ -97,7 +97,7 @@
     "prettier": "^2.3.2",
     "raw-loader": "^4.0.2",
     "react": "^17.0.2",
-    "react-dnd-html5-backend": "^14.0.0",
+    "react-dnd-html5-backend": "^14.0.1",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-router": "^5.2.0",
@@ -105,7 +105,7 @@
     "react-test-renderer": "^17.0.2",
     "rollup": "^2.56.2",
     "rollup-plugin-filesize": "^9.1.1",
-    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-postcss": "^4.0.1",
     "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.37.5",
     "sass-loader": "^12.1.0",
@@ -124,9 +124,9 @@
     "react-dom": "^17.0.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.14.8",
+    "@babel/runtime": "^7.15.3",
     "prop-types": "^15.7.2",
-    "react-dnd": "^14.0.2"
+    "react-dnd": "^14.0.3"
   },
   "browserslist": [
     ">0.5%",

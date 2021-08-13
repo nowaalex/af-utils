@@ -768,8 +768,6 @@ object-assign
 
 // CONCATENATED MODULE: ./node_modules/react-dnd-html5-backend/dist/esm/utils/js_utils.js
 
-// CONCATENATED MODULE: ./node_modules/react-dnd/dist/esm/core/DndProvider.js
-
 // CONCATENATED MODULE: ./node_modules/react-icons/lib/esm/iconContext.js
 
 // CONCATENATED MODULE: ./node_modules/react-icons/lib/esm/iconsManifest.js
@@ -849,6 +847,8 @@ object-assign
 // Don't publish the source just yet (see why below)
 
 // Don't show a nice cursor but still prevent default
+
+// Dragging some elements, like <a> and <img> may still behave like a native drag event,
 
 // EXPORTS
 
@@ -954,6 +954,8 @@ object-assign
 
 // Instead, we periodically shift 1024 tasks off the queue.
 
+// Internal State
+
 // Interpolate
 
 // It also neatly avoids a situation where render() returns null
@@ -1026,6 +1028,8 @@ object-assign
 
 // React v16.12 and above
 
+// React-Dnd Components
+
 // Rearrange xs and ys so that xs is sorted
 
 // Receiving a mouse event in the middle of a dragging operation
@@ -1053,6 +1057,8 @@ object-assign
 // See:
 
 // Show user-specified drop effect.
+
+// Stop the default behavior when we're not expecting a native item to be dropped.
 
 // Store drag source node so we can check whether
 
@@ -1237,6 +1243,8 @@ object-assign
 // eslint-disable-line no-new-wrappers
 
 // eslint-disable-next-line no-console
+
+// even if the current drag event matches a user-defined type.
 
 // even then.
 
