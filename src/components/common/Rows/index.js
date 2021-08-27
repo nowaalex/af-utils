@@ -9,7 +9,7 @@ const spacerKey = Math.random().toString(36);
 const Rows = ({ model, children, Spacer = "div", ...rest }) => useSubscription(
     model, 
     ({ startIndex, endIndex, virtualTopOffset, setSpacerNode }) => {
-
+        
         const result = [
             <Spacer
                 key={spacerKey}

@@ -10,11 +10,14 @@ export const Row = ({ index, columns, getRowData, getRowProps, Cell }) => {
 
     return (
         <tr {...(getRowProps&&getRowProps(rowData,index))}>
-            {rowData ? columns.map( column => (
-                <td key={column.dataKey}>
-                    <Cell rowData={rowData} column={column} />
-                </td>
-            )) : (
+            {rowData ? columns.map( column => {
+                const FinalCell = column.Cell || Cell;
+                return (
+                    <td key={column.dataKey}>
+                        <FinalCell rowData={rowData} column={column} />
+                    </td>
+                );
+            }) : (
                 <td colSpan={columns.length}>
                     {DEFAULT_EMPTY_CELL_CONTENT}
                 </td>

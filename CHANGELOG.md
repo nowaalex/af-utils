@@ -1,4 +1,7 @@
-# 2.8.0 - 2021-08-011
+# 2.8.2 - 2021-08-27
+* upgraded deps
+* added column.Cell to tables
+# 2.8.0 - 2021-08-11
 * upgraded deps
 * recalculating rows dimensions on widget resize
 # 2.7.9 - 2021-08-02
