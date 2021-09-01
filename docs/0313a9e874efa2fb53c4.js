@@ -1,0 +1,3 @@
+/*! For license information please see 0313a9e874efa2fb53c4.js.LICENSE.txt */
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[415],{19415:(e,a,l)=>{l.r(a),l.d(a,{default:()=>c});var s=l(26185),t=l(52322);const c=()=>(0,t.jsx)(s.iA,{fixed:!0,headless:!0,rowsQuantity:1e3,getRowData:e=>({a:`cell_a_${e}`,b:`cell_b_${e}`,c:`cell_c_${e}`}),columns:[{dataKey:"a",label:"a"},{dataKey:"b",label:"b"},{dataKey:"c",label:"c"}]})}}]);
+//# sourceMappingURL=0313a9e874efa2fb53c4.js.map

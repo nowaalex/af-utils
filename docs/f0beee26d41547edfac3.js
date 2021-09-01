@@ -1,0 +1,3 @@
+/*! For license information please see f0beee26d41547edfac3.js.LICENSE.txt */
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[510],{11510:(e,s,r)=>{r.r(s),r.d(s,{default:()=>g});var t=r(2784),a=r(26185),c=r(13923),n=r(17801),i=r(37574);const l="_Rl_QfM21Cv_viWZb4A6";var u=r(52322);c.Z.registerLanguage("javascript",n.Z),c.Z.registerLanguage("xml",i.Z);const f=({children:e,className:s})=>{const r=(0,t.useRef)();return(0,t.useEffect)((()=>{c.Z.highlightElement(r.current)}),[e]),(0,u.jsx)("code",{ref:r,className:(0,a.cx)(l,s),children:e})},g=(0,t.memo)(f)}}]);
+//# sourceMappingURL=f0beee26d41547edfac3.js.map

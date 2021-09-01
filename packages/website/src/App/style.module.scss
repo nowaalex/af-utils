@@ -1,0 +1,18 @@
+.wrapper {
+    display: flex;
+    flex-flow: row nowrap;
+    height: 100vh;
+    color: #c5c5c5;
+}
+
+.playgroundWrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1 1 auto;
+    min-width:  0;
+}
+
+.playgroundHeader {
+    text-align: center;
+    flex: 0 0 auto;
+}

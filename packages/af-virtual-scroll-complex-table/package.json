@@ -1,0 +1,77 @@
+{
+  "name": "af-virtual-scroll-complex-table",
+  "version": "1.0.0",
+  "description": "React components for rendering large scrollable data",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nowaalex/af-virtual-scroll.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nowaalex/af-virtual-scroll/issues"
+  },
+  "homepage": "https://nowaalex.github.io/af-virtual-scroll/",
+  "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
+  "license": "MIT",
+  "sideEffects": [
+    "*.css",
+    "*.scss"
+  ],
+  "scripts": {
+    "start": "rollup --watch --config rollup.config.js",
+    "build": "rollup --config rollup.config.js",
+    "prepare": "yarn run build",
+    "test": "jest",
+    "clear-test-cache": "jest --clearCache"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "files": [
+    "lib/*"
+  ],
+  "main": "lib/index.esm.js",
+  "module": "lib/index.esm.js",
+  "keywords": [
+    "react",
+    "reactjs",
+    "virtual",
+    "table",
+    "list",
+    "scrolling",
+    "infinite",
+    "virtualized",
+    "grid",
+    "sortable",
+    "windowing"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-react": "^7.14.5",
+    "@rollup/plugin-alias": "^3.1.5",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "postcss": "^8.3.6",
+    "rollup": "^2.56.3",
+    "rollup-plugin-postcss": "^4.0.1",
+    "sass": "^1.38.2"
+  },
+  "peerDependencies": {
+    "af-virtual-scroll": "^2.8.2",
+    "mobx": "^6.3.0",
+    "mobx-react-lite": "^3.2.0",
+    "react": "^17.0.0"
+  },
+  "dependencies": {
+    "af-virtual-scroll": "^2.8.2",
+    "mobx": "^6.3.3",
+    "mobx-react-lite": "^3.2.1",
+    "react": "^17.0.2"
+  }
+}
