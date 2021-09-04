@@ -2,30 +2,30 @@ import ListBase from "../ListBase";
 
 class FixedSizeList extends ListBase {
 
-    rowHeight = 0;
+    _rowHeight = 0;
 
-    setRowHeight( v ){
-        if( v !== this.rowHeight ){
-            this.rowHeight = v;
-            this.remeasure();
+    _setRowHeight( v ){
+        if( v !== this._rowHeight ){
+            this._rowHeight = v;
+            this._remeasure();
         }
     }
 
     getIndex( offset ){
         /* rounding via bitwise hacks like |0 may not work here, because number may be > max(int32) */
-        return this.rowHeight && Math.trunc( offset / this.rowHeight );
+        return this._rowHeight && Math.trunc( offset / this._rowHeight );
     }
 
     getOffset( index ){
-        return index * this.rowHeight;
+        return index * this._rowHeight;
     }
 
-    measureRows(){
+    _measureRows(){
         if( this.rowsQuantity ){
-            const tgtEl = this.spacerNode?.nextElementSibling;
+            const tgtEl = this._spacerNode?.nextElementSibling;
             
             if( tgtEl ){
-                this.setRowHeight( tgtEl.offsetHeight );
+                this._setRowHeight( tgtEl.offsetHeight );
             }   
         }
     }    

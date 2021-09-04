@@ -13,7 +13,7 @@ const Rows = ({ model, children, Spacer = "div", ...rest }) => useSubscription(
         const result = [
             <Spacer
                 key={spacerKey}
-                className={css.wrapper}
+                className={css.spacer}
                 aria-hidden="true"
                 style={{ height: virtualTopOffset}}
                 ref={setSpacerNode}

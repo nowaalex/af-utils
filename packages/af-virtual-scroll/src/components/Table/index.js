@@ -15,6 +15,7 @@ import {
     Cell
 } from "./renderers";
 
+import "./style.scss";
 import css from "./style.module.scss";
 
 /*
@@ -35,7 +36,7 @@ const Table = ({
     className,
     ...props
 }) => (
-    <Container className={cx(css.wrapper,className)} {...props}>
+    <Container className={cx("afvscr-table",className)} {...props}>
         {model => (
             <table className={css.bodyTable}>
                 <Colgroup columns={columns} />

@@ -11,7 +11,7 @@ const useSubscription = ( model, callBack, events ) => {
         return () => model.off( forceUpdate, ...events );
     }, events );
 
-    if( model.inBatch ){
+    if( model._inBatch ){
         /*
             Somebody tried to rerender, while we were in batch.
             On batch finish component definitely must be rerendered.

@@ -1,3 +1,5 @@
+# 2.8.3 - 2021-09-04
+* splitted repo to workspaces, optimized bundle size
 # 2.8.2 - 2021-08-27
 * upgraded deps
 * added column.Cell to tables

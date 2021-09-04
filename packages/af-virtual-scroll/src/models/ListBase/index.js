@@ -1,5 +1,6 @@
 import PubSub from "../PubSub";
 import throttle from "src/utils/throttle";
+import { observe, unobserve } from "src/utils/dimensionsObserver";
 
 import {
     START_INDEX,
@@ -14,151 +15,158 @@ import {
 class ListBase extends PubSub {
 
     /* Provided from renderer */
-    scrollTop = 0;
+    _scrollTop = 0;
 
     rowsQuantity = 0;
 
     /* must be >= 1 */
-    overscanRowsCount = 2;
+    _overscanRowsCount = 2;
 
-    widgetHeight = 0;
-    widgetWidth = 0;
+    _widgetHeight = 0;
+    _widgetWidth = 0;
 
     /* sticky elements ( for example table header/footer ) must influence ONLY on widgetScrollHeight */
     extraStickyHeight = 0;
 
-    estimatedRowHeight = 0;
+    _estimatedRowHeight = 0;
 
-    spacerNode = null;
-    scrollContainerNode = null;
+    _spacerNode = null;
+    _scrollContainerNode = null;
 
-    setScrollContainerNode( node ){
-        this.scrollContainerNode = node || null;
-    }
-
-    /* will ne used as callback, so => */
-    setSpacerNode = node => {
-        this.spacerNode = node;
-    }
-
-    updateWidgetDimensions = ({ offsetHeight, offsetWidth }) => {
+    _updateWidgetDimensions = ({ offsetHeight, offsetWidth }) => {
 
         this.startBatch();
 
-        if( offsetHeight !== this.widgetHeight ){
-            this.widgetHeight = offsetHeight;
-            this.emit( WIDGET_HEIGHT );
+        if( offsetHeight !== this._widgetHeight ){
+            this._widgetHeight = offsetHeight;
+            this._emit( WIDGET_HEIGHT );
         }
 
-        if( offsetWidth !== this.widgetWidth ){
-            this.widgetWidth = offsetWidth;
-            this.emit( WIDGET_WIDTH );
+        if( offsetWidth !== this._widgetWidth ){
+            this._widgetWidth = offsetWidth;
+            this._emit( WIDGET_WIDTH );
         }
 
         this.endBatch();
     }
 
+    _unobserveCurrentScrollContainerNode(){
+        if( this._scrollContainerNode ){
+            unobserve( this._scrollContainerNode );
+        }
+    }
+
+    /* will ne used as callback, so => */
+    setScrollContainerNode = node => {
+        this._unobserveCurrentScrollContainerNode();
+        this._scrollContainerNode = node || null;
+        if( node ){
+            observe( node, this._updateWidgetDimensions );
+        }
+    }
+
+    /* will ne used as callback, so => */
+    setSpacerNode = node => {
+        this._spacerNode = node;
+    }
+
     setScrollTop( v ){
-        if( v !== this.scrollTop ){
-            this.scrollTop = v;
-            this.updateVisibleRange();
+        if( v !== this._scrollTop ){
+            this._scrollTop = v;
+            this._updateVisibleRange();
         }
     }
 
     updateExtraStickyHeight( delta ){
         if( delta ){
             this.extraStickyHeight += delta;
-            this.emit( WIDGET_EXTRA_STICKY_HEIGHT );
+            this._emit( WIDGET_EXTRA_STICKY_HEIGHT );
         }
     }
 
-    updateEndIndex(){
+    _updateEndIndex(){
 
-        const endIndex = Math.min( this.getIndex( this.scrollTop + this.widgetHeight ) + this.overscanRowsCount, this.rowsQuantity );
+        const endIndex = Math.min( this.getIndex( this._scrollTop + this._widgetHeight ) + this._overscanRowsCount, this.rowsQuantity );
 
         if( endIndex !== this.endIndex ){
             this.endIndex = endIndex;
-            this.emit( END_INDEX );
+            this._emit( END_INDEX );
         }
-
-        return this;
     }
 
-    updateVisibleRange(){
+    _updateVisibleRange(){
 
         this.startBatch();
         
-        const startIndex = Math.max( 0, this.getIndex( this.scrollTop ) - this.overscanRowsCount );
+        const startIndex = Math.max( 0, this.getIndex( this._scrollTop ) - this._overscanRowsCount );
 
         if( startIndex !== this.startIndex ){
             this.startIndex = startIndex;
             this.virtualTopOffset = this.getOffset( startIndex );
-            this.emit( START_INDEX );
+            this._emit( START_INDEX );
         }
 
-        return this
-            .updateEndIndex()
-            .endBatch();
+        this._updateEndIndex()
+        this.endBatch();
     }
 
 
     /* must be called when row height/heights change */
-    remeasure(){
-        return this
-            .startBatch()
-            .updateWidgetScrollHeight()
-            .updateVisibleRange()
-            .endBatch();
+    _remeasure(){
+        this.startBatch();
+        this._updateWidgetScrollHeight();
+        this._updateVisibleRange();
+        this.endBatch();
     }
 
-    measureRowsThrottled = throttle( this.measureRows, 200, this );
+    _measureRowsThrottled = throttle( this._measureRows, 200, this );
 
     constructor(){
         super()
 
         this
-            .on( this.measureRowsThrottled, ROWS_QUANTITY, WIDGET_HEIGHT, WIDGET_WIDTH )
-            .on( this.updateWidgetScrollHeight, ROWS_QUANTITY )
-            .on( this.updateEndIndex, ROWS_QUANTITY, WIDGET_HEIGHT );
+            .on( this._measureRowsThrottled, ROWS_QUANTITY, WIDGET_HEIGHT, WIDGET_WIDTH )
+            .on( this._updateWidgetScrollHeight, ROWS_QUANTITY )
+            .on( this._updateEndIndex, ROWS_QUANTITY, WIDGET_HEIGHT );
     }
 
     destructor(){
-        this.measureRowsThrottled.cancel();
+        this._unobserveCurrentScrollContainerNode();
+        this._measureRowsThrottled.cancel();
         super.destructor();
     }
 
     scrollToRow( rowIndex ){
-        if( this.scrollContainerNode ){
-            this.scrollContainerNode.scrollTop = this.getOffset( rowIndex );
+        if( this._scrollContainerNode ){
+            this._scrollContainerNode.scrollTop = this.getOffset( rowIndex );
         }
         else if( process.env.NODE_ENV !== "production" ){
             console.error( "scrollContainerNode is not set" );
         }
     }
 
-    updateWidgetScrollHeight(){
+    _updateWidgetScrollHeight(){
         const v = this.getOffset( this.rowsQuantity );
         if( v !== this.widgetScrollHeight ){
             this.widgetScrollHeight = v;
-            this.emit( WIDGET_SCROLL_HEIGHT );
+            this._emit( WIDGET_SCROLL_HEIGHT );
         }
-        return this;
     }
 
     setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity ){
 
-        this.estimatedRowHeight = estimatedRowHeight;
+        this._estimatedRowHeight = estimatedRowHeight;
 
         this.startBatch();
 
-        if( overscanRowsCount !== this.overscanRowsCount ){
-            this.overscanRowsCount = overscanRowsCount;
-            this.queue( this.updateVisibleRange );
+        if( overscanRowsCount !== this._overscanRowsCount ){
+            this._overscanRowsCount = overscanRowsCount;
+            this.queue( this._updateVisibleRange );
         }
 
         if( rowsQuantity !== this.rowsQuantity ){
             this.rowsQuantity = rowsQuantity;
-            this.emit( ROWS_QUANTITY );
+            this._emit( ROWS_QUANTITY );
         }
 
         this.endBatch();

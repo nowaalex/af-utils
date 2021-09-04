@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&display=swap&subset=cyrillic");
 
 $playground-background-color: #3b4048;
+$table-border-color: #c5c5c5;
 
 html, body, #app_root {
     height: 100%;
@@ -13,25 +14,42 @@ body {
     background: #{$playground-background-color};
 }
 
-tfoot td, th {
-    background: #{$playground-background-color};
-}
-
 table {
     border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #{$table-border-color};
 }
 
 td {
     padding: 0.5em;
 }
 
-
-table, td, th {
-    border: 1px solid #c5c5c5;
-}
-
 thead th, tfoot td {
-    border-style: none;
     padding: 2em;
     background: #5b5f7d;
+}
+
+.afvscr-table {
+
+    border: 1px solid #{$table-border-color};
+
+    table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    td, th {
+        border-style: none solid solid none;
+    }
+
+    tbody tr:last-child td,
+    tfoot td {
+        border-bottom: none;
+    }
+    
+    tfoot td {
+        border-top-style: solid;
+    }
 }

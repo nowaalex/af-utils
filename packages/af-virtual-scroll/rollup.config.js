@@ -5,6 +5,7 @@ import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import replace from "@rollup/plugin-replace";
 import postcss from "rollup-plugin-postcss";
+import { terser } from "rollup-plugin-terser";
 import resolve from "@rollup/plugin-node-resolve";
 
 import * as inlinedConstants from "./src/constants/events";
@@ -49,6 +50,19 @@ export default {
             extensions: [ ".scss", ".css" ],
             modules: {
                 generateScopedName: "[hash:base64:7]",
+            }
+        }),
+        terser({
+            mangle: {
+                properties: {
+                    regex: /^_/
+                }
+            },
+            module: true,
+            output: {
+                beautify: true,
+                comments: "all",
+                preserve_annotations: true
             }
         }),
         babel({ babelHelpers: "runtime" }),

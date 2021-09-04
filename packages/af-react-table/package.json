@@ -1,7 +1,7 @@
 {
-  "name": "af-virtual-scroll-complex-table",
+  "name": "af-react-table",
   "version": "1.0.0",
-  "description": "React components for rendering large scrollable data",
+  "description": "React components for rendering tables",
   "repository": {
     "type": "git",
     "url": "https://github.com/nowaalex/af-virtual-scroll.git"
@@ -46,11 +46,11 @@
     "windowing"
   ],
   "devDependencies": {
-    "@babel/core": "^7.15.0",
+    "@babel/core": "^7.15.4",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
     "@babel/plugin-transform-runtime": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-env": "^7.15.4",
     "@babel/preset-react": "^7.14.5",
     "@rollup/plugin-alias": "^3.1.5",
     "@rollup/plugin-babel": "^5.3.0",
@@ -60,7 +60,7 @@
     "postcss": "^8.3.6",
     "rollup": "^2.56.3",
     "rollup-plugin-postcss": "^4.0.1",
-    "sass": "^1.38.2"
+    "sass": "^1.39.0"
   },
   "peerDependencies": {
     "af-virtual-scroll": "^2.8.2",

@@ -1,11 +1,10 @@
-import { useState, useCallback, useEffect, useImperativeHandle } from "react";
+import { useState, useEffect, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 import cx from "src/utils/cx";
 import {
     END_INDEX,
     ROWS_QUANTITY
 } from "src/constants/events";
-import { observe, unobserve } from "src/utils/dimensionsObserver";
 import HeightProvider from "./HeightProvider";
 import VariableHeightsModel from "src/models/VariableSizeList";
 import FixedHeightsModel from "src/models/FixedSizeList";
@@ -30,17 +29,8 @@ const Container = ({
 
     useImperativeHandle( dataRef, () => model, EMPTY_ARRAY);
 
-    const setScrollNode = useCallback( scrollNode => {
-        if( model.scrollContainerNode ){
-            unobserve( model.scrollContainerNode );
-        }
-        model.setScrollContainerNode( scrollNode );
-        if( scrollNode ){
-            observe( scrollNode, model.updateWidgetDimensions );
-        }
-    }, EMPTY_ARRAY);
-
-    model.startBatch().setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity );
+    model.startBatch();
+    model.setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity );
 
     useEffect(() => {
         model.endBatch();
@@ -76,7 +66,7 @@ const Container = ({
             {...props}
             tabIndex="0"
             className={cx(css.wrapper,className)}
-            ref={setScrollNode}
+            ref={model.setScrollContainerNode}
             onScroll={e => model.setScrollTop( e.target.scrollTop )}
         >
             <HeightProvider model={model} />

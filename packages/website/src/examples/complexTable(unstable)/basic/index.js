@@ -1,4 +1,4 @@
-import { Table } from "af-virtual-scroll-complex-table";
+import { Table } from "af-react-table";
 import faker from "faker";
 
 const rows = Array.from({ length: 10000 }, (v, i) => ({

@@ -18,13 +18,13 @@
           It is much more efficient, than calling updateRowHeight N times.
       */
 
-/* .default */
-
 /* Calculated inside model */
 
 /* Provided from renderer */
 
 /* We can batch-update fenwick tree, if we know, that all indexes are updated in +1 - order. */
+
+/* ["default"] */
 
 /* binding */
 

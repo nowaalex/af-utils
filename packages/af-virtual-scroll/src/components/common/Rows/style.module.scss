@@ -1,5 +1,5 @@
 .spacer {
-    display: block !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
+    visibility: hidden;
+    pointer-events: none;
+    contain: strict;
 }

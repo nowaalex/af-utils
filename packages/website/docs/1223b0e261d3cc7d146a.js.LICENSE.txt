@@ -1,8 +1,8 @@
 /* .List */
 
-/* .default */
+/* ["default"] */
 
-/* .default.div */
+/* ["default"].div */
 
 /* harmony export */
 

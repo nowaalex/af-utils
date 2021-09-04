@@ -41,7 +41,7 @@
 
 /***/
 
-// CONCATENATED MODULE: ../af-virtual-scroll-complex-table/lib/index.esm.js
+// CONCATENATED MODULE: ../af-react-table/lib/index.esm.js
 
 // CONCATENATED MODULE: ./src/examples/complexTable(unstable)/basic/index.js
 
