@@ -21,7 +21,8 @@ export default {
     output: {
         format: "es",
         dir: OUTPUT_DIR,
-        preferConst: true
+        preferConst: true,
+        sourcemap: true
     },
     plugins: [
         alias({
