@@ -1,3 +1,0 @@
-/*! For license information please see db3156403ec912314ffc.js.LICENSE.txt */
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[210],{92210:(e,a,l)=>{l.r(a),l.d(a,{default:()=>b});var t=l(26185),c=l(52322);const b=()=>(0,c.jsx)(t.iA,{fixed:!0,rowsQuantity:1e3,getRowData:e=>({a:`cell_a_${e}`,b:`cell_b_${e}`,c:`cell_c_${e}`}),columns:[{dataKey:"a",label:"a",width:"100em"},{dataKey:"b",label:"b"},{dataKey:"c",label:"c"}]})}}]);
-//# sourceMappingURL=db3156403ec912314ffc.js.map

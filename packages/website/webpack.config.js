@@ -7,6 +7,8 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require( "copy-webpack-plugin" );
 const webpack = require( "webpack" );
 
+const BUILD_PATH = path.resolve(__dirname, "build");
+
 module.exports = () => {
 
 	const env = process.env;
@@ -19,7 +21,7 @@ module.exports = () => {
 		entry: "./src/index.js",
 		output: {
 			publicPath: env.BASE_URL,
-			path: path.resolve(__dirname, "docs"),
+			path: BUILD_PATH,
 			filename: shouldCompress ? "[contenthash].js" : "[name].[id].js"
 		},
 		optimization: {
@@ -81,8 +83,8 @@ module.exports = () => {
 			}),
 			new CopyPlugin({
 				patterns: [
-					  { from: "./google/", to: path.resolve(__dirname, "docs") },
-					  { from: "./preview.gif", to: path.resolve(__dirname, "docs") }
+					  { from: "./google/", to: BUILD_PATH },
+					  { from: "./preview.gif", to: BUILD_PATH }
 				],
 			}),
 		]

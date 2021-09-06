@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "start": "yarn wsrun --collect-logs start",
-    "build": "yarn wsrun --stages build && cp -r packages/website/docs .",
+    "build": "yarn wsrun --stages build",
+    "deploy": "gh-pages -d packages/website/build",
     "test": "jest",
     "clear-test-cache": "jest --clearCache"
   },
@@ -23,6 +24,7 @@
     "not ios_saf < 13"
   ],
   "devDependencies": {
+    "gh-pages": "^3.2.3",
     "wsrun": "^5.2.4"
   }
 }

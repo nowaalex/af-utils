@@ -50,14 +50,14 @@ class PubSub {
     }
 
     _emit( evt ){
-        if( this._inBatch ){
+        if( this._inBatch === 0 ){
             for( const cb of this._E[ evt ] ){
-                this._Q.add( cb );
+                cb.call( this );
             }
         }
         else{
             for( const cb of this._E[ evt ] ){
-                cb.call( this );
+                this._Q.add( cb );
             }
         }
     }

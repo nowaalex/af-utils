@@ -1,3 +1,5 @@
+# 2.8.4 - 2021-09-06
+* added gh-pages, minor pubsub optimization
 # 2.8.3 - 2021-09-04
 * splitted repo to workspaces, optimized bundle size
 # 2.8.2 - 2021-08-27

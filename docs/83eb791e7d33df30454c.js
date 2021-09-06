@@ -1,3 +1,0 @@
-/*! For license information please see 83eb791e7d33df30454c.js.LICENSE.txt */
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[299],{42299:(e,s,i)=>{i.r(s),i.d(s,{default:()=>h});var t=i(26185),d=i(52322);const a={minWidth:200,maxWidth:400},h=()=>(0,d.jsx)(t.aV,{fixed:!0,style:a,rowsQuantity:1e3,children:e=>(0,d.jsxs)("div",{children:["row ",e]},e)})}}]);
-//# sourceMappingURL=83eb791e7d33df30454c.js.map
