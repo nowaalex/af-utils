@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import RowsAggregator from "src/models/aggregators/Mobx";
+import RowsAggregator from "models/aggregators/Mobx";
 import { Table, cx } from "af-virtual-scroll";
 import css from "./style.module.scss";
 import { useDrag, useDrop } from "react-dnd";

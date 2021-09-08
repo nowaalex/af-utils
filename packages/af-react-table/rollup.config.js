@@ -1,18 +1,11 @@
 import fs from "fs";
-import path from "path";
 import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
-import alias from "@rollup/plugin-alias";
-import resolve from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
 
 const OUTPUT_DIR = "lib";
 
 fs.rmSync( OUTPUT_DIR, { recursive: true, force: true });
-
-const customResolver = resolve({
-    extensions: [ '.js', '.scss' ]
-});
 
 export default {
     input: {
@@ -25,13 +18,6 @@ export default {
         sourcemap: true
     },
     plugins: [
-        alias({
-            entries: [{
-                find: /^src\//,
-                replacement: path.resolve(__dirname, 'src') + '/'
-            }],
-            customResolver
-        }),
         postcss({
             extract: "style.css",
             use: [ "sass" ],

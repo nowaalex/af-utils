@@ -1,5 +1,5 @@
-import useSubscription from "src/hooks/useSubscription";
-import { WIDGET_SCROLL_HEIGHT, WIDGET_EXTRA_STICKY_HEIGHT } from "src/constants/events";
+import useSubscription from "hooks/useSubscription";
+import { WIDGET_SCROLL_HEIGHT, WIDGET_EXTRA_STICKY_HEIGHT } from "constants/events";
 import css from "./style.module.scss";
 
 const Events = [ WIDGET_SCROLL_HEIGHT, WIDGET_EXTRA_STICKY_HEIGHT ];

@@ -1,5 +1,5 @@
 import { useState, cloneElement, useEffect } from "react";
-import { observe, unobserve } from "src/utils/dimensionsObserver";
+import { observe, unobserve } from "utils/dimensionsObserver";
 
 const ExtraHeight = ({ model, children }) => {
 

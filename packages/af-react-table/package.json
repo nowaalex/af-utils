@@ -20,8 +20,7 @@
     "start": "rollup --watch --config rollup.config.js",
     "build": "rollup --config rollup.config.js",
     "prepare": "yarn run build",
-    "test": "jest",
-    "clear-test-cache": "jest --clearCache"
+    "test": "jest"
   },
   "engines": {
     "node": ">=14.0.0",
@@ -52,10 +51,9 @@
     "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.4",
     "@babel/preset-react": "^7.14.5",
-    "@rollup/plugin-alias": "^3.1.5",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^20.0.0",
-    "@rollup/plugin-node-resolve": "^13.0.4",
+    "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "postcss": "^8.3.6",
     "rollup": "^2.56.3",
@@ -70,6 +68,7 @@
   },
   "dependencies": {
     "af-virtual-scroll": "^2.8.2",
+    "babel-jest": "^27.1.1",
     "mobx": "^6.3.3",
     "mobx-react-lite": "^3.2.1",
     "react": "^17.0.2"

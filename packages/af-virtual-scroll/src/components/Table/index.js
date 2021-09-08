@@ -1,6 +1,6 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
-import cx from "src/utils/cx";
+import cx from "utils/cx";
 
 import Rows from "../common/Rows";
 import Container from "../common/Container";

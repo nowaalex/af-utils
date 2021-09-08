@@ -1,4 +1,5 @@
 const plugins = [
+    [ "module-resolver", { "root": [ "./src" ] }],
     [ "@babel/plugin-proposal-class-properties", { loose: true }],
     [ "@babel/plugin-proposal-object-rest-spread", { loose: true, useBuiltIns: true }],
     [ "transform-react-remove-prop-types", {

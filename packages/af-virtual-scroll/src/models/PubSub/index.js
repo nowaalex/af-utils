@@ -1,4 +1,4 @@
-import { EVENTS_ARRAY_LENGTH } from "src/constants/events";
+import { EVENTS_ARRAY_LENGTH } from "constants/events";
 
 class PubSub {
 

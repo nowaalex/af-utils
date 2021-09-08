@@ -1,13 +1,13 @@
 import { useState, useEffect, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
-import cx from "src/utils/cx";
+import cx from "utils/cx";
 import {
     END_INDEX,
     ROWS_QUANTITY
-} from "src/constants/events";
+} from "constants/events";
 import HeightProvider from "./HeightProvider";
-import VariableHeightsModel from "src/models/VariableSizeList";
-import FixedHeightsModel from "src/models/FixedSizeList";
+import VariableHeightsModel from "models/VariableSizeList";
+import FixedHeightsModel from "models/FixedSizeList";
 import css from "./style.module.scss";
 
 const EMPTY_ARRAY = [];

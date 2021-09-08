@@ -1,6 +1,6 @@
 import PubSub from "../PubSub";
-import throttle from "src/utils/throttle";
-import { observe, unobserve } from "src/utils/dimensionsObserver";
+import throttle from "utils/throttle";
+import { observe, unobserve } from "utils/dimensionsObserver";
 
 import {
     START_INDEX,
@@ -10,7 +10,7 @@ import {
     WIDGET_EXTRA_STICKY_HEIGHT,
     WIDGET_HEIGHT,
     WIDGET_WIDTH
-} from "src/constants/events";
+} from "constants/events";
 
 class ListBase extends PubSub {
 

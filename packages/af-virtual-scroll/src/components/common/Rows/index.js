@@ -1,5 +1,5 @@
-import useSubscription from "src/hooks/useSubscription";
-import { START_INDEX, END_INDEX } from "src/constants/events";
+import useSubscription from "hooks/useSubscription";
+import { START_INDEX, END_INDEX } from "constants/events";
 import css from "./style.module.scss";
 
 const Events = [ START_INDEX, END_INDEX ];

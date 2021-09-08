@@ -2,7 +2,7 @@ import VariableSizeList from "./index";
 import r from "lodash/random";
 
 const ROWS_QUANTITY = 100;
-const UPDATES_QUANTITY = 15;
+const UPDATES_QUANTITY = 1;
 
 const ROW_HEIGHTS = new Uint32Array( ROWS_QUANTITY );
 
@@ -39,13 +39,13 @@ describe( "VariableSizeList model works", () => {
     });
 
     test( "Setting rowsQuantity > max(int32) or < 0 throws error", () => {
-        expect(() => VSList.setParams( 0, 2, -1, null )).toThrow();
-        expect(() => VSList.setParams( 0, 2, 0x7fffffff + 1, null )).toThrow();
+        expect(() => VSList.setParams( 0, 2, -1 )).toThrow();
+        expect(() => VSList.setParams( 0, 2, 0x7fffffff + 1 )).toThrow();
     });
 
     test( "Summation works correctly", () => {
 
-        VSList.setParams( 0, 2, ROWS_QUANTITY, null, null );
+        VSList.setParams( 0, 2, ROWS_QUANTITY );
 
         for( let i = 0, sum; i < UPDATES_QUANTITY; i++ ){
 

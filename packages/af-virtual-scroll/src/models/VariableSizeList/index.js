@@ -4,7 +4,7 @@ import {
     ROWS_QUANTITY,
     START_INDEX,
     END_INDEX,
-} from "src/constants/events";
+} from "constants/events";
 
 class VariableSizeList extends ListBase {
     
@@ -122,9 +122,7 @@ class VariableSizeList extends ListBase {
             /* We can batch-update fenwick tree, if we know, that all indexes are updated in +1 - order. */
             const lim = Math.min( this._fTree.length, 1 << 32 - Math.clz32( this.endIndex - 1 ) );
 
-
             do {
-     
                 diff = child.offsetHeight - this._rowHeights[ index ];
 
                 if( diff ){
