@@ -12,15 +12,14 @@ https://nowaalex.github.io/af-virtual-scroll/
 * All dimensions are calculated automatically, so there is no need to provide them.
 * Uses position: sticky for tables
 * mobx - ready
+* optimized for performance
 * `scrollToRow(rowIndex)` method is available
-* renders `table`, `tr`, `td`, `th`, so default table styling, border collapsing, etc. can be easily applied
 * < 3KB gzipped
 
 ### Basic usage
 ```javascript
 import { List } from "af-virtual-scroll";
-
-/* style is not required */
+import "af-virtual-scroll/lib/style.css";
 
 const SimpleList = () => (
     <List style={{ width: 400, height: 400 }} rowsQuantity={1000}>
