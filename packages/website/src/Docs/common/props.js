@@ -4,7 +4,7 @@ const commonDefaultProps = {
     as: "div",
     fixed: false,
     estimatedRowHeight: 20,
-    overscanRowsCount: 2,
+    overscanRowsCount: 1,
 }
 
 const commonProps = [
@@ -47,7 +47,7 @@ const commonProps = [
         type: "number",
         defaultValue: commonDefaultProps.overscanRowsCount,
         description: `Maximum number of rows, rendered above and below viewport.
-        Normally should not be overriden.`
+        Normally should not be overriden. Must be >= 1`
     },
     {
         name: "estimatedRowHeight",

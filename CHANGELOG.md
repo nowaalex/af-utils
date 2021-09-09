@@ -1,3 +1,5 @@
+# 2.8.5 - 2021-09-09
+* changed overscanRowsCount default value
 # 2.8.4 - 2021-09-06
 * added gh-pages, minor pubsub optimization
 # 2.8.3 - 2021-09-04

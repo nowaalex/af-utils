@@ -20,7 +20,7 @@ class ListBase extends PubSub {
     rowsQuantity = 0;
 
     /* must be >= 1 */
-    _overscanRowsCount = 2;
+    _overscanRowsCount = 1;
 
     _widgetHeight = 0;
     _widgetWidth = 0;

@@ -18,7 +18,7 @@ const Container = ({
     as: Component = "div",
     fixed = false,
     estimatedRowHeight = 20,
-    overscanRowsCount = 2,
+    overscanRowsCount = 1,
     dataRef,
     onRangeEndMove,
     className,

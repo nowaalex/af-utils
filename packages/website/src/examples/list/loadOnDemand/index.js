@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import faker from "faker";
 import { List } from "af-virtual-scroll";
 
@@ -14,19 +14,19 @@ const fetchArrayOfImages = () => new Promise( resolve => setTimeout(
 const Posts = () => {
 
     const [ posts, setPosts ] = useState([]);
-    const [ isLoading, setLoading ] = useState( false );
+    const isLoadingRef = useRef( false );
 
     const rangeEndMoveHandler = useCallback( async ({ rowsQuantity, endIndex }) => {
-        if( rowsQuantity === endIndex ){
-            setLoading( true );
+        if( isLoadingRef.current === false && rowsQuantity === endIndex ){
+            isLoadingRef.current = true;
             const images = await fetchArrayOfImages();
             setPosts( p => p.concat( images ) );
-            setLoading( false );
+            isLoadingRef.current = false;
         }
     }, []);
 
     return (
-        <List rowsQuantity={posts.length} onRangeEndMove={isLoading ? null : rangeEndMoveHandler}>
+        <List rowsQuantity={posts.length} onRangeEndMove={rangeEndMoveHandler}>
             {i => (
                 <div key={i}>
                     <img src={posts[i][0]} />
