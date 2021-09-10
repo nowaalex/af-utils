@@ -2,13 +2,8 @@
   "name": "af-virtual-scroll",
   "version": "2.8.6",
   "description": "React components for rendering large scrollable data",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nowaalex/af-virtual-scroll.git"
-  },
-  "bugs": {
-    "url": "https://github.com/nowaalex/af-virtual-scroll/issues"
-  },
+  "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
+  "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
   "homepage": "https://nowaalex.github.io/af-virtual-scroll/",
   "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
   "license": "MIT",
@@ -37,10 +32,15 @@
     "virtual",
     "table",
     "list",
+    "recycle",
+    "dom-recycle",
+    "dynamic-size",
+    "scroll",
     "scrolling",
     "infinite",
     "virtualized",
-    "grid",
+    "virtual",
+    "virtualization",
     "sortable",
     "windowing"
   ],
