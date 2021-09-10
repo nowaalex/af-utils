@@ -1,27 +1,29 @@
-import { useState, cloneElement, useEffect } from "react";
+import { useRef, useCallback, cloneElement } from "react";
 import { observe, unobserve } from "utils/dimensionsObserver";
 
 const ExtraHeight = ({ model, children }) => {
 
-    const [ el, ref ] = useState();
+    const prevEl = useRef( null );
+    const prevHeight = useRef( 0 );
 
-    useEffect(() => {
-        if( el && model ){
-            let prevHeight = 0;
-
-            observe( el, ({ offsetHeight }) => {
-                model.updateExtraStickyHeight( offsetHeight - prevHeight );
-                prevHeight = offsetHeight;
-            });
-    
-            return () => {
-                unobserve( el );
-                model.updateExtraStickyHeight( -prevHeight );
-            }
+    const updateRef = useCallback( el => {
+        
+        if( prevEl.current ){
+            unobserve( prevEl.current );
+            model.updateExtraStickyHeight( -prevHeight.current );
         }
-    }, [ el, model ]);
 
-    return cloneElement( children, { ref });
+        if( el ){
+            observe( el, ({ offsetHeight }) => {
+                model.updateExtraStickyHeight( offsetHeight - prevHeight.current );
+                prevHeight.current = offsetHeight;
+            });
+        }
+
+        prevEl.current = el;
+    }, [ model ]);
+
+    return cloneElement( children, { ref: updateRef });
 }
 
 export default ExtraHeight;
