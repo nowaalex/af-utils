@@ -63,7 +63,7 @@ h2 {
 .wrapper {
     display: flex;
     flex-flow: row nowrap;
-    height: 100vh;
+    height: 100%;
     color: #c5c5c5;
 
     @media (max-width: #{$burger-breakpoint}) {

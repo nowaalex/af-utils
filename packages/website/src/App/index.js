@@ -56,7 +56,7 @@ const BurgerWrapper = () => {
 
 const App = () => (
     <DndProvider backend={HTML5Backend}>
-        <Router basename={process.env.BASE_URL}>
+        <Router>
             <div className={css.wrapper}>
                 <BurgerWrapper />
                 <Switch>
