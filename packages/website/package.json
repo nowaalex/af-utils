@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "start": "NODE_ENV=development BASE_URL=/ PROD=false webpack serve --mode=development",
-    "build": "NODE_ENV=production BASE_URL=/af-virtual-scroll/ PROD=true webpack --mode=production",
+    "build": "NODE_ENV=production BASE_URL=/ PROD=true webpack --mode=production",
     "test": "jest"
   },
   "devDependencies": {
