@@ -19,10 +19,12 @@ https://nowaalex.github.io/af-virtual-scroll/
 ### Basic usage
 ```javascript
 import { List } from "af-virtual-scroll";
+
+// import once in a project
 import "af-virtual-scroll/lib/style.css";
 
 const SimpleList = () => (
-    <List style={{ width: 400, height: 400 }} rowsQuantity={1000}>
+    <List rowsQuantity={1000}>
         {i => <div key={i}>row {i}</div>}
     </List>
 );

@@ -12,11 +12,11 @@ const DOCS_STRUCTURE = [
     [ "Bundle Size", "/docs/bundleSize" ]
 ];
 
-const Menu = ({ items }) => (
+const Menu = ({ items, className, ...props }) => (
     
-    <div className={css.wrapper}>
+    <div className={className} {...props}>
 
-        <h2 className={css.header}>Docs</h2>
+        <h2>Docs</h2>
         <nav>
             {DOCS_STRUCTURE.map(([ label, url ]) => (
                 <NavLink key={url} activeClassName={css.activeLink} className={css.link} to={url}>
@@ -25,7 +25,7 @@ const Menu = ({ items }) => (
             ))}
         </nav>
     
-        <h2 className={css.header}>Examples</h2>
+        <h2>Examples</h2>
         <nav>
             {items.map( item => (
                 <NavLink activeClassName={css.activeLink} className={css.link} to={item} key={item}>
@@ -33,9 +33,8 @@ const Menu = ({ items }) => (
                 </NavLink>
             ))}
         </nav>
-
-        
-        <h2 className={css.header}>Links</h2>
+    
+        <h2>Links</h2>
         <a href="https://github.com/nowaalex/af-virtual-scroll" target="_blank" className={css.link}>
             <VscGithub />
             Github
@@ -47,4 +46,4 @@ const Menu = ({ items }) => (
     </div>
 );
 
-export default Menu
+export default Menu;

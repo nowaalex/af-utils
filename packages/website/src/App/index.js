@@ -1,8 +1,9 @@
-import { lazy, Fragment } from "react";
+import { lazy, useState, Fragment } from "react";
 import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Helmet } from "react-helmet";
+import { VscMenu } from "react-icons/vsc";
 import Menu from "../Menu";
 import Docs from "../Docs";
 import Playground from "./Playground";
@@ -26,10 +27,11 @@ const renderPlayground = routeProps => {
             <Helmet>
                 <title>{humanizeRoute( route )} | af-virtual-scroll | Examples</title>
             </Helmet>
-            <h2 className={css.playgroundHeader}>Examples | {humanizeRoute( route )}</h2>
+            <h2>Examples | {humanizeRoute( route )}</h2>
             <Playground
                 Example={getLazyComponent(exampleId)}
                 code={requireExampleCode(exampleId)}
+                className={css.playground}
             />
         </div>
     ) : (
@@ -37,14 +39,29 @@ const renderPlayground = routeProps => {
     );
 };
 
+const BurgerWrapper = () => {
+    const [ opened, setOpened ] = useState( false );
+
+    return (
+        <Fragment>
+            <VscMenu className={css.burger} onClick={() => setOpened( v => !v )} />
+            <Menu
+                items={menuItems}
+                className={opened ? css.menu : css.hiddenMenu}
+                onClick={() => setOpened( false )}   
+            />
+        </Fragment>
+    );
+}
+
 const App = () => (
     <DndProvider backend={HTML5Backend}>
         <Router basename={process.env.BASE_URL}>
             <div className={css.wrapper}>
-                <Menu items={menuItems} />
+                <BurgerWrapper />
                 <Switch>
                     <Route path="/examples/:example(.+)?" render={renderPlayground} />
-                    <Route path="/docs/:docPage" component={Docs} />
+                    <Route path="/docs/:docPage" render={() => <Docs className={css.docs} />} />
                     <Redirect to="/docs/why" />
                 </Switch>
             </div>

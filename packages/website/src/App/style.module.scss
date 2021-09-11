@@ -1,18 +1,156 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&display=swap&subset=cyrillic");
+
+$playground-background-color: #3b4048;
+$table-border-color: #c5c5c5;
+$burger-breakpoint: 40rem;
+
+html, body, #app_root {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    background: #{$playground-background-color};
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #{$table-border-color};
+}
+
+td {
+    padding: 0.5em;
+}
+
+thead th, tfoot td {
+    padding: 0.8em;
+    background: #5b5f7d;
+}
+
+h2 {
+    flex: 0 0 auto;
+    margin: 0.7em;
+}
+
+:global(.afvscr-table) {
+
+    border: 1px solid #{$table-border-color};
+
+    table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    td, th {
+        border-style: none solid solid none;
+    }
+
+    tbody tr:last-child td,
+    tfoot td {
+        border-bottom: none;
+    }
+    
+    tfoot td {
+        border-top-style: solid;
+    }
+}
+
 .wrapper {
     display: flex;
     flex-flow: row nowrap;
     height: 100vh;
     color: #c5c5c5;
+
+    @media (max-width: #{$burger-breakpoint}) {
+        & > :last-child h2 {
+            text-indent: 2em;
+            text-align: center;
+        }
+    }
 }
 
 .playgroundWrapper {
     display: flex;
     flex-flow: column nowrap;
     flex: 1 1 auto;
-    min-width:  0;
+    min-width: 0;
 }
 
-.playgroundHeader {
-    text-align: center;
+.burger {
+    height: 2em;
+    width: 2em;
+    cursor: pointer;
+    position: fixed;
+    top: 0.8em;
+    left: 1em;
+    z-index: 10;
+}
+
+.docs {
+    padding: 0 1em;
+    flex: 1 1 auto;
+    overflow: auto;
+
+    h2 {
+        margin-left: 0;
+    }
+}
+
+.menu {
+    background: #2c313a;
+    overflow: auto;
     flex: 0 0 auto;
 }
+
+.playground {
+    display: flex;
+    flex: 1 1 auto;
+    overflow: hidden;
+
+    & > * {
+        margin: 1em;
+    }
+
+    & > :nth-child(1){
+        flex: 1 4 40%;
+    }
+
+    & > :nth-child(2){
+        flex: 1 1 60%;
+    }
+
+    @media (max-width: 70rem) {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: #{$burger-breakpoint}) {
+
+    .menu {
+        padding-top: 2.5em;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .hiddenMenu {
+        composes: menu;
+        display: none;
+    }
+}
+
+@media (min-width: #{$burger-breakpoint}) {
+    .burger {
+        display: none;
+    }
+}
+
+

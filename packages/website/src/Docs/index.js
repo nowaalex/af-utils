@@ -6,7 +6,6 @@ import ComplexTable from "./ComplexTable";
 import BundleSize from "./BundleSize";
 import Why from "./Why";
 import humanizeRoute from "../utils/humanizeRoute";
-import css from "./style.module.scss";
 
 const Pages = {
     why: Why,
@@ -16,13 +15,13 @@ const Pages = {
     bundleSize: BundleSize
 };
 
-const Docs = () => {
+const Docs = ({ className }) => {
 
     const { docPage } = useParams();
     const Component = Pages[ docPage ];
     
     return (
-        <div className={css.wrapper}>
+        <div className={className}>
             <Helmet>
                 <title>{Component ? humanizeRoute( docPage ) : "Not found"} | Docs | af-virtual-scroll</title>
             </Helmet>

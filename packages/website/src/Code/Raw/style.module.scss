@@ -3,7 +3,7 @@
     background: transparent;
     overflow: auto;
     color: inherit;
-    margin-left: 1em;
-    padding: 0;
-    flex: 0 1 auto;
+    
+    /* overriding hljs styling */
+    padding: 0 2px;
 }

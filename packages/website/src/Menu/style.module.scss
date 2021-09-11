@@ -1,29 +1,16 @@
-.wrapper {
-    display: flex;
-    flex-flow: column nowrap;
-    background: #2c313a;
-    overflow: auto;
-    flex: 0 0 auto;
-}
-
 .link {
     display: flex;
     align-items: center;
     white-space: nowrap;
-    padding: 0.5em 1em;
+    padding: 0.5em 1.2em;
     color: inherit;
     text-decoration: none;
-    user-select: none;
 
     & > svg {
         width: auto;
         height: 1.5em;
         margin-right: 1em;
     }
-}
-
-.header {
-    padding-left: 0.5em;
 }
 
 .activeLink {
