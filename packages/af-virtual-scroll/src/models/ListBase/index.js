@@ -71,14 +71,16 @@ class ListBase extends PubSub {
     }
 
     setScrollTop( v ){
-        if( v !== this._scrollTop ){
-            this._scrollTop = v;
-            this._updateVisibleRange();
-        }
+        /*
+            No check is needed here;
+            Assuming, that view layer does not trigger this with same value each time
+        */
+        this._scrollTop = v;
+        this._updateVisibleRange();
     }
 
     updateExtraStickyHeight( delta ){
-        if( delta ){
+        if( delta !== 0 ){
             this.extraStickyHeight += delta;
             this._emit( WIDGET_EXTRA_STICKY_HEIGHT );
         }
@@ -110,23 +112,14 @@ class ListBase extends PubSub {
         this.endBatch();
     }
 
-
-    /* must be called when row height/heights change */
-    _remeasure(){
-        this.startBatch();
-        this._updateWidgetScrollHeight();
-        this._updateVisibleRange();
-        this.endBatch();
-    }
-
     _measureRowsThrottled = throttle( this._measureRows, 200, this );
 
     constructor(){
         super()
 
         this
+            .on( this._rowsQuantityChanged, ROWS_QUANTITY )
             .on( this._measureRowsThrottled, ROWS_QUANTITY, WIDGET_HEIGHT, WIDGET_WIDTH )
-            .on( this._updateWidgetScrollHeight, ROWS_QUANTITY )
             .on( this._updateEndIndex, ROWS_QUANTITY, WIDGET_HEIGHT );
     }
 
@@ -145,12 +138,16 @@ class ListBase extends PubSub {
         }
     }
 
-    _updateWidgetScrollHeight(){
-        const v = this.getOffset( this.rowsQuantity );
-        if( v !== this.widgetScrollHeight ){
-            this.widgetScrollHeight = v;
-            this._emit( WIDGET_SCROLL_HEIGHT );
-        }
+    _setWidgetScrollHeight( v ){
+        /*
+            No need to check v !== this.widgetScrollHeight.
+            Called inside other checks.
+        */
+        this.widgetScrollHeight = v;
+        this.startBatch();
+        this._emit( WIDGET_SCROLL_HEIGHT );
+        this._updateVisibleRange();
+        this.endBatch();
     }
 
     setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity ){

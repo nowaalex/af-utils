@@ -10,13 +10,14 @@ const StyledTable = styled(Table)`
     max-width: 50em;
 `;
 
-
 const DEFAULT_ROW_COUNT = 100000;
-
 
 const VariableSizeTable = () => {
 
-    const [ dynamicListRowHeights ] = useState(() => times( DEFAULT_ROW_COUNT, () => r( 100, 200 ) ));
+    const [ dynamicListRowHeights ] = useState(() => times(
+        DEFAULT_ROW_COUNT,
+        () => r( 100, 200 )
+    ));
 
     const columns = [
         {
@@ -39,7 +40,11 @@ const VariableSizeTable = () => {
 
     return (
         <StyledTable
-            getRowData={i => ({ a: i, b: `cell_b_${i}`, c: `cell_c_${i}` })}
+            getRowData={i => ({
+                a: i,
+                b: `cell_b_${i}`,
+                c: `cell_c_${i}`
+            })}
             columns={columns}
             estimatedRowHeight={150}
             rowsQuantity={DEFAULT_ROW_COUNT}

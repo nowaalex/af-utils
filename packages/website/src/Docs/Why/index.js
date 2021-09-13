@@ -3,11 +3,13 @@ const Why = () => {
         <div>
             <h2>What is it?</h2>
             <p>
-                When you need to render a list/table with a lot of rows, you may face performance problems.
-                A lot of DOM nodes must be allocated and updated(if needed), but only a few of them are visible.
+                When you need to render a list/table with a lot of rows, you may face performance problems.<br />
+                A lot of DOM nodes must be allocated and updated(if needed),<br />
+                but only a few of them are visible.
             </p>
             <p>
-                One way to optimize this is called virtualization. Based on scrollTop and height of each row we may calculate,
+                One way to optimize this is called virtualization.<br />
+                Based on scrollTop and height of each row we may calculate,<br />
                 what range must be rendered now.
             </p>
             <h2>Approximate scheme</h2>

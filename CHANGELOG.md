@@ -1,3 +1,5 @@
+# 2.8.7 - 2021-09-14
+* optimized widgetHeight calculation inside model
 # 2.8.5 - 2021-09-09
 * changed overscanRowsCount default value
 # 2.8.4 - 2021-09-06

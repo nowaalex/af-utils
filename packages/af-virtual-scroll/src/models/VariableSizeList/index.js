@@ -1,7 +1,6 @@
 import ListBase from "../ListBase";
 
 import {
-    ROWS_QUANTITY,
     START_INDEX,
     END_INDEX,
 } from "constants/events";
@@ -20,13 +19,10 @@ class VariableSizeList extends ListBase {
     constructor(){
         super();
 
-        this
-            /* must be done before events, attached in ListBase */
-            .prependListener( this._grow, ROWS_QUANTITY )
-            .on( this._measureRowsThrottled, START_INDEX, END_INDEX );            
+        this.on( this._measureRowsThrottled, START_INDEX, END_INDEX );            
     }
 
-    _grow(){
+    _rowsQuantityChanged(){
 
         const { rowsQuantity } = this;
 
@@ -56,14 +52,18 @@ class VariableSizeList extends ListBase {
 
             this._fTree.set( this._rowHeights, 1 );
 
+            let widgetScrollHeight = 0;
+
+            /* TODO: optimize <= */
             for( let i = 1, j; i <= rowsQuantity; i++ ){
+                widgetScrollHeight += this._rowHeights[ i - 1 ];
                 j = i + ( i & -i );
                 if( j <= rowsQuantity ){
                     this._fTree[ j ] += this._fTree[ i ];
                 }
             }
 
-            this._remeasure();
+            this._setWidgetScrollHeight( widgetScrollHeight );
         }        
     }
 
@@ -135,7 +135,7 @@ class VariableSizeList extends ListBase {
 
             if( buff ){
                 this._updateRowHeight( lim, buff, this._fTree.length );
-                this._remeasure();
+                this._setWidgetScrollHeight( this.widgetScrollHeight + buff );
             }
         }
     }

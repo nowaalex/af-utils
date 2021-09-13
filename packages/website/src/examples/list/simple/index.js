@@ -2,8 +2,8 @@ import { List } from "af-virtual-scroll";
 
 
 /*
-    Initial dimensions are not required, but flex-grow/min-width/smth. should be set,
-    because otherwise List may collapse to zero-width
+    Initial dimensions are not required, but flex-grow/min-width/smth.
+    Should be set, because otherwise List may collapse to zero-width
 */
 
 const wrapperStyle = { minWidth: 200, maxWidth: 400 };
