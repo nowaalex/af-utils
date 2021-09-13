@@ -140,14 +140,15 @@ class ListBase extends PubSub {
 
     _setWidgetScrollHeight( v ){
         /*
-            No need to check v !== this.widgetScrollHeight.
-            Called inside other checks.
+            TODO: crushes without if check.
         */
-        this.widgetScrollHeight = v;
-        this.startBatch();
-        this._emit( WIDGET_SCROLL_HEIGHT );
-        this._updateVisibleRange();
-        this.endBatch();
+        if( this.widgetScrollHeight !== v ){
+            this.widgetScrollHeight = v;
+            this.startBatch();
+            this._emit( WIDGET_SCROLL_HEIGHT );
+            this._updateVisibleRange();
+            this.endBatch();
+        }
     }
 
     setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity ){
