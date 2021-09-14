@@ -112,7 +112,7 @@ class ListBase extends PubSub {
         this.endBatch();
     }
 
-    _measureRowsThrottled = throttle( this._measureRows, 200, this );
+    _measureRowsThrottled = throttle( this._measureRows, 300, this );
 
     constructor(){
         super()

@@ -133,7 +133,7 @@ class VariableSizeList extends ListBase {
             }
             while( ++index < this.endIndex && ( child = child.nextElementSibling ) );
 
-            if( buff ){
+            if( buff !== 0 ){
                 this._updateRowHeight( lim, buff, this._fTree.length );
                 this._setWidgetScrollHeight( this.widgetScrollHeight + buff );
             }

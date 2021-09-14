@@ -53,7 +53,7 @@
     "postcss": "^8.3.6",
     "rollup": "^2.56.3",
     "rollup-plugin-postcss": "^4.0.1",
-    "sass": "^1.39.2"
+    "sass": "^1.40.1"
   },
   "peerDependencies": {
     "af-virtual-scroll": "^2.8.2",
