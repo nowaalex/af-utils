@@ -6,6 +6,8 @@ $menu-background: #2c313a;
 $table-border-color: $text-color;
 $burger-breakpoint: 40rem;
 $burger-size: 2rem;
+$burger-top-offset: 0.7rem;
+$headers-margin: $burger-top-offset + 0.3rem;
 
 html, body, #app_root {
     height: 100%;
@@ -37,11 +39,11 @@ thead th, tfoot td {
 
 h2 {
     flex: 0 0 auto;
-    margin: 0.7em;
+    margin: #{$headers-margin};
 }
 
 h2:not(:first-of-type){
-    margin-top: 1.8em;
+    margin-top: #{$headers-margin * 2.3};
 }
 
 :global(.afvscr-table) {
@@ -74,6 +76,7 @@ h2:not(:first-of-type){
     color: #{$text-color};
 
     @media only screen and (max-width: #{$burger-breakpoint}) {
+        background: #{$menu-background};
         & > :last-child h2 {
             text-indent: #{$burger-size};
             text-align: center;
@@ -93,7 +96,7 @@ h2:not(:first-of-type){
     width: #{$burger-size};
     cursor: pointer;
     position: fixed;
-    top: 0.8em;
+    top: #{$burger-top-offset};
     left: 1em;
     z-index: 10;
 }
@@ -112,7 +115,8 @@ h2:not(:first-of-type){
     background: #{$menu-background};
     overflow: auto;
     flex: 0 0 auto;
-    min-height: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .playground {
@@ -140,13 +144,9 @@ h2:not(:first-of-type){
 @media only screen and (max-width: #{$burger-breakpoint}) {
 
     .menu {
-        padding-top: 2.5em;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        
-        z-index: 1;
+        margin-top: #{$burger-top-offset + $burger-size};
+        padding-bottom: #{$burger-top-offset + $burger-size};
+        width: 100%;  
     }
 
     .hiddenMenu {

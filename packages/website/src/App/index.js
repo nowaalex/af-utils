@@ -44,7 +44,7 @@ const BurgerWrapper = () => {
 
     return (
         <Fragment>
-            <VscMenu className={css.burger} onClick={() => setOpened( v => !v )} />
+            <VscMenu className={css.burger} onClick={() => setOpened( !opened )} />
             <Menu
                 items={menuItems}
                 className={opened ? css.menu : css.hiddenMenu}

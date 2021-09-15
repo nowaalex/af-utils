@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require( "copy-webpack-plugin" );
+const SitemapPlugin = require("sitemap-webpack-plugin").default;
 const webpack = require( "webpack" );
 
 const BUILD_PATH = path.resolve(__dirname, "build");
@@ -12,17 +13,17 @@ const BUILD_PATH = path.resolve(__dirname, "build");
 module.exports = () => {
 
 	const env = process.env;
-    const shouldCompress = env.PROD === "true";
+    const isProd = env.PROD === "true";
     
 	return {
 		bail: true,
-		devtool: shouldCompress ? "source-map" : "eval",
+		devtool: isProd ? "source-map" : "eval",
 		target: "browserslist",
 		entry: "./src/index.js",
 		output: {
 			publicPath: env.BASE_URL,
 			path: BUILD_PATH,
-			filename: shouldCompress ? "[contenthash].js" : "[name].[id].js"
+			filename: isProd ? "[contenthash].js" : "[name].[id].js"
 		},
 		optimization: {
 			minimizer: [
@@ -75,18 +76,37 @@ module.exports = () => {
 			new CleanWebpackPlugin(),
 			new MiniCssExtractPlugin({
 				ignoreOrder: true,
-				filename: shouldCompress ? "[contenthash].css" : "[name].css",
-				chunkFilename: shouldCompress ? "[contenthash].css" : "[id].css"
+				filename: isProd ? "[contenthash].css" : "[name].css",
+				chunkFilename: isProd ? "[contenthash].css" : "[id].css"
 			}),
 			new HtmlWebpackPlugin({
                 title: "af-virtual-scroll"
 			}),
-			new CopyPlugin({
+			isProd ? new CopyPlugin({
 				patterns: [
 					  { from: "./google/", to: BUILD_PATH },
 					  { from: "./preview.gif", to: BUILD_PATH }
 				],
-			}),
-		]
+			}) : null,
+			isProd ? new SitemapPlugin({
+				base: 'https://af-virtual-scroll.vercel.app',
+				paths: [
+					"/docs/why",
+					"/docs/list",
+					"/docs/table",
+					"/docs/bundleSize",
+
+					"/examples/custom/simple",
+					"/examples/list/equalHeights",
+					"/examples/list/loadOnDemand",
+					"/examples/list/simple",
+					"/examples/list/variableRowHeights",
+					"/examples/table/equalHeights",
+					"/examples/table/headless",
+					"/examples/table/simple",
+					"/examples/table/variableRowHeights"
+				]
+			}) : null
+		].filter( Boolean )
 	};
 }

@@ -14,7 +14,7 @@ const DOCS_STRUCTURE = [
 
 const Menu = ({ items, className, ...props }) => (
     
-    <div className={className} {...props}>
+    <aside className={className} {...props}>
 
         <h2>Docs</h2>
         <nav>
@@ -43,7 +43,7 @@ const Menu = ({ items, className, ...props }) => (
             <ImNpm />
             Npm
         </a>
-    </div>
+    </aside>
 );
 
 export default Menu;
