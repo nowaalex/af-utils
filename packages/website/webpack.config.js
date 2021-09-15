@@ -91,21 +91,26 @@ module.exports = () => {
 			isProd ? new SitemapPlugin({
 				base: 'https://af-virtual-scroll.vercel.app',
 				paths: [
-					"/docs/why",
-					"/docs/list",
-					"/docs/table",
-					"/docs/bundleSize",
+					"/docs/why/",
+					"/docs/list/",
+					"/docs/table/",
+					"/docs/bundleSize/",
 
-					"/examples/custom/simple",
-					"/examples/list/equalHeights",
-					"/examples/list/loadOnDemand",
-					"/examples/list/simple",
-					"/examples/list/variableRowHeights",
-					"/examples/table/equalHeights",
-					"/examples/table/headless",
-					"/examples/table/simple",
-					"/examples/table/variableRowHeights"
-				]
+					"/examples/custom/simple/",
+					"/examples/list/equalHeights/",
+					"/examples/list/loadOnDemand/",
+					"/examples/list/simple/",
+					"/examples/list/variableRowHeights/",
+					"/examples/table/equalHeights/",
+					"/examples/table/headless/",
+					"/examples/table/simple/",
+					"/examples/table/variableRowHeights/"
+				],
+				options: {
+					lastmod: true,
+					changefreq: 'monthly',
+					priority: 0.5
+				}
 			}) : null
 		].filter( Boolean )
 	};
