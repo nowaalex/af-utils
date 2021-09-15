@@ -32,9 +32,9 @@ class PubSub {
         return this;
     }
 
-    queue( cb ){
+    _queue( cb ){
         if( process.env.NODE_ENV !== "production" ){
-            if( !this._inBatch ){
+            if( this._inBatch === 0 ){
                 console.error( "trying to add event to batch queue, while _inBatch is 0" );
             }
         }
@@ -56,13 +56,16 @@ class PubSub {
 
     /* inspired by mobx */
 
-    startBatch(){
+    _startBatch(){
         this._inBatch++;
     }
 
-    endBatch(){
+    _endBatch(){
         if( --this._inBatch === 0 ){
             for( const cb of this._Q ){
+                /*
+                    These callbacks must not call _startBatch from inside.
+                */
                 cb.call( this );
             }
             this._Q.clear();

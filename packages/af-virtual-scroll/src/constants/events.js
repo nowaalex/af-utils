@@ -1,9 +1,7 @@
-export const START_INDEX                    = 0;
-export const END_INDEX                      = 1;
-export const ROWS_QUANTITY                  = 2;
-export const WIDGET_SCROLL_HEIGHT           = 3;
-export const WIDGET_EXTRA_STICKY_HEIGHT     = 4;
-export const WIDGET_HEIGHT                  = 5;
-export const WIDGET_WIDTH                   = 6;
+export const EVT_START_INDEX                    = 0;
+export const EVT_END_INDEX                      = 1;
+export const EVT_ROWS_QUANTITY                  = 2;
+export const EVT_WIDGET_SCROLL_HEIGHT           = 3;
+export const EVT_WIDGET_EXTRA_STICKY_HEIGHT     = 4;
 
-export const EVENTS_ARRAY_LENGTH            = 7;
+export const EVENTS_ARRAY_LENGTH            = 5;

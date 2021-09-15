@@ -3,13 +3,11 @@ import throttle from "utils/throttle";
 import { observe, unobserve } from "utils/dimensionsObserver";
 
 import {
-    START_INDEX,
-    END_INDEX,
-    ROWS_QUANTITY,
-    WIDGET_SCROLL_HEIGHT,
-    WIDGET_EXTRA_STICKY_HEIGHT,
-    WIDGET_HEIGHT,
-    WIDGET_WIDTH
+    EVT_START_INDEX,
+    EVT_END_INDEX,
+    EVT_ROWS_QUANTITY,
+    EVT_WIDGET_SCROLL_HEIGHT,
+    EVT_WIDGET_EXTRA_STICKY_HEIGHT,
 } from "constants/events";
 
 class ListBase extends PubSub {
@@ -23,7 +21,6 @@ class ListBase extends PubSub {
     _overscanRowsCount = 1;
 
     _widgetHeight = 0;
-    _widgetWidth = 0;
 
     /* sticky elements ( for example table header/footer ) must influence ONLY on widgetScrollHeight */
     extraStickyHeight = 0;
@@ -33,21 +30,14 @@ class ListBase extends PubSub {
     _spacerNode = null;
     _scrollContainerNode = null;
 
-    _updateWidgetDimensions = ({ offsetHeight, offsetWidth }) => {
-
-        this.startBatch();
+    _updateWidgetDimensions = ({ offsetHeight }) => {
 
         if( offsetHeight !== this._widgetHeight ){
             this._widgetHeight = offsetHeight;
-            this._emit( WIDGET_HEIGHT );
+            this._updateEndIndex();
         }
 
-        if( offsetWidth !== this._widgetWidth ){
-            this._widgetWidth = offsetWidth;
-            this._emit( WIDGET_WIDTH );
-        }
-
-        this.endBatch();
+        this._measureRowsThrottled();
     }
 
     _unobserveCurrentScrollContainerNode(){
@@ -79,10 +69,10 @@ class ListBase extends PubSub {
         this._updateVisibleRange();
     }
 
-    updateExtraStickyHeight( delta ){
+    _updateExtraStickyHeight( delta ){
         if( delta !== 0 ){
             this.extraStickyHeight += delta;
-            this._emit( WIDGET_EXTRA_STICKY_HEIGHT );
+            this._emit( EVT_WIDGET_EXTRA_STICKY_HEIGHT );
         }
     }
 
@@ -92,36 +82,24 @@ class ListBase extends PubSub {
 
         if( endIndex !== this.endIndex ){
             this.endIndex = endIndex;
-            this._emit( END_INDEX );
+            this._emit( EVT_END_INDEX );
         }
     }
 
     _updateVisibleRange(){
-
-        this.startBatch();
         
         const startIndex = Math.max( 0, this.getIndex( this._scrollTop ) - this._overscanRowsCount );
 
         if( startIndex !== this.startIndex ){
             this.startIndex = startIndex;
             this.virtualTopOffset = this.getOffset( startIndex );
-            this._emit( START_INDEX );
+            this._emit( EVT_START_INDEX );
         }
 
         this._updateEndIndex()
-        this.endBatch();
     }
 
     _measureRowsThrottled = throttle( this._measureRows, 300, this );
-
-    constructor(){
-        super()
-
-        this
-            .on( this._rowsQuantityChanged, ROWS_QUANTITY )
-            .on( this._measureRowsThrottled, ROWS_QUANTITY, WIDGET_HEIGHT, WIDGET_WIDTH )
-            .on( this._updateEndIndex, ROWS_QUANTITY, WIDGET_HEIGHT );
-    }
 
     destructor(){
         this._unobserveCurrentScrollContainerNode();
@@ -144,10 +122,7 @@ class ListBase extends PubSub {
         */
         if( this.widgetScrollHeight !== v ){
             this.widgetScrollHeight = v;
-            this.startBatch();
-            this._emit( WIDGET_SCROLL_HEIGHT );
-            this._updateVisibleRange();
-            this.endBatch();
+            this._emit( EVT_WIDGET_SCROLL_HEIGHT );
         }
     }
 
@@ -155,19 +130,19 @@ class ListBase extends PubSub {
 
         this._estimatedRowHeight = estimatedRowHeight;
 
-        this.startBatch();
-
-        if( overscanRowsCount !== this._overscanRowsCount ){
-            this._overscanRowsCount = overscanRowsCount;
-            this.queue( this._updateVisibleRange );
-        }
+        /*
+            No need to waste extra render reacting on this prop.
+            Normally it should not be changed.
+        */
+        this._overscanRowsCount = overscanRowsCount;
 
         if( rowsQuantity !== this.rowsQuantity ){
             this.rowsQuantity = rowsQuantity;
-            this._emit( ROWS_QUANTITY );
+            this._rowsQuantityChanged();
+            this._updateVisibleRange();
+            this._measureRowsThrottled();
+            this._emit( EVT_ROWS_QUANTITY );
         }
-
-        this.endBatch();
     }
 
     /* Calculated inside model */

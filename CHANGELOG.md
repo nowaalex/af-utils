@@ -1,3 +1,5 @@
+# 2.9.0 - 2021-09-16
+* improved models perf & bundle size
 # 2.8.9 - 2021-09-15
 * optimized widgetHeight calculation inside model
 # 2.8.5 - 2021-09-09

@@ -1,9 +1,9 @@
-import { useState, useEffect, useImperativeHandle } from "react";
+import { useState, useEffect,  useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
 import {
-    END_INDEX,
-    ROWS_QUANTITY
+    EVT_END_INDEX,
+    EVT_ROWS_QUANTITY
 } from "constants/events";
 import HeightProvider from "./HeightProvider";
 import VariableHeightsModel from "models/VariableSizeList";
@@ -29,19 +29,19 @@ const Container = ({
 
     useImperativeHandle( dataRef, () => model, EMPTY_ARRAY);
 
-    model.startBatch();
+    model._startBatch();
     model.setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity );
 
     useEffect(() => {
-        model.endBatch();
+        model._endBatch();
     });
 
     useEffect(() => {
         if( onRangeEndMove ){
             const evt = () => onRangeEndMove( model );
             evt();
-            model.on( evt, ROWS_QUANTITY, END_INDEX );
-            return () => model.off( evt, ROWS_QUANTITY, END_INDEX );
+            model.on( evt, EVT_ROWS_QUANTITY, EVT_END_INDEX );
+            return () => model.off( evt, EVT_ROWS_QUANTITY, EVT_END_INDEX );
         }
     }, [ onRangeEndMove ]);
 

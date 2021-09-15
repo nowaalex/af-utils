@@ -11,15 +11,15 @@ const useSubscription = ( model, callBack, events ) => {
         return () => model.off( forceUpdate, ...events );
     }, events );
 
-    if( model._inBatch ){
+    if( model._inBatch === 0 ){
+        prevRenderRef.current = callBack( model );
+    }
+    else{
         /*
             Somebody tried to rerender, while we were in batch.
             On batch finish component definitely must be rerendered.
         */
-        model.queue( forceUpdate );
-    }
-    else{
-        prevRenderRef.current = callBack( model );
+        model._queue( forceUpdate );
     }
     
     return prevRenderRef.current;

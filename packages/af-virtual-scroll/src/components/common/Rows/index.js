@@ -1,8 +1,8 @@
 import useSubscription from "hooks/useSubscription";
-import { START_INDEX, END_INDEX } from "constants/events";
+import { EVT_START_INDEX, EVT_END_INDEX } from "constants/events";
 import css from "./style.module.scss";
 
-const Events = [ START_INDEX, END_INDEX ];
+const Events = [ EVT_START_INDEX, EVT_END_INDEX ];
 
 const spacerKey = Date.now().toString(36);
 

@@ -1,8 +1,8 @@
 import ListBase from "../ListBase";
 
 import {
-    START_INDEX,
-    END_INDEX,
+    EVT_START_INDEX,
+    EVT_END_INDEX,
 } from "constants/events";
 
 class VariableSizeList extends ListBase {
@@ -19,7 +19,7 @@ class VariableSizeList extends ListBase {
     constructor(){
         super();
 
-        this.on( this._measureRowsThrottled, START_INDEX, END_INDEX );            
+        this.on( this._measureRowsThrottled, EVT_START_INDEX, EVT_END_INDEX );            
     }
 
     _rowsQuantityChanged(){
@@ -136,6 +136,12 @@ class VariableSizeList extends ListBase {
             if( buff !== 0 ){
                 this._updateRowHeight( lim, buff, this._fTree.length );
                 this._setWidgetScrollHeight( this.widgetScrollHeight + buff );
+
+                /*
+                    It is useless to do _updateVisibleRange here,
+                    because startIndex cannot change.
+                */
+                this._updateEndIndex();
             }
         }
     }

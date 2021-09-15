@@ -10,12 +10,12 @@ const ExtraHeight = ({ model, children }) => {
         
         if( prevEl.current ){
             unobserve( prevEl.current );
-            model.updateExtraStickyHeight( -prevHeight.current );
+            model._updateExtraStickyHeight( -prevHeight.current );
         }
 
         if( el ){
             observe( el, ({ offsetHeight }) => {
-                model.updateExtraStickyHeight( offsetHeight - prevHeight.current );
+                model._updateExtraStickyHeight( offsetHeight - prevHeight.current );
                 prevHeight.current = offsetHeight;
             });
         }

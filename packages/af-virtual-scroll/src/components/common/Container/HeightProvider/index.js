@@ -1,8 +1,8 @@
 import useSubscription from "hooks/useSubscription";
-import { WIDGET_SCROLL_HEIGHT, WIDGET_EXTRA_STICKY_HEIGHT } from "constants/events";
+import { EVT_WIDGET_SCROLL_HEIGHT, EVT_WIDGET_EXTRA_STICKY_HEIGHT } from "constants/events";
 import css from "./style.module.scss";
 
-const Events = [ WIDGET_SCROLL_HEIGHT, WIDGET_EXTRA_STICKY_HEIGHT ];
+const Events = [ EVT_WIDGET_SCROLL_HEIGHT, EVT_WIDGET_EXTRA_STICKY_HEIGHT ];
 
 const HeightProvider = ({ model }) => useSubscription( model, API => (
     <div
