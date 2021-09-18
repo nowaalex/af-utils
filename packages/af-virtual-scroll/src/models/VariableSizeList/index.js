@@ -1,5 +1,4 @@
 import ListBase from "../ListBase";
-
 import { EVT_RANGE } from "constants/events";
 
 class VariableSizeList extends ListBase {
@@ -49,19 +48,15 @@ class VariableSizeList extends ListBase {
 
             this._fTree.set( this._rowHeights, 1 );
 
-            let widgetScrollHeight = 0;
-
-            /* TODO: optimize <= */
             for( let i = 1, j; i <= rowsQuantity; i++ ){
-                widgetScrollHeight += this._rowHeights[ i - 1 ];
                 j = i + ( i & -i );
                 if( j <= rowsQuantity ){
                     this._fTree[ j ] += this._fTree[ i ];
                 }
             }
+        }
 
-            this._setWidgetScrollHeight( widgetScrollHeight );
-        }        
+        this._setWidgetScrollHeight( this.getOffset( rowsQuantity ) );
     }
 
     getIndex( offset ){

@@ -79,7 +79,7 @@ class ListBase extends PubSub {
     }
 
     _updateRangeFromEnd(){
-        const to = this.getIndex( this._scrollTop + this._widgetHeight ) + 1;
+        const to = Math.min( this.rowsQuantity, this.getIndex( this._scrollTop + this._widgetHeight ) + 1 );
 
         if( to >= this.to ){
             this.from = this.getIndex( this._scrollTop );
