@@ -2,7 +2,7 @@ import { useState, useEffect,  useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
 import {
-    EVT_END_INDEX,
+    EVT_RANGE,
     EVT_ROWS_QUANTITY
 } from "constants/events";
 import HeightProvider from "./HeightProvider";
@@ -18,7 +18,7 @@ const Container = ({
     as: Component = "div",
     fixed = false,
     estimatedRowHeight = 20,
-    overscanRowsCount = 1,
+    overscanRowsCount = 3,
     dataRef,
     onRangeEndMove,
     className,
@@ -40,8 +40,8 @@ const Container = ({
         if( onRangeEndMove ){
             const evt = () => onRangeEndMove( model );
             evt();
-            model.on( evt, EVT_ROWS_QUANTITY, EVT_END_INDEX );
-            return () => model.off( evt, EVT_ROWS_QUANTITY, EVT_END_INDEX );
+            model.on( evt, EVT_ROWS_QUANTITY, EVT_RANGE );
+            return () => model.off( evt, EVT_ROWS_QUANTITY, EVT_RANGE );
         }
     }, [ onRangeEndMove ]);
 

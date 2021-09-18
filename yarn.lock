@@ -6747,10 +6747,10 @@ sass-loader@^12.1.0:
     klona "^2.0.4"
     neo-async "^2.6.2"
 
-sass@^1.41.0:
-  version "1.41.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.41.0.tgz#f7b41dc00336a4c03429c37b9680b86758af61d4"
-  integrity sha512-wb8nT60cjo9ZZMcHzG7TzdbFtCAmHEKWrH+zAdScPb4ZxL64WQBnGdbp5nwlenW5wJPcHva1JWmVa0h6iqA5eg==
+sass@^1.41.1:
+  version "1.41.1"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.41.1.tgz#bca5bed2154192779c29f48fca9c644c60c38d98"
+  integrity sha512-vIjX7izRxw3Wsiez7SX7D+j76v7tenfO18P59nonjr/nzCkZuoHuF7I/Fo0ZRZPKr88v29ivIdE9BqGDgQD/Nw==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 
@@ -7769,10 +7769,10 @@ webpack-sources@^3.2.0:
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.0.tgz#b16973bcf844ebcdb3afde32eda1c04d0b90f89d"
   integrity sha512-fahN08Et7P9trej8xz/Z7eRu8ltyiygEo/hnRi9KqBUs80KeDcnf96ZJo++ewWd84fEf3xSX9bp4ZS9hbw0OBw==
 
-webpack@^5.52.1:
-  version "5.52.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.52.1.tgz#2dc1d9029ecb7acfb80da7bf67baab67baa517a7"
-  integrity sha512-wkGb0hLfrS7ML3n2xIKfUIwHbjB6gxwQHyLmVHoAqEQBw+nWo+G6LoHL098FEXqahqximsntjBLuewStrnJk0g==
+webpack@^5.53.0:
+  version "5.53.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.53.0.tgz#f463cd9c6fc1356ae4b9b7ac911fd1f5b2df86af"
+  integrity sha512-RZ1Z3z3ni44snoWjfWeHFyzvd9HMVYDYC5VXmlYUT6NWgEOWdCNpad5Fve2CzzHoRED7WtsKe+FCyP5Vk4pWiQ==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.50"

@@ -1,3 +1,5 @@
+# 2.9.0 - 2021-09-18
+* optimized overscan rendering
 # 2.9.0 - 2021-09-16
 * improved models perf & bundle size
 # 2.8.9 - 2021-09-15

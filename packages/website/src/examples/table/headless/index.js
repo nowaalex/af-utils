@@ -5,6 +5,7 @@ const SimpleHeadlessTable = () => (
         fixed
         headless
         rowsQuantity={1000}
+        getRowProps={( rd, i ) => ({ "data-index": i })}
         getRowData={i => ({
             a: `cell_a_${i}`,
             b: `cell_b_${i}`,

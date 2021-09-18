@@ -1,9 +1,6 @@
 import ListBase from "../ListBase";
 
-import {
-    EVT_START_INDEX,
-    EVT_END_INDEX,
-} from "constants/events";
+import { EVT_RANGE } from "constants/events";
 
 class VariableSizeList extends ListBase {
     
@@ -19,7 +16,7 @@ class VariableSizeList extends ListBase {
     constructor(){
         super();
 
-        this.on( this._measureRowsThrottled, EVT_START_INDEX, EVT_END_INDEX );            
+        this.on( this._measureRowsThrottled, EVT_RANGE );            
     }
 
     _rowsQuantityChanged(){
@@ -115,12 +112,12 @@ class VariableSizeList extends ListBase {
 
         if( child ){
 
-            let index = this.startIndex,
+            let index = this.from,
                 diff,
                 buff = 0;
             
             /* We can batch-update fenwick tree, if we know, that all indexes are updated in +1 - order. */
-            const lim = Math.min( this._fTree.length, 1 << 32 - Math.clz32( this.endIndex - 1 ) );
+            const lim = Math.min( this._fTree.length, 1 << 32 - Math.clz32( this.to - 1 ) );
 
             do {
                 diff = child.offsetHeight - this._rowHeights[ index ];
@@ -131,17 +128,12 @@ class VariableSizeList extends ListBase {
                     this._updateRowHeight( index + 1, diff, lim );                  
                 }                
             }
-            while( ++index < this.endIndex && ( child = child.nextElementSibling ) );
+            while( ++index < this.to && ( child = child.nextElementSibling ) );
 
             if( buff !== 0 ){
                 this._updateRowHeight( lim, buff, this._fTree.length );
                 this._setWidgetScrollHeight( this.widgetScrollHeight + buff );
-
-                /*
-                    It is useless to do _updateVisibleRange here,
-                    because startIndex cannot change.
-                */
-                this._updateEndIndex();
+                this._updateRangeFromEnd();
             }
         }
     }

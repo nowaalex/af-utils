@@ -3,8 +3,7 @@ import throttle from "utils/throttle";
 import { observe, unobserve } from "utils/dimensionsObserver";
 
 import {
-    EVT_START_INDEX,
-    EVT_END_INDEX,
+    EVT_RANGE,
     EVT_ROWS_QUANTITY,
     EVT_WIDGET_SCROLL_HEIGHT,
     EVT_WIDGET_EXTRA_STICKY_HEIGHT,
@@ -12,13 +11,10 @@ import {
 
 class ListBase extends PubSub {
 
-    /* Provided from renderer */
     _scrollTop = 0;
 
     rowsQuantity = 0;
-
-    /* must be >= 1 */
-    _overscanRowsCount = 1;
+    _overscanRowsCount = 0;
 
     _widgetHeight = 0;
 
@@ -34,7 +30,7 @@ class ListBase extends PubSub {
 
         if( offsetHeight !== this._widgetHeight ){
             this._widgetHeight = offsetHeight;
-            this._updateEndIndex();
+            this._updateRangeFromEnd();
         }
 
         this._measureRowsThrottled();
@@ -65,8 +61,14 @@ class ListBase extends PubSub {
             No check is needed here;
             Assuming, that view layer does not trigger this with same value each time
         */
+        const isScrollingDown = v > this._scrollTop;
         this._scrollTop = v;
-        this._updateVisibleRange();
+        if( isScrollingDown ){
+            this._updateRangeFromEnd();
+        }
+        else {
+            this._updateRangeFromStart();
+        }
     }
 
     _updateExtraStickyHeight( delta ){
@@ -76,27 +78,26 @@ class ListBase extends PubSub {
         }
     }
 
-    _updateEndIndex(){
+    _updateRangeFromEnd(){
+        const to = this.getIndex( this._scrollTop + this._widgetHeight ) + 1;
 
-        const endIndex = Math.min( this.getIndex( this._scrollTop + this._widgetHeight ) + this._overscanRowsCount, this.rowsQuantity );
-
-        if( endIndex !== this.endIndex ){
-            this.endIndex = endIndex;
-            this._emit( EVT_END_INDEX );
+        if( to >= this.to ){
+            this.from = this.getIndex( this._scrollTop );
+            this.to = Math.min( this.rowsQuantity, to + this._overscanRowsCount );
+            this.virtualTopOffset = this.getOffset( this.from );
+            this._emit( EVT_RANGE );
         }
     }
 
-    _updateVisibleRange(){
-        
-        const startIndex = Math.max( 0, this.getIndex( this._scrollTop ) - this._overscanRowsCount );
+    _updateRangeFromStart(){
+        const from = this.getIndex( this._scrollTop );
 
-        if( startIndex !== this.startIndex ){
-            this.startIndex = startIndex;
-            this.virtualTopOffset = this.getOffset( startIndex );
-            this._emit( EVT_START_INDEX );
+        if( from <= this.from ){
+            this.from = Math.max( 0, from - this._overscanRowsCount );
+            this.to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
+            this.virtualTopOffset = this.getOffset( this.from );
+            this._emit( EVT_RANGE );
         }
-
-        this._updateEndIndex()
     }
 
     _measureRowsThrottled = throttle( this._measureRows, 300, this );
@@ -139,15 +140,15 @@ class ListBase extends PubSub {
         if( rowsQuantity !== this.rowsQuantity ){
             this.rowsQuantity = rowsQuantity;
             this._rowsQuantityChanged();
-            this._updateVisibleRange();
+            this._updateRangeFromEnd();
             this._measureRowsThrottled();
             this._emit( EVT_ROWS_QUANTITY );
         }
     }
 
     /* Calculated inside model */
-    startIndex = 0;
-    endIndex = 0;
+    from = 0;
+    to = 0;
     virtualTopOffset = 0;
     widgetScrollHeight = 0;
 }

@@ -16,8 +16,8 @@ const Posts = () => {
     const [ posts, setPosts ] = useState([]);
     const isLoadingRef = useRef( false );
 
-    const rangeEndMoveHandler = useCallback( async ({ rowsQuantity, endIndex }) => {
-        if( isLoadingRef.current === false && rowsQuantity === endIndex ){
+    const rangeEndMoveHandler = useCallback( async ({ rowsQuantity, to }) => {
+        if( isLoadingRef.current === false && rowsQuantity === to ){
             isLoadingRef.current = true;
             const images = await fetchArrayOfImages();
             setPosts( p => p.concat( images ) );

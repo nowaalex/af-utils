@@ -8,11 +8,14 @@ class FixedSizeList extends ListBase {
         if( v !== this._rowHeight ){
             this._rowHeight = v;
             this._setWidgetScrollHeight( v * this.rowsQuantity );
-            this._updateVisibleRange();
+            this._updateRangeFromEnd();
         }
     }
 
     _rowsQuantityChanged(){
+        if( this._rowHeight === 0 ){
+            this._rowHeight = this._estimatedRowHeight;
+        }
         this._setWidgetScrollHeight( this._rowHeight * this.rowsQuantity );
     }
 
