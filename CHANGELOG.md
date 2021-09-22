@@ -1,3 +1,5 @@
+# 2.9.3 - 2021-09-23
+* added useRange, optimized scroll
 # 2.9.2 - 2021-09-18
 * optimized overscan rendering
 # 2.9.0 - 2021-09-16

@@ -9,7 +9,7 @@ const R = new ResizeObserver( entries => {
 
 export const observe = ( el, callBack ) => {
     callBacks.set( el, callBack );
-    R.observe( el );
+    R.observe( el, { box : "border-box" });
 }
 
 export const unobserve = el => callBacks.delete( el ) && R.unobserve( el );

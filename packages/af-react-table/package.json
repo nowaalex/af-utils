@@ -50,10 +50,10 @@
     "@rollup/plugin-commonjs": "^20.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "postcss": "^8.3.6",
-    "rollup": "^2.56.3",
+    "postcss": "^8.3.7",
+    "rollup": "^2.57.0",
     "rollup-plugin-postcss": "^4.0.1",
-    "sass": "^1.41.1"
+    "sass": "^1.42.1"
   },
   "peerDependencies": {
     "af-virtual-scroll": "^2.8.2",
@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "af-virtual-scroll": "^2.8.2",
-    "babel-jest": "^27.2.0",
+    "babel-jest": "^27.2.1",
     "mobx": "^6.3.3",
     "mobx-react-lite": "^3.2.1",
     "react": "^17.0.2"

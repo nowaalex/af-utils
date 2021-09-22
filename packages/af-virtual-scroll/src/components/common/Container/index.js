@@ -1,11 +1,6 @@
-import { useState, useEffect,  useImperativeHandle } from "react";
+import { useState, useEffect, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
-import {
-    EVT_RANGE,
-    EVT_ROWS_QUANTITY
-} from "constants/events";
-import HeightProvider from "./HeightProvider";
 import VariableHeightsModel from "models/VariableSizeList";
 import FixedHeightsModel from "models/FixedSizeList";
 import css from "./style.module.scss";
@@ -20,32 +15,22 @@ const Container = ({
     estimatedRowHeight = 20,
     overscanRowsCount = 3,
     dataRef,
-    onRangeEndMove,
     className,
     ...props
 }) => {
     
     const [ model ] = useState(() => new ( fixed ? FixedHeightsModel : VariableHeightsModel ));
 
-    useImperativeHandle( dataRef, () => model, EMPTY_ARRAY);
-
     model._startBatch();
-    model.setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity );
+    model._setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity );
 
     useEffect(() => {
         model._endBatch();
     });
 
-    useEffect(() => {
-        if( onRangeEndMove ){
-            const evt = () => onRangeEndMove( model );
-            evt();
-            model.on( evt, EVT_ROWS_QUANTITY, EVT_RANGE );
-            return () => model.off( evt, EVT_ROWS_QUANTITY, EVT_RANGE );
-        }
-    }, [ onRangeEndMove ]);
+    useEffect(() => () => model._destroy(), EMPTY_ARRAY);
 
-    useEffect(() => () => model.destructor(), EMPTY_ARRAY);
+    useImperativeHandle( dataRef, () => model, EMPTY_ARRAY);
 
     if( process.env.NODE_ENV !== "production" ){
         const AssumedConstructor = fixed ? FixedHeightsModel : VariableHeightsModel;
@@ -66,10 +51,13 @@ const Container = ({
             {...props}
             tabIndex="0"
             className={cx(css.wrapper,className)}
-            ref={model.setScrollContainerNode}
-            onScroll={e => model.setScrollTop( e.target.scrollTop )}
+            ref={model._setScrollContainerNode}
         >
-            <HeightProvider model={model} />
+            <div
+                ref={model._setHeightNode}
+                aria-hidden="true"
+                className={css.heightNode}
+            />
             {children( model )}
         </Component>
     );
@@ -82,7 +70,6 @@ Container.propTypes = {
     fixed: PropTypes.bool,
     overscanRowsCount: PropTypes.number,
     estimatedRowHeight: PropTypes.number,
-    onRangeEndMove: PropTypes.func,
 }
 
 export default Container;

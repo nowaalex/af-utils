@@ -2,9 +2,9 @@ import { Fragment } from "react";
 import css from "./style.module.scss";
 
 const SIZES = [
-    [ "only List",           "4.91 KB", "2.13 KB" ],
-    [ "only Table",          "6.37 KB", "2.70 KB" ],
-    [ "List + Table",        "6.51 KB", "2.74 KB" ]
+    [ "only List",           "4.8 KB", "2.12 KB" ],
+    [ "only Table",          "6.27 KB", "2.68 KB" ],
+    [ "List + Table",        "6.4 KB", "2.72 KB" ]
 ];
 
 const BundleSize = () => (

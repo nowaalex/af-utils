@@ -4,9 +4,7 @@ import { observe, unobserve } from "utils/dimensionsObserver";
 
 import {
     EVT_RANGE,
-    EVT_ROWS_QUANTITY,
-    EVT_WIDGET_SCROLL_HEIGHT,
-    EVT_WIDGET_EXTRA_STICKY_HEIGHT,
+    EVT_ROWS_QUANTITY
 } from "constants/events";
 
 class ListBase extends PubSub {
@@ -19,12 +17,38 @@ class ListBase extends PubSub {
     _widgetHeight = 0;
 
     /* sticky elements ( for example table header/footer ) must influence ONLY on widgetScrollHeight */
-    extraStickyHeight = 0;
+    _extraStickyHeight = 0;
 
     _estimatedRowHeight = 0;
 
     _spacerNode = null;
     _scrollContainerNode = null;
+    _heightNode = null;
+
+
+    /* Calculated inside model */
+    from = 0;
+    to = 0;
+    _virtualTopOffset = 0;
+    _widgetScrollHeight = 0;
+
+    _setScrollTop = e => {
+        /*
+            No check is needed here;
+            Assuming, that view layer does not trigger this with same value each time
+        */
+        const diff = e.target.scrollTop - this._scrollTop;
+        this._scrollTop += diff;
+        if( diff > 0 ){
+            this._updateRangeFromEnd();
+        }
+        else {
+            this._updateRangeFromStart();
+        }
+        if( this._spacerNode ){
+            this._spacerNode.style.height = `${this._virtualTopOffset}px`;
+        }
+    }
 
     _updateWidgetDimensions = ({ offsetHeight }) => {
 
@@ -39,42 +63,36 @@ class ListBase extends PubSub {
     _unobserveCurrentScrollContainerNode(){
         if( this._scrollContainerNode ){
             unobserve( this._scrollContainerNode );
+            this._scrollContainerNode.removeEventListener( "scroll", this._setScrollTop );
         }
     }
 
     /* will ne used as callback, so => */
-    setScrollContainerNode = node => {
+    _setScrollContainerNode = node => {
         this._unobserveCurrentScrollContainerNode();
-        this._scrollContainerNode = node || null;
+        this._scrollContainerNode = node;
         if( node ){
             observe( node, this._updateWidgetDimensions );
+            node.addEventListener( "scroll", this._setScrollTop, { passive: true });
         }
     }
 
     /* will ne used as callback, so => */
-    setSpacerNode = node => {
-        this._spacerNode = node;
-    }
+    _setSpacerNode = node => this._spacerNode = node;
 
-    setScrollTop( v ){
-        /*
-            No check is needed here;
-            Assuming, that view layer does not trigger this with same value each time
-        */
-        const isScrollingDown = v > this._scrollTop;
-        this._scrollTop = v;
-        if( isScrollingDown ){
-            this._updateRangeFromEnd();
-        }
-        else {
-            this._updateRangeFromStart();
+    /* will ne used as callback, so => */
+    _setHeightNode = node => this._heightNode = node;
+
+    _updateHeight(){
+        if( this._heightNode ){
+            this._heightNode.style.height = ( this._widgetScrollHeight + this._extraStickyHeight ) + 'px';
         }
     }
 
     _updateExtraStickyHeight( delta ){
         if( delta !== 0 ){
-            this.extraStickyHeight += delta;
-            this._emit( EVT_WIDGET_EXTRA_STICKY_HEIGHT );
+            this._extraStickyHeight += delta;
+            this._updateHeight();
         }
     }
 
@@ -84,7 +102,7 @@ class ListBase extends PubSub {
         if( to >= this.to ){
             this.from = this.getIndex( this._scrollTop );
             this.to = Math.min( this.rowsQuantity, to + this._overscanRowsCount );
-            this.virtualTopOffset = this.getOffset( this.from );
+            this._virtualTopOffset = this.getOffset( this.from );
             this._emit( EVT_RANGE );
         }
     }
@@ -95,17 +113,17 @@ class ListBase extends PubSub {
         if( from <= this.from ){
             this.from = Math.max( 0, from - this._overscanRowsCount );
             this.to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
-            this.virtualTopOffset = this.getOffset( this.from );
+            this._virtualTopOffset = this.getOffset( this.from );
             this._emit( EVT_RANGE );
         }
     }
 
     _measureRowsThrottled = throttle( this._measureRows, 300, this );
 
-    destructor(){
+    _destroy(){
         this._unobserveCurrentScrollContainerNode();
         this._measureRowsThrottled.cancel();
-        super.destructor();
+        super._destroy();
     }
 
     scrollToRow( rowIndex ){
@@ -121,13 +139,13 @@ class ListBase extends PubSub {
         /*
             TODO: crushes without if check.
         */
-        if( this.widgetScrollHeight !== v ){
-            this.widgetScrollHeight = v;
-            this._emit( EVT_WIDGET_SCROLL_HEIGHT );
+        if( this._widgetScrollHeight !== v ){
+            this._widgetScrollHeight = v;
+            this._updateHeight();
         }
     }
 
-    setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity ){
+    _setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity ){
 
         this._estimatedRowHeight = estimatedRowHeight;
 
@@ -145,12 +163,6 @@ class ListBase extends PubSub {
             this._emit( EVT_ROWS_QUANTITY );
         }
     }
-
-    /* Calculated inside model */
-    from = 0;
-    to = 0;
-    virtualTopOffset = 0;
-    widgetScrollHeight = 0;
 }
 
 export default ListBase;

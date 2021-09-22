@@ -12,3 +12,13 @@
     /* this wrapper has tabIndex prop */
     outline: none;
 }
+
+.heightNode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    visibility: hidden;
+    contain: strict;
+    pointer-events: none;
+}

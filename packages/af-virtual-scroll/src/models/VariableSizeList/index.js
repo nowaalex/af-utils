@@ -127,7 +127,7 @@ class VariableSizeList extends ListBase {
 
             if( buff !== 0 ){
                 this._updateRowHeight( lim, buff, this._fTree.length );
-                this._setWidgetScrollHeight( this.widgetScrollHeight + buff );
+                this._setWidgetScrollHeight( this._widgetScrollHeight + buff );
                 this._updateRangeFromEnd();
             }
         }

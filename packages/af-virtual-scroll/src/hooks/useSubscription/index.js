@@ -1,5 +1,8 @@
-import { useRef, useEffect } from "react";
-import useForceUpdate from "../useForceUpdate";
+import { useRef, useEffect, useReducer } from "react";
+
+const increment = x => x + 1;
+
+const useForceUpdate = () => useReducer( increment, 0 )[ 1 ];
 
 const useSubscription = ( model, callBack, events ) => {
     

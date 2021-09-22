@@ -1,6 +1,6 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef } from "react";
 import faker from "faker";
-import { List } from "af-virtual-scroll";
+import { List, useRange } from "af-virtual-scroll";
 
 const fetchArrayOfImages = () => new Promise( resolve => setTimeout(
     resolve,
@@ -15,18 +15,19 @@ const Posts = () => {
 
     const [ posts, setPosts ] = useState([]);
     const isLoadingRef = useRef( false );
+    const modelRef = useRef();
 
-    const rangeEndMoveHandler = useCallback( async ({ rowsQuantity, to }) => {
+    useRange( modelRef, async ({ rowsQuantity, to }) => {
         if( isLoadingRef.current === false && rowsQuantity === to ){
             isLoadingRef.current = true;
             const images = await fetchArrayOfImages();
             setPosts( p => p.concat( images ) );
             isLoadingRef.current = false;
         }
-    }, []);
+    });
 
     return (
-        <List rowsQuantity={posts.length} onRangeEndMove={rangeEndMoveHandler}>
+        <List dataRef={modelRef} rowsQuantity={posts.length}>
             {i => (
                 <div key={i}>
                     <img src={posts[i][0]} />

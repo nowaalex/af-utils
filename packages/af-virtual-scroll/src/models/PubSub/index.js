@@ -18,7 +18,7 @@ class PubSub {
         return this;
     }
 
-    destructor(){
+    _destroy(){
         for( const events of this._E ){
             events.splice( 0 );
         }
