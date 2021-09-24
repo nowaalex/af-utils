@@ -85,15 +85,19 @@ class ListBase extends PubSub {
 
     _updateHeight(){
         if( this._heightNode ){
-            this._heightNode.style.height = ( this._widgetScrollHeight + this._extraStickyHeight ) + 'px';
+            this._heightNode.style.height = this._widgetScrollHeight + 'px';
         }
     }
 
     _updateExtraStickyHeight( delta ){
+        /*
+        TODO: DEBUG;
+        
         if( delta !== 0 ){
-            this._extraStickyHeight += delta;
+            this._extraStickyHeight += delta;    
             this._updateHeight();
         }
+        */
     }
 
     _updateRangeFromEnd(){
@@ -115,6 +119,16 @@ class ListBase extends PubSub {
             this.to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
             this._virtualTopOffset = this.getOffset( this.from );
             this._emit( EVT_RANGE );
+        }
+    }
+
+    _clampTo(){
+        if( this.to > this.rowsQuantity ){
+            this.to = this.rowsQuantity;
+            this._emit( EVT_RANGE );
+        }
+        else {
+            this._updateRangeFromEnd();
         }
     }
 
@@ -158,7 +172,7 @@ class ListBase extends PubSub {
         if( rowsQuantity !== this.rowsQuantity ){
             this.rowsQuantity = rowsQuantity;
             this._rowsQuantityChanged();
-            this._updateRangeFromEnd();
+            this._clampTo();
             this._measureRowsThrottled();
             this._emit( EVT_ROWS_QUANTITY );
         }

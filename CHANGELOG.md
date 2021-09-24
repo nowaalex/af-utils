@@ -1,3 +1,5 @@
+# 2.9.4 - 2021-09-24
+* fixed rowsQuantity update
 # 2.9.3 - 2021-09-23
 * added useRange, optimized scroll
 # 2.9.2 - 2021-09-18
