@@ -1,4 +1,4 @@
-# 2.9.5 - 2021-09-27
+# 2.9.6 - 2021-09-27
 * upgraded tables
 # 2.9.4 - 2021-09-24
 * fixed rowsQuantity update

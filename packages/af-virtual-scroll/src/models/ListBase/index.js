@@ -126,6 +126,10 @@ class ListBase extends PubSub {
             this.from = this.getIndex( Math.max( 0, this._widgetScrollHeight - this._widgetHeight ) );
             this._emit( EVT_RANGE );
         }
+        else {
+            /* if rowsQuantity 0 -> smth */
+            this._updateRangeFromEnd();
+        }
     }
 
     _measureRowsThrottled = throttle( this._measureRows, 300, this );
