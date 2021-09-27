@@ -87,8 +87,14 @@ const SummaryCell = /*#__PURE__*/ observer(({ m, column, rowIndexes }) => {
 
     if( column.totals === "sum" ){
         const sum = getSum( rowIndexes, column.dataKey, m.getRowData );
-        const fn = column.formatTotal || column.format;
-        return fn ? fn( sum ) : sum;
+        if( column.formatTotal ){
+            const secondArg = m.getTotalsFormattingHelper ? m.getTotalsFormattingHelper() : null;
+            return column.formatTotal( sum, secondArg );
+        }
+        if( column.format ){
+            return column.format( sum );
+        }
+        return sum;
     }
 
     return null;
@@ -181,7 +187,15 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
     return null;
 });
 
-const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel = GroupLabelDefault, ...props }) => {
+const ComplexTable = ({
+    rowsQuantity,
+    getRowData,
+    getTotalsFormattingHelper,
+    className,
+    columns,
+    GroupLabel = GroupLabelDefault,
+    ...props
+}) => {
 
     const [ m ] = useState(() => new RowsAggregator());
 
@@ -214,7 +228,10 @@ const ComplexTable = ({ rowsQuantity, getRowData, className, columns, GroupLabel
         </th>
     ));
 
-    useEffect(() => m.merge({ rowsQuantity, getRowData, columns }), [ rowsQuantity, getRowData, columns ]);
+    useEffect(
+        () => m.merge({ rowsQuantity, getRowData, getTotalsFormattingHelper, columns }),
+        [ rowsQuantity, getRowData, getTotalsFormattingHelper, columns ]
+    );
 
     useEffect(() => {
         const initialGroupingKeys = m.visibleColumns

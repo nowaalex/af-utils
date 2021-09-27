@@ -71,6 +71,7 @@ class Mobx extends Base {
 
             rowsQuantity: true,
             getRowData: true,
+            getTotalsFormattingHelper: true,
             columns: true,
             compact: true,
             filtersMap: true,

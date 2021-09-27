@@ -3,6 +3,7 @@ class Base {
     /* Provided from renderer */
     rowsQuantity = 0;
     getRowData = null;
+    getTotalsFormattingHelper = null;
     columns = [];
     compact = true;
 

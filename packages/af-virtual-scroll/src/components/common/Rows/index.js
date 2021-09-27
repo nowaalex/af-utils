@@ -8,7 +8,7 @@ const Events = [ EVT_RANGE ];
 const VisibleRows = ({ m: model, r: renderRow, e: extraProps }) => useSubscription(
     model, 
     ({ from, to }) => {
-        const result = [];    
+        const result = [];
         
         for( let i = from; i < to; i++ ){
             result.push(renderRow( i, extraProps ));

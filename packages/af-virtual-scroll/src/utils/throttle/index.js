@@ -17,7 +17,7 @@ const throttle = ( fn, ms, ctx ) => {
         }
     }
 
-    throttled.cancel = cancel;
+    throttled._cancel = cancel;
 
     return throttled;
 }

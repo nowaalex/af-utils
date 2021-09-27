@@ -10,11 +10,9 @@ import {
 class ListBase extends PubSub {
 
     _scrollTop = 0;
-
-    rowsQuantity = 0;
     _overscanRowsCount = 0;
-
     _widgetHeight = 0;
+    _widgetScrollHeight = 0;
 
     /* sticky elements ( for example table header/footer ) must influence ONLY on widgetScrollHeight */
     _extraStickyHeight = 0;
@@ -25,28 +23,30 @@ class ListBase extends PubSub {
     _scrollContainerNode = null;
     _heightNode = null;
 
-
-    /* Calculated inside model */
+    rowsQuantity = 0;
     from = 0;
     to = 0;
-    _virtualTopOffset = 0;
-    _widgetScrollHeight = 0;
+
+    _updateVirtualTopOffset(){
+        if( this._spacerNode ){
+            this._spacerNode.style.height = this.getOffset( this.from ) + "px";
+        }
+    }
+
+    constructor(){
+        super();
+        this.on( this._updateVirtualTopOffset, EVT_RANGE );
+    }
 
     _setScrollTop = e => {
-        /*
-            No check is needed here;
-            Assuming, that view layer does not trigger this with same value each time
-        */
         const diff = e.target.scrollTop - this._scrollTop;
         this._scrollTop += diff;
+
         if( diff > 0 ){
             this._updateRangeFromEnd();
         }
-        else {
+        else if( diff < 0 ) {
             this._updateRangeFromStart();
-        }
-        if( this._spacerNode ){
-            this._spacerNode.style.height = `${this._virtualTopOffset}px`;
         }
     }
 
@@ -101,12 +101,11 @@ class ListBase extends PubSub {
     }
 
     _updateRangeFromEnd(){
-        const to = Math.min( this.rowsQuantity, this.getIndex( this._scrollTop + this._widgetHeight ) + 1 );
+        const to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
 
         if( to >= this.to ){
             this.from = this.getIndex( this._scrollTop );
             this.to = Math.min( this.rowsQuantity, to + this._overscanRowsCount );
-            this._virtualTopOffset = this.getOffset( this.from );
             this._emit( EVT_RANGE );
         }
     }
@@ -117,7 +116,6 @@ class ListBase extends PubSub {
         if( from <= this.from ){
             this.from = Math.max( 0, from - this._overscanRowsCount );
             this.to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
-            this._virtualTopOffset = this.getOffset( this.from );
             this._emit( EVT_RANGE );
         }
     }
@@ -125,10 +123,8 @@ class ListBase extends PubSub {
     _clampTo(){
         if( this.to > this.rowsQuantity ){
             this.to = this.rowsQuantity;
+            this.from = this.getIndex( Math.max( 0, this._widgetScrollHeight - this._widgetHeight ) );
             this._emit( EVT_RANGE );
-        }
-        else {
-            this._updateRangeFromEnd();
         }
     }
 
@@ -136,7 +132,7 @@ class ListBase extends PubSub {
 
     _destroy(){
         this._unobserveCurrentScrollContainerNode();
-        this._measureRowsThrottled.cancel();
+        this._measureRowsThrottled._cancel();
         super._destroy();
     }
 
