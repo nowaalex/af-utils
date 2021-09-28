@@ -103,7 +103,7 @@ class ListBase extends PubSub {
     _updateRangeFromEnd(){
         const to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
 
-        if( to >= this.to ){
+        if( to > this.to ){
             this.from = this.getIndex( this._scrollTop );
             this.to = Math.min( this.rowsQuantity, to + this._overscanRowsCount );
             this._emit( EVT_RANGE );
@@ -113,7 +113,7 @@ class ListBase extends PubSub {
     _updateRangeFromStart(){
         const from = this.getIndex( this._scrollTop );
 
-        if( from <= this.from ){
+        if( from < this.from ){
             this.from = Math.max( 0, from - this._overscanRowsCount );
             this.to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
             this._emit( EVT_RANGE );
