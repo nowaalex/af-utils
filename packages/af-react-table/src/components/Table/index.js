@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { observer } from "mobx-react-lite";
+import { PureComponent } from "react";
+import { observer, Observer } from "mobx-react-lite";
 import RowsAggregator from "models/aggregators/Mobx";
 import { Table, cx } from "af-virtual-scroll";
 import css from "./style.module.scss";
@@ -187,90 +187,101 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
     return null;
 });
 
-const ComplexTable = ({
-    rowsQuantity,
-    getRowData,
-    getTotalsFormattingHelper,
-    className,
-    columns,
-    GroupLabel = GroupLabelDefault,
-    ...props
-}) => {
-
-    const [ m ] = useState(() => new RowsAggregator());
-
-    /* hack to change renderRow by link */
-    const { finalIndexes } = m;
-
-    const renderRow = ( index, RowProps ) => {
-
-        const realRowIndex = finalIndexes[ index ];
-
-        return realRowIndex < 0 ? (
-            <tr key={index}>
-                <td colSpan={RowProps.columns.length}>
-                    <GroupCell m={m} idx={realRowIndex} columns={RowProps.columns} />
-                </td>
-            </tr>
-        ) : (
-            <RowProps.Row
-                {...RowProps}
-                key={index}
-                index={realRowIndex}
-            />
-        );
+class ComplexTable extends PureComponent {
+    state = {
+        m: new RowsAggregator()
     }
 
-    const renderHeaderCells = columns => columns.map(({ dataKey, label, minWidth }, i ) => (
-        <th key={dataKey} style={{ minWidth }}>
-            <HeaderLabel m={m} dataKey={dataKey} label={label} i={i} />
-            <HeaderInput m={m} dataKey={dataKey} />
-        </th>
-    ));
+    static getDerivedStateFromProps({ rowsQuantity, getRowData, getTotalsFormattingHelper, columns }, { m }){
+        m.merge({ rowsQuantity, getRowData, getTotalsFormattingHelper, columns });
+        return null;
+    }
 
-    useEffect(
-        () => m.merge({ rowsQuantity, getRowData, getTotalsFormattingHelper, columns }),
-        [ rowsQuantity, getRowData, getTotalsFormattingHelper, columns ]
-    );
-
-    useEffect(() => {
-        const initialGroupingKeys = m.visibleColumns
-            .slice()
-            .sort(( a, b ) => ( a.initialGrouingIndex || 0 ) - ( b.initialGrouingIndex || 0 ) )
-            .filter( col => col.initialGroupingIndex )
-            .map( col => col.dataKey );
-
-        m.setGrouping( initialGroupingKeys );
-    }, []);
-
-    const renderTfootContent = normalizedVisibleColumns => normalizedVisibleColumns.some( col => !!col.totals ) ? (
+    renderTfootContent = normalizedVisibleColumns => normalizedVisibleColumns.some( col => !!col.totals ) ? (
         <tr>
             {normalizedVisibleColumns.map( col => (
                 <td key={col.dataKey}>
-                    <SummaryCell m={m} column={col} rowIndexes={m.filteredIndexes} />
+                    <SummaryCell m={this.state.m} column={col} rowIndexes={this.state.m.filteredIndexes} />
                 </td>
             ))}
         </tr>
     ) : null;
 
-    /*
-        Normally must be wrapped with DndProvider, but nested providers throw error.
-        Waiting for react-dnd release, which would fix this
-    */
-    return (
-        <div className={cx(css.wrapper,className)}>
-            <GroupsPanel m={m} GroupLabel={GroupLabel} />
-            <Table
-                columns={m.visibleColumns}
-                rowsQuantity={finalIndexes.length}
-                getRowData={getRowData}
-                renderRow={renderRow}
-                renderHeaderCells={renderHeaderCells}
-                renderTfootContent={renderTfootContent}
-                {...props}
-            />
-        </div>
-    );
+    renderHeaderCells = columns => columns.map(({ dataKey, label, minWidth }, i ) => (
+        <th key={dataKey} style={{ minWidth }}>
+            <HeaderLabel m={this.state.m} dataKey={dataKey} label={label} i={i} />
+            <HeaderInput m={this.state.m} dataKey={dataKey} />
+        </th>
+    ));
+
+    render(){
+
+        const {
+            rowsQuantity,
+            getRowData,
+            getTotalsFormattingHelper,
+            className,
+            columns,
+            GroupLabel = GroupLabelDefault,
+            ...props
+        } = this.props;
+
+        const { m } = this.state;
+
+        return (
+            <div className={cx(css.wrapper,className)}>
+                <GroupsPanel m={m} GroupLabel={GroupLabel} />
+                <Observer>
+                    {() => {
+
+                        /* hack to change renderRow by link */
+                        const { finalIndexes } = m;
+
+                        const renderRow = ( index, RowProps ) => {
+
+                            const realRowIndex = finalIndexes[ index ];
+
+                            return realRowIndex < 0 ? (
+                                <tr key={index}>
+                                    <td colSpan={RowProps.columns.length}>
+                                        <GroupCell m={m} idx={realRowIndex} columns={RowProps.columns} />
+                                    </td>
+                                </tr>
+                            ) : (
+                                <RowProps.Row
+                                    {...RowProps}
+                                    key={index}
+                                    index={realRowIndex}
+                                />
+                            );
+                        }
+
+                        return (
+                            <Table
+                                columns={m.visibleColumns}
+                                rowsQuantity={finalIndexes.length}
+                                getRowData={getRowData}
+                                renderRow={renderRow}
+                                renderHeaderCells={this.renderHeaderCells}
+                                renderTfootContent={this.renderTfootContent}
+                                {...props}
+                            />
+                        );
+                    }}
+                </Observer>
+            </div>
+        )
+    }
+
+    componentDidMount(){
+        const initialGroupingKeys = this.state.m.visibleColumns
+            .slice()
+            .sort(( a, b ) => ( a.initialGrouingIndex || 0 ) - ( b.initialGrouingIndex || 0 ) )
+            .filter( col => col.initialGroupingIndex )
+            .map( col => col.dataKey );
+
+        this.state.m.setGrouping( initialGroupingKeys );
+    }
 }
 
-export default /*#__PURE__*/ observer( ComplexTable );
+export default ComplexTable;
