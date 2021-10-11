@@ -1,3 +1,5 @@
+# 2.9.8 - 2021-10-11
+* upgraded deps & replaced Fragments with </>
 # 2.9.7 - 2021-09-28
 * upgraded deps & fixed list trembling bug
 # 2.9.6 - 2021-09-27

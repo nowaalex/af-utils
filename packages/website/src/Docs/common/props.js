@@ -1,5 +1,3 @@
-import { Fragment } from "react";
-
 const commonDefaultProps = {
     as: "div",
     fixed: false,
@@ -30,7 +28,7 @@ const commonProps = [
         type: "bool",
         defaultValue: commonDefaultProps.fixed.toString(),
         description: (
-                <Fragment>
+            <>
                 <p>
                     <strong>true</strong> - you guarantee, that all children(except sticky ones) have same height determined by first rendered child.
                 </p>
@@ -39,7 +37,7 @@ const commonProps = [
                     In this case maximum rowsQuantity value is limited to <strong>2_147_483_647</strong> (maximum int32 value),
                     because row heights cache uses bitwise operations.
                 </p>
-            </Fragment>
+            </>
         )
     },
     {

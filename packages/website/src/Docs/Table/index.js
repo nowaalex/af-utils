@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import PropsTable from "../common/PropsTable";
 import PropsRows from "../common/PropsRows";
 import commonProps from "../common/props";
@@ -58,7 +57,7 @@ const props = [
 ];
 
 const List = () => (
-    <Fragment>
+    <>
         <Styling />
         <h2>PropTypes</h2>
         <PropsTable>
@@ -69,7 +68,7 @@ const List = () => (
         <Code>
             {codeString}
         </Code>
-    </Fragment>
+    </>
 );
 
 export default List;

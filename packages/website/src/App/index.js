@@ -1,4 +1,4 @@
-import { lazy, useState, Fragment } from "react";
+import { lazy, useState } from "react";
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
@@ -43,14 +43,14 @@ const BurgerWrapper = () => {
     const [ opened, setOpened ] = useState( false );
 
     return (
-        <Fragment>
+        <>
             <VscMenu className={css.burger} onClick={() => setOpened( !opened )} />
             <Menu
                 items={menuItems}
                 className={opened ? css.menu : css.hiddenMenu}
                 onClick={() => setOpened( false )}   
             />
-        </Fragment>
+        </>
     );
 }
 

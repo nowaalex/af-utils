@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import PropsTable from "../common/PropsTable";
 import PropsRows from "../common/PropsRows";
 import commonProps from "../common/props";
@@ -14,14 +13,14 @@ const props = [
 ];
 
 const List = () => (
-    <Fragment>
+    <>
         <Styling />
         <h2>PropTypes</h2>
         <PropsTable>
             <PropsRows propsList={props} />
             <PropsRows propsList={commonProps} />
         </PropsTable>
-    </Fragment>
+    </>
 );
 
 export default List;

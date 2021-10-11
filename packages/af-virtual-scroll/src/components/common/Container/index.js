@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useImperativeHandle } from "react";
+import { useState, useEffect, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
 import VariableHeightsModel from "models/VariableSizeList";
@@ -24,7 +24,7 @@ const Container = ({
     model._startBatch();
     model._setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity );
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         model._endBatch();
     });
 

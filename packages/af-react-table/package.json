@@ -40,18 +40,18 @@
     "windowing"
   ],
   "devDependencies": {
-    "@babel/core": "^7.15.5",
+    "@babel/core": "^7.15.8",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/plugin-proposal-object-rest-spread": "^7.15.6",
-    "@babel/plugin-transform-runtime": "^7.15.0",
-    "@babel/preset-env": "^7.15.6",
+    "@babel/plugin-transform-runtime": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
     "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-commonjs": "^21.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "postcss": "^8.3.8",
-    "rollup": "^2.57.0",
+    "postcss": "^8.3.9",
+    "rollup": "^2.58.0",
     "rollup-plugin-postcss": "^4.0.1",
     "sass": "^1.42.1"
   },
@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "af-virtual-scroll": "^2.9.7",
-    "babel-jest": "^27.2.3",
+    "babel-jest": "^27.2.5",
     "mobx": "^6.3.3",
     "mobx-react-lite": "^3.2.1",
     "react": "^17.0.2"

@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import RowsAggregator from "models/aggregators/Mobx";
 import { Table, cx } from "af-virtual-scroll";
@@ -148,7 +148,7 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
             const groupValue = groupPath[lastGroupIndex];
 
             return (
-                <Fragment>
+                <>
                     <span
                         className={css.groupToggler}
                         onClick={() => m.toggleCollapsedGroup( idx )}
@@ -159,9 +159,9 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
                     />
                     &nbsp;
                     {getGroupLabel?getGroupLabel(groupValue):(
-                        <Fragment>
+                        <>
                             {label}:&nbsp;{format?format(groupValue):""+groupValue}
-                        </Fragment>
+                        </>
                     )}
                     {columns.length ? (
                         <span className={css.columnSummaries}>
@@ -178,7 +178,7 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
                             ) : null)}
                         </span>
                     ) : null}
-                </Fragment>
+                </>
             );
         }
         

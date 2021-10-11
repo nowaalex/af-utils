@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import css from "./style.module.scss";
 
 const SIZES = [
@@ -8,7 +7,7 @@ const SIZES = [
 ];
 
 const BundleSize = () => (
-    <Fragment>
+    <>
         <h2>Bundle Size</h2>
         <p>
             This library was carefully optimized for tree-shaking, so final size depends on imports you use.
@@ -34,7 +33,7 @@ const BundleSize = () => (
                 </tr>
             </tbody>
         </table>
-    </Fragment>
+    </>
 );
 
 export default BundleSize;

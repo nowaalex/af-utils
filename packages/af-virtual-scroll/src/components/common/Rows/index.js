@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import useSubscription from "hooks/useSubscription";
 import { EVT_RANGE } from "constants/events";
 import css from "./style.module.scss";
@@ -20,7 +19,7 @@ const VisibleRows = ({ m: model, r: renderRow, e: extraProps }) => useSubscripti
 );
 
 const Rows = ({ model, children, Spacer = "div", ...rest }) => (
-    <Fragment>
+    <>
         <Spacer
             className={css.spacer}
             aria-hidden="true"
@@ -31,7 +30,7 @@ const Rows = ({ model, children, Spacer = "div", ...rest }) => (
             r={children}
             e={rest}
         />
-    </Fragment>
+    </>
 );
 
 
