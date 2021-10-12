@@ -28,7 +28,7 @@
     "mini-css-extract-plugin": "^2.4.2",
     "raw-loader": "^4.0.2",
     "sass": "^1.42.1",
-    "sass-loader": "^12.1.0",
+    "sass-loader": "^12.2.0",
     "sitemap-webpack-plugin": "^1.1.1",
     "terser-webpack-plugin": "^5.2.4",
     "webpack": "^5.58.1",

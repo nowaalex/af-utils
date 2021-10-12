@@ -9,4 +9,3 @@ export { default as cx } from "./utils/cx";
 export { default as useRange } from "./hooks/useRange";
 
 export * from "./components/Table/renderers";
-export * from "./constants/events";

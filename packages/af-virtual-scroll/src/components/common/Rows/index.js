@@ -1,8 +1,5 @@
 import useSubscription from "hooks/useSubscription";
-import { EVT_RANGE } from "constants/events";
 import css from "./style.module.scss";
-
-const Events = [ EVT_RANGE ];
 
 const VisibleRows = ({ m: model, r: renderRow, e: extraProps }) => useSubscription(
     model, 
@@ -14,8 +11,7 @@ const VisibleRows = ({ m: model, r: renderRow, e: extraProps }) => useSubscripti
         }
 
         return result;
-    },
-    Events
+    }
 );
 
 const Rows = ({ model, children, Spacer = "div", ...rest }) => (

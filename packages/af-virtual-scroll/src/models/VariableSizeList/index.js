@@ -1,5 +1,4 @@
 import ListBase from "../ListBase";
-import { EVT_RANGE } from "constants/events";
 
 class VariableSizeList extends ListBase {
     
@@ -15,7 +14,7 @@ class VariableSizeList extends ListBase {
     constructor(){
         super();
 
-        this.on( this._measureRowsThrottled, EVT_RANGE );            
+        this._sub( this._measureRowsThrottled );            
     }
 
     _rowsQuantityChanged(){

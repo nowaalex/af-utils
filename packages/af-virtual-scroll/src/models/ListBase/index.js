@@ -2,11 +2,6 @@ import PubSub from "../PubSub";
 import throttle from "utils/throttle";
 import { observe, unobserve } from "utils/dimensionsObserver";
 
-import {
-    EVT_RANGE,
-    EVT_ROWS_QUANTITY
-} from "constants/events";
-
 class ListBase extends PubSub {
 
     _scrollTop = 0;
@@ -35,7 +30,7 @@ class ListBase extends PubSub {
 
     constructor(){
         super();
-        this.on( this._updateVirtualTopOffset, EVT_RANGE );
+        this._sub( this._updateVirtualTopOffset );
     }
 
     _setScrollTop = e => {
@@ -78,10 +73,16 @@ class ListBase extends PubSub {
     }
 
     /* will ne used as callback, so => */
-    _setSpacerNode = node => this._spacerNode = node;
+    _setSpacerNode = node => {
+        this._spacerNode = node;
+        this._updateVirtualTopOffset();
+    }
 
     /* will ne used as callback, so => */
-    _setHeightNode = node => this._heightNode = node;
+    _setHeightNode = node => {
+        this._heightNode = node;
+        this._updateHeight();
+    }
 
     _updateHeight(){
         if( this._heightNode ){
@@ -106,7 +107,7 @@ class ListBase extends PubSub {
         if( to > this.to ){
             this.from = this.getIndex( this._scrollTop );
             this.to = Math.min( this.rowsQuantity, to + this._overscanRowsCount );
-            this._emit( EVT_RANGE );
+            this._run();
         }
     }
 
@@ -116,7 +117,7 @@ class ListBase extends PubSub {
         if( from < this.from ){
             this.from = Math.max( 0, from - this._overscanRowsCount );
             this.to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
-            this._emit( EVT_RANGE );
+            this._run();
         }
     }
 
@@ -124,7 +125,7 @@ class ListBase extends PubSub {
         if( this.to > this.rowsQuantity ){
             this.to = this.rowsQuantity;
             this.from = this.getIndex( Math.max( 0, this._widgetScrollHeight - this._widgetHeight ) );
-            this._emit( EVT_RANGE );
+            this._run();
         }
         else {
             /* if rowsQuantity 0 -> smth */
@@ -174,7 +175,6 @@ class ListBase extends PubSub {
             this._rowsQuantityChanged();
             this._clampTo();
             this._measureRowsThrottled();
-            this._emit( EVT_ROWS_QUANTITY );
         }
     }
 }

@@ -1,3 +1,5 @@
+# 2.9.9 - 2021-10-12
+* optimized & simplified pubsub
 # 2.9.8 - 2021-10-11
 * upgraded deps & replaced Fragments with </>
 # 2.9.7 - 2021-09-28

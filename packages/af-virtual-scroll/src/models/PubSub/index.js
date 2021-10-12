@@ -1,9 +1,6 @@
-import { EVENTS_ARRAY_LENGTH } from "constants/events";
-
 class PubSub {
 
-    /* All callbacks are known in advance, so we can allocate in construcror */
-    _E = Array.from({ length: EVENTS_ARRAY_LENGTH }, () => []);
+    _E = [];
 
     /* query of callbacks, that should run after batch end */
     _Q = new Set();
@@ -11,25 +8,17 @@ class PubSub {
     /* depth of batch */
     _inBatch = 0;
 
-    on( callBack, ...events ){
-        for( const evt of events ){
-            this._E[ evt ].push( callBack );
-        }
-        return this;
+    _sub( callBack ){
+        this._E.push( callBack );
     }
 
     _destroy(){
-        for( const events of this._E ){
-            events.splice( 0 );
-        }
+        this._E.splice( 0 );
         this._Q.clear();
     }
 
-    off( callBack, ...events ){
-        for( const evt of events ){
-            this._E[ evt ].splice( this._E[ evt ].indexOf( callBack ) >>> 0, 1 );
-        }
-        return this;
+    _unsub( callBack ){
+        this._E.splice( this._E.indexOf( callBack ) >>> 0, 1 );
     }
 
     _queue( cb ){
@@ -41,14 +30,14 @@ class PubSub {
         this._Q.add( cb );
     }
 
-    _emit( evt ){
+    _run(){
         if( this._inBatch === 0 ){
-            for( const cb of this._E[ evt ] ){
+            for( const cb of this._E ){
                 cb.call( this );
             }
         }
         else{
-            for( const cb of this._E[ evt ] ){
+            for( const cb of this._E ){
                 this._Q.add( cb );
             }
         }
