@@ -1,6 +1,6 @@
 # af-virtual-scroll
 
-![Virtual scroll preview](https://nowaalex.github.io/af-virtual-scroll/preview.gif)
+![Virtual scroll preview](https://af-virtual-scroll.vercel.app/preview.gif)
 
 ### Install
 `npm install --save af-virtual-scroll`

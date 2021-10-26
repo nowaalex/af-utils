@@ -44,6 +44,9 @@ const BurgerWrapper = () => {
 
     return (
         <>
+            <Helmet>
+                <html lang="en" />
+            </Helmet>
             <VscMenu className={css.burger} onClick={() => setOpened( !opened )} />
             <Menu
                 items={menuItems}
