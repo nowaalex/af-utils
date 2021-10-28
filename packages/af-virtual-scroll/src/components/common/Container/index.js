@@ -54,11 +54,11 @@ const Container = ({
             ref={model._setScrollContainerNode}
         >
             <div
-                ref={model._setHeightNode}
-                aria-hidden="true"
-                className={css.heightNode}
-            />
-            {children( model )}
+                ref={model._setInnerNode}
+                className={css.innerNode}
+            >
+                {children( model )}
+            </div>
         </Component>
     );
 };

@@ -16,7 +16,7 @@ class ListBase extends PubSub {
 
     _spacerNode = null;
     _scrollContainerNode = null;
-    _heightNode = null;
+    _innerNode = null;
 
     rowsQuantity = 0;
     from = 0;
@@ -79,14 +79,14 @@ class ListBase extends PubSub {
     }
 
     /* will ne used as callback, so => */
-    _setHeightNode = node => {
-        this._heightNode = node;
+    _setInnerNode = node => {
+        this._innerNode = node;
         this._updateHeight();
     }
 
     _updateHeight(){
-        if( this._heightNode ){
-            this._heightNode.style.height = this._widgetScrollHeight + 'px';
+        if( this._innerNode ){
+            this._innerNode.style.height = this._widgetScrollHeight + 'px';
         }
     }
 
