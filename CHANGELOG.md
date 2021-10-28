@@ -1,4 +1,4 @@
-# 2.9.11 - 2021-10-28
+# 2.9.12 - 2021-10-28
 * little render change
 # 2.9.9 - 2021-10-12
 * optimized & simplified pubsub

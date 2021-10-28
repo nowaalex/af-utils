@@ -14,8 +14,9 @@
 }
 
 .innerNode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     contain: size;
-
-    /* in case of flex-parent */
-    flex: 0 0 auto;
 }
