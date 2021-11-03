@@ -24,7 +24,7 @@ module.exports = api => {
     }
     else{
         presetEnvOptions.modules = false;
-        plugins.push([ "@babel/plugin-transform-runtime", { useESModules: true }]);
+        plugins.push([ "@babel/plugin-transform-runtime" ]);
     }
 
     presets.push([ "@babel/preset-env", presetEnvOptions ]);

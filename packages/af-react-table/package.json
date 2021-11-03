@@ -40,18 +40,18 @@
     "windowing"
   ],
   "devDependencies": {
-    "@babel/core": "^7.15.8",
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.15.6",
-    "@babel/plugin-transform-runtime": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
-    "@babel/preset-react": "^7.14.5",
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-react": "^7.16.0",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "postcss": "^8.3.11",
-    "rollup": "^2.58.3",
+    "rollup": "^2.59.0",
     "rollup-plugin-postcss": "^4.0.1",
     "sass": "^1.43.4"
   },
@@ -64,8 +64,8 @@
   "dependencies": {
     "af-virtual-scroll": "^2.9.12",
     "babel-jest": "^27.3.1",
-    "mobx": "^6.3.5",
-    "mobx-react-lite": "^3.2.1",
+    "mobx": "^6.3.6",
+    "mobx-react-lite": "^3.2.2",
     "react": "^17.0.2"
   }
 }
