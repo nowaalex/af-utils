@@ -1,5 +1,5 @@
 import { lazy, useState } from "react";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, useParams, Routes, Navigate } from "react-router-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Helmet } from "react-helmet";
@@ -19,8 +19,8 @@ const LazyCache = {};
 
 const getLazyComponent = exampleId => LazyCache[ exampleId ] || ( LazyCache[ exampleId ] = lazy(() => requireExample( exampleId ) ) );
 
-const renderPlayground = routeProps => {
-    const route = routeProps.match.params.example;
+const PlaygroundWrapper = () => {
+    const route = useParams()[ "*" ];
     const exampleId = `./${route}/index.js`;
     return keys.includes( exampleId ) ? (
         <div className={css.playgroundWrapper}>
@@ -35,7 +35,7 @@ const renderPlayground = routeProps => {
             />
         </div>
     ) : (
-        <Redirect to="/examples/list/simple" />
+        <Navigate to="list/simple" />
     );
 };
 
@@ -62,11 +62,11 @@ const App = () => (
         <Router>
             <div className={css.wrapper}>
                 <BurgerWrapper />
-                <Switch>
-                    <Route path="/examples/:example(.+)?" render={renderPlayground} />
-                    <Route path="/docs/:docPage" render={() => <Docs className={css.docs} />} />
-                    <Redirect to="/docs/why" />
-                </Switch>
+                <Routes>
+                    <Route path="examples/*" element={<PlaygroundWrapper />} />
+                    <Route path="docs/:docPage" element={<Docs className={css.docs} />} />
+                    <Route path="*" element={<Navigate to="docs/why" />} />
+                </Routes>
             </div>
         </Router>
     </DndProvider>
