@@ -14,7 +14,8 @@ const ListRows = ({ model, renderRow }) => useSubscription( model, ({ from, to }
     }
 
     const fromOffset = model.getOffset(model.from);
-    const height = model.getOffset(model.to) - fromOffset;
+    const toOffset = model.getOffset(model.to);
+    const height = toOffset - fromOffset;
 
     return (
         <div

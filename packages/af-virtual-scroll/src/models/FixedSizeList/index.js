@@ -7,8 +7,7 @@ class FixedSizeList extends ListBase {
     _setRowHeight( v ){
         if( v !== this._rowHeight ){
             this._rowHeight = v;
-            this._setWidgetScrollHeight( v * this.rowsQuantity );
-            this._updateRangeFromEnd();
+            this._reactOnUpdatedDimensions( v * this.rowsQuantity );
         }
     }
 
