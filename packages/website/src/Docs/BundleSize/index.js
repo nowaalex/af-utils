@@ -1,9 +1,9 @@
 import css from "./style.module.scss";
 
 const SIZES = [
-    [ "only List",           "4.72 KB", "2.07 KB" ],
-    [ "only Table",          "6.19 KB", "2.63 KB" ],
-    [ "List + Table",        "6.33 KB", "2.67 KB" ]
+    [ "only List",           "4.72 KB", "2.01 KB" ],
+    [ "only Table",          "6.19 KB", "2.54 KB" ],
+    [ "List + Table",        "6.33 KB", "2.7 KB" ]
 ];
 
 const BundleSize = () => (

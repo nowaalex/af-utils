@@ -14,24 +14,13 @@ class ListBase extends PubSub {
 
     _estimatedRowHeight = 0;
 
-    _spacerNode = null;
+    _zeroChildNode = null;
     _scrollContainerNode = null;
     _innerNode = null;
 
     rowsQuantity = 0;
     from = 0;
     to = 0;
-
-    _updateVirtualTopOffset(){
-        if( this._spacerNode ){
-            this._spacerNode.style.height = this.getOffset( this.from ) + "px";
-        }
-    }
-
-    constructor(){
-        super();
-        this._sub( this._updateVirtualTopOffset );
-    }
 
     _setScrollTop = e => {
         const diff = e.target.scrollTop - this._scrollTop;
@@ -73,9 +62,8 @@ class ListBase extends PubSub {
     }
 
     /* will ne used as callback, so => */
-    _setSpacerNode = node => {
-        this._spacerNode = node;
-        this._updateVirtualTopOffset();
+    _setZeroChildNode = node => {
+        this._zeroChildNode = node;
     }
 
     /* will ne used as callback, so => */

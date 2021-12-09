@@ -12,6 +12,8 @@ const DOCS_STRUCTURE = [
     [ "Bundle Size", "/docs/bundleSize" ]
 ];
 
+const getClassName = ({ isActive }) => isActive ? css.activeLink : css.link;
+
 const Menu = ({ items, className, ...props }) => (
     
     <aside className={className} {...props}>
@@ -19,7 +21,7 @@ const Menu = ({ items, className, ...props }) => (
         <h2>Docs</h2>
         <nav>
             {DOCS_STRUCTURE.map(([ label, url ]) => (
-                <NavLink key={url} className={({ isActive }) => isActive ? css.activeLink : css.link} to={url}>
+                <NavLink key={url} className={getClassName} to={url}>
                     {label}
                 </NavLink>
             ))}
@@ -28,7 +30,7 @@ const Menu = ({ items, className, ...props }) => (
         <h2>Examples</h2>
         <nav>
             {items.map( item => (
-                <NavLink className={({ isActive }) => isActive ? css.activeLink : css.link} to={item} key={item}>
+                <NavLink className={getClassName} to={item} key={item}>
                     {humanizeRoute(item.replace( "/examples/", "" ))}
                 </NavLink>
             ))}

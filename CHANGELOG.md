@@ -1,3 +1,5 @@
+# 2.9.14 - 2021-12-09
+* optimized list rendering, no more exporting Rows component
 # 2.9.12 - 2021-10-28
 * little render change
 # 2.9.9 - 2021-10-12

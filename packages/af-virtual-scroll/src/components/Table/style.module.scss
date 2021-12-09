@@ -4,3 +4,9 @@
     table-layout: fixed;
     min-width: 100%;
 }
+
+.spacer {
+    visibility: hidden;
+    pointer-events: none;
+    contain: strict;
+}

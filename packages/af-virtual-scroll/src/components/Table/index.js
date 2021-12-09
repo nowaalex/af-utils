@@ -2,7 +2,6 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
 
-import Rows from "../common/Rows";
 import Container from "../common/Container";
 import ExtraHeight from "../common/ExtraHeight";
 
@@ -17,11 +16,32 @@ import {
 
 import "./style.scss";
 import css from "./style.module.scss";
+import useSubscription from "hooks/useSubscription";
 
 /*
     Todo:
         * think about border-collapse offsetHeight issue ( maybe throw border-collapse )
 */
+
+const TableRows = ({ model, renderRow, ...extraProps }) => useSubscription( model, ({ from, to }) => {
+
+    const result = [];
+
+    for( let i = from; i < to; i++ ){
+        result.push(renderRow( i, extraProps ));
+    }
+
+    return (
+        <>
+            <tr
+                className={css.spacer}
+                ref={model._setZeroChildNode}
+                style={{ height: model.getOffset(model.from) }} 
+            />
+            {result}
+        </>
+    );
+})
 
 const Table = ({
     columns,
@@ -50,17 +70,15 @@ const Table = ({
                     </ExtraHeight>
                 )}
                 <tbody>
-                    <Rows
+                    <TableRows
+                        renderRow={renderRow}
                         model={model}
-                        Spacer="tr"
                         columns={columns}
                         getRowData={getRowData}
                         getRowProps={getRowProps}
                         Row={Row}
                         Cell={Cell}
-                    >
-                        {renderRow}
-                    </Rows>
+                    />
                 </tbody>
                 {renderTfootContent ? (
                     <ExtraHeight model={model}>
@@ -115,7 +133,6 @@ Table.propTypes = {
 
 Table.defaultProps = {
     headless: false,
-
     renderRow,
     Row,
     renderHeaderCells,

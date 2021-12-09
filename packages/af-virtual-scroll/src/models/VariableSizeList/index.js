@@ -102,7 +102,7 @@ class VariableSizeList extends ListBase {
     }
 
     _measureRows(){
-        let child = this._spacerNode?.nextElementSibling;
+        let child = this._zeroChildNode?.nextElementSibling;
 
         if( child ){
 

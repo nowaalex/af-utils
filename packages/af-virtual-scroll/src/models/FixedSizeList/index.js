@@ -30,7 +30,7 @@ class FixedSizeList extends ListBase {
 
     _measureRows(){
         if( this.rowsQuantity ){
-            const tgtEl = this._spacerNode?.nextElementSibling;
+            const tgtEl = this._zeroChildNode?.nextElementSibling;
             
             if( tgtEl ){
                 this._setRowHeight( tgtEl.offsetHeight );
