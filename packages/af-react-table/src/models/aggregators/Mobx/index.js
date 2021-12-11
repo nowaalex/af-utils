@@ -34,7 +34,7 @@ class Mobx extends Base {
     }
 
     get filteredIndexes(){
-        return getFilteredIndexes( this.rowsQuantity, this.getRowData, this.filtersMap );
+        return getFilteredIndexes( this.itemCount, this.getRowData, this.filtersMap );
     }
 
     get noGroupsSortedIndexes(){
@@ -69,7 +69,7 @@ class Mobx extends Base {
             noGroupsSortedIndexes: computed({ equals: stubFalse }),
             groupedSorted: computed({ equals: stubFalse }),
 
-            rowsQuantity: true,
+            itemCount: true,
             getRowData: true,
             getTotalsFormattingHelper: true,
             columns: true,

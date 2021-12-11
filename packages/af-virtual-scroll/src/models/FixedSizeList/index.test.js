@@ -4,11 +4,11 @@ describe( "FixedSizeList model works", () => {
 
     const FList = new FixedSizeList();
 
-    test( "Default rowsQuantity is zero", () => {
-        expect( FList.rowsQuantity ).toEqual( 0 );
+    test( "Default itemCount is zero", () => {
+        expect( FList.itemCount ).toEqual( 0 );
     });
 
-    test( "Calcultions with zero rowsQuantity work correctly", () => {
+    test( "Calcultions with zero itemCount work correctly", () => {
         expect( FList.getIndex( 0 ) ).toEqual( 0 );
         expect( FList.getOffset( 0 ) ).toEqual( 0 );
     });

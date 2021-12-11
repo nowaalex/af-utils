@@ -1,13 +1,13 @@
 const commonDefaultProps = {
     as: "div",
     fixed: false,
-    estimatedRowHeight: 20,
-    overscanRowsCount: 3,
+    estimatedItemSize: 20,
+    overscanCount: 3,
 }
 
 const commonProps = [
     {
-        name: "rowsQuantity",
+        name: "itemCount",
         type: "number",
         required: true,
         description: "must be > 0"
@@ -34,23 +34,23 @@ const commonProps = [
                 </p>
                 <p>
                     <strong>false</strong> - special cache is created, which allows rows to have different height.
-                    In this case maximum rowsQuantity value is limited to <strong>2_147_483_647</strong> (maximum int32 value),
+                    In this case maximum itemCount value is limited to <strong>2_147_483_647</strong> (maximum int32 value),
                     because row heights cache uses bitwise operations.
                 </p>
             </>
         )
     },
     {
-        name: "overscanRowsCount",
+        name: "overscanCount",
         type: "number",
-        defaultValue: commonDefaultProps.overscanRowsCount,
+        defaultValue: commonDefaultProps.overscanCount,
         description: `extra space for rows above and below viewport.
         Normally should not be overriden`
     },
     {
-        name: "estimatedRowHeight",
+        name: "estimatedItemSize",
         type: "number",
-        defaultValue: commonDefaultProps.estimatedRowHeight,
+        defaultValue: commonDefaultProps.estimatedItemSize,
         description: `
             This number will NOT be used as an only source of truth.
             It is just a hint to minimize number of waste renders

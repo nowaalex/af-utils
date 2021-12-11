@@ -5,20 +5,17 @@ import { observe, unobserve } from "utils/dimensionsObserver";
 class ListBase extends PubSub {
 
     _scrollTop = 0;
-    _overscanRowsCount = 0;
+    _overscanCount = 0;
     _widgetHeight = 0;
     _widgetScrollHeight = 0;
 
-    /* sticky elements ( for example table header/footer ) must influence ONLY on widgetScrollHeight */
-    _extraStickyHeight = 0;
-
-    _estimatedRowHeight = 0;
+    _estimatedItemSize = 0;
 
     _zeroChildNode = null;
-    _scrollContainerNode = null;
+    _outerNode = null;
     _innerNode = null;
 
-    rowsQuantity = 0;
+    itemCount = 0;
     from = 0;
     to = 0;
 
@@ -41,20 +38,20 @@ class ListBase extends PubSub {
             this._updateRangeFromEnd();
         }
 
-        this._measureRowsThrottled();
+        this._measureItemsThrottled();
     }
 
-    _unobserveCurrentScrollContainerNode(){
-        if( this._scrollContainerNode ){
-            unobserve( this._scrollContainerNode );
-            this._scrollContainerNode.removeEventListener( "scroll", this._setScrollTop );
+    _unobserveCurrentOuterNode(){
+        if( this._outerNode ){
+            unobserve( this._outerNode );
+            this._outerNode.removeEventListener( "scroll", this._setScrollTop );
         }
     }
 
     /* will ne used as callback, so => */
-    _setScrollContainerNode = node => {
-        this._unobserveCurrentScrollContainerNode();
-        this._scrollContainerNode = node;
+    setOuterNode = node => {
+        this._unobserveCurrentOuterNode();
+        this._outerNode = node;
         if( node ){
             observe( node, this._updateWidgetDimensions );
             node.addEventListener( "scroll", this._setScrollTop, { passive: true });
@@ -62,39 +59,28 @@ class ListBase extends PubSub {
     }
 
     /* will ne used as callback, so => */
-    _setZeroChildNode = node => {
+    setZeroChildNode = node => {
         this._zeroChildNode = node;
     }
 
     /* will ne used as callback, so => */
-    _setInnerNode = node => {
+    setInnerNode = node => {
         this._innerNode = node;
-        this._updateHeight();
+        this._updateSize();
     }
 
-    _updateHeight(){
+    _updateSize(){
         if( this._innerNode ){
             this._innerNode.style.height = this._widgetScrollHeight + 'px';
         }
     }
 
-    _updateExtraStickyHeight( delta ){
-        /*
-        TODO: DEBUG;
-        
-        if( delta !== 0 ){
-            this._extraStickyHeight += delta;    
-            this._updateHeight();
-        }
-        */
-    }
-
     _updateRangeFromEnd(){
-        const to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
+        const to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
 
         if( to > this.to ){
             this.from = this.getIndex( this._scrollTop );
-            this.to = Math.min( this.rowsQuantity, to + this._overscanRowsCount );
+            this.to = Math.min( this.itemCount, to + this._overscanCount );
             this._run();
         }
     }
@@ -103,38 +89,38 @@ class ListBase extends PubSub {
         const from = this.getIndex( this._scrollTop );
 
         if( from < this.from ){
-            this.from = Math.max( 0, from - this._overscanRowsCount );
-            this.to = Math.min( this.rowsQuantity, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
+            this.from = Math.max( 0, from - this._overscanCount );
+            this.to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollTop + this._widgetHeight ) );
             this._run();
         }
     }
 
     _clampTo(){
-        if( this.to > this.rowsQuantity ){
-            this.to = this.rowsQuantity;
+        if( this.to > this.itemCount ){
+            this.to = this.itemCount;
             this.from = this.getIndex( Math.max( 0, this._widgetScrollHeight - this._widgetHeight ) );
             this._run();
         }
         else {
-            /* if rowsQuantity 0 -> smth */
+            /* if itemCount 0 -> smth */
             this._updateRangeFromEnd();
         }
     }
 
-    _measureRowsThrottled = throttle( this._measureRows, 300, this );
+    _measureItemsThrottled = throttle( this._measureItems, 300, this );
 
     _destroy(){
-        this._unobserveCurrentScrollContainerNode();
-        this._measureRowsThrottled._cancel();
+        this._unobserveCurrentOuterNode();
+        this._measureItemsThrottled._cancel();
         super._destroy();
     }
 
     scrollToRow( rowIndex ){
-        if( this._scrollContainerNode ){
-            this._scrollContainerNode.scrollTop = this.getOffset( rowIndex );
+        if( this._outerNode ){
+            this._outerNode.scrollTop = this.getOffset( rowIndex );
         }
         else if( process.env.NODE_ENV !== "production" ){
-            console.error( "scrollContainerNode is not set" );
+            console.error( "outerNode is not set" );
         }
     }
 
@@ -144,7 +130,7 @@ class ListBase extends PubSub {
         */
         if( this._widgetScrollHeight !== v ){
             this._widgetScrollHeight = v;
-            this._updateHeight();
+            this._updateSize();
         }
     }
 
@@ -160,21 +146,21 @@ class ListBase extends PubSub {
         this._endBatch();
     }
 
-    _setParams( estimatedRowHeight, overscanRowsCount, rowsQuantity ){
+    _setParams( estimatedItemSize, overscanCount, itemCount ){
 
-        this._estimatedRowHeight = estimatedRowHeight;
+        this._estimatedItemSize = estimatedItemSize;
 
         /*
             No need to waste extra render reacting on this prop.
             Normally it should not be changed.
         */
-        this._overscanRowsCount = overscanRowsCount;
+        this._overscanCount = overscanCount;
 
-        if( rowsQuantity !== this.rowsQuantity ){
-            this.rowsQuantity = rowsQuantity;
-            this._rowsQuantityChanged();
+        if( itemCount !== this.itemCount ){
+            this.itemCount = itemCount;
+            this._itemCountChanged();
             this._clampTo();
-            this._measureRowsThrottled();
+            this._measureItemsThrottled();
         }
     }
 }

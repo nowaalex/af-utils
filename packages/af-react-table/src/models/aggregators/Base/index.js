@@ -1,7 +1,7 @@
 class Base {
 
     /* Provided from renderer */
-    rowsQuantity = 0;
+    itemCount = 0;
     getRowData = null;
     getTotalsFormattingHelper = null;
     columns = [];

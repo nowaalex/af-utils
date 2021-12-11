@@ -2,11 +2,11 @@ import ListBase from "../ListBase";
 
 class VariableSizeList extends ListBase {
     
-    _rowHeights = [];
+    _itemSizes = [];
     _fTree = [];
 
     /*
-        most significant bit of this.rowsQuantity;
+        most significant bit of this.itemCount;
         caching it to avoid Math.clz32 calculations on every getIndex call
     */
     _msb = 0;
@@ -14,30 +14,30 @@ class VariableSizeList extends ListBase {
     constructor(){
         super();
 
-        this._sub( this._measureRowsThrottled );            
+        this._sub( this._measureItemsThrottled );            
     }
 
-    _rowsQuantityChanged(){
+    _itemCountChanged(){
 
-        const { rowsQuantity } = this;
+        const { itemCount } = this;
 
-        if( rowsQuantity < 0 || rowsQuantity > 0x7fffffff ){
-            throw new Error( `Wrong rowsQuantity: ${rowsQuantity}. Must be 0...2_147_483_647.` )
+        if( itemCount < 0 || itemCount > 0x7fffffff ){
+            throw new Error( `Wrong itemCount: ${itemCount}. Must be 0...2_147_483_647.` )
         }
 
-        this._msb = rowsQuantity && 1 << 31 - Math.clz32( rowsQuantity );
+        this._msb = itemCount && 1 << 31 - Math.clz32( itemCount );
 
-        const curRowHeighsLength = this._rowHeights.length;
+        const curRowHeighsLength = this._itemSizes.length;
 
-        if( rowsQuantity > curRowHeighsLength ){
+        if( itemCount > curRowHeighsLength ){
 
-            const oldRowHeights = this._rowHeights;
+            const oldItemSizes = this._itemSizes;
             
-            this._rowHeights = new Uint32Array( rowsQuantity );
-            this._fTree = new Uint32Array( rowsQuantity + 1 );
+            this._itemSizes = new Uint32Array( itemCount );
+            this._fTree = new Uint32Array( itemCount + 1 );
 
-            this._rowHeights.set( oldRowHeights );
-            this._rowHeights.fill( this._estimatedRowHeight, curRowHeighsLength );
+            this._itemSizes.set( oldItemSizes );
+            this._itemSizes.fill( this._estimatedItemSize, curRowHeighsLength );
 
 
             /* 
@@ -45,17 +45,17 @@ class VariableSizeList extends ListBase {
                 It is much more efficient, than calling updateRowHeight N times.
             */
 
-            this._fTree.set( this._rowHeights, 1 );
+            this._fTree.set( this._itemSizes, 1 );
 
-            for( let i = 1, j; i <= rowsQuantity; i++ ){
+            for( let i = 1, j; i <= itemCount; i++ ){
                 j = i + ( i & -i );
-                if( j <= rowsQuantity ){
+                if( j <= itemCount ){
                     this._fTree[ j ] += this._fTree[ i ];
                 }
             }
         }
 
-        this._setWidgetScrollHeight( this.getOffset( rowsQuantity ) );
+        this._setWidgetScrollHeight( this.getOffset( itemCount ) );
     }
 
     getIndex( offset ){
@@ -63,7 +63,7 @@ class VariableSizeList extends ListBase {
         
         for( let bitMask = this._msb, tempIndex; bitMask !== 0; bitMask >>= 1 ){
             tempIndex = index + bitMask;
-            if( tempIndex > this.rowsQuantity ){
+            if( tempIndex > this.itemCount ){
                 continue;
             }
             if( offset === this._fTree[ tempIndex ] ){
@@ -80,8 +80,8 @@ class VariableSizeList extends ListBase {
 
     getOffset( index ){
         if( process.env.NODE_ENV !== "production" ){
-            if( index > this.rowsQuantity ){
-                throw new Error( "index must not be > rowsQuantity" );
+            if( index > this.itemCount ){
+                throw new Error( "index must not be > itemCount" );
             }
         }
 
@@ -94,14 +94,18 @@ class VariableSizeList extends ListBase {
         return result;
     }
 
+    getSize( itemIndex ){
+        return this._itemSizes[itemIndex] || this._estimatedItemSize;
+    }
+
     /* i starts from 1 here; */
-    _updateRowHeight( i, delta, limitTreeLiftingIndex ){
+    _updateItemHeight( i, delta, limitTreeLiftingIndex ){
         for ( ; i < limitTreeLiftingIndex; i += i & -i ){
             this._fTree[ i ] += delta;
         }
     }
 
-    _measureRows(){
+    _measureItems(){
         let child = this._zeroChildNode?.nextElementSibling;
 
         if( child ){
@@ -114,18 +118,18 @@ class VariableSizeList extends ListBase {
             const lim = Math.min( this._fTree.length, 1 << 32 - Math.clz32( this.to - 1 ) );
 
             do {
-                diff = child.offsetHeight - this._rowHeights[ index ];
+                diff = child.offsetHeight - this._itemSizes[ index ];
 
                 if( diff ){
-                    this._rowHeights[ index ] += diff;
+                    this._itemSizes[ index ] += diff;
                     buff += diff;
-                    this._updateRowHeight( index + 1, diff, lim );                  
+                    this._updateItemHeight( index + 1, diff, lim );                  
                 }                
             }
             while( ++index < this.to && ( child = child.nextElementSibling ) );
 
             if( buff !== 0 ){
-                this._updateRowHeight( lim, buff, this._fTree.length );
+                this._updateItemHeight( lim, buff, this._fTree.length );
                 this._reactOnUpdatedDimensions( this._widgetScrollHeight + buff );
             }
         }

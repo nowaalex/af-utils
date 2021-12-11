@@ -7,15 +7,15 @@ class FixedSizeList extends ListBase {
     _setRowHeight( v ){
         if( v !== this._rowHeight ){
             this._rowHeight = v;
-            this._reactOnUpdatedDimensions( v * this.rowsQuantity );
+            this._reactOnUpdatedDimensions( v * this.itemCount );
         }
     }
 
-    _rowsQuantityChanged(){
+    _itemCountChanged(){
         if( this._rowHeight === 0 ){
-            this._rowHeight = this._estimatedRowHeight;
+            this._rowHeight = this._estimatedItemSize;
         }
-        this._setWidgetScrollHeight( this._rowHeight * this.rowsQuantity );
+        this._setWidgetScrollHeight( this._rowHeight * this.itemCount );
     }
 
     getIndex( offset ){
@@ -27,8 +27,12 @@ class FixedSizeList extends ListBase {
         return index * this._rowHeight;
     }
 
-    _measureRows(){
-        if( this.rowsQuantity ){
+    getSize( itemIndex ){
+        return this._rowHeight || this._estimatedItemSize;
+    }
+
+    _measureItems(){
+        if( this.itemCount ){
             const tgtEl = this._zeroChildNode?.nextElementSibling;
             
             if( tgtEl ){

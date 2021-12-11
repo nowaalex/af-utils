@@ -17,8 +17,8 @@ const Posts = () => {
     const isLoadingRef = useRef( false );
     const modelRef = useRef();
 
-    useRange( modelRef, async ({ rowsQuantity, to }) => {
-        if( isLoadingRef.current === false && rowsQuantity === to ){
+    useRange( modelRef, async ({ itemCount, to }) => {
+        if( isLoadingRef.current === false && itemCount === to ){
             isLoadingRef.current = true;
             const images = await fetchArrayOfImages();
             setPosts( p => p.concat( images ) );
@@ -27,7 +27,7 @@ const Posts = () => {
     });
 
     return (
-        <List dataRef={modelRef} rowsQuantity={posts.length}>
+        <List dataRef={modelRef} itemCount={posts.length}>
             {i => (
                 <div key={i}>
                     <img src={posts[i][0]} />

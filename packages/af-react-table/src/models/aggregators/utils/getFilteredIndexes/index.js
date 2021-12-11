@@ -1,10 +1,10 @@
-const getFilteredIndexes = ( rowsQuantity, getRowData, filtersMap ) => {
+const getFilteredIndexes = ( itemCount, getRowData, filtersMap ) => {
     if( filtersMap.size ){
 
         const result = [];
 
         mainLoop:
-        for( let j = 0, row; j < rowsQuantity; j++ ){
+        for( let j = 0, row; j < itemCount; j++ ){
             row = getRowData( j );
 
             if( row ){
@@ -21,7 +21,7 @@ const getFilteredIndexes = ( rowsQuantity, getRowData, filtersMap ) => {
         return result;
     }
 
-    return Array.from({ length: rowsQuantity }, ( v, i ) => i );
+    return Array.from({ length: itemCount }, ( v, i ) => i );
 }
 
 export default getFilteredIndexes;

@@ -11,6 +11,7 @@ fs.rmSync( BUNDLE_TREESHAKE_STATS_OUTPUT_DIR, { recursive: true, force: true });
 export default [
     commonConfig,
     ...[
+        [ "hook", `import { useVirtual } from "./lib/index.esm.js";useVirtual();` ],
         [ "list", `import { List } from "./lib/index.esm.js";List();` ],
         [ "table", `import { Table } from "./lib/index.esm.js";Table();` ],
         [ "listTable", `import { List, Table } from "./lib/index.esm.js";List();Table();` ]

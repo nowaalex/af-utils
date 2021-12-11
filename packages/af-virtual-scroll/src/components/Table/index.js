@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import cx from "utils/cx";
 
 import Container from "../common/Container";
-import ExtraHeight from "../common/ExtraHeight";
 
 import Colgroup from "./Colgroup";
 
@@ -35,7 +34,7 @@ const TableRows = ({ model, renderRow, ...extraProps }) => useSubscription( mode
         <>
             <tr
                 className={css.spacer}
-                ref={model._setZeroChildNode}
+                ref={model.setZeroChildNode}
                 style={{ height: model.getOffset(model.from) }} 
             />
             {result}
@@ -61,13 +60,11 @@ const Table = ({
             <table className={css.bodyTable}>
                 <Colgroup columns={columns} />
                 {headless ? null : (
-                    <ExtraHeight model={model}>
                         <thead>
                             <tr>
                                 {renderHeaderCells(columns)}
                             </tr>
                         </thead>
-                    </ExtraHeight>
                 )}
                 <tbody>
                     <TableRows
@@ -81,11 +78,9 @@ const Table = ({
                     />
                 </tbody>
                 {renderTfootContent ? (
-                    <ExtraHeight model={model}>
                         <tfoot>
                             {renderTfootContent( columns )}
                         </tfoot>
-                    </ExtraHeight>
                 ) : null}
             </table>
         )}

@@ -24,7 +24,7 @@ import { List } from "af-virtual-scroll";
 import "af-virtual-scroll/lib/style.css";
 
 const SimpleList = () => (
-    <List rowsQuantity={1000}>
+    <List itemCount={1000}>
         {i => <div key={i}>row {i}</div>}
     </List>
 );

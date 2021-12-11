@@ -9,7 +9,7 @@ import { List } from "af-virtual-scroll";
 const wrapperStyle = { minWidth: 200, maxWidth: 400 };
 
 const SimpleList = () => (
-    <List fixed style={wrapperStyle} rowsQuantity={1000}>
+    <List fixed style={wrapperStyle} itemCount={1000}>
         {i => <div key={i}>row {i}</div>}
     </List>
 );

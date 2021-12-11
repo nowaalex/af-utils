@@ -51,9 +51,9 @@
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "postcss": "^8.4.4",
-    "rollup": "^2.61.0",
+    "rollup": "^2.61.1",
     "rollup-plugin-postcss": "^4.0.2",
-    "sass": "^1.44.0"
+    "sass": "^1.45.0"
   },
   "peerDependencies": {
     "af-virtual-scroll": "^2.9.12",
@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "af-virtual-scroll": "^2.9.12",
-    "babel-jest": "^27.4.2",
+    "babel-jest": "^27.4.4",
     "mobx": "^6.3.8",
     "mobx-react-lite": "^3.2.2",
     "react": "^17.0.2"

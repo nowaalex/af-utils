@@ -14,9 +14,9 @@ const getPureRandomLineHeight = rowIndex => 20 + ( rowIndex % 53 ) + ( rowIndex 
 
 const ComplexTable = () => (
     <Table
-        rowsQuantity={rows.length}
+        itemCount={rows.length}
         getRowData={i => rows[ i ]}
-        estimatedRowHeight={30}
+        estimatedItemSize={30}
         columns={[
             {
                 dataKey: "i",

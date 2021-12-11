@@ -192,8 +192,8 @@ class ComplexTable extends PureComponent {
         m: new RowsAggregator()
     }
 
-    static getDerivedStateFromProps({ rowsQuantity, getRowData, getTotalsFormattingHelper, columns }, { m }){
-        m.merge({ rowsQuantity, getRowData, getTotalsFormattingHelper, columns });
+    static getDerivedStateFromProps({ itemCount, getRowData, getTotalsFormattingHelper, columns }, { m }){
+        m.merge({ itemCount, getRowData, getTotalsFormattingHelper, columns });
         return null;
     }
 
@@ -217,7 +217,7 @@ class ComplexTable extends PureComponent {
     render(){
 
         const {
-            rowsQuantity,
+            itemCount,
             getRowData,
             getTotalsFormattingHelper,
             className,
@@ -259,7 +259,7 @@ class ComplexTable extends PureComponent {
                         return (
                             <Table
                                 columns={m.visibleColumns}
-                                rowsQuantity={finalIndexes.length}
+                                itemCount={finalIndexes.length}
                                 getRowData={getRowData}
                                 renderRow={renderRow}
                                 renderHeaderCells={this.renderHeaderCells}

@@ -4,7 +4,7 @@ const SimpleHeadlessTable = () => (
     <Table
         fixed
         headless
-        rowsQuantity={1000}
+        itemCount={1000}
         getRowProps={( rd, i ) => ({ "data-index": i })}
         getRowData={i => ({
             a: `cell_a_${i}`,

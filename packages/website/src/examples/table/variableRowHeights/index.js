@@ -46,8 +46,8 @@ const VariableSizeTable = () => {
                 c: `cell_c_${i}`
             })}
             columns={columns}
-            estimatedRowHeight={150}
-            rowsQuantity={DEFAULT_ROW_COUNT}
+            estimatedItemSize={150}
+            itemCount={DEFAULT_ROW_COUNT}
         />
     );
 }

@@ -25,7 +25,7 @@ const ListRows = ({ model, renderRow }) => useSubscription( model, ({ from, to }
                 height
             }}
         >
-            <div ref={model._setZeroChildNode} hidden />
+            <div ref={model.setZeroChildNode} hidden />
             {result}
         </div>
     )

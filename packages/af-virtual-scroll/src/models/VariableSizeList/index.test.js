@@ -29,16 +29,16 @@ describe( "VariableSizeList model works", () => {
 
     const VSList = new VariableSizeList();
 
-    test( "Default rowsQuantity is zero", () => {
-        expect( VSList.rowsQuantity ).toEqual( 0 );
+    test( "Default itemCount is zero", () => {
+        expect( VSList.itemCount ).toEqual( 0 );
     });
 
-    test( "Calcultions with zero rowsQuantity work correctly", () => {
+    test( "Calcultions with zero itemCount work correctly", () => {
         expect( VSList.getIndex( 0 ) ).toEqual( 0 );
         expect( VSList.getOffset( 0 ) ).toEqual( 0 );
     });
 
-    test( "Setting rowsQuantity > max(int32) or < 0 throws error", () => {
+    test( "Setting itemCount > max(int32) or < 0 throws error", () => {
         expect(() => VSList._setParams( 0, 2, -1 )).toThrow();
         expect(() => VSList._setParams( 0, 2, 0x7fffffff + 1 )).toThrow();
     });

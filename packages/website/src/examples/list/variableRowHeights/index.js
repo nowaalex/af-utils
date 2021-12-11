@@ -24,8 +24,8 @@ const VariableSizeList = () => {
 
     return (
         <StyledList
-            estimatedRowHeight={75}
-            rowsQuantity={DEFAULT_ROW_COUNT}
+            estimatedItemSize={75}
+            itemCount={DEFAULT_ROW_COUNT}
         >
             {i => (
                 <StyledRow key={i} style={{
