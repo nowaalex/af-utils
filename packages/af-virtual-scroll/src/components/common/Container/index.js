@@ -10,9 +10,9 @@ const Container = ({
     itemCount,
     children,
     as: Component = "div",
-    fixed = false,
-    estimatedItemSize = 20,
-    overscanCount = 3,
+    fixed,
+    estimatedItemSize,
+    overscanCount,
     dataRef,
     className,
     ...props

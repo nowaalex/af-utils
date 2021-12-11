@@ -35,7 +35,7 @@ const TableRows = ({ model, renderRow, ...extraProps }) => useSubscription( mode
             <tr
                 className={css.spacer}
                 ref={model.setZeroChildNode}
-                style={{ height: model.getOffset(model.from) }} 
+                style={{ height: model.getOffset(from) }} 
             />
             {result}
         </>
@@ -60,11 +60,11 @@ const Table = ({
             <table className={css.bodyTable}>
                 <Colgroup columns={columns} />
                 {headless ? null : (
-                        <thead>
-                            <tr>
-                                {renderHeaderCells(columns)}
-                            </tr>
-                        </thead>
+                    <thead>
+                        <tr>
+                            {renderHeaderCells(columns)}
+                        </tr>
+                    </thead>
                 )}
                 <tbody>
                     <TableRows
@@ -78,9 +78,9 @@ const Table = ({
                     />
                 </tbody>
                 {renderTfootContent ? (
-                        <tfoot>
-                            {renderTfootContent( columns )}
-                        </tfoot>
+                    <tfoot>
+                        {renderTfootContent( columns )}
+                    </tfoot>
                 ) : null}
             </table>
         )}
