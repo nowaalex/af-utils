@@ -1,6 +1,6 @@
 {
   "name": "af-react-table",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "React components for rendering tables",
   "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
   "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
@@ -56,13 +56,13 @@
     "sass": "^1.45.0"
   },
   "peerDependencies": {
-    "af-virtual-scroll": "^2.9.12",
+    "af-virtual-scroll": "^2.9.16",
     "mobx": "^6.3.0",
     "mobx-react-lite": "^3.2.0",
     "react": "^17.0.0"
   },
   "dependencies": {
-    "af-virtual-scroll": "^2.9.12",
+    "af-virtual-scroll": "^2.9.16",
     "babel-jest": "^27.4.4",
     "mobx": "^6.3.8",
     "mobx-react-lite": "^3.2.2",
