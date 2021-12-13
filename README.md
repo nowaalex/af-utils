@@ -13,7 +13,7 @@ https://af-virtual-scroll.vercel.app/
 * Uses position: sticky for tables
 * mobx - ready
 * optimized for performance
-* `scrollToRow(rowIndex)` method is available
+* `scrollTo(index)` method is available
 * < 3KB gzipped
 
 ### Basic usage
