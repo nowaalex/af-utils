@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "yarn wsrun --collect-logs start",
+    "start": "yarn wsrun start",
     "build": "yarn wsrun --stages build",
     "test": "jest"
   },

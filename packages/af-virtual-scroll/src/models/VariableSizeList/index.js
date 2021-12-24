@@ -27,22 +27,22 @@ class VariableSizeList extends ListBase {
 
         this._msb = itemCount && 1 << 31 - Math.clz32( itemCount );
 
-        const curRowHeighsLength = this._itemSizes.length;
+        const oldItemSizes = this._itemSizes;
+        const curRowHeighsLength = oldItemSizes.length;
 
         if( itemCount > curRowHeighsLength ){
 
-            const oldItemSizes = this._itemSizes;
-            
             this._itemSizes = new Uint32Array( itemCount );
             this._fTree = new Uint32Array( itemCount + 1 );
 
-            this._itemSizes.set( oldItemSizes );
-            this._itemSizes.fill( this._estimatedItemSize, curRowHeighsLength );
+            this._itemSizes
+                .fill( this._estimatedItemSize, curRowHeighsLength )
+                .set( oldItemSizes );
 
 
             /* 
                 Creating fenwick tree from an array in linear time;
-                It is much more efficient, than calling updateRowHeight N times.
+                It is much more efficient, than calling updateItemHeight N times.
             */
 
             this._fTree.set( this._itemSizes, 1 );

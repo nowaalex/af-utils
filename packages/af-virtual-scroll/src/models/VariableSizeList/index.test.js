@@ -54,7 +54,7 @@ describe( "VariableSizeList model works", () => {
             for( let j = 0, diff; j < ROWS_QUANTITY; j++ ){
                 diff = r( 5 - i, 20 );
                 sum += diff;
-                VSList._updateRowHeight( j + 1, diff, VSList._fTree.length );
+                VSList._updateItemHeight( j + 1, diff, VSList._fTree.length );
                 ROW_HEIGHTS[ j ] += diff;
             }
 

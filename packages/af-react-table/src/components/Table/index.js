@@ -275,9 +275,8 @@ class ComplexTable extends PureComponent {
 
     componentDidMount(){
         const initialGroupingKeys = this.state.m.visibleColumns
-            .slice()
-            .sort(( a, b ) => ( a.initialGrouingIndex || 0 ) - ( b.initialGrouingIndex || 0 ) )
-            .filter( col => col.initialGroupingIndex )
+            .filter( col => col.initialGroupingIndex > 0 )
+            .sort(( a, b ) => a.initialGrouingIndex - b.initialGrouingIndex )
             .map( col => col.dataKey );
 
         this.state.m.setGrouping( initialGroupingKeys );

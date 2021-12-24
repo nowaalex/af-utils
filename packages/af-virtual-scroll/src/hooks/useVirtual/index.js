@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import VariableHeightsModel from "models/VariableSizeList";
 import FixedHeightsModel from "models/FixedSizeList";
+import { EMPTY_ARRAY } from "constants";
 
 const useVirtual = ({
     itemCount = 0,
@@ -17,7 +18,7 @@ const useVirtual = ({
         model._endBatch();
     });
 
-    useEffect(() => () => model._destroy(), []);
+    useEffect(() => () => model._destroy(), EMPTY_ARRAY);
 
     if( process.env.NODE_ENV !== "production" ){
         const AssumedConstructor = fixed ? FixedHeightsModel : VariableHeightsModel;

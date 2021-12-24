@@ -2,9 +2,8 @@ import { useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
 import useVirtual from "hooks/useVirtual";
+import { EMPTY_ARRAY } from "constants";
 import css from "./style.module.scss";
-
-const EMPTY_ARRAY = [];
 
 const Container = ({
     itemCount,

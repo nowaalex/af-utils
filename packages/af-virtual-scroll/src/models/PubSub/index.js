@@ -33,7 +33,7 @@ class PubSub {
     _run(){
         if( this._inBatch === 0 ){
             for( const cb of this._E ){
-                cb.call( this );
+                cb();
             }
         }
         else{
@@ -55,7 +55,7 @@ class PubSub {
                 /*
                     These callbacks must not call _startBatch from inside.
                 */
-                cb.call( this );
+                cb();
             }
             this._Q.clear();
         }
