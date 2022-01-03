@@ -1,0 +1,9 @@
+.wrapper {
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.inner {
+    display: flex;
+    flex-flow: row nowrap;
+}

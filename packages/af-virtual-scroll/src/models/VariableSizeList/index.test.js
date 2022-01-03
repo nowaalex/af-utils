@@ -39,13 +39,13 @@ describe( "VariableSizeList model works", () => {
     });
 
     test( "Setting itemCount > max(int32) or < 0 throws error", () => {
-        expect(() => VSList._setParams( 0, 2, -1 )).toThrow();
-        expect(() => VSList._setParams( 0, 2, 0x7fffffff + 1 )).toThrow();
+        expect(() => VSList._setParams( 0, 2, -1, false )).toThrow();
+        expect(() => VSList._setParams( 0, 2, 0x7fffffff + 1, false )).toThrow();
     });
 
     test( "Summation works correctly", () => {
 
-        VSList._setParams( 0, 2, ROWS_QUANTITY );
+        VSList._setParams( 0, 2, ROWS_QUANTITY, false );
 
         for( let i = 0, sum; i < UPDATES_QUANTITY; i++ ){
 

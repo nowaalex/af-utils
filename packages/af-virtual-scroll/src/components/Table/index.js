@@ -1,8 +1,8 @@
-import { memo } from "react";
 import PropTypes from "prop-types";
 import cx from "utils/cx";
+import Subscription from "../common/Subscription";
+import mapVisibleRange from "utils/mapVisibleRange";
 
-import Container from "../common/Container";
 
 import Colgroup from "./Colgroup";
 
@@ -15,34 +15,14 @@ import {
 
 import "./style.scss";
 import css from "./style.module.scss";
-import useSubscription from "hooks/useSubscription";
 
 /*
     Todo:
         * think about border-collapse offsetHeight issue ( maybe throw border-collapse )
 */
 
-const TableRows = ({ model, renderRow, ...extraProps }) => useSubscription( model, ({ from, to }) => {
-
-    const result = [];
-
-    for( let i = from; i < to; i++ ){
-        result.push(renderRow( i, extraProps ));
-    }
-
-    return (
-        <>
-            <tr
-                className={css.spacer}
-                ref={model.setZeroChildNode}
-                style={{ height: model.getOffset(from) }} 
-            />
-            {result}
-        </>
-    );
-})
-
 const Table = ({
+    model,
     columns,
     getRowData,
     getRowProps,
@@ -54,9 +34,13 @@ const Table = ({
     headless,
     className,
     ...props
-}) => (
-    <Container className={cx("afvscr-table",className)} {...props}>
-        {model => (
+}) => {
+    const extraProps = { columns, getRowData, getRowProps, Row, Cell };
+    return (
+        <div className={cx(css.wrapper,cx("afvscr-table",className))} ref={model.setOuterNode} {...props}>
+            <Subscription model={model}>
+                {({ widgetScrollSize: height }) => <div className={css.topSpacer} style={{ height }} /> }
+            </Subscription>
             <table className={css.bodyTable}>
                 <Colgroup columns={columns} />
                 {headless ? null : (
@@ -67,15 +51,18 @@ const Table = ({
                     </thead>
                 )}
                 <tbody>
-                    <TableRows
-                        renderRow={renderRow}
-                        model={model}
-                        columns={columns}
-                        getRowData={getRowData}
-                        getRowProps={getRowProps}
-                        Row={Row}
-                        Cell={Cell}
-                    />
+                    <Subscription model={model}>
+                        {({ from }) =>  (
+                            <>
+                                <tr
+                                    className={css.spacer}
+                                    ref={model.setZeroChildNode}
+                                    style={{ height: model.getOffset(from) }} 
+                                />
+                                {mapVisibleRange( model, i => renderRow( i, extraProps ) )}
+                            </>
+                        )}
+                    </Subscription>
                 </tbody>
                 {renderTfootContent ? (
                     <tfoot>
@@ -83,9 +70,9 @@ const Table = ({
                     </tfoot>
                 ) : null}
             </table>
-        )}
-    </Container>
-);
+        </div>
+    );
+}
 
 Table.propTypes = {
     className: PropTypes.string,
@@ -134,4 +121,4 @@ Table.defaultProps = {
     Cell
 };
 
-export default memo( Table );
+export default Table;

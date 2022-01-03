@@ -12,9 +12,9 @@ export default [
     commonConfig,
     ...[
         [ "hook", `import { useVirtual } from "./lib/index.esm.js";useVirtual();` ],
-        [ "list", `import { List } from "./lib/index.esm.js";List();` ],
-        [ "table", `import { Table } from "./lib/index.esm.js";Table();` ],
-        [ "listTable", `import { List, Table } from "./lib/index.esm.js";List();Table();` ]
+        [ "list", `import { VerticalList, useVirtual } from "./lib/index.esm.js";VerticalList();useVirtual();` ],
+        [ "table", `import { Table, useVirtual } from "./lib/index.esm.js";Table();useVirtual();` ],
+        [ "listTable", `import { VerticalList, Table, useVirtual } from "./lib/index.esm.js";VerticalList();Table();useVirtual();` ]
     ].map(([ fileName, fileContent ]) => ({
         input: fileName,
         treeshake: {

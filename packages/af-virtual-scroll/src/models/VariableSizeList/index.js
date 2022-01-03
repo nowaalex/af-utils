@@ -55,7 +55,7 @@ class VariableSizeList extends ListBase {
             }
         }
 
-        this._setWidgetScrollHeight( this.getOffset( itemCount ) );
+        this._setWidgetScrollSize( this.getOffset( itemCount ) );
     }
 
     getIndex( offset ){
@@ -130,7 +130,7 @@ class VariableSizeList extends ListBase {
 
             if( buff !== 0 ){
                 this._updateItemHeight( lim, buff, this._fTree.length );
-                this._reactOnUpdatedDimensions( this._widgetScrollHeight + buff );
+                this._reactOnUpdatedDimensions( this.widgetScrollSize + buff );
             }
         }
     }

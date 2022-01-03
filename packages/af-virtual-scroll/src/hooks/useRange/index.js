@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 import { EMPTY_ARRAY } from "constants";
-import ListBase from "models/ListBase";
 
 const useRange = ( model, event, deps = EMPTY_ARRAY ) => useEffect(() => {
-    const finalModel = model instanceof ListBase ? model : model.current;
-    if( finalModel && event ){
-        const evt = () => event( finalModel );
+    if( model && event ){
+        const evt = () => event( model );
         evt();
-        finalModel._sub( evt );
-        return () => finalModel._unsub( evt );
+        model._sub( evt );
+        return () => model._unsub( evt );
     }
 }, deps );
 

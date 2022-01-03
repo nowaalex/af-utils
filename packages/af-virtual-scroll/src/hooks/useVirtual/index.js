@@ -7,12 +7,13 @@ const useVirtual = ({
     itemCount = 0,
     estimatedItemSize = 20,
     overscanCount = 3,
+    horizontal = false,
     fixed = false
 }) => {
     const [ model ] = useState(() => new ( fixed ? FixedHeightsModel : VariableHeightsModel ));
 
     model._startBatch();
-    model._setParams( estimatedItemSize, overscanCount, itemCount );
+    model._setParams( estimatedItemSize, overscanCount, itemCount, horizontal );
 
     useEffect(() => {
         model._endBatch();

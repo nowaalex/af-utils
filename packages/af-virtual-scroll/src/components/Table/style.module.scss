@@ -10,3 +10,17 @@
     pointer-events: none;
     contain: strict;
 }
+
+.topSpacer {
+    composes: spacer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+}
+
+.wrapper {
+    box-sizing: border-box;
+    overflow: auto;
+    position: relative;
+}

@@ -1,7 +1,7 @@
 import { PureComponent } from "react";
 import { observer, Observer } from "mobx-react-lite";
 import RowsAggregator from "models/aggregators/Mobx";
-import { Table, cx } from "af-virtual-scroll";
+import { Table, cx, useVirtual } from "af-virtual-scroll";
 import css from "./style.module.scss";
 import { useDrag, useDrop } from "react-dnd";
 
@@ -187,6 +187,63 @@ const GroupCell = /*#__PURE__*/ observer(({ m, columns, idx }) => {
     return null;
 });
 
+const TableWrapper = observer(({ m, fixed, estimatedItemSize, overscanCount, ...props }) => {
+
+    const model = useVirtual({
+        itemCount: m.finalIndexes.length,
+        fixed,
+        estimatedItemSize,
+        overscanCount
+    });
+
+    const renderRow = ( index, RowProps ) => {
+
+        const realRowIndex = m.finalIndexes[ index ];
+
+        return realRowIndex < 0 ? (
+            <tr key={index}>
+                <td colSpan={RowProps.columns.length}>
+                    <GroupCell m={m} idx={realRowIndex} columns={RowProps.columns} />
+                </td>
+            </tr>
+        ) : (
+            <RowProps.Row
+                {...RowProps}
+                key={index}
+                index={realRowIndex}
+            />
+        );
+    }
+
+    const renderHeaderCells = columns => columns.map(({ dataKey, label, minWidth }, i ) => (
+        <th key={dataKey} style={{ minWidth }}>
+            <HeaderLabel m={m} dataKey={dataKey} label={label} i={i} />
+            <HeaderInput m={m} dataKey={dataKey} />
+        </th>
+    ));
+
+    const renderTfootContent = normalizedVisibleColumns => normalizedVisibleColumns.some( col => !!col.totals ) ? (
+        <tr>
+            {normalizedVisibleColumns.map( col => (
+                <td key={col.dataKey}>
+                    <SummaryCell m={m} column={col} rowIndexes={m.filteredIndexes} />
+                </td>
+            ))}
+        </tr>
+    ) : null;
+
+    return (
+        <Table
+            model={model}
+            columns={m.visibleColumns}
+            renderRow={renderRow}
+            renderHeaderCells={renderHeaderCells}
+            renderTfootContent={renderTfootContent}
+            {...props}
+        />
+    );
+});
+
 class ComplexTable extends PureComponent {
     state = {
         m: new RowsAggregator()
@@ -197,28 +254,10 @@ class ComplexTable extends PureComponent {
         return null;
     }
 
-    renderTfootContent = normalizedVisibleColumns => normalizedVisibleColumns.some( col => !!col.totals ) ? (
-        <tr>
-            {normalizedVisibleColumns.map( col => (
-                <td key={col.dataKey}>
-                    <SummaryCell m={this.state.m} column={col} rowIndexes={this.state.m.filteredIndexes} />
-                </td>
-            ))}
-        </tr>
-    ) : null;
-
-    renderHeaderCells = columns => columns.map(({ dataKey, label, minWidth }, i ) => (
-        <th key={dataKey} style={{ minWidth }}>
-            <HeaderLabel m={this.state.m} dataKey={dataKey} label={label} i={i} />
-            <HeaderInput m={this.state.m} dataKey={dataKey} />
-        </th>
-    ));
-
     render(){
 
         const {
             itemCount,
-            getRowData,
             getTotalsFormattingHelper,
             className,
             columns,
@@ -231,46 +270,9 @@ class ComplexTable extends PureComponent {
         return (
             <div className={cx(css.wrapper,className)}>
                 <GroupsPanel m={m} GroupLabel={GroupLabel} />
-                <Observer>
-                    {() => {
-
-                        /* hack to change renderRow by link */
-                        const { finalIndexes } = m;
-
-                        const renderRow = ( index, RowProps ) => {
-
-                            const realRowIndex = finalIndexes[ index ];
-
-                            return realRowIndex < 0 ? (
-                                <tr key={index}>
-                                    <td colSpan={RowProps.columns.length}>
-                                        <GroupCell m={m} idx={realRowIndex} columns={RowProps.columns} />
-                                    </td>
-                                </tr>
-                            ) : (
-                                <RowProps.Row
-                                    {...RowProps}
-                                    key={index}
-                                    index={realRowIndex}
-                                />
-                            );
-                        }
-
-                        return (
-                            <Table
-                                columns={m.visibleColumns}
-                                itemCount={finalIndexes.length}
-                                getRowData={getRowData}
-                                renderRow={renderRow}
-                                renderHeaderCells={this.renderHeaderCells}
-                                renderTfootContent={this.renderTfootContent}
-                                {...props}
-                            />
-                        );
-                    }}
-                </Observer>
+                <TableWrapper m={m} {...props} />
             </div>
-        )
+        );
     }
 
     componentDidMount(){

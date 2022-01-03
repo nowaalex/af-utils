@@ -5,8 +5,8 @@ const increment = x => x + 1;
 
 const useForceUpdate = () => useReducer( increment, 0 )[ 1 ];
 
-const useSubscription = ( model, callBack ) => {
-    
+const Subscription = ({ model, children }) => {
+
     const prevRenderRef = useRef( null );
     const forceUpdate = useForceUpdate();
     
@@ -16,17 +16,14 @@ const useSubscription = ( model, callBack ) => {
     }, EMPTY_ARRAY);
 
     if( model._inBatch === 0 ){
-        prevRenderRef.current = callBack( model );
+        prevRenderRef.current = children( model );
     }
     else{
-        /*
-            Somebody tried to rerender, while we were in batch.
-            On batch finish component definitely must be rerendered.
-        */
         model._queue( forceUpdate );
     }
     
     return prevRenderRef.current;
 }
 
-export default useSubscription;
+
+export default Subscription;

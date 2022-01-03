@@ -48,6 +48,10 @@ module.exports = () => {
 					loader: "babel-loader"
 				},
 				{
+					test: /\.md$/,
+					loader: "raw-loader",
+				},
+				{
 					test: /\.s?css$/,
 					use: [
 						MiniCssExtractPlugin.loader,

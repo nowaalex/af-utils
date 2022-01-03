@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { List } from "af-virtual-scroll";
+import { VerticalList, useVirtual } from "af-virtual-scroll";
 import styled from "styled-components";
 import times from "lodash/times";
 import r from "lodash/random";
 
-const StyledList = styled(List)`
+const StyledList = styled(VerticalList)`
     flex: 1 1 20em;
     min-width: 12em;
     max-width: 36em;
@@ -22,11 +22,12 @@ const VariableSizeList = () => {
 
     const [ dynamicListRowHeights ] = useState(() => times( DEFAULT_ROW_COUNT, () => r( 50, 100 ) ));
 
+    const model = useVirtual({
+        itemCount: DEFAULT_ROW_COUNT
+    });
+
     return (
-        <StyledList
-            estimatedItemSize={75}
-            itemCount={DEFAULT_ROW_COUNT}
-        >
+        <StyledList model={model}>
             {i => (
                 <StyledRow key={i} style={{
                     lineHeight: `${dynamicListRowHeights[i]}px`,

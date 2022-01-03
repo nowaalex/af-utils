@@ -1,24 +1,24 @@
 class PubSub {
 
-    _E = [];
+    _EventsList = [];
 
     /* query of callbacks, that should run after batch end */
-    _Q = new Set();
+    _Query = new Set();
 
     /* depth of batch */
     _inBatch = 0;
 
     _sub( callBack ){
-        this._E.push( callBack );
+        this._EventsList.push( callBack );
     }
 
     _destroy(){
-        this._E.splice( 0 );
-        this._Q.clear();
+        this._EventsList.splice( 0 );
+        this._Query.clear();
     }
 
     _unsub( callBack ){
-        this._E.splice( this._E.indexOf( callBack ) >>> 0, 1 );
+        this._EventsList.splice( this._EventsList.indexOf( callBack ) >>> 0, 1 );
     }
 
     _queue( cb ){
@@ -27,18 +27,18 @@ class PubSub {
                 console.error( "trying to add event to batch queue, while _inBatch is 0" );
             }
         }
-        this._Q.add( cb );
+        this._Query.add( cb );
     }
 
     _run(){
         if( this._inBatch === 0 ){
-            for( const cb of this._E ){
+            for( const cb of this._EventsList ){
                 cb();
             }
         }
         else{
-            for( const cb of this._E ){
-                this._Q.add( cb );
+            for( const cb of this._EventsList ){
+                this._Query.add( cb );
             }
         }
     }
@@ -51,13 +51,13 @@ class PubSub {
 
     _endBatch(){
         if( --this._inBatch === 0 ){
-            for( const cb of this._Q ){
+            for( const cb of this._Query ){
                 /*
                     These callbacks must not call _startBatch from inside.
                 */
                 cb();
             }
-            this._Q.clear();
+            this._Query.clear();
         }
     }
 }

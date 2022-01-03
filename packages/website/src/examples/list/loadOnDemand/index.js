@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import faker from "faker";
-import { List, useRange } from "af-virtual-scroll";
+import { VerticalList, useVirtual, useRange } from "af-virtual-scroll";
 
 const fetchArrayOfImages = () => new Promise( resolve => setTimeout(
     resolve,
@@ -14,10 +14,14 @@ const fetchArrayOfImages = () => new Promise( resolve => setTimeout(
 const Posts = () => {
 
     const [ posts, setPosts ] = useState([]);
-    const isLoadingRef = useRef( false );
-    const modelRef = useRef();
 
-    useRange( modelRef, async ({ itemCount, to }) => {
+    const isLoadingRef = useRef( false );
+
+    const model = useVirtual({
+        itemCount: posts.length
+    });
+
+    useRange( model, async ({ itemCount, to }) => {
         if( isLoadingRef.current === false && itemCount === to ){
             isLoadingRef.current = true;
             const images = await fetchArrayOfImages();
@@ -27,14 +31,14 @@ const Posts = () => {
     });
 
     return (
-        <List dataRef={modelRef} itemCount={posts.length}>
+        <VerticalList model={model}>
             {i => (
                 <div key={i}>
                     <img src={posts[i][0]} />
                     <p>{posts[i][1]}</p>
                 </div>
             )}
-        </List>
+        </VerticalList>
     );
 }
 

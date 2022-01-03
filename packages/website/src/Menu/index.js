@@ -6,10 +6,9 @@ import css from "./style.module.scss";
 
 const DOCS_STRUCTURE = [
     [ "Getting started", "/docs/why" ],
-    [ "List", "/docs/list" ],
-    [ "Table", "/docs/table" ],
+    [ "API reference", "/docs/apiReference" ],
     [ "ComplexTable", "/docs/complexTable" ],
-    [ "Bundle Size", "/docs/bundleSize" ]
+    // [ "Bundle Size", "/docs/bundleSize" ]
 ];
 
 const getClassName = ({ isActive }) => isActive ? css.activeLink : css.link;

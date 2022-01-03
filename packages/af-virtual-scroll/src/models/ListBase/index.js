@@ -6,15 +6,15 @@ class ListBase extends PubSub {
 
     _scrollPos = 0;
     _overscanCount = 0;
-    _widgetHeight = 0;
-    _widgetScrollHeight = 0;
-
     _estimatedItemSize = 0;
 
     _zeroChildNode = null;
     _outerNode = null;
-    _innerNode = null;
 
+    widgetSize = 0;
+    widgetScrollSize = 0;
+
+    horizontal = false;
     itemCount = 0;
     from = 0;
     to = 0;
@@ -33,8 +33,8 @@ class ListBase extends PubSub {
 
     _updateWidgetDimensions = ({ offsetHeight }) => {
 
-        if( offsetHeight !== this._widgetHeight ){
-            this._widgetHeight = offsetHeight;
+        if( offsetHeight !== this.widgetSize ){
+            this.widgetSize = offsetHeight;
             this._updateRangeFromEnd();
         }
 
@@ -63,20 +63,8 @@ class ListBase extends PubSub {
         this._zeroChildNode = node;
     }
 
-    /* will ne used as callback, so => */
-    setInnerNode = node => {
-        this._innerNode = node;
-        this._updateSize();
-    }
-
-    _updateSize(){
-        if( this._innerNode ){
-            this._innerNode.style.height = this._widgetScrollHeight + 'px';
-        }
-    }
-
     _updateRangeFromEnd(){
-        const to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollPos + this._widgetHeight ) );
+        const to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollPos + this.widgetSize ) );
 
         if( to > this.to ){
             this.from = this.getIndex( this._scrollPos );
@@ -90,7 +78,7 @@ class ListBase extends PubSub {
 
         if( from < this.from ){
             this.from = Math.max( 0, from - this._overscanCount );
-            this.to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollPos + this._widgetHeight ) );
+            this.to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollPos + this.widgetSize ) );
             this._run();
         }
     }
@@ -98,7 +86,7 @@ class ListBase extends PubSub {
     _clampTo(){
         if( this.to > this.itemCount ){
             this.to = this.itemCount;
-            this.from = this.getIndex( Math.max( 0, this._widgetScrollHeight - this._widgetHeight ) );
+            this.from = this.getIndex( Math.max( 0, this.widgetScrollSize - this.widgetSize ) );
             this._run();
         }
         else {
@@ -124,19 +112,16 @@ class ListBase extends PubSub {
         }
     }
 
-    _setWidgetScrollHeight( v ){
-        /*
-            TODO: crushes without if check.
-        */
-        if( this._widgetScrollHeight !== v ){
-            this._widgetScrollHeight = v;
-            this._updateSize();
+    _setWidgetScrollSize( v ){
+        if( this.widgetScrollSize !== v ){
+            this.widgetScrollSize = v;
+            this._run();
         }
     }
 
-    _reactOnUpdatedDimensions( newWidgetScrollHeight ){
+    _reactOnUpdatedDimensions( newWidgetScrollSize ){
         this._startBatch();
-        this._setWidgetScrollHeight( newWidgetScrollHeight );
+        this._setWidgetScrollSize( newWidgetScrollSize );
         this._updateRangeFromEnd();
         /*
             run must be called everytime,
@@ -146,7 +131,7 @@ class ListBase extends PubSub {
         this._endBatch();
     }
 
-    _setParams( estimatedItemSize, overscanCount, itemCount ){
+    _setParams( estimatedItemSize, overscanCount, itemCount, horizontal ){
 
         this._estimatedItemSize = estimatedItemSize;
 
@@ -155,6 +140,7 @@ class ListBase extends PubSub {
             Normally it should not be changed.
         */
         this._overscanCount = overscanCount;
+        this.horizontal = horizontal;
 
         if( itemCount !== this.itemCount ){
             this.itemCount = itemCount;

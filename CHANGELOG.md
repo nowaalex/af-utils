@@ -1,3 +1,5 @@
+# 2.9.15 - 2021-01-03
+* BREAKING: switched to hook mode
 # 2.9.15 - 2021-12-09
 * optimized list rendering, no more exporting Rows component
 # 2.9.12 - 2021-10-28

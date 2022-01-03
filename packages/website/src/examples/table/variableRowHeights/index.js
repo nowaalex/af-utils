@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Table } from  "af-virtual-scroll";
+import { Table, useVirtual } from  "af-virtual-scroll";
 import styled from "styled-components";
 import times from "lodash/times";
 import r from "lodash/random";
@@ -18,6 +18,11 @@ const VariableSizeTable = () => {
         DEFAULT_ROW_COUNT,
         () => r( 100, 200 )
     ));
+
+    const model = useVirtual({
+        itemCount: DEFAULT_ROW_COUNT,
+        estimatedItemSize: 150
+    })
 
     const columns = [
         {
@@ -40,14 +45,13 @@ const VariableSizeTable = () => {
 
     return (
         <StyledTable
+            model={model}
             getRowData={i => ({
                 a: i,
                 b: `cell_b_${i}`,
                 c: `cell_c_${i}`
             })}
             columns={columns}
-            estimatedItemSize={150}
-            itemCount={DEFAULT_ROW_COUNT}
         />
     );
 }

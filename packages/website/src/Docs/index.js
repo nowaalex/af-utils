@@ -5,6 +5,7 @@ import Table from "./Table";
 import ComplexTable from "./ComplexTable";
 import BundleSize from "./BundleSize";
 import Why from "./Why";
+import ApiReference from "./ApiReference";
 import humanizeRoute from "../utils/humanizeRoute";
 
 const Pages = {
@@ -12,7 +13,8 @@ const Pages = {
     list: List,
     table: Table,
     complexTable: ComplexTable,
-    bundleSize: BundleSize
+    bundleSize: BundleSize,
+    apiReference: ApiReference
 };
 
 const Docs = ({ className }) => {
