@@ -1,6 +1,6 @@
 {
   "name": "af-react-table",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "description": "React components for rendering tables",
   "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
   "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
@@ -40,32 +40,32 @@
     "windowing"
   ],
   "devDependencies": {
-    "@babel/core": "^7.16.5",
-    "@babel/plugin-proposal-class-properties": "^7.16.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.16.5",
-    "@babel/plugin-transform-runtime": "^7.16.5",
-    "@babel/preset-env": "^7.16.5",
-    "@babel/preset-react": "^7.16.5",
+    "@babel/core": "^7.16.7",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "@babel/preset-react": "^7.16.7",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "postcss": "^8.4.5",
-    "rollup": "^2.61.1",
+    "rollup": "^2.62.0",
     "rollup-plugin-postcss": "^4.0.2",
-    "sass": "^1.45.1"
+    "sass": "^1.45.2"
   },
   "peerDependencies": {
-    "af-virtual-scroll": "^2.9.17",
+    "af-virtual-scroll": "^2.9.18",
     "mobx": "^6.3.0",
     "mobx-react-lite": "^3.2.0",
     "react": "^17.0.0"
   },
   "dependencies": {
-    "af-virtual-scroll": "^2.9.17",
+    "af-virtual-scroll": "^2.9.18",
     "babel-jest": "^27.4.5",
     "mobx": "^6.3.10",
-    "mobx-react-lite": "^3.2.2",
+    "mobx-react-lite": "^3.2.3",
     "react": "^17.0.2"
   }
 }
