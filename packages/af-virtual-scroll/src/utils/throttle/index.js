@@ -7,8 +7,8 @@ const throttle = ( fn, ms, ctx ) => {
 
     const boundFn = fn.bind( ctx );
 
-    const requestIdleCallbackPolyfilled = requestIdleCallback || (fn => fn(), 1);
-    const cancelIdleCallbackPolyfilled = cancelIdleCallback || (() => {});
+    const requestIdleCallbackPolyfilled = window.requestIdleCallback || (fn => fn(), 1);
+    const cancelIdleCallbackPolyfilled = window.cancelIdleCallback || (() => {});
 
     const cancel = () => {
         clearTimeout( mainTimer );
