@@ -7,7 +7,7 @@ const throttle = ( fn, ms, ctx ) => {
 
     const boundFn = fn.bind( ctx );
 
-    const requestIdleCallbackPolyfilled = window.requestIdleCallback || (fn => fn(), 1);
+    const requestIdleCallbackPolyfilled = window.requestIdleCallback || (fn => (fn(), 1));
     const cancelIdleCallbackPolyfilled = window.cancelIdleCallback || (() => {});
 
     const cancel = () => {
