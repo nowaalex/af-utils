@@ -11,10 +11,10 @@ fs.rmSync( BUNDLE_TREESHAKE_STATS_OUTPUT_DIR, { recursive: true, force: true });
 export default [
     commonConfig,
     ...[
-        [ "hook", `import { useVirtual } from "./lib/index.esm.js";useVirtual();` ],
-        [ "list", `import { VerticalList, useVirtual } from "./lib/index.esm.js";VerticalList();useVirtual();` ],
-        [ "table", `import { Table, useVirtual } from "./lib/index.esm.js";Table();useVirtual();` ],
-        [ "listTable", `import { VerticalList, Table, useVirtual } from "./lib/index.esm.js";VerticalList();Table();useVirtual();` ]
+        [ "hook", `import { useVirtual } from "./lib/index.js";useVirtual();` ],
+        [ "list", `import { VerticalList, useVirtual } from "./lib/index.js";VerticalList();useVirtual();` ],
+        [ "table", `import { Table, useVirtual } from "./lib/index.js";Table();useVirtual();` ],
+        [ "listTable", `import { VerticalList, Table, useVirtual } from "./lib/index.js";VerticalList();Table();useVirtual();` ]
     ].map(([ fileName, fileContent ]) => ({
         input: fileName,
         treeshake: {

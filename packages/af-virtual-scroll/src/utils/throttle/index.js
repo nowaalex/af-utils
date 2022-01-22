@@ -1,29 +1,27 @@
-const IdleOptions = { timeout: 1000 };
+const IdleOptions = { timeout: 2000 };
 
-const throttle = ( fn, ms, ctx ) => {
+const delay = globalThis.requestIdleCallback || ( fn => setTimeout( fn, 500 ) );
+const cancelDelay = globalThis.cancelIdleCallback || clearTimeout;
 
-    let mainTimer = 0,
-        idleTimer = 0;
+const throttle = ( fn, ctx ) => {
+
+    let timer = 0;
 
     const boundFn = fn.bind( ctx );
 
-    const requestIdleCallbackPolyfilled = window.requestIdleCallback || (fn => (fn(), 1));
-    const cancelIdleCallbackPolyfilled = window.cancelIdleCallback || (() => {});
-
     const cancel = () => {
-        clearTimeout( mainTimer );
-        cancelIdleCallbackPolyfilled( idleTimer );
-        mainTimer = idleTimer = 0;
+        cancelDelay( timer );
+        timer = 0;
     }
 
     const invoke = () => {
-        mainTimer = 0;
-        idleTimer = requestIdleCallbackPolyfilled( boundFn, IdleOptions );
+        timer = 0;
+        boundFn();
     }
 
     const throttled = () => {
-        if( mainTimer === 0 && idleTimer === 0 ){
-            mainTimer = setTimeout( invoke, ms );
+        if( timer === 0 ){
+            timer = delay( invoke, IdleOptions );
         }
     }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import VariableHeightsModel from "models/VariableSizeList";
 import FixedHeightsModel from "models/FixedSizeList";
 import { EMPTY_ARRAY } from "constants";
@@ -6,17 +6,23 @@ import { EMPTY_ARRAY } from "constants";
 const useVirtual = ({
     itemCount = 0,
     estimatedItemSize = 20,
+    ssrWidgetSize = 200,
     overscanCount = 3,
     horizontal = false,
     fixed = false
 }) => {
-    const [ model ] = useState(() => new ( fixed ? FixedHeightsModel : VariableHeightsModel ));
 
-    model._startBatch();
-    model._setParams( estimatedItemSize, overscanCount, itemCount, horizontal );
+    const [ model ] = useState(() => {
+        const model = new ( fixed ? FixedHeightsModel : VariableHeightsModel );
+        if( typeof window === "undefined" ){
+            model.widgetSize = ssrWidgetSize;
+            model._setParams( estimatedItemSize, overscanCount, itemCount, horizontal );
+        }
+        return model;
+    });
 
     useEffect(() => {
-        model._endBatch();
+        model._setParams( estimatedItemSize, overscanCount, itemCount, horizontal );
     });
 
     useEffect(() => () => model._destroy(), EMPTY_ARRAY);

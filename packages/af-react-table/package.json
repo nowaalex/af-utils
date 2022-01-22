@@ -24,8 +24,8 @@
   "files": [
     "lib/*"
   ],
-  "main": "lib/index.esm.js",
-  "module": "lib/index.esm.js",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
   "keywords": [
     "react",
     "reactjs",
@@ -40,20 +40,20 @@
     "windowing"
   ],
   "devDependencies": {
-    "@babel/core": "^7.16.7",
+    "@babel/core": "^7.16.10",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.16.7",
-    "@babel/plugin-transform-runtime": "^7.16.7",
-    "@babel/preset-env": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.16.10",
+    "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "postcss": "^8.4.5",
-    "rollup": "^2.63.0",
+    "rollup": "^2.66.0",
     "rollup-plugin-postcss": "^4.0.2",
-    "sass": "^1.45.2"
+    "sass": "^1.49.0"
   },
   "peerDependencies": {
     "af-virtual-scroll": "^2.9.20",
@@ -62,10 +62,12 @@
     "react": "^17.0.0"
   },
   "dependencies": {
+    "@babel/runtime": "^7.16.7",
     "af-virtual-scroll": "^2.9.20",
     "babel-jest": "^27.4.6",
-    "mobx": "^6.3.10",
+    "mobx": "^6.3.13",
     "mobx-react-lite": "^3.2.3",
+    "prop-types": "^15.8.1",
     "react": "^17.0.2"
   }
 }

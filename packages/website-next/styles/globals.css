@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+td {
+    @apply p-2;
+}
+
+tfoot th, tfoot td, thead th, thead td {
+    @apply bg-white;
+}

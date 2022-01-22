@@ -8,9 +8,7 @@ const OUTPUT_DIR = "lib";
 fs.rmSync( OUTPUT_DIR, { recursive: true, force: true });
 
 export default {
-    input: {
-        "index.esm": "src/index.esm.js",
-    },
+    input: "src/index.js",
     output: {
         format: "es",
         dir: OUTPUT_DIR,

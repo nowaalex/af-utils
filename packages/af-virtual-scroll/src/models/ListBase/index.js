@@ -1,8 +1,18 @@
 import PubSub from "../PubSub";
 import throttle from "utils/throttle";
-import { observe, unobserve } from "utils/dimensionsObserver";
-
+import ResizeObserver from "models/ResizeObserver";
 class ListBase extends PubSub {
+
+    _OuterNodeResizeObserver = new ResizeObserver(() => {
+        const { offsetHeight } = this._outerNode;
+
+        if( offsetHeight !== this.widgetSize ){
+            this.widgetSize = offsetHeight;
+            this._updateRangeFromEnd();
+        }
+
+        this._measureItemsThrottled();
+    });
 
     _scrollPos = 0;
     _overscanCount = 0;
@@ -31,19 +41,9 @@ class ListBase extends PubSub {
         }
     }
 
-    _updateWidgetDimensions = ({ offsetHeight }) => {
-
-        if( offsetHeight !== this.widgetSize ){
-            this.widgetSize = offsetHeight;
-            this._updateRangeFromEnd();
-        }
-
-        this._measureItemsThrottled();
-    }
-
     _unobserveCurrentOuterNode(){
         if( this._outerNode ){
-            unobserve( this._outerNode );
+            this._OuterNodeResizeObserver.unobserve( this._outerNode );
             this._outerNode.removeEventListener( "scroll", this._setScrollPos );
         }
     }
@@ -53,7 +53,7 @@ class ListBase extends PubSub {
         this._unobserveCurrentOuterNode();
         this._outerNode = node;
         if( node ){
-            observe( node, this._updateWidgetDimensions );
+            this._OuterNodeResizeObserver.observe( node );
             node.addEventListener( "scroll", this._setScrollPos, { passive: true });
         }
     }
@@ -61,6 +61,9 @@ class ListBase extends PubSub {
     /* will ne used as callback, so => */
     setZeroChildNode = node => {
         this._zeroChildNode = node;
+        if( node ){
+            this._measureItemsThrottled();
+        }
     }
 
     _updateRangeFromEnd(){
@@ -95,12 +98,11 @@ class ListBase extends PubSub {
         }
     }
 
-    _measureItemsThrottled = throttle( this._measureItems, 300, this );
+    _measureItemsThrottled = throttle( this._measureItems, this );
 
     _destroy(){
         this._unobserveCurrentOuterNode();
         this._measureItemsThrottled._cancel();
-        super._destroy();
     }
 
     scrollTo( index ){
@@ -144,8 +146,10 @@ class ListBase extends PubSub {
 
         if( itemCount !== this.itemCount ){
             this.itemCount = itemCount;
+            this._startBatch();
             this._itemCountChanged();
             this._clampTo();
+            this._endBatch();
             this._measureItemsThrottled();
         }
     }

@@ -106,6 +106,7 @@ class VariableSizeList extends ListBase {
     }
 
     _measureItems(){
+
         let child = this._zeroChildNode?.nextElementSibling;
 
         if( child ){

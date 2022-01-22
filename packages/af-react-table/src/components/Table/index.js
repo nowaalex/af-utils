@@ -1,9 +1,9 @@
 import { PureComponent } from "react";
-import { observer, Observer } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import RowsAggregator from "models/aggregators/Mobx";
 import { Table, cx, useVirtual } from "af-virtual-scroll";
-import css from "./style.module.scss";
 import { useDrag, useDrop } from "react-dnd";
+import css from "./style.module.scss";
 
 const HEADER_DND_TYPE = "h";
 
@@ -245,8 +245,20 @@ const TableWrapper = observer(({ m, fixed, estimatedItemSize, overscanCount, ...
 });
 
 class ComplexTable extends PureComponent {
-    state = {
-        m: new RowsAggregator()
+
+    constructor( props ){
+        super( props );
+
+        const m = new RowsAggregator();
+
+        this.state = { m };
+
+        const initialGroupingKeys = m.visibleColumns
+            .filter( col => col.initialGrouingIndex > 0 )
+            .sort(( a, b ) => a.initialGrouingIndex - b.initialGrouingIndex )
+            .map( col => col.dataKey );
+
+        m.setGrouping( initialGroupingKeys );
     }
 
     static getDerivedStateFromProps({ itemCount, getRowData, getTotalsFormattingHelper, columns }, { m }){
@@ -273,15 +285,6 @@ class ComplexTable extends PureComponent {
                 <TableWrapper m={m} {...props} />
             </div>
         );
-    }
-
-    componentDidMount(){
-        const initialGroupingKeys = this.state.m.visibleColumns
-            .filter( col => col.initialGroupingIndex > 0 )
-            .sort(( a, b ) => a.initialGrouingIndex - b.initialGrouingIndex )
-            .map( col => col.dataKey );
-
-        this.state.m.setGrouping( initialGroupingKeys );
     }
 }
 

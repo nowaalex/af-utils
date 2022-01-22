@@ -32,13 +32,11 @@ class FixedSizeList extends ListBase {
     }
 
     _measureItems(){
-        if( this.itemCount ){
-            const tgtEl = this._zeroChildNode?.nextElementSibling;
-            
-            if( tgtEl ){
-                this._setRowSize( tgtEl.offsetHeight );
-            }   
-        }
+        const tgtEl = this._zeroChildNode?.nextElementSibling;
+        
+        if( tgtEl ){
+            this._setRowSize( tgtEl.offsetHeight );
+        }   
     }    
 }
 

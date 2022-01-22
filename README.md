@@ -20,7 +20,7 @@ https://af-virtual-scroll.vercel.app/
 ```javascript
 import { List } from "af-virtual-scroll";
 
-// import once in a project
+// import once in a project ( not needed for hook )
 import "af-virtual-scroll/lib/style.css";
 
 const SimpleList = () => (
