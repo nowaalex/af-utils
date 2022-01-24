@@ -45,10 +45,10 @@ const model = useVirtual({
 - `setZeroChildNode: Bound Function(el: DOMElement) => void 0`
   - must be attached to element, which goes before all items. Used for row measurement.
 
-## `useRange`
+## `useSubscriptiosn`
 
 ```js
-useRange( model, model => {} );
+useSubscription( model, () => {}, deps = [] );
 ```
 
 ### Options
@@ -56,7 +56,7 @@ useRange( model, model => {} );
 - `model: Model`
   - **Required**
   - return value of `useVirtual()`
-- `event: Function(model: Model) => void 0`
+- `event: Function() => void 0`
   - gets called when model params change
 
 ## `mapVisibleRange`

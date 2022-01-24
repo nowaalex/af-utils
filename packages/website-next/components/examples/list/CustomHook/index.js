@@ -10,7 +10,6 @@ const CustomHook = () => {
         <div className="overflow-auto" ref={model.setOuterNode}>
             <Subscription model={model}>
                 {({ from, widgetScrollSize }) => {
-
                     const fromOffset = model.getOffset(from);
 
                     return (

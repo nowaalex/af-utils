@@ -14,10 +14,13 @@ const useVirtual = ({
 
     const [ model ] = useState(() => {
         const model = new ( fixed ? FixedHeightsModel : VariableHeightsModel );
+
         if( typeof window === "undefined" ){
             model.widgetSize = ssrWidgetSize;
-            model._setParams( estimatedItemSize, overscanCount, itemCount, horizontal );
         }
+        
+        model._setParams( estimatedItemSize, overscanCount, itemCount, horizontal );
+        
         return model;
     });
 

@@ -1,13 +1,11 @@
-/*
-    Simplified mobx idea.
-    Forbidden:
-        * calling _sub / _unsub inside batch block
-        * calling _startBatch / _endBatch inside _run
-*/
 class PubSub {
 
     _EventsList = [];
-    _wasRunAttempted = false;
+
+    /* query of callbacks, that should run after batch end */
+    _Query = new Set();
+
+    /* depth of batch */
     _inBatch = 0;
 
     _sub( callBack ){
@@ -18,27 +16,38 @@ class PubSub {
         this._EventsList.splice( this._EventsList.indexOf( callBack ) >>> 0, 1 );
     }
 
+    _queue( cb ){
+        this._Query.add( cb );
+    }
+
     _run(){
         if( this._inBatch === 0 ){
             for( const cb of this._EventsList ){
                 cb();
             }
         }
-        else {
-            this._wasRunAttempted = true;
+        else{
+            for( const cb of this._EventsList ){
+                this._queue( cb );
+            }
         }
     }
+
+    /* inspired by mobx */
 
     _startBatch(){
         this._inBatch++;
     }
 
     _endBatch(){
-        if( --this._inBatch === 0 && this._wasRunAttempted === true ){
-            for( const cb of this._EventsList ){
+        if( --this._inBatch === 0 ){
+            for( const cb of this._Query ){
+                /*
+                    These callbacks must not call _startBatch from inside.
+                */
                 cb();
             }
-            this._wasRunAttempted = false;
+            this._Query.clear();
         }
     }
 }

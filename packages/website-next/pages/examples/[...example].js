@@ -21,7 +21,6 @@ const Example = () => {
     );
 }
 
-
 export const getStaticProps = context => ({
     props: {},
     notFound: !table[ `/examples/${context.params.example.join("/")}` ]

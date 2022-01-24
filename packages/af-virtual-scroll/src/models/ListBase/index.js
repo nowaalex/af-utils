@@ -149,8 +149,8 @@ class ListBase extends PubSub {
             this._startBatch();
             this._itemCountChanged();
             this._clampTo();
-            this._endBatch();
             this._measureItemsThrottled();
+            this._endBatch();
         }
     }
 }

@@ -8,7 +8,6 @@ const VerticalList = ({ model, children: renderRow, className, ...props }) => (
     <div className={cx(css.wrapper,className)} ref={model.setOuterNode} {...props}>
         <Subscription model={model}>
             {({ from, widgetScrollSize }) => {
-
                 const fromOffset = model.getOffset(from);
 
                 return (

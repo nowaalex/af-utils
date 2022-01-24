@@ -1,20 +1,26 @@
-import { useReducer, useEffect } from "react";
-import { EMPTY_ARRAY } from "constants";
+import { useRef, useReducer } from "react";
+import useSubscription from "hooks/useSubscription";
 
-const increment = x => x + 1;
-
-const useForceUpdate = () => useReducer( increment, 0 )[ 1 ];
+const inc = x => x + 1;
 
 const Subscription = ({ model, children }) => {
 
-    const forceUpdate = useForceUpdate();
-    
-    useEffect(() => {
-        model._sub( forceUpdate );
-        return () => model._unsub( forceUpdate );
-    }, EMPTY_ARRAY);
+    const [ forceUpdateRenderCounter, forceUpdate ] = useReducer( inc, 1 );
 
-    return children( model );
+    useSubscription( model, forceUpdate );
+
+    const prevRenderRef = useRef( null );
+    const renderCounterRef = useRef( 0 );
+
+    if( renderCounterRef.current !== forceUpdateRenderCounter ){
+        renderCounterRef.current = forceUpdateRenderCounter;
+        prevRenderRef.current = children( model );
+    }
+    else {
+        model._queue( forceUpdate );
+    }
+
+    return prevRenderRef.current;
 }
 
 
