@@ -1,22 +1,16 @@
 import { useEffect, useRef } from "react";
-import cx from "classnames";
-import hljs from "highlight.js/lib/core";
-import javascript from "highlight.js/lib/languages/javascript";
-import xml from "highlight.js/lib/languages/xml";
-import "highlight.js/styles/googlecode.css";
+import Prism from "prismjs";
+import "prismjs/components/prism-jsx";
 
-hljs.registerLanguage( "javascript", javascript );
-hljs.registerLanguage( "xml", xml );
-
-const Code = ({ children, className }) => {    
+const Code = ({ children }) => {    
     const ref = useRef();
 
     useEffect(() => {
-        hljs.highlightElement( ref.current );
+        Prism.highlightElement( ref.current );
     }, [ children ]);
 
     return (
-        <code ref={ref} className={cx("font-mono whitespace-pre",className)}>
+        <code ref={ref} className="language-jsx">
             {children}
         </code>
     );

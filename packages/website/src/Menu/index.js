@@ -6,7 +6,7 @@ import css from "./style.module.scss";
 
 const DOCS_STRUCTURE = [
     [ "Getting started", "/docs/why" ],
-    [ "API reference", "/docs/apiReference" ],
+    [ "API reference", "/apiReference" ],
     [ "ComplexTable", "/docs/complexTable" ],
     // [ "Bundle Size", "/docs/bundleSize" ]
 ];

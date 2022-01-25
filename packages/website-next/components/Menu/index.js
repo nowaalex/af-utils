@@ -9,13 +9,13 @@ import { components } from "/AllExamples";
 import humanizeRoute from "/utils/humanizeRoute";
 
 const DOCS_STRUCTURE = [
-    [ "Getting started", "/docs/why" ],
-    [ "API reference", "/docs/apiReference" ],
-    [ "ComplexTable", "/docs/complexTable" ],
-    // [ "Bundle Size", "/docs/bundleSize" ]
+    [ "Getting started", "/why" ],
+    [ "Installation", "/installation" ],
+    [ "API reference", "/apiReference" ],
+    [ "ComplexTable", "/complexTable" ]
 ];
 
-const Menu = ({ className, ...props }) => {
+const Menu = ({ className }) => {
 
     const { asPath } = useRouter();
     const [ opened, setOpened ] = useState( true );
@@ -26,14 +26,14 @@ const Menu = ({ className, ...props }) => {
                 <VscMenu className="h-8 w-8" />
             </button>
             
-            <aside onClick={() => setOpened( false)} className={cx("z-10 overflow-auto grow-0 shrink-0 pt-8 bg-neutral-100 fixed inset-0 mr-0 md:mr-6 md:block md:pt-0 md:static",opened || "hidden",className)} {...props}>
+            <aside onClick={() => setOpened( false)} className={cx("z-10 overflow-auto grow-0 shrink-0 pt-8 bg-neutral-100 fixed inset-0 mr-0 md:mr-6 md:h-screen md:block md:pt-0 md:static",opened || "hidden",className)}>
 
                 <h2 className="text-xl font-bold pl-3 mt-3">Docs</h2>
 
                 <nav className="flex flex-col">
                     {DOCS_STRUCTURE.map(([ label, url ]) => (
                         <Link key={url} href={url}>
-                            <a className="px-6 py-1">
+                            <a className={cx("px-6 py-1",  url === asPath ? "bg-neutral-300" : "")}>
                                 {label}
                             </a>
                         </Link>

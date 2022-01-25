@@ -51,7 +51,7 @@
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "postcss": "^8.4.5",
-    "rollup": "^2.66.0",
+    "rollup": "^2.66.1",
     "rollup-plugin-postcss": "^4.0.2",
     "sass": "^1.49.0"
   },

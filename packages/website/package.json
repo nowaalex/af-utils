@@ -32,7 +32,7 @@
     "sitemap-webpack-plugin": "^1.1.1",
     "terser-webpack-plugin": "^5.3.0",
     "webpack": "^5.67.0",
-    "webpack-cli": "^4.9.1",
+    "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.3"
   },
   "dependencies": {
@@ -48,10 +48,8 @@
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.3.1",
-    "react-markdown": "^8.0.0",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
-    "react-syntax-highlighter": "^15.4.5",
     "styled-components": "^5.3.3"
   }
 }
