@@ -15,17 +15,3 @@ https://af-virtual-scroll.vercel.app/
 * optimized for performance
 * `scrollTo(index)` method is available
 * < 3KB gzipped
-
-### Basic usage
-```javascript
-import { List } from "af-virtual-scroll";
-
-// import once in a project ( not needed for hook )
-import "af-virtual-scroll/lib/style.css";
-
-const SimpleList = () => (
-    <List itemCount={1000}>
-        {i => <div key={i}>row {i}</div>}
-    </List>
-);
-```

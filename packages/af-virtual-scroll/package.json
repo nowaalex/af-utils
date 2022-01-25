@@ -1,6 +1,6 @@
 {
   "name": "af-virtual-scroll",
-  "version": "2.9.20",
+  "version": "2.9.21",
   "description": "React components for rendering large scrollable data",
   "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
   "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
