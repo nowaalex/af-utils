@@ -1,6 +1,6 @@
 const MdxWrapper = ({ children }) => (
     <div className="overflow-auto w-full">
-        <div className="mdx-wrapper max-w-[60em]">
+        <div className="prose md:prose-lg max-w-[60em] pt-4">
             {children}
         </div>
     </div>

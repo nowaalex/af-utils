@@ -4,7 +4,23 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      typography: theme => ({
+        DEFAULT: {
+          css: {
+            "code::before": {
+              content: ""
+            },
+            "code::after": {
+              content: ""
+            }
+          }
+        }
+      })
+    },
+    
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/typography"),
+  ],
 }

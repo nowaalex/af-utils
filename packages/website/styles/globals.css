@@ -2,34 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.mdx-wrapper {
-
-    h1 {
-        @apply text-5xl font-bold mt-12 mb-4;
-    }
-
-    h2 {
-        @apply text-3xl font-bold mt-9 mb-3;
-    }
-
-    h3 {
-        @apply text-xl font-semibold mt-5 mb-2;
-    }
-
-    ul {
-        list-style-type: disc;
-
-        & > li {
-            @apply ml-8;
-        }
-    }
-
-    p {
-        @apply my-3
-    }
-}
-  
-
 td {
     @apply p-2;
 }
