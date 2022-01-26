@@ -1,4 +1,4 @@
-import Subscription from "components/common/Subscription";
+import Subscription from "components/Subscription";
 import mapVisibleRange from "utils/mapVisibleRange";
 import cx from "utils/cx";
 
