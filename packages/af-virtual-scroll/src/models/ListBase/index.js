@@ -3,11 +3,14 @@ import throttle from "utils/throttle";
 import ResizeObserver from "models/ResizeObserver";
 class ListBase extends PubSub {
 
-    _OuterNodeResizeObserver = new ResizeObserver(() => {
-        const { offsetHeight } = this._outerNode;
+    _scrollKey = "";
+    _sizeKey = "";
 
-        if( offsetHeight !== this.widgetSize ){
-            this.widgetSize = offsetHeight;
+    _OuterNodeResizeObserver = new ResizeObserver(() => {
+        const size = this._outerNode[ this._sizeKey ];
+
+        if( size !== this._widgetSize ){
+            this._widgetSize = size;
             this._updateRangeFromEnd();
         }
 
@@ -21,16 +24,15 @@ class ListBase extends PubSub {
     _zeroChildNode = null;
     _outerNode = null;
 
-    widgetSize = 0;
-    widgetScrollSize = 0;
+    _widgetSize = 0;
+    scrollSize = 0;
 
-    horizontal = false;
     itemCount = 0;
     from = 0;
     to = 0;
 
-    _setScrollPos = e => {
-        const diff = e.target.scrollTop - this._scrollPos;
+    _setScrollPos = () => {
+        const diff = this._outerNode[ this._scrollKey ] - this._scrollPos;
         this._scrollPos += diff;
 
         if( diff > 0 ){
@@ -67,7 +69,7 @@ class ListBase extends PubSub {
     }
 
     _updateRangeFromEnd(){
-        const to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollPos + this.widgetSize ) );
+        const to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollPos + this._widgetSize ) );
 
         if( to > this.to ){
             this.from = this.getIndex( this._scrollPos );
@@ -81,7 +83,7 @@ class ListBase extends PubSub {
 
         if( from < this.from ){
             this.from = Math.max( 0, from - this._overscanCount );
-            this.to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollPos + this.widgetSize ) );
+            this.to = Math.min( this.itemCount, 1 + this.getIndex( this._scrollPos + this._widgetSize ) );
             this._run();
         }
     }
@@ -89,7 +91,7 @@ class ListBase extends PubSub {
     _clampTo(){
         if( this.to > this.itemCount ){
             this.to = this.itemCount;
-            this.from = this.getIndex( Math.max( 0, this.widgetScrollSize - this.widgetSize ) );
+            this.from = this.getIndex( Math.max( 0, this.scrollSize - this._widgetSize ) );
             this._run();
         }
         else {
@@ -107,23 +109,23 @@ class ListBase extends PubSub {
 
     scrollTo( index ){
         if( this._outerNode ){
-            this._outerNode.scrollTop = this.getOffset( index );
+            this._outerNode[ this._scrollKey ] = this.getOffset( index );
         }
         else if( process.env.NODE_ENV !== "production" ){
             console.error( "outerNode is not set" );
         }
     }
 
-    _setWidgetScrollSize( v ){
-        if( this.widgetScrollSize !== v ){
-            this.widgetScrollSize = v;
+    _setScrollSize( v ){
+        if( this.scrollSize !== v ){
+            this.scrollSize = v;
             this._run();
         }
     }
 
-    _reactOnUpdatedDimensions( newWidgetScrollSize ){
+    _reactOnUpdatedDimensions( newscrollSize ){
         this._startBatch();
-        this._setWidgetScrollSize( newWidgetScrollSize );
+        this._setScrollSize( newscrollSize );
         this._updateRangeFromEnd();
         /*
             run must be called everytime,
@@ -142,7 +144,9 @@ class ListBase extends PubSub {
             Normally it should not be changed.
         */
         this._overscanCount = overscanCount;
-        this.horizontal = horizontal;
+        
+        this._scrollKey = `scroll${horizontal ? "Left" : "Top"}`;
+        this._sizeKey = `offset${horizontal ? "Width" : "Height"}`;
 
         if( itemCount !== this.itemCount ){
             this.itemCount = itemCount;

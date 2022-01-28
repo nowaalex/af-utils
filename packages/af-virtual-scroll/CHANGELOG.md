@@ -1,5 +1,11 @@
 # af-virtual-scroll
 
+## 2.10.2
+
+### Patch Changes
+
+-   added 'horizontal' prop to useVirtual
+
 ## 2.10.1
 
 ### Patch Changes

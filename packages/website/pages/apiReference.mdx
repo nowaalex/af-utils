@@ -22,6 +22,9 @@ const model = useVirtual({
 - `overscanCount: Integer`
   - Defaults to `3`
   - Minimum amount of items to load behind/ahead(depends on scroll direction) of the current visible range.
+- `horizontal: Boolean`
+  - Defaults to `false`
+  - determines, whether scrollTop/offsetHeight or scrollLeft/offsetWidth are used in calculations
 - `fixed: Boolean`
   - Defaults to `false`
   - `true` - you guarantee, that all children(except sticky ones) have same size determined by first rendered child. This allows to use faster range calculation
@@ -35,9 +38,7 @@ const model = useVirtual({
   - range start
 - `to: Integer`
   - range end
-- `widgetSize: Integer`
-  - size of outer element
-- `widgetScrollSize: Integer`
+- `scrollSize: Integer`
   - sum of all item sizes
 - `getIndex: Function(offset: Integer) => Integer`
 - `getOffset: Function(index: Integer) => Integer`

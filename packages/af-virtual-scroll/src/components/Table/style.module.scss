@@ -1,10 +1,3 @@
-.bodyTable {
-    /* flex-grow on table makes rows to stretch on firefox */
-    flex: 0 1 auto;
-    table-layout: fixed;
-    min-width: 100%;
-}
-
 .spacer {
     visibility: hidden;
     pointer-events: none;
@@ -17,10 +10,4 @@
     top: 0;
     left: 0;
     width: 1px;
-}
-
-.wrapper {
-    box-sizing: border-box;
-    overflow: auto;
-    position: relative;
 }

@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,8 +11,8 @@
   "dependencies": {
     "@mdx-js/loader": "^1.6.22",
     "@next/mdx": "^12.0.9",
-    "af-react-table": "^4.0.1",
-    "af-virtual-scroll": "^2.10.1",
+    "af-react-table": "^4.0.2",
+    "af-virtual-scroll": "^2.10.2",
     "classnames": "^2.3.1",
     "faker": "5.5.3",
     "lodash": "^4.17.21",

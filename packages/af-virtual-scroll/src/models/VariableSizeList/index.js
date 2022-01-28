@@ -55,7 +55,7 @@ class VariableSizeList extends ListBase {
             }
         }
 
-        this._setWidgetScrollSize( this.getOffset( itemCount ) );
+        this._setScrollSize( this.getOffset( itemCount ) );
     }
 
     getIndex( offset ){
@@ -119,7 +119,7 @@ class VariableSizeList extends ListBase {
             const lim = Math.min( this._fTree.length, 1 << 32 - Math.clz32( this.to - 1 ) );
 
             do {
-                diff = child.offsetHeight - this._itemSizes[ index ];
+                diff = child[ this._sizeKey ] - this._itemSizes[ index ];
 
                 if( diff ){
                     this._itemSizes[ index ] += diff;
@@ -131,7 +131,7 @@ class VariableSizeList extends ListBase {
 
             if( buff !== 0 ){
                 this._updateItemHeight( lim, buff, this._fTree.length );
-                this._reactOnUpdatedDimensions( this.widgetScrollSize + buff );
+                this._reactOnUpdatedDimensions( this.scrollSize + buff );
             }
         }
     }

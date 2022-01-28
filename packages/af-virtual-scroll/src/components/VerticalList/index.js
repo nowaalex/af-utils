@@ -1,20 +1,19 @@
 import Subscription from "components/Subscription";
 import mapVisibleRange from "utils/mapVisibleRange";
 import cx from "utils/cx";
-
-import css from "./style.module.scss";
+import "style/style.scss";
 
 const VerticalList = ({ model, children: renderRow, className, ...props }) => (
-    <div className={cx(css.wrapper,className)} ref={model.setOuterNode} {...props}>
+    <div className={cx("afvscr-list",className)} ref={model.setOuterNode} {...props}>
         <Subscription model={model}>
-            {({ from, widgetScrollSize }) => {
+            {({ from, scrollSize }) => {
                 const fromOffset = model.getOffset(from);
 
                 return (
                     <div
                         style={{
                             marginTop: fromOffset,
-                            height: widgetScrollSize - fromOffset
+                            height: scrollSize - fromOffset
                         }}
                     >
                         <div ref={model.setZeroChildNode} hidden />

@@ -1,4 +1,17 @@
+.afvscr-list, .afvscr-table {
+    overflow: auto;
+}
+
 .afvscr-table {
+
+    position: relative;
+
+    table {
+        /* flex-grow on table makes rows to stretch on firefox */
+        flex: 0 1 auto;
+        table-layout: fixed;
+        min-width: 100%;
+    }
 
     thead,
     tfoot {

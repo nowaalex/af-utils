@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "start": "yarn wsrun start",
-    "build": "yarn wsrun --stages build",
+    "prepublish": "yarn wsrun -x website --stages build",
+    "release": "yarn prepublish && yarn changeset publish",
     "test": "jest"
   },
   "engines": {
@@ -22,6 +23,7 @@
     "not ios_saf < 13"
   ],
   "devDependencies": {
+    "@changesets/changelog-github": "^0.4.2",
     "@changesets/cli": "^2.20.0",
     "wsrun": "^5.2.4"
   }

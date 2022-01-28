@@ -15,7 +15,7 @@ class FixedSizeList extends ListBase {
         if( this._rowSize === 0 ){
             this._rowSize = this._estimatedItemSize;
         }
-        this._setWidgetScrollSize( this._rowSize * this.itemCount );
+        this._setScrollSize( this._rowSize * this.itemCount );
     }
 
     getIndex( offset ){
@@ -35,7 +35,7 @@ class FixedSizeList extends ListBase {
         const tgtEl = this._zeroChildNode?.nextElementSibling;
         
         if( tgtEl ){
-            this._setRowSize( tgtEl.offsetHeight );
+            this._setRowSize( tgtEl[ this._sizeKey ] );
         }   
     }    
 }

@@ -4,28 +4,32 @@ const CustomHook = () => {
 
     const model = useVirtual({
         itemCount: 50000,
+        estimatedItemSize: 75,
+        horizontal: true
     });
 
     return (
-        <div className="overflow-auto" ref={model.setOuterNode}>
+        <div className="overflow-auto h-min" ref={model.setOuterNode}>
             <Subscription model={model}>
                 {({ from, scrollSize }) => {
                     const fromOffset = model.getOffset(from);
 
                     return (
                         <div 
-                            className="divide-y divide-zinc-700"
+                            className="flex divide-y divide-zinc-700"
                             style={{
-                                marginTop: fromOffset,
-                                height: scrollSize - fromOffset
+                                marginLeft: fromOffset,
+                                width: scrollSize - fromOffset
                             }}
                         >
                             <div ref={model.setZeroChildNode} hidden />
                             {mapVisibleRange( model, i => (
-                                <div
+                                <div 
                                     key={i}
                                     className={`
                                         p-4
+                                        leading-[5em]
+                                        whitespace-nowrap
                                         ${ i % 2 ? "bg-orange-400" : "bg-orange-700"}
                                     `}
                                 >

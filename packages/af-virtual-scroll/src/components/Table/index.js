@@ -13,7 +13,7 @@ import {
     Cell
 } from "./renderers";
 
-import "./style.scss";
+import "style/style.scss";
 import css from "./style.module.scss";
 
 /*
@@ -37,11 +37,11 @@ const Table = ({
 }) => {
     const extraProps = { columns, getRowData, getRowProps, Row, Cell };
     return (
-        <div className={cx(css.wrapper,cx("afvscr-table",className))} ref={model.setOuterNode} {...props}>
+        <div className={cx("afvscr-table",className)} ref={model.setOuterNode} {...props}>
             <Subscription model={model}>
-                {({ widgetScrollSize: height }) => <div className={css.topSpacer} style={{ height }} /> }
+                {({ scrollSize: height }) => <div className={css.topSpacer} style={{ height }} /> }
             </Subscription>
-            <table className={css.bodyTable}>
+            <table>
                 <Colgroup columns={columns} />
                 {headless ? null : (
                     <thead>

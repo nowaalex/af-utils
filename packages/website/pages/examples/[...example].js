@@ -10,7 +10,7 @@ const Example = () => {
     const humanizedRoute = humanizeRoute(asPath);
 
     return (
-        <div className="grow shrink grid grid-cols-1 lg:grid-cols-[minmax(min-content,_35%),_1fr]">
+        <div className="grow shrink grid grid-cols-1 lg:grid-cols-[minmax(10em,_40%),_1fr]">
             <Head>
                 <title>af-virtual-scroll | {humanizedRoute}</title>
             </Head>
