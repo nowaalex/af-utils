@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import cx from "utils/cx";
-import Subscription from "../common/Subscription";
+import Subscription from "components/Subscription";
 import mapVisibleRange from "utils/mapVisibleRange";
 
 

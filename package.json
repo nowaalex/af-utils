@@ -22,6 +22,7 @@
     "not ios_saf < 13"
   ],
   "devDependencies": {
+    "@changesets/cli": "^2.20.0",
     "wsrun": "^5.2.4"
   }
 }

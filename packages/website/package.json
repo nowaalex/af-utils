@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,28 +10,28 @@
   },
   "dependencies": {
     "@mdx-js/loader": "^1.6.22",
-    "@next/mdx": "^12.0.8",
-    "af-react-table": "^3.0.12",
-    "af-virtual-scroll": "^2.9.21",
+    "@next/mdx": "^12.0.9",
+    "af-react-table": "^4.0.1",
+    "af-virtual-scroll": "^2.10.1",
     "classnames": "^2.3.1",
     "faker": "5.5.3",
     "lodash": "^4.17.21",
     "mobx": "^6.3.13",
     "mobx-react-lite": "^3.2.3",
-    "next": "12.0.8",
+    "next": "12.0.9",
     "prismjs": "^1.26.0",
     "react": "17.0.2",
     "react-dnd": "^14.0.5",
     "react-dnd-html5-backend": "^14.1.0",
     "react-dom": "17.0.2",
     "react-icons": "^4.3.1",
-    "tailwindcss": "^3.0.16"
+    "tailwindcss": "^3.0.17"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.0",
     "autoprefixer": "^10.4.2",
     "eslint": "8.7.0",
-    "eslint-config-next": "12.0.8",
+    "eslint-config-next": "12.0.9",
     "postcss": "^8.4.5",
     "postcss-import": "^14.0.2",
     "raw-loader": "^4.0.2",
