@@ -7,8 +7,8 @@
   ],
   "scripts": {
     "start": "yarn wsrun start",
-    "prepublish": "yarn wsrun -x website --stages build",
-    "release": "yarn prepublish && yarn changeset publish",
+    "build": "yarn wsrun --stages build",
+    "release": "yarn build && yarn changeset publish",
     "test": "jest"
   },
   "engines": {
