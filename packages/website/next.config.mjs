@@ -1,8 +1,11 @@
+import path from "path";
 import remarkGfm from "remark-gfm";
 import remarkPrism from "remark-prism";
 import remarkToc from "remark-toc";
 import nextMdx from "@next/mdx";
 import set from "lodash/set.js";
+
+const __dirname = path.resolve();
 
 const withMDX = nextMdx({
   extension: /\.mdx?$/,
@@ -22,7 +25,7 @@ const config = withMDX({
   webpack: config => set(
     config,
     "resolveLoader.alias.prism-loader",
-    "/home/alex/GIT/af-virtual-scroll/packages/website/loaders/prism-loader.js"
+    path.resolve( __dirname, "./loaders/prism-loader.js" )
   ),
   async redirects() {
     return [
