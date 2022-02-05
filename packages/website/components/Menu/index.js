@@ -26,7 +26,7 @@ const Menu = ({ className }) => {
                 <VscMenu className="h-8 w-8" />
             </button>
             
-            <aside onClick={() => setOpened( false)} className={cx("z-10 overflow-auto grow-0 shrink-0 pt-8 bg-neutral-100 fixed inset-0 mr-0 md:mr-6 md:h-screen md:block md:pt-0 md:static",opened || "hidden",className)}>
+            <aside onClick={() => setOpened( false)} className={cx("z-10 overflow-auto grow-0 shrink-0 pt-8 bg-neutral-100 fixed inset-0 md:h-screen md:block md:pt-0 md:static",opened || "hidden",className)}>
 
                 <h2 className="text-xl font-bold pl-3 mt-3">Docs</h2>
 

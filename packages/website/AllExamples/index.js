@@ -1,8 +1,7 @@
 import dynamic from "next/dynamic";
-import Code from "/components/Code";
 
 const requireComponent = require.context( "/components/examples", true, /index\.js$/, "lazy" );
-const requireCode = require.context( "!!raw-loader!/components/examples", true, /index\.js$/, "lazy" );
+const requireCode = require.context( "!!prism-loader!/components/examples", true, /index\.js$/, "lazy" );
 
 const toUrl = link => link.replace( /^\./, "/examples" ).replace( /\/index\.js$/, "" );
 
@@ -17,7 +16,8 @@ export const table = Object.fromEntries( keys.map( path => [
             () => requireComponent( path )
         ),
         ComponentCode: dynamic(
-            () => requireCode( path ).then( code => ({ children, ...props }) => <Code {...props}>{code.default}</Code> )
+            () => requireCode( path )
+                .then( code => () => <code className="language-jsx" dangerouslySetInnerHTML={{ __html: code.default }} /> )
         )
     }
 ]));

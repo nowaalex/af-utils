@@ -16,7 +16,7 @@ const Example = () => {
             </Head>
             <h1 className="text-4xl lg:col-span-2 mt-1 mb-2 font-bold text-center ml-14 sm:ml-0">{humanizedRoute}</h1>
             <Component />
-            <pre className="overflow-auto !m-0">
+            <pre className="language-jsx overflow-auto !m-0">
                 <ComponentCode />
             </pre>
         </div>

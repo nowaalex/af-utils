@@ -18,6 +18,7 @@ const getPureRandomLineHeight = rowIndex => 20 + ( rowIndex % 53 ) + ( rowIndex 
 const ComplexTable = () => (
     <DndProvider backend={HTML5Backend}>
         <Table
+            className="min-h-0"
             itemCount={rows.length}
             getRowData={i => rows[ i ]}
             estimatedItemSize={30}

@@ -16,7 +16,7 @@ const CustomHook = () => {
 
                     return (
                         <div 
-                            className="flex divide-y divide-zinc-700"
+                            className="flex divide-x divide-zinc-700"
                             style={{
                                 marginLeft: fromOffset,
                                 width: scrollSize - fromOffset
