@@ -1,6 +1,6 @@
 {
   "name": "af-react-table",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "description": "React components for rendering tables",
   "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
   "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
@@ -51,20 +51,20 @@
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "postcss": "^8.4.6",
-    "rollup": "^2.67.0",
+    "rollup": "^2.67.1",
     "rollup-plugin-postcss": "^4.0.2",
     "sass": "^1.49.7"
   },
   "peerDependencies": {
-    "af-virtual-scroll": "^2.10.2",
+    "af-virtual-scroll": "^2.11.0",
     "mobx": "^6.3.0",
     "mobx-react-lite": "^3.2.0",
     "react": "^17.0.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.17.0",
-    "af-virtual-scroll": "^2.10.2",
-    "babel-jest": "^27.5.0",
+    "af-virtual-scroll": "^2.11.0",
+    "babel-jest": "^27.5.1",
     "mobx": "^6.3.13",
     "mobx-react-lite": "^3.2.3",
     "prop-types": "^15.8.1",

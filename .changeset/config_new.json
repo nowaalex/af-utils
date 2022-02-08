@@ -1,0 +1,3 @@
+{
+    "changelog": ["@changesets/changelog-github", { "repo": "nowaalex/af-virtual-scroll" }]
+}

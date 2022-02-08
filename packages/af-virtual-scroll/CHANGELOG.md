@@ -1,5 +1,14 @@
 # af-virtual-scroll
 
+## 2.11.0
+
+### Minor Changes
+
+-   6c9b8c5: improved website perf
+-   95d2a51: imprved website perf
+-   batch changed
+-   fixed forceupdate call
+
 ## 2.10.2
 
 ### Patch Changes

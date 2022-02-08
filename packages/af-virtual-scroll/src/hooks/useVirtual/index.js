@@ -25,7 +25,12 @@ const useVirtual = ({
     });
 
     useEffect(() => {
+        /*
+            StartBatch/endBatch needed here for subscription forceUpdate queue call
+        */
+        model._startBatch();
         model._setParams( estimatedItemSize, overscanCount, itemCount, horizontal );
+        model._endBatch();
     });
 
     useEffect(() => () => model._destroy(), EMPTY_ARRAY);
