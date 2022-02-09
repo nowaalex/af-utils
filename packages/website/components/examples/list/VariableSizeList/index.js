@@ -6,7 +6,7 @@ import r from "lodash/random";
 // import once in a project ( not needed for hook )
 // import "af-virtual-scroll/lib/style.css";
 
-const DEFAULT_ROW_COUNT = 2000;
+const DEFAULT_ROW_COUNT = 20000;
 
 const VariableSizeList = () => {
 
@@ -16,7 +16,8 @@ const VariableSizeList = () => {
     ));
 
     const model = useVirtual({
-        itemCount: DEFAULT_ROW_COUNT
+        itemCount: DEFAULT_ROW_COUNT,
+        estimatedItemSize: 75
     });
 
     return (

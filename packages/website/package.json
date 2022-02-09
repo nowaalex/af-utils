@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.4.0",
     "af-react-table": "^5.0.0",
     "af-virtual-scroll": "^2.11.0",
     "classnames": "^2.3.1",
