@@ -127,11 +127,6 @@ class ListBase extends PubSub {
         this._startBatch();
         this._setScrollSize( newscrollSize );
         this._updateRangeFromEnd();
-        /*
-            run must be called everytime,
-            because dimensions change may change getOffset() behavior even if from/to did not change
-        */
-        this._run();
         this._endBatch();
     }
 
