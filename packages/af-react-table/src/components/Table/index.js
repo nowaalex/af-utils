@@ -246,16 +246,18 @@ const TableWrapper = observer(({ m, fixed, estimatedItemSize, overscanCount, ...
 
 class ComplexTable extends PureComponent {
 
-    constructor( props ){
-        super( props );
+    state = {
+        m: new RowsAggregator()
+    }
 
-        const m = new RowsAggregator();
-
-        this.state = { m };
-
+    componentDidMount(){
+        /*
+            Must be here, not in constructor, because visibleColumns are available only after getDerivedStateFromProps
+        */
+        const { m } = this.state;
         const initialGroupingKeys = m.visibleColumns
-            .filter( col => col.initialGrouingIndex > 0 )
-            .sort(( a, b ) => a.initialGrouingIndex - b.initialGrouingIndex )
+            .filter( col => typeof col.initialGroupingIndex === "number" && col.initialGroupingIndex > 0 )
+            .sort(( a, b ) => a.initialGroupingIndex - b.initialGroupingIndex )
             .map( col => col.dataKey );
 
         m.setGrouping( initialGroupingKeys );

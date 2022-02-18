@@ -1,5 +1,16 @@
 # af-react-table
 
+## 6.0.0
+
+### Minor Changes
+
+-   fixed initial grouping
+
+### Patch Changes
+
+-   Updated dependencies
+    -   af-virtual-scroll@2.12.0
+
 ## 5.0.0
 
 ### Minor Changes

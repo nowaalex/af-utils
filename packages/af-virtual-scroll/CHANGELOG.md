@@ -1,5 +1,11 @@
 # af-virtual-scroll
 
+## 2.12.0
+
+### Minor Changes
+
+-   fixed initial grouping
+
 ## 2.11.0
 
 ### Minor Changes
