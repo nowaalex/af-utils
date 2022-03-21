@@ -1,6 +1,6 @@
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import { Table } from "@af/react-mobx-table";
+import { Table } from "@af-utils/react-mobx-table";
 import faker from "faker";
 
 const rows = Array.from({ length: 10000 }, (v, i) => ({

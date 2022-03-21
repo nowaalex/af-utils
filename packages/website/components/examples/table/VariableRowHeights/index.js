@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useVirtual, Table } from "@af/react-table";
+import { useVirtual, Table } from "@af-utils/react-table";
 import times from "lodash/times";
 import r from "lodash/random";
 

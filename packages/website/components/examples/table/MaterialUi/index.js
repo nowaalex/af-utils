@@ -1,4 +1,4 @@
-import { useVirtual, Table } from "@af/react-table";
+import { useVirtual, Table } from "@af-utils/react-table";
 
 import { css } from "@emotion/css";
 import Paper from '@mui/material/Paper';

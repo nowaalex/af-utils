@@ -1,6 +1,6 @@
 import { useState  } from "react";
 import Link from "next/link";
-import { cx } from "@af/styled";
+import { cx } from "@af-utils/styled";
 import { useRouter } from "next/router";
 import { VscGithub } from "react-icons/vsc";
 import { ImNpm } from "react-icons/im";

@@ -1,4 +1,4 @@
-# af-virtual-scroll
+# af-utils
 
 ![Virtual scroll preview](https://af-virtual-scroll.vercel.app/preview.gif)
 

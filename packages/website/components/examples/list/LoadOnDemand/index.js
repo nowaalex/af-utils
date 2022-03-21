@@ -6,7 +6,7 @@ import {
     areIndexesEqual,
     EVT_TO,
     List
-} from "@af/react-virtual-list";
+} from "@af-utils/react-virtual-list";
 
 import faker from "faker";
 

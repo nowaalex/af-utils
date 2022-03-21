@@ -1,4 +1,4 @@
-import { useVirtual, Table } from "@af/react-table";
+import { useVirtual, Table } from "@af-utils/react-table";
 
 const columns = [
     { key: "a" },
