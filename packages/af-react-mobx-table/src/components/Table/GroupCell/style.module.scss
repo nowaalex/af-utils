@@ -1,0 +1,29 @@
+.noUserSelect {
+    user-select: none;
+}
+
+.groupToggler {
+    composes: noUserSelect;
+    &:before {
+        cursor: pointer;
+        padding-right: 0.3em;
+        content: "\025BE";
+    }
+    &[data-collapsed]:before{
+        content: "\025B8";
+    }
+}
+
+.columnSummaries {
+    margin-left: 1em;
+    &:before {
+        content: "(";
+    }
+    &:after {
+        content: ")"
+    }
+
+    & > :not(:last-child):after {
+        content: ", ";
+    }
+}

@@ -1,0 +1,38 @@
+import MdxWrapper from "/components/MdxWrapper";
+
+## Installation
+---
+### NPM
+
+```bash
+npm install @af/styled @af/react-virtual-list @af/react-virtual-headless @babel/runtime prop-types --save
+```
+
+### Yarn
+
+```bash
+yarn add @af/styled @af/react-virtual-list @af/react-virtual-headless @babel/runtime prop-types
+```
+
+## List
+
+```jsx
+<List model={model} horizontal={false}>
+    {Item}
+</List>
+```
+
+### Options
+
+- `model: Model`
+  - **Required**
+  - return value of `useVirtual()`
+- `children: ReactElement`
+  - **Required**
+  - React component, that will have `i` prop when rendered.
+- `itemData: Any`
+  - Will be passed as `data` prop to each `Item`
+- All other props are passed to outermost div
+
+
+export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;

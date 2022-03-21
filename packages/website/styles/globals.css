@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* dirty */
+* { outline: none; }
+
+@layer components {
+    .basic-table-container {
+        table {
+            @apply border-separate;
+            border-spacing: 0;
+        }
+        
+        td, th {
+            @apply p-2;
+            @apply border;
+        }
+        
+        tfoot th, tfoot td, thead th, thead td {
+            @apply bg-white;
+        }
+        
+        th input {
+            @apply border;
+        }
+    }
+}
