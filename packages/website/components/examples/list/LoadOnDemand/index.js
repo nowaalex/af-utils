@@ -2,7 +2,7 @@ import { useState, useRef, memo } from "react";
 import {
     useVirtual,
     useSubscription,
-    areIndexesEqual,
+    areItemPropsEqual,
     EVT_TO,
     List
 } from "@af-utils/react-virtual-list";
@@ -27,7 +27,7 @@ const Item = memo(
             <p>{posts[i]}</p>
         </div>
     ),
-    areIndexesEqual
+    areItemPropsEqual
 );
 
 const Posts = () => {

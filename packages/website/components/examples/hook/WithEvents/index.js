@@ -3,7 +3,7 @@ import { memo } from "react";
 import {
     useVirtual,
     mapVisibleRange,
-    areIndexesEqual,
+    areItemPropsEqual,
     Subscription,
     EVT_SCROLL_SIZE,
     EVT_FROM,
@@ -12,7 +12,7 @@ import {
 
 const Item = memo(
     ({ i }) => <div className="border-t p-2 border-zinc-400">row {i}</div>,
-    areIndexesEqual
+    areItemPropsEqual
 );
 
 const RANGE_EVENTS = [EVT_FROM, EVT_TO];

@@ -1,7 +1,7 @@
 import { memo } from "react";
 import {
     useVirtual,
-    areIndexesEqual,
+    areItemPropsEqual,
     List
 } from "@af-utils/react-virtual-list";
 
@@ -18,7 +18,7 @@ const Item = memo(
             col {i}
         </div>
     ),
-    areIndexesEqual
+    areItemPropsEqual
 );
 
 const HorizontalList = () => {

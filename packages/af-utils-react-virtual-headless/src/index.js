@@ -1,5 +1,5 @@
 export { default as mapVisibleRange } from "./utils/mapVisibleRange";
-export { default as areIndexesEqual } from "./utils/areIndexesEqual";
+export { default as areItemPropsEqual } from "./utils/areItemPropsEqual";
 
 export { default as useVirtual } from "./hooks/useVirtual";
 export { default as useVirtualModel } from "./hooks/useVirtualModel";

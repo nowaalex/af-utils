@@ -1,7 +1,7 @@
 import { useState, memo } from "react";
 import {
     useVirtual,
-    areIndexesEqual,
+    areItemPropsEqual,
     List
 } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
@@ -20,7 +20,7 @@ const Item = memo(
             row {i}:&nbsp;{dynamicListRowHeights[i]}px
         </div>
     ),
-    areIndexesEqual
+    areItemPropsEqual
 );
 
 const ScrollToItem = () => {

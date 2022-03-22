@@ -3,13 +3,13 @@ import { memo } from "react";
 import {
     useVirtual,
     mapVisibleRange,
-    areIndexesEqual,
+    areItemPropsEqual,
     Subscription
 } from "@af-utils/react-virtual-headless";
 
 const Item = memo(
     ({ i }) => <div className="border-t p-2 border-zinc-400">row {i}</div>,
-    areIndexesEqual
+    areItemPropsEqual
 );
 
 const SimpleHook = () => {

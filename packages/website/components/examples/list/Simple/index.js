@@ -1,13 +1,13 @@
 import { memo } from "react";
 import {
     useVirtual,
-    areIndexesEqual,
+    areItemPropsEqual,
     List
 } from "@af-utils/react-virtual-list";
 
 const Item = memo(
     ({ i }) => <div className="border-t p-2 border-zinc-400">row {i}</div>,
-    areIndexesEqual
+    areItemPropsEqual
 );
 
 const SimpleList = () => {
