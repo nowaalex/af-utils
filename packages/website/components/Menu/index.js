@@ -3,7 +3,6 @@ import Link from "next/link";
 import { cx } from "@af-utils/styled";
 import { useRouter } from "next/router";
 import { VscGithub } from "react-icons/vsc";
-import { ImNpm } from "react-icons/im";
 import { VscMenu } from "react-icons/vsc";
 import { components } from "/AllExamples";
 import humanizeRoute from "/utils/humanizeRoute";
@@ -13,7 +12,8 @@ const DOCS_STRUCTURE = [
     [ "Headless", "/headless" ],
     [ "List", "/list" ],
     [ "Table", "/table" ],
-    [ "ComplexTable", "/complexTable" ]
+    [ "ComplexTable", "/complexTable" ],
+    [ "Bundle size impact", "/size" ]
 ];
 
 const Menu = ({ className }) => {

@@ -1,0 +1,19 @@
+import MdxWrapper from "/components/MdxWrapper";
+import SizesTable from "/components/SizesTable";
+
+## Bundle size impact
+
+<SizesTable />
+
+### Terser configuration
+```jsx
+const TERSER_OPTS = {
+    compress: {
+        global_defs: {
+            "process.env.NODE_ENV": "production"
+        }
+    }
+};
+```
+
+export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;

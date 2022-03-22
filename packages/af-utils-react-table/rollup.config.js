@@ -1,10 +1,9 @@
-import fs from "fs";
 import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
+import exportBundleSize from "@rollup/plugin-export-bundle-size";
 import { terser } from "rollup-plugin-terser";
 
 const OUTPUT_DIR = "lib";
-fs.rmSync( OUTPUT_DIR, { recursive: true, force: true });
 
 export default {
     input: "src/index.js",
@@ -32,7 +31,8 @@ export default {
             }
         }),
         babel({ babelHelpers: "runtime" }),
-        commonjs()
+        commonjs(),
+        exportBundleSize({ dir: OUTPUT_DIR })
     ],
     external: [
         "react",

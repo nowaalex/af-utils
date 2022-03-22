@@ -1,0 +1,20 @@
+{
+    "name": "@rollup/plugin-export-bundle-size",
+    "private": true,
+    "version": "0.0.1",
+    "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
+    "license": "MIT",
+    "sideEffects": false,
+    "scripts": {},
+    "engines": {
+      "node": ">=14.0.0",
+      "npm": ">=6.0.0"
+    },
+    "main": "index.js",
+    "module": "index.js",
+    "keywords": [],
+    "devDependencies": {
+      "terser": "^5.12.1"
+    }
+  }
+  
