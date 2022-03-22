@@ -6,6 +6,10 @@
         "node": true,
         "es6": true
     },
+    "parserOptions": {
+        "ecmaVersion": 11,
+        "sourceType": "module"
+    },
     "rules": {
         "quotes": ["warn", "double"],
         "semi": ["error", "always"],
