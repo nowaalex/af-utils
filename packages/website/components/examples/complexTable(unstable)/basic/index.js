@@ -11,10 +11,10 @@ const rows = Array.from({ length: 10000 }, (v, i) => ({
     country: faker.address.country()
 }));
 
-const getRowData = i => rows[ i ];
+const getRowData = i => rows[i];
 
 /* Math.random is not the best option, because same rowIndex should produce same height */
-const getPureRandomLineHeight = rowIndex => 20 + ( rowIndex & 63 );
+const getPureRandomLineHeight = rowIndex => 20 + (rowIndex & 63);
 
 const columns = [
     {
@@ -23,12 +23,14 @@ const columns = [
         totals: "sum",
         width: 170,
         render: cellData => (
-            <div style={{
-                color: "#000",
-                textAlign: "center",
-                lineHeight: `${getPureRandomLineHeight(cellData)}px`,
-                background: `hsl(${cellData*11%360},60%,60%)`
-            }}>
+            <div
+                style={{
+                    color: "#000",
+                    textAlign: "center",
+                    lineHeight: `${getPureRandomLineHeight(cellData)}px`,
+                    background: `hsl(${(cellData * 11) % 360},60%,60%)`
+                }}
+            >
                 {cellData}
             </div>
         )
@@ -39,14 +41,14 @@ const columns = [
         label: "FR",
         initialGroupingIndex: 1,
         align: "center",
-        priorityGroupValues: [ 4, 7, 71, 5 ]
+        priorityGroupValues: [4, 7, 71, 5]
     },
     {
         key: "firstName",
         label: "first name",
         initialGroupingIndex: 2,
         align: "center",
-        priorityGroupValues: [ "Dennis" ],
+        priorityGroupValues: ["Dennis"],
         totals: "count"
     },
     { key: "lastName", label: "last name", align: "center" },

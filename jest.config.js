@@ -3,8 +3,5 @@ module.exports = {
     bail: true,
     transformIgnorePatterns: [],
     // collectCoverage: true,
-    collectCoverageFrom: [
-        "src/**/*.{js,jsx}"
-    ]
+    collectCoverageFrom: ["src/**/*.{js,jsx}"]
 };
-  

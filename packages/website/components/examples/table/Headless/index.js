@@ -1,9 +1,8 @@
 import { useVirtual, Table } from "@af-utils/react-table";
 
 const SimpleHeadlessTable = () => {
-
     const model = useVirtual({
-        itemCount: 1000,
+        itemCount: 1000
     });
 
     return (
@@ -23,6 +22,6 @@ const SimpleHeadlessTable = () => {
             ]}
         />
     );
-}
+};
 
 export default SimpleHeadlessTable;

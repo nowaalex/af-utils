@@ -1,19 +1,27 @@
-import { memo  } from "react";
-import { useVirtual, areIndexesEqual, List } from "@af-utils/react-virtual-list";
+import { memo } from "react";
+import {
+    useVirtual,
+    areIndexesEqual,
+    List
+} from "@af-utils/react-virtual-list";
 
-const Item = memo(({ i }) => (
-    <div className={`
+const Item = memo(
+    ({ i }) => (
+        <div
+            className={`
         p-4
         leading-[5em]
         whitespace-nowrap
-        ${ i % 2 ? "bg-orange-400" : "bg-orange-700"}
-    `}>
-        col {i}
-    </div>
-), areIndexesEqual );
+        ${i % 2 ? "bg-orange-400" : "bg-orange-700"}
+    `}
+        >
+            col {i}
+        </div>
+    ),
+    areIndexesEqual
+);
 
 const HorizontalList = () => {
-
     const model = useVirtual({
         itemCount: 50000,
         estimatedItemSize: 75,
@@ -25,6 +33,6 @@ const HorizontalList = () => {
             {Item}
         </List>
     );
-}
+};
 
 export default HorizontalList;

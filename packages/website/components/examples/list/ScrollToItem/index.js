@@ -1,27 +1,32 @@
 import { useState, memo } from "react";
-import { useVirtual, areIndexesEqual, List } from "@af-utils/react-virtual-list";
+import {
+    useVirtual,
+    areIndexesEqual,
+    List
+} from "@af-utils/react-virtual-list";
 import times from "lodash/times";
 import r from "lodash/random";
 
 const DEFAULT_ROW_COUNT = 20000;
 
-const Item = memo(({ i, data: dynamicListRowHeights }) => (
-    <div
-        className="text-center border-t border-zinc-400"
-        style={{
-            lineHeight: `${dynamicListRowHeights[i]}px`,
-        }}
-    >
-        row {i}:&nbsp;{dynamicListRowHeights[i]}px
-    </div>
-), areIndexesEqual );
+const Item = memo(
+    ({ i, data: dynamicListRowHeights }) => (
+        <div
+            className="text-center border-t border-zinc-400"
+            style={{
+                lineHeight: `${dynamicListRowHeights[i]}px`
+            }}
+        >
+            row {i}:&nbsp;{dynamicListRowHeights[i]}px
+        </div>
+    ),
+    areIndexesEqual
+);
 
 const ScrollToItem = () => {
-
-    const [ dynamicListRowHeights ] = useState(() => times(
-        DEFAULT_ROW_COUNT,
-        () => r( 50, 100 )
-    ));
+    const [dynamicListRowHeights] = useState(() =>
+        times(DEFAULT_ROW_COUNT, () => r(50, 100))
+    );
 
     const model = useVirtual({
         itemCount: DEFAULT_ROW_COUNT,
@@ -30,11 +35,11 @@ const ScrollToItem = () => {
 
     const submitHandler = e => {
         e.preventDefault();
-        const idx = Number.parseInt( e.currentTarget.idx.value, 10 );
-        if( !Number.isNaN( idx ) ){
-            model.scrollTo( idx );
+        const idx = Number.parseInt(e.currentTarget.idx.value, 10);
+        if (!Number.isNaN(idx)) {
+            model.scrollTo(idx);
         }
-    }
+    };
 
     return (
         <div className="flex flex-col">
@@ -51,15 +56,22 @@ const ScrollToItem = () => {
                         type="number"
                     />
                 </label>
-                <button className="px-6 py-2 border border-gray-500" type="submit">
+                <button
+                    className="px-6 py-2 border border-gray-500"
+                    type="submit"
+                >
                     Scroll
                 </button>
             </form>
-            <List model={model} itemData={dynamicListRowHeights} className="grow basis-96">
+            <List
+                model={model}
+                itemData={dynamicListRowHeights}
+                className="grow basis-96"
+            >
                 {Item}
             </List>
         </div>
     );
-}
+};
 
 export default ScrollToItem;

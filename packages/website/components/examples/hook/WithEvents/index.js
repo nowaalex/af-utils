@@ -10,19 +10,17 @@ import {
     EVT_TO
 } from "@af-utils/react-virtual-headless";
 
-const Item = memo(({ i }) => (
-    <div className="border-t p-2 border-zinc-400">
-        row {i}
-    </div>
-), areIndexesEqual );
+const Item = memo(
+    ({ i }) => <div className="border-t p-2 border-zinc-400">row {i}</div>,
+    areIndexesEqual
+);
 
-const RANGE_EVENTS = [ EVT_FROM, EVT_TO ];
-const SCROLL_SIZE_EVENTS = [ EVT_SCROLL_SIZE ];
+const RANGE_EVENTS = [EVT_FROM, EVT_TO];
+const SCROLL_SIZE_EVENTS = [EVT_SCROLL_SIZE];
 
 const WithEvents = () => {
-
     const model = useVirtual({
-        itemCount: 50000,
+        itemCount: 50000
     });
 
     return (
@@ -41,14 +39,14 @@ const WithEvents = () => {
                         <div
                             className="invisible w-px"
                             ref={model.setZeroChildNode}
-                            style={{ height: model.getOffset(from) }}    
+                            style={{ height: model.getOffset(from) }}
                         />
-                        {mapVisibleRange( model, Item )}
+                        {mapVisibleRange(model, Item)}
                     </>
                 )}
             </Subscription>
         </div>
     );
-}
+};
 
 export default WithEvents;

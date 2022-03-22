@@ -20,15 +20,14 @@ yarn add @af-utils/styled @af-utils/react-virtual-list @af-utils/react-virtual-h
 
 ### Options
 
-- `model: Model`
-  - **Required**
-  - return value of `useVirtual()`
-- `children: ReactElement`
-  - **Required**
-  - React component, that will have `i` prop when rendered.
-- `itemData: Any`
-  - Will be passed as `data` prop to each `Item`
-- All other props are passed to outermost div
-
+-   `model: Model`
+    -   **Required**
+    -   return value of `useVirtual()`
+-   `children: ReactElement`
+    -   **Required**
+    -   React component, that will have `i` prop when rendered.
+-   `itemData: Any`
+    -   Will be passed as `data` prop to each `Item`
+-   All other props are passed to outermost div
 
 export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;

@@ -5,9 +5,9 @@ import "/styles/code.css";
 
 const MyApp = ({ Component, pageProps }) => (
     <div className="max-h-screen flex">
-      <Menu />
-      <Component {...pageProps} />
+        <Menu />
+        <Component {...pageProps} />
     </div>
 );
 
-export default MyApp
+export default MyApp;

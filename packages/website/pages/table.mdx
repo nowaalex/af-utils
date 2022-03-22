@@ -13,27 +13,26 @@ yarn add @af-utils/styled @af-utils/react-table @af-utils/react-virtual-headless
 ## Table
 
 ```jsx
-<Table model={model}>
-    {i => <div key={i}>{i}</div>}
-</Table>
+<Table model={model}>{i => <div key={i}>{i}</div>}</Table>
 ```
 
 ### Options
 
-- `model: Model`
-  - **Required**
-  - return value of `useVirtual()`
-- `getRowData: Function(rowIndex: Integer) => Row`
-  - **Required**
-- `columns: Array`
-  - **Required**
-- `headless: Boolean`
-  - Should render thead or not
-- `footer: Boolean`
-  - Should render tfoot or not
-- `components: Object`
-  - See components implementation
+-   `model: Model`
+    -   **Required**
+    -   return value of `useVirtual()`
+-   `getRowData: Function(rowIndex: Integer) => Row`
+    -   **Required**
+-   `columns: Array`
+    -   **Required**
+-   `headless: Boolean`
+    -   Should render thead or not
+-   `footer: Boolean`
+    -   Should render tfoot or not
+-   `components: Object`
 
-- All other props are passed to outermost div
+    -   See components implementation
+
+-   All other props are passed to outermost div
 
 export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;

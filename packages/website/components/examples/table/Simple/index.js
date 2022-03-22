@@ -1,10 +1,6 @@
 import { useVirtual, Table } from "@af-utils/react-table";
 
-const columns = [
-    { key: "a" },
-    { key: "b" },
-    { key: "c" }
-];
+const columns = [{ key: "a" }, { key: "b" }, { key: "c" }];
 
 const getRowData = i => ({
     a: `cell_a_${i}`,
@@ -13,7 +9,6 @@ const getRowData = i => ({
 });
 
 const SimpleTable = () => {
-
     const model = useVirtual({
         itemCount: 10000
     });
@@ -26,6 +21,6 @@ const SimpleTable = () => {
             columns={columns}
         />
     );
-}
+};
 
 export default SimpleTable;

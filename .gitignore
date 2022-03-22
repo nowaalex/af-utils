@@ -14,8 +14,6 @@ desktop.ini
 **/treeshake_bundles/
 
 *.log
-npm-debug.log*
-
 **/.next/**
 
 .ultra.cache.json

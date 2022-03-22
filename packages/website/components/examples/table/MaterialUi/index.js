@@ -1,7 +1,7 @@
 import { useVirtual, Table } from "@af-utils/react-table";
 
 import { css } from "@emotion/css";
-import Paper from '@mui/material/Paper';
+import Paper from "@mui/material/Paper";
 import MuiTableContainer from "@mui/material/TableContainer";
 import MuiTable from "@mui/material/Table";
 import MuiTableBody from "@mui/material/TableBody";
@@ -25,7 +25,7 @@ const components = {
 const columns = [
     {
         key: "a",
-        label: "Col a",
+        label: "Col a"
     },
     {
         key: "b",
@@ -49,10 +49,11 @@ const getRowData = i => ({
     If you place Table inside block container,
     you must specify height somehow.
 */
-const fullHeightClass = css`height: 100%;`;
+const fullHeightClass = css`
+    height: 100%;
+`;
 
 const SimpleTable = () => {
-
     const model = useVirtual({
         itemCount: 10000
     });
@@ -68,6 +69,6 @@ const SimpleTable = () => {
             />
         </MuiTableContainer>
     );
-}
+};
 
 export default SimpleTable;

@@ -3,27 +3,11 @@ import MdxWrapper from "/components/MdxWrapper";
 ## What is it?
 
 When you need to render a list/table with a lot of rows, you may face performance problems.
-A lot of DOM nodes must be allocated and updated(if needed),
+A lot of DOM nodes must be allocated and updated (if needed),
 but only a few of them are visible.
 
 One way to optimize this is called virtualization.
 Based on scroll position and size of each item we may calculate,
 what range must be rendered now.
-
-## Approximate scheme
-
-<pre>
-|↑|----------------------------------<br />
-|S| ARTIFICIAL OFFSET                <br />
-|C|----------------------------------<br />
-|R| visible rows, which are rendered <br />
-|O| —<br />
-|L| —<br />
-|L| —<br />
-|B| —<br />
-|A|----------------------------------<br />
-|R| ARTIFICIAL OFFSET                <br />
-|↓|----------------------------------<br />
-</pre>
 
 export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;

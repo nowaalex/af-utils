@@ -24,91 +24,98 @@ const model = useVirtual({
 
 ### Options
 
-- `itemCount: Integer`
-  - Defaults to `0`
-  - The total count of elements
-- `estimatedItemSize: Integer`
-  - Defaults to `40`
-  - Best-guess item size
-- `overscanCount: Integer`
-  - Defaults to `3`
-  - Minimum amount of items to load behind/ahead(depends on scroll direction) of the current visible range.
-- `horizontal: Boolean`
-  - Defaults to `false`
-  - Determines, whether scrollTop/offsetHeight or scrollLeft/offsetWidth are used in calculations
-- `estimatedWidgetSize: Integer`
-  - Defaults to `200`
-  - Widget size to use before ResizeObserver measurements are ready.
-    Used mainly for server-side rendering.
-    If you want to disable SSR - put `0` here.
+-   `itemCount: Integer`
+    -   Defaults to `0`
+    -   The total count of elements
+-   `estimatedItemSize: Integer`
+    -   Defaults to `40`
+    -   Best-guess item size
+-   `overscanCount: Integer`
+    -   Defaults to `3`
+    -   Minimum amount of items to load behind/ahead(depends on scroll direction) of the current visible range.
+-   `horizontal: Boolean`
+    -   Defaults to `false`
+    -   Determines, whether scrollTop/offsetHeight or scrollLeft/offsetWidth are used in calculations
+-   `estimatedWidgetSize: Integer`
+    -   Defaults to `200`
+    -   Widget size to use before ResizeObserver measurements are ready.
+        Used mainly for server-side rendering.
+        If you want to disable SSR - put `0` here.
 
 ### Returns
 
-- `itemCount: Integer`
-  - The total count of elements
-- `from: Integer`
-  - range start
-- `to: Integer`
-  - range end
-- `scrollSize: Integer`
-  - sum of all item sizes
-- `getIndex: Function(offset: Integer) => Integer`
-- `getOffset: Function(index: Integer) => Integer`
-- `scrollTo: Function(index: Integer ) => void 0`
-- `setOuterNode: Bound Function(el: DOMElement) => void 0`
-  - must be attached to outermost element with `overflow: auto`
-- `setZeroChildNode: Bound Function(el: DOMElement) => void 0`
-  - must be attached to element, which goes before all items. Used for row measurement.
+-   `itemCount: Integer`
+    -   The total count of elements
+-   `from: Integer`
+    -   range start
+-   `to: Integer`
+    -   range end
+-   `scrollSize: Integer`
+    -   sum of all item sizes
+-   `getIndex: Function(offset: Integer) => Integer`
+-   `getOffset: Function(index: Integer) => Integer`
+-   `scrollTo: Function(index: Integer ) => void 0`
+-   `setOuterNode: Bound Function(el: DOMElement) => void 0`
+    -   must be attached to outermost element with `overflow: auto`
+-   `setZeroChildNode: Bound Function(el: DOMElement) => void 0`
+    -   must be attached to element, which goes before all items. Used for row measurement.
 
 ## mapVisibleRange
 
 ```jsx
-mapVisibleRange( model, Item, itemData );
+mapVisibleRange(model, Item, itemData);
 ```
 
 ### Options
 
-- `model: Model`
-  - **Required**
-  - return value of `useVirtual()`
-- `Item: ReactElement`
-  - **Required**
-  - React component, that will have `i` and `data` props when rendered.
-- `itemData: Any`
-  - Will be passed as `data` prop to each `Item`
+-   `model: Model`
+    -   **Required**
+    -   return value of `useVirtual()`
+-   `Item: ReactElement`
+    -   **Required**
+    -   React component, that will have `i` and `data` props when rendered.
+-   `itemData: Any`
+    -   Will be passed as `data` prop to each `Item`
 
 ### Returns
-- `Array<ReactElement>`
+
+-   `Array<ReactElement>`
 
 ## Numeric event constants
 
-- `EVT_FROM`
-- `EVT_TO`
-- `EVT_SCROLL_SIZE`
+-   `EVT_FROM`
+-   `EVT_TO`
+-   `EVT_SCROLL_SIZE`
 
 ## useSubscription
 
 ```jsx
-useSubscription( model, () => {}, events, invokeImmediately = false, deps = [] );
+useSubscription(
+    model,
+    () => {},
+    events,
+    (invokeImmediately = false),
+    (deps = [])
+);
 ```
 
 ### Options
 
-- `model: Model`
-  - **Required**
-  - return value of `useVirtual()`
-- `callback: Function() => void 0`
-  - **Required**
-  - gets called when at least one of `events` gets triggered
-- `events: Array<Integer>`
-  - **Required**
-  - Array of events to subscribe
-- `invokeImmediately: Boolean`
-  - Defaults to: `false`
-  - Should call `callback` right after subscribing to `events`
-- `deps: Array`
-  - By default `callback` reference change does not lead to resubscribe.
-    Think of deps like of useCallback deps for `callback`.
+-   `model: Model`
+    -   **Required**
+    -   return value of `useVirtual()`
+-   `callback: Function() => void 0`
+    -   **Required**
+    -   gets called when at least one of `events` gets triggered
+-   `events: Array<Integer>`
+    -   **Required**
+    -   Array of events to subscribe
+-   `invokeImmediately: Boolean`
+    -   Defaults to: `false`
+    -   Should call `callback` right after subscribing to `events`
+-   `deps: Array`
+    -   By default `callback` reference change does not lead to resubscribe.
+        Think of deps like of useCallback deps for `callback`.
 
 ## Subscription
 
@@ -120,14 +127,14 @@ useSubscription( model, () => {}, events, invokeImmediately = false, deps = [] )
 
 ### Options
 
-- `model: Model`
-  - **Required**
-  - return value of `useVirtual()`
-- `children: Function(index: Integer) => ReactElement`
-  - **Required**
-  - gets called everytime model params change
-- `events: Array<Integer>`
-  - **Required**
-  - Defaults to: `[ EVT_FROM, EVT_TO, EVT_SCROLL_SIZE ]`
+-   `model: Model`
+    -   **Required**
+    -   return value of `useVirtual()`
+-   `children: Function(index: Integer) => ReactElement`
+    -   **Required**
+    -   gets called everytime model params change
+-   `events: Array<Integer>`
+    -   **Required**
+    -   Defaults to: `[ EVT_FROM, EVT_TO, EVT_SCROLL_SIZE ]`
 
 export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;
