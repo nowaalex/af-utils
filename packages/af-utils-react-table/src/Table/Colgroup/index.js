@@ -15,4 +15,4 @@ const Colgroup = ({ columns }) => (
     </colgroup>
 );
 
-export default memo( Colgroup );
+export default memo(Colgroup);

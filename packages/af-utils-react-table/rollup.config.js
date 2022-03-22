@@ -22,7 +22,7 @@ export default {
             },
             module: true,
             compress: {
-                passes: 2,
+                passes: 2
             },
             output: {
                 beautify: true,
@@ -41,4 +41,4 @@ export default {
         "prop-types",
         "@babel/runtime"
     ]
-}
+};

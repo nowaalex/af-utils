@@ -1,6 +1,6 @@
 class FakeResizeObserver {
-    observe(){}
-    unobserve(){}
+    observe() {}
+    unobserve() {}
 }
 
 export default globalThis.ResizeObserver || FakeResizeObserver;

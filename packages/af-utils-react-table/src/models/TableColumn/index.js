@@ -1,13 +1,13 @@
 import { css } from "@af-utils/styled";
 
 const ALIGN_CLASSES_MAP = {
-    right: css( "text-align: right !important;" ),
-    left: css( "text-align: left !important;" ),
-    center: css( "text-align: center !important;" )
-}
+    right: css("text-align: right !important;"),
+    left: css("text-align: left !important;"),
+    center: css("text-align: center !important;")
+};
 
 class TableColumn {
-    constructor( col ){
+    constructor(col) {
         this.key = col.key;
         this.align = col.align || "left";
         this.label = col.label || this.key;
@@ -22,7 +22,7 @@ class TableColumn {
         this.Cell = col.Cell || null;
 
         this._styleObj = this.minWidth && { minWidth: this.minWidth };
-        this._className = ALIGN_CLASSES_MAP[ this.align ];
+        this._className = ALIGN_CLASSES_MAP[this.align];
     }
 }
 
