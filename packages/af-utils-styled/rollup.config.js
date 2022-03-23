@@ -13,13 +13,14 @@ export default {
             dir: OUTPUT_DIR,
             preferConst: true,
             sourcemap: true
-        },
+        }
     ],
     plugins: [
         terser({
             module: true,
             compress: {
                 passes: 2,
+                ecma: 2022
             },
             output: {
                 beautify: true,
@@ -30,8 +31,5 @@ export default {
         babel({ babelHelpers: "runtime" }),
         commonjs(),
         exportBundleSize({ dir: OUTPUT_DIR })
-    ],
-    external: [
-        "@babel/runtime"
     ]
-}
+};

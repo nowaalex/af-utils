@@ -23,6 +23,7 @@ export default {
             module: true,
             compress: {
                 passes: 2,
+                ecma: 2022
             },
             output: {
                 beautify: true,
@@ -33,16 +34,5 @@ export default {
         babel({ babelHelpers: "runtime" }),
         commonjs(),
         exportBundleSize({ dir: OUTPUT_DIR })
-    ],
-    external: [
-        "react",
-        "react-dnd",
-        "mobx",
-        "mobx-react-lite",
-        "@babel/runtime",
-        "@af-utils/styled",
-        "@af-utils/react-table",
-        "@af-utils/react-virtual-headless",
-        "prop-types"
     ]
-}
+};

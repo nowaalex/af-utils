@@ -3,10 +3,8 @@ const IdleOptions = { timeout: 2000 };
 const delay = globalThis.requestIdleCallback || (fn => setTimeout(fn, 500));
 const cancelDelay = globalThis.cancelIdleCallback || clearTimeout;
 
-const throttle = (fn, ctx) => {
+const throttle = fn => {
     let timer = 0;
-
-    const boundFn = fn.bind(ctx);
 
     const cancel = () => {
         cancelDelay(timer);
@@ -15,7 +13,7 @@ const throttle = (fn, ctx) => {
 
     const invoke = () => {
         timer = 0;
-        boundFn();
+        fn();
     };
 
     const throttled = () => {

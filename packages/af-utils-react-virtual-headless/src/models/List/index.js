@@ -41,7 +41,41 @@ class List extends PubSub {
     from = 0;
     to = 0;
 
-    _measureItemsThrottled = throttle(this._measureItems, this);
+    _measureItemsThrottled = throttle(() => {
+        /*
+            Babel still transpiles optional chaining little ugly
+        */
+        let child =
+            this._zeroChildNode && this._zeroChildNode.nextElementSibling;
+
+        if (child) {
+            let index = this.from,
+                diff = 0,
+                lim = index + 1,
+                buff = 0;
+
+            /* We can batch-update fenwick tree, if we know updated indexes range */
+            for (; lim < this.to; lim += lim & -lim);
+
+            do {
+                diff = child[this._sizeKey] - this._itemSizes[index];
+
+                if (diff) {
+                    this._itemSizes[index] += diff;
+                    buff += diff;
+                    this._updateItemHeight(index + 1, diff, lim);
+                }
+            } while (++index < this.to && (child = child.nextElementSibling));
+
+            if (buff !== 0) {
+                this._startBatch();
+                this._updateItemHeight(lim, buff, this._fTree.length);
+                this._setScrollSize(this.scrollSize + buff);
+                this._updateRangeFromEnd();
+                this._endBatch();
+            }
+        }
+    });
 
     constructor() {
         super();
@@ -103,19 +137,18 @@ class List extends PubSub {
 
         for (
             let bitMask = this._msb, tempIndex = 0;
-            bitMask !== 0;
+            bitMask > 0;
             bitMask >>= 1
         ) {
             tempIndex = index + bitMask;
-            if (tempIndex > this.itemCount) {
-                continue;
-            }
-            if (offset === this._fTree[tempIndex]) {
-                return tempIndex;
-            }
-            if (offset > this._fTree[tempIndex]) {
-                offset -= this._fTree[tempIndex];
-                index = tempIndex;
+            if (tempIndex <= this.itemCount) {
+                if (offset === this._fTree[tempIndex]) {
+                    return tempIndex;
+                }
+                if (offset > this._fTree[tempIndex]) {
+                    offset -= this._fTree[tempIndex];
+                    index = tempIndex;
+                }
             }
         }
 
@@ -154,50 +187,14 @@ class List extends PubSub {
         }
     }
 
-    _measureItems() {
-        /*
-            Babel still transpiles optional chaining little ugly
-        */
-        let child =
-            this._zeroChildNode && this._zeroChildNode.nextElementSibling;
-
-        if (child) {
-            let index = this.from,
-                diff = 0,
-                lim = index + 1,
-                buff = 0;
-
-            /* We can batch-update fenwick tree, if we know updated indexes range */
-            for (; lim < this.to; lim += lim & -lim);
-
-            do {
-                diff = child[this._sizeKey] - this._itemSizes[index];
-
-                if (diff) {
-                    this._itemSizes[index] += diff;
-                    buff += diff;
-                    this._updateItemHeight(index + 1, diff, lim);
-                }
-            } while (++index < this.to && (child = child.nextElementSibling));
-
-            if (buff !== 0) {
-                this._startBatch();
-                this._updateItemHeight(lim, buff, this._fTree.length);
-                this._setScrollSize(this.scrollSize + buff);
-                this._updateRangeFromEnd();
-                this._endBatch();
-            }
-        }
-    }
-
     _setScrollPos = () => {
         const curScrollPos = this._outerNode[this._scrollKey];
-        const diff = curScrollPos - this._scrollPos;
-        this._scrollPos = curScrollPos;
 
-        if (diff > 0) {
+        if (curScrollPos > this._scrollPos) {
+            this._scrollPos = curScrollPos;
             this._updateRangeFromEnd();
-        } else if (diff < 0) {
+        } else if (curScrollPos < this._scrollPos) {
+            this._scrollPos = curScrollPos;
             this._updateRangeFromStart();
         }
     };

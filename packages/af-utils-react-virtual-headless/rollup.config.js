@@ -22,7 +22,14 @@ export default {
             },
             module: true,
             compress: {
-                passes: 2,
+                ecma: 2022,
+                /*
+                    No computed values are used, so saving some bytes
+                    https://github.com/terser/terser
+                */
+                unsafe_comps: true,
+                unsafe_math: true,
+                passes: 2
             },
             output: {
                 beautify: true,
@@ -33,10 +40,5 @@ export default {
         babel({ babelHelpers: "runtime" }),
         commonjs(),
         exportBundleSize({ dir: OUTPUT_DIR })
-    ],
-    external: [
-        "react",
-        "prop-types",
-        "@babel/runtime",
     ]
-}
+};
