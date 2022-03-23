@@ -13,11 +13,11 @@ const useIsomorphicLayoutEffect =
 */
 const useSubscription = (model, callBack, events, invokeImmediately, deps) =>
     useIsomorphicLayoutEffect(() => {
-        model.sub(callBack, events);
+        model.on(callBack, events);
         if (invokeImmediately) {
             callBack();
         }
-        return () => model.unsub(callBack, events);
+        return () => model.off(callBack, events);
     }, deps || EMPTY_ARRAY);
 
 export default useSubscription;

@@ -1,38 +1,36 @@
 {
-  "private": true,
-  "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
-  "license": "MIT",
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-    "dev": "yarn ultra -r --silent dev",
-    "monitor": "yarn ultra --monitor",
-    "build": "yarn ultra -r build",
-    "release": "yarn build && npx changeset publish",
-    "test": "jest"
-  },
-  "engines": {
-    "node": ">=14.0.0",
-    "npm": ">=6.0.0"
-  },
-  "browserslist": [
-    ">0.5%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all",
-    "not ios_saf < 13"
-  ],
-  "devDependencies": {
-    "@changesets/changelog-github": "^0.4.3",
-    "@changesets/cli": "^2.21.1",
-    "ultra-runner": "^3.10.5"
-  },
-  "dependencies": {
-    "@babel/eslint-plugin": "^7.17.7",
-    "eslint": "^8.11.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-react": "^7.29.4",
-    "prettier": "^2.6.0"
-  }
+    "private": true,
+    "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
+    "license": "MIT",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "yarn ultra -r --silent dev",
+        "monitor": "yarn ultra --monitor",
+        "build": "yarn ultra -r build",
+        "release": "yarn build && npx changeset publish",
+        "test": "jest"
+    },
+    "engines": {
+        "node": ">=14.0.0",
+        "npm": ">=6.0.0"
+    },
+    "browserslist": [
+        ">0.5%",
+        "not ie <= 11",
+        "not op_mini all"
+    ],
+    "devDependencies": {
+        "@changesets/changelog-github": "^0.4.3",
+        "@changesets/cli": "^2.21.1",
+        "ultra-runner": "^3.10.5"
+    },
+    "dependencies": {
+        "@babel/eslint-plugin": "^7.17.7",
+        "eslint": "^8.11.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-react": "^7.29.4",
+        "prettier": "^2.6.0"
+    }
 }

@@ -1,76 +1,73 @@
 {
-  "name": "@af-utils/react-virtual-list",
-  "private": false,
-  "version": "0.0.2",
-  "description": "React components for rendering large scrollable data",
-  "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
-  "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
-  "homepage": "https://af-virtual-scroll.vercel.app/",
-  "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
-  "license": "MIT",
-  "sideEffects": false,
-  "scripts": {
-    "dev": "rollup --watch --config rollup.config.js",
-    "build": "rollup --config rollup.config.js",
-    "prepare": "npm run build",
-    "test": "jest"
-  },
-  "engines": {
-    "node": ">=14.0.0",
-    "npm": ">=6.0.0"
-  },
-  "files": [
-    "lib/*"
-  ],
-  "main": "lib/index.js",
-  "module": "lib/index.js",
-  "keywords": [
-    "react",
-    "reactjs",
-    "virtual",
-    "table",
-    "list",
-    "recycle",
-    "dom-recycle",
-    "dynamic-size",
-    "scroll",
-    "scrolling",
-    "infinite",
-    "virtualized",
-    "virtual",
-    "virtualization",
-    "sortable",
-    "windowing"
-  ],
-  "devDependencies": {
-    "@babel/core": "^7.17.8",
-    "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
-    "@rollup/plugin-babel": "^5.3.1",
-    "@rollup/plugin-commonjs": "^21.0.2",
-    "@rollup/plugin-replace": "^4.0.0",
-    "@rollup/plugin-virtual": "^2.1.0",
-    "@rollup/plugin-export-bundle-size": "^0.0.1",
-    "babel-jest": "^27.5.1",
-    "babel-plugin-module-resolver": "^4.1.0",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "jest": "^27.5.1",
-    "lodash": "^4.17.21",
-    "rollup": "^2.70.1",
-    "rollup-plugin-filesize": "^9.1.2",
-    "rollup-plugin-terser": "^7.0.2"
-  },
-  "peerDependencies": {
-    "@babel/runtime": "^7.16.0",
-    "@af-utils/react-virtual-headless": "^0.0.2",
-    "@af-utils/styled": "^0.0.1",
-    "prop-types": "^15.8.0",
-    "react": "^17.0.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "name": "@af-utils/react-virtual-list",
+    "private": false,
+    "version": "0.0.3",
+    "description": "React components for rendering large scrollable data",
+    "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
+    "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
+    "homepage": "https://af-virtual-scroll.vercel.app/",
+    "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
+    "license": "MIT",
+    "sideEffects": false,
+    "scripts": {
+        "dev": "rollup --watch --config rollup.config.js",
+        "build": "rollup --config rollup.config.js",
+        "prepare": "npm run build",
+        "test": "jest"
+    },
+    "engines": {
+        "node": ">=14.0.0",
+        "npm": ">=6.0.0"
+    },
+    "files": [
+        "lib/*"
+    ],
+    "main": "lib/index.js",
+    "module": "lib/index.js",
+    "keywords": [
+        "react",
+        "reactjs",
+        "virtual",
+        "table",
+        "list",
+        "recycle",
+        "dom-recycle",
+        "dynamic-size",
+        "scroll",
+        "scrolling",
+        "infinite",
+        "virtualized",
+        "virtual",
+        "virtualization",
+        "sortable",
+        "windowing"
+    ],
+    "devDependencies": {
+        "@babel/core": "^7.17.8",
+        "@babel/preset-env": "^7.16.11",
+        "@babel/plugin-transform-runtime": "^7.17.0",
+        "@babel/preset-react": "^7.16.7",
+        "@rollup/plugin-babel": "^5.3.1",
+        "@rollup/plugin-commonjs": "^21.0.2",
+        "@rollup/plugin-replace": "^4.0.0",
+        "@rollup/plugin-virtual": "^2.1.0",
+        "@rollup/plugin-export-bundle-size": "^0.0.1",
+        "babel-jest": "^27.5.1",
+        "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+        "babel-plugin-module-resolver": "^4.1.0",
+        "jest": "^27.5.1",
+        "lodash": "^4.17.21",
+        "rollup": "^2.70.1",
+        "rollup-plugin-filesize": "^9.1.2",
+        "rollup-plugin-terser": "^7.0.2"
+    },
+    "peerDependencies": {
+        "@af-utils/react-virtual-headless": "^0.0.3",
+        "@af-utils/styled": "^0.0.2",
+        "prop-types": "^15.8.0",
+        "react": "^17.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

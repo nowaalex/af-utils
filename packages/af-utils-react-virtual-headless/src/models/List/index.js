@@ -80,7 +80,7 @@ class List extends PubSub {
     constructor() {
         super();
 
-        this.sub(this._measureItemsThrottled, [EVT_FROM, EVT_TO]);
+        this.on(this._measureItemsThrottled, [EVT_FROM, EVT_TO]);
     }
 
     setWidgetSize(widgetSize) {

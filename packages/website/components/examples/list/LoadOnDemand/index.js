@@ -1,4 +1,5 @@
 import { useState, useRef, memo } from "react";
+
 import {
     useVirtual,
     useSubscription,
@@ -30,6 +31,8 @@ const Item = memo(
     areItemPropsEqual
 );
 
+const EVENTS = [EVT_TO];
+
 const Posts = () => {
     const [posts, setPosts] = useState(() => [faker.lorem.paragraphs()]);
 
@@ -51,7 +54,7 @@ const Posts = () => {
                 setPosts(p => p.concat(paragraphs));
             }
         },
-        [EVT_TO],
+        EVENTS,
         true
     );
 

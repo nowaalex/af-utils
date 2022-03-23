@@ -8,13 +8,13 @@ class PubSub {
     /* depth of batch */
     _inBatch = 0;
 
-    sub(callBack, deps) {
+    on(callBack, deps) {
         for (const evt of deps) {
             this._EventsList[evt].push(callBack);
         }
     }
 
-    unsub(callBack, deps) {
+    off(callBack, deps) {
         for (const evt of deps) {
             this._EventsList[evt].splice(
                 this._EventsList[evt].indexOf(callBack) >>> 0,
