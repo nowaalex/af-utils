@@ -1,7 +1,13 @@
 import PubSub from "../PubSub";
 import throttle from "utils/throttle";
+import debounce from "utils/debounce";
 import ResizeObserver from "models/ResizeObserver";
-import { EVT_FROM, EVT_TO, EVT_SCROLL_SIZE } from "constants";
+import {
+    EVT_FROM,
+    EVT_TO,
+    EVT_SCROLL_SIZE,
+    SCROLL_TO_CHECK_INTERVAL
+} from "constants";
 
 const HORIZONTAL_SCROLL_KEY = "scrollLeft";
 const VERTICAL_SCROLL_KEY = "scrollTop";
@@ -24,7 +30,6 @@ class List extends PubSub {
 
     _zeroChildNode = null;
     _outerNode = null;
-
     _widgetSize = 0;
 
     _itemSizes = [];
@@ -286,17 +291,22 @@ class List extends PubSub {
         }
     }
 
-    _destroy() {
-        this._unobserveCurrentOuterNode();
-        this._measureItemsThrottled._cancel();
-    }
-
-    scrollTo(index) {
+    _scrollToRaw = index => {
         if (this._outerNode) {
             this._outerNode[this._scrollKey] = this.getOffset(index);
         } else if (process.env.NODE_ENV !== "production") {
             console.error("outerNode is not set");
         }
+    };
+
+    _scrollToRawDebounced = debounce(
+        this._scrollToRaw,
+        SCROLL_TO_CHECK_INTERVAL
+    );
+
+    scrollTo(index) {
+        this._scrollToRaw(index);
+        this._scrollToRawDebounced(index);
     }
 
     _setScrollSize(v) {
@@ -348,6 +358,12 @@ class List extends PubSub {
     setSecondaryParams(estimatedItemSize, overscanCount) {
         this._estimatedItemSize = estimatedItemSize;
         this._overscanCount = overscanCount;
+    }
+
+    _destroy() {
+        this._unobserveCurrentOuterNode();
+        this._measureItemsThrottled._cancel();
+        this._scrollToRawDebounced._cancel();
     }
 }
 
