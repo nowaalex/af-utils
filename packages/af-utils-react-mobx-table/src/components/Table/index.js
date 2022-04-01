@@ -31,6 +31,7 @@ const ComplexTable = ({
     overscanCount,
     estimatedWidgetSize,
     getRowData,
+    getKey,
     getTotalsFormattingHelper,
     columns,
     GroupLabel = GroupLabelDefault,
@@ -152,6 +153,7 @@ const ComplexTable = ({
                         model={virtualModel}
                         columns={aggregatorModel.visibleColumns}
                         getRowData={getRowData}
+                        getKey={getKey}
                         components={components}
                         footer={aggregatorModel.hasTotals}
                         {...props}

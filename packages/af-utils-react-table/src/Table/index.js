@@ -95,7 +95,7 @@ const Table = ({
                 {mapVisibleRange(model, C.Row, rowProps, getKey)}
             </>
         );
-    }, [C, normalizedColumns, getRowData, getRowProps]);
+    }, [C, normalizedColumns, getRowData, getRowProps, getKey]);
 
     return (
         <div

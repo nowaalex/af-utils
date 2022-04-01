@@ -1,5 +1,11 @@
 # @af-utils/react-table
 
+## 0.0.6
+
+### Patch Changes
+
+-   minor getKey fix
+
 ## 0.0.5
 
 ### Patch Changes
