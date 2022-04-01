@@ -57,6 +57,7 @@ const renderStretchBlock = ({ scrollSize: height }) => (
 const Table = ({
     model,
     columns,
+    getKey,
     getRowData,
     getRowProps,
     components,
@@ -91,7 +92,7 @@ const Table = ({
                     ref={model.setZeroChildNode}
                     style={{ height: model.getOffset(model.from) }}
                 />
-                {mapVisibleRange(model, C.Row, rowProps)}
+                {mapVisibleRange(model, C.Row, rowProps, getKey)}
             </>
         );
     }, [C, normalizedColumns, getRowData, getRowProps]);
@@ -139,12 +140,14 @@ const Table = ({
 };
 
 Table.propTypes = {
+    model: PropTypes.object.isRequired,
     components: PropTypes.object,
     tabIndex: PropTypes.number,
     className: PropTypes.string,
     columns: PropTypes.array.isRequired,
     getRowData: PropTypes.func.isRequired,
     getRowProps: PropTypes.func,
+    getKey: PropTypes.func,
     headless: PropTypes.bool,
     footer: PropTypes.bool
 };

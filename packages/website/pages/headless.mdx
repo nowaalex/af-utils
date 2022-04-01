@@ -54,7 +54,7 @@ const model = useVirtual({
     -   sum of all item sizes
 -   `getIndex: Function(offset: Integer) => Integer`
 -   `getOffset: Function(index: Integer) => Integer`
--   `scrollTo: Function(index: Integer ) => void 0`
+-   `scrollTo: Function(index: Integer, pixelOffset: Integer ) => void 0`
 -   `setOuterNode: Bound Function(el: DOMElement) => void 0`
     -   must be attached to outermost element with `overflow: auto`
 -   `setZeroChildNode: Bound Function(el: DOMElement) => void 0`
@@ -63,7 +63,7 @@ const model = useVirtual({
 ## mapVisibleRange
 
 ```jsx
-mapVisibleRange(model, Item, itemData);
+mapVisibleRange(model, Item, itemData, getKey);
 ```
 
 ### Options
@@ -76,6 +76,9 @@ mapVisibleRange(model, Item, itemData);
     -   React component, that will have `i` and `data` props when rendered.
 -   `itemData: Any`
     -   Will be passed as `data` prop to each `Item`
+-   `getKey: Function(i, itemData) => Integer`
+    -   Defaults to: `i => i`
+    -   if you have unique id to pass as key - it may be more efficient.
 
 ### Returns
 

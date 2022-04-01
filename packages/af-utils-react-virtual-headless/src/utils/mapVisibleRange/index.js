@@ -1,8 +1,17 @@
-const mapVisibleRange = ({ from, to }, Item, itemData) => {
+const getKeyDefault = i => i;
+
+const mapVisibleRange = (
+    { from, to },
+    Item,
+    itemData,
+    getKey = getKeyDefault
+) => {
     const result = [];
 
     for (; from < to; from++) {
-        result.push(<Item key={from} i={from} data={itemData} />);
+        result.push(
+            <Item key={getKey(from, itemData)} i={from} data={itemData} />
+        );
     }
 
     return result;

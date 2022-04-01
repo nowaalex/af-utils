@@ -33,6 +33,8 @@ const Item = memo(
 
 const EVENTS = [EVT_TO];
 
+const getKey = (i, itemData) => itemData[i];
+
 const Posts = () => {
     const [posts, setPosts] = useState(() => [faker.lorem.paragraphs()]);
 
@@ -59,7 +61,7 @@ const Posts = () => {
     );
 
     return (
-        <List model={model} itemData={posts}>
+        <List model={model} itemData={posts} getKey={getKey}>
             {Item}
         </List>
     );

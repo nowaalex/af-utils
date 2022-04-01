@@ -28,6 +28,9 @@ yarn add @af-utils/styled @af-utils/react-virtual-list @af-utils/react-virtual-h
     -   React component, that will have `i` prop when rendered.
 -   `itemData: Any`
     -   Will be passed as `data` prop to each `Item`
+-   `getKey: Function(i, itemData) => Integer`
+    -   Defaults to: `i => i`
+    -   if you have unique id to pass as key - it may be more efficient.
 -   All other props are passed to outermost div
 
 export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;

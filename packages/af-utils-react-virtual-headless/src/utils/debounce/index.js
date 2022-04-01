@@ -3,9 +3,9 @@ const debounce = (fn, ms) => {
 
     const cancel = () => clearTimeout(timer);
 
-    const debounced = arg => {
+    const debounced = (arg1, arg2) => {
         cancel();
-        timer = setTimeout(fn, ms, arg);
+        timer = setTimeout(fn, ms, arg1, arg2);
     };
 
     debounced._cancel = cancel;

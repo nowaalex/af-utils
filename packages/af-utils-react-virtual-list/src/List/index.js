@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import {
     Subscription,
     mapVisibleRange,
@@ -58,6 +60,7 @@ const List = ({
     children: Item,
     className,
     itemData,
+    getKey,
     tabIndex = -1,
     ...props
 }) => {
@@ -87,12 +90,21 @@ const List = ({
                             ref={model.setZeroChildNode}
                             style={{ [primaryAxis]: model.getOffset(from) }}
                         />
-                        {mapVisibleRange(model, Item, itemData)}
+                        {mapVisibleRange(model, Item, itemData, getKey)}
                     </>
                 )}
             </Subscription>
         </div>
     );
+};
+
+List.propTypes = {
+    model: PropTypes.object.isRequired,
+    children: PropTypes.elementType.isRequired,
+    getKey: PropTypes.func,
+    className: PropTypes.string,
+    itemData: PropTypes.any,
+    tabIndex: PropTypes.number
 };
 
 export default List;

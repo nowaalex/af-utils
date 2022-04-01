@@ -23,6 +23,11 @@ yarn add @af-utils/styled @af-utils/react-table @af-utils/react-virtual-headless
     -   return value of `useVirtual()`
 -   `getRowData: Function(rowIndex: Integer) => Row`
     -   **Required**
+-   `getRowProps: Function(rowData, i) => Object`
+    -   Will be spread to row
+-   `getKey: Function(i, itemData) => Integer`
+    -   Defaults to: `i => i`
+    -   if you have unique id to pass as key - it may be more efficient.
 -   `columns: Array`
     -   **Required**
 -   `headless: Boolean`

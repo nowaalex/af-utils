@@ -24,7 +24,7 @@ class List extends PubSub {
         this.setWidgetSize(this._outerNode[this._sizeKey])
     );
 
-    _scrollPos = 0;
+    scrollPos = 0;
     _overscanCount = 0;
     _estimatedItemSize = 0;
 
@@ -195,11 +195,11 @@ class List extends PubSub {
     _setScrollPos = () => {
         const curScrollPos = this._outerNode[this._scrollKey];
 
-        if (curScrollPos > this._scrollPos) {
-            this._scrollPos = curScrollPos;
+        if (curScrollPos > this.scrollPos) {
+            this.scrollPos = curScrollPos;
             this._updateRangeFromEnd();
-        } else if (curScrollPos < this._scrollPos) {
-            this._scrollPos = curScrollPos;
+        } else if (curScrollPos < this.scrollPos) {
+            this.scrollPos = curScrollPos;
             this._updateRangeFromStart();
         }
     };
@@ -234,7 +234,7 @@ class List extends PubSub {
     _updateRangeFromEnd() {
         const to = Math.min(
             this.itemCount,
-            1 + this.getIndex(this._scrollPos + this._widgetSize)
+            1 + this.getIndex(this.scrollPos + this._widgetSize)
         );
 
         if (to > this.to) {
@@ -243,7 +243,7 @@ class List extends PubSub {
             this.to = Math.min(this.itemCount, to + this._overscanCount);
             this._run(EVT_TO);
 
-            const from = this.getIndex(this._scrollPos);
+            const from = this.getIndex(this.scrollPos);
 
             if (from !== this.from) {
                 this.from = from;
@@ -255,7 +255,7 @@ class List extends PubSub {
     }
 
     _updateRangeFromStart() {
-        const from = this.getIndex(this._scrollPos);
+        const from = this.getIndex(this.scrollPos);
 
         if (from < this.from) {
             this._startBatch();
@@ -265,7 +265,7 @@ class List extends PubSub {
 
             const to = Math.min(
                 this.itemCount,
-                1 + this.getIndex(this._scrollPos + this._widgetSize)
+                1 + this.getIndex(this.scrollPos + this._widgetSize)
             );
 
             if (to !== this.to) {
@@ -291,9 +291,10 @@ class List extends PubSub {
         }
     }
 
-    _scrollToRaw = index => {
+    _scrollToRaw = (index, pixelOffset) => {
         if (this._outerNode) {
-            this._outerNode[this._scrollKey] = this.getOffset(index);
+            this._outerNode[this._scrollKey] =
+                this.getOffset(index) + (pixelOffset || 0);
         } else if (process.env.NODE_ENV !== "production") {
             console.error("outerNode is not set");
         }
@@ -304,9 +305,9 @@ class List extends PubSub {
         SCROLL_TO_CHECK_INTERVAL
     );
 
-    scrollTo(index) {
-        this._scrollToRaw(index);
-        this._scrollToRawDebounced(index);
+    scrollTo(index, pixelOffset) {
+        this._scrollToRaw(index, pixelOffset);
+        this._scrollToRawDebounced(index, pixelOffset);
     }
 
     _setScrollSize(v) {
@@ -328,7 +329,7 @@ class List extends PubSub {
                 : VERTICAL_SIZE_KEY;
             if (this._outerNode) {
                 /* TODO: Needs testing */
-                this._scrollPos = 0;
+                this.scrollPos = 0;
                 this.setWidgetSize(this._outerNode[this._sizeKey]);
                 this._updateRangeFromStart();
             }

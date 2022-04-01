@@ -12,4 +12,4 @@ https://af-virtual-scroll.vercel.app/
 -   Uses position: sticky for tables
 -   mobx - ready
 -   optimized for performance
--   `scrollTo(index)` method is available
+-   `scrollTo(index, pixelOffset = 0)` method is available
