@@ -1,6 +1,10 @@
-const IdleOptions = { timeout: 2000 };
+import { MEASUREMENTS_MAX_DELAY } from "constants";
 
-const delay = globalThis.requestIdleCallback || (fn => setTimeout(fn, 500));
+const IdleOptions = { timeout: MEASUREMENTS_MAX_DELAY };
+
+const delay =
+    globalThis.requestIdleCallback ||
+    (fn => setTimeout(fn, MEASUREMENTS_MAX_DELAY));
 const cancelDelay = globalThis.cancelIdleCallback || clearTimeout;
 
 const throttle = fn => {

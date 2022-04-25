@@ -35,7 +35,7 @@ const ScrollToItem = () => {
 
     useEffect(() => {
         model.scrollTo(dynamicListRowHeights.length - 1);
-    }, [dynamicListRowHeights.length]);
+    }, [model, dynamicListRowHeights.length]);
 
     const scrollSubmitHandler = e => {
         e.preventDefault();

@@ -70,7 +70,7 @@ const PrependItems = () => {
             prepending/appending or you need to sync scroll pos only
             in certain cases.
         */
-    }, [items]);
+    }, [model, items]);
 
     return (
         <div className="flex flex-col gap-4">

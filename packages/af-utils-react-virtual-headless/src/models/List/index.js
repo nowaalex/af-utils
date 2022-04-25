@@ -1,12 +1,12 @@
 import PubSub from "../PubSub";
 import throttle from "utils/throttle";
-import debounce from "utils/debounce";
 import ResizeObserver from "models/ResizeObserver";
 import {
+    EVT_ALL,
     EVT_FROM,
     EVT_TO,
     EVT_SCROLL_SIZE,
-    SCROLL_TO_CHECK_INTERVAL
+    MEASUREMENTS_MAX_DELAY
 } from "constants";
 
 const HORIZONTAL_SCROLL_KEY = "scrollLeft";
@@ -27,6 +27,9 @@ class List extends PubSub {
     scrollPos = 0;
     _overscanCount = 0;
     _estimatedItemSize = 0;
+
+    _scrollToTmpValue = null;
+    _scrollToTimer = 0;
 
     _zeroChildNode = null;
     _outerNode = null;
@@ -291,23 +294,26 @@ class List extends PubSub {
         }
     }
 
-    _scrollToRaw = (index, pixelOffset) => {
+    _scrollToRaw = () => {
         if (this._outerNode) {
             this._outerNode[this._scrollKey] =
-                this.getOffset(index) + (pixelOffset || 0);
+                this.getOffset(this._scrollToTmpValue[0]) +
+                this._scrollToTmpValue[1];
         } else if (process.env.NODE_ENV !== "production") {
             console.error("outerNode is not set");
         }
     };
 
-    _scrollToRawDebounced = debounce(
-        this._scrollToRaw,
-        SCROLL_TO_CHECK_INTERVAL
-    );
-
     scrollTo(index, pixelOffset) {
-        this._scrollToRaw(index, pixelOffset);
-        this._scrollToRawDebounced(index, pixelOffset);
+        if (!this._scrollToTmpValue) {
+            this.on(this._scrollToRaw, EVT_ALL);
+            this._scrollToTimer = setTimeout(() => {
+                this.off(this._scrollToRaw, EVT_ALL);
+                this._scrollToTmpValue = null;
+            }, MEASUREMENTS_MAX_DELAY);
+        }
+        this._scrollToTmpValue = [index || 0, pixelOffset || 0];
+        this._scrollToRaw();
     }
 
     _setScrollSize(v) {
@@ -364,7 +370,7 @@ class List extends PubSub {
     _destroy() {
         this._unobserveCurrentOuterNode();
         this._measureItemsThrottled._cancel();
-        this._scrollToRawDebounced._cancel();
+        clearTimeout(this._scrollToTimer);
     }
 }
 

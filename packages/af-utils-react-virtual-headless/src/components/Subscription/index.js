@@ -1,13 +1,6 @@
 import { useRef, useReducer, memo } from "react";
 import useSubscription from "hooks/useSubscription";
-import {
-    EVT_FROM,
-    EVT_TO,
-    EVT_SCROLL_SIZE,
-    FORCEUPDATE_MODULO
-} from "constants";
-
-const ALL_EVENTS = [EVT_FROM, EVT_TO, EVT_SCROLL_SIZE];
+import { EVT_ALL, FORCEUPDATE_MODULO } from "constants";
 
 /*
     Increment just x + 1 may result in NaN theoretically, so modulo should be used.
@@ -17,7 +10,7 @@ const ALL_EVENTS = [EVT_FROM, EVT_TO, EVT_SCROLL_SIZE];
 */
 const inc = x => (x + 1) & FORCEUPDATE_MODULO;
 
-const Subscription = ({ model, children, events = ALL_EVENTS }) => {
+const Subscription = ({ model, children, events = EVT_ALL }) => {
     const [forceUpdateRenderCounter, forceUpdate] = useReducer(inc, 1);
     const lastRenderCounterRef = useRef(0);
     const prevRenderRef = useRef(null);
