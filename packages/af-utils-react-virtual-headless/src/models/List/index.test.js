@@ -42,8 +42,8 @@ describe("List model works", () => {
     });
 
     test("Summation works correctly", () => {
-        VSList.setItemCount(ROWS_QUANTITY);
-        VSList.setSecondaryParams(2, 0);
+        VSList.setItemCount(ROWS_QUANTITY, false, () => 2);
+        VSList.setOverscan(0);
 
         for (let i = 0, sum; i < UPDATES_QUANTITY; i++) {
             sum = 0;

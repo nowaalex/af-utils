@@ -1,5 +1,14 @@
 # @af-utils/react-virtual-list
 
+## 0.0.7
+
+### Patch Changes
+
+-   changed estimatedItemSize logics + upgraded deps
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.7
+    -   @af-utils/styled@0.0.4
+
 ## 0.0.6
 
 ### Patch Changes

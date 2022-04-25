@@ -23,6 +23,9 @@ const Item = memo(
     areItemPropsEqual
 );
 
+const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
+    oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 75;
+
 const ScrollToItem = () => {
     const [dynamicListRowHeights, changeRows] = useState(() =>
         times(DEFAULT_ROW_COUNT, () => r(50, 100))
@@ -30,7 +33,7 @@ const ScrollToItem = () => {
 
     const model = useVirtual({
         itemCount: dynamicListRowHeights.length,
-        estimatedItemSize: 75
+        getEstimatedItemSize
     });
 
     useEffect(() => {

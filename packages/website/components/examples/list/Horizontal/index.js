@@ -21,10 +21,13 @@ const Item = memo(
     areItemPropsEqual
 );
 
+const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
+    oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 75;
+
 const HorizontalList = () => {
     const model = useVirtual({
         itemCount: 50000,
-        estimatedItemSize: 75,
+        getEstimatedItemSize,
         horizontal: true
     });
 

@@ -15,7 +15,7 @@ yarn add @af-utils/react-virtual-headless prop-types
 ```jsx
 const model = useVirtual({
     itemCount,
-    estimatedItemSize,
+    getEstimatedItemSize,
     overscanCount,
     estimatedWidgetSize,
     horizontal
@@ -27,8 +27,8 @@ const model = useVirtual({
 -   `itemCount: Integer`
     -   Defaults to `0`
     -   The total count of elements
--   `estimatedItemSize: Integer`
-    -   Defaults to `40`
+-   `getEstimatedItemSize: Function( itemSizes, scrollSize, newItemCount ) => Integer`
+    -   Defaults to `scrollSize / itemSizes.length` or `40` if no items
     -   Best-guess item size
 -   `overscanCount: Integer`
     -   Defaults to `3`

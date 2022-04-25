@@ -5,39 +5,54 @@ import {
     List
 } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
+import random from "lodash/random";
 import faker from "faker";
 
 const Item = memo(
     ({ i, data }) => (
-        <div className="border-t p-2 border-zinc-400">
-            Idx:&nbsp;{i};&emsp;{data[i]}
+        <div
+            className="border-t p-2 border-zinc-400"
+            style={{ lineHeight: data[i].height + "px" }}
+        >
+            Idx:&nbsp;{i};&emsp;{data[i].name}
         </div>
     ),
     areItemPropsEqual
 );
 
-const getKey = (i, itemData) => itemData[i];
+const getKey = (i, itemData) => itemData[i].name;
 
-const getRandomName = () =>
-    faker.name.firstName() + " " + faker.name.lastName();
+const getRandomItem = () => ({
+    name: faker.name.firstName() + " " + faker.name.lastName(),
+    height: random(30, 120)
+});
 
 /* new Promise is made to simulate asynchronous fetch request */
-const fetch100RandomNamesAsync = () =>
+const fetch100RandomItemsAsync = () =>
     new Promise(resolve =>
-        setTimeout(resolve, 1000, times(100, getRandomName))
+        setTimeout(resolve, 1000, times(100, getRandomItem))
     );
+
+/*
+    Approach from other examples may be used here also, just for diversity
+*/
+const getEstimatedItemSize = oldItemSizes =>
+    oldItemSizes.length
+        ? Math.round((oldItemSizes[0] + oldItemSizes.at(-1)) / 2)
+        : 60;
 
 const PrependItems = () => {
     const scrollPosRef = useRef(null);
 
-    const [items, setItems] = useState(() => times(1000, getRandomName));
+    const [items, setItems] = useState(() => times(1000, getRandomItem));
 
     const model = useVirtual({
+        getEstimatedItemSize,
         itemCount: items.length
     });
 
     const prependItems = async () => {
-        const newItems = await fetch100RandomNamesAsync();
+        const newItems = await fetch100RandomItemsAsync();
 
         /*
             model.getIndex(model.from) may give wrong resuts

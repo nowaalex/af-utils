@@ -35,6 +35,9 @@ const EVENTS = [EVT_TO];
 
 const getKey = (i, itemData) => itemData[i];
 
+const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
+    oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 500;
+
 const Posts = () => {
     const [posts, setPosts] = useState(() => [faker.lorem.paragraphs()]);
 
@@ -42,7 +45,7 @@ const Posts = () => {
 
     const model = useVirtual({
         itemCount: posts.length,
-        estimatedItemSize: 500
+        getEstimatedItemSize
     });
 
     useSubscription(

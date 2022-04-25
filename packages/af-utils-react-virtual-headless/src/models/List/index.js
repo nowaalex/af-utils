@@ -26,7 +26,6 @@ class List extends PubSub {
 
     scrollPos = 0;
     _overscanCount = 0;
-    _estimatedItemSize = 0;
 
     _scrollToTmpValue = null;
     _scrollToTimer = 0;
@@ -98,7 +97,7 @@ class List extends PubSub {
         }
     }
 
-    _itemCountChanged(itemCount) {
+    _itemCountChanged(itemCount, getEstimatedItemSize) {
         if (itemCount < 0 || itemCount > 0x7fffffff) {
             /*
                 0x7fffffff - maximum 32bit integer.
@@ -119,7 +118,14 @@ class List extends PubSub {
             this._fTree = new Uint32Array(itemCount + 1);
 
             this._itemSizes
-                .fill(this._estimatedItemSize, curRowHeighsLength)
+                .fill(
+                    getEstimatedItemSize(
+                        oldItemSizes,
+                        this.scrollSize,
+                        itemCount
+                    ),
+                    curRowHeighsLength
+                )
                 .set(oldItemSizes);
 
             /* 
@@ -343,11 +349,11 @@ class List extends PubSub {
         }
     }
 
-    setItemCount(itemCount) {
+    setItemCount(itemCount, getEstimatedItemSize) {
         if (itemCount !== this.itemCount) {
             this.itemCount = itemCount;
             this._startBatch();
-            this._itemCountChanged(itemCount);
+            this._itemCountChanged(itemCount, getEstimatedItemSize);
             if (this.to > itemCount) {
                 this._shiftRangeToEnd();
             } else {
@@ -358,12 +364,7 @@ class List extends PubSub {
         }
     }
 
-    /*
-        No need to waste extra render reacting on these props.
-        Normally they should not be changed.
-    */
-    setSecondaryParams(estimatedItemSize, overscanCount) {
-        this._estimatedItemSize = estimatedItemSize;
+    setOverscan(overscanCount) {
         this._overscanCount = overscanCount;
     }
 

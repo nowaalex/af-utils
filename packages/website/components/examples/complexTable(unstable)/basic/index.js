@@ -2,19 +2,19 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Table } from "@af-utils/react-mobx-table";
 import faker from "faker";
+import times from "lodash/times";
+import random from "lodash/random";
 
-const rows = Array.from({ length: 10000 }, (v, i) => ({
+const rows = times(10000, i => ({
     i,
     fixedRange: i & 15,
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
+    height: random(20, 100),
     country: faker.address.country()
 }));
 
 const getRowData = i => rows[i];
-
-/* Math.random is not the best option, because same rowIndex should produce same height */
-const getPureRandomLineHeight = rowIndex => 20 + (rowIndex & 63);
 
 const columns = [
     {
@@ -22,12 +22,12 @@ const columns = [
         label: "i",
         totals: "sum",
         width: 170,
-        render: cellData => (
+        render: (cellData, row) => (
             <div
                 style={{
                     color: "#000",
                     textAlign: "center",
-                    lineHeight: `${getPureRandomLineHeight(cellData)}px`,
+                    lineHeight: `${row.height}px`,
                     background: `hsl(${(cellData * 11) % 360},60%,60%)`
                 }}
             >
@@ -55,13 +55,16 @@ const columns = [
     { key: "country", label: "country", align: "center", width: "40%" }
 ];
 
+const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
+    oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 60;
+
 const ComplexTable = () => (
     <DndProvider backend={HTML5Backend}>
         <Table
             className="min-h-0 basic-table-container"
             itemCount={rows.length}
             getRowData={getRowData}
-            estimatedItemSize={30}
+            getEstimatedItemSize={getEstimatedItemSize}
             columns={columns}
         />
     </DndProvider>

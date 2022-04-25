@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import List from "models/List";
+import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
 import useOnce from "../useOnce";
 import { EMPTY_ARRAY } from "constants";
 
 const useVirtualModel = ({
     itemCount = 0,
-    estimatedItemSize = 40,
+    getEstimatedItemSize = getEstimatedItemSizeDefault,
     estimatedWidgetSize = 200,
     overscanCount = 3,
     horizontal = false
@@ -14,15 +15,15 @@ const useVirtualModel = ({
         const model = new List();
 
         /* StartBatch/EndBatch are not needed, because no subscriptions could exist here */
-        model.setSecondaryParams(estimatedItemSize, overscanCount);
+        model.setOverscan(overscanCount);
         model.setHorizontal(horizontal);
-        model.setItemCount(itemCount);
+        model.setItemCount(itemCount, getEstimatedItemSize);
         model.setWidgetSize(estimatedWidgetSize);
 
         return model;
     });
 
-    model.setSecondaryParams(estimatedItemSize, overscanCount);
+    model.setOverscan(overscanCount);
 
     useEffect(() => () => model._destroy(), EMPTY_ARRAY);
 

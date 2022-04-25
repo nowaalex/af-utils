@@ -10,7 +10,6 @@ import {
 
 import { Table, DefaultTableComponents } from "@af-utils/react-table";
 
-import { EMPTY_ARRAY } from "constants";
 import HeaderLabel from "./HeaderLabel";
 import HeaderInput from "./HeaderInput";
 import GroupCell from "./GroupCell";
@@ -27,7 +26,7 @@ const wrapperClass = css(
 
 const ComplexTable = ({
     itemCount,
-    estimatedItemSize,
+    getEstimatedItemSize,
     overscanCount,
     estimatedWidgetSize,
     getRowData,
@@ -41,7 +40,7 @@ const ComplexTable = ({
     ...props
 }) => {
     const virtualModel = useVirtualModel({
-        estimatedItemSize,
+        getEstimatedItemSize,
         estimatedWidgetSize,
         overscanCount
     });
@@ -67,7 +66,10 @@ const ComplexTable = ({
 
         model.setGrouping(initialGroupingKeys);
 
-        virtualModel.setItemCount(model.finalIndexesCount);
+        virtualModel.setItemCount(
+            model.finalIndexesCount,
+            getEstimatedItemSize
+        );
 
         return model;
     });
@@ -75,9 +77,12 @@ const ComplexTable = ({
     useEffect(
         () =>
             autorun(() =>
-                virtualModel.setItemCount(aggregatorModel.finalIndexesCount)
+                virtualModel.setItemCount(
+                    aggregatorModel.finalIndexesCount,
+                    getEstimatedItemSize
+                )
             ),
-        EMPTY_ARRAY
+        [getEstimatedItemSize]
     );
 
     useEffect(() => {
