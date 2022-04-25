@@ -1,0 +1,32 @@
+import MdxWrapper from "/components/MdxWrapper";
+import { FcHighPriority } from "react-icons/fc";
+
+## @af-utils/styled
+
+**<FcHighPriority /> For internal use, API may change <FcHighPriority />**
+
+Attempt co create tiny css-in-js library. It creates atomic classes for each rule.
+
+## Installation
+
+```bash
+# npm
+npm i -S @af-utils/styled
+
+# yarn
+yarn add @af-utils/styled
+```
+
+## css
+
+```jsx
+const finalClassName = css( "display: block", "width: 100px", "padding: 1em", ... );
+```
+
+## cx
+
+```jsx
+const finalClassName = cx( "class1", "class2", ... );
+```
+
+export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;

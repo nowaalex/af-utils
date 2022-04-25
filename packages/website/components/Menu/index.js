@@ -13,6 +13,7 @@ const DOCS_STRUCTURE = [
     ["List", "/list"],
     ["Table", "/table"],
     ["ComplexTable", "/complexTable"],
+    ["Styled", "/styled"],
     ["Bundle size impact", "/size"]
 ];
 
