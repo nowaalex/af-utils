@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://af-virtual-scroll.vercel.app
+
+# Sitemaps
+Sitemap: https://af-virtual-scroll.vercel.app/sitemap.xml
