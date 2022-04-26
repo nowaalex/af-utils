@@ -1,9 +1,20 @@
 import MdxWrapper from "/components/MdxWrapper";
+import CommonHead from "/components/CommonHead";
 
 ## List
 
 ```jsx
-<List model={model}>{Item}</List>
+import { useVirtual, List } from "@af-utils/react-virtual-list";
+
+const Item = ({ i }) => <div>{i}</div>;
+
+const SimpleList = () => {
+    const model = useVirtual({
+        itemCount: 50000
+    });
+
+    return <List model={model}>{Item}</List>;
+};
 ```
 
 ## Installation
@@ -31,4 +42,9 @@ yarn add @af-utils/styled @af-utils/react-virtual-list @af-utils/react-virtual-h
     -   if you have unique id to pass as key - it may be more efficient.
 -   All other props are passed to outermost div
 
-export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;
+export default ({ children }) => (
+    <MdxWrapper>
+        <CommonHead title="Docs:  List" />
+        {children}
+    </MdxWrapper>
+);

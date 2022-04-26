@@ -1,20 +1,18 @@
 import { useRouter } from "next/router";
-import Head from "next/head";
+import CommonHead from "/components/CommonHead";
 import { table, components } from "/AllExamples";
-import humanizeRoute from "/utils/humanizeRoute";
+import urlToTitle from "/utils/urlToTitle";
 
 const Example = () => {
     const { asPath } = useRouter();
     const { ComponentCode, Component } = table[asPath];
-    const humanizedRoute = humanizeRoute(asPath);
+    const title = urlToTitle(asPath);
 
     return (
         <div className="grow shrink grid grid-cols-1 lg:grid-cols-[minmax(10em,_40%),_1fr]">
-            <Head>
-                <title>af-virtual-scroll | {humanizedRoute}</title>
-            </Head>
+            <CommonHead title={`examples | ${title}`} />
             <h1 className="text-4xl lg:col-span-2 mt-1 mb-2 font-bold text-center ml-14 sm:ml-0">
-                {humanizedRoute}
+                {title}
             </h1>
             <Component />
             <pre className="language-jsx overflow-auto !m-0">

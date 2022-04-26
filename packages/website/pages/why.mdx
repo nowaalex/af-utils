@@ -1,4 +1,5 @@
 import MdxWrapper from "/components/MdxWrapper";
+import CommonHead from "/components/CommonHead";
 
 ## What is it?
 
@@ -10,4 +11,9 @@ One way to optimize this is called virtualization.
 Based on scroll position and size of each item we may calculate,
 what range must be rendered now.
 
-export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;
+export default ({ children }) => (
+    <MdxWrapper>
+        <CommonHead title="Why" />
+        {children}
+    </MdxWrapper>
+);

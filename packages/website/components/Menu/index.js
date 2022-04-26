@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { VscGithub } from "react-icons/vsc";
 import { VscMenu } from "react-icons/vsc";
 import { components } from "/AllExamples";
-import humanizeRoute from "/utils/humanizeRoute";
+import urlToTitle from "/utils/urlToTitle";
 
 const DOCS_STRUCTURE = [
     ["Getting started", "/why"],
@@ -66,7 +66,7 @@ const Menu = ({ className }) => {
                                     item === asPath ? "bg-neutral-300" : ""
                                 )}
                             >
-                                {humanizeRoute(item)}
+                                {urlToTitle(item)}
                             </a>
                         </Link>
                     ))}

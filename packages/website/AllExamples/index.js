@@ -13,8 +13,7 @@ const requireCode = require.context(
     "lazy"
 );
 
-const toUrl = link =>
-    link.replace(/^\./, "/examples").replace(/\/index\.js$/, "");
+const toUrl = link => "/examples" + link.slice(1).replace(/\/index\.js$/, "");
 
 const keys = requireComponent.keys();
 

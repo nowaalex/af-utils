@@ -1,9 +1,25 @@
 import MdxWrapper from "/components/MdxWrapper";
+import CommonHead from "/components/CommonHead";
 
 ## Table
 
 ```jsx
-<Table model={model}>{i => <div key={i}>{i}</div>}</Table>
+import { useVirtual, Table } from "@af-utils/react-table";
+
+const columns = [{ key: "a" }, { key: "b" }];
+
+const getRowData = i => ({
+    a: `cell_a_${i}`,
+    b: `cell_b_${i}`
+});
+
+const SimpleTable = () => {
+    const model = useVirtual({
+        itemCount: 10000
+    });
+
+    return <Table model={model} getRowData={getRowData} columns={columns} />;
+};
 ```
 
 ## Installation
@@ -40,4 +56,9 @@ yarn add @af-utils/styled @af-utils/react-table @af-utils/react-virtual-headless
 
 -   All other props are passed to outermost div
 
-export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;
+export default ({ children }) => (
+    <MdxWrapper>
+        <CommonHead title="Docs:  Table" />
+        {children}
+    </MdxWrapper>
+);

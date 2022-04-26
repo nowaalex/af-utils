@@ -1,4 +1,5 @@
 import MdxWrapper from "/components/MdxWrapper";
+import CommonHead from "/components/CommonHead";
 import { FcHighPriority } from "react-icons/fc";
 
 ## Complex table
@@ -10,4 +11,9 @@ This component supports summary/filtering/grouping/sorting.
 -   It is not yet ready to be published as stable, because API is changed frequently
 -   It is not fully documented
 
-export default ({ children }) => <MdxWrapper>{children}</MdxWrapper>;
+export default ({ children }) => (
+    <MdxWrapper>
+        <CommonHead title="Docs:  Complex table" />
+        {children}
+    </MdxWrapper>
+);
