@@ -30,10 +30,11 @@
         "react-dnd": "^15.0.3",
         "react-dnd-html5-backend": "^15.0.3",
         "react-dom": "17.0.2",
-        "react-icons": "^4.3.1",
-        "tailwindcss": "^3.0.24"
+        "react-icons": "^4.3.1"
     },
     "devDependencies": {
+        "postcss": "^8.4.12",
+        "tailwindcss": "^3.0.24",
         "@mapbox/rehype-prism": "^0.8.0",
         "@mdx-js/loader": "^2.1.1",
         "@next/mdx": "^12.1.5",
@@ -42,6 +43,7 @@
         "eslint-config-next": "12.1.5",
         "next": "^12.1.5",
         "next-sitemap": "^2.5.20",
+        "postcss-import": "^14.1.0",
         "prism-webpack-loader": "^0.0.1",
         "refractor": "^4.6.0",
         "rehype-rewrite": "^3.0.6",
