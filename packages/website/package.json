@@ -42,8 +42,6 @@
         "eslint-config-next": "12.1.5",
         "next": "^12.1.5",
         "next-sitemap": "^2.5.20",
-        "postcss": "^8.4.12",
-        "postcss-import": "^14.1.0",
         "prism-webpack-loader": "^0.0.1",
         "refractor": "^4.6.0",
         "rehype-rewrite": "^3.0.6",
