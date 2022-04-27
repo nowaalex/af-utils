@@ -4,6 +4,7 @@ import { cx } from "@af-utils/styled";
 import { useRouter } from "next/router";
 import { VscGithub } from "react-icons/vsc";
 import { VscMenu } from "react-icons/vsc";
+import { SiDiscord } from "react-icons/si";
 import { components } from "/AllExamples";
 import urlToTitle from "/utils/urlToTitle";
 
@@ -83,6 +84,15 @@ const Menu = ({ className }) => {
                     >
                         <VscGithub className="mr-2 self-stretch w-auto h-auto" />
                         Github
+                    </a>
+                    <a
+                        href="https://discord.gg/6uQZB2y4cz"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center py-1"
+                    >
+                        <SiDiscord className="mr-2 self-stretch w-auto h-auto" />
+                        Discord
                     </a>
                 </div>
             </aside>
