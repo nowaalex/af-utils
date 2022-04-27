@@ -45,7 +45,7 @@
         "@rollup/plugin-babel": "^5.3.1",
         "@rollup/plugin-commonjs": "^22.0.0",
         "@rollup/plugin-export-bundle-size": "^0.0.1",
-        "babel-jest": "^28.0.1",
+        "babel-jest": "^28.0.2",
         "babel-plugin-module-resolver": "^4.1.0",
         "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
         "rollup": "^2.70.2",
