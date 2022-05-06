@@ -1,5 +1,6 @@
 import MdxWrapper from "/components/MdxWrapper";
 import CommonHead from "/components/CommonHead";
+import Link from "next/link";
 
 ## Table
 
@@ -36,7 +37,7 @@ yarn add @af-utils/styled @af-utils/react-table @af-utils/react-virtual-headless
 
 -   `model: Model`
     -   **Required**
-    -   return value of `useVirtual()`
+    -   return value of <Link href="/headless#use-virtual"><a>`useVirtual()`</a></Link>
 -   `getRowData: Function(rowIndex: Integer) => Row`
     -   **Required**
 -   `getRowProps: Function(rowData, i) => Object`

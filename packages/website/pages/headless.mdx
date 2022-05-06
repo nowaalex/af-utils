@@ -1,5 +1,6 @@
 import MdxWrapper from "/components/MdxWrapper";
 import CommonHead from "/components/CommonHead";
+import Link from "next/link";
 
 ## Installation
 
@@ -11,7 +12,7 @@ npm i -S @af-utils/react-virtual-headless prop-types
 yarn add @af-utils/react-virtual-headless prop-types
 ```
 
-## useVirtual
+<h2 id="use-virtual">useVirtual</h2>
 
 ```jsx
 const model = useVirtual({
@@ -70,14 +71,21 @@ mapVisibleRange(model, Item, itemData, getKey);
 ### Options
 
 -   `model: Model`
+
     -   **Required**
-    -   return value of `useVirtual()`
+    -   return value of <Link href="/headless#use-virtual"><a>`useVirtual()`</a></Link>
+
 -   `Item: ReactElement`
+
     -   **Required**
     -   React component, that will have `i` and `data` props when rendered.
+
 -   `itemData: Any`
+
     -   Will be passed as `data` prop to each `Item`
+
 -   `getKey: Function(i, itemData) => Integer`
+
     -   Defaults to: `i => i`
     -   if you have unique id to pass as key - it may be more efficient.
 

@@ -19,7 +19,7 @@ const DOCS_STRUCTURE = [
 ];
 
 const Menu = ({ className }) => {
-    const { asPath } = useRouter();
+    const { pathname } = useRouter();
     const [opened, setOpened] = useState(true);
 
     return (
@@ -47,7 +47,7 @@ const Menu = ({ className }) => {
                             <a
                                 className={cx(
                                     "px-6 py-1",
-                                    url === asPath ? "bg-neutral-300" : ""
+                                    url === pathname ? "bg-neutral-300" : ""
                                 )}
                             >
                                 {label}
@@ -64,7 +64,7 @@ const Menu = ({ className }) => {
                             <a
                                 className={cx(
                                     "px-6 py-1",
-                                    item === asPath ? "bg-neutral-300" : ""
+                                    item === pathname ? "bg-neutral-300" : ""
                                 )}
                             >
                                 {urlToTitle(item)}
