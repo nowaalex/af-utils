@@ -1,5 +1,14 @@
 # @af-utils/react-table
 
+## 0.0.9
+
+### Patch Changes
+
+-   6ce746e: fixed bug with getEstimatedItemSize defaulting to undefined + upgraded deps
+-   Updated dependencies [6ce746e]
+    -   @af-utils/react-virtual-headless@0.0.8
+    -   @af-utils/styled@0.0.5
+
 ## 0.0.8
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.5
+
+### Patch Changes
+
+-   6ce746e: fixed bug with getEstimatedItemSize defaulting to undefined + upgraded deps
+
 ## 0.0.4
 
 ### Patch Changes
