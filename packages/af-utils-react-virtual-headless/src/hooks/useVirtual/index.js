@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
 import useVirtualModel from "../useVirtualModel";
 
 const useVirtual = params => {
@@ -12,10 +11,7 @@ const useVirtual = params => {
         */
         model._startBatch();
         model.setHorizontal(params.horizontal);
-        model.setItemCount(
-            params.itemCount,
-            params.getEstimatedItemSize || getEstimatedItemSizeDefault
-        );
+        model.setItemCount(params.itemCount, params.getEstimatedItemSize);
         model._endBatch();
     });
 

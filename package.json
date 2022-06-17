@@ -22,15 +22,15 @@
         "not op_mini all"
     ],
     "devDependencies": {
-        "@changesets/changelog-github": "^0.4.4",
-        "@changesets/cli": "^2.22.0",
+        "@changesets/changelog-github": "^0.4.5",
+        "@changesets/cli": "^2.23.0",
         "ultra-runner": "^3.10.5"
     },
     "dependencies": {
         "@babel/eslint-plugin": "^7.17.7",
-        "eslint": "^8.14.0",
+        "eslint": "^8.17.0",
         "eslint-config-prettier": "^8.5.0",
-        "eslint-plugin-react": "^7.29.4",
-        "prettier": "^2.6.2"
+        "eslint-plugin-react": "^7.30.0",
+        "prettier": "^2.7.1"
     }
 }

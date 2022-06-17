@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import List from "models/List";
-import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
 import useOnce from "../useOnce";
 import { EMPTY_ARRAY } from "constants";
 
 const useVirtualModel = ({
     itemCount = 0,
-    getEstimatedItemSize = getEstimatedItemSizeDefault,
+    // setItemCount already has default callback set
+    getEstimatedItemSize,
     estimatedWidgetSize = 200,
     overscanCount = 3,
     horizontal = false

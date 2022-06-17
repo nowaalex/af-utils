@@ -1,5 +1,6 @@
 import PubSub from "../PubSub";
 import throttle from "utils/throttle";
+import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
 import ResizeObserver from "models/ResizeObserver";
 import {
     EVT_ALL,
@@ -349,7 +350,10 @@ class List extends PubSub {
         }
     }
 
-    setItemCount(itemCount, getEstimatedItemSize) {
+    setItemCount(
+        itemCount,
+        getEstimatedItemSize = getEstimatedItemSizeDefault
+    ) {
         if (itemCount !== this.itemCount) {
             this.itemCount = itemCount;
             this._startBatch();
