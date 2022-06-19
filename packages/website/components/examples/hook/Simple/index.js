@@ -18,7 +18,10 @@ const SimpleHook = () => {
     });
 
     return (
-        <div className="overflow-auto" ref={model.setOuterNode}>
+        <div
+            className="overflow-auto will-change-scroll"
+            ref={model.setOuterNode}
+        >
             <Subscription model={model}>
                 {({ scrollSize, from }) => {
                     const fromOffset = model.getOffset(from);

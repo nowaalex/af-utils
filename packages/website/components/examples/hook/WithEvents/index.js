@@ -24,7 +24,10 @@ const WithEvents = () => {
     });
 
     return (
-        <div className="overflow-auto relative" ref={model.setOuterNode}>
+        <div
+            className="overflow-auto relative will-change-scroll"
+            ref={model.setOuterNode}
+        >
             <Subscription model={model} events={SCROLL_SIZE_EVENTS}>
                 {({ scrollSize: height }) => (
                     <div
