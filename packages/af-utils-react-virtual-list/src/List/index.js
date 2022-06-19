@@ -10,7 +10,12 @@ import {
 
 import { css, cx } from "@af-utils/styled";
 
-const verticalWrapperClass = css("overflow: auto", "position: relative");
+const verticalWrapperClass = css(
+    "overflow: auto",
+    "position: relative",
+    // https://github.com/nowaalex/af-virtual-scroll/issues/26
+    "will-change: scroll-position"
+);
 
 const hiddenClass = css("visibility: hidden");
 const absoluteClass = css("position: absolute");

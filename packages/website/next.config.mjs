@@ -1,12 +1,21 @@
 import remarkGfm from "remark-gfm";
 import { refractor } from "refractor";
-import jsx from "refractor/lang/jsx.js";
 import rehypeRewrite from "rehype-rewrite";
 import rehypePrism from "@mapbox/rehype-prism";
 import remarkToc from "remark-toc";
 import nextMdx from "@next/mdx";
 
+import jsx from "refractor/lang/jsx.js";
+import css from "refractor/lang/css.js";
+import bash from "refractor/lang/bash.js";
+import jsExtras from "refractor/lang/js-extras.js";
+import cssExtras from "refractor/lang/css-extras.js";
+
 refractor.register(jsx);
+refractor.register(css);
+refractor.register(bash);
+refractor.register(jsExtras);
+refractor.register(cssExtras);
 
 const withMDX = nextMdx({
     options: {
@@ -23,18 +32,33 @@ const withMDX = nextMdx({
                     rewrite: node => {
                         if (
                             node.tagName === "code" &&
-                            !node.properties.className?.length &&
                             node.children.every(child => child.type === "text")
                         ) {
+                            let lang;
+
+                            const newClassName =
+                                node.properties.className || [];
+                            const langMatch = newClassName
+                                .find(c => c.startsWith("language-"))
+                                ?.match(/language-(.+)/);
+
+                            if (!langMatch) {
+                                newClassName.push("language-jsx");
+                                lang = "jsx";
+                            } else {
+                                lang = langMatch[1];
+                            }
+
                             const combinedText = node.children.reduce(
                                 (acc, v) => acc + v.value,
                                 ""
                             );
                             const result = refractor.highlight(
                                 combinedText,
-                                "jsx"
+                                lang
                             );
-                            node.properties.className = ["language-jsx"];
+
+                            node.properties.className = newClassName;
                             node.children = result.children;
                         }
                     }

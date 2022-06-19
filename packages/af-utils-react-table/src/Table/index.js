@@ -20,7 +20,12 @@ import DEFAULT_COMPONENTS_MAP from "./components";
 const SCROLLSIZE_EVENTS = [EVT_SCROLL_SIZE];
 const RANGE_EVENTS = [EVT_FROM, EVT_TO];
 
-const baseClass = css("overflow: auto", "position: relative");
+const baseClass = css(
+    "overflow: auto",
+    "position: relative",
+    // https://github.com/nowaalex/af-virtual-scroll/issues/26
+    "will-change: scroll-position"
+);
 
 const top0Class = css("top: 0");
 const hiddenClass = css("visibility: hidden");

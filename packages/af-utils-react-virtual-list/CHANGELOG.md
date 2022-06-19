@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-list
 
+## 0.0.9
+
+### Patch Changes
+
+-   fixed chrome scrolling issue
+
 ## 0.0.8
 
 ### Patch Changes

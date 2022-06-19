@@ -15,7 +15,8 @@ const DOCS_STRUCTURE = [
     ["Table", "/table"],
     ["ComplexTable", "/complexTable"],
     ["Styled", "/styled"],
-    ["Bundle size impact", "/size"]
+    ["Bundle size impact", "/size"],
+    ["FAQs", "/faq"]
 ];
 
 const Menu = ({ className }) => {
