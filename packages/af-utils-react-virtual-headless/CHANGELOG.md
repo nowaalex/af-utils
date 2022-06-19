@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.9
+
+### Patch Changes
+
+-   added react 18 support
+
 ## 0.0.8
 
 ### Patch Changes

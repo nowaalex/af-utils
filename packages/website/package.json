@@ -10,10 +10,10 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@af-utils/react-mobx-table": "^0.0.10",
-        "@af-utils/react-table": "^0.0.10",
-        "@af-utils/react-virtual-headless": "^0.0.8",
-        "@af-utils/react-virtual-list": "^0.0.9",
+        "@af-utils/react-mobx-table": "^0.0.11",
+        "@af-utils/react-table": "^0.0.11",
+        "@af-utils/react-virtual-headless": "^0.0.9",
+        "@af-utils/react-virtual-list": "^0.0.10",
         "@emotion/css": "^11.9.0",
         "@emotion/react": "^11.9.3",
         "@emotion/styled": "^11.9.3",
@@ -26,10 +26,10 @@
         "mobx-react-lite": "^3.4.0",
         "pretty-bytes": "^6.0.0",
         "prop-types": "^15.8.1",
-        "react": "17.0.2",
-        "react-dnd": "^15.0.3",
-        "react-dnd-html5-backend": "^15.0.3",
-        "react-dom": "17.0.2",
+        "react": "18.2.0",
+        "react-dnd": "^16.0.1",
+        "react-dnd-html5-backend": "^16.0.1",
+        "react-dom": "18.2.0",
         "react-icons": "^4.4.0"
     },
     "devDependencies": {
@@ -40,7 +40,7 @@
         "eslint": "8.18.0",
         "eslint-config-next": "12.1.6",
         "next": "^12.1.6",
-        "next-sitemap": "3.0.5",
+        "next-sitemap": "3.1.1",
         "postcss": "^8.4.14",
         "postcss-import": "^14.1.0",
         "prism-webpack-loader": "^0.0.1",

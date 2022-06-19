@@ -204,7 +204,6 @@ class List extends PubSub {
 
     _setScrollPos = () => {
         const curScrollPos = this._outerNode[this._scrollKey];
-
         if (curScrollPos > this.scrollPos) {
             this.scrollPos = curScrollPos;
             this._updateRangeFromEnd();
@@ -221,7 +220,10 @@ class List extends PubSub {
         }
     }
 
-    /* will ne used as callback, so => */
+    /*
+        Performs as destructor when null is passed
+        will ne used as callback, so using =>
+    */
     setOuterNode = node => {
         this._unobserveCurrentOuterNode();
         this._outerNode = node;
@@ -230,6 +232,9 @@ class List extends PubSub {
             node.addEventListener("scroll", this._setScrollPos, {
                 passive: true
             });
+        } else {
+            this._measureItemsThrottled._cancel();
+            clearTimeout(this._scrollToTimer);
         }
     };
 
@@ -370,12 +375,6 @@ class List extends PubSub {
 
     setOverscan(overscanCount) {
         this._overscanCount = overscanCount;
-    }
-
-    _destroy() {
-        this._unobserveCurrentOuterNode();
-        this._measureItemsThrottled._cancel();
-        clearTimeout(this._scrollToTimer);
     }
 }
 

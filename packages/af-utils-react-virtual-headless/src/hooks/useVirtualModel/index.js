@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import List from "models/List";
 import useOnce from "../useOnce";
-import { EMPTY_ARRAY } from "constants";
 
 const useVirtualModel = ({
     itemCount = 0,
@@ -24,8 +22,6 @@ const useVirtualModel = ({
     });
 
     model.setOverscan(overscanCount);
-
-    useEffect(() => () => model._destroy(), EMPTY_ARRAY);
 
     return model;
 };

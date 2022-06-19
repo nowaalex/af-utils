@@ -1,5 +1,13 @@
 # @af-utils/react-table
 
+## 0.0.11
+
+### Patch Changes
+
+-   added react 18 support
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.9
+
 ## 0.0.10
 
 ### Patch Changes
