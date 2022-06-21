@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.10
+
+### Patch Changes
+
+-   BREAKING change with refs
+
 ## 0.0.9
 
 ### Patch Changes

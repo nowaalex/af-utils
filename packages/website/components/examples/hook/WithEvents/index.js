@@ -11,7 +11,14 @@ import {
 } from "@af-utils/react-virtual-headless";
 
 const Item = memo(
-    ({ i }) => <div className="border-t p-2 border-zinc-400">row {i}</div>,
+    ({ i, model }) => (
+        <div
+            ref={el => model.el(i, el)}
+            className="border-t p-2 border-zinc-400"
+        >
+            row {i}
+        </div>
+    ),
     areItemPropsEqual
 );
 
@@ -41,7 +48,6 @@ const WithEvents = () => {
                     <>
                         <div
                             className="invisible w-px"
-                            ref={model.setZeroChildNode}
                             style={{ height: model.getOffset(from) }}
                         />
                         {mapVisibleRange(model, Item)}

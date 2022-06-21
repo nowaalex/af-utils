@@ -40,8 +40,8 @@ yarn add @af-utils/styled @af-utils/react-table @af-utils/react-virtual-headless
     -   return value of <Link href="/headless#use-virtual"><a>`useVirtual()`</a></Link>
 -   `getRowData: Function(rowIndex: Integer) => Row`
     -   **Required**
--   `getRowProps: Function(rowData, i) => Object`
-    -   Will be spread to row
+-   `getRowProps: Function(model, i, rowData) => Object`
+    -   Will be spread to row; must return ref
 -   `getKey: Function(i, itemData) => Integer`
     -   Defaults to: `i => i`
     -   if you have unique id to pass as key - it may be more efficient.

@@ -10,8 +10,9 @@ import r from "lodash/random";
 const DEFAULT_ROW_COUNT = 20000;
 
 const Item = memo(
-    ({ i, data: dynamicListRowHeights }) => (
+    ({ i, model, data: dynamicListRowHeights }) => (
         <div
+            ref={el => model.el(i, el)}
             className="text-center border-t border-zinc-400"
             style={{
                 lineHeight: `${dynamicListRowHeights[i]}px`

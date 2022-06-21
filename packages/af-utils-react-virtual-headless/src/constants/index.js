@@ -1,6 +1,6 @@
 export const FORCEUPDATE_MODULO = 65535;
 export const EMPTY_ARRAY = [];
-export const MEASUREMENTS_MAX_DELAY = 500;
+export const MEASUREMENTS_MAX_DELAY = 700;
 
 export const EVT_FROM = 0;
 export const EVT_TO = 1;

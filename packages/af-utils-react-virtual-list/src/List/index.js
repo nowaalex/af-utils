@@ -92,7 +92,6 @@ const List = ({
                     <>
                         <div
                             className={offsetClassName}
-                            ref={model.setZeroChildNode}
                             style={{ [primaryAxis]: model.getOffset(from) }}
                         />
                         {mapVisibleRange(model, Item, itemData, getKey)}

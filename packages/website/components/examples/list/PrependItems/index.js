@@ -9,8 +9,9 @@ import random from "lodash/random";
 import faker from "faker";
 
 const Item = memo(
-    ({ i, data }) => (
+    ({ i, model, data }) => (
         <div
+            ref={el => model.el(i, el)}
             className="border-t p-2 border-zinc-400"
             style={{ lineHeight: data[i].height + "px" }}
         >

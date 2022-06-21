@@ -1,16 +1,16 @@
 const getKeyDefault = i => i;
 
-const mapVisibleRange = (
-    { from, to },
-    Item,
-    itemData,
-    getKey = getKeyDefault
-) => {
+const mapVisibleRange = (model, Item, itemData, getKey = getKeyDefault) => {
     const result = [];
 
-    for (; from < to; from++) {
+    for (let i = model.from, to = model.to; i < to; i++) {
         result.push(
-            <Item key={getKey(from, itemData)} i={from} data={itemData} />
+            <Item
+                key={getKey(i, itemData)}
+                i={i}
+                data={itemData}
+                model={model}
+            />
         );
     }
 

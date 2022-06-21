@@ -8,7 +8,14 @@ import {
 } from "@af-utils/react-virtual-headless";
 
 const Item = memo(
-    ({ i }) => <div className="border-t p-2 border-zinc-400">row {i}</div>,
+    ({ i, model }) => (
+        <div
+            ref={el => model.el(i, el)}
+            className="border-t p-2 border-zinc-400"
+        >
+            row {i}
+        </div>
+    ),
     areItemPropsEqual
 );
 
@@ -32,10 +39,7 @@ const SimpleHook = () => {
                     };
 
                     return (
-                        <div style={style}>
-                            <div hidden ref={model.setZeroChildNode} />
-                            {mapVisibleRange(model, Item)}
-                        </div>
+                        <div style={style}>{mapVisibleRange(model, Item)}</div>
                     );
                 }}
             </Subscription>

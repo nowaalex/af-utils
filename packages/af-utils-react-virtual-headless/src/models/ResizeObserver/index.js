@@ -1,6 +1,9 @@
 class FakeResizeObserver {
     observe() {}
     unobserve() {}
+    disconnect() {}
 }
 
-export default globalThis.ResizeObserver || FakeResizeObserver;
+export default typeof ResizeObserver === "undefined"
+    ? FakeResizeObserver
+    : ResizeObserver;

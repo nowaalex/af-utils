@@ -6,8 +6,9 @@ import {
 } from "@af-utils/react-virtual-list";
 
 const Item = memo(
-    ({ i }) => (
+    ({ i, model }) => (
         <div
+            ref={el => model.el(i, el)}
             className={`
         p-4
         leading-[5em]

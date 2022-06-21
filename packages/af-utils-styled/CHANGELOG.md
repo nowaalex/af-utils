@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.6
+
+### Patch Changes
+
+-   BREAKING change with refs
+
 ## 0.0.5
 
 ### Patch Changes

@@ -20,8 +20,8 @@ const fetchRandomDescriptions = () =>
     );
 
 const Item = memo(
-    ({ i, data: posts }) => (
-        <div className="p-4">
+    ({ i, model, data: posts }) => (
+        <div ref={el => model.el(i, el)} className="p-4">
             <div className="border-4 text-center ring-inset leading-[30vh]">
                 maybe picture
             </div>

@@ -6,7 +6,14 @@ import {
 } from "@af-utils/react-virtual-list";
 
 const Item = memo(
-    ({ i }) => <div className="border-t p-2 border-zinc-400">row {i}</div>,
+    ({ i, model }) => (
+        <div
+            ref={el => model.el(i, el)}
+            className="border-t p-2 border-zinc-400"
+        >
+            row {i}
+        </div>
+    ),
     areItemPropsEqual
 );
 

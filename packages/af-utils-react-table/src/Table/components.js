@@ -9,12 +9,26 @@ const CellForEmptyRow = ({ data: D }) => (
     <D.components.Td colSpan={D.columns.length}>&nbsp;</D.components.Td>
 );
 
-const Row = ({ i, data }) => {
+if (process.env.NODE_ENV !== "production") {
+    var warnedAboutAbsentRef = false;
+}
+
+const Row = ({ i, model, data }) => {
     const rowData = data.getRowData(i);
     const C = data.components;
+    const rowProps = data.getRowProps(model, i, rowData);
+
+    if (process.env.NODE_ENV !== "production") {
+        if (warnedAboutAbsentRef === false && !rowProps.ref) {
+            warnedAboutAbsentRef = true;
+            throw new Error(
+                "ref should be present in getRowProps return value"
+            );
+        }
+    }
 
     return (
-        <C.Tr {...(data.getRowProps && data.getRowProps(rowData, i))}>
+        <C.Tr {...rowProps}>
             {rowData ? (
                 data.columns.map(column => {
                     const FinalCell = column.Cell || C.Cell;

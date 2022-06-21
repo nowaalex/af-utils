@@ -1,7 +1,7 @@
 import PubSub from "../PubSub";
-import throttle from "utils/throttle";
 import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
 import ResizeObserver from "models/ResizeObserver";
+import throttle from "/utils/throttle";
 import {
     EVT_ALL,
     EVT_FROM,
@@ -31,7 +31,6 @@ class List extends PubSub {
     _scrollToTmpValue = null;
     _scrollToTimer = 0;
 
-    _zeroChildNode = null;
     _outerNode = null;
     _widgetSize = 0;
 
@@ -49,47 +48,37 @@ class List extends PubSub {
     from = 0;
     to = 0;
 
-    _measureItemsThrottled = throttle(() => {
-        /*
-            Babel still transpiles optional chaining little ugly
-        */
-        let child =
-            this._zeroChildNode && this._zeroChildNode.nextElementSibling;
+    _elQueue = new Map();
+    _elToIdx = new Map();
+    _idxToEl = new Map();
 
-        if (child) {
-            let index = this.from,
-                diff = 0,
-                lim = index + 1,
-                buff = 0;
+    _ElResizeObserver = new ResizeObserver(entries => {
+        let index = this.from,
+            diff = 0,
+            buff = 0,
+            lim = index + 1;
 
-            /* We can batch-update fenwick tree, if we know updated indexes range */
-            for (; lim < this.to; lim += lim & -lim);
+        for (; lim < this.to; lim += lim & -lim);
 
-            do {
-                diff = child[this._sizeKey] - this._itemSizes[index];
+        for (const { target } of entries) {
+            index = this._elToIdx.get(target);
+            diff = target[this._sizeKey] - this._itemSizes[index];
 
-                if (diff) {
-                    this._itemSizes[index] += diff;
-                    buff += diff;
-                    this._updateItemHeight(index + 1, diff, lim);
-                }
-            } while (++index < this.to && (child = child.nextElementSibling));
-
-            if (buff !== 0) {
-                this._startBatch();
-                this._updateItemHeight(lim, buff, this._fTree.length);
-                this._setScrollSize(this.scrollSize + buff);
-                this._updateRangeFromEnd();
-                this._endBatch();
+            if (diff) {
+                this._itemSizes[index] += diff;
+                buff += diff;
+                this._updateItemHeight(index + 1, diff, lim);
             }
         }
+
+        if (buff !== 0) {
+            this._startBatch();
+            this._updateItemHeight(lim, buff, this._fTree.length);
+            this._setScrollSize(this.scrollSize + buff);
+            this._updateRangeFromEnd();
+            this._endBatch();
+        }
     });
-
-    constructor() {
-        super();
-
-        this.on(this._measureItemsThrottled, [EVT_FROM, EVT_TO]);
-    }
 
     setWidgetSize(widgetSize) {
         if (widgetSize !== this._widgetSize) {
@@ -213,38 +202,50 @@ class List extends PubSub {
         }
     };
 
-    _unobserveCurrentOuterNode() {
-        if (this._outerNode) {
-            this._OuterNodeResizeObserver.unobserve(this._outerNode);
-            this._outerNode.removeEventListener("scroll", this._setScrollPos);
+    _processQueueThrottled = throttle(() => {
+        for (const [i, el] of this._elQueue) {
+            this._idxToEl.set(i, el);
+            this._elToIdx.set(el, i);
+            this._ElResizeObserver.observe(el);
         }
-    }
+        this._elQueue.clear();
+    });
 
     /*
         Performs as destructor when null is passed
         will ne used as callback, so using =>
     */
     setOuterNode = node => {
-        this._unobserveCurrentOuterNode();
+        if (this._outerNode) {
+            this._OuterNodeResizeObserver.unobserve(this._outerNode);
+            this._outerNode.removeEventListener("scroll", this._setScrollPos);
+        }
+
         this._outerNode = node;
+
         if (node) {
             this._OuterNodeResizeObserver.observe(node);
             node.addEventListener("scroll", this._setScrollPos, {
                 passive: true
             });
         } else {
-            this._measureItemsThrottled._cancel();
+            this._ElResizeObserver.disconnect();
             clearTimeout(this._scrollToTimer);
+            this._processQueueThrottled._cancel();
         }
     };
 
-    /* will ne used as callback, so => */
-    setZeroChildNode = node => {
-        this._zeroChildNode = node;
+    el(i, node) {
         if (node) {
-            this._measureItemsThrottled();
+            this._elQueue.set(i, node);
+            this._processQueueThrottled();
+        } else if (!this._elQueue.delete(i)) {
+            node = this._idxToEl.get(i);
+            this._idxToEl.delete(i);
+            this._elToIdx.delete(node);
+            this._ElResizeObserver.unobserve(node);
         }
-    };
+    }
 
     _updateRangeFromEnd() {
         const to = Math.min(
@@ -368,7 +369,6 @@ class List extends PubSub {
             } else {
                 this._updateRangeFromEnd();
             }
-            this._measureItemsThrottled();
             this._endBatch();
         }
     }

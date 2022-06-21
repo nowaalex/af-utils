@@ -49,7 +49,8 @@ class RowPropsClass {
         this.columns = columns;
         this.components = components;
         this.getRowData = getRowData;
-        this.getRowProps = getRowProps;
+        this.getRowProps =
+            getRowProps || ((model, i) => ({ ref: el => model.el(i, el) }));
     }
 }
 
@@ -94,7 +95,6 @@ const Table = ({
             <>
                 <tr
                     className={hiddenClass}
-                    ref={model.setZeroChildNode}
                     style={{ height: model.getOffset(model.from) }}
                 />
                 {mapVisibleRange(model, C.Row, rowProps, getKey)}
