@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { useRouter } from "next/router";
 import CommonHead from "/components/CommonHead";
 import { table, components } from "/AllExamples";
@@ -15,14 +14,11 @@ const Example = () => {
             <h1 className="text-4xl lg:col-span-2 mt-1 mb-2 font-bold text-center ml-14 sm:ml-0">
                 {title}
             </h1>
-            <Suspense>
-                <Component />
-            </Suspense>
+
+            <Component />
 
             <pre className="language-jsx overflow-auto !m-0">
-                <Suspense>
-                    <ComponentCode />
-                </Suspense>
+                <ComponentCode />
             </pre>
         </div>
     );

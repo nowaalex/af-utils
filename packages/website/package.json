@@ -26,10 +26,10 @@
         "mobx-react-lite": "^3.4.0",
         "pretty-bytes": "^6.0.0",
         "prop-types": "^15.8.1",
-        "react": "18.2.0",
-        "react-dnd": "^16.0.1",
-        "react-dnd-html5-backend": "^16.0.1",
-        "react-dom": "18.2.0",
+        "react": "17.0.2",
+        "react-dnd": "^15.0.3",
+        "react-dnd-html5-backend": "^15.0.3",
+        "react-dom": "17.0.2",
         "react-icons": "^4.4.0"
     },
     "devDependencies": {
