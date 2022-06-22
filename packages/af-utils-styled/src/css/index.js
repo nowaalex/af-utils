@@ -1,30 +1,33 @@
 const PREFIX = "af_";
 const RuleToClass = new Map();
 
-let sheet;
+const styleEl = process.env.__IS_SERVER__
+    ? null
+    : document.createElement("style");
 
-if (typeof document !== "undefined") {
-    const styleEl = document.createElement("style");
+if (!process.env.__IS_SERVER__) {
     if (process.env.NODE_ENV !== "production") {
         styleEl.setAttribute("data-af-styled", "");
     }
     document.head.append(styleEl);
-    sheet = styleEl.sheet;
-} else {
-    sheet = { insertRule() {} };
 }
+
+const sheet = process.env.__IS_SERVER__ ? null : styleEl.sheet;
 
 const getClassNameFromRule = rawRule => {
     const rule = rawRule
         .trim()
         .replace(/(\s)+/g, "$1")
-        .replace(/\s*:\s*/, ":");
+        .replace(/\s?:\s?/, ":");
     let classForRule = RuleToClass.get(rule);
 
     if (!classForRule) {
-        classForRule = PREFIX + rule.replace(/[:-\s!;%.]+/g, "_");
+        classForRule = PREFIX + rule.replace(/\W+/g, "_");
         RuleToClass.set(rule, classForRule);
-        sheet.insertRule(`.${classForRule}{${rule}}`);
+
+        if (!process.env.__IS_SERVER__) {
+            sheet.insertRule(`.${classForRule}{${rule}}`);
+        }
     }
 
     return classForRule;

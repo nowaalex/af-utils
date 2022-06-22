@@ -1,5 +1,4 @@
 import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
-import ResizeObserver from "models/ResizeObserver";
 import {
     EVT_ALL,
     EVT_FROM,
@@ -14,12 +13,20 @@ const VERTICAL_SCROLL_KEY = "scrollTop";
 const HORIZONTAL_SIZE_KEY = "offsetWidth";
 const VERTICAL_SIZE_KEY = "offsetHeight";
 
+const FinalResizeObserver = process.env.__IS_SERVER__
+    ? class {
+          observe() {}
+          unobserve() {}
+          disconnect() {}
+      }
+    : ResizeObserver;
+
 class List {
     horizontal = false;
     _scrollKey = VERTICAL_SCROLL_KEY;
     _sizeKey = VERTICAL_SIZE_KEY;
 
-    _OuterNodeResizeObserver = new ResizeObserver(() =>
+    _OuterNodeResizeObserver = new FinalResizeObserver(() =>
         this.setWidgetSize(this._outerNode[this._sizeKey])
     );
 
@@ -49,7 +56,7 @@ class List {
     _elToIdx = new Map();
     _idxToEl = new Map();
 
-    _ElResizeObserver = new ResizeObserver(entries => {
+    _ElResizeObserver = new FinalResizeObserver(entries => {
         let index = this.from,
             diff = 0,
             buff = 0,

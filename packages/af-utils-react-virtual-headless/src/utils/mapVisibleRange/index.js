@@ -1,6 +1,8 @@
 const getKeyDefault = i => i;
 
-const mapVisibleRange = (model, Item, itemData, getKey = getKeyDefault) => {
+const mapVisibleRange = (model, Item, itemData, getKey) => {
+    // default arguments are transpiled non-compact way
+    getKey ||= getKeyDefault;
     const result = [];
 
     for (let i = model.from, to = model.to; i < to; i++) {

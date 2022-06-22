@@ -1,6 +1,7 @@
 import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import exportBundleSize from "@rollup/plugin-export-bundle-size";
+import replace from "@rollup/plugin-replace";
 import { terser } from "rollup-plugin-terser";
 
 const OUTPUT_DIR = "lib";
@@ -12,7 +13,26 @@ export default {
             format: "es",
             dir: OUTPUT_DIR,
             preferConst: true,
-            sourcemap: true
+            sourcemap: true,
+            entryFileNames: "[name].js",
+            plugins: [
+                exportBundleSize({ dir: OUTPUT_DIR }),
+                replace({
+                    "process.env.__IS_SERVER__": false
+                })
+            ]
+        },
+        {
+            format: "es",
+            dir: OUTPUT_DIR,
+            preferConst: true,
+            sourcemap: false,
+            entryFileNames: "[name].server.js",
+            plugins: [
+                replace({
+                    "process.env.__IS_SERVER__": true
+                })
+            ]
         }
     ],
     plugins: [
@@ -29,7 +49,6 @@ export default {
             }
         }),
         babel({ babelHelpers: "runtime" }),
-        commonjs(),
-        exportBundleSize({ dir: OUTPUT_DIR })
+        commonjs()
     ]
 };

@@ -35,13 +35,15 @@ const SimpleHook = () => {
                 {({ scrollSize, from }) => {
                     const fromOffset = model.getOffset(from);
 
-                    const style = {
-                        height: scrollSize - fromOffset,
-                        marginTop: fromOffset
-                    };
-
                     return (
-                        <div style={style}>{mapVisibleRange(model, Item)}</div>
+                        <div
+                            style={{
+                                height: scrollSize - fromOffset,
+                                marginTop: fromOffset
+                            }}
+                        >
+                            {mapVisibleRange(model, Item)}
+                        </div>
                     );
                 }}
             </Subscription>

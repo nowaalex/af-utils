@@ -10,10 +10,10 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@af-utils/react-mobx-table": "^0.0.15",
-        "@af-utils/react-table": "^0.0.14",
-        "@af-utils/react-virtual-headless": "^0.0.11",
-        "@af-utils/react-virtual-list": "^0.0.13",
+        "@af-utils/react-mobx-table": "^0.0.16",
+        "@af-utils/react-table": "^0.0.15",
+        "@af-utils/react-virtual-headless": "^0.0.12",
+        "@af-utils/react-virtual-list": "^0.0.14",
         "@emotion/css": "^11.9.0",
         "@emotion/react": "^11.9.3",
         "@emotion/styled": "^11.9.3",

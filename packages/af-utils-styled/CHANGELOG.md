@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.8
+
+### Patch Changes
+
+-   separate bundles for client/server
+
 ## 0.0.7
 
 ### Patch Changes

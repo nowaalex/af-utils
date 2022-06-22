@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.14
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.12
+    -   @af-utils/styled@0.0.8
+
 ## 0.0.13
 
 ### Patch Changes
