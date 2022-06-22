@@ -26,7 +26,12 @@ const SimpleHook = () => {
 
     return (
         <div className="overflow-auto" ref={model.setOuterNode}>
-            <Subscription model={model}>
+            <Subscription
+                model={model}
+                getHash={() =>
+                    model.from + "_" + model.to + "_" + model.scrollSize
+                }
+            >
                 {({ scrollSize, from }) => {
                     const fromOffset = model.getOffset(from);
 

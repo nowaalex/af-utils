@@ -1,4 +1,4 @@
-const PREFIX = "af-s";
+const PREFIX = "af_";
 const RuleToClass = new Map();
 
 let sheet;
@@ -14,8 +14,6 @@ if (typeof document !== "undefined") {
     sheet = { insertRule() {} };
 }
 
-let counter = 0;
-
 const getClassNameFromRule = rawRule => {
     const rule = rawRule
         .trim()
@@ -24,7 +22,7 @@ const getClassNameFromRule = rawRule => {
     let classForRule = RuleToClass.get(rule);
 
     if (!classForRule) {
-        classForRule = PREFIX + (counter++).toString(36);
+        classForRule = PREFIX + rule.replace(/[:-\s!;%.]+/g, "_");
         RuleToClass.set(rule, classForRule);
         sheet.insertRule(`.${classForRule}{${rule}}`);
     }

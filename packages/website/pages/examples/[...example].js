@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import CommonHead from "/components/CommonHead";
 import { table, components } from "/AllExamples";
 import urlToTitle from "/utils/urlToTitle";
+import { Suspense } from "react";
 
 const Example = () => {
     const { asPath } = useRouter();
@@ -14,11 +15,14 @@ const Example = () => {
             <h1 className="text-4xl lg:col-span-2 mt-1 mb-2 font-bold text-center ml-14 sm:ml-0">
                 {title}
             </h1>
-
-            <Component />
+            <Suspense>
+                <Component />
+            </Suspense>
 
             <pre className="language-jsx overflow-auto !m-0">
-                <ComponentCode />
+                <Suspense>
+                    <ComponentCode />
+                </Suspense>
             </pre>
         </div>
     );

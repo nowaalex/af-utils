@@ -3,14 +3,13 @@ import { DndProvider } from "react-dnd";
 import { Table } from "@af-utils/react-mobx-table";
 import faker from "faker";
 import times from "lodash/times";
-import random from "lodash/random";
 
 const rows = times(10000, i => ({
     i,
     fixedRange: i & 15,
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
-    height: random(20, 100),
+    height: 30 + ((i ** 2) & 63),
     country: faker.address.country()
 }));
 

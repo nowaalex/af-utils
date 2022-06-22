@@ -5,7 +5,6 @@ import {
     List
 } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
-import r from "lodash/random";
 
 const DEFAULT_ROW_COUNT = 20000;
 
@@ -29,7 +28,7 @@ const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
 
 const ScrollToItem = () => {
     const [dynamicListRowHeights, changeRows] = useState(() =>
-        times(DEFAULT_ROW_COUNT, () => r(50, 100))
+        times(DEFAULT_ROW_COUNT, i => 50 + ((i ** 2) & 63))
     );
 
     const model = useVirtual({
@@ -57,7 +56,7 @@ const ScrollToItem = () => {
         if (!Number.isNaN(rowsToAdd) && rowsToAdd !== 0) {
             changeRows(rows =>
                 rowsToAdd > 0
-                    ? rows.concat(times(rowsToAdd, () => r(50, 100)))
+                    ? rows.concat(times(rowsToAdd, i => 50 + ((i ** 2) & 63)))
                     : rows.slice(0, rowsToAdd)
             );
         }

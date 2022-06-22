@@ -6,10 +6,10 @@ import Link from "next/link";
 
 ```bash
 # npm
-npm i -S @af-utils/react-virtual-headless prop-types
+npm i -S @af-utils/react-virtual-headless prop-types use-sync-external-store
 
 # yarn
-yarn add @af-utils/react-virtual-headless prop-types
+yarn add @af-utils/react-virtual-headless prop-types use-sync-external-store
 ```
 
 <h2 id="use-virtual">useVirtual</h2>
@@ -101,13 +101,7 @@ mapVisibleRange(model, Item, itemData, getKey);
 ## useSubscription
 
 ```jsx
-useSubscription(
-    model,
-    () => {},
-    events,
-    (invokeImmediately = false),
-    (deps = [])
-);
+useSubscription(model, () => {}, events, (deps = []));
 ```
 
 ### Options
@@ -121,9 +115,6 @@ useSubscription(
 -   `events: Array<Integer>`
     -   **Required**
     -   Array of events to subscribe
--   `invokeImmediately: Boolean`
-    -   Defaults to: `false`
-    -   Should call `callback` right after subscribing to `events`
 -   `deps: Array`
     -   By default `callback` reference change does not lead to resubscribe.
         Think of deps like of useCallback deps for `callback`.
@@ -131,7 +122,7 @@ useSubscription(
 ## Subscription
 
 ```jsx
-<Subscription model={model} events={events}>
+<Subscription model={model} events={events} getHash={getHash}>
     {model => {}}
 </Subscription>
 ```
@@ -147,6 +138,9 @@ useSubscription(
 -   `events: Array<Integer>`
     -   **Required**
     -   Defaults to: <Link href="/headless#numeric-event-constants"><a>`EVT_ALL`</a></Link>
+-   `getHash: Function() => String | Integer`
+    -   **Required**
+    -   model entity hash
 
 export default ({ children }) => (
     <MdxWrapper>

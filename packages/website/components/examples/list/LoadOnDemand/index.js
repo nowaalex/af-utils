@@ -59,8 +59,7 @@ const Posts = () => {
                 setPosts(p => p.concat(paragraphs));
             }
         },
-        EVENTS,
-        true
+        EVENTS
     );
 
     return (

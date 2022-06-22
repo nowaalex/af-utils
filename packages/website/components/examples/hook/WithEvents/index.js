@@ -32,7 +32,11 @@ const WithEvents = () => {
 
     return (
         <div className="overflow-auto relative" ref={model.setOuterNode}>
-            <Subscription model={model} events={SCROLL_SIZE_EVENTS}>
+            <Subscription
+                model={model}
+                events={SCROLL_SIZE_EVENTS}
+                getHash={() => model.scrollSize}
+            >
                 {({ scrollSize: height }) => (
                     <div
                         className="invisible absolute top-0 left-0 w-px"
@@ -40,7 +44,11 @@ const WithEvents = () => {
                     />
                 )}
             </Subscription>
-            <Subscription model={model} events={RANGE_EVENTS}>
+            <Subscription
+                model={model}
+                events={RANGE_EVENTS}
+                getHash={() => model.from + "_" + model.to}
+            >
                 {({ from }) => (
                     <>
                         <div

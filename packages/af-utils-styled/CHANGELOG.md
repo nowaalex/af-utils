@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.7
+
+### Patch Changes
+
+-   react 18 final
+
 ## 0.0.6
 
 ### Patch Changes

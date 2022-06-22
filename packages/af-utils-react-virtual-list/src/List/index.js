@@ -74,7 +74,11 @@ const List = ({
             tabIndex={tabIndex}
             {...props}
         >
-            <Subscription model={model} events={SCROLL_SIZE_EVENTS}>
+            <Subscription
+                model={model}
+                events={SCROLL_SIZE_EVENTS}
+                getHash={() => model.scrollSize}
+            >
                 {({ scrollSize }) => (
                     <div
                         className={scrollClassName}
@@ -82,7 +86,11 @@ const List = ({
                     />
                 )}
             </Subscription>
-            <Subscription model={model} events={RANGE_EVENTS}>
+            <Subscription
+                model={model}
+                events={RANGE_EVENTS}
+                getHash={() => model.from + "_" + model.to}
+            >
                 {({ from }) => (
                     <>
                         <div

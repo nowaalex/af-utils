@@ -5,7 +5,6 @@ import {
     List
 } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
-import random from "lodash/random";
 import faker from "faker";
 
 const Item = memo(
@@ -23,9 +22,9 @@ const Item = memo(
 
 const getKey = (i, itemData) => itemData[i].name;
 
-const getRandomItem = () => ({
+const getRandomItem = i => ({
     name: faker.name.firstName() + " " + faker.name.lastName(),
-    height: random(30, 120)
+    height: 30 + ((i ** 2) & 63)
 });
 
 /* new Promise is made to simulate asynchronous fetch request */

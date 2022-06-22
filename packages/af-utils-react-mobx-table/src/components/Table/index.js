@@ -25,7 +25,7 @@ const wrapperClass = css(
 );
 
 const GroupRow = memo(
-    ({ i, groupI, model, m, data: D }) => (
+    ({ i, groupI, m, model, data: D }) => (
         <D.components.Tr ref={el => model.el(i, el)}>
             <D.components.Td colSpan={D.columns.length}>
                 <GroupCell m={m} i={groupI} columns={D.columns} />
@@ -122,7 +122,11 @@ const ComplexTable = ({
                     model={model}
                 />
             ) : (
-                <D.components.PASSED_ROW i={i} data={D} model={model} />
+                <D.components.PASSED_ROW
+                    i={realRowIndex}
+                    data={D}
+                    model={model}
+                />
             );
         });
 

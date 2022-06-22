@@ -24,19 +24,21 @@ export const table = Object.fromEntries(
         toUrl(path),
         {
             Component: dynamic(() => requireComponent(path), {
-                suspense: false
+                suspense: true
             }),
             ComponentCode: dynamic(
                 () =>
-                    requireCode(path).then(code => () => (
-                        <code
-                            className="language-jsx"
-                            dangerouslySetInnerHTML={{
-                                __html: code.default
-                            }}
-                        />
-                    )),
-                { suspense: false }
+                    requireCode(path).then(code => ({
+                        default: () => (
+                            <code
+                                className="language-jsx"
+                                dangerouslySetInnerHTML={{
+                                    __html: code.default
+                                }}
+                            />
+                        )
+                    })),
+                { suspense: true }
             )
         }
     ])

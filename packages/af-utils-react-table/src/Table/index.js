@@ -104,7 +104,11 @@ const Table = ({
             tabIndex={tabIndex}
             {...props}
         >
-            <Subscription model={model} events={SCROLLSIZE_EVENTS}>
+            <Subscription
+                model={model}
+                events={SCROLLSIZE_EVENTS}
+                getHash={() => model.scrollSize}
+            >
                 {renderStretchBlock}
             </Subscription>
             <C.Table className={tableClass}>
@@ -120,7 +124,11 @@ const Table = ({
                     </C.Thead>
                 )}
                 <C.Tbody>
-                    <Subscription model={model} events={RANGE_EVENTS}>
+                    <Subscription
+                        model={model}
+                        events={RANGE_EVENTS}
+                        getHash={() => model.from + "_" + model.to}
+                    >
                         {renderRows}
                     </Subscription>
                 </C.Tbody>

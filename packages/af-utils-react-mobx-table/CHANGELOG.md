@@ -1,5 +1,15 @@
 # @af-utils/react-mobx-table
 
+## 0.0.15
+
+### Patch Changes
+
+-   react 18 final
+-   Updated dependencies
+    -   @af-utils/react-table@0.0.14
+    -   @af-utils/react-virtual-headless@0.0.11
+    -   @af-utils/styled@0.0.7
+
 ## 0.0.14
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.11
+
+### Patch Changes
+
+-   react 18 final
+
 ## 0.0.10
 
 ### Patch Changes

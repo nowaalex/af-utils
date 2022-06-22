@@ -1,7 +1,5 @@
-import PubSub from "../PubSub";
 import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
 import ResizeObserver from "models/ResizeObserver";
-import throttle from "/utils/throttle";
 import {
     EVT_ALL,
     EVT_FROM,
@@ -16,7 +14,7 @@ const VERTICAL_SCROLL_KEY = "scrollTop";
 const HORIZONTAL_SIZE_KEY = "offsetWidth";
 const VERTICAL_SIZE_KEY = "offsetHeight";
 
-class List extends PubSub {
+class List {
     horizontal = false;
     _scrollKey = VERTICAL_SCROLL_KEY;
     _sizeKey = VERTICAL_SIZE_KEY;
@@ -48,7 +46,6 @@ class List extends PubSub {
     from = 0;
     to = 0;
 
-    _elQueue = new Map();
     _elToIdx = new Map();
     _idxToEl = new Map();
 
@@ -79,6 +76,56 @@ class List extends PubSub {
             this._endBatch();
         }
     });
+
+    /* Quantity of subarrays is hardcoded and equals events constants quantity */
+    _EventsList = [[], [], []];
+
+    /* Queue of callbacks, that should run after batch end */
+    _Queue = new Set();
+
+    /* depth of batch */
+    _inBatch = 0;
+
+    on(callBack, deps) {
+        deps.forEach(evt => this._EventsList[evt].push(callBack));
+        return () =>
+            deps.forEach(evt =>
+                this._EventsList[evt].splice(
+                    this._EventsList[evt].indexOf(callBack) >>> 0,
+                    1
+                )
+            );
+    }
+
+    _run(evt) {
+        if (process.env.NODE_ENV !== "production") {
+            if (this._inBatch === 0) {
+                throw new Error("Can't run actions while not in batch");
+            }
+        }
+
+        for (const cb of this._EventsList[evt]) {
+            this._Queue.add(cb);
+        }
+    }
+
+    /* inspired by mobx */
+
+    _startBatch() {
+        this._inBatch++;
+    }
+
+    _endBatch() {
+        if (--this._inBatch === 0) {
+            for (const cb of this._Queue) {
+                /*
+                    These callbacks must not call _startBatch from inside.
+                */
+                cb();
+            }
+            this._Queue.clear();
+        }
+    }
 
     setWidgetSize(widgetSize) {
         if (widgetSize !== this._widgetSize) {
@@ -202,15 +249,6 @@ class List extends PubSub {
         }
     };
 
-    _processQueueThrottled = throttle(() => {
-        for (const [i, el] of this._elQueue) {
-            this._idxToEl.set(i, el);
-            this._elToIdx.set(el, i);
-            this._ElResizeObserver.observe(el);
-        }
-        this._elQueue.clear();
-    });
-
     /*
         Performs as destructor when null is passed
         will ne used as callback, so using =>
@@ -231,19 +269,21 @@ class List extends PubSub {
         } else {
             this._ElResizeObserver.disconnect();
             clearTimeout(this._scrollToTimer);
-            this._processQueueThrottled._cancel();
         }
     };
 
     el(i, node) {
         if (node) {
-            this._elQueue.set(i, node);
-            this._processQueueThrottled();
-        } else if (!this._elQueue.delete(i)) {
+            this._idxToEl.set(i, node);
+            this._elToIdx.set(node, i);
+            this._ElResizeObserver.observe(node);
+        } else {
             node = this._idxToEl.get(i);
-            this._idxToEl.delete(i);
-            this._elToIdx.delete(node);
-            this._ElResizeObserver.unobserve(node);
+            if (node) {
+                this._idxToEl.delete(i);
+                this._elToIdx.delete(node);
+                this._ElResizeObserver.unobserve(node);
+            }
         }
     }
 
@@ -319,9 +359,9 @@ class List extends PubSub {
 
     scrollTo(index, pixelOffset) {
         if (!this._scrollToTmpValue) {
-            this.on(this._scrollToRaw, EVT_ALL);
+            const unsubscribe = this.on(this._scrollToRaw, EVT_ALL);
             this._scrollToTimer = setTimeout(() => {
-                this.off(this._scrollToRaw, EVT_ALL);
+                unsubscribe();
                 this._scrollToTmpValue = null;
             }, MEASUREMENTS_MAX_DELAY);
         }

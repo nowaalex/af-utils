@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { useVirtual, Table } from "@af-utils/react-table";
 import times from "lodash/times";
-import r from "lodash/random";
 
 const DEFAULT_ROW_COUNT = 100000;
 
@@ -10,7 +9,7 @@ const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
 
 const VariableSizeTable = () => {
     const [dynamicListRowHeights] = useState(() =>
-        times(DEFAULT_ROW_COUNT, () => r(30, 90))
+        times(DEFAULT_ROW_COUNT, i => 30 + ((i ** 2) & 63))
     );
 
     const model = useVirtual({
