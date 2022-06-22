@@ -1,5 +1,11 @@
 # @af-utils/react-mobx-table
 
+## 0.0.13
+
+### Patch Changes
+
+-   minor complexTable tweak
+
 ## 0.0.12
 
 ### Patch Changes

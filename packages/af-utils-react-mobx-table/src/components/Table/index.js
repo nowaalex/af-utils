@@ -24,6 +24,17 @@ const wrapperClass = css(
     "flex: 1 1 auto"
 );
 
+const GroupRow = memo(
+    ({ i, groupI, model, m, data: D }) => (
+        <D.components.Tr ref={el => model.el(i, el)}>
+            <D.components.Td colSpan={D.columns.length}>
+                <GroupCell m={m} i={groupI} columns={D.columns} />
+            </D.components.Td>
+        </D.components.Tr>
+    ),
+    areItemPropsEqual
+);
+
 const ComplexTable = ({
     itemCount,
     getEstimatedItemSize,
@@ -99,27 +110,20 @@ const ComplexTable = ({
     const components = useMemo(() => {
         const PASSED_ROW = PassedRow || DefaultTableComponents.Row;
 
-        const GroupRow = memo(
-            ({ i, data: D }) => (
-                <D.components.Tr>
-                    <D.components.Td colSpan={D.columns.length}>
-                        <GroupCell
-                            m={aggregatorModel}
-                            i={i}
-                            columns={D.columns}
-                        />
-                    </D.components.Td>
-                </D.components.Tr>
-            ),
-            areItemPropsEqual
-        );
-
-        const Row = observer(({ i, data }) => {
+        const Row = observer(({ i, model, data: D }) => {
             const realRowIndex = aggregatorModel.finalIndexes[i];
-            const Component =
-                realRowIndex < 0 ? GroupRow : data.components.PASSED_ROW;
 
-            return <Component key={i} i={realRowIndex} data={data} />;
+            return realRowIndex < 0 ? (
+                <GroupRow
+                    i={i}
+                    m={aggregatorModel}
+                    groupI={realRowIndex}
+                    data={D}
+                    model={model}
+                />
+            ) : (
+                <D.components.PASSED_ROW i={i} data={D} model={model} />
+            );
         });
 
         const HeaderCell = ({ column, i }) => (
