@@ -1,5 +1,11 @@
 # @af-utils/react-table
 
+## 0.0.13
+
+### Patch Changes
+
+-   removed will-change fix
+
 ## 0.0.12
 
 ### Patch Changes

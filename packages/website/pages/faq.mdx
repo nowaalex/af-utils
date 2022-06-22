@@ -12,8 +12,8 @@ import CommonHead from "/components/CommonHead";
         Github issue
     </a>
 
-    I have no idea why is this happening, but it can be fixed by adding <code className="language-css">will-change: scroll-position</code> or <code className="language-css">
-    transform: translateZ(0)</code> to scroll wrapper.
+    I have no idea why is this happening, it seems to be chrome bug, but it can be fixed by adding <code className="language-css">will-change: scroll-position</code> or <code className="language-css">
+    transform: translateZ(0)</code> to scroll wrapper. But scroll performance could decrease after this.
 
 export default ({ children }) => (
     <MdxWrapper>

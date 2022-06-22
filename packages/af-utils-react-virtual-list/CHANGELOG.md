@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-list
 
+## 0.0.12
+
+### Patch Changes
+
+-   removed will-change fix
+
 ## 0.0.11
 
 ### Patch Changes
