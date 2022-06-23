@@ -1,5 +1,13 @@
 # @af-utils/react-table
 
+## 0.0.16
+
+### Patch Changes
+
+-   repaired website ssr
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.13
+
 ## 0.0.15
 
 ### Patch Changes

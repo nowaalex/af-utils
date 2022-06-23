@@ -1,4 +1,4 @@
-import { useState, useRef, memo } from "react";
+import { useState, useRef, useCallback, memo } from "react";
 
 import {
     useVirtual,
@@ -8,7 +8,9 @@ import {
     List
 } from "@af-utils/react-virtual-list";
 
-import faker from "faker";
+import useFakerSeed from "/hooks/useFakerSeed";
+
+import { faker } from "@faker-js/faker";
 
 const fetchRandomDescriptions = () =>
     new Promise(resolve =>
@@ -39,6 +41,9 @@ const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
     oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 500;
 
 const Posts = () => {
+    // fake data should be consistent for ssr purpose
+    useFakerSeed(12345);
+
     const [posts, setPosts] = useState(() => [faker.lorem.paragraphs()]);
 
     const isLoadingRef = useRef(false);
@@ -50,7 +55,7 @@ const Posts = () => {
 
     useSubscription(
         model,
-        async () => {
+        useCallback(async () => {
             const { itemCount, to } = model;
             if (isLoadingRef.current === false && itemCount === to) {
                 isLoadingRef.current = true;
@@ -58,7 +63,9 @@ const Posts = () => {
                 isLoadingRef.current = false;
                 setPosts(p => p.concat(paragraphs));
             }
-        },
+            // model is always same by link
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []),
         EVENTS
     );
 

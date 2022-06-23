@@ -4,6 +4,7 @@ import rehypeRewrite from "rehype-rewrite";
 import rehypePrism from "@mapbox/rehype-prism";
 import remarkToc from "remark-toc";
 import nextMdx from "@next/mdx";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
 import jsx from "refractor/lang/jsx.js";
 import css from "refractor/lang/css.js";
@@ -68,18 +69,20 @@ const withMDX = nextMdx({
     }
 });
 
-const config = withMDX({
-    pageExtensions: ["js", "jsx", "md", "mdx"],
-    reactStrictMode: true,
-    async redirects() {
-        return [
-            {
-                source: "/",
-                destination: "/examples/list/Simple",
-                permanent: true
-            }
-        ];
-    }
-});
+const config = withBundleAnalyzer(
+    withMDX({
+        pageExtensions: ["js", "jsx", "md", "mdx"],
+        reactStrictMode: true,
+        async redirects() {
+            return [
+                {
+                    source: "/",
+                    destination: "/examples/list/Simple",
+                    permanent: true
+                }
+            ];
+        }
+    })
+);
 
 export default config;

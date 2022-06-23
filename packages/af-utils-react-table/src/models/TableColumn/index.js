@@ -15,11 +15,12 @@ class TableColumn {
         this.render = col.render || null;
         this.formatTotal = col.formatTotal || null;
         this.totals = col.totals || null;
-        this.background = col.background || "";
-        this.border = col.border || "";
-        this.width = col.width ?? "";
-        this.minWidth = col.minWidth ?? null;
         this.Cell = col.Cell || null;
+
+        this.background = col.background;
+        this.border = col.border;
+        this.width = col.width;
+        this.minWidth = col.minWidth;
 
         this._styleObj = this.minWidth && { minWidth: this.minWidth };
         this._className = ALIGN_CLASSES_MAP[this.align];

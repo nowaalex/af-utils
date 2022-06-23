@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { EMPTY_ARRAY } from "constants";
 
-const useSubscription = (model, callBack, events, deps) =>
-    useEffect(
-        () => (callBack(), model.on(callBack, events)),
-        deps || EMPTY_ARRAY
-    );
+const useSubscription = (model, callBack, events) =>
+    useEffect(() => {
+        if (callBack) {
+            callBack();
+            return model.on(callBack, events);
+        }
+    }, [callBack, events]);
 
 export default useSubscription;

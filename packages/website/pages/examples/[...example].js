@@ -15,12 +15,12 @@ const Example = () => {
             <h1 className="text-4xl lg:col-span-2 mt-1 mb-2 font-bold text-center ml-14 sm:ml-0">
                 {title}
             </h1>
-            <Suspense>
+            <Suspense fallback="Loading component...">
                 <Component />
             </Suspense>
 
             <pre className="language-jsx overflow-auto !m-0">
-                <Suspense>
+                <Suspense fallback="Loading code...">
                     <ComponentCode />
                 </Suspense>
             </pre>

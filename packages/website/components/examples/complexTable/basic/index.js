@@ -1,15 +1,18 @@
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Table } from "@af-utils/react-mobx-table";
-import faker from "faker";
 import times from "lodash/times";
+import { faker } from "@faker-js/faker";
+
+// fake data should be consistent for ssr purpose
+faker.seed(5);
 
 const rows = times(10000, i => ({
     i,
     fixedRange: i & 15,
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
-    height: 30 + ((i ** 2) & 63),
+    height: faker.mersenne.rand(90, 30),
     country: faker.address.country()
 }));
 

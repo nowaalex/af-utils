@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.13
+
+### Patch Changes
+
+-   repaired website ssr
+
 ## 0.0.12
 
 ### Patch Changes

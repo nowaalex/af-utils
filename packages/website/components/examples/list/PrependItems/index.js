@@ -5,7 +5,8 @@ import {
     List
 } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
-import faker from "faker";
+import { faker } from "@faker-js/faker";
+import useFakerSeed from "/hooks/useFakerSeed";
 
 const Item = memo(
     ({ i, model, data }) => (
@@ -22,9 +23,9 @@ const Item = memo(
 
 const getKey = (i, itemData) => itemData[i].name;
 
-const getRandomItem = i => ({
+const getRandomItem = () => ({
     name: faker.name.firstName() + " " + faker.name.lastName(),
-    height: 30 + ((i ** 2) & 63)
+    height: faker.mersenne.rand(140, 30)
 });
 
 /* new Promise is made to simulate asynchronous fetch request */
@@ -42,6 +43,9 @@ const getEstimatedItemSize = oldItemSizes =>
         : 60;
 
 const PrependItems = () => {
+    // fake data should be consistent for ssr purpose
+    useFakerSeed(1234);
+
     const scrollPosRef = useRef(null);
 
     const [items, setItems] = useState(() => times(1000, getRandomItem));

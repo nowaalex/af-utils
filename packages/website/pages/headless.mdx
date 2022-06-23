@@ -101,7 +101,7 @@ mapVisibleRange(model, Item, itemData, getKey);
 ## useSubscription
 
 ```jsx
-useSubscription(model, () => {}, events, (deps = []));
+useSubscription(model, () => {}, events);
 ```
 
 ### Options
@@ -115,9 +115,6 @@ useSubscription(model, () => {}, events, (deps = []));
 -   `events: Array<Integer>`
     -   **Required**
     -   Array of events to subscribe
--   `deps: Array`
-    -   By default `callback` reference change does not lead to resubscribe.
-        Think of deps like of useCallback deps for `callback`.
 
 ## Subscription
 

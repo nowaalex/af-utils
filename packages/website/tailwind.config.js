@@ -6,7 +6,7 @@ module.exports = {
     ],
     theme: {
         extend: {
-            typography: theme => ({
+            typography: () => ({
                 DEFAULT: {
                     css: {
                         "code::before": {
