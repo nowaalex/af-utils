@@ -4,7 +4,7 @@ import rehypeRewrite from "rehype-rewrite";
 import rehypePrism from "@mapbox/rehype-prism";
 import remarkToc from "remark-toc";
 import nextMdx from "@next/mdx";
-import withBundleAnalyzer from "@next/bundle-analyzer";
+import nextBundleAnalyzer from "@next/bundle-analyzer";
 
 import jsx from "refractor/lang/jsx.js";
 import css from "refractor/lang/css.js";
@@ -17,6 +17,10 @@ refractor.register(css);
 refractor.register(bash);
 refractor.register(jsExtras);
 refractor.register(cssExtras);
+
+const withBundleAnalyzer = nextBundleAnalyzer({
+    enabled: true
+});
 
 const withMDX = nextMdx({
     options: {
