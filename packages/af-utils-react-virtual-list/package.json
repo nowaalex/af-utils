@@ -48,7 +48,7 @@
         "@babel/preset-env": "^7.18.2",
         "@babel/preset-react": "^7.17.12",
         "@rollup/plugin-babel": "^5.3.1",
-        "@rollup/plugin-commonjs": "^22.0.0",
+        "@rollup/plugin-commonjs": "^22.0.1",
         "@rollup/plugin-export-bundle-size": "^0.0.1",
         "@rollup/plugin-replace": "^4.0.0",
         "@rollup/plugin-virtual": "^2.1.0",
