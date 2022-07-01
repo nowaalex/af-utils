@@ -1,5 +1,11 @@
 # @af-utils/react-table
 
+## 0.0.18
+
+### Patch Changes
+
+-   quick subscription fix
+
 ## 0.0.17
 
 ### Patch Changes

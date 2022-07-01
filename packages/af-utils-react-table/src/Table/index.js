@@ -82,7 +82,7 @@ const Table = ({
             getRowProps
         );
 
-        return model => (
+        return () => (
             <>
                 <tr
                     className={hiddenClass}
