@@ -119,8 +119,8 @@ useSubscription(model, () => {}, events);
 ## Subscription
 
 ```jsx
-<Subscription model={model} events={events} getHash={getHash}>
-    {model => {}}
+<Subscription model={model} events={events}>
+    {() => {}}
 </Subscription>
 ```
 
@@ -135,9 +135,6 @@ useSubscription(model, () => {}, events);
 -   `events: Array<Integer>`
     -   **Required**
     -   Defaults to: <Link href="/headless#numeric-event-constants"><a>`EVT_ALL`</a></Link>
--   `getHash: Function() => String | Integer`
-    -   **Required**
-    -   model entity hash
 
 export default ({ children }) => (
     <MdxWrapper>

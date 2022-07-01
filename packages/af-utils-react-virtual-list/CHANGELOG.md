@@ -1,5 +1,14 @@
 # @af-utils/react-virtual-list
 
+## 0.0.16
+
+### Patch Changes
+
+-   removed getHash, calculating it automatically now
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.14
+    -   @af-utils/styled@0.0.9
+
 ## 0.0.15
 
 ### Patch Changes

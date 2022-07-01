@@ -51,10 +51,6 @@ class RowPropsClass {
 
 /* ---------------------------------------------------- */
 
-const renderStretchBlock = ({ scrollSize: height }) => (
-    <div className={topSpacerClass} style={{ height }} />
-);
-
 const Table = ({
     model,
     columns,
@@ -104,12 +100,13 @@ const Table = ({
             tabIndex={tabIndex}
             {...props}
         >
-            <Subscription
-                model={model}
-                events={SCROLLSIZE_EVENTS}
-                getHash={() => model.scrollSize}
-            >
-                {renderStretchBlock}
+            <Subscription model={model} events={SCROLLSIZE_EVENTS}>
+                {() => (
+                    <div
+                        className={topSpacerClass}
+                        style={{ height: model.scrollSize }}
+                    />
+                )}
             </Subscription>
             <C.Table className={tableClass}>
                 <Colgroup columns={normalizedColumns} />
@@ -124,11 +121,7 @@ const Table = ({
                     </C.Thead>
                 )}
                 <C.Tbody>
-                    <Subscription
-                        model={model}
-                        events={RANGE_EVENTS}
-                        getHash={() => model.from + "_" + model.to}
-                    >
+                    <Subscription model={model} events={RANGE_EVENTS}>
                         {renderRows}
                     </Subscription>
                 </C.Tbody>

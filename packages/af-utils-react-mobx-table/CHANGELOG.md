@@ -1,5 +1,15 @@
 # @af-utils/react-mobx-table
 
+## 0.0.18
+
+### Patch Changes
+
+-   removed getHash, calculating it automatically now
+-   Updated dependencies
+    -   @af-utils/react-table@0.0.17
+    -   @af-utils/react-virtual-headless@0.0.14
+    -   @af-utils/styled@0.0.9
+
 ## 0.0.17
 
 ### Patch Changes

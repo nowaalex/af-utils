@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.9
+
+### Patch Changes
+
+-   removed getHash, calculating it automatically now
+
 ## 0.0.8
 
 ### Patch Changes

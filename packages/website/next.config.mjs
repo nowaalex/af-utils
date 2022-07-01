@@ -19,7 +19,7 @@ refractor.register(jsExtras);
 refractor.register(cssExtras);
 
 const withBundleAnalyzer = nextBundleAnalyzer({
-    enabled: true
+    enabled: false
 });
 
 const withMDX = nextMdx({

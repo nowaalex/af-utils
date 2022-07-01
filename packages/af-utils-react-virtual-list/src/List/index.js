@@ -74,28 +74,22 @@ const List = ({
             tabIndex={tabIndex}
             {...props}
         >
-            <Subscription
-                model={model}
-                events={SCROLL_SIZE_EVENTS}
-                getHash={() => model.scrollSize}
-            >
-                {({ scrollSize }) => (
+            <Subscription model={model} events={SCROLL_SIZE_EVENTS}>
+                {() => (
                     <div
                         className={scrollClassName}
-                        style={{ [primaryAxis]: scrollSize }}
+                        style={{ [primaryAxis]: model.scrollSize }}
                     />
                 )}
             </Subscription>
-            <Subscription
-                model={model}
-                events={RANGE_EVENTS}
-                getHash={() => model.from + "_" + model.to}
-            >
-                {({ from }) => (
+            <Subscription model={model} events={RANGE_EVENTS}>
+                {() => (
                     <>
                         <div
                             className={offsetClassName}
-                            style={{ [primaryAxis]: model.getOffset(from) }}
+                            style={{
+                                [primaryAxis]: model.getOffset(model.from)
+                            }}
                         />
                         {mapVisibleRange(model, Item, itemData, getKey)}
                     </>

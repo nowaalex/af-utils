@@ -1,22 +1,19 @@
 const getKeyDefault = i => i;
 
-const mapVisibleRange = (model, Item, itemData, getKey) => {
-    // default arguments are transpiled non-compact way
-    getKey ||= getKeyDefault;
-    const result = [];
-
-    for (let i = model.from, to = model.to; i < to; i++) {
-        result.push(
-            <Item
-                key={getKey(i, itemData)}
-                i={i}
-                data={itemData}
-                model={model}
-            />
-        );
-    }
-
-    return result;
-};
+// default args are transpiled strangely
+const mapVisibleRange = (model, Item, itemData, getKey) => (
+    (getKey ||= getKeyDefault),
+    /*
+        i and key order is important in jsx
+    */
+    Array.from({ length: model.to - model.from }, (_, i) => (
+        <Item
+            i={(i += model.from)}
+            key={getKey(i, itemData)}
+            data={itemData}
+            model={model}
+        />
+    ))
+);
 
 export default mapVisibleRange;
