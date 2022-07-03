@@ -6,6 +6,7 @@ import getSorter from "../utils/getSorter";
 import getFilteredIndexes from "../utils/getFilteredIndexes";
 import Base from "../Base";
 
+const stubFalse = () => false;
 class Mobx extends Base {
     get visibleColumns() {
         return this.columns.filter(col => !this.groupKeys.includes(col.key));
@@ -103,9 +104,9 @@ class Mobx extends Base {
             visibleColumns: computed({ equals: comparer.structural }),
             priorityGroupValuesArray: computed({ equals: comparer.structural }),
 
-            finalIndexes: true,
-            noGroupsSortedIndexes: true,
-            groupedSorted: true,
+            finalIndexes: computed({ equals: stubFalse }),
+            noGroupsSortedIndexes: computed({ equals: stubFalse }),
+            groupedSorted: computed({ equals: stubFalse }),
 
             itemCount: true,
             getRowData: false,

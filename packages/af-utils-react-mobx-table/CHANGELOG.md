@@ -1,5 +1,11 @@
 # @af-utils/react-mobx-table
 
+## 0.0.21
+
+### Patch Changes
+
+-   corrected table observers
+
 ## 0.0.20
 
 ### Patch Changes
