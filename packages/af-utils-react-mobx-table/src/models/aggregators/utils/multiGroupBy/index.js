@@ -1,24 +1,27 @@
-const multiGroupBy = ( indexesArray, groupDataKeysList, getRowData, priorityGroupValuesArray ) => {
-
+const multiGroupBy = (
+    indexesArray,
+    groupDataKeysList,
+    getRowData,
+    priorityGroupValuesArray
+) => {
     const lastGroupIndex = groupDataKeysList.length - 1;
 
-    if( process.env.NODE_ENV !== "production" ){
-        if( lastGroupIndex < 0 ){
-            throw new Error( "lastGroupIndex < 0" );
+    if (process.env.NODE_ENV !== "production") {
+        if (lastGroupIndex < 0) {
+            throw new Error("lastGroupIndex < 0");
         }
     }
 
-    const lastGroupDataKey = groupDataKeysList[ lastGroupIndex ];
+    const lastGroupDataKey = groupDataKeysList[lastGroupIndex];
     const groupsMap = new Map();
-   
 
-    for( let rowIndex of indexesArray ){
+    for (const rowIndex of indexesArray) {
         /*
             It is better to start from indexes iteration, not from groups, to minimize getRowData calls
         */
-        const row = getRowData( rowIndex );
+        const row = getRowData(rowIndex);
 
-        if( !row ){
+        if (!row) {
             continue;
         }
 
@@ -29,38 +32,39 @@ const multiGroupBy = ( indexesArray, groupDataKeysList, getRowData, priorityGrou
         /*
             We could put everything in one loop, but last iteration is different.
         */
-        for( let i = 0; i < lastGroupIndex; i++ ){
-            cellValue = row[ groupDataKeysList[ i ] ];
-            tmpInnerObject = innerObject.get( cellValue );
-            if( !tmpInnerObject ){
+        for (let i = 0; i < lastGroupIndex; i++) {
+            cellValue = row[groupDataKeysList[i]];
+            tmpInnerObject = innerObject.get(cellValue);
+            if (!tmpInnerObject) {
                 tmpInnerObject = new Map();
-                for( let priorityValue of priorityGroupValuesArray[ i ] ){
-                    if( !innerObject.has( priorityValue ) ){
-                        innerObject.set( priorityValue, null );
+                for (let priorityValue of priorityGroupValuesArray[i]) {
+                    if (!innerObject.has(priorityValue)) {
+                        innerObject.set(priorityValue, null);
                     }
                 }
-                innerObject.set( cellValue, tmpInnerObject );
+                innerObject.set(cellValue, tmpInnerObject);
             }
             innerObject = tmpInnerObject;
         }
 
-        cellValue = row[ lastGroupDataKey ];
-        tmpInnerObject = innerObject.get( cellValue );
+        cellValue = row[lastGroupDataKey];
+        tmpInnerObject = innerObject.get(cellValue);
 
-        if( tmpInnerObject ){
-            tmpInnerObject.push( rowIndex );
-        }
-        else {
-            for( let priorityValue of priorityGroupValuesArray[ lastGroupIndex ] ){
-                if( !innerObject.has( priorityValue  ) ){
-                    innerObject.set( priorityValue, null );
+        if (tmpInnerObject) {
+            tmpInnerObject.push(rowIndex);
+        } else {
+            for (let priorityValue of priorityGroupValuesArray[
+                lastGroupIndex
+            ]) {
+                if (!innerObject.has(priorityValue)) {
+                    innerObject.set(priorityValue, null);
                 }
             }
-            innerObject.set( cellValue, [ rowIndex ]);
+            innerObject.set(cellValue, [rowIndex]);
         }
     }
 
     return groupsMap;
-}
+};
 
 export default multiGroupBy;

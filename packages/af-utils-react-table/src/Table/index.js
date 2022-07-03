@@ -9,6 +9,7 @@ import {
 } from "@af-utils/react-virtual-headless";
 import { css, cx } from "@af-utils/styled";
 import TableColumn from "models/TableColumn";
+import TableRowProps from "models/TableRowProps";
 import Colgroup from "./Colgroup";
 import DEFAULT_COMPONENTS_MAP from "./components";
 
@@ -38,44 +39,32 @@ const theadClass = cx(stickyClass, top0Class);
 
 const tfootClass = cx(stickyClass, css("bottom: 0"));
 
-/* Creating classes for hidden classes optimization */
-class RowPropsClass {
-    constructor(columns, components, getRowData, getRowProps) {
-        this.columns = columns;
-        this.components = components;
-        this.getRowData = getRowData;
-        this.getRowProps =
-            getRowProps || ((model, i) => ({ ref: el => model.el(i, el) }));
-    }
-}
-
-/* ---------------------------------------------------- */
-
 const Table = ({
     model,
     columns,
-    getKey,
+    getKey = i => i,
     getRowData,
     getRowProps,
     components,
     headless,
     footer,
     className,
+    ColumnModel = TableColumn,
     tabIndex = -1,
     ...props
 }) => {
     const C = useMemo(
-        () => Object.assign({}, DEFAULT_COMPONENTS_MAP, components),
+        () => ({ ...DEFAULT_COMPONENTS_MAP, ...components }),
         [components]
     );
 
     const normalizedColumns = useMemo(
-        () => columns.map(col => new TableColumn(col)),
-        [columns]
+        () => columns.map(col => new ColumnModel(col, C)),
+        [columns, C]
     );
 
     const renderRows = useMemo(() => {
-        const rowProps = new RowPropsClass(
+        const rowProps = new TableRowProps(
             normalizedColumns,
             C,
             getRowData,
@@ -88,7 +77,15 @@ const Table = ({
                     className={hiddenClass}
                     style={{ height: model.getOffset(model.from) }}
                 />
-                {mapVisibleRange(model, C.Row, rowProps, getKey)}
+                {mapVisibleRange(model, i => (
+                    <C.Row
+                        key={getKey(i, rowProps)}
+                        i={i}
+                        i2={i}
+                        data={rowProps}
+                        model={model}
+                    />
+                ))}
             </>
         );
     }, [C, normalizedColumns, getRowData, getRowProps, getKey]);
@@ -150,7 +147,8 @@ Table.propTypes = {
     getRowProps: PropTypes.func,
     getKey: PropTypes.func,
     headless: PropTypes.bool,
-    footer: PropTypes.bool
+    footer: PropTypes.bool,
+    ColumnModel: PropTypes.func
 };
 
 export default memo(Table);

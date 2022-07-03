@@ -1,27 +1,20 @@
 import { useState, useEffect, memo } from "react";
-import {
-    useVirtual,
-    areItemPropsEqual,
-    List
-} from "@af-utils/react-virtual-list";
+import { useVirtual, List } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
 
 const DEFAULT_ROW_COUNT = 20000;
 
-const Item = memo(
-    ({ i, model, data: dynamicListRowHeights }) => (
-        <div
-            ref={el => model.el(i, el)}
-            className="text-center border-t border-zinc-400"
-            style={{
-                lineHeight: `${dynamicListRowHeights[i]}px`
-            }}
-        >
-            row {i}:&nbsp;{dynamicListRowHeights[i]}px
-        </div>
-    ),
-    areItemPropsEqual
-);
+const Item = memo(({ i, model, data: dynamicListRowHeights }) => (
+    <div
+        ref={el => model.el(i, el)}
+        className="text-center border-t border-zinc-400"
+        style={{
+            lineHeight: `${dynamicListRowHeights[i]}px`
+        }}
+    >
+        row {i}:&nbsp;{dynamicListRowHeights[i]}px
+    </div>
+));
 
 const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
     oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 75;

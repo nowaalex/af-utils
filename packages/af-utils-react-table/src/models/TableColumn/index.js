@@ -1,4 +1,5 @@
 import { css } from "@af-utils/styled";
+import pick from "utils/pick";
 
 const ALIGN_CLASSES_MAP = {
     right: css("text-align: right !important;"),
@@ -6,21 +7,27 @@ const ALIGN_CLASSES_MAP = {
     center: css("text-align: center !important;")
 };
 
+const renderDefault = cellData => cellData;
 class TableColumn {
-    constructor(col) {
-        this.key = col.key;
-        this.align = col.align || "left";
-        this.label = col.label || this.key;
-        this.format = col.format || null;
-        this.render = col.render || null;
-        this.formatTotal = col.formatTotal || null;
-        this.totals = col.totals || null;
-        this.Cell = col.Cell || null;
+    static KEYS = [
+        "key",
+        "align",
+        "label",
+        "render",
+        "Cell",
+        "background",
+        "border",
+        "width",
+        "minWidth"
+    ];
 
-        this.background = col.background;
-        this.border = col.border;
-        this.width = col.width;
-        this.minWidth = col.minWidth;
+    constructor(col, components) {
+        Object.assign(this, pick(col, this.constructor.KEYS));
+
+        this.align ||= "left";
+        this.label ||= this.key;
+        this.Cell ||= components.Cell;
+        this.render ||= renderDefault;
 
         this._styleObj = this.minWidth && { minWidth: this.minWidth };
         this._className = ALIGN_CLASSES_MAP[this.align];

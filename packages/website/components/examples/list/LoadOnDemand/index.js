@@ -3,7 +3,6 @@ import { useState, useRef, useCallback, memo } from "react";
 import {
     useVirtual,
     useSubscription,
-    areItemPropsEqual,
     EVT_TO,
     List
 } from "@af-utils/react-virtual-list";
@@ -21,17 +20,14 @@ const fetchRandomDescriptions = () =>
         )
     );
 
-const Item = memo(
-    ({ i, model, data: posts }) => (
-        <div ref={el => model.el(i, el)} className="p-4">
-            <div className="border-4 text-center ring-inset leading-[30vh]">
-                maybe picture
-            </div>
-            <p>{posts[i]}</p>
+const Item = memo(({ i, model, data: posts }) => (
+    <div ref={el => model.el(i, el)} className="p-4">
+        <div className="border-4 text-center ring-inset leading-[30vh]">
+            maybe picture
         </div>
-    ),
-    areItemPropsEqual
-);
+        <p>{posts[i]}</p>
+    </div>
+));
 
 const EVENTS = [EVT_TO];
 
@@ -63,9 +59,7 @@ const Posts = () => {
                 isLoadingRef.current = false;
                 setPosts(p => p.concat(paragraphs));
             }
-            // model is always same by link
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, []),
+        }, [model]),
         EVENTS
     );
 

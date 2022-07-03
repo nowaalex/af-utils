@@ -1,8 +1,10 @@
 import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
 import {
+    SIZES_HASH_MODULO,
     EVT_ALL,
     EVT_FROM,
     EVT_TO,
+    EVT_SIZES,
     EVT_SCROLL_SIZE,
     MEASUREMENTS_MAX_DELAY
 } from "constants";
@@ -20,6 +22,30 @@ const FinalResizeObserver = process.env.__IS_SERVER__
           disconnect() {}
       }
     : ResizeObserver;
+
+/*
+Terser is able to inline function calls.
+Let's use it to optimize very simple function.
+If this function becomes more complex/inlining stops working - call should be rewritten to normal
+*/
+const inlinedStartBatch = ctx => {
+    ctx._inBatch++;
+};
+
+/* 
+        Creating fenwick tree from an array in linear time;
+        It is much more efficient, than calling updateItemHeight N times.
+    */
+const syncFtree = (fTree, sourceArray, itemCount) => {
+    fTree.set(sourceArray, 1);
+
+    for (let i = 1, j; i <= itemCount; i++) {
+        j = i + (i & -i);
+        if (j <= itemCount) {
+            fTree[j] += fTree[i];
+        }
+    }
+};
 
 class List {
     horizontal = false;
@@ -52,6 +78,7 @@ class List {
     itemCount = 0;
     from = 0;
     to = 0;
+    sizesHash = 0;
 
     _elToIdx = new Map();
     _idxToEl = new Map();
@@ -60,6 +87,7 @@ class List {
         let index = this.from,
             diff = 0,
             buff = 0,
+            wasAtLeastOneSizeChanged = false,
             lim = index + 1;
 
         for (; lim < this.to; lim += lim & -lim);
@@ -69,23 +97,33 @@ class List {
             diff = target[this._sizeKey] - this._itemSizes[index];
 
             if (diff) {
+                wasAtLeastOneSizeChanged = true;
                 this._itemSizes[index] += diff;
                 buff += diff;
                 this._updateItemHeight(index + 1, diff, lim);
             }
         }
 
-        if (buff !== 0) {
-            this._startBatch();
-            this._updateItemHeight(lim, buff, this._fTree.length);
-            this._setScrollSize(this.scrollSize + buff);
-            this._updateRangeFromEnd();
+        if (wasAtLeastOneSizeChanged) {
+            /*@__INLINE__*/
+            inlinedStartBatch(this);
+            /*
+                Modulo is used to prevent sizesHash from growing too much.
+                Using bitwise hack to optimize modulo.
+                5 % 2 === 5 & 1 && 9 % 4 === 9 & 3
+            */
+            this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
+            this._run(EVT_SIZES);
+            if (buff !== 0) {
+                this._updateItemHeight(lim, buff, this._fTree.length);
+                this._setScrollSize(this.scrollSize + buff);
+                this._updateRangeFromEnd();
+            }
             this._endBatch();
         }
     });
 
-    /* Quantity of subarrays is hardcoded and equals events constants quantity */
-    _EventsList = [[], [], []];
+    _EventsList = EVT_ALL.map(() => []);
 
     /* Queue of callbacks, that should run after batch end */
     _Queue = new Set();
@@ -119,7 +157,8 @@ class List {
     /* inspired by mobx */
 
     _startBatch() {
-        this._inBatch++;
+        /*@__INLINE__*/
+        inlinedStartBatch(this);
     }
 
     _endBatch() {
@@ -159,32 +198,21 @@ class List {
 
         if (itemCount > curRowHeighsLength) {
             this._itemSizes = new Uint32Array(itemCount);
-            this._fTree = new Uint32Array(itemCount + 1);
+            this._itemSizes.set(oldItemSizes);
 
-            this._itemSizes
-                .fill(
+            /*@__NOINLINE__*/
+            syncFtree(
+                (this._fTree = new Uint32Array(itemCount + 1)),
+                this._itemSizes.fill(
                     getEstimatedItemSize(
                         oldItemSizes,
                         this.scrollSize,
                         itemCount
                     ),
                     curRowHeighsLength
-                )
-                .set(oldItemSizes);
-
-            /* 
-                Creating fenwick tree from an array in linear time;
-                It is much more efficient, than calling updateItemHeight N times.
-            */
-
-            this._fTree.set(this._itemSizes, 1);
-
-            for (let i = 1, j; i <= itemCount; i++) {
-                j = i + (i & -i);
-                if (j <= itemCount) {
-                    this._fTree[j] += this._fTree[i];
-                }
-            }
+                ),
+                itemCount
+            );
         }
 
         this._setScrollSize(this.getOffset(itemCount));
@@ -281,9 +309,14 @@ class List {
 
     el(i, node) {
         if (node) {
-            this._idxToEl.set(i, node);
-            this._elToIdx.set(node, i);
-            this._ElResizeObserver.observe(node);
+            if (!this._idxToEl.has(i)) {
+                this._idxToEl.set(i, node);
+                this._elToIdx.set(node, i);
+                this._ElResizeObserver.observe(node);
+            } else if (process.env.NODE_ENV !== "production") {
+                console.log({ i, node });
+                // throw new Error("el(i, node) must be called once per i");
+            }
         } else {
             node = this._idxToEl.get(i);
             if (node) {
@@ -301,7 +334,8 @@ class List {
         );
 
         if (to > this.to) {
-            this._startBatch();
+            /*@__INLINE__*/
+            inlinedStartBatch(this);
 
             this.to = Math.min(this.itemCount, to + this._overscanCount);
             this._run(EVT_TO);
@@ -321,7 +355,8 @@ class List {
         const from = this.getIndex(this.scrollPos);
 
         if (from < this.from) {
-            this._startBatch();
+            /*@__INLINE__*/
+            inlinedStartBatch(this);
 
             this.from = Math.max(0, from - this._overscanCount);
             this._run(EVT_FROM);
@@ -368,8 +403,8 @@ class List {
         if (!this._scrollToTmpValue) {
             const unsubscribe = this.on(this._scrollToRaw, EVT_ALL);
             this._scrollToTimer = setTimeout(() => {
-                unsubscribe();
                 this._scrollToTmpValue = null;
+                unsubscribe();
             }, MEASUREMENTS_MAX_DELAY);
         }
         this._scrollToTmpValue = [index || 0, pixelOffset || 0];
@@ -385,7 +420,8 @@ class List {
 
     setHorizontal(horizontal) {
         if (horizontal !== this.horizontal) {
-            this._startBatch();
+            /*@__INLINE__*/
+            inlinedStartBatch(this);
             this.horizontal = horizontal;
             this._scrollKey = horizontal
                 ? HORIZONTAL_SCROLL_KEY
@@ -409,7 +445,8 @@ class List {
     ) {
         if (itemCount !== this.itemCount) {
             this.itemCount = itemCount;
-            this._startBatch();
+            /*@__INLINE__*/
+            inlinedStartBatch(this);
             this._itemCountChanged(itemCount, getEstimatedItemSize);
             if (this.to > itemCount) {
                 this._shiftRangeToEnd();

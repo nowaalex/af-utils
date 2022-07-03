@@ -3,7 +3,6 @@ import useOnce from "../useOnce";
 
 const useVirtualModel = ({
     itemCount = 0,
-    // setItemCount already has default callback set
     getEstimatedItemSize,
     estimatedWidgetSize = 200,
     overscanCount = 3,
@@ -12,7 +11,6 @@ const useVirtualModel = ({
     const model = useOnce(() => {
         const model = new List();
 
-        /* StartBatch/EndBatch are not needed, because no subscriptions could exist here */
         model.setOverscan(overscanCount);
         model.setHorizontal(horizontal);
         model.setItemCount(itemCount, getEstimatedItemSize);

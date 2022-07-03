@@ -1,14 +1,10 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import useVirtualModel from "../useVirtualModel";
 
 const useVirtual = params => {
     const model = useVirtualModel(params);
 
-    useEffect(() => {
-        /*
-            startBatch/endBatch needed here not only for perf,
-            but also for subscription forceUpdate queue call
-        */
+    useLayoutEffect(() => {
         model._startBatch();
         model.setHorizontal(params.horizontal);
         model.setItemCount(params.itemCount, params.getEstimatedItemSize);

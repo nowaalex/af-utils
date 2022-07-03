@@ -8,7 +8,7 @@ import { faker } from "@faker-js/faker";
 faker.seed(5);
 
 const rows = times(10000, i => ({
-    i,
+    i: i - 5000,
     fixedRange: i & 15,
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
@@ -20,6 +20,7 @@ const getRowData = i => rows[i];
 
 const columns = [
     {
+        sorter: "numeric",
         key: "i",
         label: "i",
         totals: "sum",

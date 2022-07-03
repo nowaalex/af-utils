@@ -1,25 +1,18 @@
 import { memo, useState, useRef, useEffect } from "react";
-import {
-    useVirtual,
-    areItemPropsEqual,
-    List
-} from "@af-utils/react-virtual-list";
+import { useVirtual, List } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
 import { faker } from "@faker-js/faker";
 import useFakerSeed from "/hooks/useFakerSeed";
 
-const Item = memo(
-    ({ i, model, data }) => (
-        <div
-            ref={el => model.el(i, el)}
-            className="border-t p-2 border-zinc-400"
-            style={{ lineHeight: data[i].height + "px" }}
-        >
-            Idx:&nbsp;{i};&emsp;{data[i].name}
-        </div>
-    ),
-    areItemPropsEqual
-);
+const Item = memo(({ i, model, data }) => (
+    <div
+        ref={el => model.el(i, el)}
+        className="border-t p-2 border-zinc-400"
+        style={{ lineHeight: data[i].height + "px" }}
+    >
+        Idx:&nbsp;{i};&emsp;{data[i].name}
+    </div>
+));
 
 const getKey = (i, itemData) => itemData[i].name;
 

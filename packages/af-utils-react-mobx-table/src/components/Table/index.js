@@ -1,15 +1,11 @@
-import { useEffect, memo, useMemo } from "react";
+import { memo, useMemo, useLayoutEffect } from "react";
 import { observer, Observer } from "mobx-react-lite";
 import { autorun } from "mobx";
 import RowsAggregator from "models/aggregators/Mobx";
-import {
-    useVirtualModel,
-    areItemPropsEqual,
-    useOnce
-} from "@af-utils/react-virtual-headless";
+import { useVirtualModel, useOnce } from "@af-utils/react-virtual-headless";
 
 import { Table, DefaultTableComponents } from "@af-utils/react-table";
-
+import ColumnModel from "models/ColumnModel";
 import HeaderLabel from "./HeaderLabel";
 import HeaderInput from "./HeaderInput";
 import GroupCell from "./GroupCell";
@@ -24,16 +20,13 @@ const wrapperClass = css(
     "flex: 1 1 auto"
 );
 
-const GroupRow = memo(
-    ({ i, groupI, m, model, data: D }) => (
-        <D.components.Tr ref={el => model.el(i, el)}>
-            <D.components.Td colSpan={D.columns.length}>
-                <GroupCell m={m} i={groupI} columns={D.columns} />
-            </D.components.Td>
-        </D.components.Tr>
-    ),
-    areItemPropsEqual
-);
+const GroupRow = memo(({ i, groupI, m, model, data: D }) => (
+    <D.components.Tr ref={el => model.el(i, el)}>
+        <D.components.Td colSpan={D.columns.length}>
+            <GroupCell m={m} i={groupI} columns={D.columns} />
+        </D.components.Td>
+    </D.components.Tr>
+));
 
 const ComplexTable = ({
     itemCount,
@@ -85,7 +78,7 @@ const ComplexTable = ({
         return model;
     });
 
-    useEffect(
+    useLayoutEffect(
         () =>
             autorun(() =>
                 virtualModel.setItemCount(
@@ -96,7 +89,7 @@ const ComplexTable = ({
         [getEstimatedItemSize]
     );
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         aggregatorModel.merge({
             itemCount,
             getRowData,
@@ -124,6 +117,7 @@ const ComplexTable = ({
             ) : (
                 <D.components.PASSED_ROW
                     i={realRowIndex}
+                    i2={i}
                     data={D}
                     model={model}
                 />
@@ -164,6 +158,7 @@ const ComplexTable = ({
                 {() => (
                     <Table
                         model={virtualModel}
+                        ColumnModel={ColumnModel}
                         columns={aggregatorModel.visibleColumns}
                         getRowData={getRowData}
                         getKey={getKey}

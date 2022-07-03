@@ -60,7 +60,7 @@ const List = ({
     children: Item,
     className,
     itemData,
-    getKey,
+    getKey = i => i,
     tabIndex = -1,
     ...props
 }) => {
@@ -91,7 +91,14 @@ const List = ({
                                 [primaryAxis]: model.getOffset(model.from)
                             }}
                         />
-                        {mapVisibleRange(model, Item, itemData, getKey)}
+                        {mapVisibleRange(model, i => (
+                            <Item
+                                key={getKey(i, itemData)}
+                                i={i}
+                                data={itemData}
+                                model={model}
+                            />
+                        ))}
                     </>
                 )}
             </Subscription>

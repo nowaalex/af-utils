@@ -45,6 +45,7 @@ export default {
             module: true,
             compress: {
                 ecma: 2022,
+                unsafe: true,
                 /*
                     No computed values are used, so saving some bytes
                     https://github.com/terser/terser

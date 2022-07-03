@@ -1,19 +1,19 @@
-const getKeyDefault = i => i;
+const mapVisibleRange = (model, cb, countOffset) => {
+    const result = [];
+    let { from, to } = model;
 
-// default args are transpiled strangely
-const mapVisibleRange = (model, Item, itemData, getKey) => (
-    (getKey ||= getKeyDefault),
-    /*
-        i and key order is important in jsx
-    */
-    Array.from({ length: model.to - model.from }, (_, i) => (
-        <Item
-            i={(i += model.from)}
-            key={getKey(i, itemData)}
-            data={itemData}
-            model={model}
-        />
-    ))
-);
+    if (countOffset) {
+        for (let delta = model.getOffset(from); from < to; ) {
+            result.push(cb(from, delta));
+            delta += model.getSize(from++);
+        }
+    } else {
+        for (; from < to; ) {
+            result.push(cb(from++));
+        }
+    }
+
+    return result;
+};
 
 export default mapVisibleRange;

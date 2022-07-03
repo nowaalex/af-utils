@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.15
+
+### Patch Changes
+
+-   tables restructured + small optimizations
+
 ## 0.0.14
 
 ### Patch Changes

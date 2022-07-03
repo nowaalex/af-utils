@@ -3,9 +3,7 @@ import { useRef } from "react";
 
 const useFakerSeed = seedNumber => {
     const v = useRef();
-    if (!v.current) {
-        v.current = faker.seed(seedNumber);
-    }
+    v.current ||= faker.seed(seedNumber);
 };
 
 export default useFakerSeed;

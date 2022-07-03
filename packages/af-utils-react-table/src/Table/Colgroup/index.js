@@ -1,16 +1,12 @@
 import { memo } from "react";
+import pick from "utils/pick";
 
-const Colgroup = ({ columns }) => (
+const STYLE_FIELDS = ["width", "background", "border"];
+
+const Colgroup = props => (
     <colgroup>
-        {columns.map(({ key, background, border, width }) => (
-            <col
-                key={key}
-                style={{
-                    width,
-                    background,
-                    border
-                }}
-            />
+        {props.columns.map(column => (
+            <col key={column.key} style={pick(column, STYLE_FIELDS)} />
         ))}
     </colgroup>
 );

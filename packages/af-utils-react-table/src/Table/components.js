@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { areItemPropsEqual } from "@af-utils/react-virtual-headless";
 
 /*
     If all cells in a row would be completely empty - row can "collapse" short.
@@ -13,10 +12,10 @@ if (process.env.NODE_ENV !== "production") {
     var warnedAboutAbsentRef = false;
 }
 
-const Row = ({ i, model, data }) => {
+const Row = ({ i, i2, model, data }) => {
     const rowData = data.getRowData(i);
     const C = data.components;
-    const rowProps = data.getRowProps(model, i, rowData);
+    const rowProps = data.getRowProps(model, i2, rowData);
 
     if (process.env.NODE_ENV !== "production") {
         if (warnedAboutAbsentRef === false && !rowProps.ref) {
@@ -30,14 +29,11 @@ const Row = ({ i, model, data }) => {
     return (
         <C.Tr {...rowProps}>
             {rowData ? (
-                data.columns.map(column => {
-                    const FinalCell = column.Cell || C.Cell;
-                    return (
-                        <C.Td key={column.key} className={column._className}>
-                            <FinalCell row={rowData} column={column} />
-                        </C.Td>
-                    );
-                })
+                data.columns.map(Column => (
+                    <C.Td key={Column.key} className={Column._className}>
+                        <Column.Cell row={rowData} column={Column} />
+                    </C.Td>
+                ))
             ) : (
                 <C.CellForEmptyRow data={data} />
             )}
@@ -72,20 +68,18 @@ const FooterCells = ({ columns, components: C }) =>
     ));
 
 const Cell = ({ row, column }) => {
-    const { render, key, format } = column;
-
-    const cellData = row[key];
+    const cellData = row[column.key];
 
     if (cellData === undefined) {
         return "\u00A0";
     }
 
-    if (render) {
-        return render(cellData, row);
+    if (column.format) {
+        return column.format(cellData);
     }
 
-    if (format) {
-        return format(cellData);
+    if (column.render) {
+        return column.render(cellData, row);
     }
 
     return cellData;
@@ -102,7 +96,7 @@ const DEFAULT_COMPONENTS_MAP = {
     Th: "th",
 
     /* Extra */
-    Row: memo(Row, areItemPropsEqual),
+    Row: memo(Row),
     Cell,
     CellForEmptyRow,
     HeaderCell,

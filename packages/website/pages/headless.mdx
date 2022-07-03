@@ -63,7 +63,7 @@ const model = useVirtual({
 ## mapVisibleRange
 
 ```jsx
-mapVisibleRange(model, Item, itemData, getKey);
+mapVisibleRange(model, callback, provideOffset);
 ```
 
 ### Options
@@ -73,19 +73,14 @@ mapVisibleRange(model, Item, itemData, getKey);
     -   **Required**
     -   return value of <Link href="/headless#use-virtual"><a>`useVirtual()`</a></Link>
 
--   `Item: ReactElement`
+-   `callback: Function( currentIndex, offset ) => any`
 
     -   **Required**
-    -   React component, that will have `i` and `data` props when rendered.
 
--   `itemData: Any`
+-   `provideOffset: Boolean`
 
-    -   Will be passed as `data` prop to each `Item`
-
--   `getKey: Function(i, itemData) => Integer`
-
-    -   Defaults to: `i => i`
-    -   if you have unique id to pass as key - it may be more efficient.
+    -   should provide offset or not
+    -   Defaults to: false
 
 ### Returns
 

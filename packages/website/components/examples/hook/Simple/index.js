@@ -3,21 +3,14 @@ import { memo } from "react";
 import {
     useVirtual,
     mapVisibleRange,
-    areItemPropsEqual,
     Subscription
 } from "@af-utils/react-virtual-headless";
 
-const Item = memo(
-    ({ i, model }) => (
-        <div
-            ref={el => model.el(i, el)}
-            className="border-t p-2 border-zinc-400"
-        >
-            row {i}
-        </div>
-    ),
-    areItemPropsEqual
-);
+const Item = memo(({ i, model }) => (
+    <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">
+        row {i}
+    </div>
+));
 
 const SimpleHook = () => {
     const model = useVirtual({
@@ -37,7 +30,9 @@ const SimpleHook = () => {
                                 marginTop: fromOffset
                             }}
                         >
-                            {mapVisibleRange(model, Item)}
+                            {mapVisibleRange(model, i => (
+                                <Item key={i} model={model} i={i} />
+                            ))}
                         </div>
                     );
                 }}

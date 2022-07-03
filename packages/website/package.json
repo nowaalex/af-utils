@@ -10,10 +10,10 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@af-utils/react-mobx-table": "^0.0.19",
-        "@af-utils/react-table": "^0.0.18",
-        "@af-utils/react-virtual-headless": "^0.0.14",
-        "@af-utils/react-virtual-list": "^0.0.16",
+        "@af-utils/react-mobx-table": "^0.0.20",
+        "@af-utils/react-table": "^0.0.19",
+        "@af-utils/react-virtual-headless": "^0.0.15",
+        "@af-utils/react-virtual-list": "^0.0.17",
         "@emotion/css": "^11.9.0",
         "@emotion/react": "^11.9.3",
         "@emotion/styled": "^11.9.3",
@@ -39,7 +39,7 @@
         "@next/bundle-analyzer": "^12.2.0",
         "@next/mdx": "^12.2.0",
         "autoprefixer": "^10.4.7",
-        "eslint": "8.18.0",
+        "eslint": "8.19.0",
         "eslint-config-next": "12.2.0",
         "next": "^12.2.0",
         "next-sitemap": "3.1.7",
