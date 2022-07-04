@@ -1,10 +1,10 @@
 # @af-utils
 
-![Virtual scroll preview](https://af-virtual-scroll.vercel.app/preview.gif)
+![Virtual scroll preview](https://af-utils.vercel.app/preview.gif)
 
 ### Website
 
-https://af-virtual-scroll.vercel.app/
+https://af-utils.vercel.app/
 
 ### Features
 

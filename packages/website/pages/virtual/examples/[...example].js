@@ -30,12 +30,14 @@ const Example = () => {
 
 export const getStaticProps = context => ({
     props: {},
-    notFound: !table[`/examples/${context.params.example.join("/")}`]
+    notFound: !table[`/virtual/examples/${context.params.example.join("/")}`]
 });
 
 export const getStaticPaths = async () => ({
     paths: components.map(route => ({
-        params: { example: route.replace(/^\/examples\//, "").split("/") }
+        params: {
+            example: route.replace(/^\/virtual\/examples\//, "").split("/")
+        }
     })),
     fallback: false
 });

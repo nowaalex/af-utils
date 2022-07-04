@@ -81,9 +81,25 @@ const config = withBundleAnalyzer(
             return [
                 {
                     source: "/",
-                    destination: "/examples/list/Simple",
+                    destination: "/virtual",
+                    permanent: false
+                },
+
+                {
+                    source: "/examples/:v*",
+                    destination: "/virtual/examples/:v*",
                     permanent: true
-                }
+                },
+                {
+                    source: "/why",
+                    destination: "/virtual",
+                    permanent: true
+                },
+                ...["/headless", "/size", "/table", "/list"].map(oldPath => ({
+                    source: oldPath,
+                    destination: `/virtual${oldPath}`,
+                    permanent: true
+                }))
             ];
         }
     })

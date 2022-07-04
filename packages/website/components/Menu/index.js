@@ -1,26 +1,22 @@
 import { useState } from "react";
-import Link from "next/link";
 import { cx } from "@af-utils/styled";
-import { useRouter } from "next/router";
 import { VscGithub } from "react-icons/vsc";
 import { VscMenu } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
 import { components } from "/AllExamples";
+import NavLink from "../NavLink";
 import urlToTitle from "/utils/urlToTitle";
 
 const DOCS_STRUCTURE = [
-    ["Getting started", "/why"],
-    ["Headless", "/headless"],
-    ["List", "/list"],
-    ["Table", "/table"],
-    ["ComplexTable", "/complexTable"],
-    ["Styled", "/styled"],
-    ["Bundle size impact", "/size"],
-    ["FAQs", "/faq"]
+    ["Getting started", "/virtual"],
+    ["Headless", "/virtual/headless"],
+    ["List", "/virtual/list"],
+    ["Table", "/virtual/table"],
+    ["ComplexTable", "/virtual/complexTable"],
+    ["Bundle size impact", "/virtual/size"]
 ];
 
 const Menu = ({ className }) => {
-    const { asPath } = useRouter();
     const [opened, setOpened] = useState(true);
 
     return (
@@ -44,37 +40,29 @@ const Menu = ({ className }) => {
 
                 <nav className="flex flex-col">
                     {DOCS_STRUCTURE.map(([label, url]) => (
-                        <Link key={url} href={url}>
-                            <a
-                                className={cx(
-                                    "px-6 py-1",
-                                    asPath.startsWith(url)
-                                        ? "bg-neutral-300"
-                                        : ""
-                                )}
-                            >
-                                {label}
-                            </a>
-                        </Link>
+                        <NavLink
+                            key={url}
+                            href={url}
+                            activeClassName="bg-neutral-300"
+                            className="px-6 py-1"
+                        >
+                            {label}
+                        </NavLink>
                     ))}
                 </nav>
 
-                <h2 className="text-xl font-bold mt-2 pl-3 mt-6">Examples</h2>
+                <h2 className="text-xl font-bold pl-3 mt-6">Examples</h2>
 
                 <nav className="flex flex-col">
                     {components.map(item => (
-                        <Link href={item} key={item}>
-                            <a
-                                className={cx(
-                                    "px-6 py-1",
-                                    asPath.startsWith(item)
-                                        ? "bg-neutral-300"
-                                        : ""
-                                )}
-                            >
-                                {urlToTitle(item)}
-                            </a>
-                        </Link>
+                        <NavLink
+                            href={item}
+                            key={item}
+                            activeClassName="bg-neutral-300"
+                            className="px-6 py-1"
+                        >
+                            {urlToTitle(item)}
+                        </NavLink>
                     ))}
                 </nav>
 

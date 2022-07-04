@@ -8,7 +8,7 @@ const EXCEPTIONS = {
 const urlToTitle = url =>
     url
         .split("/")
-        .slice(2)
+        .slice(3)
         .map(v => EXCEPTIONS[v] || startCase(v))
         .join(" / ");
 
