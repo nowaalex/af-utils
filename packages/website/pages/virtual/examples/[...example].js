@@ -10,7 +10,7 @@ const Example = () => {
     const title = urlToTitle(asPath);
 
     return (
-        <div className="grow shrink grid grid-cols-1 lg:grid-cols-[minmax(10em,_40%),_1fr]">
+        <div className="grow shrink grid place-content-start grid-cols-1 lg:grid-cols-[minmax(10em,_40%),_1fr]">
             <CommonHead title={`examples | ${title}`} />
             <h1 className="text-4xl lg:col-span-2 mt-1 mb-2 font-bold text-center ml-14 sm:ml-0">
                 {title}
@@ -19,7 +19,7 @@ const Example = () => {
                 <Component />
             </Suspense>
 
-            <pre className="language-jsx overflow-auto !m-0">
+            <pre className="text-sm language-jsx overflow-auto !m-0">
                 <Suspense fallback="Loading code...">
                     <ComponentCode />
                 </Suspense>
