@@ -1,96 +1,91 @@
-import { useState } from "react";
 import { cx } from "@af-utils/styled";
 import { VscGithub } from "react-icons/vsc";
-import { VscMenu } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
 import { components } from "/AllExamples";
 import NavLink from "../NavLink";
 import urlToTitle from "/utils/urlToTitle";
 
 const DOCS_STRUCTURE = [
-    ["Getting started", "/virtual"],
-    ["Headless", "/virtual/headless"],
-    ["List", "/virtual/list"],
-    ["Table", "/virtual/table"],
-    ["ComplexTable", "/virtual/complexTable"],
-    ["Bundle size impact", "/virtual/size"]
+    ["Getting started", "/"],
+    ["Headless", "/headless"],
+    ["List", "/list"],
+    ["Table", "/table"],
+    ["ComplexTable", "/complexTable"],
+    ["Bundle size impact", "/size"]
 ];
 
-const Menu = ({ className }) => {
-    const [opened, setOpened] = useState(true);
+const Menu = ({ className, children }) => (
+    <aside
+        className={cx(
+            "px-4 pt-[2vmin] prose prose-ul:list-none prose-a:no-underline bg-white",
+            className
+        )}
+    >
+        {children}
 
-    return (
-        <>
-            <button
-                className="outline-none fixed top-1 left-3 z-20 block md:hidden"
-                onClick={() => setOpened(!opened)}
-            >
-                <VscMenu className="h-8 w-8" />
-            </button>
+        <h2>Docs</h2>
 
-            <aside
-                onClick={() => setOpened(false)}
-                className={cx(
-                    "z-10 overflow-auto grow-0 shrink-0 pt-8 bg-neutral-100 fixed inset-0 md:h-screen md:block md:pt-0 md:static",
-                    opened || "hidden",
-                    className
-                )}
-            >
-                <h2 className="text-xl font-bold pl-3 mt-3">Docs</h2>
-
-                <nav className="flex flex-col">
-                    {DOCS_STRUCTURE.map(([label, url]) => (
+        <nav>
+            <ul>
+                {DOCS_STRUCTURE.map(([label, url]) => (
+                    <li key={url}>
                         <NavLink
-                            key={url}
-                            href={url}
-                            activeClassName="bg-neutral-300"
-                            className="px-6 py-1"
+                            href={`/virtual${url}`}
+                            activeClassName="font-bold text-orange-700 translate-y-20"
                         >
                             {label}
                         </NavLink>
-                    ))}
-                </nav>
+                    </li>
+                ))}
+            </ul>
+        </nav>
 
-                <h2 className="text-xl font-bold pl-3 mt-6">Examples</h2>
+        <h2>Examples</h2>
 
-                <nav className="flex flex-col">
-                    {components.map(item => (
+        <nav>
+            <ul>
+                {components.map(item => (
+                    <li key={item}>
                         <NavLink
                             href={item}
-                            key={item}
-                            activeClassName="bg-neutral-300"
-                            className="px-6 py-1"
+                            activeClassName="font-bold text-orange-700"
                         >
                             {urlToTitle(item)}
                         </NavLink>
-                    ))}
-                </nav>
+                    </li>
+                ))}
+            </ul>
+        </nav>
 
-                <h2 className="text-xl font-bold pl-3 mt-3">Links</h2>
+        <h2>Links</h2>
 
-                <div className="flex flex-col mt-2 ml-6">
+        <nav>
+            <ul>
+                <li>
                     <a
                         href="https://github.com/nowaalex/af-virtual-scroll"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center py-1"
+                        className="flex items-center gap-2"
                     >
-                        <VscGithub className="mr-2 self-stretch w-auto h-auto" />
+                        <VscGithub size="1.2em" />
                         Github
                     </a>
+                </li>
+                <li>
                     <a
                         href="https://discord.gg/6uQZB2y4cz"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center py-1"
+                        className="flex items-center gap-2"
                     >
-                        <SiDiscord className="mr-2 self-stretch w-auto h-auto" />
+                        <SiDiscord size="1.2em" />
                         Discord
                     </a>
-                </div>
-            </aside>
-        </>
-    );
-};
+                </li>
+            </ul>
+        </nav>
+    </aside>
+);
 
 export default Menu;

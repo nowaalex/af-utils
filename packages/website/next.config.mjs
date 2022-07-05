@@ -80,12 +80,6 @@ const config = withBundleAnalyzer(
         async redirects() {
             return [
                 {
-                    source: "/",
-                    destination: "/virtual",
-                    permanent: false
-                },
-
-                {
                     source: "/examples/:v*",
                     destination: "/virtual/examples/:v*",
                     permanent: true

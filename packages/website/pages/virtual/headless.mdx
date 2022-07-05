@@ -1,3 +1,4 @@
+import VirtualLayout from "/components/layouts/Virtual";
 import MdxWrapper from "/components/MdxWrapper";
 import CommonHead from "/components/CommonHead";
 import Link from "next/link";
@@ -133,8 +134,10 @@ useSubscription(model, () => {}, events);
     -   Defaults to: <Link href="/virtual/headless#numeric-event-constants"><a>`EVT_ALL`</a></Link>
 
 export default ({ children }) => (
-    <MdxWrapper>
-        <CommonHead title="Docs:  Headless" />
-        {children}
-    </MdxWrapper>
+    <VirtualLayout>
+        <MdxWrapper>
+            <CommonHead title="Docs: Headless" />
+            {children}
+        </MdxWrapper>
+    </VirtualLayout>
 );

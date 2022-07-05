@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import CommonHead from "/components/CommonHead";
+import VirtualLayout from "/components/layouts/Virtual";
 import { table, components } from "/AllExamples";
 import urlToTitle from "/utils/urlToTitle";
 import { Suspense } from "react";
@@ -10,21 +11,22 @@ const Example = () => {
     const title = urlToTitle(asPath);
 
     return (
-        <div className="grow shrink grid place-content-start grid-cols-1 lg:grid-cols-[minmax(10em,_40%),_1fr]">
+        <VirtualLayout>
             <CommonHead title={`examples | ${title}`} />
-            <h1 className="text-4xl lg:col-span-2 mt-1 mb-2 font-bold text-center ml-14 sm:ml-0">
-                {title}
-            </h1>
-            <Suspense fallback="Loading component...">
-                <Component />
-            </Suspense>
-
-            <pre className="text-sm language-jsx overflow-auto !m-0">
-                <Suspense fallback="Loading code...">
-                    <ComponentCode />
+            <div className="min-h-0 flex flex-col flex-auto prose max-w-full p-[4vmin] pt-[2vmin] md:h-screen">
+                <h1 className="text-xl md:text-2xl lg:text-3xl">{title}</h1>
+                <Suspense fallback="Loading example...">
+                    <div className="flex-auto min-h-0 grid gap-[4vmin] place-content-start grid-cols-1 lg:grid-cols-[minmax(10em,_40%),_1fr]">
+                        <div className="shadow-lg min-h-0">
+                            <Component />
+                        </div>
+                        <pre className="language-jsx overflow-auto !m-0 shadow-lg">
+                            <ComponentCode />
+                        </pre>
+                    </div>
                 </Suspense>
-            </pre>
-        </div>
+            </div>
+        </VirtualLayout>
     );
 };
 

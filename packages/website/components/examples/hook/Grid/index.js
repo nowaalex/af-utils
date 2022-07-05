@@ -68,7 +68,7 @@ const SimpleHook = () => {
 
     return (
         <div
-            className="overflow-auto min-h-0"
+            className="overflow-auto h-full"
             ref={el => {
                 rows.setOuterNode(el);
                 cols.setOuterNode(el);

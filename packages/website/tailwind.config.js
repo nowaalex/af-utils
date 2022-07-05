@@ -6,18 +6,9 @@ module.exports = {
     ],
     theme: {
         extend: {
-            typography: () => ({
-                DEFAULT: {
-                    css: {
-                        "code::before": {
-                            content: ""
-                        },
-                        "code::after": {
-                            content: ""
-                        }
-                    }
-                }
-            })
+            backgroundImage: {
+                sloth: "url('/sloth.svg')"
+            }
         }
     },
     plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms")]

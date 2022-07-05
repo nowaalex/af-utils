@@ -26,7 +26,7 @@ const HorizontalList = () => {
     });
 
     return (
-        <List model={model} className="h-min">
+        <List model={model} className="h-full">
             {Item}
         </List>
     );

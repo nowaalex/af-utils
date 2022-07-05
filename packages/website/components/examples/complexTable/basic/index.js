@@ -64,7 +64,7 @@ const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
 const ComplexTable = () => (
     <DndProvider backend={HTML5Backend}>
         <Table
-            className="min-h-0 basic-table-container"
+            className="h-full basic-table-container"
             itemCount={rows.length}
             getRowData={getRowData}
             getEstimatedItemSize={getEstimatedItemSize}

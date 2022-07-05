@@ -1,3 +1,4 @@
+import VirtualLayout from "/components/layouts/Virtual";
 import MdxWrapper from "/components/MdxWrapper";
 import CommonHead from "/components/CommonHead";
 import SizesTable from "/components/SizesTable";
@@ -19,8 +20,10 @@ const TERSER_OPTS = {
 ```
 
 export default ({ children }) => (
-    <MdxWrapper>
-        <CommonHead title="Bundle size" />
-        {children}
-    </MdxWrapper>
+    <VirtualLayout>
+        <MdxWrapper>
+            <CommonHead title="Bundle size" />
+            {children}
+        </MdxWrapper>
+    </VirtualLayout>
 );

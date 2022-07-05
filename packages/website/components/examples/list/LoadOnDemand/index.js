@@ -64,7 +64,7 @@ const Posts = () => {
     );
 
     return (
-        <List model={model} itemData={posts} getKey={getKey}>
+        <List model={model} itemData={posts} getKey={getKey} className="h-full">
             {Item}
         </List>
     );

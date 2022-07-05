@@ -12,7 +12,11 @@ const SimpleList = () => {
         itemCount: 50000
     });
 
-    return <List model={model}>{Item}</List>;
+    return (
+        <List className="h-full" model={model}>
+            {Item}
+        </List>
+    );
 };
 
 export default SimpleList;

@@ -3,7 +3,9 @@ import Head from "next/head";
 
 const CommonHead = ({ title }) => {
     const { asPath } = useRouter();
-    const prefixedTitle = `${title} | ${process.env.NEXT_PUBLIC_TITLE_PREFIX}`;
+    const prefixedTitle = title
+        ? `${title} | ${process.env.NEXT_PUBLIC_TITLE_PREFIX}`
+        : process.env.NEXT_PUBLIC_TITLE_PREFIX;
 
     return (
         <Head>

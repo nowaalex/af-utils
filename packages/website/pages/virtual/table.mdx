@@ -1,3 +1,4 @@
+import VirtualLayout from "/components/layouts/Virtual";
 import MdxWrapper from "/components/MdxWrapper";
 import CommonHead from "/components/CommonHead";
 import Link from "next/link";
@@ -58,8 +59,10 @@ yarn add @af-utils/styled @af-utils/react-table @af-utils/react-virtual-headless
 -   All other props are passed to outermost div
 
 export default ({ children }) => (
-    <MdxWrapper>
-        <CommonHead title="Docs:  Table" />
-        {children}
-    </MdxWrapper>
+    <VirtualLayout>
+        <MdxWrapper>
+            <CommonHead title="Docs:  Table" />
+            {children}
+        </MdxWrapper>
+    </VirtualLayout>
 );

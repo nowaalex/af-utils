@@ -8,7 +8,7 @@ const SimpleHeadlessTable = () => {
     return (
         <Table
             model={model}
-            className="basic-table-container"
+            className="h-full basic-table-container"
             headless
             getRowData={i => ({
                 a: `cell_a_${i}`,

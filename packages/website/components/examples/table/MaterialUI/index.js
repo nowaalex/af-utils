@@ -54,7 +54,7 @@ const SimpleTable = () => {
         you must specify height: 100% by adding style/className.
     */
     return (
-        <MuiTableContainer component={Paper}>
+        <MuiTableContainer component={Paper} className="h-full not-prose">
             <Table
                 className="h-full"
                 model={model}

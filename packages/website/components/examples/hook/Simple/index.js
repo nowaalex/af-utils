@@ -18,7 +18,7 @@ const SimpleHook = () => {
     });
 
     return (
-        <div className="overflow-auto" ref={model.setOuterNode}>
+        <div className="h-full overflow-auto" ref={model.setOuterNode}>
             <Subscription model={model}>
                 {() => {
                     const fromOffset = model.getOffset(model.from);

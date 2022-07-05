@@ -16,7 +16,7 @@ const SimpleTable = () => {
     return (
         <Table
             model={model}
-            className="basic-table-container"
+            className="h-full basic-table-container"
             getRowData={getRowData}
             columns={columns}
         />

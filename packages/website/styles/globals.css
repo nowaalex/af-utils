@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* dirty */
-* {
-    outline: none;
-}
-
-svg {
-    display: inline-block;
-}
-
 @layer components {
     .basic-table-container {
         table {
@@ -34,5 +25,17 @@ svg {
         th input {
             @apply border;
         }
+    }
+
+    .ds-menu [data-closer] {
+        display: none;
+    }
+
+    .ds-menu[open] [data-opener] {
+        display: none;
+    }
+
+    .ds-menu[open] [data-closer] {
+        display: block;
     }
 }

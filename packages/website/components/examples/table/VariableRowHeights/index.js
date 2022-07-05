@@ -44,7 +44,7 @@ const VariableSizeTable = () => {
     return (
         <Table
             model={model}
-            className="basic-table-container"
+            className="h-full basic-table-container"
             getRowData={i => ({
                 a: i,
                 b: `cell_b_${i}`,

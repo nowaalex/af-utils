@@ -9,7 +9,7 @@ const NavLink = ({ href, children, className, activeClassName, ...props }) => {
     return (
         <Link href={href}>
             <a
-                className={cx(className, isActive ? activeClassName : "")}
+                className={cx(className || "", isActive ? activeClassName : "")}
                 {...props}
             >
                 {children}

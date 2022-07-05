@@ -56,9 +56,9 @@ const ScrollToItem = () => {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col h-full">
             <form
-                className="flex bg-neutral-100 p-4 flex-wrap gap-4 justify-center items-center"
+                className="flex p-4 flex-wrap gap-4 justify-center items-center bg-orange-100"
                 onSubmit={scrollSubmitHandler}
             >
                 <label>
@@ -81,7 +81,7 @@ const ScrollToItem = () => {
                 </button>
             </form>
             <form
-                className="flex bg-neutral-100 p-4 flex-wrap gap-4 justify-center items-center"
+                className="flex p-4 flex-wrap gap-4 justify-center items-center bg-orange-100"
                 onSubmit={rowsAddSubmitHandler}
             >
                 <label>

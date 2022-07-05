@@ -31,7 +31,7 @@ const VariableSizeList = () => {
     });
 
     return (
-        <List model={model} itemData={dynamicListRowHeights}>
+        <List className="h-full" model={model} itemData={dynamicListRowHeights}>
             {Item}
         </List>
     );

@@ -24,7 +24,7 @@ const WithEvents = () => {
     });
 
     return (
-        <div className="overflow-auto relative" ref={model.setOuterNode}>
+        <div className="h-full overflow-auto relative" ref={model.setOuterNode}>
             <Subscription model={model} events={SCROLL_SIZE_EVENTS}>
                 {() => (
                     <div
