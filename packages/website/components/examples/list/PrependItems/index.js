@@ -88,7 +88,7 @@ const PrependItems = () => {
         <div className="flex flex-col gap-4 h-full">
             <button
                 type="button"
-                className="px-6 py-2 ring-4"
+                className="px-6 py-2 bg-orange-300"
                 onClick={prependItems}
             >
                 Prepend 100 items

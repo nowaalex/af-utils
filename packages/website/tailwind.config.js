@@ -7,7 +7,7 @@ module.exports = {
     theme: {
         extend: {
             backgroundImage: {
-                sloth: "url('/sloth.svg')"
+                sloth: "url('/sloth.jpg')"
             }
         }
     },

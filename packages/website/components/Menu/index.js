@@ -14,15 +14,13 @@ const DOCS_STRUCTURE = [
     ["Bundle size impact", "/size"]
 ];
 
-const Menu = ({ className, children }) => (
+const Menu = ({ className }) => (
     <aside
         className={cx(
-            "px-4 pt-[2vmin] prose prose-ul:list-none prose-a:no-underline bg-white",
+            "prose prose-ul:list-none prose-a:no-underline max-w-full",
             className
         )}
     >
-        {children}
-
         <h2>Docs</h2>
 
         <nav>
@@ -63,7 +61,7 @@ const Menu = ({ className, children }) => (
             <ul>
                 <li>
                     <a
-                        href="https://github.com/nowaalex/af-virtual-scroll"
+                        href="https://github.com/nowaalex/af-utils"
                         target="_blank"
                         rel="noreferrer"
                         className="flex items-center gap-2"

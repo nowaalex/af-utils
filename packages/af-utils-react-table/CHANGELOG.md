@@ -1,5 +1,11 @@
 # @af-utils/react-table
 
+## 0.0.21
+
+### Patch Changes
+
+-   format fix
+
 ## 0.0.20
 
 ### Patch Changes

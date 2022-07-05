@@ -3,28 +3,33 @@ import Menu from "/components/Menu";
 import Link from "next/link";
 
 const Virtual = ({ children }) => (
-    <div className="h-screen flex flex-col md:flex-row prose-zinc max-w-full">
+    <div className="h-screen flex flex-col md:flex-row prose prose-zinc max-w-full">
         <details className="md:hidden ds-menu z-10 relative">
-            <summary className="list-none flex-none border-b flex h-[50px] items-center px-4 gap-4">
+            <summary className="list-none flex-none border-b flex h-[60px] items-center px-4 gap-8">
                 <VscMenu data-opener size="28px" className="cursor-pointer" />
                 <VscClose data-closer size="28px" className="cursor-pointer" />
-                <h2>
+                <h2 className="m-0 p-0">
                     <Link href="/">
-                        <a>@af-utils</a>
+                        <a>af-utils</a>
                     </Link>
-                    /virtual
+                    &nbsp;/&nbsp;virtual
                 </h2>
             </summary>
-            <Menu className="overflow-auto fixed inset-0 top-[51px]" />
+            <Menu className="overflow-auto p-4 fixed inset-0 top-[61px] bg-white" />
         </details>
-        <Menu className="overflow-y-scroll min-w-[20em] hidden md:block h-screen flex-none shadow-xl">
-            <h2>
-                <Link href="/">
-                    <a>@af-utils</a>
-                </Link>
-                /virtual
-            </h2>
-        </Menu>
+        <div className="shadow-lg hidden md:flex h-screen overflow-y-scroll flex-none flex-col min-w-[20em]">
+            <div className="sticky top-0 bg-white p-5 border-b">
+                <h2 className="m-0 p-0">
+                    <Link href="/">
+                        <a>af-utils</a>
+                    </Link>
+                    &nbsp;/&nbsp;virtual
+                </h2>
+            </div>
+
+            <Menu className="p-4" />
+        </div>
+
         {children}
     </div>
 );

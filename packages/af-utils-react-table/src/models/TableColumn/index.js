@@ -14,6 +14,7 @@ class TableColumn {
         "align",
         "label",
         "render",
+        "format",
         "Cell",
         "background",
         "border",
