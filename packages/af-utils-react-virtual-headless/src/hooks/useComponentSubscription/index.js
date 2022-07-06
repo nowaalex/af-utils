@@ -15,7 +15,7 @@ const useComponentSubscription = (model, events) => {
         TODO: test it
     */
     const getHash = () =>
-        events.reduce((acc, e, i) => acc ^ (model[EVT_TO_PROP[e]] << i), 31);
+        events.reduce((acc, e) => acc ^ (model[EVT_TO_PROP[e]] << e), 31);
 
     useSyncExternalStore(
         useCallback(listener => model.on(listener, events), [events]),

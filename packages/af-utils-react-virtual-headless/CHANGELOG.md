@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.18
+
+### Patch Changes
+
+-   hashFn upgrade
+
 ## 0.0.17
 
 ### Patch Changes
