@@ -8,8 +8,14 @@ const EVT_TO_PROP = ["from", "to", "scrollSize", "sizesHash"];
 const useComponentSubscription = (model, events) => {
     events ||= EVT_ALL;
 
+    /*
+        Naive way is just to combine integers to string.
+        But can do more optimal with low collision rate.
+
+        TODO: test it
+    */
     const getHash = () =>
-        events.reduce((acc, e) => `${acc}_${model[EVT_TO_PROP[e]]}`, "");
+        events.reduce((acc, e, i) => acc ^ (model[EVT_TO_PROP[e]] << i), 31);
 
     useSyncExternalStore(
         useCallback(listener => model.on(listener, events), [events]),

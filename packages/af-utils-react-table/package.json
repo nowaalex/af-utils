@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/react-table",
     "private": false,
-    "version": "0.0.21",
+    "version": "0.0.22",
     "description": "React components for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
     "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
@@ -62,7 +62,7 @@
         "rollup-plugin-terser": "^7.0.2"
     },
     "peerDependencies": {
-        "@af-utils/react-virtual-headless": "^0.0.16",
+        "@af-utils/react-virtual-headless": "^0.0.17",
         "@af-utils/styled": "^0.0.9",
         "prop-types": "^15.8.0",
         "react": "^17.0.0 || ^18.1.0"
