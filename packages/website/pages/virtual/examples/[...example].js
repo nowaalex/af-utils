@@ -6,9 +6,9 @@ import urlToTitle from "/utils/urlToTitle";
 import { Suspense } from "react";
 
 const Example = () => {
-    const { asPath } = useRouter();
-    const { ComponentCode, Component } = table[asPath];
-    const title = urlToTitle(asPath);
+    const { query } = useRouter();
+    const { ComponentCode, Component } = table[query.example.join("/")];
+    const title = urlToTitle(query.example);
 
     return (
         <>
@@ -34,13 +34,13 @@ Example.getLayout = page => <VirtualLayout>{page}</VirtualLayout>;
 
 export const getStaticProps = context => ({
     props: {},
-    notFound: !table[`/virtual/examples/${context.params.example.join("/")}`]
+    notFound: !table[context.params.example.join("/")]
 });
 
 export const getStaticPaths = async () => ({
     paths: components.map(route => ({
         params: {
-            example: route.replace(/^\/virtual\/examples\//, "").split("/")
+            example: route.staticPaths
         }
     })),
     fallback: false

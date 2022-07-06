@@ -29,11 +29,10 @@ const toTree = paths => {
     return walk(
         paths.reduce(
             (result, path) => (
-                path
-                    .replace("/virtual", "")
-                    .split("/")
-                    .filter(Boolean)
-                    .reduce((acc, v) => (acc[v] ||= {}), result),
+                ["examples", ...path.staticPaths].reduce(
+                    (acc, v) => (acc[v] ||= {}),
+                    result
+                ),
                 result
             ),
             {}

@@ -13,23 +13,26 @@ const requireCode = require.context(
     "lazy"
 );
 
-const toUrl = link =>
-    "/virtual/examples" + link.slice(1).replace(/\/index\.js$/, "");
-
 const keys = requireComponent.keys();
 
-export const components = keys.map(toUrl);
+export const components = keys.map(k => {
+    const short = k.slice(2).replace(/\/index\.js$/, "");
+    return {
+        staticPaths: short.split("/"),
+        short,
+        path: k
+    };
+});
 
-export const table = Object.fromEntries(
-    keys.map(path => [
-        toUrl(path),
-        {
-            Component: dynamic(() => requireComponent(path), {
+export const table = components.reduce(
+    (acc, v) => (
+        (acc[v.short] = {
+            Component: dynamic(() => requireComponent(v.path), {
                 suspense: true
             }),
             ComponentCode: dynamic(
                 () =>
-                    requireCode(path).then(code => ({
+                    requireCode(v.path).then(code => ({
                         default: () => (
                             <code
                                 className="language-jsx"
@@ -41,6 +44,8 @@ export const table = Object.fromEntries(
                     })),
                 { suspense: true }
             )
-        }
-    ])
+        }),
+        acc
+    ),
+    {}
 );
