@@ -14,33 +14,30 @@ const DOCS_STRUCTURE = [
     ["Bundle size impact", "/size"]
 ];
 
-const toTree = paths => {
-    const walk = (obj, arr, path) => {
-        for (const k in obj) {
-            arr.push({
-                name: k,
-                path: path + "/" + k,
-                children: walk(obj[k], [], path + "/" + k)
-            });
-        }
-        return arr;
-    };
+const walk = (obj, arr, path) => {
+    for (const k in obj) {
+        const newPath = `${path}/${k}`;
+        arr.push({
+            name: k,
+            path: newPath,
+            children: walk(obj[k], [], newPath)
+        });
+    }
+    return arr;
+};
 
-    return walk(
+const toTree = (paths, start = "") =>
+    walk(
         paths.reduce(
             (result, path) => (
-                ["examples", ...path.staticPaths].reduce(
-                    (acc, v) => (acc[v] ||= {}),
-                    result
-                ),
+                path.staticPaths.reduce((acc, v) => (acc[v] ||= {}), result),
                 result
             ),
             {}
         ),
         [],
-        ""
+        start
     );
-};
 
 const H = ["h2", "h3", "h4", "h4"];
 
@@ -70,7 +67,11 @@ const ExamplesSubtree = ({ node, depth = 0 }) =>
         </NavLink>
     );
 
-const COMPONENTS_TREE = toTree(components)[0];
+const COMPONENTS_TREE = {
+    name: "examples",
+    children: toTree(components, "/examples"),
+    path: ""
+};
 
 const Menu = ({ className, onClick }) => (
     <aside
