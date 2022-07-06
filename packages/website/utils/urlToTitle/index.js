@@ -1,7 +1,6 @@
 import startCase from "lodash/startCase";
 
 const EXCEPTIONS = {
-    MaterialUi: "Material UI",
     complexTable: "Complex Table (unstable)"
 };
 
