@@ -1,6 +1,23 @@
+import VirtualLayout from "/components/layouts/Virtual";
+import MdxWrapper from "/components/MdxWrapper";
 import "/styles/globals.css";
 import "/styles/code.css";
 
-const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />;
+const FUCKING_DIRTY_MDX_LAYOUTS = {
+    virtual: page => (
+        <VirtualLayout>
+            <MdxWrapper>{page}</MdxWrapper>
+        </VirtualLayout>
+    )
+};
+
+const MyApp = ({ Component, pageProps }) => {
+    const { dirtyMdxLayout, ...rest } = pageProps;
+    const getLayout =
+        Component.getLayout ||
+        FUCKING_DIRTY_MDX_LAYOUTS[dirtyMdxLayout] ||
+        (page => page);
+    return getLayout(<Component {...rest} />);
+};
 
 export default MyApp;

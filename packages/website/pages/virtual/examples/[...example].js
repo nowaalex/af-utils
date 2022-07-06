@@ -11,7 +11,7 @@ const Example = () => {
     const title = urlToTitle(asPath);
 
     return (
-        <VirtualLayout>
+        <>
             <CommonHead title={`examples | ${title}`} />
             <div className="min-h-0 flex flex-col flex-auto prose max-w-full p-4 lg:px-6 lg:pb-6 xl:px-8 xl:pb-8 md:h-screen">
                 <h1 className="text-xl md:text-2xl lg:text-3xl">{title}</h1>
@@ -26,9 +26,11 @@ const Example = () => {
                     </div>
                 </Suspense>
             </div>
-        </VirtualLayout>
+        </>
     );
 };
+
+Example.getLayout = page => <VirtualLayout>{page}</VirtualLayout>;
 
 export const getStaticProps = context => ({
     props: {},

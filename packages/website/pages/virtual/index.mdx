@@ -1,5 +1,3 @@
-import VirtualLayout from "/components/layouts/Virtual";
-import MdxWrapper from "/components/MdxWrapper";
 import CommonHead from "/components/CommonHead";
 
 ## What is it?
@@ -13,10 +11,10 @@ Based on scroll position and size of each item we may calculate,
 what range must be rendered now.
 
 export default ({ children }) => (
-    <VirtualLayout>
-        <MdxWrapper>
-            <CommonHead title="Why" />
-            {children}
-        </MdxWrapper>
-    </VirtualLayout>
+    <>
+        <CommonHead title="Why" />
+        {children}
+    </>
 );
+
+export const getStaticProps = () => ({ props: { dirtyMdxLayout: "virtual" } });

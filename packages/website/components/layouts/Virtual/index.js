@@ -1,13 +1,14 @@
-import { useRef } from "react";
+import { useRef, memo } from "react";
 import { VscMenu, VscClose } from "react-icons/vsc";
 import Menu from "/components/Menu";
 import Link from "next/link";
 
-const Virtual = ({ children }) => {
+// layouts are rendered in unoptimal way
+const Nav = memo(() => {
     const defailsRef = useRef();
 
     return (
-        <div className="h-screen flex flex-col md:flex-row prose prose-zinc max-w-full">
+        <>
             <details
                 ref={defailsRef}
                 className="md:hidden ds-menu z-10 relative"
@@ -51,10 +52,15 @@ const Virtual = ({ children }) => {
 
                 <Menu className="p-4" />
             </div>
-
-            {children}
-        </div>
+        </>
     );
-};
+});
+
+const Virtual = ({ children }) => (
+    <div className="h-screen flex flex-col md:flex-row prose prose-zinc max-w-full">
+        <Nav />
+        {children}
+    </div>
+);
 
 export default Virtual;
