@@ -14,8 +14,9 @@ const DOCS_STRUCTURE = [
     ["Bundle size impact", "/size"]
 ];
 
-const Menu = ({ className }) => (
+const Menu = ({ className, onClick }) => (
     <aside
+        onClick={onClick}
         className={cx(
             "prose prose-ul:list-none prose-a:no-underline max-w-full",
             className
