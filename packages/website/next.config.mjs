@@ -75,6 +75,10 @@ const withMDX = nextMdx({
 
 const config = withBundleAnalyzer(
     withMDX({
+        i18n: {
+            locales: ["en"],
+            defaultLocale: "en"
+        },
         pageExtensions: ["js", "jsx", "md", "mdx"],
         reactStrictMode: true,
         async redirects() {
