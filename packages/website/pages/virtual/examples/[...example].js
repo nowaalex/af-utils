@@ -1,14 +1,10 @@
-import { useRouter } from "next/router";
 import CommonHead from "/components/CommonHead";
 import VirtualLayout from "/components/layouts/Virtual";
 import { table, components } from "/AllExamples";
-import urlToTitle from "/utils/urlToTitle";
 import { Suspense } from "react";
 
-const Example = () => {
-    const { query } = useRouter();
-    const { ComponentCode, Component } = table[query.example.join("/")];
-    const title = urlToTitle(query.example);
+const Example = ({ name }) => {
+    const { ComponentCode, Component, title } = table[name];
 
     return (
         <>
@@ -32,10 +28,15 @@ const Example = () => {
 
 Example.getLayout = page => <VirtualLayout>{page}</VirtualLayout>;
 
-export const getStaticProps = context => ({
-    props: {},
-    notFound: !table[context.params.example.join("/")]
-});
+export const getStaticProps = context => {
+    const name = context.params.example.join("/");
+    return {
+        props: {
+            name
+        },
+        notFound: !table[name]
+    };
+};
 
 export const getStaticPaths = async () => ({
     paths: components.map(route => ({

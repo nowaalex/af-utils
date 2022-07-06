@@ -1,4 +1,9 @@
 import dynamic from "next/dynamic";
+import startCase from "lodash/startCase";
+
+const EXCEPTIONS = {
+    complexTable: "Complex Table (unstable)"
+};
 
 const requireComponent = require.context(
     "/components/examples",
@@ -27,6 +32,9 @@ export const components = keys.map(k => {
 export const table = components.reduce(
     (acc, v) => (
         (acc[v.short] = {
+            title: v.staticPaths
+                .map(v => EXCEPTIONS[v] || startCase(v))
+                .join(" / "),
             Component: dynamic(() => requireComponent(v.path), {
                 suspense: true
             }),
