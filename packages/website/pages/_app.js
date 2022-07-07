@@ -1,3 +1,5 @@
+import { MDXProvider } from "@mdx-js/react";
+import AutoLink from "/components/AutoLink";
 import VirtualLayout from "/components/layouts/Virtual";
 import MdxWrapper from "/components/MdxWrapper";
 import "/styles/globals.css";
@@ -11,13 +13,22 @@ const FUCKING_DIRTY_MDX_LAYOUTS = {
     )
 };
 
+const components = {
+    a: AutoLink
+};
+
 const MyApp = ({ Component, pageProps }) => {
     const { dirtyMdxLayout, ...rest } = pageProps;
     const getLayout =
         Component.getLayout ||
         FUCKING_DIRTY_MDX_LAYOUTS[dirtyMdxLayout] ||
         (page => page);
-    return getLayout(<Component {...rest} />);
+
+    return (
+        <MDXProvider components={components}>
+            {getLayout(<Component {...rest} />)}
+        </MDXProvider>
+    );
 };
 
 export default MyApp;

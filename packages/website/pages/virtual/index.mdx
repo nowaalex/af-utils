@@ -1,24 +1,20 @@
 import CommonHead from "/components/CommonHead";
-import List from "/components/examples/list/Simple";
+import IndexExample from "/components/IndexExample";
 
 ## Getting started
 
 When you need to render a list, table or grid with a lot of rows or columns, you may face performance problems.
-A lot of DOM nodes must be allocated and updated (if needed),
-but only a few of them are visible.
+A lot of DOM nodes must be created, but only a few of them are visible.
 
 One way to optimize this is called virtualization.
-Based on scroll position and size of each item we may calculate,
-what range must be shown. Only visible elements are rendered with this approach.
+Based on scroll position and size of each item we may calculate the range to shown.
+Only visible elements are rendered with this approach.
 
-<div className="flex flex-wrap gap-8 justify-center">
-    <img src="/messy.jpg" className="m-0 p-0 shrink shadow-lg" />
-    <div className="flex-auto relative min-w-[14em] min-h-[10em] shadow-lg">
-        <div className="absolute inset-0">
-            <List className="h-[300px]" />
-        </div>
-    </div>
-</div>
+<IndexExample />
+
+Components ([List](/virtual/list), [Table](/virtual/table)) are available for basic use cases.
+If you want maximum flexibility — [headless](/virtual/headless) API is for you.
+Variable item sizes with <span className="whitespace-nowrap">on-the-fly</span> remeasurement are also supported.
 
 export default ({ children }) => (
     <>

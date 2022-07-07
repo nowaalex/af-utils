@@ -24,6 +24,7 @@ const withBundleAnalyzer = nextBundleAnalyzer({
 
 const withMDX = nextMdx({
     options: {
+        providerImportSource: "@mdx-js/react",
         remarkPlugins: [remarkGfm, remarkToc],
         rehypePlugins: [
             rehypePrism,
