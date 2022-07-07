@@ -19,7 +19,7 @@ const SizesTable = () => (
     <table>
         <thead>
             <tr>
-                <th>Library</th>
+                <th>Package</th>
                 {sizeColumns.map(col => (
                     <th key={col}>{col}</th>
                 ))}

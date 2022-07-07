@@ -3,9 +3,16 @@ import SizesTable from "/components/SizesTable";
 
 ## Bundle size impact
 
+All packages were carefully optimized to be as small as possible.
+In order to provide exact numbers, each of them is shipped with `bundlesize.index.js` file.
+Contents of all those files are shown in this table in human-readable format.
+
 <SizesTable />
 
 ### Terser configuration
+
+During bundle size measurement `process.env.NODE_ENV` was set to `production`
+to cut away some extra checks and verbose errors.
 
 ```jsx
 const TERSER_OPTS = {
