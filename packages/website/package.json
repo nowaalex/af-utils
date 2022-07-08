@@ -21,7 +21,7 @@
         "@mdx-js/react": "^2.1.2",
         "@mui/material": "^5.8.7",
         "@tailwindcss/forms": "^0.5.2",
-        "@tailwindcss/typography": "^0.5.2",
+        "@tailwindcss/typography": "^0.5.3",
         "lodash": "^4.17.21",
         "mobx": "^6.6.1",
         "mobx-react-lite": "^3.4.0",
@@ -37,12 +37,12 @@
     "devDependencies": {
         "@mapbox/rehype-prism": "^0.8.0",
         "@mdx-js/loader": "^2.1.2",
-        "@next/bundle-analyzer": "^12.2.0",
-        "@next/mdx": "^12.2.0",
+        "@next/bundle-analyzer": "^12.2.1",
+        "@next/mdx": "^12.2.1",
         "autoprefixer": "^10.4.7",
         "eslint": "8.19.0",
-        "eslint-config-next": "12.2.0",
-        "next": "^12.2.0",
+        "eslint-config-next": "12.2.1",
+        "next": "^12.2.1",
         "next-sitemap": "3.1.10",
         "postcss": "^8.4.14",
         "postcss-import": "^14.1.0",
@@ -51,6 +51,6 @@
         "rehype-rewrite": "^3.0.6",
         "remark-gfm": "^3.0.1",
         "remark-toc": "^8.0.1",
-        "tailwindcss": "^3.1.4"
+        "tailwindcss": "^3.1.5"
     }
 }
