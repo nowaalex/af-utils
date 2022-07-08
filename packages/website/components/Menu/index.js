@@ -105,7 +105,7 @@ const Menu = ({ className, onClick }) => (
                 <a
                     href="https://github.com/nowaalex/af-utils"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener"
                     className="flex items-center gap-2"
                 >
                     <VscGithub size="1.2em" />
@@ -116,7 +116,7 @@ const Menu = ({ className, onClick }) => (
                 <a
                     href="https://discord.gg/6uQZB2y4cz"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener"
                     className="flex items-center gap-2"
                 >
                     <SiDiscord size="1.2em" />

@@ -10,7 +10,7 @@ const Landing = () => (
             <a
                 href="https://github.com/nowaalex/af-utils"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener"
                 className="flex items-center gap-2 hover:underline"
             >
                 <VscGithub size="1em" />
@@ -20,7 +20,7 @@ const Landing = () => (
             <a
                 href="https://discord.gg/6uQZB2y4cz"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener"
                 className="flex items-center gap-2 hover:underline"
             >
                 <SiDiscord size="1em" />

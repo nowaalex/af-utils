@@ -11,7 +11,7 @@ const AutoLink = ({ href, ...props }) => {
         }
     }
 
-    return <a href={href} target="_blank" rel="noreferrer" {...props} />;
+    return <a href={href} target="_blank" rel="noopener" {...props} />;
 };
 
 export default AutoLink;

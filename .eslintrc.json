@@ -33,6 +33,9 @@
         "max-classes-per-file": [0],
         "react/display-name": "off",
         "react/jsx-uses-react": "off",
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-no-target-blank": {
+            "allowReferrer": true
+        }
     }
 }
