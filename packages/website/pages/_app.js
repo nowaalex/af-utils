@@ -1,14 +1,15 @@
 import { MDXProvider } from "@mdx-js/react";
 import AutoLink from "/components/AutoLink";
 import VirtualLayout from "/components/layouts/Virtual";
-import MdxWrapper from "/components/MdxWrapper";
 import "/styles/globals.css";
 import "/styles/code.css";
 
 const FUCKING_DIRTY_MDX_LAYOUTS = {
     virtual: page => (
         <VirtualLayout>
-            <MdxWrapper>{page}</MdxWrapper>
+            <div className="overflow-auto px-8 pt-4 w-full h-full">
+                <div className="prose max-w-[1200px] w-full">{page}</div>
+            </div>
         </VirtualLayout>
     )
 };

@@ -58,7 +58,7 @@ const ScrollToItem = () => {
     return (
         <div className="flex flex-col h-full">
             <form
-                className="flex p-4 flex-wrap gap-4 justify-center items-center bg-orange-100"
+                className="flex p-2 flex-wrap gap-4 bg-orange-100"
                 onSubmit={scrollSubmitHandler}
             >
                 <label>
@@ -69,19 +69,16 @@ const ScrollToItem = () => {
                             dynamicListRowHeights.length / 2
                         )}
                         name="idx"
-                        className="w-[7em]"
+                        className="w-[7em] py-1"
                         type="number"
                     />
                 </label>
-                <button
-                    className="px-6 py-2 border border-gray-500"
-                    type="submit"
-                >
+                <button className="px-4  border border-gray-500" type="submit">
                     Scroll
                 </button>
             </form>
             <form
-                className="flex p-4 flex-wrap gap-4 justify-center items-center bg-orange-100"
+                className="flex p-2 flex-wrap gap-4 bg-green-100"
                 onSubmit={rowsAddSubmitHandler}
             >
                 <label>
@@ -91,14 +88,11 @@ const ScrollToItem = () => {
                         type="number"
                         required
                         name="rowsToAdd"
-                        className="w-[5em]"
+                        className="w-[5em] py-1"
                     />
                 </label>
 
-                <button
-                    className="px-6 py-2 border border-gray-500"
-                    type="submit"
-                >
+                <button className="px-4 border border-gray-500" type="submit">
                     Add and scroll to end
                 </button>
             </form>

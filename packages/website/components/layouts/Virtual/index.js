@@ -11,7 +11,7 @@ const Nav = memo(() => {
         <>
             <details
                 ref={defailsRef}
-                className="md:hidden ds-menu z-10 relative"
+                className="lg:hidden ds-menu z-10 relative"
             >
                 <summary className="list-none flex-none border-b flex h-[60px] items-center px-4 gap-8">
                     <VscMenu
@@ -40,7 +40,7 @@ const Nav = memo(() => {
                     }}
                 />
             </details>
-            <div className="shadow-lg hidden md:flex h-screen overflow-y-scroll flex-none flex-col min-w-[20em]">
+            <div className="shadow-lg hidden lg:flex h-screen overflow-y-scroll flex-none flex-col min-w-[20em]">
                 <div className="sticky top-0 bg-white p-5 border-b">
                     <h2 className="m-0 p-0">
                         <Link href="/">
@@ -57,7 +57,7 @@ const Nav = memo(() => {
 });
 
 const Virtual = ({ children }) => (
-    <div className="h-screen flex flex-col md:flex-row prose prose-zinc max-w-full">
+    <div className="h-screen flex flex-col lg:flex-row prose prose-zinc max-w-full">
         <Nav />
         {children}
     </div>

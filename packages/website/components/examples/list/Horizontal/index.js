@@ -19,17 +19,13 @@ const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
     oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 75;
 
 const HorizontalList = () => {
-    const model = useVirtual({
+    const cols = useVirtual({
         itemCount: 50000,
         getEstimatedItemSize,
         horizontal: true
     });
 
-    return (
-        <List model={model} className="h-full">
-            {Item}
-        </List>
-    );
+    return <List model={cols}>{Item}</List>;
 };
 
 export default HorizontalList;

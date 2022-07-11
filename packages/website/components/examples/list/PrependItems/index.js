@@ -85,7 +85,7 @@ const PrependItems = () => {
     }, [model, items]);
 
     return (
-        <div className="flex flex-col gap-4 h-full">
+        <div className="flex flex-col gap-4 h-full lg:min-w-[20em]">
             <button
                 type="button"
                 className="px-6 py-2 bg-orange-300"

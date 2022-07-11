@@ -8,12 +8,12 @@ const Item = memo(({ i, model }) => (
 ));
 
 const SimpleList = () => {
-    const model = useVirtual({
+    const rows = useVirtual({
         itemCount: 50000
     });
 
     return (
-        <List className="h-full" model={model}>
+        <List className="h-full" model={rows}>
             {Item}
         </List>
     );
