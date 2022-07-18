@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-target-blank */
+
 import Link from "next/link";
 
 const AutoLink = ({ href, ...props }) => {

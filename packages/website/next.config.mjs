@@ -4,6 +4,7 @@ import rehypeRewrite from "rehype-rewrite";
 import rehypePrism from "@mapbox/rehype-prism";
 import remarkToc from "remark-toc";
 import nextMdx from "@next/mdx";
+import rehypeSlug from "rehype-slug";
 import nextBundleAnalyzer from "@next/bundle-analyzer";
 
 import jsx from "refractor/lang/jsx.js";
@@ -28,6 +29,8 @@ const withMDX = nextMdx({
         remarkPlugins: [remarkGfm, remarkToc],
         rehypePlugins: [
             rehypePrism,
+            rehypeSlug,
+
             /*
         I did not find a clear way to highlight inline code blocks as jsx.
         RemarkPrism transformInlineCode works like unconfigurable shit, rehypePrism does not have this option.

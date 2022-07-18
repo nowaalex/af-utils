@@ -7,6 +7,7 @@ import { startCase } from "lodash";
 
 const DOCS_STRUCTURE = [
     ["Getting started", ""],
+    ["FAQ", "/faq"],
     ["Headless", "/headless"],
     ["List", "/list"],
     ["Table", "/table"],
@@ -105,7 +106,7 @@ const Menu = ({ className, onClick }) => (
                 <a
                     href="https://github.com/nowaalex/af-utils"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-2"
                 >
                     <VscGithub size="1.2em" />
@@ -116,7 +117,7 @@ const Menu = ({ className, onClick }) => (
                 <a
                     href="https://discord.gg/6uQZB2y4cz"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-2"
                 >
                     <SiDiscord size="1.2em" />

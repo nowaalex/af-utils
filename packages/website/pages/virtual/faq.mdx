@@ -1,0 +1,25 @@
+import CommonHead from "/components/CommonHead";
+
+## Frequently asked questions
+
+### Why do I need to use ref?
+
+In order to work smoothly, library must know scrolled item sizes. Initially they
+are taken with the help of `getEstimatedItemSize` param. But this is usually not
+enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
+for more accurate measurements, but you must provide mounted items explicitly in
+conjunction with their indexes.
+
+### Do I need to use css classes, provided in examples?
+
+Not necessary. This website was build with [tailwind](https://tailwindcss.com/),
+but you may use your styling approach.
+
+export default ({ children }) => (
+    <>
+        <CommonHead title="Docs: Frequently asked questions" />
+        {children}
+    </>
+);
+
+export const getStaticProps = () => ({ props: { dirtyMdxLayout: "virtual" } });

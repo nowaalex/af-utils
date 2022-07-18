@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import Link from "next/link";
 import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";

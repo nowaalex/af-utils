@@ -34,8 +34,6 @@
         "react/display-name": "off",
         "react/jsx-uses-react": "off",
         "react/react-in-jsx-scope": "off",
-        "react/jsx-no-target-blank": {
-            "allowReferrer": true
-        }
+        "react/jsx-no-target-blank": [1]
     }
 }
