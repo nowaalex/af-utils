@@ -11,7 +11,11 @@ npm i -S @af-utils/react-virtual-headless prop-types use-sync-external-store
 yarn add @af-utils/react-virtual-headless prop-types use-sync-external-store
 ```
 
-<h2 id="use-virtual">useVirtual</h2>
+---
+
+## useVirtual
+
+Core hook. Used to get scroller model instance synchronized with props.
 
 ```jsx
 const model = useVirtual({
@@ -23,41 +27,65 @@ const model = useVirtual({
 });
 ```
 
-### Options
+#### `itemCount: Integer`
 
--   `itemCount: Integer`
-    -   Defaults to `0`
-    -   The total count of elements
--   `getEstimatedItemSize: Function( itemSizes, scrollSize, newItemCount ) => Integer`
-    -   Defaults to `scrollSize / itemSizes.length` or `40` if no items
-    -   Best-guess item size
--   `overscanCount: Integer`
-    -   Defaults to `3`
-    -   Minimum amount of items to load behind/ahead(depends on scroll direction) of the current visible range.
--   `horizontal: Boolean`
-    -   Defaults to `false`
-    -   Determines, whether scrollTop/offsetHeight or scrollLeft/offsetWidth are used in calculations
--   `estimatedWidgetSize: Integer`
-    -   Defaults to `200`
-    -   Widget size to use before ResizeObserver measurements are ready.
-        Used mainly for server-side rendering.
-        If you want to disable SSR - put `0` here.
+Quantity of items. Defaults to `0`.
+
+#### `getEstimatedItemSize: Function( itemSizes, scrollSize, newItemCount ) => Integer`
+
+Best-guess item size. Defaults to `scrollSize / itemSizes.length` or `40` if no items.
+
+#### `overscanCount: Integer`
+
+Minimum amount of items to load behind/ahead(depends on scroll direction) of the current visible range. Defaults to `3`.
+
+#### `horizontal: Boolean`
+
+Determines, whether scrollTop/offsetHeight or scrollLeft/offsetWidth are used in calculations. Defaults to `false`.
+
+#### `estimatedWidgetSize: Integer`
+
+Widget size to use before ResizeObserver measurements are ready.
+Used mainly for server-side rendering. If you want to disable SSR - put `0` here.
+Defaults to `200`.
 
 ### Returns
 
--   `itemCount: Integer`
-    -   The total count of elements
--   `from: Integer`
-    -   range start
--   `to: Integer`
-    -   range end
--   `scrollSize: Integer`
-    -   sum of all item sizes
--   `getIndex: Function(offset: Integer) => Integer`
--   `getOffset: Function(index: Integer) => Integer`
--   `scrollTo: Function(index: Integer, pixelOffset: Integer ) => void 0`
--   `setOuterNode: Bound Function(el: DOMElement) => void 0`
-    -   must be attached to outermost element with `overflow: auto`
+Scroller model instance with following public props:
+
+#### `itemCount: Integer`
+
+The total count of elements. Same as passed to [`useVirtual()`](#usevirtual).
+
+#### `from: Integer`
+
+Visible range start.
+
+#### `to: Integer`
+
+Visible range end.
+
+#### `scrollSize: Integer`
+
+Sum of all item sizes.
+
+#### `getIndex: Function(offset: Integer) => Integer`
+
+Get element index pixel offset.
+
+#### `getOffset: Function(index: Integer) => Integer`
+
+Get pixel offset for element index.
+
+#### `scrollTo: Function(index: Integer, pixelOffset: Integer ) => void 0`
+
+Scroll to element at certain index and add pixel offset.
+
+#### `setOuterNode: Bound Function(el: DOMElement) => void 0`
+
+Pass scrollable element to model. Must be attached to outermost element with `overflow: auto`.
+
+---
 
 ## mapVisibleRange
 
@@ -65,53 +93,74 @@ const model = useVirtual({
 mapVisibleRange(model, callback, provideOffset);
 ```
 
-### Options
+#### `model: Model`
 
--   `model: Model`
+**Required**. Return value of [`useVirtual()`](#usevirtual).
 
-    -   **Required**
-    -   return value of <Link href="/virtual/headless#use-virtual"><a>`useVirtual()`</a></Link>
+#### `callback: Function( index, offset ) => ReactElement`
 
--   `callback: Function( currentIndex, offset ) => any`
+**Required**. Function called for each visible element index.
 
-    -   **Required**
+#### `countOffset: Boolean`
 
--   `provideOffset: Boolean`
-
-    -   should provide offset or not
-    -   Defaults to: false
+Should provide offset to callback or not. Defaults to: `false`.
 
 ### Returns
 
--   `Array<ReactElement>`
+`Array<ReactElement>`
 
-<h2 id="numeric-event-constants">Numeric event constants</h2>
+---
+
+## Numeric event constants
+
+Scroller model has build-in event emitter. All possible events are exported.
 
 -   `EVT_FROM`
+
+    Start of visible range changed.
+
 -   `EVT_TO`
+
+    End of visible range changed. Used to make [load on demand](/virtual/examples/list/LoadOnDemand).
+
 -   `EVT_SCROLL_SIZE`
+
+    Sum of item sizes changed.
+
 -   `EVT_SIZES`
--   `EVT_ALL`_(array of all events)_
+
+    At least one item size changed. Used, when all items are `position: absolute` and are not automatically realigned
+    when siblinbgs are resized.
+
+-   `EVT_ALL`_(array of events above)_
+
+---
 
 ## useSubscription
+
+Called, when at least one of passed [events](#numeric-event-constants) is triggered.
 
 ```jsx
 useSubscription(model, () => {}, events);
 ```
 
-### Options
+#### `model: Model`
 
--   `model: Model`
-    -   **Required**
-    -   return value of `useVirtual()`
--   `callback: Function() => void 0`
-    -   **Required**
-    -   gets called when at least one of `events` gets triggered
--   `events: Array<Integer>`
-    -   **Required**
-    -   Array of events to subscribe
+**Required**. Return value of [`useVirtual()`](#usevirtual).
+
+#### `callback: Function() => void 0`
+
+**Required**. Gets called when at least one of [events](#numeric-event-constants) gets triggered.
+
+#### `events: Array<Integer>`
+
+**Required**. Array of [events](#numeric-event-constants) to subscribe
+
+---
 
 ## Subscription
+
+Rerendered, when at least one of passed [events](#numeric-event-constants) is triggered.
 
 ```jsx
 <Subscription model={model} events={events}>
@@ -119,17 +168,17 @@ useSubscription(model, () => {}, events);
 </Subscription>
 ```
 
-### Options
+#### `model: Model`
 
--   `model: Model`
-    -   **Required**
-    -   return value of `useVirtual()`
--   `children: Function(index: Integer) => ReactElement`
-    -   **Required**
-    -   gets called everytime model params change
--   `events: Array<Integer>`
-    -   **Required**
-    -   Defaults to: <Link href="/virtual/headless#numeric-event-constants"><a>`EVT_ALL`</a></Link>
+**Required**. Return value of [`useVirtual()`](#usevirtual).
+
+#### `children: Function() => ReactElement`
+
+**Required**. Render prop.
+
+#### `events: Array<Integer>`
+
+**Required**. Defaults to: [`EVT_ALL`](#numeric-event-constants)
 
 export default ({ children }) => (
     <>

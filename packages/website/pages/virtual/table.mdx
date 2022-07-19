@@ -34,27 +34,39 @@ yarn add @af-utils/styled @af-utils/react-table @af-utils/react-virtual-headless
 
 ### Options
 
--   `model: Model`
-    -   **Required**
-    -   return value of <Link href="/virtual/headless#use-virtual"><a>`useVirtual()`</a></Link>
--   `getRowData: Function(rowIndex: Integer) => Row`
-    -   **Required**
--   `getRowProps: Function(model, i, rowData) => Object`
-    -   Will be spread to row; must return ref
--   `getKey: Function(i, itemData) => Integer`
-    -   Defaults to: `i => i`
-    -   if you have unique id to pass as key - it may be more efficient.
--   `columns: Array`
-    -   **Required**
--   `headless: Boolean`
-    -   Should render thead or not
--   `footer: Boolean`
-    -   Should render tfoot or not
--   `components: Object`
+#### `model: Model`
 
-    -   See components implementation
+**Required**. Return value of [`useVirtual()`](/virtual/headless#usevirtual).
 
--   All other props are passed to outermost div
+#### `getRowData: Function(rowIndex: Integer) => Row`
+
+**Required**.
+
+#### `columns: Array`
+
+**Required**.
+
+#### `getRowProps: Function(model, i, rowData) => Object`
+
+Will be spread to row; must return ref.
+
+#### `getKey: Function(i, itemData) => Integer`
+
+Defaults to: `i => i`. if you have unique id to pass as key - it may be more efficient.
+
+#### `headless: Boolean`
+
+Should render thead or not.
+
+#### `footer: Boolean`
+
+Should render tfoot or not.
+
+#### `components: Object`
+
+See components implementation
+
+All other props are passed to outermost div.
 
 export default ({ children }) => (
     <>
