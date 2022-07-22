@@ -51,6 +51,7 @@ const Posts = () => {
 
     useSubscription(
         model,
+        EVENTS,
         useCallback(async () => {
             const { itemCount, to } = model;
             if (isLoadingRef.current === false && itemCount === to) {
@@ -59,8 +60,7 @@ const Posts = () => {
                 isLoadingRef.current = false;
                 setPosts(p => p.concat(paragraphs));
             }
-        }, [model]),
-        EVENTS
+        }, [model])
     );
 
     return (

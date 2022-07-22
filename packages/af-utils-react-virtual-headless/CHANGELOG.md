@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.19
+
+### Patch Changes
+
+-   useSubscription arguments order change
+
 ## 0.0.18
 
 ### Patch Changes

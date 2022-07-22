@@ -141,20 +141,20 @@ Scroller model has build-in event emitter. All possible events are exported.
 Called, when at least one of passed [events](#numeric-event-constants) is triggered.
 
 ```jsx
-useSubscription(model, () => {}, events);
+useSubscription(model, events, callback);
 ```
 
 #### `model: Model`
 
 **Required**. Return value of [`useVirtual()`](#usevirtual).
 
-#### `callback: Function() => void 0`
-
-**Required**. Gets called when at least one of [events](#numeric-event-constants) gets triggered.
-
 #### `events: Array<Integer>`
 
 **Required**. Array of [events](#numeric-event-constants) to subscribe
+
+#### `callback: Function() => void 0`
+
+Gets called when at least one of [events](#numeric-event-constants) gets triggered. In case you do not want to subscribe - pass `null`.
 
 ---
 

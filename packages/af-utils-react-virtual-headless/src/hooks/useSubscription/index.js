@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const useSubscription = (model, callBack, events) =>
+const useSubscription = (model, events, callBack) =>
     useEffect(() => {
         if (callBack) {
             callBack();
