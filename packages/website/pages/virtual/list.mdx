@@ -1,7 +1,7 @@
 import CommonHead from "/components/CommonHead";
 import Link from "next/link";
 
-## List
+# List
 
 ```jsx
 import { useVirtual, List } from "@af-utils/react-virtual-list";
@@ -17,7 +17,7 @@ const SimpleList = () => {
 };
 ```
 
-## Installation
+# Installation
 
 ```bash
 # npm
@@ -27,19 +27,19 @@ npm i -S @af-utils/styled @af-utils/react-virtual-list @af-utils/react-virtual-h
 yarn add @af-utils/styled @af-utils/react-virtual-list @af-utils/react-virtual-headless prop-types use-sync-external-store
 ```
 
-#### `model: Model`
+### `model: Model`
 
 **Required**. Return value of [`useVirtual()`](/virtual/headless#usevirtual)
 
-#### `children: ReactElementType`
+### `children: ReactElementType`
 
 **Required**. React component, that will have `i` prop when rendered.
 
-#### `itemData: Any`
+### `itemData: Any`
 
 Will be passed as `data` prop to each `Item`.
 
-#### `getKey: Function(i, itemData) => any`
+### `getKey: Function(i, itemData) => any`
 
 Defaults to: `i => i`. If you have unique id to pass as key - it may be more efficient.
 

@@ -8,6 +8,21 @@ module.exports = {
         extend: {
             backgroundImage: {
                 sloth: "url('/sloth.jpg')"
+            },
+            typography: {
+                DEFAULT: {
+                    css: {
+                        h1: {
+                            "font-size": "1.6em"
+                        },
+                        h2: {
+                            "font-size": "1.3em"
+                        },
+                        h3: {
+                            "font-size": "inherit"
+                        }
+                    }
+                }
             }
         }
     },

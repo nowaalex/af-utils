@@ -1,7 +1,7 @@
 import CommonHead from "/components/CommonHead";
 import Link from "next/link";
 
-## Installation
+# Installation
 
 ```bash
 # npm
@@ -13,7 +13,7 @@ yarn add @af-utils/react-virtual-headless prop-types use-sync-external-store
 
 ---
 
-## useVirtual
+# useVirtual
 
 Core hook. Used to get scroller model instance synchronized with props.
 
@@ -27,91 +27,91 @@ const model = useVirtual({
 });
 ```
 
-#### `itemCount: Integer`
+### `itemCount: Integer`
 
 Quantity of items. Defaults to `0`.
 
-#### `getEstimatedItemSize: Function( itemSizes, scrollSize, newItemCount ) => Integer`
+### `getEstimatedItemSize: Function( itemSizes, scrollSize, newItemCount ) => Integer`
 
 Best-guess item size. Defaults to `scrollSize / itemSizes.length` or `40` if no items.
 
-#### `overscanCount: Integer`
+### `overscanCount: Integer`
 
 Minimum amount of items to load behind/ahead(depends on scroll direction) of the current visible range. Defaults to `3`.
 
-#### `horizontal: Boolean`
+### `horizontal: Boolean`
 
 Determines, whether scrollTop/offsetHeight or scrollLeft/offsetWidth are used in calculations. Defaults to `false`.
 
-#### `estimatedWidgetSize: Integer`
+### `estimatedWidgetSize: Integer`
 
 Widget size to use before ResizeObserver measurements are ready.
 Used mainly for server-side rendering. If you want to disable SSR - put `0` here.
 Defaults to `200`.
 
-### Returns
+## Returns
 
 Scroller model instance with following public props:
 
-#### `itemCount: Integer`
+### `itemCount: Integer`
 
 The total count of elements. Same as passed to [`useVirtual()`](#usevirtual).
 
-#### `from: Integer`
+### `from: Integer`
 
 Visible range start.
 
-#### `to: Integer`
+### `to: Integer`
 
 Visible range end.
 
-#### `scrollSize: Integer`
+### `scrollSize: Integer`
 
 Sum of all item sizes.
 
-#### `getIndex: Function(offset: Integer) => Integer`
+### `getIndex: Function(offset: Integer) => Integer`
 
 Get element index pixel offset.
 
-#### `getOffset: Function(index: Integer) => Integer`
+### `getOffset: Function(index: Integer) => Integer`
 
 Get pixel offset for element index.
 
-#### `scrollTo: Function(index: Integer, pixelOffset: Integer ) => void 0`
+### `scrollTo: Function(index: Integer, pixelOffset: Integer ) => void 0`
 
 Scroll to element at certain index and add pixel offset.
 
-#### `setOuterNode: Bound Function(el: DOMElement) => void 0`
+### `setOuterNode: Bound Function(el: DOMElement) => void 0`
 
 Pass scrollable element to model. Must be attached to outermost element with `overflow: auto`.
 
 ---
 
-## mapVisibleRange
+# mapVisibleRange
 
 ```jsx
 mapVisibleRange(model, callback, provideOffset);
 ```
 
-#### `model: Model`
+### `model: Model`
 
 **Required**. Return value of [`useVirtual()`](#usevirtual).
 
-#### `callback: Function( index, offset ) => ReactElement`
+### `callback: Function( index, offset ) => ReactElement`
 
 **Required**. Function called for each visible element index.
 
-#### `countOffset: Boolean`
+### `countOffset: Boolean`
 
 Should provide offset to callback or not. Defaults to: `false`.
 
-### Returns
+## Returns
 
 `Array<ReactElement>`
 
 ---
 
-## Numeric event constants
+# Numeric event constants
 
 Scroller model has build-in event emitter. All possible events are exported.
 
@@ -136,7 +136,7 @@ Scroller model has build-in event emitter. All possible events are exported.
 
 ---
 
-## useSubscription
+# useSubscription
 
 Called, when at least one of passed [events](#numeric-event-constants) is triggered.
 
@@ -144,21 +144,21 @@ Called, when at least one of passed [events](#numeric-event-constants) is trigge
 useSubscription(model, events, callback);
 ```
 
-#### `model: Model`
+### `model: Model`
 
 **Required**. Return value of [`useVirtual()`](#usevirtual).
 
-#### `events: Array<Integer>`
+### `events: Array<Integer>`
 
 **Required**. Array of [events](#numeric-event-constants) to subscribe
 
-#### `callback: Function() => void 0`
+### `callback: Function() => void 0`
 
 Gets called when at least one of [events](#numeric-event-constants) gets triggered. In case you do not want to subscribe - pass `null`.
 
 ---
 
-## Subscription
+# Subscription
 
 Rerendered, when at least one of passed [events](#numeric-event-constants) is triggered.
 
@@ -168,15 +168,15 @@ Rerendered, when at least one of passed [events](#numeric-event-constants) is tr
 </Subscription>
 ```
 
-#### `model: Model`
+### `model: Model`
 
 **Required**. Return value of [`useVirtual()`](#usevirtual).
 
-#### `children: Function() => ReactElement`
+### `children: Function() => ReactElement`
 
 **Required**. Render prop.
 
-#### `events: Array<Integer>`
+### `events: Array<Integer>`
 
 **Required**. Defaults to: [`EVT_ALL`](#numeric-event-constants)
 

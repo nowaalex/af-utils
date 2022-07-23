@@ -42,12 +42,12 @@ const Nav = memo(() => {
             </details>
             <div className="shadow-lg hidden lg:flex h-screen overflow-y-scroll flex-none flex-col min-w-[20em]">
                 <div className="sticky top-0 bg-white p-5 border-b">
-                    <h2 className="m-0 p-0">
+                    <h1 className="m-0 p-0">
                         <Link href="/">
                             <a>af-utils</a>
                         </Link>
                         &nbsp;/&nbsp;virtual
-                    </h2>
+                    </h1>
                 </div>
 
                 <Menu className="p-4" />
