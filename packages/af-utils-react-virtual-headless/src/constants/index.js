@@ -1,4 +1,3 @@
-export const MEASUREMENTS_MAX_DELAY = 600;
 export const SIZES_HASH_MODULO = 2 ** 30 - 1;
 
 export const EVT_FROM = 0;

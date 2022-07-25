@@ -5,15 +5,32 @@ import {
     EVT_FROM,
     EVT_TO,
     EVT_SIZES,
-    EVT_SCROLL_SIZE,
-    MEASUREMENTS_MAX_DELAY
+    EVT_SCROLL_SIZE
 } from "constants";
 
 const HORIZONTAL_SCROLL_KEY = "scrollLeft";
 const VERTICAL_SCROLL_KEY = "scrollTop";
 
+const HORIZONTAL_SCROLL_TO_KEY = "left";
+const VERTICAL_SCROLL_TO_KEY = "top";
+
 const HORIZONTAL_SIZE_KEY = "offsetWidth";
 const VERTICAL_SIZE_KEY = "offsetHeight";
+
+const debounce = (fn, ms) => {
+    let timer = 0;
+
+    const _cancel = () => clearTimeout(timer);
+
+    const res = (a, b, c) => {
+        _cancel();
+        timer = setTimeout(fn, ms, a, b, c);
+    };
+
+    res._cancel = _cancel;
+
+    return res;
+};
 
 const FinalResizeObserver = process.env.__IS_SERVER__
     ? class {
@@ -49,6 +66,7 @@ const syncFtree = (fTree, sourceArray, itemCount) => {
 
 class List {
     horizontal = false;
+    _scrollToKey = VERTICAL_SCROLL_TO_KEY;
     _scrollKey = VERTICAL_SCROLL_KEY;
     _sizeKey = VERTICAL_SIZE_KEY;
 
@@ -59,8 +77,7 @@ class List {
     scrollPos = 0;
     _overscanCount = 0;
 
-    _scrollToTmpValue = null;
-    _scrollToTimer = 0;
+    _unsubscribeScrollEvent = () => {};
 
     _outerNode = null;
     _widgetSize = 0;
@@ -303,7 +320,8 @@ class List {
             });
         } else {
             this._ElResizeObserver.disconnect();
-            clearTimeout(this._scrollToTimer);
+            this._scrollToRawDebounced._cancel();
+            this._removeScrollEventDebounced._cancel();
         }
     };
 
@@ -389,26 +407,33 @@ class List {
         }
     }
 
-    _scrollToRaw = () => {
-        if (this._outerNode) {
-            this._outerNode[this._scrollKey] =
-                this.getOffset(this._scrollToTmpValue[0]) +
-                this._scrollToTmpValue[1];
-        } else if (process.env.NODE_ENV !== "production") {
-            console.error("outerNode is not set");
-        }
-    };
+    _scrollToRaw(index, pixelOffset, smooth) {
+        this._outerNode &&
+            this._outerNode.scroll({
+                [this._scrollToKey]:
+                    this.getOffset(index || 0) + (pixelOffset || 0),
+                behavior: smooth ? "smooth" : "instant"
+            });
+    }
 
-    scrollTo(index, pixelOffset) {
-        if (!this._scrollToTmpValue) {
-            const unsubscribe = this.on(this._scrollToRaw, EVT_ALL);
-            this._scrollToTimer = setTimeout(() => {
-                this._scrollToTmpValue = null;
-                unsubscribe();
-            }, MEASUREMENTS_MAX_DELAY);
-        }
-        this._scrollToTmpValue = [index || 0, pixelOffset || 0];
-        this._scrollToRaw();
+    _scrollToRawDebounced = debounce(
+        (index, pixelOffset, smooth) =>
+            this._scrollToRaw(index, pixelOffset, smooth),
+        300
+    );
+    _removeScrollEventDebounced = debounce(
+        () => this._unsubscribeScrollEvent(),
+        700
+    );
+
+    scrollTo(index, pixelOffset, smooth) {
+        this._unsubscribeScrollEvent();
+        this._unsubscribeScrollEvent = this.on(() => {
+            this._scrollToRawDebounced(index, pixelOffset, smooth);
+            this._removeScrollEventDebounced();
+        }, EVT_ALL);
+        this._removeScrollEventDebounced();
+        this._scrollToRaw(index, pixelOffset, smooth);
     }
 
     _setScrollSize(v) {
@@ -423,6 +448,9 @@ class List {
             /*@__INLINE__*/
             inlinedStartBatch(this);
             this.horizontal = horizontal;
+            this._scrollToKey = horizontal
+                ? HORIZONTAL_SCROLL_TO_KEY
+                : VERTICAL_SCROLL_TO_KEY;
             this._scrollKey = horizontal
                 ? HORIZONTAL_SCROLL_KEY
                 : VERTICAL_SCROLL_KEY;
@@ -431,7 +459,7 @@ class List {
                 : VERTICAL_SIZE_KEY;
             if (this._outerNode) {
                 /* TODO: Needs testing */
-                this.scrollPos = 0;
+                this._scrollToRaw();
                 this.setWidgetSize(this._outerNode[this._sizeKey]);
                 this._updateRangeFromStart();
             }

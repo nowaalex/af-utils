@@ -38,7 +38,7 @@ const ScrollToItem = () => {
         const idx = Number.parseInt(e.currentTarget.idx.value, 10);
 
         if (!Number.isNaN(idx)) {
-            model.scrollTo(idx);
+            model.scrollTo(idx, 0, true);
         }
     };
 
