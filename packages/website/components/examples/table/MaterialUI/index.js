@@ -1,6 +1,5 @@
 import { useVirtual, Table } from "@af-utils/react-table";
 
-import Paper from "@mui/material/Paper";
 import MuiTableContainer from "@mui/material/TableContainer";
 import MuiTable from "@mui/material/Table";
 import MuiTableBody from "@mui/material/TableBody";
@@ -54,7 +53,7 @@ const SimpleTable = () => {
         you must specify height: 100% by adding style/className.
     */
     return (
-        <MuiTableContainer component={Paper} className="h-full not-prose">
+        <MuiTableContainer className="h-full not-prose">
             <Table
                 className="h-full"
                 model={model}

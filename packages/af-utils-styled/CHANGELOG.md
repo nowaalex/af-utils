@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.10
+
+### Patch Changes
+
+-   upgraded rollup & added component prop to List & added List MUI example
+
 ## 0.0.9
 
 ### Patch Changes

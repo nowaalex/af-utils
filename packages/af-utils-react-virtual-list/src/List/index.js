@@ -60,6 +60,7 @@ const List = ({
     children: Item,
     className,
     itemData,
+    component: Component = "div",
     getKey = i => i,
     tabIndex = -1,
     ...props
@@ -68,7 +69,7 @@ const List = ({
         model.horizontal ? HORIZONTAL_PROPS : VERTICAL_PROPS;
 
     return (
-        <div
+        <Component
             className={cx(baseClassName, className)}
             ref={model.setOuterNode}
             tabIndex={tabIndex}
@@ -102,7 +103,7 @@ const List = ({
                     </>
                 )}
             </Subscription>
-        </div>
+        </Component>
     );
 };
 
@@ -110,6 +111,7 @@ List.propTypes = {
     model: PropTypes.object.isRequired,
     children: PropTypes.elementType.isRequired,
     getKey: PropTypes.func,
+    component: PropTypes.elementType,
     className: PropTypes.string,
     itemData: PropTypes.any,
     tabIndex: PropTypes.number

@@ -1,5 +1,15 @@
 # @af-utils/react-mobx-table
 
+## 0.0.29
+
+### Patch Changes
+
+-   upgraded rollup & added component prop to List & added List MUI example
+-   Updated dependencies
+    -   @af-utils/react-table@0.0.27
+    -   @af-utils/react-virtual-headless@0.0.22
+    -   @af-utils/styled@0.0.10
+
 ## 0.0.28
 
 ### Patch Changes

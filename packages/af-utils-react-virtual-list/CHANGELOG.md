@@ -1,5 +1,14 @@
 # @af-utils/react-virtual-list
 
+## 0.0.24
+
+### Patch Changes
+
+-   upgraded rollup & added component prop to List & added List MUI example
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.22
+    -   @af-utils/styled@0.0.10
+
 ## 0.0.23
 
 ### Patch Changes
