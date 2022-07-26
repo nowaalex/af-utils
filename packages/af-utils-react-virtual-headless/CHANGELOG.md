@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.23
+
+### Patch Changes
+
+-   added cache room for adding items
+
 ## 0.0.22
 
 ### Patch Changes

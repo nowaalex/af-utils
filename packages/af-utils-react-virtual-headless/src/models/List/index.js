@@ -17,6 +17,14 @@ const VERTICAL_SCROLL_TO_KEY = "top";
 const HORIZONTAL_SIZE_KEY = "offsetWidth";
 const VERTICAL_SIZE_KEY = "offsetHeight";
 
+const TypedCache = Uint32Array;
+
+/*
+    0x7fffffff - maximum 32bit integer.
+    Bitwise operations, used in fenwick tree, cannot be applied to numbers > int32.
+*/
+const MAX_ITEM_COUNT = 0x7fffffff;
+
 const debounce = (fn, ms) => {
     let timer = 0;
 
@@ -50,17 +58,29 @@ const inlinedStartBatch = ctx => {
 };
 
 /* 
-        Creating fenwick tree from an array in linear time;
-        It is much more efficient, than calling updateItemHeight N times.
-    */
-const syncFtree = (fTree, sourceArray, itemCount) => {
+    Creating fenwick tree from an array in linear time;
+    It is much more efficient, than calling updateItemHeight N times.
+*/
+
+const buildFtree = sourceArray => {
+    const fTreeLength = sourceArray.length + 1;
+    const fTree = new TypedCache(fTreeLength);
+
     fTree.set(sourceArray, 1);
 
-    for (let i = 1, j; i <= itemCount; i++) {
+    for (let i = 1, j; i < fTreeLength; i++) {
         j = i + (i & -i);
-        if (j <= itemCount) {
+        if (j < fTreeLength) {
             fTree[j] += fTree[i];
         }
+    }
+
+    return fTree;
+};
+
+const updateItemHeight = (fTree, i, delta, limitTreeLiftingIndex) => {
+    for (; i < limitTreeLiftingIndex; i += i & -i) {
+        fTree[i] += delta;
     }
 };
 
@@ -82,8 +102,8 @@ class List {
     _outerNode = null;
     _widgetSize = 0;
 
-    _itemSizes = [];
-    _fTree = [];
+    _itemSizes = new TypedCache(0);
+    _fTree = new TypedCache(0);
 
     /*
         most significant bit of this.itemCount;
@@ -117,7 +137,7 @@ class List {
                 wasAtLeastOneSizeChanged = true;
                 this._itemSizes[index] += diff;
                 buff += diff;
-                this._updateItemHeight(index + 1, diff, lim);
+                updateItemHeight(this._fTree, index + 1, diff, lim);
             }
         }
 
@@ -132,7 +152,7 @@ class List {
             this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
             this._run(EVT_SIZES);
             if (buff !== 0) {
-                this._updateItemHeight(lim, buff, this._fTree.length);
+                updateItemHeight(this._fTree, lim, buff, this._fTree.length);
                 this._setScrollSize(this.scrollSize + buff);
                 this._updateRangeFromEnd();
             }
@@ -198,13 +218,9 @@ class List {
     }
 
     _itemCountChanged(itemCount, getEstimatedItemSize) {
-        if (itemCount < 0 || itemCount > 0x7fffffff) {
-            /*
-                0x7fffffff - maximum 32bit integer.
-                Bitwise operations, used in fenwick tree, cannot be applied to numbers > int32.
-            */
+        if (itemCount > MAX_ITEM_COUNT) {
             throw new Error(
-                `itemCount must be 0 - 2_147_483_647. Got: ${itemCount}.`
+                `itemCount must be <= 2_147_483_647. Got: ${itemCount}.`
             );
         }
 
@@ -214,12 +230,12 @@ class List {
         const curRowHeighsLength = oldItemSizes.length;
 
         if (itemCount > curRowHeighsLength) {
-            this._itemSizes = new Uint32Array(itemCount);
+            this._itemSizes = new TypedCache(
+                Math.min(itemCount + 32, MAX_ITEM_COUNT)
+            );
             this._itemSizes.set(oldItemSizes);
 
-            /*@__NOINLINE__*/
-            syncFtree(
-                (this._fTree = new Uint32Array(itemCount + 1)),
+            this._fTree = /*@__NOINLINE__*/ buildFtree(
                 this._itemSizes.fill(
                     getEstimatedItemSize(
                         oldItemSizes,
@@ -227,8 +243,7 @@ class List {
                         itemCount
                     ),
                     curRowHeighsLength
-                ),
-                itemCount
+                )
             );
         }
 
@@ -290,13 +305,6 @@ class List {
             (this._scrollPos - this.getOffset(firstVisibleIndex)) /
                 this._itemSizes[firstVisibleIndex]
         );
-    }
-
-    /* i starts from 1 here; */
-    _updateItemHeight(i, delta, limitTreeLiftingIndex) {
-        for (; i < limitTreeLiftingIndex; i += i & -i) {
-            this._fTree[i] += delta;
-        }
     }
 
     _setScrollPos = () => {
@@ -459,15 +467,17 @@ class List {
             /*@__INLINE__*/
             inlinedStartBatch(this);
             this.horizontal = horizontal;
-            this._scrollToKey = horizontal
-                ? HORIZONTAL_SCROLL_TO_KEY
-                : VERTICAL_SCROLL_TO_KEY;
-            this._scrollKey = horizontal
-                ? HORIZONTAL_SCROLL_KEY
-                : VERTICAL_SCROLL_KEY;
-            this._sizeKey = horizontal
-                ? HORIZONTAL_SIZE_KEY
-                : VERTICAL_SIZE_KEY;
+            [this._scrollToKey, this._scrollKey, this._sizeKey] = horizontal
+                ? [
+                      HORIZONTAL_SCROLL_TO_KEY,
+                      HORIZONTAL_SCROLL_KEY,
+                      HORIZONTAL_SIZE_KEY
+                  ]
+                : [
+                      VERTICAL_SCROLL_TO_KEY,
+                      VERTICAL_SCROLL_KEY,
+                      VERTICAL_SIZE_KEY
+                  ];
             if (this._outerNode) {
                 /* TODO: Needs testing */
                 this._scrollToRaw(0);
