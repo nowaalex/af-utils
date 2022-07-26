@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from "react";
+import { useState, memo, useLayoutEffect } from "react";
 import { useVirtual, List } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
 
@@ -29,7 +29,7 @@ const ScrollToItem = () => {
         getEstimatedItemSize
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         model.scrollTo(dynamicListRowHeights.length - 1);
     }, [model, dynamicListRowHeights.length]);
 
@@ -38,7 +38,7 @@ const ScrollToItem = () => {
         const idx = Number.parseInt(e.currentTarget.idx.value, 10);
 
         if (!Number.isNaN(idx)) {
-            model.scrollTo(idx, 0, true);
+            model.scrollTo(idx, true);
         }
     };
 

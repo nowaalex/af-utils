@@ -12,4 +12,4 @@ https://af-utils.vercel.app/
 -   Uses position: sticky for tables
 -   mobx - ready
 -   optimized for performance
--   `scrollTo(index = 0, pixelOffset = 0, smooth = false)` method is available
+-   `scrollTo(index, smooth = false)` method is available

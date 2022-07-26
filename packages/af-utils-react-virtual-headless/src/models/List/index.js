@@ -22,9 +22,9 @@ const debounce = (fn, ms) => {
 
     const _cancel = () => clearTimeout(timer);
 
-    const res = (a, b, c) => {
+    const res = (...args) => {
         _cancel();
-        timer = setTimeout(fn, ms, a, b, c);
+        timer = setTimeout(fn, ms, ...args);
     };
 
     res._cancel = _cancel;
@@ -74,7 +74,7 @@ class List {
         this.setWidgetSize(this._outerNode[this._sizeKey])
     );
 
-    scrollPos = 0;
+    _scrollPos = 0;
     _overscanCount = 0;
 
     _unsubscribeScrollEvent = () => {};
@@ -283,6 +283,15 @@ class List {
         return this._itemSizes[itemIndex];
     }
 
+    getScrollPosition() {
+        const firstVisibleIndex = this.getIndex(this._scrollPos);
+        return (
+            firstVisibleIndex +
+            (this._scrollPos - this.getOffset(firstVisibleIndex)) /
+                this._itemSizes[firstVisibleIndex]
+        );
+    }
+
     /* i starts from 1 here; */
     _updateItemHeight(i, delta, limitTreeLiftingIndex) {
         for (; i < limitTreeLiftingIndex; i += i & -i) {
@@ -292,11 +301,11 @@ class List {
 
     _setScrollPos = () => {
         const curScrollPos = this._outerNode[this._scrollKey];
-        if (curScrollPos > this.scrollPos) {
-            this.scrollPos = curScrollPos;
+        if (curScrollPos > this._scrollPos) {
+            this._scrollPos = curScrollPos;
             this._updateRangeFromEnd();
-        } else if (curScrollPos < this.scrollPos) {
-            this.scrollPos = curScrollPos;
+        } else if (curScrollPos < this._scrollPos) {
+            this._scrollPos = curScrollPos;
             this._updateRangeFromStart();
         }
     };
@@ -348,7 +357,7 @@ class List {
     _updateRangeFromEnd() {
         const to = Math.min(
             this.itemCount,
-            1 + this.getIndex(this.scrollPos + this._widgetSize)
+            1 + this.getIndex(this._scrollPos + this._widgetSize)
         );
 
         if (to > this.to) {
@@ -358,7 +367,7 @@ class List {
             this.to = Math.min(this.itemCount, to + this._overscanCount);
             this._run(EVT_TO);
 
-            const from = this.getIndex(this.scrollPos);
+            const from = this.getIndex(this._scrollPos);
 
             if (from !== this.from) {
                 this.from = from;
@@ -370,7 +379,7 @@ class List {
     }
 
     _updateRangeFromStart() {
-        const from = this.getIndex(this.scrollPos);
+        const from = this.getIndex(this._scrollPos);
 
         if (from < this.from) {
             /*@__INLINE__*/
@@ -381,7 +390,7 @@ class List {
 
             const to = Math.min(
                 this.itemCount,
-                1 + this.getIndex(this.scrollPos + this._widgetSize)
+                1 + this.getIndex(this._scrollPos + this._widgetSize)
             );
 
             if (to !== this.to) {
@@ -407,18 +416,20 @@ class List {
         }
     }
 
-    _scrollToRaw(index, pixelOffset, smooth) {
-        this._outerNode &&
+    _scrollToRaw(index, smooth) {
+        if (this._outerNode) {
+            const whole = index | 0;
             this._outerNode.scroll({
                 [this._scrollToKey]:
-                    this.getOffset(index || 0) + (pixelOffset || 0),
+                    this.getOffset(whole) +
+                    Math.round(this._itemSizes[whole] * (index - whole)),
                 behavior: smooth ? "smooth" : "instant"
             });
+        }
     }
 
     _scrollToRawDebounced = debounce(
-        (index, pixelOffset, smooth) =>
-            this._scrollToRaw(index, pixelOffset, smooth),
+        (index, smooth) => this._scrollToRaw(index, smooth),
         300
     );
     _removeScrollEventDebounced = debounce(
@@ -426,14 +437,14 @@ class List {
         700
     );
 
-    scrollTo(index, pixelOffset, smooth) {
+    scrollTo(index, smooth) {
         this._unsubscribeScrollEvent();
         this._unsubscribeScrollEvent = this.on(() => {
-            this._scrollToRawDebounced(index, pixelOffset, smooth);
+            this._scrollToRawDebounced(index, smooth);
             this._removeScrollEventDebounced();
         }, EVT_ALL);
         this._removeScrollEventDebounced();
-        this._scrollToRaw(index, pixelOffset, smooth);
+        this._scrollToRaw(index, smooth);
     }
 
     _setScrollSize(v) {
@@ -459,7 +470,7 @@ class List {
                 : VERTICAL_SIZE_KEY;
             if (this._outerNode) {
                 /* TODO: Needs testing */
-                this._scrollToRaw();
+                this._scrollToRaw(0);
                 this.setWidgetSize(this._outerNode[this._sizeKey]);
                 this._updateRangeFromStart();
             }

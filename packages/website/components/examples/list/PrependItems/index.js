@@ -1,4 +1,4 @@
-import { memo, useState, useRef, useEffect } from "react";
+import { memo, useState, useRef, useLayoutEffect } from "react";
 import { useVirtual, List } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
 import { faker } from "@faker-js/faker";
@@ -50,31 +50,13 @@ const PrependItems = () => {
 
     const prependItems = async () => {
         const newItems = await fetch100RandomItemsAsync();
-
-        /*
-            model.getIndex(model.from) may give wrong resuts
-            due to overscan optimization.
-            Must use scrollPos here.
-        */
-        const firstVisibleIndex = model.getIndex(model.scrollPos);
-
-        /*
-            By default model.scrollTo rewinds exactly to element's top.
-            If only half of element is visible - we must remember pixel offset.
-        */
-        const pxOffset = model.scrollPos - model.getOffset(firstVisibleIndex);
-
-        const indexToScroll = firstVisibleIndex + newItems.length;
-
-        scrollPosRef.current = [indexToScroll, pxOffset];
-
+        scrollPosRef.current = newItems.length + model.getScrollPosition();
         setItems(currentItems => [...newItems, ...currentItems]);
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (scrollPosRef.current) {
-            const [indexToScroll, pxOffset] = scrollPosRef.current;
-            model.scrollTo(indexToScroll, pxOffset);
+            model.scrollTo(scrollPosRef.current);
             scrollPosRef.current = null;
         }
         /*
