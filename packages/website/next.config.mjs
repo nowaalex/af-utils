@@ -93,6 +93,11 @@ const config = withBundleAnalyzer(
                     permanent: true
                 },
                 {
+                    source: "/docs",
+                    destination: "/virtual",
+                    permanent: true
+                },
+                {
                     source: "/why",
                     destination: "/virtual",
                     permanent: true
