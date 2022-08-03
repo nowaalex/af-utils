@@ -423,7 +423,7 @@ class List {
 
             if (desiredScrollPos !== this._scrollPos) {
                 attemptsLeft ||= 5;
-                if (performance.now() - this._scrollTs > 200) {
+                if (!smooth || performance.now() - this._scrollTs > 128) {
                     this._outerNode.scroll({
                         [this._scrollToKey]: desiredScrollPos,
                         behavior: smooth ? "smooth" : "instant"
@@ -433,7 +433,7 @@ class List {
                 if (attemptsLeft) {
                     this._scrollToTimer = setTimeout(
                         () => this.scrollTo(index, smooth, attemptsLeft),
-                        400
+                        smooth ? 256 : 0
                     );
                 }
             }

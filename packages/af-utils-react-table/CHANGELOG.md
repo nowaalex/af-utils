@@ -1,5 +1,12 @@
 # @af-utils/react-table
 
+## 0.0.30
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.25
+
 ## 0.0.29
 
 ### Patch Changes
