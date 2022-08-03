@@ -16,6 +16,7 @@ yarn add @af-utils/react-virtual-headless prop-types use-sync-external-store
 # useVirtual
 
 Core hook. Used to get scroller model instance synchronized with props.
+This instance will persist for the full lifetime of the component.
 
 ```jsx
 const model = useVirtual({
@@ -37,7 +38,7 @@ Best-guess item size. Defaults to `scrollSize / itemSizes.length` or `40` if no 
 
 ### `overscanCount: Integer`
 
-Minimum amount of items to load behind/ahead(depends on scroll direction) of the current visible range. Defaults to `3`.
+Minimum amount of items to load behind/ahead(depends on scroll direction) of the current visible range. Defaults to `3`. [Example](/virtual/examples/list/ExtraEvents).
 
 ### `horizontal: Boolean`
 
@@ -165,7 +166,7 @@ Gets called when at least one of [events](#numeric-event-constants) gets trigger
 
 # Subscription
 
-Rerendered, when at least one of passed [events](#numeric-event-constants) is triggered.
+Rerendered, when at least one of passed [events](#numeric-event-constants) is triggered. [Example](/virtual/examples/list/ExtraEvents).
 
 ```jsx
 <Subscription model={model} events={events}>

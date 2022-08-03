@@ -1,0 +1,49 @@
+import { memo } from "react";
+import {
+    useVirtual,
+    List,
+    EVT_TO,
+    EVT_FROM,
+    EVT_SCROLL_SIZE,
+    Subscription
+} from "@af-utils/react-virtual-list";
+
+const Item = memo(({ i, model }) => (
+    <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">
+        row {i}
+    </div>
+));
+
+const ExtraEvents = () => {
+    const rows = useVirtual({
+        itemCount: 50000,
+        /*
+            Such a big overscanCount is rarely needed;
+            just for example here
+        */
+        overscanCount: 10
+    });
+
+    return (
+        <div className="h-full flex flex-col">
+            <div className="flex-none text-center p-1 bg-orange-200">
+                Rendered range:&nbsp;
+                <Subscription model={rows} events={[EVT_FROM, EVT_TO]}>
+                    {() => `${rows.from} - ${rows.to}`}
+                </Subscription>
+            </div>
+            <List className="flex-auto" model={rows}>
+                {Item}
+            </List>
+            <div className="flex-none text-center p-1 bg-orange-200">
+                Scroll size:&nbsp;
+                <Subscription model={rows} events={[EVT_SCROLL_SIZE]}>
+                    {() => rows.scrollSize}
+                </Subscription>
+                px
+            </div>
+        </div>
+    );
+};
+
+export default ExtraEvents;
