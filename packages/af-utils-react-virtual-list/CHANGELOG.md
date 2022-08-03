@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.29
+
+### Patch Changes
+
+-   added countOffset prop to list & inlined itemCountChanged func
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.27
+
 ## 0.0.28
 
 ### Patch Changes

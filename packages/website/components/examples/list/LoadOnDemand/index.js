@@ -53,16 +53,13 @@ const Posts = () => {
         model,
         EVENTS,
         useCallback(async () => {
-            if (
-                isLoadingRef.current === false &&
-                model.itemCount === model.to
-            ) {
+            if (isLoadingRef.current === false && posts.length === model.to) {
                 isLoadingRef.current = true;
                 const paragraphs = await fetchRandomDescriptions();
                 isLoadingRef.current = false;
-                setPosts(p => p.concat(paragraphs));
+                setPosts(p => [...p, ...paragraphs]);
             }
-        }, [model])
+        }, [model, posts])
     );
 
     return (

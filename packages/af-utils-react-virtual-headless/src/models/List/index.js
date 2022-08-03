@@ -86,6 +86,7 @@ class List {
         this.setWidgetSize(this._outerNode[this._sizeKey])
     );
 
+    _itemCount = 0;
     _scrollTs = 0;
     _scrollToTimer = 0;
     _scrollPos = 0;
@@ -98,13 +99,12 @@ class List {
     _fTree = new TypedCache(0);
 
     /*
-        most significant bit of this.itemCount;
+        most significant bit of this._itemCount;
         caching it to avoid Math.clz32 calculations on every getIndex call
     */
     _msb = 0;
 
     scrollSize = 0;
-    itemCount = 0;
     from = 0;
     to = 0;
     sizesHash = 0;
@@ -166,7 +166,7 @@ class List {
         return () =>
             deps.forEach(evt =>
                 this._EventsList[evt].splice(
-                    this._EventsList[evt].indexOf(callBack) >>> 0,
+                    this._EventsList[evt].indexOf(callBack),
                     1
                 )
             );
@@ -192,7 +192,7 @@ class List {
     }
 
     _endBatch() {
-        if (--this._inBatch === 0) {
+        if (!--this._inBatch) {
             for (const cb of this._Queue) {
                 /*
                     These callbacks must not call _startBatch from inside.
@@ -210,39 +210,6 @@ class List {
         }
     }
 
-    _itemCountChanged(itemCount, getEstimatedItemSize) {
-        if (itemCount > MAX_ITEM_COUNT) {
-            throw new Error(
-                `itemCount must be <= 2_147_483_647. Got: ${itemCount}.`
-            );
-        }
-
-        this._msb = itemCount && 1 << (31 - Math.clz32(itemCount));
-
-        const oldItemSizes = this._itemSizes;
-        const curRowHeighsLength = oldItemSizes.length;
-
-        if (itemCount > curRowHeighsLength) {
-            this._itemSizes = new TypedCache(
-                Math.min(itemCount + 32, MAX_ITEM_COUNT)
-            );
-            this._itemSizes.set(oldItemSizes);
-
-            this._fTree = /*@__NOINLINE__*/ buildFtree(
-                this._itemSizes.fill(
-                    getEstimatedItemSize(
-                        oldItemSizes,
-                        this.scrollSize,
-                        itemCount
-                    ),
-                    curRowHeighsLength
-                )
-            );
-        }
-
-        this._setScrollSize(this.getOffset(itemCount));
-    }
-
     getIndex(offset) {
         let index = 0;
 
@@ -252,7 +219,7 @@ class List {
             bitMask >>= 1
         ) {
             tempIndex = index + bitMask;
-            if (tempIndex <= this.itemCount) {
+            if (tempIndex <= this._itemCount) {
                 if (offset === this._fTree[tempIndex]) {
                     return tempIndex;
                 }
@@ -268,7 +235,7 @@ class List {
 
     getOffset(index) {
         if (process.env.NODE_ENV !== "production") {
-            if (index > this.itemCount) {
+            if (index > this._itemCount) {
                 throw new Error("index must not be > itemCount");
             }
         }
@@ -329,9 +296,7 @@ class List {
             );
         }
 
-        this._outerNode = node;
-
-        if (node) {
+        if ((this._outerNode = node)) {
             this._OuterNodeResizeObserver.observe(node);
             node.addEventListener("scroll", this._updateScrollPos, {
                 passive: true
@@ -364,14 +329,14 @@ class List {
 
     _updateRangeFromEnd() {
         const to = Math.min(
-            this.itemCount,
+            this._itemCount,
             1 + this.getIndex(this._scrollPos + this._widgetSize)
         );
 
         if (to > this.to) {
             /*@__INLINE__*/ inlinedStartBatch(this);
 
-            this.to = Math.min(this.itemCount, to + this._overscanCount);
+            this.to = Math.min(this._itemCount, to + this._overscanCount);
             this._run(EVT_TO);
 
             const from = this.getIndex(this._scrollPos);
@@ -396,7 +361,7 @@ class List {
             this._run(EVT_FROM);
 
             const to = Math.min(
-                this.itemCount,
+                this._itemCount,
                 1 + this.getIndex(this._scrollPos + this._widgetSize)
             );
 
@@ -406,20 +371,6 @@ class List {
             }
 
             this._endBatch();
-        }
-    }
-
-    _shiftRangeToEnd() {
-        this.to = this.itemCount;
-        this._run(EVT_TO);
-
-        const from = this.getIndex(
-            Math.max(0, this.scrollSize - this._widgetSize)
-        );
-
-        if (from !== this.from) {
-            this.from = from;
-            this._run(EVT_FROM);
         }
     }
 
@@ -470,22 +421,20 @@ class List {
             /*@__INLINE__*/
             inlinedStartBatch(this);
             this.horizontal = horizontal;
-            [this._scrollToKey, this._scrollKey, this._sizeKey] = horizontal
-                ? [
-                      HORIZONTAL_SCROLL_TO_KEY,
-                      HORIZONTAL_SCROLL_KEY,
-                      HORIZONTAL_SIZE_KEY
-                  ]
-                : [
-                      VERTICAL_SCROLL_TO_KEY,
-                      VERTICAL_SCROLL_KEY,
-                      VERTICAL_SIZE_KEY
-                  ];
+            this._scrollToKey = horizontal
+                ? HORIZONTAL_SCROLL_TO_KEY
+                : VERTICAL_SCROLL_TO_KEY;
+            this._scrollKey = horizontal
+                ? HORIZONTAL_SCROLL_KEY
+                : VERTICAL_SCROLL_KEY;
+            this._sizeKey = horizontal
+                ? HORIZONTAL_SIZE_KEY
+                : VERTICAL_SIZE_KEY;
+
             if (this._outerNode) {
                 /* TODO: Needs testing */
                 this.scrollTo(0);
                 this.setWidgetSize(this._outerNode[this._sizeKey]);
-                this._updateRangeFromStart();
             }
             this._endBatch();
         }
@@ -495,16 +444,46 @@ class List {
         itemCount,
         getEstimatedItemSize = getEstimatedItemSizeDefault
     ) {
-        if (itemCount !== this.itemCount) {
-            this.itemCount = itemCount;
-            /*@__INLINE__*/
-            inlinedStartBatch(this);
-            this._itemCountChanged(itemCount, getEstimatedItemSize);
-            if (this.to > itemCount) {
-                this._shiftRangeToEnd();
-            } else {
-                this._updateRangeFromEnd();
+        if (itemCount > MAX_ITEM_COUNT) {
+            throw new Error(
+                `itemCount must be <= 2_147_483_647. Got: ${itemCount}.`
+            );
+        }
+        if (itemCount !== this._itemCount) {
+            this._msb =
+                (this._itemCount = itemCount) &&
+                1 << (31 - Math.clz32(itemCount));
+
+            const oldItemSizes = this._itemSizes;
+            const curRowHeighsLength = oldItemSizes.length;
+
+            if (itemCount > curRowHeighsLength) {
+                this._itemSizes = new TypedCache(
+                    Math.min(itemCount + 32, MAX_ITEM_COUNT)
+                );
+                this._itemSizes.set(oldItemSizes);
+
+                this._fTree = /*@__NOINLINE__*/ buildFtree(
+                    this._itemSizes.fill(
+                        getEstimatedItemSize(
+                            oldItemSizes,
+                            this.scrollSize,
+                            itemCount
+                        ),
+                        curRowHeighsLength
+                    )
+                );
             }
+
+            /*@__INLINE__*/ inlinedStartBatch(this);
+            this._setScrollSize(this.getOffset(itemCount));
+
+            if (this.to > itemCount) {
+                // Forcing shift range to end
+                this.to = -1;
+            }
+
+            this._updateRangeFromEnd();
             this._endBatch();
         }
     }

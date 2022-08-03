@@ -9,7 +9,7 @@ const mapVisibleRange = (model, cb, countOffset) => {
         }
     } else {
         for (; from < to; ) {
-            result.push(cb(from++));
+            result.push(cb(from++, 0));
         }
     }
 
