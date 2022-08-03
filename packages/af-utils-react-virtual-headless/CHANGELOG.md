@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.26
+
+### Patch Changes
+
+-   adjusted scrollTo timers for ff
+
 ## 0.0.25
 
 ### Patch Changes

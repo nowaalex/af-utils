@@ -20,6 +20,19 @@ const VERTICAL_SIZE_KEY = "offsetHeight";
 
 const TypedCache = Uint32Array;
 
+/*
+    Chrome works ok with 0;
+    FF needs some timer to place scrollTo call after ResizeObserver callback
+*/
+const NON_SMOOTH_SCROLL_CHECK_TIMER = 32;
+
+const SMOOTH_SCROLL_CHECK_TIMER = 512;
+
+/*
+    How many milliseconds without scroll events must pass before scroll considered ended
+*/
+const SCROLL_ENDED_TIMER = 128;
+
 const FinalResizeObserver = process.env.__IS_SERVER__
     ? class {
           observe() {}
@@ -423,7 +436,10 @@ class List {
 
             if (desiredScrollPos !== this._scrollPos) {
                 attemptsLeft ||= 5;
-                if (!smooth || performance.now() - this._scrollTs > 128) {
+                if (
+                    !smooth ||
+                    performance.now() - this._scrollTs > SCROLL_ENDED_TIMER
+                ) {
                     this._outerNode.scroll({
                         [this._scrollToKey]: desiredScrollPos,
                         behavior: smooth ? "smooth" : "instant"
@@ -433,7 +449,9 @@ class List {
                 if (attemptsLeft) {
                     this._scrollToTimer = setTimeout(
                         () => this.scrollTo(index, smooth, attemptsLeft),
-                        smooth ? 256 : 0
+                        smooth
+                            ? SMOOTH_SCROLL_CHECK_TIMER
+                            : NON_SMOOTH_SCROLL_CHECK_TIMER
                     );
                 }
             }
