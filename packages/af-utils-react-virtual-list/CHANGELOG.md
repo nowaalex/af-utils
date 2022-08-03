@@ -1,5 +1,14 @@
 # @af-utils/react-virtual-list
 
+## 0.0.26
+
+### Patch Changes
+
+-   improved scrollTo
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.24
+    -   @af-utils/styled@0.0.11
+
 ## 0.0.25
 
 ### Patch Changes

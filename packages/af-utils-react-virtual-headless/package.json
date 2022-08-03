@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/react-virtual-headless",
     "private": false,
-    "version": "0.0.23",
+    "version": "0.0.24",
     "description": "React components for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
     "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
@@ -43,9 +43,9 @@
         "windowing"
     ],
     "devDependencies": {
-        "@babel/core": "^7.18.9",
-        "@babel/plugin-transform-runtime": "^7.18.9",
-        "@babel/preset-env": "^7.18.9",
+        "@babel/core": "^7.18.10",
+        "@babel/plugin-transform-runtime": "^7.18.10",
+        "@babel/preset-env": "^7.18.10",
         "@babel/preset-react": "^7.18.6",
         "@rollup/plugin-babel": "^5.3.1",
         "@rollup/plugin-commonjs": "^22.0.1",

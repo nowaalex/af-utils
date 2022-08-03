@@ -10,16 +10,16 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@af-utils/react-mobx-table": "^0.0.30",
-        "@af-utils/react-table": "^0.0.28",
-        "@af-utils/react-virtual-headless": "^0.0.23",
-        "@af-utils/react-virtual-list": "^0.0.25",
-        "@emotion/css": "^11.9.0",
-        "@emotion/react": "^11.9.3",
-        "@emotion/styled": "^11.9.3",
+        "@af-utils/react-mobx-table": "^0.0.31",
+        "@af-utils/react-table": "^0.0.29",
+        "@af-utils/react-virtual-headless": "^0.0.24",
+        "@af-utils/react-virtual-list": "^0.0.26",
+        "@emotion/css": "^11.10.0",
+        "@emotion/react": "^11.10.0",
+        "@emotion/styled": "^11.10.0",
         "@faker-js/faker": "^7.3.0",
         "@mdx-js/react": "^2.1.2",
-        "@mui/material": "^5.9.2",
+        "@mui/material": "^5.9.3",
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/typography": "^0.5.4",
         "lodash": "^4.17.21",
@@ -39,11 +39,11 @@
         "@mdx-js/loader": "^2.1.2",
         "@next/bundle-analyzer": "^12.2.3",
         "@next/mdx": "^12.2.3",
-        "autoprefixer": "^10.4.7",
-        "eslint": "8.20.0",
+        "autoprefixer": "^10.4.8",
+        "eslint": "8.21.0",
         "eslint-config-next": "12.2.3",
         "next": "^12.2.3",
-        "next-sitemap": "3.1.13",
+        "next-sitemap": "3.1.15",
         "postcss": "^8.4.14",
         "postcss-import": "^14.1.0",
         "prism-webpack-loader": "^0.0.1",
@@ -52,6 +52,6 @@
         "rehype-slug": "^5.0.1",
         "remark-gfm": "^3.0.1",
         "remark-toc": "^8.0.1",
-        "tailwindcss": "^3.1.6"
+        "tailwindcss": "^3.1.7"
     }
 }

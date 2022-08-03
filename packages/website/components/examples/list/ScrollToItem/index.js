@@ -1,6 +1,8 @@
 import { useState, memo, useLayoutEffect } from "react";
 import { useVirtual, List } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
+import { faker } from "@faker-js/faker";
+import useFakerSeed from "/hooks/useFakerSeed";
 
 const DEFAULT_ROW_COUNT = 20000;
 
@@ -20,8 +22,11 @@ const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
     oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 75;
 
 const ScrollToItem = () => {
+    // fake data should be consistent for ssr purpose
+    useFakerSeed(1234);
+
     const [dynamicListRowHeights, changeRows] = useState(() =>
-        times(DEFAULT_ROW_COUNT, i => 50 + ((i ** 2) & 63))
+        times(DEFAULT_ROW_COUNT, () => faker.mersenne.rand(140, 30))
     );
 
     const model = useVirtual({
@@ -49,7 +54,9 @@ const ScrollToItem = () => {
         if (!Number.isNaN(rowsToAdd) && rowsToAdd !== 0) {
             changeRows(rows =>
                 rowsToAdd > 0
-                    ? rows.concat(times(rowsToAdd, i => 50 + ((i ** 2) & 63)))
+                    ? rows.concat(
+                          times(rowsToAdd, () => faker.mersenne.rand(140, 30))
+                      )
                     : rows.slice(0, rowsToAdd)
             );
         }
