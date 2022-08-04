@@ -24,6 +24,9 @@ const TypedCache = Uint32Array;
     Chrome works ok with 0;
     FF needs some timer to place scrollTo call after ResizeObserver callback
 */
+
+const ITEMS_ROOM = 32;
+
 const NON_SMOOTH_SCROLL_CHECK_TIMER = 32;
 
 const SMOOTH_SCROLL_CHECK_TIMER = 512;
@@ -146,7 +149,13 @@ class List {
             if (buff !== 0) {
                 updateItemHeight(this._fTree, lim, buff, this._fTree.length);
                 this._setScrollSize(this.scrollSize + buff);
-                this._updateRangeFromEnd();
+                if (buff < 0) {
+                    /*
+                        If visible item sizes reduced - holes may appear, so rerender is a must.
+                        No holes possible if item sizes increased => no need to rerender.
+                    */
+                    this._updateRangeFromEnd();
+                }
             }
 
             this._endBatch();
@@ -212,20 +221,16 @@ class List {
 
     getIndex(offset) {
         let index = 0;
-
+        offset = Math.min(offset, this.scrollSize);
         for (
             let bitMask = this._msb, tempIndex = 0;
             bitMask > 0;
             bitMask >>= 1
         ) {
-            tempIndex = index + bitMask;
-            if (tempIndex <= this._itemCount) {
-                if (offset === this._fTree[tempIndex]) {
-                    return tempIndex;
-                }
+            if ((tempIndex = index + bitMask) <= this._itemCount) {
                 if (offset > this._fTree[tempIndex]) {
-                    offset -= this._fTree[tempIndex];
                     index = tempIndex;
+                    offset -= this._fTree[tempIndex];
                 }
             }
         }
@@ -258,7 +263,7 @@ class List {
         return this._itemSizes[itemIndex];
     }
 
-    getScrollPosition() {
+    get visibleFrom() {
         const firstVisibleIndex = this.getIndex(this._scrollPos);
         return (
             firstVisibleIndex +
@@ -328,10 +333,9 @@ class List {
     }
 
     _updateRangeFromEnd() {
-        const to = Math.min(
-            this._itemCount,
-            1 + this.getIndex(this._scrollPos + this._widgetSize)
-        );
+        const to =
+            this._itemCount &&
+            1 + this.getIndex(this._scrollPos + this._widgetSize);
 
         if (to > this.to) {
             /*@__INLINE__*/ inlinedStartBatch(this);
@@ -360,10 +364,9 @@ class List {
             this.from = Math.max(0, from - this._overscanCount);
             this._run(EVT_FROM);
 
-            const to = Math.min(
-                this._itemCount,
-                1 + this.getIndex(this._scrollPos + this._widgetSize)
-            );
+            const to =
+                this._itemCount &&
+                1 + this.getIndex(this._scrollPos + this._widgetSize);
 
             if (to !== this.to) {
                 this.to = to;
@@ -459,7 +462,7 @@ class List {
 
             if (itemCount > curRowHeighsLength) {
                 this._itemSizes = new TypedCache(
-                    Math.min(itemCount + 32, MAX_ITEM_COUNT)
+                    Math.min(itemCount + ITEMS_ROOM, MAX_ITEM_COUNT)
                 );
                 this._itemSizes.set(oldItemSizes);
 

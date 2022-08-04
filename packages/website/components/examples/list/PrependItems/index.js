@@ -50,7 +50,7 @@ const PrependItems = () => {
 
     const prependItems = async () => {
         const newItems = await fetch100RandomItemsAsync();
-        scrollPosRef.current = newItems.length + model.getScrollPosition();
+        scrollPosRef.current = newItems.length + model.visibleFrom;
         setItems(currentItems => [...newItems, ...currentItems]);
     };
 
