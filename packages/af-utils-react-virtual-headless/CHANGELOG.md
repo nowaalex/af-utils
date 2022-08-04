@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.29
+
+### Patch Changes
+
+-   minor updateFromEnd optimization + nextjs upgrade
+
 ## 0.0.28
 
 ### Patch Changes

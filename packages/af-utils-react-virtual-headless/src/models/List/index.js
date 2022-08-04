@@ -227,11 +227,12 @@ class List {
             bitMask > 0;
             bitMask >>= 1
         ) {
-            if ((tempIndex = index + bitMask) <= this._itemCount) {
-                if (offset > this._fTree[tempIndex]) {
-                    index = tempIndex;
-                    offset -= this._fTree[tempIndex];
-                }
+            if (
+                (tempIndex = index + bitMask) <= this._itemCount &&
+                offset > this._fTree[tempIndex]
+            ) {
+                index = tempIndex;
+                offset -= this._fTree[tempIndex];
             }
         }
 
@@ -333,9 +334,10 @@ class List {
     }
 
     _updateRangeFromEnd() {
-        const to =
-            this._itemCount &&
-            1 + this.getIndex(this._scrollPos + this._widgetSize);
+        /*
+            zero itemCount check is not needed here, it is done inside folowing if block
+        */
+        const to = 1 + this.getIndex(this._scrollPos + this._widgetSize);
 
         if (to > this.to) {
             /*@__INLINE__*/ inlinedStartBatch(this);
