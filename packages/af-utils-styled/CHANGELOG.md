@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.12
+
+### Patch Changes
+
+-   upgraded dependencies + minor model optimization
+
 ## 0.0.11
 
 ### Patch Changes

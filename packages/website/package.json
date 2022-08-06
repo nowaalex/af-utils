@@ -10,10 +10,10 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@af-utils/react-mobx-table": "^0.0.36",
-        "@af-utils/react-table": "^0.0.34",
-        "@af-utils/react-virtual-headless": "^0.0.29",
-        "@af-utils/react-virtual-list": "^0.0.31",
+        "@af-utils/react-mobx-table": "^0.0.37",
+        "@af-utils/react-table": "^0.0.35",
+        "@af-utils/react-virtual-headless": "^0.0.30",
+        "@af-utils/react-virtual-list": "^0.0.32",
         "@emotion/css": "^11.10.0",
         "@emotion/react": "^11.10.0",
         "@emotion/styled": "^11.10.0",
@@ -52,6 +52,6 @@
         "rehype-slug": "^5.0.1",
         "remark-gfm": "^3.0.1",
         "remark-toc": "^8.0.1",
-        "tailwindcss": "^3.1.7"
+        "tailwindcss": "^3.1.8"
     }
 }

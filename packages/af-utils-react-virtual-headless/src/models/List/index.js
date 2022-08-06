@@ -423,10 +423,7 @@ class List {
 
     setHorizontal(horizontal) {
         if (horizontal !== this.horizontal) {
-            /*@__INLINE__*/
-            inlinedStartBatch(this);
-            this.horizontal = horizontal;
-            this._scrollToKey = horizontal
+            this._scrollToKey = (this.horizontal = horizontal)
                 ? HORIZONTAL_SCROLL_TO_KEY
                 : VERTICAL_SCROLL_TO_KEY;
             this._scrollKey = horizontal
@@ -438,10 +435,10 @@ class List {
 
             if (this._outerNode) {
                 /* TODO: Needs testing */
-                this.scrollTo(0);
                 this.setWidgetSize(this._outerNode[this._sizeKey]);
             }
-            this._endBatch();
+
+            this.scrollTo(0);
         }
     }
 

@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/react-mobx-table",
     "private": false,
-    "version": "0.0.36",
+    "version": "0.0.37",
     "description": "React components for rendering tables",
     "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
     "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
@@ -43,7 +43,7 @@
         "@babel/preset-env": "^7.18.10",
         "@babel/preset-react": "^7.18.6",
         "@rollup/plugin-babel": "^5.3.1",
-        "@rollup/plugin-commonjs": "^22.0.1",
+        "@rollup/plugin-commonjs": "^22.0.2",
         "@rollup/plugin-export-bundle-size": "^0.0.1",
         "babel-jest": "^28.1.3",
         "babel-plugin-module-resolver": "^4.1.0",
@@ -52,9 +52,9 @@
         "rollup-plugin-terser": "^7.0.2"
     },
     "peerDependencies": {
-        "@af-utils/react-table": "^0.0.34",
-        "@af-utils/react-virtual-headless": "^0.0.29",
-        "@af-utils/styled": "^0.0.11",
+        "@af-utils/react-table": "^0.0.35",
+        "@af-utils/react-virtual-headless": "^0.0.30",
+        "@af-utils/styled": "^0.0.12",
         "mobx": "^6.3.0",
         "mobx-react-lite": "^3.2.0",
         "prop-types": "^15.8.1",
