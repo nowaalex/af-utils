@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.31
+
+### Patch Changes
+
+-   minor hooks refactor
+
 ## 0.0.30
 
 ### Patch Changes

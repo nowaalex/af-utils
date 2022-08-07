@@ -6,7 +6,9 @@ import {
     EVT_TO,
     EVT_SIZES,
     EVT_SCROLL_SIZE,
-    MAX_ITEM_COUNT
+    MAX_ITEM_COUNT,
+    DEFAULT_OVERSCAN_COUNT,
+    DEFAULT_ESTIMATED_WIDGET_SIZE
 } from "constants";
 
 const HORIZONTAL_SCROLL_KEY = "scrollLeft";
@@ -93,10 +95,10 @@ class List {
     _scrollTs = 0;
     _scrollToTimer = 0;
     _scrollPos = 0;
-    _overscanCount = 0;
+    _overscanCount = DEFAULT_OVERSCAN_COUNT;
 
     _outerNode = null;
-    _widgetSize = 0;
+    _widgetSize = DEFAULT_ESTIMATED_WIDGET_SIZE;
 
     _itemSizes = new TypedCache(0);
     _fTree = new TypedCache(0);
@@ -448,7 +450,7 @@ class List {
     ) {
         if (itemCount > MAX_ITEM_COUNT) {
             throw new Error(
-                `itemCount must be <= 2_147_483_647. Got: ${itemCount}.`
+                `itemCount must be <= ${MAX_ITEM_COUNT}. Got: ${itemCount}.`
             );
         }
         if (itemCount !== this._itemCount) {

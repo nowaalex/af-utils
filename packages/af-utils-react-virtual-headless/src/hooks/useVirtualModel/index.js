@@ -1,27 +1,27 @@
 import List from "models/List";
+import {
+    DEFAULT_OVERSCAN_COUNT,
+    DEFAULT_ESTIMATED_WIDGET_SIZE
+} from "constants";
+
 import useOnce from "../useOnce";
 
 const useVirtualModel = ({
     itemCount = 0,
     getEstimatedItemSize,
-    estimatedWidgetSize = 200,
-    overscanCount = 3,
-    horizontal = false
-}) => {
-    const model = useOnce(() => {
+    estimatedWidgetSize = DEFAULT_ESTIMATED_WIDGET_SIZE,
+    overscanCount = DEFAULT_OVERSCAN_COUNT,
+    horizontal
+}) =>
+    useOnce(() => {
         const model = new List();
 
         model.setOverscan(overscanCount);
-        model.setHorizontal(horizontal);
+        model.setHorizontal(!!horizontal);
         model.setItemCount(itemCount, getEstimatedItemSize);
         model.setWidgetSize(estimatedWidgetSize);
 
         return model;
     });
-
-    model.setOverscan(overscanCount);
-
-    return model;
-};
 
 export default useVirtualModel;

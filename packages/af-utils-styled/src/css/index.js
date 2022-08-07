@@ -1,4 +1,4 @@
-const PREFIX = "af_";
+const PREFIX = "af-styled_";
 const RuleToClass = new Map();
 
 const styleEl = process.env.__IS_SERVER__
@@ -19,6 +19,7 @@ const getClassNameFromRule = rawRule => {
         .trim()
         .replace(/(\s)+/g, "$1")
         .replace(/\s?:\s?/, ":");
+
     let classForRule = RuleToClass.get(rule);
 
     if (!classForRule) {
