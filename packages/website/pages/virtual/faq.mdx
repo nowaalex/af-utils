@@ -5,7 +5,7 @@ import CommonHead from "/components/CommonHead";
 ## Why do I need to use ref?
 
 In order to work smoothly, library must know scrolled item sizes. Initially they
-are taken with the help of `getEstimatedItemSize` param. But this is usually not
+are taken with the help of [`getEstimatedItemSize`](/virtual/headless#getestimateditemsize-function-itemsizes-scrollsize-newitemcount---integer) param. But this is usually not
 enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
 for more accurate measurements, but you must provide mounted items explicitly in
 conjunction with their indexes.
@@ -17,7 +17,7 @@ but you may use your styling approach.
 
 ## How many items virtual scroller can handle?
 
-Maximum `itemCount` value is `2_147_483_647` (int32 max).
+Maximum [`itemcount`](/virtual/headless#itemcount-integer) value is `2_147_483_647` (int32 max).
 This limit exists, because item sizes cache implementation has bitwise operations, which work only with int32.
 But there is one more limit. W3C does not provide maximum allowed values for height, width, margin, etc.
 
@@ -26,7 +26,11 @@ But there is one more limit. W3C does not provide maximum allowed values for hei
 > UAs should support reasonably useful ranges and precisions
 
 This quote was found [here](https://www.w3.org/TR/css3-values/). Chrome's experimentally found maximum value is `33_554_428`.
-So some problems _may_ happen if `scrollSize` is bigger.
+So some problems _may_ happen if [`scrollSize`](/virtual/headless#scrollsize-integer) is bigger.
+
+## Is Server-side rendering supported?
+
+Yes, it is enabled by default, use [`estimatedWidgetSize`](/virtual/headless#estimatedwidgetsize-integer) for fine-tuning.
 
 export default ({ children }) => (
     <>
