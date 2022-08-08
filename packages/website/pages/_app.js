@@ -7,7 +7,7 @@ import "/styles/code.css";
 const FUCKING_DIRTY_MDX_LAYOUTS = {
     virtual: page => (
         <VirtualLayout>
-            <div className="overflow-auto px-8 pt-4 w-full h-full">
+            <div className="overflow-auto px-8 py-4 w-full h-full">
                 <div className="prose max-w-[1200px] w-full">{page}</div>
             </div>
         </VirtualLayout>
