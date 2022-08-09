@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.32
+
+### Patch Changes
+
+-   restructured events
+
 ## 0.0.31
 
 ### Patch Changes

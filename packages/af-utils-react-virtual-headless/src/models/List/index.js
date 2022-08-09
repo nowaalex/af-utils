@@ -2,8 +2,7 @@ import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
 import {
     SIZES_HASH_MODULO,
     EVT_ALL,
-    EVT_FROM,
-    EVT_TO,
+    EVT_RANGE,
     EVT_SIZES,
     EVT_SCROLL_SIZE,
     MAX_ITEM_COUNT,
@@ -81,6 +80,8 @@ const updateItemHeight = (fTree, i, delta, limitTreeLiftingIndex) => {
         fTree[i] += delta;
     }
 };
+
+const call = fn => fn();
 class List {
     horizontal = false;
     _scrollToKey = VERTICAL_SCROLL_TO_KEY;
@@ -183,16 +184,12 @@ class List {
             );
     }
 
-    _run(evt) {
-        if (process.env.NODE_ENV !== "production") {
-            if (this._inBatch === 0) {
-                throw new Error("Can't run actions while not in batch");
-            }
-        }
+    _addToQueue = cb => this._Queue.add(cb);
 
-        for (const cb of this._EventsList[evt]) {
-            this._Queue.add(cb);
-        }
+    _run(evt) {
+        this._EventsList[evt].forEach(
+            this._inBatch === 0 ? call : this._addToQueue
+        );
     }
 
     /* inspired by mobx */
@@ -203,13 +200,11 @@ class List {
     }
 
     _endBatch() {
-        if (!--this._inBatch) {
-            for (const cb of this._Queue) {
-                /*
-                    These callbacks must not call _startBatch from inside.
-                */
-                cb();
-            }
+        if (--this._inBatch === 0) {
+            /*
+                 calls must not call _startBatch from inside.
+            */
+            this._Queue.forEach(call);
             this._Queue.clear();
         }
     }
@@ -342,19 +337,9 @@ class List {
         const to = 1 + this.getIndex(this._scrollPos + this._widgetSize);
 
         if (to > this.to) {
-            /*@__INLINE__*/ inlinedStartBatch(this);
-
             this.to = Math.min(this._itemCount, to + this._overscanCount);
-            this._run(EVT_TO);
-
-            const from = this.getIndex(this._scrollPos);
-
-            if (from !== this.from) {
-                this.from = from;
-                this._run(EVT_FROM);
-            }
-
-            this._endBatch();
+            this.from = this.getIndex(this._scrollPos);
+            this._run(EVT_RANGE);
         }
     }
 
@@ -362,22 +347,11 @@ class List {
         const from = this.getIndex(this._scrollPos);
 
         if (from < this.from) {
-            /*@__INLINE__*/
-            inlinedStartBatch(this);
-
             this.from = Math.max(0, from - this._overscanCount);
-            this._run(EVT_FROM);
-
-            const to =
+            this.to =
                 this._itemCount &&
                 1 + this.getIndex(this._scrollPos + this._widgetSize);
-
-            if (to !== this.to) {
-                this.to = to;
-                this._run(EVT_TO);
-            }
-
-            this._endBatch();
+            this._run(EVT_RANGE);
         }
     }
 

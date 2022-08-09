@@ -3,7 +3,7 @@ import { useState, useRef, useCallback, memo } from "react";
 import {
     useVirtual,
     useSubscription,
-    EVT_TO,
+    EVT_RANGE,
     List
 } from "@af-utils/react-virtual-list";
 
@@ -29,7 +29,7 @@ const Item = memo(({ i, model, data: posts }) => (
     </div>
 ));
 
-const EVENTS = [EVT_TO];
+const EVENTS = [EVT_RANGE];
 
 const getKey = (i, itemData) => itemData[i];
 

@@ -5,8 +5,7 @@ import {
     mapVisibleRange,
     Subscription,
     EVT_SCROLL_SIZE,
-    EVT_FROM,
-    EVT_TO
+    EVT_RANGE
 } from "@af-utils/react-virtual-headless";
 
 const Item = memo(({ i, model }) => (
@@ -15,9 +14,6 @@ const Item = memo(({ i, model }) => (
     </div>
 ));
 
-const RANGE_EVENTS = [EVT_FROM, EVT_TO];
-const SCROLL_SIZE_EVENTS = [EVT_SCROLL_SIZE];
-
 const WithEvents = () => {
     const model = useVirtual({
         itemCount: 50000
@@ -25,7 +21,7 @@ const WithEvents = () => {
 
     return (
         <div className="h-full overflow-auto relative" ref={model.setOuterNode}>
-            <Subscription model={model} events={SCROLL_SIZE_EVENTS}>
+            <Subscription model={model} events={[EVT_SCROLL_SIZE]}>
                 {() => (
                     <div
                         className="invisible absolute top-0 left-0 w-px"
@@ -33,7 +29,7 @@ const WithEvents = () => {
                     />
                 )}
             </Subscription>
-            <Subscription model={model} events={RANGE_EVENTS}>
+            <Subscription model={model} events={[EVT_RANGE]}>
                 {() => (
                     <>
                         <div

@@ -8,10 +8,4 @@ export { default as useOnce } from "./hooks/useOnce";
 
 export { default as Subscription } from "./components/Subscription";
 
-export {
-    EVT_FROM,
-    EVT_TO,
-    EVT_SCROLL_SIZE,
-    EVT_SIZES,
-    EVT_ALL
-} from "./constants";
+export { EVT_RANGE, EVT_SCROLL_SIZE, EVT_SIZES, EVT_ALL } from "./constants";

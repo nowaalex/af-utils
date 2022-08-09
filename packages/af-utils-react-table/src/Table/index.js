@@ -4,8 +4,7 @@ import {
     Subscription,
     mapVisibleRange,
     EVT_SCROLL_SIZE,
-    EVT_FROM,
-    EVT_TO
+    EVT_RANGE
 } from "@af-utils/react-virtual-headless";
 import { css, cx } from "@af-utils/styled";
 import TableColumn from "models/TableColumn";
@@ -19,7 +18,7 @@ import DEFAULT_COMPONENTS_MAP from "./components";
 */
 
 const SCROLLSIZE_EVENTS = [EVT_SCROLL_SIZE];
-const RANGE_EVENTS = [EVT_FROM, EVT_TO];
+const RANGE_EVENTS = [EVT_RANGE];
 
 const baseClass = css("overflow: auto", "position: relative");
 

@@ -2,8 +2,7 @@ import { memo } from "react";
 import {
     useVirtual,
     List,
-    EVT_TO,
-    EVT_FROM,
+    EVT_RANGE,
     EVT_SCROLL_SIZE,
     Subscription
 } from "@af-utils/react-virtual-list";
@@ -28,7 +27,7 @@ const ExtraEvents = () => {
         <div className="h-full flex flex-col">
             <div className="flex-none text-center p-1 bg-orange-200">
                 Rendered range:&nbsp;
-                <Subscription model={rows} events={[EVT_FROM, EVT_TO]}>
+                <Subscription model={rows} events={[EVT_RANGE]}>
                     {() => `${rows.from} - ${rows.to}`}
                 </Subscription>
             </div>

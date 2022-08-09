@@ -5,8 +5,7 @@ import {
     mapVisibleRange,
     EVT_SIZES,
     EVT_SCROLL_SIZE,
-    EVT_FROM,
-    EVT_TO
+    EVT_RANGE
 } from "@af-utils/react-virtual-headless";
 
 import { css, cx } from "@af-utils/styled";
@@ -52,7 +51,7 @@ const HORIZONTAL_PROPS = [
     horizontalOffsetClass
 ];
 
-const RANGE_EVENTS = [EVT_FROM, EVT_TO];
+const RANGE_EVENTS = [EVT_RANGE];
 
 const RANGE_EVENTS_WITH_OFFSETS = [...RANGE_EVENTS, EVT_SIZES];
 
