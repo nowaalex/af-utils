@@ -88,10 +88,6 @@ class List {
     _scrollKey = VERTICAL_SCROLL_KEY;
     _sizeKey = VERTICAL_SIZE_KEY;
 
-    _OuterNodeResizeObserver = new FinalResizeObserver(() =>
-        this.setWidgetSize(this._outerNode[this._sizeKey])
-    );
-
     _itemCount = 0;
     _scrollTs = 0;
     _scrollToTimer = 0;
@@ -99,7 +95,6 @@ class List {
     _overscanCount = DEFAULT_OVERSCAN_COUNT;
 
     _outerNode = null;
-    _widgetSize = DEFAULT_ESTIMATED_WIDGET_SIZE;
 
     _itemSizes = new TypedCache(0);
     _fTree = new TypedCache(0);
@@ -173,6 +168,20 @@ class List {
     /* depth of batch */
     _inBatch = 0;
 
+    _updateWidgetSize = () => {
+        const widgetSize = this._outerNode[this._sizeKey];
+        if (widgetSize !== this._widgetSize) {
+            this._widgetSize = widgetSize;
+            this._updateRangeFromEnd();
+        }
+    };
+
+    _OuterNodeResizeObserver = new FinalResizeObserver(this._updateWidgetSize);
+
+    constructor(estimatedWidgetSize) {
+        this._widgetSize = estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
+    }
+
     on(callBack, deps) {
         deps.forEach(evt => this._EventsList[evt].push(callBack));
         return () =>
@@ -206,13 +215,6 @@ class List {
             */
             this._Queue.forEach(call);
             this._Queue.clear();
-        }
-    }
-
-    setWidgetSize(widgetSize) {
-        if (widgetSize !== this._widgetSize) {
-            this._widgetSize = widgetSize;
-            this._updateRangeFromEnd();
         }
     }
 
@@ -404,7 +406,7 @@ class List {
 
             if (this._outerNode) {
                 /* TODO: Needs testing */
-                this.setWidgetSize(this._outerNode[this._sizeKey]);
+                this._updateWidgetSize();
             }
 
             this.scrollTo(0);

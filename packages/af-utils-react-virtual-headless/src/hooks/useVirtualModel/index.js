@@ -15,12 +15,11 @@ const useVirtualModel = ({
     horizontal
 }) =>
     useOnce(() => {
-        const model = new List();
+        const model = new List(estimatedWidgetSize);
 
         model.setOverscan(overscanCount);
         model.setHorizontal(!!horizontal);
         model.setItemCount(itemCount, estimatedItemSize);
-        model.setWidgetSize(estimatedWidgetSize);
 
         return model;
     });
