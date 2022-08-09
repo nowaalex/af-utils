@@ -1,28 +1,41 @@
+import { memo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-const CommonHead = ({ title, description }) => {
+const LinksFragment = memo(() => {
     const { asPath } = useRouter();
-    const prefixedTitle = title
-        ? `${title} | ${process.env.NEXT_PUBLIC_TITLE_PREFIX}`
-        : process.env.NEXT_PUBLIC_TITLE_PREFIX;
+    const fullLink = process.env.NEXT_PUBLIC_ORIGIN + asPath;
 
     return (
         <Head>
-            <title>{prefixedTitle}</title>
-            <meta property="og:type" content="website" />
-            <meta property="og:title" content={prefixedTitle} />
-            <meta
-                property="og:url"
-                content={process.env.NEXT_PUBLIC_ORIGIN + asPath}
-            />
-            {description ? (
-                <>
-                    <meta name="description" content={description} />
-                    <meta property="og:description" content={description} />
-                </>
-            ) : null}
+            <meta property="og:url" content={fullLink} />
+            <link rel="canonical" href={fullLink} />
         </Head>
+    );
+});
+
+const CommonHead = ({ lib, title, description }) => {
+    const postfix = lib
+        ? process.env.NEXT_PUBLIC_TITLE_PREFIX + "/" + lib
+        : process.env.NEXT_PUBLIC_TITLE_PREFIX;
+
+    const prefixedTitle = title ? `${title} | ${postfix}` : postfix;
+
+    return (
+        <>
+            <LinksFragment />
+            <Head>
+                <title>{prefixedTitle}</title>
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content={prefixedTitle} />
+                {description ? (
+                    <>
+                        <meta name="description" content={description} />
+                        <meta property="og:description" content={description} />
+                    </>
+                ) : null}
+            </Head>
+        </>
     );
 };
 

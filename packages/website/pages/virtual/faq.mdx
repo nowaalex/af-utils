@@ -2,6 +2,8 @@ import CommonHead from "/components/CommonHead";
 
 # Frequently asked questions
 
+Something is not working as expected? Here is the list of hints that may help.
+
 ## Why do I need to use ref?
 
 In order to work smoothly, library must know scrolled item sizes. Initially they equal [`estimatedItemSize`](/virtual/headless#estimateditemsize-integer). But this is usually not
@@ -34,7 +36,11 @@ Quantity of server-rendered items can be determined like this: `Math.min( itemCo
 
 export default ({ children }) => (
     <>
-        <CommonHead title="Docs: Frequently asked questions" />
+        <CommonHead
+            lib="virtual"
+            title="Docs: Frequently asked questions"
+            description="Something is not working as expected? Here is the list of hints that may help."
+        />
         {children}
     </>
 );

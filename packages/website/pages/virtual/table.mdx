@@ -1,7 +1,10 @@
 import CommonHead from "/components/CommonHead";
 import Link from "next/link";
 
-# Table
+# Table Component Reference
+
+Table component is used to create virtual tables without writing boilerplate markup.
+[Headless API](/virtual/headless) should be used for more flexibility.
 
 ```jsx
 import { useVirtual, Table } from "@af-utils/react-table";
@@ -22,7 +25,7 @@ const SimpleTable = () => {
 };
 ```
 
-# Installation
+## Installation
 
 ```bash
 # npm
@@ -31,8 +34,6 @@ npm i -S @af-utils/styled @af-utils/react-table @af-utils/react-virtual-headless
 # yarn
 yarn add @af-utils/styled @af-utils/react-table @af-utils/react-virtual-headless prop-types use-sync-external-store
 ```
-
-## Options
 
 ### `model: Model`
 
@@ -70,7 +71,11 @@ All other props are passed to outermost div.
 
 export default ({ children }) => (
     <>
-        <CommonHead title="Docs:  Table" />
+        <CommonHead
+            lib="virtual"
+            title="Docs: Table"
+            description="Table component is used to create virtual tables without writing boilerplate markup. Headless API should be used for more flexibility."
+        />
         {children}
     </>
 );

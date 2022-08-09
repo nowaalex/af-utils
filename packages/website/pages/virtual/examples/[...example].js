@@ -9,7 +9,7 @@ const Example = ({ name }) => {
 
     return (
         <>
-            <CommonHead title={`examples | ${title}`} />
+            <CommonHead lib="virtual" title={`examples | ${title}`} />
             <div className="min-h-0 basis-0 flex flex-col flex-auto prose max-w-full p-4 lg:px-6 lg:pb-6 xl:px-8 xl:pb-8 md:h-screen">
                 <h1 className="text-xl md:text-2xl lg:text-3xl">{title}</h1>
                 <Suspense fallback="Loading example...">

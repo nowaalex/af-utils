@@ -7,7 +7,7 @@ import CommonHead from "/components/CommonHead";
 const Landing = () => (
     <div className="h-screen w-screen flex flex-col gap-12">
         <CommonHead
-            title="Getting started"
+            title="Home"
             description={
                 "Simple tools that just work(usually fast). Virtual scroll for rendering only visible part of huge lists, tables and grids"
             }

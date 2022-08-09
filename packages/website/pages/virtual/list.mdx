@@ -1,7 +1,10 @@
 import CommonHead from "/components/CommonHead";
 import Link from "next/link";
 
-# List
+# List Component Reference
+
+List component is used to create virtual lists without writing boilerplate markup.
+[Headless API](/virtual/headless) should be used for more flexibility.
 
 ```jsx
 import { useVirtual, List } from "@af-utils/react-virtual-list";
@@ -17,7 +20,7 @@ const SimpleList = () => {
 };
 ```
 
-# Installation
+## Installation
 
 ```bash
 # npm
@@ -57,7 +60,11 @@ All other props are passed to outermost div.
 
 export default ({ children }) => (
     <>
-        <CommonHead title="Docs: List" />
+        <CommonHead
+            lib="virtual"
+            title="Docs: List"
+            description="List component is used to create virtual lists without writing boilerplate markup. Headless API should be used for more flexibility."
+        />
         {children}
     </>
 );
