@@ -17,13 +17,8 @@
         "npm": ">=6.0.0"
     },
     "browserslist": [
-        "last 2 chrome major versions",
-        "last 2 firefox major versions",
-        "last 2 safari major versions",
-        "last 2 edge major versions",
-        "last 2 android major versions",
-        "last 2 chromeandroid major versions",
-        "last 2 ios major versions"
+        ">0.6%",
+        "not op_mini all"
     ],
     "devDependencies": {
         "@changesets/changelog-github": "^0.4.6",
