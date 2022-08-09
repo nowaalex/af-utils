@@ -1,7 +1,12 @@
 import CommonHead from "/components/CommonHead";
 import Link from "next/link";
 
-# Installation
+# Headless API Reference
+
+Headless API is the core of the library and it provides maximum flexibility.
+You can work with it directly or delegate rendering to [List](/virtual/list) or [Table](/virtual/table).
+
+## Installation
 
 ```bash
 # npm
@@ -13,7 +18,7 @@ yarn add @af-utils/react-virtual-headless prop-types use-sync-external-store
 
 ---
 
-# useVirtual
+## useVirtual
 
 Core hook. Used to get scroller model instance synchronized with props.
 This instance will persist for the full lifetime of the component.
@@ -49,7 +54,7 @@ Determines, whether scrollTop/offsetHeight or scrollLeft/offsetWidth are used in
 Widget size to use before ResizeObserver measurements are ready.
 Used mainly for server-side rendering. Defaults to `200`.
 
-## Returns
+### Returns
 
 Scroller model instance with following public props:
 
@@ -93,7 +98,7 @@ Pass scrollable element to model. Must be attached to outermost element with `ov
 
 ---
 
-# mapVisibleRange
+## mapVisibleRange
 
 ```jsx
 mapVisibleRange(model, callback, provideOffset);
@@ -111,13 +116,13 @@ mapVisibleRange(model, callback, provideOffset);
 
 Should provide offset to callback or not. Defaults to: `false`.
 
-## Returns
+### Returns
 
 `Array<ReactElement>`
 
 ---
 
-# Numeric event constants
+## Numeric event constants
 
 Scroller model has build-in event emitter. All possible events are exported.
 
@@ -138,7 +143,7 @@ Scroller model has build-in event emitter. All possible events are exported.
 
 ---
 
-# useSubscription
+## useSubscription
 
 Called, when at least one of passed [events](#numeric-event-constants) is triggered.
 
@@ -160,7 +165,7 @@ Gets called when at least one of [events](#numeric-event-constants) gets trigger
 
 ---
 
-# Subscription
+## Subscription
 
 Rerendered, when at least one of passed [events](#numeric-event-constants) is triggered. [Example](/virtual/examples/list/ExtraEvents).
 
@@ -184,7 +189,10 @@ Rerendered, when at least one of passed [events](#numeric-event-constants) is tr
 
 export default ({ children }) => (
     <>
-        <CommonHead title="Docs: Headless" />
+        <CommonHead
+            title="Docs: Headless"
+            description="Headless API is the core of the library and it provides maximum flexibility. You can work with it directly or delegate rendering to List or Table."
+        />
         {children}
     </>
 );

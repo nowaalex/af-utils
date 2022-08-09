@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-const CommonHead = ({ title }) => {
+const CommonHead = ({ title, description }) => {
     const { asPath } = useRouter();
     const prefixedTitle = title
         ? `${title} | ${process.env.NEXT_PUBLIC_TITLE_PREFIX}`
@@ -16,6 +16,12 @@ const CommonHead = ({ title }) => {
                 property="og:url"
                 content={process.env.NEXT_PUBLIC_ORIGIN + asPath}
             />
+            {description ? (
+                <>
+                    <meta name="description" content={description} />
+                    <meta property="og:description" content={description} />
+                </>
+            ) : null}
         </Head>
     );
 };

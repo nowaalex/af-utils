@@ -6,7 +6,12 @@ import CommonHead from "/components/CommonHead";
 
 const Landing = () => (
     <div className="h-screen w-screen flex flex-col gap-12">
-        <CommonHead />
+        <CommonHead
+            title="Getting started"
+            description={
+                "Simple tools that just work(usually fast). Virtual scroll for rendering only visible part of huge lists, tables and grids"
+            }
+        />
         <header className="flex gap-8 mx-[5vmin] p-6 justify-center border-b flex-none text-lg">
             <a
                 href="https://github.com/nowaalex/af-utils"
@@ -30,9 +35,10 @@ const Landing = () => (
         </header>
         <div className="flex-auto prose-xl prose prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] max-w-full sm:bg-sloth bg-right-bottom bg-[length:55vmin] xl:bg-contain bg-no-repeat">
             <h1>af-utils/*</h1>
-            <i className="text-lg">
-                Simple tools that just work&nbsp;<small>(usually fast)</small>
-            </i>
+            <h2 className="text-lg font-light text-inherit italic">
+                Simple tools that just work&nbsp;
+                <small>(usually fast)</small>
+            </h2>
             <ul className="max-w-[28em]">
                 <li>
                     <Link href="/virtual">

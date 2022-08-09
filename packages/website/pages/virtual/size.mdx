@@ -26,7 +26,10 @@ const TERSER_OPTS = {
 
 export default ({ children }) => (
     <>
-        <CommonHead title="Bundle size" />
+        <CommonHead
+            title="Bundle size"
+            description="All packages were carefully optimized to be as small as possible. Exact sizes are provided here."
+        />
         {children}
     </>
 );
