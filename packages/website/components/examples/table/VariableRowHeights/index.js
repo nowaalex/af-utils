@@ -4,9 +4,6 @@ import times from "lodash/times";
 
 const DEFAULT_ROW_COUNT = 100000;
 
-const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
-    oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 60;
-
 const VariableSizeTable = () => {
     const [dynamicListRowHeights] = useState(() =>
         times(DEFAULT_ROW_COUNT, i => 30 + ((i ** 2) & 63))
@@ -14,7 +11,7 @@ const VariableSizeTable = () => {
 
     const model = useVirtual({
         itemCount: DEFAULT_ROW_COUNT,
-        getEstimatedItemSize
+        estimatedItemSize: 60
     });
 
     const columns = useMemo(

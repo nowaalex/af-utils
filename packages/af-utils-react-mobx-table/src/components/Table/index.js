@@ -30,7 +30,7 @@ const GroupRow = memo(({ i, groupI, m, model, data: D }) => (
 
 const ComplexTable = ({
     itemCount,
-    getEstimatedItemSize,
+    estimatedItemSize,
     overscanCount,
     estimatedWidgetSize,
     getRowData,
@@ -44,7 +44,7 @@ const ComplexTable = ({
     ...props
 }) => {
     const virtualModel = useVirtualModel({
-        getEstimatedItemSize,
+        estimatedItemSize,
         estimatedWidgetSize,
         overscanCount
     });
@@ -70,10 +70,7 @@ const ComplexTable = ({
 
         model.setGrouping(initialGroupingKeys);
 
-        virtualModel.setItemCount(
-            model.finalIndexesCount,
-            getEstimatedItemSize
-        );
+        virtualModel.setItemCount(model.finalIndexesCount, estimatedItemSize);
 
         return model;
     });
@@ -83,10 +80,10 @@ const ComplexTable = ({
             autorun(() =>
                 virtualModel.setItemCount(
                     aggregatorModel.finalIndexesCount,
-                    getEstimatedItemSize
+                    estimatedItemSize
                 )
             ),
-        [getEstimatedItemSize]
+        [estimatedItemSize]
     );
 
     useLayoutEffect(() => {

@@ -21,7 +21,7 @@ This instance will persist for the full lifetime of the component.
 ```jsx
 const model = useVirtual({
     itemCount,
-    getEstimatedItemSize,
+    estimatedItemSize,
     overscanCount,
     estimatedWidgetSize,
     horizontal
@@ -32,9 +32,9 @@ const model = useVirtual({
 
 Quantity of items. Defaults to `0`.
 
-### `getEstimatedItemSize: Function( itemSizes, scrollSize, newItemCount ) => Integer`
+### `estimatedItemSize: Integer`
 
-Best-guess item size. Defaults to `scrollSize / itemSizes.length` or `40` if no items.
+Best-guess item size. Defaults to `40`.
 
 ### `overscanCount: Integer`
 

@@ -4,8 +4,7 @@ import CommonHead from "/components/CommonHead";
 
 ## Why do I need to use ref?
 
-In order to work smoothly, library must know scrolled item sizes. Initially they
-are taken with the help of [`getEstimatedItemSize`](/virtual/headless#getestimateditemsize-function-itemsizes-scrollsize-newitemcount---integer) param. But this is usually not
+In order to work smoothly, library must know scrolled item sizes. Initially they equal [`estimatedItemSize`](/virtual/headless#estimateditemsize-function-itemsizes-scrollsize-newitemcount---integer). But this is usually not
 enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
 for more accurate measurements, but you must provide mounted items explicitly in
 conjunction with their indexes.

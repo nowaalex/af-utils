@@ -18,9 +18,6 @@ const Item = memo(({ i, model, data: dynamicListRowHeights }) => (
     </div>
 ));
 
-const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
-    oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 75;
-
 const ScrollToItem = () => {
     // fake data should be consistent for ssr purpose
     useFakerSeed(1234);
@@ -31,7 +28,7 @@ const ScrollToItem = () => {
 
     const model = useVirtual({
         itemCount: dynamicListRowHeights.length,
-        getEstimatedItemSize
+        estimatedItemSize: 75
     });
 
     useLayoutEffect(() => {

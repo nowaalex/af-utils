@@ -1,5 +1,14 @@
 # @af-utils/react-mobx-table
 
+## 0.0.41
+
+### Patch Changes
+
+-   simplified estimatedItemSize
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.34
+    -   @af-utils/react-table@0.0.39
+
 ## 0.0.40
 
 ### Patch Changes

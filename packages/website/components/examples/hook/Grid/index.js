@@ -57,12 +57,12 @@ const GridItems = ({ rows, cols }) => {
 const SimpleHook = () => {
     const rows = useVirtual({
         itemCount: 50000,
-        getEstimatedItemSize: () => 102
+        estimatedItemSize: 102
     });
 
     const cols = useVirtual({
         itemCount: 50000,
-        getEstimatedItemSize: () => 200,
+        estimatedItemSize: 200,
         horizontal: true
     });
 

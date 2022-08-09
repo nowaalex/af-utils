@@ -1,4 +1,3 @@
-import getEstimatedItemSizeDefault from "utils/getEstimatedItemSize";
 import {
     SIZES_HASH_MODULO,
     EVT_ALL,
@@ -6,6 +5,7 @@ import {
     EVT_SIZES,
     EVT_SCROLL_SIZE,
     MAX_ITEM_COUNT,
+    DEFAULT_ESTIMATED_ITEM_SIZE,
     DEFAULT_OVERSCAN_COUNT,
     DEFAULT_ESTIMATED_WIDGET_SIZE
 } from "constants";
@@ -411,10 +411,7 @@ class List {
         }
     }
 
-    setItemCount(
-        itemCount,
-        getEstimatedItemSize = getEstimatedItemSizeDefault
-    ) {
+    setItemCount(itemCount, estimatedItemSize) {
         if (itemCount > MAX_ITEM_COUNT) {
             throw new Error(
                 `itemCount must be <= ${MAX_ITEM_COUNT}. Got: ${itemCount}.`
@@ -436,11 +433,7 @@ class List {
 
                 this._fTree = /*@__NOINLINE__*/ buildFtree(
                     this._itemSizes.fill(
-                        getEstimatedItemSize(
-                            oldItemSizes,
-                            this.scrollSize,
-                            itemCount
-                        ),
+                        estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE,
                         curRowHeighsLength
                     )
                 );

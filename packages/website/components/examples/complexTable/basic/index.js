@@ -58,16 +58,13 @@ const columns = [
     { key: "country", label: "country", align: "center", width: "40%" }
 ];
 
-const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
-    oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 60;
-
 const ComplexTable = () => (
     <DndProvider backend={HTML5Backend}>
         <Table
             className="h-full basic-table-container"
             itemCount={rows.length}
             getRowData={getRowData}
-            getEstimatedItemSize={getEstimatedItemSize}
+            estimatedItemSize={60}
             columns={columns}
         />
     </DndProvider>

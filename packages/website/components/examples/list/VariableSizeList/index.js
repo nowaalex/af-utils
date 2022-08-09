@@ -17,9 +17,6 @@ const Item = memo(({ i, model, data: dynamicListRowHeights }) => (
     </div>
 ));
 
-const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
-    oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 75;
-
 const VariableSizeList = () => {
     const [dynamicListRowHeights] = useState(() =>
         times(DEFAULT_ROW_COUNT, i => 50 + ((i ** 2) & 63))
@@ -27,7 +24,7 @@ const VariableSizeList = () => {
 
     const model = useVirtual({
         itemCount: DEFAULT_ROW_COUNT,
-        getEstimatedItemSize
+        estimatedItemSize: 75
     });
 
     return (

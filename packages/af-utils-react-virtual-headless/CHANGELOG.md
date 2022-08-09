@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.34
+
+### Patch Changes
+
+-   simplified estimatedItemSize
+
 ## 0.0.33
 
 ### Patch Changes

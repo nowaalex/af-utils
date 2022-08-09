@@ -1,5 +1,6 @@
 export const DEFAULT_OVERSCAN_COUNT = 3;
 export const DEFAULT_ESTIMATED_WIDGET_SIZE = 200;
+export const DEFAULT_ESTIMATED_ITEM_SIZE = 40;
 
 export const SIZES_HASH_MODULO = 2 ** 30 - 1;
 

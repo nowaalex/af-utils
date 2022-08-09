@@ -27,14 +27,6 @@ const fetch100RandomItemsAsync = () =>
         setTimeout(resolve, 1000, times(100, getRandomItem))
     );
 
-/*
-    Approach from other examples may be used here also, just for diversity
-*/
-const getEstimatedItemSize = oldItemSizes =>
-    oldItemSizes.length
-        ? Math.round((oldItemSizes[0] + oldItemSizes.at(-1)) / 2)
-        : 60;
-
 const PrependItems = () => {
     // fake data should be consistent for ssr purpose
     useFakerSeed(1234);
@@ -44,7 +36,7 @@ const PrependItems = () => {
     const [items, setItems] = useState(() => times(1000, getRandomItem));
 
     const model = useVirtual({
-        getEstimatedItemSize,
+        estimatedItemSize: 60,
         itemCount: items.length
     });
 

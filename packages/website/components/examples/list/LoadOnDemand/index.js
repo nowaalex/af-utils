@@ -33,9 +33,6 @@ const EVENTS = [EVT_RANGE];
 
 const getKey = (i, itemData) => itemData[i];
 
-const getEstimatedItemSize = (oldItemSizes, oldScrollSize) =>
-    oldItemSizes.length ? Math.round(oldScrollSize / oldItemSizes.length) : 500;
-
 const Posts = () => {
     // fake data should be consistent for ssr purpose
     useFakerSeed(12345);
@@ -46,7 +43,7 @@ const Posts = () => {
 
     const model = useVirtual({
         itemCount: posts.length,
-        getEstimatedItemSize
+        estimatedItemSize: 500
     });
 
     useSubscription(
