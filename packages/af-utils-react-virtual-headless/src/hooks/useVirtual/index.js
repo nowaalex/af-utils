@@ -7,9 +7,13 @@ const localUseEffect = process.env.__IS_SERVER__ ? useEffect : useLayoutEffect;
 const useVirtual = params => {
     const model = useVirtualModel(params);
 
+    /*
+        overscanCount can't be subscribed, so no sense to update it in effect.
+    */
+    model.setOverscan(params.overscanCount ?? DEFAULT_OVERSCAN_COUNT);
+
     localUseEffect(() => {
         model._startBatch();
-        model.setOverscan(params.overscanCount ?? DEFAULT_OVERSCAN_COUNT);
         model.setHorizontal(!!params.horizontal);
         model.setItemCount(
             params.itemCount,
