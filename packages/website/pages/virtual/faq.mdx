@@ -29,7 +29,8 @@ So some problems _may_ happen if [`scrollSize`](/virtual/headless#scrollsize-int
 
 ## Is Server-side rendering supported?
 
-Yes, it is enabled by default, use [`estimatedWidgetSize`](/virtual/headless#estimatedwidgetsize-integer) for fine-tuning.
+Yes, use [`estimatedWidgetSize`](/virtual/headless#estimatedwidgetsize-integer) and [`estimatedItemSize`](/virtual/headless#estimateditemsize-integer) for fine-tuning.
+Quantity of server-rendered items can be determined like this: `Math.min( itemCount, Math.ceil( estimatedWidgetSize / estimatedItemSize ) + overscanCount )`.
 
 export default ({ children }) => (
     <>
