@@ -7,7 +7,7 @@ When you need to render a list, table or grid with a lot of rows or columns, you
 A lot of DOM nodes must be created, but only a few of them are visible.
 
 One way to optimize this is called virtualization.
-Based on scroll position and size of each item we may calculate the range to show.
+Based on scroll position and size of each item we can calculate the range to show.
 Only visible elements are rendered with this approach.
 
 <IndexExample />
@@ -31,7 +31,11 @@ Variable item sizes with <span className="whitespace-nowrap">on-the-fly</span> r
 
 export default ({ children }) => (
     <>
-        <CommonHead lib="virtual" title="Getting started" />
+        <CommonHead
+            lib="virtual"
+            title="Getting started"
+            description="Based on scroll position and size of each item we can calculate the range to show. Only visible elements are rendered with this approach."
+        />
         {children}
     </>
 );
