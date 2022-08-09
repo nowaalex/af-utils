@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.33
+
+### Patch Changes
+
+-   inlined scrollSize changes
+
 ## 0.0.32
 
 ### Patch Changes

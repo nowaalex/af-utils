@@ -140,8 +140,7 @@ class List {
         }
 
         if (wasAtLeastOneSizeChanged) {
-            /*@__INLINE__*/
-            inlinedStartBatch(this);
+            /*@__INLINE__*/ inlinedStartBatch(this);
             /*
                 Modulo is used to prevent sizesHash from growing too much.
                 Using bitwise hack to optimize modulo.
@@ -151,7 +150,8 @@ class List {
             this._run(EVT_SIZES);
             if (buff !== 0) {
                 updateItemHeight(this._fTree, lim, buff, this._fTree.length);
-                this._setScrollSize(this.scrollSize + buff);
+                this.scrollSize += buff;
+                this._run(EVT_SCROLL_SIZE);
                 if (buff < 0) {
                     /*
                         If visible item sizes reduced - holes may appear, so rerender is a must.
@@ -390,13 +390,6 @@ class List {
         }
     }
 
-    _setScrollSize(v) {
-        if (this.scrollSize !== v) {
-            this.scrollSize = v;
-            this._run(EVT_SCROLL_SIZE);
-        }
-    }
-
     setHorizontal(horizontal) {
         if (horizontal !== this.horizontal) {
             this._scrollToKey = (this.horizontal = horizontal)
@@ -454,7 +447,9 @@ class List {
             }
 
             /*@__INLINE__*/ inlinedStartBatch(this);
-            this._setScrollSize(this.getOffset(itemCount));
+
+            this.scrollSize = this.getOffset(itemCount);
+            this._run(EVT_SCROLL_SIZE);
 
             if (this.to > itemCount) {
                 // Forcing shift range to end
