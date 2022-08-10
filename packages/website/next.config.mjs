@@ -86,6 +86,10 @@ const config = withBundleAnalyzer(
         },
         pageExtensions: ["js", "jsx", "md", "mdx"],
         reactStrictMode: true,
+        webpack(config) {
+            config.optimization.splitChunks.minSize = 1024;
+            return config;
+        },
         async redirects() {
             return [
                 {
