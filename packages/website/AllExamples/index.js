@@ -38,7 +38,7 @@ const requireMeta = require.context("/components/examples", true, /meta\.js$/);
 
 export const components = requireComponent.keys().map(getPathInfo);
 
-export const table = components.reduce(
+const table = components.reduce(
     (acc, v) => (
         (acc[v.short] = {
             title: v.staticPaths
@@ -84,3 +84,5 @@ requireMeta
     .forEach(v => {
         table[v.short].meta = requireMeta(v.path);
     });
+
+export { table };
