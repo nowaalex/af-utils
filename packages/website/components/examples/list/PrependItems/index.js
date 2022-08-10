@@ -1,6 +1,5 @@
 import { memo, useState, useRef, useLayoutEffect } from "react";
 import { useVirtual, List } from "@af-utils/react-virtual-list";
-import times from "lodash/times";
 import { faker } from "@faker-js/faker";
 import useFakerSeed from "/hooks/useFakerSeed";
 
@@ -24,7 +23,7 @@ const getRandomItem = () => ({
 /* new Promise is made to simulate asynchronous fetch request */
 const fetch100RandomItemsAsync = () =>
     new Promise(resolve =>
-        setTimeout(resolve, 1000, times(100, getRandomItem))
+        setTimeout(resolve, 1000, Array.from({ length: 100 }, getRandomItem))
     );
 
 const PrependItems = () => {
@@ -33,7 +32,9 @@ const PrependItems = () => {
 
     const scrollPosRef = useRef(null);
 
-    const [items, setItems] = useState(() => times(1000, getRandomItem));
+    const [items, setItems] = useState(() =>
+        Array.from({ length: 1000 }, getRandomItem)
+    );
 
     const model = useVirtual({
         estimatedItemSize: 60,

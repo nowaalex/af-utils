@@ -1,12 +1,14 @@
 import { useState, useMemo } from "react";
 import { useVirtual, Table } from "@af-utils/react-table";
-import times from "lodash/times";
 
 const DEFAULT_ROW_COUNT = 100000;
 
 const VariableSizeTable = () => {
-    const [dynamicListRowHeights] = useState(() =>
-        times(DEFAULT_ROW_COUNT, i => 30 + ((i ** 2) & 63))
+    const [pseudoRandomSizes] = useState(() =>
+        Array.from(
+            { length: DEFAULT_ROW_COUNT },
+            (_, i) => 30 + ((i ** 2) & 63)
+        )
     );
 
     const model = useVirtual({
@@ -24,7 +26,7 @@ const VariableSizeTable = () => {
                     <div
                         style={{
                             color: "#000",
-                            lineHeight: `${dynamicListRowHeights[cellData]}px`,
+                            lineHeight: `${pseudoRandomSizes[cellData]}px`,
                             background: `hsl(${(cellData * 11) % 360},60%,60%)`
                         }}
                     >
@@ -35,7 +37,7 @@ const VariableSizeTable = () => {
             { key: "b", label: "b", align: "center" },
             { key: "c", label: "c", align: "center" }
         ],
-        [dynamicListRowHeights]
+        [pseudoRandomSizes]
     );
 
     return (

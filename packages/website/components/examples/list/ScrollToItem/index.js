@@ -1,39 +1,36 @@
 import { useState, memo, useLayoutEffect } from "react";
 import { useVirtual, List } from "@af-utils/react-virtual-list";
-import times from "lodash/times";
-import { faker } from "@faker-js/faker";
-import useFakerSeed from "/hooks/useFakerSeed";
 
 const DEFAULT_ROW_COUNT = 100000;
 
-const Item = memo(({ i, model, data: dynamicListRowHeights }) => (
+const Item = memo(({ i, model, data: pseudoRandomSizes }) => (
     <div
         ref={el => model.el(i, el)}
         className="text-center border-t border-zinc-400"
         style={{
-            lineHeight: `${dynamicListRowHeights[i]}px`
+            lineHeight: `${pseudoRandomSizes[i]}px`
         }}
     >
-        row {i}:&nbsp;{dynamicListRowHeights[i]}px
+        row {i}:&nbsp;{pseudoRandomSizes[i]}px
     </div>
 ));
 
 const ScrollToItem = () => {
-    // fake data should be consistent for ssr purpose
-    useFakerSeed(1234);
-
-    const [dynamicListRowHeights, changeRows] = useState(() =>
-        times(DEFAULT_ROW_COUNT, () => faker.mersenne.rand(140, 30))
+    const [pseudoRandomSizes, changeRows] = useState(() =>
+        Array.from(
+            { length: DEFAULT_ROW_COUNT },
+            (_, i) => 50 + ((i ** 2) & 63)
+        )
     );
 
     const model = useVirtual({
-        itemCount: dynamicListRowHeights.length,
+        itemCount: pseudoRandomSizes.length,
         estimatedItemSize: 75
     });
 
     useLayoutEffect(() => {
-        model.scrollTo(dynamicListRowHeights.length - 1);
-    }, [model, dynamicListRowHeights.length]);
+        model.scrollTo(pseudoRandomSizes.length - 1);
+    }, [model, pseudoRandomSizes.length]);
 
     const scrollSubmitHandler = e => {
         e.preventDefault();
@@ -52,7 +49,10 @@ const ScrollToItem = () => {
             changeRows(rows =>
                 rowsToAdd > 0
                     ? rows.concat(
-                          times(rowsToAdd, () => faker.mersenne.rand(140, 30))
+                          Array.from(
+                              { length: rowsToAdd },
+                              (_, i) => 50 + ((i ** 2) & 63)
+                          )
                       )
                     : rows.slice(0, rowsToAdd)
             );
@@ -69,9 +69,7 @@ const ScrollToItem = () => {
                     Index:&nbsp;
                     <input
                         required
-                        defaultValue={Math.round(
-                            dynamicListRowHeights.length / 2
-                        )}
+                        defaultValue={Math.round(pseudoRandomSizes.length / 2)}
                         name="idx"
                         className="w-[7em] py-1"
                         type="number"
@@ -102,7 +100,7 @@ const ScrollToItem = () => {
             </form>
             <List
                 model={model}
-                itemData={dynamicListRowHeights}
+                itemData={pseudoRandomSizes}
                 className="grow basis-96"
             >
                 {Item}
