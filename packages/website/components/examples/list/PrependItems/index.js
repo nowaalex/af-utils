@@ -1,6 +1,6 @@
 import { memo, useState, useRef, useLayoutEffect } from "react";
 import { useVirtual, List } from "@af-utils/react-virtual-list";
-import { faker } from "@faker-js/faker";
+import { randNumber, randFullName } from "@ngneat/falso";
 import useFakerSeed from "/hooks/useFakerSeed";
 
 const Item = memo(({ i, model, data }) => (
@@ -16,8 +16,8 @@ const Item = memo(({ i, model, data }) => (
 const getKey = (i, itemData) => itemData[i].name;
 
 const getRandomItem = () => ({
-    name: faker.name.firstName() + " " + faker.name.lastName(),
-    height: faker.mersenne.rand(140, 30)
+    name: randFullName(),
+    height: randNumber({ min: 30, max: 140 })
 });
 
 /* new Promise is made to simulate asynchronous fetch request */

@@ -9,14 +9,16 @@ import {
 
 import useFakerSeed from "/hooks/useFakerSeed";
 
-import { faker } from "@faker-js/faker";
+import { randNumber, randParagraph } from "@ngneat/falso";
 
 const fetchRandomDescriptions = () =>
     new Promise(resolve =>
         setTimeout(
             resolve,
             200,
-            Array.from({ length: 5 }, () => faker.lorem.paragraphs())
+            Array.from({ length: 5 }, () =>
+                randParagraph({ length: randNumber({ min: 1, max: 3 }) })
+            )
         )
     );
 
@@ -35,7 +37,9 @@ const Posts = () => {
     // fake data should be consistent for ssr purpose
     useFakerSeed(12345);
 
-    const [posts, setPosts] = useState(() => [faker.lorem.paragraphs()]);
+    const [posts, setPosts] = useState(() => [
+        randParagraph({ length: randNumber({ min: 1, max: 3 }) })
+    ]);
 
     const isLoadingRef = useRef(false);
 

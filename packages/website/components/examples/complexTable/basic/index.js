@@ -1,18 +1,24 @@
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Table } from "@af-utils/react-mobx-table";
-import { faker } from "@faker-js/faker";
+import {
+    seed,
+    randFirstName,
+    randLastName,
+    randNumber,
+    randCountry
+} from "@ngneat/falso";
 
 // fake data should be consistent for ssr purpose
-faker.seed(5);
+seed(5);
 
 const rows = Array.from({ length: 10000 }, (_, i) => ({
     i: i - 5000,
     fixedRange: i & 15,
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    height: faker.mersenne.rand(90, 30),
-    country: faker.address.country()
+    firstName: randFirstName(),
+    lastName: randLastName(),
+    height: randNumber({ max: 90, min: 30 }),
+    country: randCountry
 }));
 
 const getRowData = i => rows[i];
