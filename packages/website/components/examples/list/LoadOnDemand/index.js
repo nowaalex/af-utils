@@ -22,16 +22,14 @@ const fetchRandomDescriptions = () =>
 
 const Item = memo(({ i, model, data: posts }) => (
     <div ref={el => model.el(i, el)} className="p-4">
-        <div className="border-4 text-center ring-inset leading-[30vh]">
-            maybe picture
+        <div className="border-4 text-center ring-inset leading-[30vh] bg-green-100">
+            some picture
         </div>
         <p>{posts[i]}</p>
     </div>
 ));
 
 const EVENTS = [EVT_RANGE];
-
-const getKey = (i, itemData) => itemData[i];
 
 const Posts = () => {
     // fake data should be consistent for ssr purpose
@@ -60,7 +58,7 @@ const Posts = () => {
     );
 
     return (
-        <List model={model} itemData={posts} getKey={getKey} className="h-full">
+        <List model={model} itemData={posts} className="h-full">
             {Item}
         </List>
     );

@@ -15,7 +15,8 @@ const Item = memo(({ i, model }) => (
 
 const ExtraEvents = () => {
     const rows = useVirtual({
-        itemCount: 50000,
+        itemCount: 250000,
+        estimatedItemSize: 45,
         /*
             Such a big overscanCount is rarely needed;
             just for example here
@@ -26,16 +27,19 @@ const ExtraEvents = () => {
     return (
         <div className="h-full flex flex-col">
             <div className="flex-none text-center p-1 bg-orange-200">
-                Rendered range:&nbsp;
                 <Subscription model={rows} events={[EVT_RANGE]}>
-                    {() => `${rows.from} - ${rows.to}`}
+                    {() =>
+                        `Rendered ${rows.to - rows.from} items. Range: ${
+                            rows.from
+                        } - ${rows.to}`
+                    }
                 </Subscription>
             </div>
             <List className="flex-auto" model={rows}>
                 {Item}
             </List>
             <div className="flex-none text-center p-1 bg-orange-200">
-                Scroll size:&nbsp;
+                Scroll size:{" "}
                 <Subscription model={rows} events={[EVT_SCROLL_SIZE]}>
                     {() => rows.scrollSize}
                 </Subscription>

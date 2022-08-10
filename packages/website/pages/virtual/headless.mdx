@@ -70,6 +70,10 @@ Items range end.
 
 Sum of all item sizes.
 
+### `el: Function(index: Integer, element: Element) => void`
+
+Start observing size of `element` at `index`. Observing is finished if `element` is falsy.
+
 ### `getIndex: Function(offset: Integer) => Integer`
 
 Get element index pixel offset.
@@ -88,11 +92,11 @@ Get snapshot of current scroll position. For example `5.3` stands for element at
 Used to remember scroll position before prepending elements. `from` is not safe to use because of `overscanCount`.
 [Example](/examples/list/PrependItems).
 
-### `scrollTo: Function(index: Double, smooth: Boolean ) => void 0`
+### `scrollTo: Function(index: Double, smooth: Boolean ) => void`
 
 Scroll to element at certain index. For example `3.6` will scroll to element at index `3` plus `60%` of its height.
 
-### `setOuterNode: Bound Function(el: DOMElement) => void 0`
+### `setOuterNode: Bound Function(el: DOMElement) => void`
 
 Pass scrollable element to model. Must be attached to outermost element with `overflow: auto`.
 
@@ -114,7 +118,7 @@ mapVisibleRange(model, callback, provideOffset);
 
 ### `countOffset: Boolean`
 
-Should provide offset to callback or not. Defaults to: `false`.
+Should provide offset to callback or not. Needed for lists, where each item is absolutely positioned. Defaults to: `false`.
 
 ### Returns
 
@@ -128,7 +132,7 @@ Scroller model has build-in event emitter. All possible events are exported.
 
 -   `EVT_RANGE`
 
-    Visible range changed. Used to make [load on demand](/virtual/examples/list/LoadOnDemand).
+    Visible range (`model.from` or `model.to`) changed. Used to make [load on demand](/virtual/examples/list/LoadOnDemand).
 
 -   `EVT_SCROLL_SIZE`
 

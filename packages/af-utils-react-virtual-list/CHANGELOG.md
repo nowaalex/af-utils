@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.37
+
+### Patch Changes
+
+-   minor internal api change
+-   Updated dependencies
+    -   @af-utils/styled@0.0.14
+
 ## 0.0.36
 
 ### Patch Changes

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import {
     Subscription,
     mapVisibleRange,
-    EVT_SIZES,
     EVT_SCROLL_SIZE,
     EVT_RANGE
 } from "@af-utils/react-virtual-headless";
@@ -53,8 +52,6 @@ const HORIZONTAL_PROPS = [
 
 const RANGE_EVENTS = [EVT_RANGE];
 
-const RANGE_EVENTS_WITH_OFFSETS = [...RANGE_EVENTS, EVT_SIZES];
-
 const SCROLL_SIZE_EVENTS = [EVT_SCROLL_SIZE];
 
 const List = ({
@@ -65,7 +62,6 @@ const List = ({
     component: Component = "div",
     getKey = i => i,
     tabIndex = -1,
-    countOffset = false,
     ...props
 }) => {
     const [primaryAxis, baseClassName, scrollClassName, offsetClassName] =
@@ -86,10 +82,7 @@ const List = ({
                     />
                 )}
             </Subscription>
-            <Subscription
-                model={model}
-                events={countOffset ? RANGE_EVENTS_WITH_OFFSETS : RANGE_EVENTS}
-            >
+            <Subscription model={model} events={RANGE_EVENTS}>
                 {() => (
                     <>
                         <div
@@ -98,19 +91,15 @@ const List = ({
                                 [primaryAxis]: model.getOffset(model.from)
                             }}
                         />
-                        {mapVisibleRange(
-                            model,
-                            (i, offset) => (
-                                <Item
-                                    key={getKey(i, itemData)}
-                                    i={i}
-                                    data={itemData}
-                                    offset={offset}
-                                    model={model}
-                                />
-                            ),
-                            countOffset
-                        )}
+                        {mapVisibleRange(model, (i, offset) => (
+                            <Item
+                                key={getKey(i, itemData)}
+                                i={i}
+                                data={itemData}
+                                offset={offset}
+                                model={model}
+                            />
+                        ))}
                     </>
                 )}
             </Subscription>
@@ -121,7 +110,6 @@ const List = ({
 List.propTypes = {
     model: PropTypes.object.isRequired,
     children: PropTypes.elementType.isRequired,
-    countOffset: PropTypes.bool,
     getKey: PropTypes.func,
     component: PropTypes.elementType,
     className: PropTypes.string,

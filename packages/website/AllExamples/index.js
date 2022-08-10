@@ -6,7 +6,7 @@ const EXCEPTIONS = {
 };
 
 const getPathInfo = path => {
-    const short = path.slice(2).replace(/\/index\.(js|mdx)$/, "");
+    const short = path.slice(2).replace(/\/[^/]+\.(js|mdx)$/, "");
     return {
         staticPaths: short.split("/"),
         short,
@@ -34,48 +34,53 @@ const requireDescription = require.context(
     "lazy"
 );
 
+const requireMeta = require.context("/components/examples", true, /meta\.js$/);
+
 export const components = requireComponent.keys().map(getPathInfo);
 
-export const table = requireDescription
+export const table = components.reduce(
+    (acc, v) => (
+        (acc[v.short] = {
+            title: v.staticPaths
+                .map(v => EXCEPTIONS[v] || startCase(v))
+                .join(" / "),
+            Component: dynamic(() => requireComponent(v.path), {
+                suspense: true
+            }),
+            Code: dynamic(
+                () =>
+                    requireCode(v.path).then(code => ({
+                        default: () => (
+                            <code
+                                className="language-jsx"
+                                dangerouslySetInnerHTML={{
+                                    __html: code.default
+                                }}
+                            />
+                        )
+                    })),
+                { suspense: true }
+            ),
+            meta: null,
+            Description: null
+        }),
+        acc
+    ),
+    {}
+);
+
+requireDescription
     .keys()
     .map(getPathInfo)
-    .reduce(
-        (acc, v) => (
-            (acc[v.short].Description = dynamic(
-                () => requireDescription(v.path),
-                {
-                    suspense: true
-                }
-            )),
-            acc
-        ),
-        components.reduce(
-            (acc, v) => (
-                (acc[v.short] = {
-                    title: v.staticPaths
-                        .map(v => EXCEPTIONS[v] || startCase(v))
-                        .join(" / "),
-                    Component: dynamic(() => requireComponent(v.path), {
-                        suspense: true
-                    }),
-                    Code: dynamic(
-                        () =>
-                            requireCode(v.path).then(code => ({
-                                default: () => (
-                                    <code
-                                        className="language-jsx"
-                                        dangerouslySetInnerHTML={{
-                                            __html: code.default
-                                        }}
-                                    />
-                                )
-                            })),
-                        { suspense: true }
-                    ),
-                    Description: null
-                }),
-                acc
-            ),
-            {}
-        )
-    );
+    .forEach(v => {
+        table[v.short].Description = dynamic(() => requireDescription(v.path), {
+            suspense: true
+        });
+    });
+
+requireMeta
+    .keys()
+    .map(getPathInfo)
+    .forEach(v => {
+        table[v.short].meta = requireMeta(v.path);
+    });

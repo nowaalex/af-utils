@@ -1,5 +1,12 @@
 # @af-utils/react-table
 
+## 0.0.40
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @af-utils/styled@0.0.14
+
 ## 0.0.39
 
 ### Patch Changes

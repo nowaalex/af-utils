@@ -9,7 +9,7 @@ const Item = memo(({ i, model }) => (
 
 const SimpleList = () => {
     const rows = useVirtual({
-        itemCount: 50000
+        itemCount: 250000
     });
 
     return (

@@ -2,7 +2,7 @@ import { useState, memo } from "react";
 import { useVirtual, List } from "@af-utils/react-virtual-list";
 import times from "lodash/times";
 
-const DEFAULT_ROW_COUNT = 20000;
+const DEFAULT_ROW_COUNT = 150000;
 
 const Item = memo(({ i, model, data: dynamicListRowHeights }) => (
     <div

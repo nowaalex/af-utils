@@ -1,5 +1,13 @@
 # @af-utils/react-mobx-table
 
+## 0.0.42
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @af-utils/styled@0.0.14
+    -   @af-utils/react-table@0.0.40
+
 ## 0.0.41
 
 ### Patch Changes

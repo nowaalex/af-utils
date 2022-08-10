@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.14
+
+### Patch Changes
+
+-   minor internal api change
+
 ## 0.0.13
 
 ### Patch Changes
