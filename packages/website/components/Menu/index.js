@@ -3,7 +3,7 @@ import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
 import { components } from "/AllExamples";
 import NavLink from "../NavLink";
-import { startCase } from "lodash";
+import startCase from "/utils/startCase";
 
 const DOCS_STRUCTURE = [
     ["Getting started", ""],

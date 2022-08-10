@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import startCase from "lodash/startCase";
+import startCase from "/utils/startCase";
 
 const EXCEPTIONS = {
     complexTable: "Complex Table (unstable)"
