@@ -4,7 +4,7 @@ import times from "lodash/times";
 import { faker } from "@faker-js/faker";
 import useFakerSeed from "/hooks/useFakerSeed";
 
-const DEFAULT_ROW_COUNT = 150000;
+const DEFAULT_ROW_COUNT = 100000;
 
 const Item = memo(({ i, model, data: dynamicListRowHeights }) => (
     <div
