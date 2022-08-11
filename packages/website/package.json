@@ -35,7 +35,6 @@
         "use-sync-external-store": "^1.2.0"
     },
     "devDependencies": {
-        "@mapbox/rehype-prism": "^0.8.0",
         "@mdx-js/loader": "^2.1.2",
         "@next/bundle-analyzer": "^12.2.4",
         "@next/mdx": "^12.2.4",

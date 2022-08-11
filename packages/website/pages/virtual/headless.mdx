@@ -23,7 +23,7 @@ yarn add @af-utils/react-virtual-headless prop-types use-sync-external-store
 Core hook. Used to get scroller model instance synchronized with props.
 This instance will persist for the full lifetime of the component.
 
-```jsx
+```javascript
 const model = useVirtual({
     itemCount,
     estimatedItemSize,
@@ -98,13 +98,13 @@ Scroll to element at certain index. For example `3.6` will scroll to element at 
 
 ### `setOuterNode: Bound Function(el: DOMElement) => void`
 
-Pass scrollable element to model. Must be attached to outermost element with `overflow: auto`.
+Pass scrollable element to model. Must be attached to outermost element with `~sass~overflow: auto`.
 
 ---
 
 ## mapVisibleRange
 
-```jsx
+```javascript
 mapVisibleRange(model, callback, provideOffset);
 ```
 
@@ -140,7 +140,7 @@ Scroller model has build-in event emitter. All possible events are exported.
 
 -   `EVT_SIZES`
 
-    At least one item size changed. Used, when all items are `position: absolute` and are not automatically realigned
+    At least one item size changed. Used, when all items are `~sass~position: absolute` and are not automatically realigned
     when siblinbgs are resized.
 
 -   `EVT_ALL`_(array of events above)_
@@ -151,7 +151,7 @@ Scroller model has build-in event emitter. All possible events are exported.
 
 Called, when at least one of passed [events](#numeric-event-constants) is triggered.
 
-```jsx
+```javascript
 useSubscription(model, events, callback);
 ```
 
