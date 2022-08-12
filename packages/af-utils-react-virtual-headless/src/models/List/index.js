@@ -10,6 +10,10 @@ import {
     DEFAULT_ESTIMATED_WIDGET_SIZE
 } from "constants";
 
+import call from "/utils/call";
+
+import Batch from "/singletons/Batch";
+
 const HORIZONTAL_SCROLL_KEY = "scrollLeft";
 const VERTICAL_SCROLL_KEY = "scrollTop";
 
@@ -44,15 +48,6 @@ const FinalResizeObserver = process.env.__IS_SERVER__
       }
     : ResizeObserver;
 
-/*
-Terser is able to inline function calls.
-Let's use it to optimize very simple function.
-If this function becomes more complex/inlining stops working - call should be rewritten to normal
-*/
-const inlinedStartBatch = ctx => {
-    ctx._inBatch++;
-};
-
 /* 
     Creating fenwick tree from an array in linear time;
     It is much more efficient, than calling updateItemHeight N times.
@@ -80,7 +75,6 @@ const updateItemHeight = (fTree, i, delta, limitTreeLiftingIndex) => {
     }
 };
 
-const call = fn => fn();
 class List {
     horizontal = false;
     _scrollToKey = VERTICAL_SCROLL_TO_KEY;
@@ -109,7 +103,8 @@ class List {
     to = 0;
     sizesHash = 0;
 
-    _elToIdx = new WeakMap();
+    _elToIdx = new Map();
+    _idxToEl = new Map();
 
     _ElResizeObserver = new FinalResizeObserver(entries => {
         let index = 0,
@@ -141,7 +136,7 @@ class List {
         }
 
         if (wasAtLeastOneSizeChanged) {
-            /*@__INLINE__*/ inlinedStartBatch(this);
+            Batch._start();
 
             if (buff !== 0) {
                 updateItemHeight(this._fTree, lim, buff, this._fTree.length);
@@ -164,17 +159,11 @@ class List {
             this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
             this._run(EVT_SIZES);
 
-            this._endBatch();
+            Batch._end();
         }
     });
 
     _EventsList = EVT_ALL.map(() => []);
-
-    /* Queue of callbacks, that should run after batch end */
-    _Queue = new Set();
-
-    /* depth of batch */
-    _inBatch = 0;
 
     _updateWidgetSize = () => {
         const widgetSize = this._outerNode[this._sizeKey];
@@ -201,29 +190,8 @@ class List {
             );
     }
 
-    _addToQueue = cb => this._Queue.add(cb);
-
     _run(evt) {
-        this._EventsList[evt].forEach(
-            this._inBatch === 0 ? call : this._addToQueue
-        );
-    }
-
-    /* inspired by mobx */
-
-    _startBatch() {
-        /*@__INLINE__*/
-        inlinedStartBatch(this);
-    }
-
-    _endBatch() {
-        if (--this._inBatch === 0) {
-            /*
-                 calls must not call _startBatch from inside.
-            */
-            this._Queue.forEach(call);
-            this._Queue.clear();
-        }
+        this._EventsList[evt].forEach(Batch._level === 0 ? call : Batch._queue);
     }
 
     getIndex(offset) {
@@ -323,7 +291,15 @@ class List {
     el(i, node) {
         if (node) {
             this._elToIdx.set(node, i);
+            this._idxToEl.set(i, node);
             this._ElResizeObserver.observe(node);
+        } else {
+            node = this._idxToEl.get(i);
+            if (node) {
+                this._idxToEl.delete(i);
+                this._elToIdx.delete(node);
+                this._ElResizeObserver.unobserve(node);
+            }
         }
     }
 
@@ -437,7 +413,7 @@ class List {
                 );
             }
 
-            /*@__INLINE__*/ inlinedStartBatch(this);
+            Batch._start();
 
             this.scrollSize = this.getOffset(itemCount);
             this._run(EVT_SCROLL_SIZE);
@@ -448,7 +424,7 @@ class List {
             }
 
             this._updateRangeFromEnd();
-            this._endBatch();
+            Batch._end();
         }
     }
 

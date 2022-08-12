@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.36
+
+### Patch Changes
+
+-   moved batch to separate singleton
+
 ## 0.0.35
 
 ### Patch Changes

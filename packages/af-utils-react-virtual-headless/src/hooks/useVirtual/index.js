@@ -1,5 +1,6 @@
 import { useLayoutEffect, useEffect } from "react";
 import useVirtualModel from "../useVirtualModel";
+import Batch from "/singletons/Batch";
 import { DEFAULT_OVERSCAN_COUNT, DEFAULT_ESTIMATED_ITEM_SIZE } from "constants";
 
 const localUseEffect = process.env.__IS_SERVER__ ? useEffect : useLayoutEffect;
@@ -13,13 +14,13 @@ const useVirtual = params => {
     model.setOverscan(params.overscanCount ?? DEFAULT_OVERSCAN_COUNT);
 
     localUseEffect(() => {
-        model._startBatch();
+        Batch._start();
         model.setHorizontal(!!params.horizontal);
         model.setItemCount(
             params.itemCount,
             params.estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE
         );
-        model._endBatch();
+        Batch._end();
     });
 
     return model;
