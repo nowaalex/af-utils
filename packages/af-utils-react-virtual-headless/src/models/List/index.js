@@ -21,13 +21,12 @@ const VERTICAL_SIZE_KEY = "offsetHeight";
 
 const TypedCache = Uint32Array;
 
+const ITEMS_ROOM = 32;
+
 /*
     Chrome works ok with 0;
     FF needs some timer to place scrollTo call after ResizeObserver callback
 */
-
-const ITEMS_ROOM = 32;
-
 const NON_SMOOTH_SCROLL_CHECK_TIMER = 32;
 
 const SMOOTH_SCROLL_CHECK_TIMER = 512;
@@ -110,39 +109,40 @@ class List {
     to = 0;
     sizesHash = 0;
 
-    _elToIdx = new Map();
-    _idxToEl = new Map();
+    _elToIdx = new WeakMap();
 
     _ElResizeObserver = new FinalResizeObserver(entries => {
-        let index = this.from,
+        let index = 0,
             diff = 0,
             buff = 0,
             wasAtLeastOneSizeChanged = false,
-            lim = index + 1;
+            lim = this.from + 1;
 
         for (; lim < this.to; lim += lim & -lim);
+        lim = Math.min(lim, this._fTree.length);
 
         for (const { target } of entries) {
             index = this._elToIdx.get(target);
-            diff = target[this._sizeKey] - this._itemSizes[index];
 
-            if (diff) {
-                wasAtLeastOneSizeChanged = true;
-                this._itemSizes[index] += diff;
-                buff += diff;
-                updateItemHeight(this._fTree, index + 1, diff, lim);
+            /*
+                ResizeObserver may give us elements, which are not in visible range => will be unmounted soon.
+                Should not take them into account.
+                This is done for performance + updateItemHeight hack would not work without it
+            */
+            if (index >= this.from && index < this.to) {
+                diff = target[this._sizeKey] - this._itemSizes[index];
+                if (diff) {
+                    wasAtLeastOneSizeChanged = true;
+                    this._itemSizes[index] += diff;
+                    buff += diff;
+                    updateItemHeight(this._fTree, index + 1, diff, lim);
+                }
             }
         }
 
         if (wasAtLeastOneSizeChanged) {
             /*@__INLINE__*/ inlinedStartBatch(this);
-            /*
-                Modulo is used to prevent sizesHash from growing too much.
-                Using bitwise hack to optimize modulo.
-                5 % 2 === 5 & 1 && 9 % 4 === 9 & 3
-            */
-            this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
-            this._run(EVT_SIZES);
+
             if (buff !== 0) {
                 updateItemHeight(this._fTree, lim, buff, this._fTree.length);
                 this.scrollSize += buff;
@@ -155,6 +155,14 @@ class List {
                     this._updateRangeFromEnd();
                 }
             }
+
+            /*
+                Modulo is used to prevent sizesHash from growing too much.
+                Using bitwise hack to optimize modulo.
+                5 % 2 === 5 & 1 && 9 % 4 === 9 & 3
+            */
+            this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
+            this._run(EVT_SIZES);
 
             this._endBatch();
         }
@@ -314,21 +322,8 @@ class List {
 
     el(i, node) {
         if (node) {
-            if (!this._idxToEl.has(i)) {
-                this._idxToEl.set(i, node);
-                this._elToIdx.set(node, i);
-                this._ElResizeObserver.observe(node);
-            } else if (process.env.NODE_ENV !== "production") {
-                console.log({ i, node });
-                // throw new Error("el(i, node) must be called once per i");
-            }
-        } else {
-            node = this._idxToEl.get(i);
-            if (node) {
-                this._idxToEl.delete(i);
-                this._elToIdx.delete(node);
-                this._ElResizeObserver.unobserve(node);
-            }
+            this._elToIdx.set(node, i);
+            this._ElResizeObserver.observe(node);
         }
     }
 
@@ -353,6 +348,7 @@ class List {
             this.to =
                 this._itemCount &&
                 1 + this.getIndex(this._scrollPos + this._widgetSize);
+
             this._run(EVT_RANGE);
         }
     }

@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.15
+
+### Patch Changes
+
+-   optimized scroll & measuring
+
 ## 0.0.14
 
 ### Patch Changes

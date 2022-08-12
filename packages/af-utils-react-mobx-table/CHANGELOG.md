@@ -1,5 +1,15 @@
 # @af-utils/react-mobx-table
 
+## 0.0.43
+
+### Patch Changes
+
+-   optimized scroll & measuring
+-   Updated dependencies
+    -   @af-utils/react-table@0.0.41
+    -   @af-utils/react-virtual-headless@0.0.35
+    -   @af-utils/styled@0.0.15
+
 ## 0.0.42
 
 ### Patch Changes
