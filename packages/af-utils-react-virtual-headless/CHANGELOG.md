@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.38
+
+### Patch Changes
+
+-   added mergeModelParams abstraction
+
 ## 0.0.37
 
 ### Patch Changes
