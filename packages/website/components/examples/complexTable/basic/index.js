@@ -18,7 +18,7 @@ const rows = Array.from({ length: 10000 }, (_, i) => ({
     firstName: randFirstName(),
     lastName: randLastName(),
     height: randNumber({ max: 90, min: 30 }),
-    country: randCountry
+    country: randCountry()
 }));
 
 const getRowData = i => rows[i];
