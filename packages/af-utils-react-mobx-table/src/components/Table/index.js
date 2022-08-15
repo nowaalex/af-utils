@@ -1,8 +1,8 @@
-import { memo, useMemo, useLayoutEffect } from "react";
+import { memo, useMemo, useRef, useLayoutEffect } from "react";
 import { observer, Observer } from "mobx-react-lite";
 import { autorun } from "mobx";
 import RowsAggregator from "models/aggregators/Mobx";
-import { useVirtualModel, useOnce } from "@af-utils/react-virtual-headless";
+import { useVirtualModel } from "@af-utils/react-virtual-headless";
 
 import { Table, DefaultTableComponents } from "@af-utils/react-table";
 import ColumnModel from "models/ColumnModel";
@@ -27,6 +27,8 @@ const GroupRow = memo(({ i, groupI, m, model, data: D }) => (
         </D.components.Td>
     </D.components.Tr>
 ));
+
+const useOnce = cb => (useRef().current ||= cb());
 
 const ComplexTable = ({
     itemCount,

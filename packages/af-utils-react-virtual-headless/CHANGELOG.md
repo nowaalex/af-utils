@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.42
+
+### Patch Changes
+
+-   removed useOnce export
+
 ## 0.0.41
 
 ### Patch Changes
