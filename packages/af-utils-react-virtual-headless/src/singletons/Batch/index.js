@@ -9,9 +9,6 @@ export default {
     },
     _end() {
         if (--this._level === 0) {
-            /*
-                 calls must not call _startBatch from inside.
-            */
             Queue.forEach(call);
             Queue.clear();
         }

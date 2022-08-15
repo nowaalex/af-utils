@@ -53,6 +53,8 @@ const FinalResizeObserver = process.env.__IS_SERVER__
     It is much more efficient, than calling updateItemHeight N times.
 */
 
+const EMPTY_TYPED_ARRAY = new TypedCache(0);
+
 const buildFtree = sourceArray => {
     const fTreeLength = sourceArray.length + 1;
     const fTree = new TypedCache(fTreeLength);
@@ -89,8 +91,8 @@ class List {
 
     _outerNode = null;
 
-    _itemSizes = new TypedCache(0);
-    _fTree = new TypedCache(0);
+    _itemSizes = EMPTY_TYPED_ARRAY;
+    _fTree = EMPTY_TYPED_ARRAY;
 
     /*
         most significant bit of this._itemCount;

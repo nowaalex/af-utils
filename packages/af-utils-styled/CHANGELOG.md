@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.16
+
+### Patch Changes
+
+-   minor memory optimization
+
 ## 0.0.15
 
 ### Patch Changes
