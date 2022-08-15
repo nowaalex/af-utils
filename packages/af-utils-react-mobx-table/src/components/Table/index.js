@@ -14,10 +14,10 @@ import GroupsPanel from "./GroupsPanel";
 import GroupLabelDefault from "./GroupLabel";
 import { css, cx } from "@af-utils/styled";
 
-const wrapperClass = css(
-    "display: flex",
-    "flex-flow: column nowrap",
-    "flex: 1 1 auto"
+const flexAutoClass = css("flex: 1 1 auto");
+
+const wrapperClass = cx(
+    css("display: flex", "flex-flow: column nowrap", flexAutoClass)
 );
 
 const GroupRow = memo(({ i, groupI, m, model, data: D }) => (
@@ -156,6 +156,7 @@ const ComplexTable = ({
             <Observer>
                 {() => (
                     <Table
+                        className={flexAutoClass}
                         model={virtualModel}
                         ColumnModel={ColumnModel}
                         columns={aggregatorModel.visibleColumns}

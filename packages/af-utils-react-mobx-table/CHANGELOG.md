@@ -1,5 +1,11 @@
 # @af-utils/react-mobx-table
 
+## 0.0.51
+
+### Patch Changes
+
+-   added grow classname to inner table
+
 ## 0.0.50
 
 ### Patch Changes

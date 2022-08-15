@@ -10,7 +10,7 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@af-utils/react-mobx-table": "^0.0.50",
+        "@af-utils/react-mobx-table": "^0.0.51",
         "@af-utils/react-table": "^0.0.48",
         "@af-utils/react-virtual-headless": "^0.0.42",
         "@af-utils/react-virtual-list": "^0.0.45",
