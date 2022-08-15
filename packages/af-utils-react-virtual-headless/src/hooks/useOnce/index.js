@@ -1,8 +1,5 @@
 import { useRef } from "react";
 
-const useOnce = cb => {
-    const v = useRef();
-    return (v.current ||= cb());
-};
+const useOnce = cb => (useRef().current ||= cb());
 
 export default useOnce;

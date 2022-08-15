@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.40
+
+### Patch Changes
+
+-   minor useOnce improvement
+
 ## 0.0.39
 
 ### Patch Changes
