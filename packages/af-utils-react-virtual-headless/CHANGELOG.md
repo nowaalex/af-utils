@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.39
+
+### Patch Changes
+
+-   removed destructurization in mergeModelParams
+
 ## 0.0.38
 
 ### Patch Changes
