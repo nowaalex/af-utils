@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.41
+
+### Patch Changes
+
+-   removed Subscription destructurization
+
 ## 0.0.40
 
 ### Patch Changes
