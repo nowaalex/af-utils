@@ -22,10 +22,10 @@ const Example = ({ name }) => {
                         </div>
                     ) : null}
                     <div className="flex-auto min-h-0 grid gap-4 grid-cols-1 xl:grid-flow-col xl:grid-cols-[minmax(400px,_2fr),_minmax(0,_3fr)] lg:gap-6 xl:gap-8">
-                        <div className="shadow-lg min-h-0 h-full prose-table:m-0 prose-table:p-0 overflow-hidden">
+                        <div className="shadow-lg min-h-0 h-full prose-table:m-0 prose-table:p-0 overflow-hidden contain-strict">
                             <Component />
                         </div>
-                        <pre className="language-jsx overflow-scroll !m-0 shadow-lg">
+                        <pre className="language-jsx overflow-scroll !m-0 shadow-lg contain-strict">
                             <Code />
                         </pre>
                     </div>
