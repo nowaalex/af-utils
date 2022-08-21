@@ -59,6 +59,8 @@ const List = ({
     children: Item,
     className,
     itemData,
+    header = null,
+    footer = null,
     component: Component = "div",
     getKey = i => i,
     tabIndex = -1,
@@ -82,6 +84,7 @@ const List = ({
                     />
                 )}
             </Subscription>
+            {header}
             <Subscription model={model} events={RANGE_EVENTS}>
                 {() => (
                     <>
@@ -103,6 +106,7 @@ const List = ({
                     </>
                 )}
             </Subscription>
+            {footer}
         </Component>
     );
 };
@@ -112,6 +116,8 @@ List.propTypes = {
     children: PropTypes.elementType.isRequired,
     getKey: PropTypes.func,
     component: PropTypes.elementType,
+    header: PropTypes.element,
+    footer: PropTypes.element,
     className: PropTypes.string,
     itemData: PropTypes.any,
     tabIndex: PropTypes.number

@@ -2,7 +2,8 @@ import dynamic from "next/dynamic";
 import startCase from "/utils/startCase";
 
 const EXCEPTIONS = {
-    complexTable: "Complex Table (unstable)"
+    complexTable: "Complex Table (unstable)",
+    StickyHeaderAndFooter: "Sticky Header and Footer"
 };
 
 const getPathInfo = path => {

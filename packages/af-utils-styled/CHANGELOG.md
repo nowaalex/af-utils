@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.17
+
+### Patch Changes
+
+-   added sticky support
+
 ## 0.0.16
 
 ### Patch Changes

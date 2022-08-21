@@ -25,27 +25,38 @@ const ExtraEvents = () => {
     });
 
     return (
-        <div className="h-full flex flex-col">
-            <div className="flex-none text-center p-1 bg-orange-200">
-                <Subscription model={rows} events={[EVT_RANGE]}>
-                    {() =>
-                        `Rendered ${rows.to - rows.from} items. Range: ${
-                            rows.from
-                        } - ${rows.to}`
-                    }
-                </Subscription>
-            </div>
-            <List className="flex-auto" model={rows}>
-                {Item}
-            </List>
-            <div className="flex-none text-center p-1 bg-orange-200">
-                Scroll size:{" "}
-                <Subscription model={rows} events={[EVT_SCROLL_SIZE]}>
-                    {() => rows.scrollSize}
-                </Subscription>
-                px
-            </div>
-        </div>
+        <List
+            className="h-full"
+            model={rows}
+            header={
+                <div
+                    className="flex-none text-center p-1 bg-orange-200 sticky top-0"
+                    ref={el => rows.setStickyHeader(el)}
+                >
+                    <Subscription model={rows} events={[EVT_RANGE]}>
+                        {() =>
+                            `Rendered ${rows.to - rows.from} items. Range: ${
+                                rows.from
+                            } - ${rows.to}`
+                        }
+                    </Subscription>
+                </div>
+            }
+            footer={
+                <div
+                    className="flex-none text-center p-1 bg-orange-200 sticky bottom-0"
+                    ref={el => rows.setStickyFooter(el)}
+                >
+                    Scroll size:{" "}
+                    <Subscription model={rows} events={[EVT_SCROLL_SIZE]}>
+                        {() => rows.scrollSize}
+                    </Subscription>
+                    px
+                </div>
+            }
+        >
+            {Item}
+        </List>
     );
 };
 

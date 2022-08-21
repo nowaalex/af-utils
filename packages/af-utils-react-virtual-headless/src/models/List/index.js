@@ -10,8 +10,8 @@ import {
     DEFAULT_ESTIMATED_WIDGET_SIZE
 } from "constants";
 
+import FinalResizeObserver from "../ResizeObserver";
 import call from "/utils/call";
-
 import Batch from "/singletons/Batch";
 
 const HORIZONTAL_SCROLL_KEY = "scrollLeft";
@@ -40,20 +40,15 @@ const SMOOTH_SCROLL_CHECK_TIMER = 512;
 */
 const SCROLL_ENDED_TIMER = 128;
 
-const FinalResizeObserver = process.env.__IS_SERVER__
-    ? class {
-          observe() {}
-          unobserve() {}
-          disconnect() {}
-      }
-    : ResizeObserver;
-
 /* 
     Creating fenwick tree from an array in linear time;
     It is much more efficient, than calling updateItemHeight N times.
 */
 
 const EMPTY_TYPED_ARRAY = new TypedCache(0);
+
+const STICKY_HEADER_INDEX = 0;
+const STICKY_FOOTER_INDEX = 1;
 
 const buildFtree = sourceArray => {
     const fTreeLength = sourceArray.length + 1;
@@ -76,13 +71,14 @@ const updateItemHeight = (fTree, i, delta, limitTreeLiftingIndex) => {
         fTree[i] += delta;
     }
 };
-
 class List {
     horizontal = false;
     _scrollToKey = VERTICAL_SCROLL_TO_KEY;
     _scrollKey = VERTICAL_SCROLL_KEY;
     _sizeKey = VERTICAL_SIZE_KEY;
 
+    _rawScrollSize = 0;
+    _stickyOffset = 0;
     _itemCount = 0;
     _scrollTs = 0;
     _scrollToTimer = 0;
@@ -107,6 +103,29 @@ class List {
 
     _elToIdx = new Map();
     _idxToEl = new Map();
+
+    /* header and footer; lengths are hardcoded */
+    _stickyElements = [null, null];
+    _stickyElementsSizes = [0, 0];
+
+    _StickyElResizeObserver = new FinalResizeObserver(entries => {
+        let index = 0,
+            diff = 0,
+            buff = 0;
+
+        for (const { target } of entries) {
+            index = this._stickyElements.indexOf(target);
+            if (index !== -1) {
+                diff = target[this._sizeKey] - this._stickyElementsSizes[index];
+                if (diff) {
+                    this._stickyElementsSizes[index] += diff;
+                    buff += diff;
+                }
+            }
+        }
+
+        this._updateStickyOffset(buff);
+    });
 
     _ElResizeObserver = new FinalResizeObserver(entries => {
         let index = 0,
@@ -142,6 +161,7 @@ class List {
 
             if (buff !== 0) {
                 updateItemHeight(this._fTree, lim, buff, this._fTree.length);
+                this._rawScrollSize += buff;
                 this.scrollSize += buff;
                 this._run(EVT_SCROLL_SIZE);
                 if (buff < 0) {
@@ -168,17 +188,33 @@ class List {
     _EventsList = EVT_ALL.map(() => []);
 
     _updateWidgetSize = () => {
-        const widgetSize = this._outerNode[this._sizeKey];
-        if (widgetSize !== this._widgetSize) {
-            this._widgetSize = widgetSize;
+        const availableWidgetSize =
+            this._outerNode[this._sizeKey] - this._stickyOffset;
+
+        if (availableWidgetSize !== this._availableWidgetSize) {
+            this._availableWidgetSize = availableWidgetSize;
             this._updateRangeFromEnd();
         }
     };
 
+    _updateStickyOffset(v) {
+        if (v) {
+            Batch._start();
+            this._stickyOffset += v;
+            this._availableWidgetSize -= v;
+            this.scrollSize += v;
+            this._run(EVT_SCROLL_SIZE);
+            this._updateRangeFromEnd();
+            Batch._end();
+        }
+    }
+
     _OuterNodeResizeObserver = new FinalResizeObserver(this._updateWidgetSize);
 
     constructor(estimatedWidgetSize) {
-        this._widgetSize = estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
+        // stickyOffset is included;
+        this._availableWidgetSize =
+            estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
     }
 
     on(callBack, deps) {
@@ -198,7 +234,7 @@ class List {
 
     getIndex(offset) {
         let index = 0;
-        offset = Math.min(offset, this.scrollSize);
+        offset = Math.min(offset, this._rawScrollSize);
         for (
             let bitMask = this._msb, tempIndex = 0;
             bitMask > 0;
@@ -286,30 +322,58 @@ class List {
             });
         } else {
             this._ElResizeObserver.disconnect();
+            this._StickyElResizeObserver.disconnect();
             clearTimeout(this._scrollToTimer);
         }
     };
 
     el(i, node) {
+        const oldNode = this._idxToEl.get(i);
+
+        if (oldNode) {
+            this._idxToEl.delete(i);
+            this._elToIdx.delete(oldNode);
+            this._ElResizeObserver.unobserve(oldNode);
+        }
+
         if (node) {
             this._elToIdx.set(node, i);
             this._idxToEl.set(i, node);
             this._ElResizeObserver.observe(node);
-        } else {
-            node = this._idxToEl.get(i);
-            if (node) {
-                this._idxToEl.delete(i);
-                this._elToIdx.delete(node);
-                this._ElResizeObserver.unobserve(node);
-            }
         }
+    }
+
+    _stickyEl(i, node) {
+        const oldNode = this._stickyElements[i];
+
+        if (oldNode) {
+            this._StickyElResizeObserver.unobserve(oldNode);
+            this._updateStickyOffset(-this._stickyElementsSizes[i]);
+            this._stickyElements[i] = null;
+            this._stickyElementsSizes[i] = 0;
+        }
+
+        if (node) {
+            this._StickyElResizeObserver.observe(
+                (this._stickyElements[i] = node)
+            );
+        }
+    }
+
+    setStickyHeader(node) {
+        this._stickyEl(STICKY_HEADER_INDEX, node);
+    }
+
+    setStickyFooter(node) {
+        this._stickyEl(STICKY_FOOTER_INDEX, node);
     }
 
     _updateRangeFromEnd() {
         /*
             zero itemCount check is not needed here, it is done inside folowing if block
         */
-        const to = 1 + this.getIndex(this._scrollPos + this._widgetSize);
+        const to =
+            1 + this.getIndex(this._scrollPos + this._availableWidgetSize);
 
         if (to > this.to) {
             this.to = Math.min(this._itemCount, to + this._overscanCount);
@@ -325,7 +389,7 @@ class List {
             this.from = Math.max(0, from - this._overscanCount);
             this.to =
                 this._itemCount &&
-                1 + this.getIndex(this._scrollPos + this._widgetSize);
+                1 + this.getIndex(this._scrollPos + this._availableWidgetSize);
 
             this._run(EVT_RANGE);
         }
@@ -337,7 +401,7 @@ class List {
         if (this._outerNode) {
             const whole = index | 0;
             const desiredScrollPos = Math.min(
-                this.scrollSize - this._widgetSize,
+                this.scrollSize - this._availableWidgetSize,
                 this.getOffset(whole) +
                     Math.round(this._itemSizes[whole] * (index - whole))
             );
@@ -417,7 +481,10 @@ class List {
 
             Batch._start();
 
-            this.scrollSize = this.getOffset(itemCount);
+            this.scrollSize =
+                (this._rawScrollSize = this.getOffset(itemCount)) +
+                this._stickyOffset;
+
             this._run(EVT_SCROLL_SIZE);
 
             if (this.to > itemCount) {

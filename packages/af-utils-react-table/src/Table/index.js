@@ -107,7 +107,10 @@ const Table = ({
             <C.Table className={tableClass}>
                 <Colgroup columns={normalizedColumns} />
                 {headless ? null : (
-                    <C.Thead className={theadClass}>
+                    <C.Thead
+                        className={theadClass}
+                        ref={el => model.setStickyHeader(el)}
+                    >
                         <C.Tr>
                             <C.HeaderCells
                                 columns={normalizedColumns}
@@ -122,7 +125,10 @@ const Table = ({
                     </Subscription>
                 </C.Tbody>
                 {footer ? (
-                    <C.Tfoot className={tfootClass}>
+                    <C.Tfoot
+                        className={tfootClass}
+                        ref={el => model.setStickyFooter(el)}
+                    >
                         <C.Tr>
                             <C.FooterCells
                                 columns={normalizedColumns}

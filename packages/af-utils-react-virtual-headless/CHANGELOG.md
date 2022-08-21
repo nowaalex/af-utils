@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.43
+
+### Patch Changes
+
+-   added sticky support
+
 ## 0.0.42
 
 ### Patch Changes

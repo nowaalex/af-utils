@@ -1,5 +1,15 @@
 # @af-utils/react-mobx-table
 
+## 0.0.52
+
+### Patch Changes
+
+-   added sticky support
+-   Updated dependencies
+    -   @af-utils/react-table@0.0.49
+    -   @af-utils/react-virtual-headless@0.0.43
+    -   @af-utils/styled@0.0.17
+
 ## 0.0.51
 
 ### Patch Changes
