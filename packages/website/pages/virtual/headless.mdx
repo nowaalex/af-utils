@@ -108,6 +108,34 @@ Scroll to element at certain index. For example `3.6` will scroll to element at 
 
 Pass scrollable element to model. Must be attached to outermost element with `~sass~overflow: auto`.
 
+### `set: Function(params: Object) => void`
+
+Manually updates model params. Should be used **ONLY** with [`useVirtualModel`](#usevirtualmodel).
+Accepts all params of [`useVirtual`](#usevirtual) except [`estimatedWidgetSize`](#estimatedwidgetsize-integer).
+
+---
+
+## useVirtualModel
+
+Low-level hook, used by [`useVirtual`](#usevirtual) internally. Accepts same params, but without synchronization with props.
+[Usage example](/virtual/examples/list/PrependItems). Difference and interconnection between these 2 hooks:
+
+```
+import { useLayoutEffect } from "react";
+import useVirtualModel from "../useVirtualModel";
+
+const useVirtual = params => {
+    const model = useVirtualModel(params);
+
+    useLayoutEffect(() => model.set(params));
+
+    return model;
+};
+
+export default useVirtual;
+
+```
+
 ---
 
 ## mapVisibleRange
@@ -118,7 +146,7 @@ mapVisibleRange(model, callback, provideOffset);
 
 ### `model: Model`
 
-**Required**. Return value of [`useVirtual()`](#usevirtual).
+**Required**. Return value of [`useVirtual`](#usevirtual).
 
 ### `callback: Function( index, offset ) => ReactElement`
 
@@ -165,7 +193,7 @@ useSubscription(model, events, callback);
 
 ### `model: Model`
 
-**Required**. Return value of [`useVirtual()`](#usevirtual).
+**Required**. Return value of [`useVirtual`](#usevirtual).
 
 ### `events: Array<Integer>`
 
@@ -189,7 +217,7 @@ Rerendered, when at least one of passed [events](#numeric-event-constants) is tr
 
 ### `model: Model`
 
-**Required**. Return value of [`useVirtual()`](#usevirtual).
+**Required**. Return value of [`useVirtual`](#usevirtual).
 
 ### `children: Function() => ReactElement`
 

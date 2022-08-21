@@ -1,6 +1,7 @@
-import { memo, useState, useRef, useLayoutEffect } from "react";
-import { useVirtual, List } from "@af-utils/react-virtual-list";
+import { memo, useRef, useState } from "react";
+import { useVirtualModel, List } from "@af-utils/react-virtual-list";
 import { randNumber, randFullName } from "@ngneat/falso";
+import { BiLoaderCircle } from "react-icons/bi";
 import useFakerSeed from "/hooks/useFakerSeed";
 
 const Item = memo(({ i, model, data }) => (
@@ -23,60 +24,66 @@ const getRandomItem = () => ({
 /* new Promise is made to simulate asynchronous fetch request */
 const fetch100RandomItemsAsync = () =>
     new Promise(resolve =>
-        setTimeout(resolve, 1000, Array.from({ length: 100 }, getRandomItem))
+        setTimeout(
+            resolve,
+            randNumber({ min: 100, max: 2000 }),
+            Array.from({ length: 100 }, getRandomItem)
+        )
     );
+
+/* Creating extra component avoid rerendering everything when isLoading state changes */
+const PrependButton = ({ model, items }) => {
+    const [isLoading, setLoading] = useState(false);
+
+    const prependItems = async () => {
+        setLoading(true);
+        const newItems = await fetch100RandomItemsAsync();
+        const desiredScrollPos = newItems.length + model.visibleFrom;
+        model.set({ itemCount: items.unshift(...newItems) });
+        model.scrollTo(desiredScrollPos);
+        setLoading(false);
+    };
+
+    return (
+        <button
+            type="button"
+            className="px-2 py-1 border bg-orange-200 hover:bg-orange-300 border-gray-700 flex gap-2 items-center"
+            onClick={prependItems}
+        >
+            Prepend 100 items
+            {isLoading ? <BiLoaderCircle size="1.5em" /> : null}
+        </button>
+    );
+};
 
 const PrependItems = () => {
     // fake data should be consistent for ssr purpose
     useFakerSeed(1234);
 
-    const scrollPosRef = useRef(null);
+    const items = (useRef().current ||= Array.from(
+        { length: 1000 },
+        getRandomItem
+    ));
 
-    const [items, setItems] = useState(() =>
-        Array.from({ length: 1000 }, getRandomItem)
-    );
-
-    const model = useVirtual({
-        estimatedItemSize: 60,
+    const model = useVirtualModel({
+        estimatedItemSize: 85,
         itemCount: items.length
     });
 
-    const prependItems = async () => {
-        const newItems = await fetch100RandomItemsAsync();
-        scrollPosRef.current = newItems.length + model.visibleFrom;
-        setItems(currentItems => [...newItems, ...currentItems]);
-    };
-
-    useLayoutEffect(() => {
-        if (scrollPosRef.current) {
-            model.scrollTo(scrollPosRef.current);
-            scrollPosRef.current = null;
-        }
-        /*
-            useEffect dependency may be changed, if you have both
-            prepending/appending or you need to sync scroll pos only
-            in certain cases.
-        */
-    }, [model, items]);
-
     return (
-        <div className="flex flex-col gap-4 h-full lg:min-w-[20em]">
-            <button
-                type="button"
-                className="px-6 py-2 bg-orange-300"
-                onClick={prependItems}
-            >
-                Prepend 100 items
-            </button>
-            <List
-                className="grow basis-96"
-                model={model}
-                itemData={items}
-                getKey={getKey}
-            >
-                {Item}
-            </List>
-        </div>
+        <List
+            className="h-full lg:min-w-[20em]"
+            model={model}
+            itemData={items}
+            getKey={getKey}
+            header={
+                <div className="flex justify-center bg-gray-200 p-3 sticky top-0">
+                    <PrependButton model={model} items={items} />
+                </div>
+            }
+        >
+            {Item}
+        </List>
     );
 };
 

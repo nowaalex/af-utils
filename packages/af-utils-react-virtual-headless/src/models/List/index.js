@@ -84,6 +84,7 @@ class List {
     _scrollToTimer = 0;
     _scrollPos = 0;
     _overscanCount = DEFAULT_OVERSCAN_COUNT;
+    _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
 
     _outerNode = null;
 
@@ -211,10 +212,11 @@ class List {
 
     _OuterNodeResizeObserver = new FinalResizeObserver(this._updateWidgetSize);
 
-    constructor(estimatedWidgetSize) {
+    constructor(params) {
         // stickyOffset is included;
         this._availableWidgetSize =
-            estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
+            params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
+        this.set(params);
     }
 
     on(callBack, deps) {
@@ -430,8 +432,60 @@ class List {
         }
     }
 
-    setHorizontal(horizontal) {
-        if (horizontal !== this.horizontal) {
+    set({ overscanCount, horizontal, itemCount, estimatedItemSize }) {
+        Batch._start();
+
+        if (estimatedItemSize) {
+            // must not be falsy, so not checking for undefined here.
+            this._estimatedItemSize = estimatedItemSize;
+        }
+
+        if (overscanCount !== undefined) {
+            this._overscanCount = overscanCount;
+        }
+
+        if (itemCount !== undefined && this._itemCount !== itemCount) {
+            if (itemCount > MAX_ITEM_COUNT) {
+                throw new Error(
+                    `itemCount must be <= ${MAX_ITEM_COUNT}. Got: ${itemCount}.`
+                );
+            }
+            this._msb =
+                (this._itemCount = itemCount) &&
+                1 << (31 - Math.clz32(itemCount));
+
+            const oldItemSizes = this._itemSizes;
+            const curRowHeighsLength = oldItemSizes.length;
+
+            if (itemCount > curRowHeighsLength) {
+                this._itemSizes = new TypedCache(
+                    Math.min(itemCount + ITEMS_ROOM, MAX_ITEM_COUNT)
+                );
+                this._itemSizes.set(oldItemSizes);
+
+                this._fTree = /*@__NOINLINE__*/ buildFtree(
+                    this._itemSizes.fill(
+                        this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE,
+                        curRowHeighsLength
+                    )
+                );
+            }
+
+            this.scrollSize =
+                (this._rawScrollSize = this.getOffset(itemCount)) +
+                this._stickyOffset;
+
+            this._run(EVT_SCROLL_SIZE);
+
+            if (this.to > itemCount) {
+                // Forcing shift range to end
+                this.to = -1;
+            }
+
+            this._updateRangeFromEnd();
+        }
+
+        if (horizontal !== undefined && this.horizontal !== horizontal) {
             this._scrollToKey = (this.horizontal = horizontal)
                 ? HORIZONTAL_SCROLL_TO_KEY
                 : VERTICAL_SCROLL_TO_KEY;
@@ -449,56 +503,8 @@ class List {
 
             this.scrollTo(0);
         }
-    }
 
-    setItemCount(itemCount, estimatedItemSize) {
-        if (itemCount > MAX_ITEM_COUNT) {
-            throw new Error(
-                `itemCount must be <= ${MAX_ITEM_COUNT}. Got: ${itemCount}.`
-            );
-        }
-        if (itemCount !== this._itemCount) {
-            this._msb =
-                (this._itemCount = itemCount) &&
-                1 << (31 - Math.clz32(itemCount));
-
-            const oldItemSizes = this._itemSizes;
-            const curRowHeighsLength = oldItemSizes.length;
-
-            if (itemCount > curRowHeighsLength) {
-                this._itemSizes = new TypedCache(
-                    Math.min(itemCount + ITEMS_ROOM, MAX_ITEM_COUNT)
-                );
-                this._itemSizes.set(oldItemSizes);
-
-                this._fTree = /*@__NOINLINE__*/ buildFtree(
-                    this._itemSizes.fill(
-                        estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE,
-                        curRowHeighsLength
-                    )
-                );
-            }
-
-            Batch._start();
-
-            this.scrollSize =
-                (this._rawScrollSize = this.getOffset(itemCount)) +
-                this._stickyOffset;
-
-            this._run(EVT_SCROLL_SIZE);
-
-            if (this.to > itemCount) {
-                // Forcing shift range to end
-                this.to = -1;
-            }
-
-            this._updateRangeFromEnd();
-            Batch._end();
-        }
-    }
-
-    setOverscan(overscanCount) {
-        this._overscanCount = overscanCount;
+        Batch._end();
     }
 }
 

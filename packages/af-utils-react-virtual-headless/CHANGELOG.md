@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.44
+
+### Patch Changes
+
+-   changed set api
+
 ## 0.0.43
 
 ### Patch Changes

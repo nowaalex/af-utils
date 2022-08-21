@@ -1,5 +1,14 @@
 # @af-utils/react-mobx-table
 
+## 0.0.53
+
+### Patch Changes
+
+-   changed set api
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.0.44
+    -   @af-utils/react-table@0.0.50
+
 ## 0.0.52
 
 ### Patch Changes

@@ -72,7 +72,7 @@ const ComplexTable = ({
 
         model.setGrouping(initialGroupingKeys);
 
-        virtualModel.setItemCount(model.finalIndexesCount, estimatedItemSize);
+        virtualModel.set({ itemCount: model.finalIndexesCount });
 
         return model;
     });
@@ -80,10 +80,10 @@ const ComplexTable = ({
     useLayoutEffect(
         () =>
             autorun(() =>
-                virtualModel.setItemCount(
-                    aggregatorModel.finalIndexesCount,
+                virtualModel.set({
+                    itemCount: aggregatorModel.finalIndexesCount,
                     estimatedItemSize
-                )
+                })
             ),
         [estimatedItemSize]
     );
