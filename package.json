@@ -22,14 +22,14 @@
     ],
     "devDependencies": {
         "@changesets/changelog-github": "^0.4.6",
-        "@changesets/cli": "^2.24.3",
+        "@changesets/cli": "^2.24.4",
         "ultra-runner": "^3.10.5"
     },
     "dependencies": {
         "@babel/eslint-plugin": "^7.18.10",
-        "eslint": "^8.22.0",
+        "eslint": "^8.23.0",
         "eslint-config-prettier": "^8.5.0",
-        "eslint-plugin-react": "^7.30.1",
+        "eslint-plugin-react": "^7.31.4",
         "prettier": "^2.7.1"
     }
 }

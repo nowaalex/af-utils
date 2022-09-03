@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { EVT_ALL, EVT_RANGE, EVT_SCROLL_SIZE, EVT_SIZES } from "constants";
+import { EVT_ALL, EVT_RANGE, EVT_SCROLL_SIZE } from "constants";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 
 const useComponentSubscription = (model, events) => {

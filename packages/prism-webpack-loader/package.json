@@ -14,6 +14,6 @@
     "module": "index.js",
     "keywords": [],
     "devDependencies": {
-        "prismjs": "^1.28.0"
+        "prismjs": "^1.29.0"
     }
 }
