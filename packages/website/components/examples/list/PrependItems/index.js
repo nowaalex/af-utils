@@ -77,7 +77,10 @@ const PrependItems = () => {
             itemData={items}
             getKey={getKey}
             header={
-                <div className="flex justify-center bg-gray-200 p-3 sticky top-0">
+                <div
+                    className="flex justify-center bg-gray-200 p-3 sticky top-0"
+                    ref={el => model.setStickyHeader(el)}
+                >
                     <PrependButton model={model} items={items} />
                 </div>
             }
