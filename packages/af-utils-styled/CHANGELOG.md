@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.18
+
+### Patch Changes
+
+-   minor subscription optimization
+
 ## 0.0.17
 
 ### Patch Changes

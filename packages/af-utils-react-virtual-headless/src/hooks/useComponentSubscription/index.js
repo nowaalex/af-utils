@@ -5,13 +5,14 @@ import { useSyncExternalStore } from "use-sync-external-store/shim";
 const useComponentSubscription = (model, events) => {
     events ||= EVT_ALL;
 
+    // szudzik pair
     const getHash = () =>
         events.reduce(
             (acc, e) =>
-                "_" +
                 acc +
+                "_" +
                 (e === EVT_RANGE
-                    ? model.from + "_" + model.to
+                    ? model.to ** 2 + model.from
                     : e === EVT_SCROLL_SIZE
                     ? model.scrollSize
                     : model.sizesHash),
