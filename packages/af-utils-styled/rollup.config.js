@@ -6,49 +6,58 @@ import { terser } from "rollup-plugin-terser";
 
 const OUTPUT_DIR = "lib";
 
-export default {
-    input: "src/index.js",
-    output: [
-        {
-            format: "es",
-            dir: OUTPUT_DIR,
-            preferConst: true,
-            sourcemap: true,
-            entryFileNames: "[name].js",
-            plugins: [
-                exportBundleSize({ dir: OUTPUT_DIR }),
-                replace({
-                    "process.env.__IS_SERVER__": false
-                })
-            ]
-        },
-        {
-            format: "es",
-            dir: OUTPUT_DIR,
-            preferConst: true,
-            sourcemap: false,
-            entryFileNames: "[name].server.js",
-            plugins: [
-                replace({
-                    "process.env.__IS_SERVER__": true
-                })
-            ]
-        }
-    ],
-    plugins: [
-        terser({
-            module: true,
-            compress: {
-                passes: 2,
-                ecma: 2022
-            },
-            output: {
-                beautify: true,
-                comments: "all",
-                preserve_annotations: true
-            }
-        }),
-        babel({ babelHelpers: "runtime" }),
-        commonjs()
-    ]
+const BASE_OUTPUT = {
+    format: "es",
+    dir: OUTPUT_DIR,
+    generatedCode: "es2015",
+    sourcemap: true
 };
+
+const BASE_PLUGINS = [
+    terser({
+        module: true,
+        compress: {
+            passes: 2,
+            ecma: 2022
+        },
+        output: {
+            beautify: true,
+            comments: "all",
+            preserve_annotations: true
+        }
+    }),
+    babel({ babelHelpers: "runtime" }),
+    commonjs()
+];
+
+export default [
+    {
+        input: "src/index.js",
+        output: {
+            ...BASE_OUTPUT,
+            entryFileNames: "[name].js"
+        },
+        plugins: [
+            ...BASE_PLUGINS,
+            exportBundleSize({ dir: OUTPUT_DIR }),
+            replace({
+                "preventAssignment": true,
+                "process.env.__IS_SERVER__": false
+            })
+        ]
+    },
+    {
+        input: "src/index.js",
+        output: {
+            ...BASE_OUTPUT,
+            entryFileNames: "[name].server.js"
+        },
+        plugins: [
+            ...BASE_PLUGINS,
+            replace({
+                "preventAssignment": true,
+                "process.env.__IS_SERVER__": true
+            })
+        ]
+    }
+];

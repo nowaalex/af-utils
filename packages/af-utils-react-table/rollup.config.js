@@ -10,7 +10,7 @@ export default {
     output: {
         format: "es",
         dir: OUTPUT_DIR,
-        preferConst: true,
+        generatedCode: "es2015",
         sourcemap: true
     },
     plugins: [

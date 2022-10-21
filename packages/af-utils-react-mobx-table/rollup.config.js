@@ -8,9 +8,9 @@ const OUTPUT_DIR = "lib";
 export default {
     input: "src/index.js",
     output: {
+        generatedCode: "es2015",
         format: "es",
         dir: OUTPUT_DIR,
-        preferConst: true,
         sourcemap: true
     },
     plugins: [
