@@ -1,6 +1,7 @@
 import { MDXProvider } from "@mdx-js/react";
 import AutoLink from "/components/AutoLink";
 import VirtualLayout from "/components/layouts/Virtual";
+import ProgressIndicator from "/components/ProgressIndicator";
 
 import "/styles/globals.css";
 import "/styles/code.css";
@@ -34,6 +35,7 @@ const MyApp = ({ Component, pageProps }) => {
     return (
         <MDXProvider components={components}>
             {getLayout(<Component {...rest} />)}
+            <ProgressIndicator />
         </MDXProvider>
     );
 };

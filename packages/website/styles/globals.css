@@ -44,4 +44,24 @@
     .ds-menu[open] [data-closer] {
         display: block;
     }
+
+    @keyframes progress-indeterminate {
+        0% {
+            width: 30%;
+            left: -40%;
+        }
+        60% {
+            left: 100%;
+            width: 100%;
+        }
+        to {
+            left: 100%;
+            width: 0;
+        }
+    }
+
+    .progressbar {
+        transition: width 0.25s ease;
+        animation: progress-indeterminate 1s ease infinite;
+    }
 }

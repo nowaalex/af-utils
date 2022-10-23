@@ -1,4 +1,4 @@
-import { useState, memo, useLayoutEffect } from "react";
+import { useState, memo, useEffect, useLayoutEffect } from "react";
 import { useVirtual, List } from "@af-utils/react-virtual-list";
 
 const DEFAULT_ROW_COUNT = 100000;
@@ -15,6 +15,10 @@ const Item = memo(({ i, model, data: pseudoRandomSizes }) => (
     </div>
 ));
 
+/* If you do not use SSR - just use useLayoutEffect */
+const useIsomorphicLayoutEffect =
+    typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 const ScrollToItem = () => {
     const [pseudoRandomSizes, changeRows] = useState(() =>
         Array.from(
@@ -28,7 +32,7 @@ const ScrollToItem = () => {
         estimatedItemSize: 75
     });
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         model.scrollTo(pseudoRandomSizes.length - 1);
     }, [model, pseudoRandomSizes.length]);
 
