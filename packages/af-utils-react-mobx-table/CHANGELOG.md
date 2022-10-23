@@ -1,5 +1,15 @@
 # @af-utils/react-mobx-table
 
+## 0.0.56
+
+### Patch Changes
+
+-   upgraded deps, changed format to esm, improved build scripts, added some tests
+-   Updated dependencies
+    -   @af-utils/react-table@0.0.53
+    -   @af-utils/react-virtual-headless@0.0.47
+    -   @af-utils/styled@0.0.19
+
 ## 0.0.55
 
 ### Patch Changes

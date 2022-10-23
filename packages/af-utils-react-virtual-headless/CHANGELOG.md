@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.47
+
+### Patch Changes
+
+-   upgraded deps, changed format to esm, improved build scripts, added some tests
+
 ## 0.0.46
 
 ### Patch Changes

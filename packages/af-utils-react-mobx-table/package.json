@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/react-mobx-table",
     "private": false,
-    "version": "0.0.55",
+    "version": "0.0.56",
     "description": "React components for rendering tables",
     "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
     "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
@@ -10,8 +10,8 @@
     "license": "MIT",
     "sideEffects": false,
     "scripts": {
-        "dev": "rollup --bundleConfigAsCjs --watch --config rollup.config.js",
-        "build": "rollup --bundleConfigAsCjs --config rollup.config.js",
+        "dev": "rollup --watch --config rollup.config.js",
+        "build": "rollup --config rollup.config.js",
         "prepare": "npm run build",
         "test": "jest"
     },
@@ -22,6 +22,7 @@
     "files": [
         "lib/*"
     ],
+    "type": "module",
     "main": "lib/index.js",
     "module": "lib/index.js",
     "keywords": [
@@ -52,9 +53,9 @@
         "rollup-plugin-terser": "^7.0.2"
     },
     "peerDependencies": {
-        "@af-utils/react-table": "^0.0.52",
-        "@af-utils/react-virtual-headless": "^0.0.46",
-        "@af-utils/styled": "^0.0.18",
+        "@af-utils/react-table": "^0.0.53",
+        "@af-utils/react-virtual-headless": "^0.0.47",
+        "@af-utils/styled": "^0.0.19",
         "mobx": "^6.3.0",
         "mobx-react-lite": "^3.2.0",
         "prop-types": "^15.8.1",

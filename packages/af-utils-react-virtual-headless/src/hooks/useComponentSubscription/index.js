@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { EVT_ALL, EVT_RANGE, EVT_SCROLL_SIZE } from "constants";
+import { EVT_ALL, EVT_RANGE, EVT_SCROLL_SIZE } from "src/constants";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 
 const useComponentSubscription = (model, events) => {

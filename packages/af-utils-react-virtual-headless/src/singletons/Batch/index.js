@@ -1,4 +1,4 @@
-import call from "/utils/call";
+import call from "src/utils/call";
 
 const Queue = new Set();
 

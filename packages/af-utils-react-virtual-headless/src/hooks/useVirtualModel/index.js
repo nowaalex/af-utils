@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import List from "models/List";
+import List from "src/models/List";
 
 const useVirtualModel = params => (useRef().current ||= new List(params));
 

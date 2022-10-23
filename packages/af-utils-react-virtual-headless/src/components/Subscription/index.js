@@ -1,4 +1,4 @@
-import useComponentSubscription from "hooks/useComponentSubscription";
+import useComponentSubscription from "src/hooks/useComponentSubscription";
 
 const Subscription = props => (
     useComponentSubscription(props.model, props.events), props.children()

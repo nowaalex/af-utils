@@ -1,6 +1,6 @@
 {
     "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
-    "plugins": ["@babel", "react"],
+    "plugins": ["@babel", "react", "jest"],
     "env": {
         "browser": true,
         "node": true,

@@ -1,5 +1,7 @@
-module.exports = {
-    transform: {
-        "\\.js$": "babel-jest"
-    }
+export default {
+    testEnvironment: "jsdom",
+    moduleNameMapper: {
+        "src/(.*)": "<rootDir>/src/$1"
+    },
+    transform: {}
 };

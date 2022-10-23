@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.19
+
+### Patch Changes
+
+-   upgraded deps, changed format to esm, improved build scripts, added some tests
+
 ## 0.0.18
 
 ### Patch Changes

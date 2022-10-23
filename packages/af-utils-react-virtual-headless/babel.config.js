@@ -1,5 +1,5 @@
 const plugins = [
-    ["module-resolver", { root: ["./src"] }],
+    ["module-resolver", { root: ["./"] }],
     "@babel/plugin-transform-runtime",
     [
         "transform-react-remove-prop-types",
@@ -19,7 +19,7 @@ const presets = [
     ]
 ];
 
-module.exports = {
+export default {
     plugins,
     presets
 };
