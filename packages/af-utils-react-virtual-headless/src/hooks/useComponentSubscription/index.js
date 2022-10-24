@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { EVT_ALL, EVT_RANGE, EVT_SCROLL_SIZE } from "src/constants";
-import { useSyncExternalStore } from "use-sync-external-store/shim";
+import { useSyncExternalStore } from "use-sync-external-store/shim/index.js";
 
 const useComponentSubscription = (model, events) => {
     events ||= EVT_ALL;

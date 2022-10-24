@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.0.48
+
+### Patch Changes
+
+-   improrted shim explicitly
+
 ## 0.0.47
 
 ### Patch Changes
