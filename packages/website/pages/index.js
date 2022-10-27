@@ -41,11 +41,8 @@ const Landing = () => (
             </h2>
             <ul className="max-w-[28em]">
                 <li>
-                    <Link href="/virtual">
-                        <a>Virtual scroll</a>
-                    </Link>{" "}
-                    for rendering only visible part of huge lists, tables and
-                    grids{" "}
+                    <Link href="/virtual">Virtual scroll</Link> for rendering
+                    only visible part of huge lists, tables and grids{" "}
                     <small>
                         <i>(currently available for React)</i>
                     </small>

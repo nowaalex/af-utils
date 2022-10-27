@@ -15,11 +15,9 @@ const Landing = () => (
 
         <h2 className="text-2xl">Page was not found</h2>
 
-        <Link href="/">
-            <a className="flex flex-col items-center mt-12 underline">
-                <AiFillHome size="4em" />
-                Go home
-            </a>
+        <Link href="/" className="flex flex-col items-center mt-12 underline">
+            <AiFillHome size="4em" />
+            Go home
         </Link>
     </div>
 );

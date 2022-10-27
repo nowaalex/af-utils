@@ -25,9 +25,7 @@ const Nav = memo(() => {
                         className="cursor-pointer"
                     />
                     <h2 className="m-0 p-0">
-                        <Link href="/">
-                            <a>af-utils</a>
-                        </Link>
+                        <Link href="/">af-utils</Link>
                         &nbsp;/&nbsp;virtual
                     </h2>
                 </summary>
@@ -43,9 +41,7 @@ const Nav = memo(() => {
             <div className="shadow-lg hidden lg:flex h-screen overflow-y-scroll flex-none flex-col min-w-[20em]">
                 <div className="sticky top-0 bg-white p-5 border-b">
                     <h1 className="m-0 p-0">
-                        <Link href="/">
-                            <a>af-utils</a>
-                        </Link>
+                        <Link href="/">af-utils</Link>
                         &nbsp;/&nbsp;virtual
                     </h1>
                 </div>
