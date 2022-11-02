@@ -1,7 +1,7 @@
 import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import exportBundleSize from "@rollup/plugin-export-bundle-size";
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 
 const OUTPUT_DIR = "lib";
 
