@@ -30,7 +30,7 @@ yarn add @af-utils/react-virtual-headless prop-types use-sync-external-store
 
 ## useVirtual
 
-Core hook. Used to get scroller model instance synchronized with props.
+Core react hook. Used to get scroller model instance synchronized with props.
 This instance will persist for the full lifetime of the component.
 
 ```javascript
@@ -127,7 +127,7 @@ Accepts all params of [`useVirtual`](#usevirtual) except [`estimatedWidgetSize`]
 
 ## useVirtualModel
 
-Low-level hook, used by [`useVirtual`](#usevirtual) internally. Accepts same params, but without synchronization with props.
+Low-level react hook, used by [`useVirtual`](#usevirtual) internally. Accepts same params, but without synchronization with props.
 [Usage example](/virtual/examples/list/PrependItems). Difference and interconnection between these 2 hooks:
 
 ```
