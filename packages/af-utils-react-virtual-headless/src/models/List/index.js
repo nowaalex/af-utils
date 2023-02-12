@@ -49,28 +49,10 @@ const STICKY_HEADER_INDEX = 0;
 const STICKY_FOOTER_INDEX = 1;
 class List {
     horizontal = false;
+
     _scrollToKey = VERTICAL_SCROLL_TO_KEY;
     _scrollKey = VERTICAL_SCROLL_KEY;
     _sizeKey = VERTICAL_SIZE_KEY;
-
-    _rawScrollSize = 0;
-    _stickyOffset = 0;
-    _itemCount = 0;
-    _scrollToTimer = 0;
-    _scrollPos = 0;
-    _overscanCount = DEFAULT_OVERSCAN_COUNT;
-    _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
-
-    _outerNode = null;
-
-    _itemSizes = EMPTY_TYPED_ARRAY;
-    _fTree = EMPTY_TYPED_ARRAY;
-
-    /*
-        most significant bit of this._itemCount;
-        caching it to avoid Math.clz32 calculations on every getIndex call
-    */
-    _msb = 0;
 
     /*
         When using window scroll mode, some blocks may go before & after virtual container.
@@ -87,10 +69,36 @@ class List {
         Some footer                |r|
         [ ----  window end  ---- ] |.|
 
-        Actually any div may be used instead of window, but offsets should be calculated.
+        Actually any div may be used instead of window, but offset should be calculated.
     */
-    _scrollElementOffsetTop = 0;
-    _scrollElementOffsetBottom = 0;
+    _scrollElementOffset = 0;
+
+    /*
+        scrollElement[ scroll[ Top | Left ] ] - _scrollElementOffset
+
+        getIndex, getOffset and some other methods are designed to be pure
+        and they don't know about _scrollElementOffset,
+        so it useful to store cached value for them
+    */
+    _alignedScrollPos = 0;
+
+    _rawScrollSize = 0;
+    _stickyOffset = 0;
+    _itemCount = 0;
+    _scrollToTimer = 0;
+    _overscanCount = DEFAULT_OVERSCAN_COUNT;
+    _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
+
+    _outerNode = null;
+
+    _itemSizes = EMPTY_TYPED_ARRAY;
+    _fTree = EMPTY_TYPED_ARRAY;
+
+    /*
+        most significant bit of this._itemCount;
+        caching it to avoid Math.clz32 calculations on every getIndex call
+    */
+    _msb = 0;
 
     scrollSize = 0;
     from = 0;
@@ -231,8 +239,16 @@ class List {
     }
 
     getIndex(offset) {
+        if (offset <= 0) {
+            return 0;
+        }
+
+        if (offset >= this._rawScrollSize) {
+            return this._itemCount - 1;
+        }
+
         let index = 0;
-        offset = Math.min(offset, this._rawScrollSize);
+
         for (
             let bitMask = this._msb, tempIndex = 0;
             bitMask > 0;
@@ -276,10 +292,10 @@ class List {
     }
 
     get visibleFrom() {
-        const firstVisibleIndex = this.getIndex(this._scrollPos);
+        const firstVisibleIndex = this._exactFrom;
         return (
             firstVisibleIndex +
-            (this._scrollPos - this.getOffset(firstVisibleIndex)) /
+            (this._alignedScrollPos - this.getOffset(firstVisibleIndex)) /
                 this._itemSizes[firstVisibleIndex]
         );
     }
@@ -288,11 +304,12 @@ class List {
         "scroll" is the only event here, so switch/case is not needed.
     */
     handleEvent() {
-        const curScrollPos = this._scrollPos,
-            newScrollPos = this._outerNode[this._scrollKey];
+        const curScrollPos = this._alignedScrollPos,
+            newScrollPos =
+                this._outerNode[this._scrollKey] - this._scrollElementOffset;
 
         if (newScrollPos !== curScrollPos) {
-            if ((this._scrollPos = newScrollPos) > curScrollPos) {
+            if ((this._alignedScrollPos = newScrollPos) > curScrollPos) {
                 this._updateRangeFromEnd();
             } else {
                 this._updateRangeFromStart();
@@ -363,29 +380,36 @@ class List {
         this._stickyEl(STICKY_FOOTER_INDEX, node);
     }
 
+    get _exactFrom() {
+        return this.getIndex(this._alignedScrollPos);
+    }
+
+    get _exactTo() {
+        return (
+            this._itemCount &&
+            1 +
+                this.getIndex(
+                    this._alignedScrollPos + this._availableWidgetSize
+                )
+        );
+    }
+
     _updateRangeFromEnd() {
-        /*
-            zero itemCount check is not needed here, it is done inside folowing if block
-        */
-        const to =
-            1 + this.getIndex(this._scrollPos + this._availableWidgetSize);
+        const to = this._exactTo;
 
         if (to > this.to) {
             this.to = Math.min(this._itemCount, to + this._overscanCount);
-            this.from = this.getIndex(this._scrollPos);
+            this.from = this._exactFrom;
             this._run(EVT_RANGE);
         }
     }
 
     _updateRangeFromStart() {
-        const from = this.getIndex(this._scrollPos);
+        const from = this._exactFrom;
 
         if (from < this.from) {
             this.from = Math.max(0, from - this._overscanCount);
-            this.to =
-                this._itemCount &&
-                1 + this.getIndex(this._scrollPos + this._availableWidgetSize);
-
+            this.to = this._exactTo;
             this._run(EVT_RANGE);
         }
     }
@@ -402,12 +426,13 @@ class List {
         );
 
         if (
-            desiredScrollPos !== this._scrollPos &&
+            desiredScrollPos !== this._alignedScrollPos &&
             this._outerNode &&
             --attemptsLeft
         ) {
             this._outerNode.scroll({
-                [this._scrollToKey]: desiredScrollPos,
+                [this._scrollToKey]:
+                    this._scrollElementOffset + desiredScrollPos,
                 behavior: smooth ? "smooth" : "auto"
             });
 
