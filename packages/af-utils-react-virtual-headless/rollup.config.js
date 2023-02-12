@@ -35,41 +35,21 @@ const BASE_PLUGINS = [
     commonjs()
 ];
 
-const BASE_OUTPUT = {
-    format: "es",
-    dir: OUTPUT_DIR,
-    generatedCode: "es2015",
-    sourcemap: true
-};
-
-export default [
-    {
-        input: "src/index.js",
-        plugins: [
-            ...BASE_PLUGINS,
-            exportBundleSize({ dir: OUTPUT_DIR }),
-            replace({
-                "preventAssignment": true,
-                "process.env.__IS_SERVER__": false
-            })
-        ],
-        output: {
-            ...BASE_OUTPUT,
-            entryFileNames: "[name].js"
-        }
-    },
-    {
-        input: "src/index.js",
-        plugins: [
-            ...BASE_PLUGINS,
-            replace({
-                "preventAssignment": true,
-                "process.env.__IS_SERVER__": true
-            })
-        ],
-        output: {
-            ...BASE_OUTPUT,
-            entryFileNames: "[name].server.js"
-        }
+export default [true, false].map(isServer => ({
+    input: "src/index.js",
+    plugins: [
+        ...BASE_PLUGINS,
+        exportBundleSize({ dir: OUTPUT_DIR }),
+        replace({
+            "preventAssignment": true,
+            "process.env.__IS_SERVER__": isServer
+        })
+    ],
+    output: {
+        format: "es",
+        dir: OUTPUT_DIR,
+        generatedCode: "es2015",
+        sourcemap: true,
+        entryFileNames: `[name].${isServer ? "server." : ""}js`
     }
-];
+}));

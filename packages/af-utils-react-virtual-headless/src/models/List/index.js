@@ -36,10 +36,7 @@ const NON_SMOOTH_SCROLL_CHECK_TIMER = 32;
 
 const SMOOTH_SCROLL_CHECK_TIMER = 512;
 
-/*
-    How many milliseconds without scroll events must pass before scroll considered ended
-*/
-const SCROLL_ENDED_TIMER = 128;
+const SCROLL_TO_MAX_ATTEMPTS = 16;
 
 /* 
     Creating fenwick tree from an array in linear time;
@@ -50,7 +47,6 @@ const EMPTY_TYPED_ARRAY = new TypedCache(0);
 
 const STICKY_HEADER_INDEX = 0;
 const STICKY_FOOTER_INDEX = 1;
-
 class List {
     horizontal = false;
     _scrollToKey = VERTICAL_SCROLL_TO_KEY;
@@ -60,7 +56,6 @@ class List {
     _rawScrollSize = 0;
     _stickyOffset = 0;
     _itemCount = 0;
-    _scrollTs = 0;
     _scrollToTimer = 0;
     _scrollPos = 0;
     _overscanCount = DEFAULT_OVERSCAN_COUNT;
@@ -76,6 +71,26 @@ class List {
         caching it to avoid Math.clz32 calculations on every getIndex call
     */
     _msb = 0;
+
+    /*
+        When using window scroll mode, some blocks may go before & after virtual container.
+
+        [ ---- window start ---- ] |.|
+        Some header                |s|
+        Another header             |c|
+        <Virtual>                  |r|
+            item 1                 [o]
+            item 2                 [l]
+            item 3                 [l]
+            ...                    [b]
+        </Virtual>                 |a|
+        Some footer                |r|
+        [ ----  window end  ---- ] |.|
+
+        Actually any div may be used instead of window, but offsets should be calculated.
+    */
+    _scrollElementOffsetTop = 0;
+    _scrollElementOffsetBottom = 0;
 
     scrollSize = 0;
     from = 0;
@@ -272,15 +287,12 @@ class List {
     /*
         "scroll" is the only event here, so switch/case is not needed.
     */
-    handleEvent(e) {
+    handleEvent() {
         const curScrollPos = this._scrollPos,
             newScrollPos = this._outerNode[this._scrollKey];
 
         if (newScrollPos !== curScrollPos) {
-            this._scrollPos = newScrollPos;
-            this._scrollTs = e.timeStamp;
-
-            if (newScrollPos > curScrollPos) {
+            if ((this._scrollPos = newScrollPos) > curScrollPos) {
                 this._updateRangeFromEnd();
             } else {
                 this._updateRangeFromStart();
@@ -380,36 +392,31 @@ class List {
 
     scrollTo(index, smooth, attemptsLeft) {
         clearTimeout(this._scrollToTimer);
+        attemptsLeft ??= SCROLL_TO_MAX_ATTEMPTS;
 
-        if (this._outerNode) {
-            const whole = index | 0;
-            const desiredScrollPos = Math.min(
-                this.scrollSize - this._availableWidgetSize,
-                this.getOffset(whole) +
-                    Math.round(this._itemSizes[whole] * (index - whole))
+        const whole = index | 0;
+        const desiredScrollPos = Math.min(
+            this.scrollSize - this._availableWidgetSize,
+            this.getOffset(whole) +
+                Math.round(this._itemSizes[whole] * (index - whole))
+        );
+
+        if (
+            desiredScrollPos !== this._scrollPos &&
+            this._outerNode &&
+            --attemptsLeft
+        ) {
+            this._outerNode.scroll({
+                [this._scrollToKey]: desiredScrollPos,
+                behavior: smooth ? "smooth" : "auto"
+            });
+
+            this._scrollToTimer = setTimeout(
+                () => this.scrollTo(index, smooth, attemptsLeft),
+                smooth
+                    ? SMOOTH_SCROLL_CHECK_TIMER
+                    : NON_SMOOTH_SCROLL_CHECK_TIMER
             );
-
-            if (desiredScrollPos !== this._scrollPos) {
-                attemptsLeft ||= 5;
-                if (
-                    !smooth ||
-                    performance.now() - this._scrollTs > SCROLL_ENDED_TIMER
-                ) {
-                    this._outerNode.scroll({
-                        [this._scrollToKey]: desiredScrollPos,
-                        behavior: smooth ? "smooth" : "instant"
-                    });
-                    attemptsLeft--;
-                }
-                if (attemptsLeft) {
-                    this._scrollToTimer = setTimeout(
-                        () => this.scrollTo(index, smooth, attemptsLeft),
-                        smooth
-                            ? SMOOTH_SCROLL_CHECK_TIMER
-                            : NON_SMOOTH_SCROLL_CHECK_TIMER
-                    );
-                }
-            }
         }
     }
 
