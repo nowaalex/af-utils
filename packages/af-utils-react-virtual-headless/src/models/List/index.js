@@ -89,7 +89,7 @@ class List {
     _overscanCount = DEFAULT_OVERSCAN_COUNT;
     _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
 
-    _outerNode = null;
+    _scrollElement = null;
 
     _itemSizes = EMPTY_TYPED_ARRAY;
     _fTree = EMPTY_TYPED_ARRAY;
@@ -194,7 +194,7 @@ class List {
 
     _updateWidgetSize = () => {
         const availableWidgetSize =
-            this._outerNode[this._sizeKey] - this._stickyOffset;
+            this._scrollElement[this._sizeKey] - this._stickyOffset;
 
         if (availableWidgetSize !== this._availableWidgetSize) {
             this._availableWidgetSize = availableWidgetSize;
@@ -214,7 +214,9 @@ class List {
         }
     }
 
-    _OuterNodeResizeObserver = new FinalResizeObserver(this._updateWidgetSize);
+    _ScrollElementResizeObserver = new FinalResizeObserver(
+        this._updateWidgetSize
+    );
 
     constructor(params) {
         // stickyOffset is included;
@@ -306,7 +308,8 @@ class List {
     handleEvent() {
         const curScrollPos = this._alignedScrollPos,
             newScrollPos =
-                this._outerNode[this._scrollKey] - this._scrollElementOffset;
+                this._scrollElement[this._scrollKey] -
+                this._scrollElementOffset;
 
         if (newScrollPos !== curScrollPos) {
             if ((this._alignedScrollPos = newScrollPos) > curScrollPos) {
@@ -322,13 +325,13 @@ class List {
         will ne used as callback, so using =>
     */
     setOuterNode = node => {
-        if (this._outerNode) {
-            this._OuterNodeResizeObserver.unobserve(this._outerNode);
-            this._outerNode.removeEventListener("scroll", this);
+        if (this._scrollElement) {
+            this._ScrollElementResizeObserver.unobserve(this._scrollElement);
+            this._scrollElement.removeEventListener("scroll", this);
         }
 
-        if ((this._outerNode = node)) {
-            this._OuterNodeResizeObserver.observe(node);
+        if ((this._scrollElement = node)) {
+            this._ScrollElementResizeObserver.observe(node);
             node.addEventListener("scroll", this, {
                 passive: true
             });
@@ -427,10 +430,10 @@ class List {
 
         if (
             desiredScrollPos !== this._alignedScrollPos &&
-            this._outerNode &&
+            this._scrollElement &&
             --attemptsLeft
         ) {
-            this._outerNode.scroll({
+            this._scrollElement.scroll({
                 [this._scrollToKey]:
                     this._scrollElementOffset + desiredScrollPos,
                 behavior: smooth ? "smooth" : "auto"
@@ -510,7 +513,7 @@ class List {
                 ? HORIZONTAL_SIZE_KEY
                 : VERTICAL_SIZE_KEY;
 
-            if (this._outerNode) {
+            if (this._scrollElement) {
                 /* TODO: Needs testing */
                 this._updateWidgetSize();
             }
