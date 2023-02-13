@@ -70,8 +70,8 @@ const SimpleHook = () => {
         <div
             className="overflow-auto h-full"
             ref={el => {
-                rows.setOuterNode(el);
-                cols.setOuterNode(el);
+                rows.setScrollElement(el);
+                cols.setScrollElement(el);
             }}
         >
             <GridItems rows={rows} cols={cols} />

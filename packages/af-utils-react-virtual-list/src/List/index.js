@@ -72,7 +72,7 @@ const List = ({
     return (
         <Component
             className={cx(baseClassName, className)}
-            ref={model.setOuterNode}
+            ref={model.setScrollElement}
             tabIndex={tabIndex}
             {...props}
         >

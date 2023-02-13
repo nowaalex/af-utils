@@ -12,7 +12,7 @@ const Item = memo(({ i, model }) => (
     </div>
 ));
 
-const SimpleHook = () => {
+const DifferentScrollElementHook = () => {
     const model = useVirtual({
         itemCount: 50000
     });
@@ -41,4 +41,4 @@ const SimpleHook = () => {
     );
 };
 
-export default SimpleHook;
+export default DifferentScrollElementHook;

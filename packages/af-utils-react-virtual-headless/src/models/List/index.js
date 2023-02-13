@@ -324,7 +324,7 @@ class List {
         Performs as destructor when null is passed
         will ne used as callback, so using =>
     */
-    setOuterNode = node => {
+    setScrollElement = node => {
         if (this._scrollElement) {
             this._ScrollElementResizeObserver.unobserve(this._scrollElement);
             this._scrollElement.removeEventListener("scroll", this);
