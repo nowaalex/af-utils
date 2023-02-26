@@ -1,9 +1,10 @@
 import {
     SIZES_HASH_MODULO,
+    Event,
+    SizeKey,
+    ScrollKey,
+    ScrollToKey,
     EVT_ALL,
-    EVT_RANGE,
-    EVT_SIZES,
-    EVT_SCROLL_SIZE,
     MAX_ITEM_COUNT,
     DEFAULT_ESTIMATED_ITEM_SIZE,
     DEFAULT_OVERSCAN_COUNT,
@@ -15,15 +16,6 @@ import call from "utils/call";
 import { build, update, getLiftingLimit } from "utils/fTree";
 import Batch from "singletons/Batch";
 import { ListInitialParams, ListRuntimeParams } from "./types";
-
-const HORIZONTAL_SCROLL_KEY = "scrollLeft";
-const VERTICAL_SCROLL_KEY = "scrollTop";
-
-const HORIZONTAL_SCROLL_TO_KEY = "left";
-const VERTICAL_SCROLL_TO_KEY = "top";
-
-const HORIZONTAL_SIZE_KEY = "offsetWidth";
-const VERTICAL_SIZE_KEY = "offsetHeight";
 
 const ITEMS_ROOM = 32;
 
@@ -47,14 +39,10 @@ const EMPTY_TYPED_ARRAY = new FTreeArray(0);
 const STICKY_HEADER_INDEX = 0;
 const STICKY_FOOTER_INDEX = 1;
 
-type SizeKey = "offsetWidth" | "offsetHeight";
-type ScrollKey = "scrollLeft" | "scrollTop";
-type ScrollToKey = "left" | "top";
-
 class List {
-    private _scrollToKey: ScrollToKey = VERTICAL_SCROLL_TO_KEY;
-    private _scrollKey: ScrollKey = VERTICAL_SCROLL_KEY;
-    private _sizeKey: SizeKey = VERTICAL_SIZE_KEY;
+    private _scrollToKey: ScrollToKey = ScrollToKey.VERTICAL;
+    private _scrollKey: ScrollKey = ScrollKey.VERTICAL;
+    private _sizeKey: SizeKey = SizeKey.VERTICAL;
 
     /*
         When using window scroll mode, some blocks may go before & after virtual container.
@@ -115,8 +103,11 @@ class List {
     private _idxToEl = new Map<number, HTMLElement>();
 
     /* header and footer; lengths are hardcoded */
-    private _stickyElements: Array<HTMLElement | null> = [null, null];
-    private _stickyElementsSizes: Array<number> = [0, 0];
+    private _stickyElements: [HTMLElement | null, HTMLElement | null] = [
+        null,
+        null
+    ];
+    private _stickyElementsSizes: [number, number] = [0, 0];
 
     private _StickyElResizeObserver = new FinalResizeObserver(
         (entries: ResizeObserverEntry[]) => {
@@ -186,7 +177,7 @@ class List {
                     update(this._fTree, lim, buff, this._fTree.length);
                     this._rawScrollSize += buff;
                     this.scrollSize += buff;
-                    this._run(EVT_SCROLL_SIZE);
+                    this._run(Event.SCROLL_SIZE);
                     if (buff < 0) {
                         /*
                         If visible item sizes reduced - holes may appear, so rerender is a must.
@@ -202,7 +193,7 @@ class List {
                 5 % 2 === 5 & 1 && 9 % 4 === 9 & 3
             */
                 this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
-                this._run(EVT_SIZES);
+                this._run(Event.SIZES);
 
                 Batch._end();
             }
@@ -229,7 +220,7 @@ class List {
             this._stickyOffset += relativeOffset;
             this._availableWidgetSize -= relativeOffset;
             this.scrollSize += relativeOffset;
-            this._run(EVT_SCROLL_SIZE);
+            this._run(Event.SCROLL_SIZE);
             this._updateRangeFromEnd();
             Batch._end();
         }
@@ -248,7 +239,7 @@ class List {
         }
     }
 
-    on(callBack: () => void, deps: Array<number>) {
+    on(callBack: () => void, deps: Array<Event>) {
         deps.forEach(evt => this._EventsList[evt].push(callBack));
         return () =>
             deps.forEach(evt =>
@@ -259,7 +250,7 @@ class List {
             );
     }
 
-    private _run(evt: number) {
+    private _run(evt: Event) {
         this._EventsList[evt].forEach(Batch._level === 0 ? call : Batch._queue);
     }
 
@@ -461,7 +452,7 @@ class List {
         if (to > this.to) {
             this.to = Math.min(this._itemCount, to + this._overscanCount);
             this.from = this._exactFrom;
-            this._run(EVT_RANGE);
+            this._run(Event.RANGE);
         }
     }
 
@@ -471,7 +462,7 @@ class List {
         if (from < this.from) {
             this.from = Math.max(0, from - this._overscanCount);
             this.to = this._exactTo;
-            this._run(EVT_RANGE);
+            this._run(Event.RANGE);
         }
     }
 
@@ -537,17 +528,15 @@ class List {
             const curRowHeighsLength = oldItemSizes.length;
 
             if (itemCount > curRowHeighsLength) {
-                this._itemSizes = new FTreeArray(
+                (this._itemSizes = new FTreeArray(
                     Math.min(itemCount + ITEMS_ROOM, MAX_ITEM_COUNT)
-                );
-                this._itemSizes.set(oldItemSizes);
+                )).set(oldItemSizes);
 
                 this._fTree = /*@__NOINLINE__*/ build(
                     this._itemSizes.fill(
                         this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE,
                         curRowHeighsLength
-                    ),
-                    FTreeArray
+                    )
                 );
             }
 
@@ -555,7 +544,7 @@ class List {
                 (this._rawScrollSize = this.getOffset(itemCount)) +
                 this._stickyOffset;
 
-            this._run(EVT_SCROLL_SIZE);
+            this._run(Event.SCROLL_SIZE);
 
             if (this.to > itemCount) {
                 // Forcing shift range to end
@@ -567,14 +556,12 @@ class List {
 
         if (horizontal !== undefined && this.horizontal !== horizontal) {
             this._scrollToKey = (this.horizontal = horizontal)
-                ? HORIZONTAL_SCROLL_TO_KEY
-                : VERTICAL_SCROLL_TO_KEY;
+                ? ScrollToKey.HORIZONTAL
+                : ScrollToKey.VERTICAL;
             this._scrollKey = horizontal
-                ? HORIZONTAL_SCROLL_KEY
-                : VERTICAL_SCROLL_KEY;
-            this._sizeKey = horizontal
-                ? HORIZONTAL_SIZE_KEY
-                : VERTICAL_SIZE_KEY;
+                ? ScrollKey.HORIZONTAL_
+                : ScrollKey.VERTICAL;
+            this._sizeKey = horizontal ? SizeKey.HORIZONTAL : SizeKey.VERTICAL;
 
             if (this._scrollElement) {
                 /* TODO: Needs testing */

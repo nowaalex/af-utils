@@ -1,11 +1,8 @@
 import FTreeArray from "models/FTreeArray";
 
-export const build = (
-    sourceArray: FTreeArray,
-    ArrayConstructor: typeof FTreeArray
-) => {
+export const build = (sourceArray: FTreeArray) => {
     const fTreeLength = sourceArray.length + 1;
-    const fTree = new ArrayConstructor(fTreeLength);
+    const fTree = new FTreeArray(fTreeLength);
 
     fTree.set(sourceArray, 1);
 

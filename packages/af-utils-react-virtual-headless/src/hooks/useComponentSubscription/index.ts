@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { EVT_ALL, EVT_RANGE, EVT_SCROLL_SIZE } from "constants/";
+import { EVT_ALL, Event } from "constants/";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 import List from "models/List";
 
-const useComponentSubscription = (model: List, events: Array<number>) => {
+const useComponentSubscription = (model: List, events: Array<Event>) => {
     events ||= EVT_ALL;
 
     // szudzik pair
@@ -15,9 +15,9 @@ const useComponentSubscription = (model: List, events: Array<number>) => {
                     (acc, e) =>
                         acc +
                         "_" +
-                        (e === EVT_RANGE
+                        (e === Event.RANGE
                             ? model.to ** 2 + model.from
-                            : e === EVT_SCROLL_SIZE
+                            : e === Event.SCROLL_SIZE
                             ? model.scrollSize
                             : model.sizesHash),
                     ""

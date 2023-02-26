@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import List from "models/List";
+import { Event } from "constants/";
 
 const useSubscription = (
     model: List,
-    events: Array<number>,
+    events: Array<Event>,
     callBack: () => void
 ) =>
     useEffect(() => {

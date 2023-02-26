@@ -10,8 +10,25 @@ export const SIZES_HASH_MODULO = 2 ** 10 - 1;
 */
 export const MAX_ITEM_COUNT = 0x7fffffff;
 
-export const EVT_RANGE = 0;
-export const EVT_SCROLL_SIZE = 1;
-export const EVT_SIZES = 2;
+export const enum Event {
+    RANGE = 0,
+    SCROLL_SIZE = 1,
+    SIZES = 2
+}
 
-export const EVT_ALL = [EVT_RANGE, EVT_SCROLL_SIZE, EVT_SIZES];
+export const enum SizeKey {
+    HORIZONTAL = "offsetWidth",
+    VERTICAL = "offsetHeight"
+}
+
+export const enum ScrollKey {
+    HORIZONTAL_ = "scrollLeft",
+    VERTICAL = "scrollTop"
+}
+
+export const enum ScrollToKey {
+    HORIZONTAL = "left",
+    VERTICAL = "top"
+}
+
+export const EVT_ALL = [Event.RANGE, Event.SCROLL_SIZE, Event.SIZES];

@@ -1,10 +1,11 @@
 import useComponentSubscription from "hooks/useComponentSubscription";
 import List from "models/List";
+import { Event } from "constants/";
 import type { ReactNode } from "react";
 
 interface SubscriptionProps {
     model: List;
-    events: Array<number>;
+    events: Array<Event>;
     children: () => ReactNode;
 }
 
