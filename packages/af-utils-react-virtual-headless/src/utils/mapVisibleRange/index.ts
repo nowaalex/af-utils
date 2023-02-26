@@ -1,4 +1,11 @@
-const mapVisibleRange = (model, cb, countOffset) => {
+import List from "models/List";
+import type { ReactNode } from "react";
+
+const mapVisibleRange = (
+    model: List,
+    cb: (index: number, delta: number) => ReactNode,
+    countOffset?: boolean
+) => {
     const result = [];
     let { from, to } = model;
 

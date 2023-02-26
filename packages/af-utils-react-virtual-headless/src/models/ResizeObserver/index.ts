@@ -5,6 +5,6 @@ const FinalResizeObserver =
               unobserve() {}
               disconnect() {}
           }
-        : ResizeObserver;
+        : window.ResizeObserver;
 
 export default FinalResizeObserver;

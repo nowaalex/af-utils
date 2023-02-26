@@ -1,4 +1,5 @@
 import babel from "@rollup/plugin-babel";
+import typescript from "@rollup/plugin-typescript";
 import commonjs from "@rollup/plugin-commonjs";
 import exportBundleSize from "@rollup/plugin-export-bundle-size";
 import replace from "@rollup/plugin-replace";
@@ -7,6 +8,7 @@ import terser from "@rollup/plugin-terser";
 const OUTPUT_DIR = "lib";
 
 const BASE_PLUGINS = [
+    typescript(),
     terser({
         mangle: {
             properties: {
@@ -31,12 +33,15 @@ const BASE_PLUGINS = [
             preserve_annotations: true
         }
     }),
-    babel({ babelHelpers: "runtime" }),
+    babel({
+        babelHelpers: "runtime",
+        extensions: [".js", ".jsx", ".ts", ".tsx"]
+    }),
     commonjs()
 ];
 
 export default [true, false].map(isServer => ({
-    input: "src/index.js",
+    input: "src/index.ts",
     plugins: [
         ...BASE_PLUGINS,
         exportBundleSize({ dir: OUTPUT_DIR }),

@@ -1,6 +1,6 @@
-import call from "src/utils/call";
+import call from "utils/call";
 
-const Queue = new Set();
+const Queue = new Set<() => void>();
 
 export default {
     _level: 0,
@@ -13,5 +13,5 @@ export default {
             Queue.clear();
         }
     },
-    _queue: fn => Queue.add(fn)
+    _queue: (fn: () => void) => Queue.add(fn)
 };

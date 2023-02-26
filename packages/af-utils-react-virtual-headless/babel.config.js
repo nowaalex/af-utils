@@ -1,5 +1,4 @@
 const plugins = [
-    ["module-resolver", { root: ["./"] }],
     "@babel/plugin-transform-runtime",
     [
         "transform-react-remove-prop-types",
@@ -10,7 +9,6 @@ const plugins = [
 ];
 
 const presets = [
-    ["@babel/preset-react", { runtime: "automatic" }],
     [
         "@babel/preset-env",
         {

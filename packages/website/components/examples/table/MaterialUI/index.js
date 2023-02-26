@@ -53,15 +53,27 @@ const SimpleTable = () => {
         you must specify height: 100% by adding style/className.
     */
     return (
-        <MuiTableContainer className="h-full not-prose">
-            <Table
-                className="h-full"
-                model={model}
-                components={components}
-                getRowData={getRowData}
-                columns={columns}
-            />
-        </MuiTableContainer>
+        <div className="h-full not-prose flex flex-col gap-4">
+            <form
+                className="shrink-0 flex gap-4 p-2 bg-gray-200"
+                onSubmit={e => {
+                    e.preventDefault();
+                    model.scrollTo(+e.currentTarget.idx.value, true);
+                }}
+            >
+                <input type="number" min={0} max={99999} name="idx" />
+                <button type="submit">Scroll</button>
+            </form>
+            <MuiTableContainer className="grow">
+                <Table
+                    className="h-full"
+                    model={model}
+                    components={components}
+                    getRowData={getRowData}
+                    columns={columns}
+                />
+            </MuiTableContainer>
+        </div>
     );
 };
 

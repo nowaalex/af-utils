@@ -1,6 +1,11 @@
 import { useEffect } from "react";
+import List from "models/List";
 
-const useSubscription = (model, events, callBack) =>
+const useSubscription = (
+    model: List,
+    events: Array<number>,
+    callBack: () => void
+) =>
     useEffect(() => {
         if (callBack) {
             callBack();

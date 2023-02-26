@@ -14,29 +14,34 @@ const Item = memo(({ i, model }) => (
 
 const DifferentScrollElementHook = () => {
     const model = useVirtual({
-        itemCount: 50000
+        itemCount: 50000,
+        overscanCount: 0
     });
 
     return (
         <div className="h-full overflow-auto" ref={model.setScrollElement}>
-            <Subscription model={model}>
-                {() => {
-                    const fromOffset = model.getOffset(model.from);
+            <div className="py-4">
+                <div className="py-4 min-h-[20vh]">Some offset</div>
+                <Subscription model={model}>
+                    {() => {
+                        const fromOffset = model.getOffset(model.from);
 
-                    return (
-                        <div
-                            style={{
-                                height: model.scrollSize - fromOffset,
-                                marginTop: fromOffset
-                            }}
-                        >
-                            {mapVisibleRange(model, i => (
-                                <Item key={i} model={model} i={i} />
-                            ))}
-                        </div>
-                    );
-                }}
-            </Subscription>
+                        return (
+                            <div
+                                ref={model.setInitialElement}
+                                style={{
+                                    height: model.scrollSize - fromOffset,
+                                    marginTop: fromOffset
+                                }}
+                            >
+                                {mapVisibleRange(model, i => (
+                                    <Item key={i} model={model} i={i} />
+                                ))}
+                            </div>
+                        );
+                    }}
+                </Subscription>
+            </div>
         </div>
     );
 };

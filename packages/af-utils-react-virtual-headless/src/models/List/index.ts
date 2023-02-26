@@ -8,12 +8,13 @@ import {
     DEFAULT_ESTIMATED_ITEM_SIZE,
     DEFAULT_OVERSCAN_COUNT,
     DEFAULT_ESTIMATED_WIDGET_SIZE
-} from "src/constants";
-
-import FinalResizeObserver from "../ResizeObserver";
-import call from "src/utils/call";
-import { build, update, getLiftingLimit } from "src/utils/fTree";
-import Batch from "src/singletons/Batch";
+} from "constants/";
+import FTreeArray from "models/FTreeArray";
+import FinalResizeObserver from "models/ResizeObserver";
+import call from "utils/call";
+import { build, update, getLiftingLimit } from "utils/fTree";
+import Batch from "singletons/Batch";
+import { ListInitialParams, ListRuntimeParams } from "./types";
 
 const HORIZONTAL_SCROLL_KEY = "scrollLeft";
 const VERTICAL_SCROLL_KEY = "scrollTop";
@@ -23,8 +24,6 @@ const VERTICAL_SCROLL_TO_KEY = "top";
 
 const HORIZONTAL_SIZE_KEY = "offsetWidth";
 const VERTICAL_SIZE_KEY = "offsetHeight";
-
-const TypedCache = Uint32Array;
 
 const ITEMS_ROOM = 32;
 
@@ -43,16 +42,19 @@ const SCROLL_TO_MAX_ATTEMPTS = 16;
     It is much more efficient, than calling updateItemHeight N times.
 */
 
-const EMPTY_TYPED_ARRAY = new TypedCache(0);
+const EMPTY_TYPED_ARRAY = new FTreeArray(0);
 
 const STICKY_HEADER_INDEX = 0;
 const STICKY_FOOTER_INDEX = 1;
-class List {
-    horizontal = false;
 
-    _scrollToKey = VERTICAL_SCROLL_TO_KEY;
-    _scrollKey = VERTICAL_SCROLL_KEY;
-    _sizeKey = VERTICAL_SIZE_KEY;
+type SizeKey = "offsetWidth" | "offsetHeight";
+type ScrollKey = "scrollLeft" | "scrollTop";
+type ScrollToKey = "left" | "top";
+
+class List {
+    private _scrollToKey: ScrollToKey = VERTICAL_SCROLL_TO_KEY;
+    private _scrollKey: ScrollKey = VERTICAL_SCROLL_KEY;
+    private _sizeKey: SizeKey = VERTICAL_SIZE_KEY;
 
     /*
         When using window scroll mode, some blocks may go before & after virtual container.
@@ -71,7 +73,7 @@ class List {
 
         Actually any div may be used instead of window, but offset should be calculated.
     */
-    _scrollElementOffset = 0;
+    private _scrollElementOffset = 0;
 
     /*
         scrollElement[ scroll[ Top | Left ] ] - _scrollElementOffset
@@ -80,121 +82,140 @@ class List {
         and they don't know about _scrollElementOffset,
         so it useful to store cached value for them
     */
-    _alignedScrollPos = 0;
+    private _alignedScrollPos = 0;
 
-    _rawScrollSize = 0;
-    _stickyOffset = 0;
-    _itemCount = 0;
-    _scrollToTimer = 0;
-    _overscanCount = DEFAULT_OVERSCAN_COUNT;
-    _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
+    private _rawScrollSize = 0;
+    private _stickyOffset = 0;
+    private _itemCount = 0;
+    private _availableWidgetSize = 0;
+    private _scrollToTimer = 0;
+    private _overscanCount = DEFAULT_OVERSCAN_COUNT;
+    private _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
 
-    _scrollElement = null;
+    private _scrollElement: HTMLElement | null = null;
+    private _initialElement: HTMLElement | null = null;
 
-    _itemSizes = EMPTY_TYPED_ARRAY;
-    _fTree = EMPTY_TYPED_ARRAY;
+    private _itemSizes = EMPTY_TYPED_ARRAY;
+    private _fTree = EMPTY_TYPED_ARRAY;
 
     /*
         most significant bit of this._itemCount;
         caching it to avoid Math.clz32 calculations on every getIndex call
     */
-    _msb = 0;
+    private _msb = 0;
+
+    horizontal = false;
 
     scrollSize = 0;
     from = 0;
     to = 0;
     sizesHash = 0;
 
-    _elToIdx = new Map();
-    _idxToEl = new Map();
+    private _elToIdx = new Map<HTMLElement, number>();
+    private _idxToEl = new Map<number, HTMLElement>();
 
     /* header and footer; lengths are hardcoded */
-    _stickyElements = [null, null];
-    _stickyElementsSizes = [0, 0];
+    private _stickyElements: Array<HTMLElement | null> = [null, null];
+    private _stickyElementsSizes: Array<number> = [0, 0];
 
-    _StickyElResizeObserver = new FinalResizeObserver(entries => {
-        let index = 0,
-            diff = 0,
-            buff = 0;
+    private _StickyElResizeObserver = new FinalResizeObserver(
+        (entries: ResizeObserverEntry[]) => {
+            let index = 0,
+                diff = 0,
+                buff = 0;
 
-        for (const { target } of entries) {
-            index = this._stickyElements.indexOf(target);
-            if (index !== -1) {
-                diff = target[this._sizeKey] - this._stickyElementsSizes[index];
-                if (diff) {
-                    this._stickyElementsSizes[index] += diff;
-                    buff += diff;
+            for (const entry of entries) {
+                const target = entry.target as HTMLElement;
+                index = this._stickyElements.indexOf(target);
+                if (index !== -1) {
+                    diff =
+                        target[this._sizeKey] -
+                        this._stickyElementsSizes[index];
+                    if (diff) {
+                        this._stickyElementsSizes[index] += diff;
+                        buff += diff;
+                    }
                 }
             }
+
+            this._updateStickyOffset(buff);
         }
+    );
 
-        this._updateStickyOffset(buff);
-    });
-
-    _ElResizeObserver = new FinalResizeObserver(entries => {
-        let index = 0,
-            diff = 0,
-            buff = 0,
-            wasAtLeastOneSizeChanged = false,
-            lim = /*@__NOINLINE__*/ getLiftingLimit(
-                this._fTree,
-                this.from + 1,
-                this.to
-            );
-
-        for (const { target } of entries) {
-            index = this._elToIdx.get(target);
+    private _ElResizeObserver = new FinalResizeObserver(
+        (entries: ResizeObserverEntry[]) => {
+            let index = 0,
+                diff = 0,
+                buff = 0,
+                wasAtLeastOneSizeChanged = false,
+                lim = /*@__NOINLINE__*/ getLiftingLimit(
+                    this._fTree,
+                    this.from + 1,
+                    this.to
+                );
 
             /*
+            TODO: check perf of borderBoxSize vs offsetWidth/offsetHeight
+        */
+            for (const entry of entries) {
+                const target = entry.target as HTMLElement;
+
+                // cannot be undefined, because element is being added to this map before getting into ResizeObserver
+                index = this._elToIdx.get(target) as number;
+
+                /*
                 ResizeObserver may give us elements, which are not in visible range => will be unmounted soon.
                 Should not take them into account.
                 This is done for performance + updateItemHeight hack would not work without it
             */
-            if (index < lim) {
-                diff = target[this._sizeKey] - this._itemSizes[index];
-                if (diff) {
-                    wasAtLeastOneSizeChanged = true;
-                    this._itemSizes[index] += diff;
-                    buff += diff;
-                    update(this._fTree, index + 1, diff, lim);
+                if (index < lim) {
+                    diff = target[this._sizeKey] - this._itemSizes[index];
+                    if (diff) {
+                        wasAtLeastOneSizeChanged = true;
+                        this._itemSizes[index] += diff;
+                        buff += diff;
+                        update(this._fTree, index + 1, diff, lim);
+                    }
                 }
             }
-        }
 
-        if (wasAtLeastOneSizeChanged) {
-            Batch._start();
+            if (wasAtLeastOneSizeChanged) {
+                Batch._start();
 
-            if (buff !== 0) {
-                update(this._fTree, lim, buff, this._fTree.length);
-                this._rawScrollSize += buff;
-                this.scrollSize += buff;
-                this._run(EVT_SCROLL_SIZE);
-                if (buff < 0) {
-                    /*
+                if (buff !== 0) {
+                    update(this._fTree, lim, buff, this._fTree.length);
+                    this._rawScrollSize += buff;
+                    this.scrollSize += buff;
+                    this._run(EVT_SCROLL_SIZE);
+                    if (buff < 0) {
+                        /*
                         If visible item sizes reduced - holes may appear, so rerender is a must.
                         No holes possible if item sizes increased => no need to rerender.
                     */
-                    this._updateRangeFromEnd();
+                        this._updateRangeFromEnd();
+                    }
                 }
-            }
 
-            /*
+                /*
                 Modulo is used to prevent sizesHash from growing too much.
                 Using bitwise hack to optimize modulo.
                 5 % 2 === 5 & 1 && 9 % 4 === 9 & 3
             */
-            this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
-            this._run(EVT_SIZES);
+                this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
+                this._run(EVT_SIZES);
 
-            Batch._end();
+                Batch._end();
+            }
         }
-    });
+    );
 
-    _EventsList = EVT_ALL.map(() => []);
+    private _EventsList: Array<Array<() => void>> = EVT_ALL.map(() => []);
 
-    _updateWidgetSize = () => {
+    private _updateWidgetSize = () => {
+        // all null checks are already done
+        const scrollEl = this._scrollElement as HTMLElement;
         const availableWidgetSize =
-            this._scrollElement[this._sizeKey] - this._stickyOffset;
+            scrollEl[this._sizeKey] - this._stickyOffset;
 
         if (availableWidgetSize !== this._availableWidgetSize) {
             this._availableWidgetSize = availableWidgetSize;
@@ -202,30 +223,32 @@ class List {
         }
     };
 
-    _updateStickyOffset(v) {
-        if (v) {
+    private _updateStickyOffset(relativeOffset: number) {
+        if (relativeOffset) {
             Batch._start();
-            this._stickyOffset += v;
-            this._availableWidgetSize -= v;
-            this.scrollSize += v;
+            this._stickyOffset += relativeOffset;
+            this._availableWidgetSize -= relativeOffset;
+            this.scrollSize += relativeOffset;
             this._run(EVT_SCROLL_SIZE);
             this._updateRangeFromEnd();
             Batch._end();
         }
     }
 
-    _ScrollElementResizeObserver = new FinalResizeObserver(
+    private _ScrollElementResizeObserver = new FinalResizeObserver(
         this._updateWidgetSize
     );
 
-    constructor(params) {
+    constructor(params?: ListInitialParams) {
         // stickyOffset is included;
-        this._availableWidgetSize =
-            params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
-        this.set(params);
+        if (params) {
+            this._availableWidgetSize =
+                params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
+            this.set(params);
+        }
     }
 
-    on(callBack, deps) {
+    on(callBack: () => void, deps: Array<number>) {
         deps.forEach(evt => this._EventsList[evt].push(callBack));
         return () =>
             deps.forEach(evt =>
@@ -236,11 +259,11 @@ class List {
             );
     }
 
-    _run(evt) {
+    private _run(evt: number) {
         this._EventsList[evt].forEach(Batch._level === 0 ? call : Batch._queue);
     }
 
-    getIndex(offset) {
+    getIndex(offset: number) {
         if (offset <= 0) {
             return 0;
         }
@@ -268,7 +291,7 @@ class List {
         return index;
     }
 
-    getOffset(index) {
+    getOffset(index: number) {
         if (process.env.NODE_ENV !== "production") {
             if (index > this._itemCount) {
                 throw new Error("index must not be > itemCount");
@@ -284,7 +307,7 @@ class List {
         return result;
     }
 
-    getSize(itemIndex) {
+    getSize(itemIndex: number) {
         if (process.env.NODE_ENV !== "production") {
             if (itemIndex >= this._itemSizes.length) {
                 throw new Error("itemIndex must be < itemCount in getSize");
@@ -306,10 +329,11 @@ class List {
         "scroll" is the only event here, so switch/case is not needed.
     */
     handleEvent() {
+        // scrollEl may not be null here, because handleEvent is attached directly to it.
+        const scrollEl = this._scrollElement as HTMLElement;
         const curScrollPos = this._alignedScrollPos,
             newScrollPos =
-                this._scrollElement[this._scrollKey] -
-                this._scrollElementOffset;
+                scrollEl[this._scrollKey] - this._scrollElementOffset;
 
         if (newScrollPos !== curScrollPos) {
             if ((this._alignedScrollPos = newScrollPos) > curScrollPos) {
@@ -324,17 +348,20 @@ class List {
         Performs as destructor when null is passed
         will ne used as callback, so using =>
     */
-    setScrollElement = node => {
+    setScrollElement = (element: HTMLElement | null) => {
         if (this._scrollElement) {
             this._ScrollElementResizeObserver.unobserve(this._scrollElement);
             this._scrollElement.removeEventListener("scroll", this);
         }
 
-        if ((this._scrollElement = node)) {
-            this._ScrollElementResizeObserver.observe(node);
-            node.addEventListener("scroll", this, {
+        if ((this._scrollElement = element)) {
+            this._ScrollElementResizeObserver.observe(element);
+            element.addEventListener("scroll", this, {
                 passive: true
             });
+            if (this._initialElement) {
+                this.recalculateOffset();
+            }
         } else {
             this._ElResizeObserver.disconnect();
             this._StickyElResizeObserver.disconnect();
@@ -342,7 +369,38 @@ class List {
         }
     };
 
-    el(i, node) {
+    setInitialElement = (element: HTMLElement | null) => {
+        this._initialElement = element;
+
+        if (element && this._scrollElement) {
+            this.recalculateOffset();
+        }
+    };
+
+    recalculateOffset() {
+        let res = 0;
+        console.log(this._initialElement, this._scrollElement);
+
+        /* TODO: benchmark with getBoundingClientRect */
+        if (this._scrollElement) {
+            for (
+                let el = this._initialElement;
+                el && this._scrollElement.contains(el);
+                el = el.offsetParent as HTMLElement
+            ) {
+                res += el.offsetTop;
+                console.log("RES", el, res);
+            }
+
+            if (res !== this._scrollElementOffset) {
+                this._scrollElementOffset = res;
+
+                this.handleEvent();
+            }
+        }
+    }
+
+    el(i: number, node: HTMLElement) {
         const oldNode = this._idxToEl.get(i);
 
         if (oldNode) {
@@ -358,7 +416,7 @@ class List {
         }
     }
 
-    _stickyEl(i, node) {
+    private _stickyEl(i: number, node: HTMLElement) {
         const oldNode = this._stickyElements[i];
 
         if (oldNode) {
@@ -375,19 +433,19 @@ class List {
         }
     }
 
-    setStickyHeader(node) {
+    setStickyHeader(node: HTMLElement) {
         this._stickyEl(STICKY_HEADER_INDEX, node);
     }
 
-    setStickyFooter(node) {
+    setStickyFooter(node: HTMLElement) {
         this._stickyEl(STICKY_FOOTER_INDEX, node);
     }
 
-    get _exactFrom() {
+    private get _exactFrom() {
         return this.getIndex(this._alignedScrollPos);
     }
 
-    get _exactTo() {
+    private get _exactTo() {
         return (
             this._itemCount &&
             1 +
@@ -397,7 +455,7 @@ class List {
         );
     }
 
-    _updateRangeFromEnd() {
+    private _updateRangeFromEnd() {
         const to = this._exactTo;
 
         if (to > this.to) {
@@ -407,7 +465,7 @@ class List {
         }
     }
 
-    _updateRangeFromStart() {
+    private _updateRangeFromStart() {
         const from = this._exactFrom;
 
         if (from < this.from) {
@@ -417,7 +475,7 @@ class List {
         }
     }
 
-    scrollTo(index, smooth, attemptsLeft) {
+    scrollTo(index: number, smooth?: boolean, attemptsLeft?: number) {
         clearTimeout(this._scrollToTimer);
         attemptsLeft ??= SCROLL_TO_MAX_ATTEMPTS;
 
@@ -439,7 +497,7 @@ class List {
                 behavior: smooth ? "smooth" : "auto"
             });
 
-            this._scrollToTimer = setTimeout(
+            this._scrollToTimer = window.setTimeout(
                 () => this.scrollTo(index, smooth, attemptsLeft),
                 smooth
                     ? SMOOTH_SCROLL_CHECK_TIMER
@@ -448,7 +506,12 @@ class List {
         }
     }
 
-    set({ overscanCount, horizontal, itemCount, estimatedItemSize }) {
+    set({
+        overscanCount,
+        horizontal,
+        itemCount,
+        estimatedItemSize
+    }: ListRuntimeParams) {
         Batch._start();
 
         if (estimatedItemSize) {
@@ -474,7 +537,7 @@ class List {
             const curRowHeighsLength = oldItemSizes.length;
 
             if (itemCount > curRowHeighsLength) {
-                this._itemSizes = new TypedCache(
+                this._itemSizes = new FTreeArray(
                     Math.min(itemCount + ITEMS_ROOM, MAX_ITEM_COUNT)
                 );
                 this._itemSizes.set(oldItemSizes);
@@ -484,7 +547,7 @@ class List {
                         this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE,
                         curRowHeighsLength
                     ),
-                    TypedCache
+                    FTreeArray
                 );
             }
 

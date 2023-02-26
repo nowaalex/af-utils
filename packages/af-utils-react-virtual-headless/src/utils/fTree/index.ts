@@ -1,4 +1,9 @@
-export const build = (sourceArray, ArrayConstructor) => {
+import FTreeArray from "models/FTreeArray";
+
+export const build = (
+    sourceArray: FTreeArray,
+    ArrayConstructor: typeof FTreeArray
+) => {
     const fTreeLength = sourceArray.length + 1;
     const fTree = new ArrayConstructor(fTreeLength);
 
@@ -14,13 +19,22 @@ export const build = (sourceArray, ArrayConstructor) => {
     return fTree;
 };
 
-export const update = (fTree, i, delta, limitTreeLiftingIndex) => {
+export const update = (
+    fTree: FTreeArray,
+    i: number,
+    delta: number,
+    limitTreeLiftingIndex: number
+) => {
     for (; i < limitTreeLiftingIndex; i += i & -i) {
         fTree[i] += delta;
     }
 };
 
-export const getLiftingLimit = (fTree, from, to) => {
+export const getLiftingLimit = (
+    fTree: FTreeArray,
+    from: number,
+    to: number
+) => {
     for (; from < to; from += from & -from);
     return Math.min(from, fTree.length);
 };
