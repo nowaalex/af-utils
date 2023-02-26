@@ -232,6 +232,7 @@ class List {
 
     constructor(params?: ListInitialParams) {
         // stickyOffset is included;
+
         if (params) {
             this._availableWidgetSize =
                 params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;

@@ -9,6 +9,7 @@
         "declaration": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
+        "alwaysStrict": true,
         "declarationMap": true
     }
 }

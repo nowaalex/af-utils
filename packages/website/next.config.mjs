@@ -112,9 +112,6 @@ const config = withBundleAnalyzer(
             }
             return config;
         },
-        experimental: {
-            appDir: true
-        },
         async redirects() {
             return [
                 {

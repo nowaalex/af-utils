@@ -46,7 +46,7 @@ const table = components.reduce(
                 .map(v => EXCEPTIONS[v] || startCase(v))
                 .join(" / "),
             Component: dynamic(() => requireComponent(v.path), {
-                suspense: true
+                ssr: false
             }),
             Code: dynamic(
                 () =>
@@ -60,7 +60,7 @@ const table = components.reduce(
                             />
                         )
                     })),
-                { suspense: true }
+                { ssr: false }
             ),
             meta: null,
             Description: null
@@ -75,7 +75,7 @@ requireDescription
     .map(getPathInfo)
     .forEach(v => {
         table[v.short].Description = dynamic(() => requireDescription(v.path), {
-            suspense: true
+            ssr: false
         });
     });
 
