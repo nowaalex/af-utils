@@ -1,10 +1,10 @@
-export interface ListRuntimeParams {
+export type ListRuntimeParams = {
     overscanCount?: number;
     horizontal?: boolean;
     itemCount?: number;
     estimatedItemSize?: number;
-}
+};
 
-export interface ListInitialParams extends ListRuntimeParams {
+export type ListInitialParams = ListRuntimeParams & {
     estimatedWidgetSize?: number;
-}
+};
