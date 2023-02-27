@@ -19,28 +19,37 @@ const DifferentScrollElementHook = () => {
     });
 
     return (
-        <div className="h-full overflow-auto" ref={model.setScrollElement}>
-            <div className="py-4">
-                <div className="py-4 min-h-[20vh]">Some offset</div>
-                <Subscription model={model}>
-                    {() => {
-                        const fromOffset = model.getOffset(model.from);
+        <div
+            className="h-full overflow-auto contain-strict"
+            ref={model.setScrollElement}
+        >
+            <div className="py-4 min-h-[20vh] bg-slate-100 text-center">
+                Some offset
+            </div>
+            <div>
+                <div className="py-4 min-h-[10vh] bg-slate-300 text-center">
+                    Some offset 2
+                </div>
+                <div ref={model.setInitialElement}>
+                    <Subscription model={model}>
+                        {() => {
+                            const fromOffset = model.getOffset(model.from);
 
-                        return (
-                            <div
-                                ref={model.setInitialElement}
-                                style={{
-                                    height: model.scrollSize - fromOffset,
-                                    marginTop: fromOffset
-                                }}
-                            >
-                                {mapVisibleRange(model, i => (
-                                    <Item key={i} model={model} i={i} />
-                                ))}
-                            </div>
-                        );
-                    }}
-                </Subscription>
+                            return (
+                                <div
+                                    style={{
+                                        height: model.scrollSize - fromOffset,
+                                        marginTop: fromOffset
+                                    }}
+                                >
+                                    {mapVisibleRange(model, i => (
+                                        <Item key={i} model={model} i={i} />
+                                    ))}
+                                </div>
+                            );
+                        }}
+                    </Subscription>
+                </div>
             </div>
         </div>
     );

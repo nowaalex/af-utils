@@ -16,14 +16,23 @@ export const enum Event {
     SIZES = 2
 }
 
-export const enum SizeKey {
+export const enum ScrollElementSizeKey {
+    WINDOW_HORIZONTAL = "innerWidth",
+    WINDOW_VERTICAL = "innerHeight",
+    ELEMENT_HORIZONTAL = "offsetWidth",
+    ELEMENT_VERTICAL = "offsetHeight"
+}
+
+export const enum ItemSizeKey {
     HORIZONTAL = "offsetWidth",
     VERTICAL = "offsetHeight"
 }
 
 export const enum ScrollKey {
-    HORIZONTAL_ = "scrollLeft",
-    VERTICAL = "scrollTop"
+    WINDOW_HORIZONTAL = "scrollX",
+    WINDOW_VERTICAL = "scrollY",
+    ELEMENT_HORIZONTAL = "scrollLeft",
+    ELEMENT_VERTICAL = "scrollTop"
 }
 
 export const enum ScrollToKey {

@@ -1,7 +1,8 @@
 import {
     SIZES_HASH_MODULO,
     Event,
-    SizeKey,
+    ScrollElementSizeKey,
+    ItemSizeKey,
     ScrollKey,
     ScrollToKey,
     EVT_ALL,
@@ -14,8 +15,11 @@ import FTreeArray from "models/FTreeArray";
 import FinalResizeObserver from "models/ResizeObserver";
 import call from "utils/call";
 import { build, update, getLiftingLimit } from "utils/fTree";
+import getDistanceBetween from "utils/getDistanceBetween";
 import Batch from "singletons/Batch";
 import { ListInitialParams, ListRuntimeParams } from "./types";
+
+type ScrollElement = HTMLElement & Window;
 
 const ITEMS_ROOM = 32;
 
@@ -39,10 +43,30 @@ const EMPTY_TYPED_ARRAY = new FTreeArray(0);
 const STICKY_HEADER_INDEX = 0;
 const STICKY_FOOTER_INDEX = 1;
 
+/* Creating specially-indexed arrays to avoid long switch-cases */
+const ScrollElementSizeKeysOrdered = [
+    ScrollElementSizeKey.ELEMENT_VERTICAL,
+    ScrollElementSizeKey.ELEMENT_HORIZONTAL,
+    ScrollElementSizeKey.WINDOW_VERTICAL,
+    ScrollElementSizeKey.WINDOW_HORIZONTAL
+];
+
+const ScrollKeysOrdered = [
+    ScrollKey.ELEMENT_VERTICAL,
+    ScrollKey.ELEMENT_HORIZONTAL,
+    ScrollKey.WINDOW_VERTICAL,
+    ScrollKey.WINDOW_HORIZONTAL
+];
+
+const ItemSizeKeysOrdered = [ItemSizeKey.VERTICAL, ItemSizeKey.HORIZONTAL];
+
+const ScrollToKeysOrdered = [ScrollToKey.VERTICAL, ScrollToKey.HORIZONTAL];
 class List {
-    private _scrollToKey: ScrollToKey = ScrollToKey.VERTICAL;
-    private _scrollKey: ScrollKey = ScrollKey.VERTICAL;
-    private _sizeKey: SizeKey = SizeKey.VERTICAL;
+    private _scrollElementSizeKey: ScrollElementSizeKey =
+        ScrollElementSizeKeysOrdered[0];
+    private _scrollKey: ScrollKey = ScrollKeysOrdered[0];
+    private _sizeKey: ItemSizeKey = ItemSizeKeysOrdered[0];
+    private _scrollToKey: ScrollToKey = ScrollToKeysOrdered[0];
 
     /*
         When using window scroll mode, some blocks may go before & after virtual container.
@@ -80,7 +104,7 @@ class List {
     private _overscanCount = DEFAULT_OVERSCAN_COUNT;
     private _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
 
-    private _scrollElement: HTMLElement | null = null;
+    private _scrollElement: ScrollElement | null = null;
     private _initialElement: HTMLElement | null = null;
 
     private _itemSizes = EMPTY_TYPED_ARRAY;
@@ -204,9 +228,9 @@ class List {
 
     private _updateWidgetSize = () => {
         // all null checks are already done
-        const scrollEl = this._scrollElement as HTMLElement;
+        const scrollEl = this._scrollElement as ScrollElement;
         const availableWidgetSize =
-            scrollEl[this._sizeKey] - this._stickyOffset;
+            scrollEl[this._scrollElementSizeKey] - this._stickyOffset;
 
         if (availableWidgetSize !== this._availableWidgetSize) {
             this._availableWidgetSize = availableWidgetSize;
@@ -234,6 +258,8 @@ class List {
         // stickyOffset is included;
 
         if (params) {
+            this._scrollElementOffset =
+                params.estimatedScrollElementOffset || 0;
             this._availableWidgetSize =
                 params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
             this.set(params);
@@ -322,7 +348,7 @@ class List {
     */
     handleEvent() {
         // scrollEl may not be null here, because handleEvent is attached directly to it.
-        const scrollEl = this._scrollElement as HTMLElement;
+        const scrollEl = this._scrollElement as ScrollElement;
         const curScrollPos = this._alignedScrollPos,
             newScrollPos =
                 scrollEl[this._scrollKey] - this._scrollElementOffset;
@@ -340,20 +366,25 @@ class List {
         Performs as destructor when null is passed
         will ne used as callback, so using =>
     */
-    setScrollElement = (element: HTMLElement | null) => {
+    setScrollElement = (element: ScrollElement | null) => {
+        this._ScrollElementResizeObserver.disconnect();
+        window.removeEventListener("resize", this._updateWidgetSize);
+
         if (this._scrollElement) {
-            this._ScrollElementResizeObserver.unobserve(this._scrollElement);
             this._scrollElement.removeEventListener("scroll", this);
         }
 
         if ((this._scrollElement = element)) {
-            this._ScrollElementResizeObserver.observe(element);
+            if (element instanceof Window) {
+                window.addEventListener("resize", this._updateWidgetSize);
+            } else {
+                this._ScrollElementResizeObserver.observe(element);
+            }
             element.addEventListener("scroll", this, {
                 passive: true
             });
-            if (this._initialElement) {
-                this.recalculateOffset();
-            }
+            this._updatePropertyKeys();
+            this.recalculateOffset();
         } else {
             this._ElResizeObserver.disconnect();
             this._StickyElResizeObserver.disconnect();
@@ -363,32 +394,22 @@ class List {
 
     setInitialElement = (element: HTMLElement | null) => {
         this._initialElement = element;
-
-        if (element && this._scrollElement) {
-            this.recalculateOffset();
-        }
+        this.recalculateOffset();
     };
 
     recalculateOffset() {
-        let res = 0;
-        console.log(this._initialElement, this._scrollElement);
+        const newScrollElementOffset = /*@__NOINLINE__*/ getDistanceBetween(
+            this._scrollElement,
+            this._initialElement,
+            this._scrollElementOffset + this._alignedScrollPos,
+            this._scrollToKey
+        );
+        const diff = newScrollElementOffset - this._scrollElementOffset;
 
-        /* TODO: benchmark with getBoundingClientRect */
-        if (this._scrollElement) {
-            for (
-                let el = this._initialElement;
-                el && this._scrollElement.contains(el);
-                el = el.offsetParent as HTMLElement
-            ) {
-                res += el.offsetTop;
-                console.log("RES", el, res);
-            }
-
-            if (res !== this._scrollElementOffset) {
-                this._scrollElementOffset = res;
-
-                this.handleEvent();
-            }
+        if (diff) {
+            this._alignedScrollPos -= diff;
+            this._scrollElementOffset += diff;
+            this._updateRangeFromEnd();
         }
     }
 
@@ -498,6 +519,17 @@ class List {
         }
     }
 
+    _updatePropertyKeys() {
+        const h = this.horizontal ? 1 : 0;
+        const w = this._scrollElement instanceof Window ? 1 : 0;
+        const i = h + 2 * w;
+
+        this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
+        this._scrollKey = ScrollKeysOrdered[i];
+        this._sizeKey = ItemSizeKeysOrdered[h];
+        this._scrollToKey = ScrollToKeysOrdered[h];
+    }
+
     set({
         overscanCount,
         horizontal,
@@ -556,13 +588,8 @@ class List {
         }
 
         if (horizontal !== undefined && this.horizontal !== horizontal) {
-            this._scrollToKey = (this.horizontal = horizontal)
-                ? ScrollToKey.HORIZONTAL
-                : ScrollToKey.VERTICAL;
-            this._scrollKey = horizontal
-                ? ScrollKey.HORIZONTAL_
-                : ScrollKey.VERTICAL;
-            this._sizeKey = horizontal ? SizeKey.HORIZONTAL : SizeKey.VERTICAL;
+            this.horizontal = horizontal;
+            this._updatePropertyKeys();
 
             if (this._scrollElement) {
                 /* TODO: Needs testing */

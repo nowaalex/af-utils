@@ -7,4 +7,5 @@ export type ListRuntimeParams = {
 
 export type ListInitialParams = ListRuntimeParams & {
     estimatedWidgetSize?: number;
+    estimatedScrollElementOffset?: number;
 };
