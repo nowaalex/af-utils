@@ -12,7 +12,7 @@
     "dependencies": {
         "@af-utils/react-mobx-table": "^1.0.0",
         "@af-utils/react-table": "^1.0.0",
-        "@af-utils/react-virtual-headless": "^0.1.1",
+        "@af-utils/react-virtual-headless": "^0.1.2",
         "@af-utils/react-virtual-list": "^1.0.0",
         "@emotion/css": "^11.10.6",
         "@emotion/react": "^11.10.6",

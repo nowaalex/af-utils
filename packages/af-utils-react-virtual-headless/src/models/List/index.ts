@@ -97,16 +97,8 @@ class List {
 
         Actually any div may be used instead of window, but offset should be calculated.
     */
+    private _scrollPos = 0;
     private _scrollElementOffset = 0;
-
-    /*
-        scrollElement[ scroll[ Top | Left ] ] - _scrollElementOffset
-
-        getIndex, getOffset and some other methods are designed to be pure
-        and they don't know about _scrollElementOffset,
-        so it useful to store cached value for them
-    */
-    private _alignedScrollPos = 0;
 
     private _rawScrollSize = 0;
     private _stickyOffset = 0;
@@ -359,7 +351,9 @@ class List {
         const firstVisibleIndex = this._exactFrom;
         return (
             firstVisibleIndex +
-            (this._alignedScrollPos - this.getOffset(firstVisibleIndex)) /
+            (this._scrollPos -
+                this._scrollElementOffset -
+                this.getOffset(firstVisibleIndex)) /
                 this._itemSizes[firstVisibleIndex]
         );
     }
@@ -370,12 +364,11 @@ class List {
     handleEvent() {
         // scrollEl may not be null here, because handleEvent is attached directly to it.
         const scrollEl = this._scrollElement as ScrollElement;
-        const curScrollPos = this._alignedScrollPos,
-            newScrollPos =
-                scrollEl[this._scrollKey] - this._scrollElementOffset;
+        const curScrollPos = this._scrollPos,
+            newScrollPos = scrollEl[this._scrollKey];
 
         if (newScrollPos !== curScrollPos) {
-            if ((this._alignedScrollPos = newScrollPos) > curScrollPos) {
+            if ((this._scrollPos = newScrollPos) > curScrollPos) {
                 this._updateRangeFromEnd();
             } else {
                 this._updateRangeFromStart();
@@ -395,15 +388,15 @@ class List {
             }
 
             if ((this._scrollElement = element)) {
+                this._updatePropertyKeys();
                 this._unobserveResize = /*@__NOINLINE__*/ observeResize(
                     element,
                     this._updateWidgetSize
                 );
-
+                this.handleEvent();
                 element.addEventListener("scroll", this, {
                     passive: true
                 });
-                this._updatePropertyKeys();
                 this.updateScrollerOffset();
             } else {
                 this._ElResizeObserver.disconnect();
@@ -424,14 +417,12 @@ class List {
         const newScrollElementOffset = /*@__NOINLINE__*/ getDistanceBetween(
             this._scrollElement,
             this._initialElement,
-            this._scrollElementOffset + this._alignedScrollPos,
+            this._scrollPos,
             this._scrollToKey
         );
-        const diff = newScrollElementOffset - this._scrollElementOffset;
 
-        if (diff) {
-            this._alignedScrollPos -= diff;
-            this._scrollElementOffset += diff;
+        if (newScrollElementOffset !== this._scrollElementOffset) {
+            this._scrollElementOffset = newScrollElementOffset;
             this._updateRangeFromEnd();
         }
     }
@@ -478,7 +469,7 @@ class List {
     }
 
     private get _exactFrom() {
-        return this.getIndex(this._alignedScrollPos);
+        return this.getIndex(this._scrollPos - this._scrollElementOffset);
     }
 
     private get _exactTo() {
@@ -486,7 +477,9 @@ class List {
             this._itemCount &&
             1 +
                 this.getIndex(
-                    this._alignedScrollPos + this._availableWidgetSize
+                    this._scrollPos -
+                        this._scrollElementOffset +
+                        this._availableWidgetSize
                 )
         );
     }
@@ -523,14 +516,14 @@ class List {
         );
 
         if (
-            desiredScrollPos !== this._alignedScrollPos &&
+            desiredScrollPos !== this._scrollPos - this._scrollElementOffset &&
             this._scrollElement &&
             --attemptsLeft
         ) {
             this._scrollElement.scroll({
                 [this._scrollToKey]:
                     this._scrollElementOffset + desiredScrollPos,
-                behavior: smooth ? "smooth" : "auto"
+                behavior: smooth ? "smooth" : undefined
             });
 
             this._scrollToTimer = window.setTimeout(

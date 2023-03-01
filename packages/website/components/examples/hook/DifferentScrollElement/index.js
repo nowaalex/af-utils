@@ -14,8 +14,7 @@ const Item = memo(({ i, model }) => (
 
 const DifferentScrollElementHook = () => {
     const model = useVirtual({
-        itemCount: 50000,
-        overscanCount: 0
+        itemCount: 5000
     });
 
     /*
