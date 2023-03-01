@@ -4,6 +4,7 @@ export { default as useVirtual } from "hooks/useVirtual";
 export { default as useVirtualModel } from "hooks/useVirtualModel";
 export { default as useSubscription } from "hooks/useSubscription";
 export { default as useComponentSubscription } from "./hooks/useComponentSubscription";
+export { default as useScroller } from "./hooks/useScroller";
 
 export { default as Subscription } from "components/Subscription";
 

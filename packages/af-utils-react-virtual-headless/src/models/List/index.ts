@@ -14,12 +14,24 @@ import {
 import FTreeArray from "models/FTreeArray";
 import FinalResizeObserver from "models/ResizeObserver";
 import call from "utils/call";
+import observeResize from "utils/observeResize";
 import { build, update, getLiftingLimit } from "utils/fTree";
 import getDistanceBetween from "utils/getDistanceBetween";
 import Batch from "singletons/Batch";
-import { ListInitialParams, ListRuntimeParams } from "./types";
 
-type ScrollElement = HTMLElement & Window;
+export type ScrollElement = HTMLElement & Window;
+
+export type ListRuntimeParams = {
+    overscanCount?: number;
+    horizontal?: boolean;
+    itemCount?: number;
+    estimatedItemSize?: number;
+};
+
+export type ListInitialParams = ListRuntimeParams & {
+    estimatedWidgetSize?: number;
+    estimatedScrollElementOffset?: number;
+};
 
 const ITEMS_ROOM = 32;
 
@@ -226,6 +238,17 @@ class List {
 
     private _EventsList: Array<Array<() => void>> = EVT_ALL.map(() => []);
 
+    private _updatePropertyKeys() {
+        const h = this.horizontal ? 1 : 0;
+        const w = this._scrollElement instanceof Window ? 1 : 0;
+        const i = h + 2 * w;
+
+        this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
+        this._scrollKey = ScrollKeysOrdered[i];
+        this._sizeKey = ItemSizeKeysOrdered[h];
+        this._scrollToKey = ScrollToKeysOrdered[h];
+    }
+
     private _updateWidgetSize = () => {
         // all null checks are already done
         const scrollEl = this._scrollElement as ScrollElement;
@@ -250,9 +273,7 @@ class List {
         }
     }
 
-    private _ScrollElementResizeObserver = new FinalResizeObserver(
-        this._updateWidgetSize
-    );
+    private _unobserveResize = () => {};
 
     constructor(params?: ListInitialParams) {
         // stickyOffset is included;
@@ -366,38 +387,40 @@ class List {
         Performs as destructor when null is passed
         will ne used as callback, so using =>
     */
-    setScrollElement = (element: ScrollElement | null) => {
-        this._ScrollElementResizeObserver.disconnect();
-        window.removeEventListener("resize", this._updateWidgetSize);
-
-        if (this._scrollElement) {
-            this._scrollElement.removeEventListener("scroll", this);
-        }
-
-        if ((this._scrollElement = element)) {
-            if (element instanceof Window) {
-                window.addEventListener("resize", this._updateWidgetSize);
-            } else {
-                this._ScrollElementResizeObserver.observe(element);
+    setScroller = (element: ScrollElement | null) => {
+        if (element !== this._scrollElement) {
+            if (this._scrollElement) {
+                this._unobserveResize();
+                this._scrollElement.removeEventListener("scroll", this);
             }
-            element.addEventListener("scroll", this, {
-                passive: true
-            });
-            this._updatePropertyKeys();
-            this.recalculateOffset();
-        } else {
-            this._ElResizeObserver.disconnect();
-            this._StickyElResizeObserver.disconnect();
-            clearTimeout(this._scrollToTimer);
+
+            if ((this._scrollElement = element)) {
+                this._unobserveResize = /*@__NOINLINE__*/ observeResize(
+                    element,
+                    this._updateWidgetSize
+                );
+
+                element.addEventListener("scroll", this, {
+                    passive: true
+                });
+                this._updatePropertyKeys();
+                this.updateScrollerOffset();
+            } else {
+                this._ElResizeObserver.disconnect();
+                this._StickyElResizeObserver.disconnect();
+                clearTimeout(this._scrollToTimer);
+            }
         }
     };
 
-    setInitialElement = (element: HTMLElement | null) => {
-        this._initialElement = element;
-        this.recalculateOffset();
+    setContainer = (element: HTMLElement | null) => {
+        if (element !== this._initialElement) {
+            this._initialElement = element;
+            this.updateScrollerOffset();
+        }
     };
 
-    recalculateOffset() {
+    updateScrollerOffset() {
         const newScrollElementOffset = /*@__NOINLINE__*/ getDistanceBetween(
             this._scrollElement,
             this._initialElement,
@@ -519,17 +542,6 @@ class List {
         }
     }
 
-    _updatePropertyKeys() {
-        const h = this.horizontal ? 1 : 0;
-        const w = this._scrollElement instanceof Window ? 1 : 0;
-        const i = h + 2 * w;
-
-        this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
-        this._scrollKey = ScrollKeysOrdered[i];
-        this._sizeKey = ItemSizeKeysOrdered[h];
-        this._scrollToKey = ScrollToKeysOrdered[h];
-    }
-
     set({
         overscanCount,
         horizontal,
@@ -602,5 +614,7 @@ class List {
         Batch._end();
     }
 }
+
+export type PublicList = Omit<List, "handleEvent">;
 
 export default List;

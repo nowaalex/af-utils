@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { EVT_ALL, Event } from "constants/";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
-import List from "models/List";
+import type PublicList from "models/List";
 
-const useComponentSubscription = (model: List, events: Array<Event>) => {
+const useComponentSubscription = (model: PublicList, events: Array<Event>) => {
     events ||= EVT_ALL;
 
     // szudzik pair
@@ -23,7 +23,7 @@ const useComponentSubscription = (model: List, events: Array<Event>) => {
                     ""
                 )
         ],
-        [events]
+        [model, events]
     );
 
     useSyncExternalStore(subscribe, getHash, getHash);

@@ -114,9 +114,13 @@ Used to remember scroll position before prepending elements.
 
 Scroll to element at certain index. For example `3.6` will scroll to element at index `3` plus `60%` of its height.
 
-### `setScrollElement: Bound Function(el: DOMElement) => void`
+### `setScroller: Bound Function(el: HTMLElement | Window) => void`
 
 Pass scrollable element to model. Must be attached to outermost element with `~sass~overflow: auto`.
+
+### `setContainer: Bound Function(el: HTMLElement) => void`
+
+Should be used ONLY if scroller is located outside (for example window scroll). Needed for proper top/left offset calculation.
 
 ### `set: Function(params: Object) => void`
 
@@ -209,6 +213,16 @@ useSubscription(model, events, callback);
 ### `callback: Function() => void`
 
 Gets called when at least one of [events](#numeric-event-constants) gets triggered. In case you do not want to subscribe - pass `null`.
+
+---
+
+## useScroller
+
+Normally [`setScroller`](#setscroller-bound-functionel-htmlelement--window--void) should be used to pass scroller to model. Use this if scroller is located outside (window scroll).
+
+```javascript
+useScroller(model, window);
+```
 
 ---
 

@@ -1,13 +1,11 @@
-import { useLayoutEffect, useEffect } from "react";
-import { ListInitialParams } from "models/List/types";
-import useVirtualModel from "../useVirtualModel";
-
-const localUseEffect = process.env.__IS_SERVER__ ? useEffect : useLayoutEffect;
+import useVirtualModel from "hooks/useVirtualModel";
+import useIsomorphicLayoutEffect from "hooks/useIsomorphicLayoutEffect";
+import type { ListInitialParams } from "models/List";
 
 const useVirtual = (params: ListInitialParams) => {
     const model = useVirtualModel(params);
 
-    localUseEffect(() => model.set(params));
+    useIsomorphicLayoutEffect(() => model.set(params));
 
     return model;
 };

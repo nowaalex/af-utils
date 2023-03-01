@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.0
+
+### Minor Changes
+
+-   upgraded headless lib to typescript, added window scroll
+
 ## 0.0.49
 
 ### Patch Changes

@@ -18,10 +18,15 @@ const DifferentScrollElementHook = () => {
         overscanCount: 0
     });
 
+    /*
+        for window scroll use this instead of model.setScroller:
+        useScroller( model, window );
+    */
+
     return (
         <div
             className="h-full overflow-auto contain-strict"
-            ref={model.setScrollElement}
+            ref={model.setScroller}
         >
             <div className="py-4 min-h-[20vh] bg-slate-100 text-center">
                 Some offset
@@ -30,7 +35,7 @@ const DifferentScrollElementHook = () => {
                 <div className="py-4 min-h-[10vh] bg-slate-300 text-center">
                     Some offset 2
                 </div>
-                <div ref={model.setInitialElement}>
+                <div ref={model.setContainer}>
                     <Subscription model={model}>
                         {() => {
                             const fromOffset = model.getOffset(model.from);

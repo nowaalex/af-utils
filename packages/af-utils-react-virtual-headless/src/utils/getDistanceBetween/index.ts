@@ -1,8 +1,9 @@
 import type { ScrollToKey } from "constants/";
+import type { ScrollElement } from "models/List";
 
 const getDistanceBetween = (
-    scrollElement: HTMLElement | Window | null,
-    containerElement: HTMLElement | null,
+    scrollElement: ScrollElement | null,
+    containerElement: Element | null,
     scrollOffset: number,
     param: ScrollToKey
 ) => {
@@ -17,9 +18,9 @@ const getDistanceBetween = (
     return (
         scrollOffset +
         (containerElement.getBoundingClientRect()[param] -
-            (scrollElement instanceof Window
-                ? 0
-                : scrollElement.getBoundingClientRect()[param]))
+            (scrollElement instanceof Element
+                ? scrollElement.getBoundingClientRect()[param]
+                : 0))
     );
 };
 

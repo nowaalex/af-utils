@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import List from "models/List";
-import { ListInitialParams } from "models/List/types";
+import type { ListInitialParams, PublicList } from "models/List";
 
-const useVirtualModel = (params: ListInitialParams) =>
-    (useRef<List>().current ||= new List(params));
+const useVirtualModel = (params: ListInitialParams): PublicList =>
+    (useRef<PublicList>().current ||= new List(params));
 
 export default useVirtualModel;

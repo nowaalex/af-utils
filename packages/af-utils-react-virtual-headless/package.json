@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/react-virtual-headless",
     "private": false,
-    "version": "0.0.49",
+    "version": "0.1.0",
     "description": "React components for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
     "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
@@ -11,7 +11,7 @@
     "sideEffects": false,
     "scripts": {
         "dev": "rollup --watch --config rollup.config.js --bundleConfigAsCjs & tsc-alias -w",
-        "build": "rollup --config rollup.config.js --bundleConfigAsCjs && tsc-alias -p",
+        "build": "rollup --config rollup.config.js --bundleConfigAsCjs && tsc-alias",
         "prepare": "npm run build",
         "test": "yarn node --experimental-vm-modules $(yarn bin jest)"
     },

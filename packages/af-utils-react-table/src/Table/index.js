@@ -92,7 +92,7 @@ const Table = ({
     return (
         <div
             className={cx(baseClass, className)}
-            ref={model.setScrollElement}
+            ref={model.setScroller}
             tabIndex={tabIndex}
             {...props}
         >

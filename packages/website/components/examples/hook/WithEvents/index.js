@@ -20,10 +20,7 @@ const WithEvents = () => {
     });
 
     return (
-        <div
-            className="h-full overflow-auto relative"
-            ref={model.setScrollElement}
-        >
+        <div className="h-full overflow-auto relative" ref={model.setScroller}>
             <Subscription model={model} events={[EVT_SCROLL_SIZE]}>
                 {() => (
                     <div

@@ -1,5 +1,16 @@
 # @af-utils/react-table
 
+## 1.0.0
+
+### Minor Changes
+
+-   upgraded headless lib to typescript, added window scroll
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.1.0
+
 ## 0.0.55
 
 ### Patch Changes

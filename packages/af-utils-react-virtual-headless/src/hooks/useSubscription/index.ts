@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import List from "models/List";
 import { Event } from "constants/";
+import type PublicList from "models/List";
 
 const useSubscription = (
-    model: List,
+    model: PublicList,
     events: Array<Event>,
     callBack: () => void
 ) =>
@@ -12,6 +12,6 @@ const useSubscription = (
             callBack();
             return model.on(callBack, events);
         }
-    }, [callBack, events]);
+    }, [model, callBack, events]);
 
 export default useSubscription;
