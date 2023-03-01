@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.1
+
+### Patch Changes
+
+-   rounding top offset
+
 ## 0.1.0
 
 ### Minor Changes

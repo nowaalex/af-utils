@@ -17,10 +17,12 @@ const getDistanceBetween = (
 
     return (
         scrollOffset +
-        (containerElement.getBoundingClientRect()[param] -
-            (scrollElement instanceof Element
-                ? scrollElement.getBoundingClientRect()[param]
-                : 0))
+        Math.round(
+            containerElement.getBoundingClientRect()[param] -
+                (scrollElement instanceof Element
+                    ? scrollElement.getBoundingClientRect()[param]
+                    : 0)
+        )
     );
 };
 
