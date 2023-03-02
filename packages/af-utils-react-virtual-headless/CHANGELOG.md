@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.5
+
+### Patch Changes
+
+-   rollup upgrade
+
 ## 0.1.4
 
 ### Patch Changes

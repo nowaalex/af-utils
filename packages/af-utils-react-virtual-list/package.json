@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/react-virtual-list",
     "private": false,
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "React components for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
     "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
@@ -59,11 +59,11 @@
         "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
         "jest": "^29.4.3",
         "lodash": "^4.17.21",
-        "rollup": "^3.17.3"
+        "rollup": "^3.18.0"
     },
     "peerDependencies": {
-        "@af-utils/react-virtual-headless": "^0.1.0",
-        "@af-utils/styled": "^0.0.20",
+        "@af-utils/react-virtual-headless": "^0.1.5",
+        "@af-utils/styled": "^0.0.21",
         "prop-types": "^15.8.0",
         "react": "^17.0.0 || ^18.1.0"
     },
