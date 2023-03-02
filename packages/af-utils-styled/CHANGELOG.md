@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.22
+
+### Patch Changes
+
+-   github actions
+
 ## 0.0.21
 
 ### Patch Changes

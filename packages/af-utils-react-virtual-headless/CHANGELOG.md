@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.6
+
+### Patch Changes
+
+-   github actions
+
 ## 0.1.5
 
 ### Patch Changes

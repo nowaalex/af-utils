@@ -1,5 +1,15 @@
 # @af-utils/react-mobx-table
 
+## 1.0.2
+
+### Patch Changes
+
+-   github actions
+-   Updated dependencies
+    -   @af-utils/react-table@1.0.2
+    -   @af-utils/react-virtual-headless@0.1.6
+    -   @af-utils/styled@0.0.22
+
 ## 1.0.1
 
 ### Patch Changes
