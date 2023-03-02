@@ -447,7 +447,7 @@ class List {
     }
 
     updateScrollerOffset() {
-        if (this._updateScrollerOffsetRaw()) {
+        if (this._updateScrollerOffsetRaw() && this._scrollElement) {
             this._syncScrollPosition();
         }
     }

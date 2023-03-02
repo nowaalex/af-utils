@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.4
+
+### Patch Changes
+
+-   fixed scrollElement check
+
 ## 0.1.3
 
 ### Patch Changes
