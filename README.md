@@ -10,9 +10,14 @@ https://af-utils.vercel.app/
 
 -   All dimensions are calculated automatically, so there is no need to provide them.
 -   Uses position: sticky for tables
--   mobx - ready
--   supports window / any other detached scroller (beta)
--   optimized for performance
--   typescript-ready (in progress)
--   decoupled architecture
+-   Mobx - ready
+-   Supports window or any other detached scroller (beta)
+-   Optimized for performance
+-   Typescript-ready (in progress)
+-   Decoupled architecture
+-   Sticky header and footer
+-   Infinite scrolling with load on demand
+-   2d grid
+-   Easy ui libraries integration
+-   Vertical and horizontal scroll directions
 -   `scrollTo(index, smooth = false)` method is available
