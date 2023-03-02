@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/react-virtual-headless",
     "private": false,
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "React components for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-virtual-scroll.git",
     "bugs": "https://github.com/nowaalex/af-virtual-scroll/issues",
