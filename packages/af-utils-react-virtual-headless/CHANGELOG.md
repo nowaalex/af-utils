@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.10
+
+### Patch Changes
+
+-   shim resolve fix
+
 ## 0.1.9
 
 ### Patch Changes

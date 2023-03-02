@@ -1,6 +1,10 @@
 import { useMemo } from "react";
 import { EVT_ALL, Event } from "constants/";
-import { useSyncExternalStore } from "use-sync-external-store/shim";
+/*
+    Reason for specifying index.js:
+    BREAKING CHANGE: The request 'use-sync-external-store/shim' failed to resolve only because it was resolved as fully specified
+*/
+import { useSyncExternalStore } from "use-sync-external-store/shim/index.js";
 import type List from "models/List";
 
 const useComponentSubscription = (model: List, events: Array<Event>) => {
