@@ -118,7 +118,7 @@ Scroll to element at certain index. For example `3.6` will scroll to element at 
 
 Pass scrollable element to model. Must be attached to outermost element with `~sass~overflow: auto`.
 
-### `setContainer: Bound Function(el: HTMLElement) => void`
+### `setContainer: Bound Function(el: Element) => void`
 
 Should be used ONLY if scroller is located outside (for example window scroll). Needed for proper top/left offset calculation.
 
@@ -218,7 +218,7 @@ Gets called when at least one of [events](#numeric-event-constants) gets trigger
 
 ## useScroller
 
-Normally [`setScroller`](#setscroller-bound-functionel-htmlelement--window--void) should be used to pass scroller to model. Use this if scroller is located outside (window scroll).
+Normally [`setScroller`](#setscroller-bound-functionel-element--window--void) should be used to pass scroller to model. Use this if scroller is located outside (window scroll).
 
 ```javascript
 useScroller(model, window);

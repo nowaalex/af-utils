@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Event } from "constants/";
-import type PublicList from "models/List";
+import type List from "models/List";
 
 const useSubscription = (
-    model: PublicList,
+    model: List,
     events: Array<Event>,
     callBack: () => void
 ) =>

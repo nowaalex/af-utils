@@ -23,9 +23,9 @@ export const enum ScrollElementSizeKey {
     ELEMENT_VERTICAL = "offsetHeight"
 }
 
-export const enum ItemSizeKey {
-    HORIZONTAL = "offsetWidth",
-    VERTICAL = "offsetHeight"
+export const enum ResizeObserverSizeKey {
+    HORIZONTAL = "inlineSize",
+    VERTICAL = "blockSize"
 }
 
 export const enum ScrollKey {

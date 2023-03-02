@@ -15,7 +15,8 @@ const Item = memo(({ i, model }) => (
 
 const DifferentScrollElementHook = () => {
     const model = useVirtual({
-        itemCount: 10000
+        itemCount: 1000,
+        estimatedItemSize: 40
     });
 
     useScroller(model, typeof window === "undefined" ? null : window);
@@ -29,18 +30,20 @@ const DifferentScrollElementHook = () => {
                 <div className="py-4 min-h-[12vh] bg-slate-300 text-center">
                     Some offset 2
                 </div>
-                <div ref={model.setContainer}>
+                <div>
                     <Subscription model={model}>
                         {() => {
                             const fromOffset = model.getOffset(model.from);
 
                             return (
                                 <div
+                                    className="contain-strict"
+                                    ref={model.setContainer}
                                     style={{
-                                        height: model.scrollSize - fromOffset,
-                                        marginTop: fromOffset
+                                        height: model.scrollSize
                                     }}
                                 >
+                                    <div style={{ height: fromOffset }}></div>
                                     {mapVisibleRange(model, i => (
                                         <Item key={i} model={model} i={i} />
                                     ))}

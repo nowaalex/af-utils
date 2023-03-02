@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.3
+
+### Patch Changes
+
+-   improved scroll restore
+
 ## 0.1.2
 
 ### Patch Changes

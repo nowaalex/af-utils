@@ -2,7 +2,7 @@ import {
     SIZES_HASH_MODULO,
     Event,
     ScrollElementSizeKey,
-    ItemSizeKey,
+    ResizeObserverSizeKey,
     ScrollKey,
     ScrollToKey,
     EVT_ALL,
@@ -31,6 +31,14 @@ export type ListRuntimeParams = {
 export type ListInitialParams = ListRuntimeParams & {
     estimatedWidgetSize?: number;
     estimatedScrollElementOffset?: number;
+};
+
+const OBSERVE_OPTIONS: ResizeObserverOptions = {
+    box: "border-box"
+};
+
+const SCROLL_EVENT_OPTIONS: AddEventListenerOptions = {
+    passive: true
 };
 
 const ITEMS_ROOM = 32;
@@ -70,14 +78,23 @@ const ScrollKeysOrdered = [
     ScrollKey.WINDOW_HORIZONTAL
 ];
 
-const ItemSizeKeysOrdered = [ItemSizeKey.VERTICAL, ItemSizeKey.HORIZONTAL];
+const ResizeObserverSizeKeysOrdered = [
+    ResizeObserverSizeKey.VERTICAL,
+    ResizeObserverSizeKey.HORIZONTAL
+];
 
 const ScrollToKeysOrdered = [ScrollToKey.VERTICAL, ScrollToKey.HORIZONTAL];
+
+const getBoxSize = (
+    borderBox: readonly ResizeObserverSize[],
+    sizeKey: ResizeObserverSizeKey
+) => Math.round(borderBox[0][sizeKey]);
 class List {
     private _scrollElementSizeKey: ScrollElementSizeKey =
         ScrollElementSizeKeysOrdered[0];
     private _scrollKey: ScrollKey = ScrollKeysOrdered[0];
-    private _sizeKey: ItemSizeKey = ItemSizeKeysOrdered[0];
+    private _resizeObserverSizeKey: ResizeObserverSizeKey =
+        ResizeObserverSizeKeysOrdered[0];
     private _scrollToKey: ScrollToKey = ScrollToKeysOrdered[0];
 
     /*
@@ -97,19 +114,21 @@ class List {
 
         Actually any div may be used instead of window, but offset should be calculated.
     */
-    private _scrollPos = 0;
+
+    /* It is more useful to store scrollPos - scrollElementOffset in one variable for future calculations */
+    private _alignedScrollPos = 0;
     private _scrollElementOffset = 0;
 
     private _rawScrollSize = 0;
     private _stickyOffset = 0;
     private _itemCount = 0;
     private _availableWidgetSize = 0;
-    private _scrollToTimer = 0;
+    private _scrollToTimer: ReturnType<typeof setTimeout> | 0 = 0;
     private _overscanCount = DEFAULT_OVERSCAN_COUNT;
     private _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
 
     private _scrollElement: ScrollElement | null = null;
-    private _initialElement: HTMLElement | null = null;
+    private _initialElement: Element | null = null;
 
     private _itemSizes = EMPTY_TYPED_ARRAY;
     private _fTree = EMPTY_TYPED_ARRAY;
@@ -127,125 +146,116 @@ class List {
     to = 0;
     sizesHash = 0;
 
-    private _elToIdx = new Map<HTMLElement, number>();
-    private _idxToEl = new Map<number, HTMLElement>();
+    private _elToIdx = new Map<Element, number>();
+    private _idxToEl = new Map<number, Element>();
 
     /* header and footer; lengths are hardcoded */
-    private _stickyElements: [HTMLElement | null, HTMLElement | null] = [
-        null,
-        null
-    ];
+    private _stickyElements: [Element | null, Element | null] = [null, null];
     private _stickyElementsSizes: [number, number] = [0, 0];
 
-    private _StickyElResizeObserver = new FinalResizeObserver(
-        (entries: ResizeObserverEntry[]) => {
-            let index = 0,
-                diff = 0,
-                buff = 0;
+    private _StickyElResizeObserver = new FinalResizeObserver(entries => {
+        let index = 0,
+            diff = 0,
+            buff = 0;
 
-            for (const entry of entries) {
-                const target = entry.target as HTMLElement;
-                index = this._stickyElements.indexOf(target);
-                if (index !== -1) {
-                    diff =
-                        target[this._sizeKey] -
-                        this._stickyElementsSizes[index];
-                    if (diff) {
-                        this._stickyElementsSizes[index] += diff;
-                        buff += diff;
-                    }
+        for (const { target, borderBoxSize } of entries) {
+            index = this._stickyElements.indexOf(target);
+            if (index !== -1) {
+                diff =
+                    getBoxSize(borderBoxSize, this._resizeObserverSizeKey) -
+                    this._stickyElementsSizes[index];
+                if (diff) {
+                    this._stickyElementsSizes[index] += diff;
+                    buff += diff;
                 }
             }
-
-            this._updateStickyOffset(buff);
         }
-    );
 
-    private _ElResizeObserver = new FinalResizeObserver(
-        (entries: ResizeObserverEntry[]) => {
-            let index = 0,
-                diff = 0,
-                buff = 0,
-                wasAtLeastOneSizeChanged = false,
-                lim = /*@__NOINLINE__*/ getLiftingLimit(
-                    this._fTree,
-                    this.from + 1,
-                    this.to
-                );
+        this._updateStickyOffset(buff);
+    });
 
-            /*
+    private _ElResizeObserver = new FinalResizeObserver(entries => {
+        let index = 0,
+            diff = 0,
+            buff = 0,
+            wasAtLeastOneSizeChanged = false,
+            lim = /*@__NOINLINE__*/ getLiftingLimit(
+                this._fTree,
+                this.from + 1,
+                this.to
+            );
+
+        /*
             TODO: check perf of borderBoxSize vs offsetWidth/offsetHeight
         */
-            for (const entry of entries) {
-                const target = entry.target as HTMLElement;
+        for (const { target, borderBoxSize } of entries) {
+            // cannot be undefined, because element is being added to this map before getting into ResizeObserver
+            index = this._elToIdx.get(target) as number;
 
-                // cannot be undefined, because element is being added to this map before getting into ResizeObserver
-                index = this._elToIdx.get(target) as number;
-
-                /*
+            /*
                 ResizeObserver may give us elements, which are not in visible range => will be unmounted soon.
                 Should not take them into account.
                 This is done for performance + updateItemHeight hack would not work without it
             */
-                if (index < lim) {
-                    diff = target[this._sizeKey] - this._itemSizes[index];
-                    if (diff) {
-                        wasAtLeastOneSizeChanged = true;
-                        this._itemSizes[index] += diff;
-                        buff += diff;
-                        update(this._fTree, index + 1, diff, lim);
-                    }
+            if (index < lim) {
+                diff =
+                    getBoxSize(borderBoxSize, this._resizeObserverSizeKey) -
+                    this._itemSizes[index];
+                if (diff) {
+                    wasAtLeastOneSizeChanged = true;
+                    this._itemSizes[index] += diff;
+                    buff += diff;
+                    update(this._fTree, index + 1, diff, lim);
                 }
             }
+        }
 
-            if (wasAtLeastOneSizeChanged) {
-                Batch._start();
+        if (wasAtLeastOneSizeChanged) {
+            Batch._start();
 
-                if (buff !== 0) {
-                    update(this._fTree, lim, buff, this._fTree.length);
-                    this._rawScrollSize += buff;
-                    this.scrollSize += buff;
-                    this._run(Event.SCROLL_SIZE);
-                    if (buff < 0) {
-                        /*
+            if (buff !== 0) {
+                update(this._fTree, lim, buff, this._fTree.length);
+                this._rawScrollSize += buff;
+                this.scrollSize += buff;
+                this._run(Event.SCROLL_SIZE);
+                if (buff < 0) {
+                    /*
                         If visible item sizes reduced - holes may appear, so rerender is a must.
                         No holes possible if item sizes increased => no need to rerender.
                     */
-                        this._updateRangeFromEnd();
-                    }
+                    this._updateRangeFromEnd();
                 }
+            }
 
-                /*
+            /*
                 Modulo is used to prevent sizesHash from growing too much.
                 Using bitwise hack to optimize modulo.
                 5 % 2 === 5 & 1 && 9 % 4 === 9 & 3
             */
-                this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
-                this._run(Event.SIZES);
+            this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
+            this._run(Event.SIZES);
 
-                Batch._end();
-            }
+            Batch._end();
         }
-    );
+    });
 
     private _EventsList: Array<Array<() => void>> = EVT_ALL.map(() => []);
 
     private _updatePropertyKeys() {
-        const h = this.horizontal ? 1 : 0;
-        const w = this._scrollElement instanceof Window ? 1 : 0;
+        const h = +this.horizontal;
+        const w = +(this._scrollElement instanceof Window);
         const i = h + 2 * w;
 
         this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
         this._scrollKey = ScrollKeysOrdered[i];
-        this._sizeKey = ItemSizeKeysOrdered[h];
+        this._resizeObserverSizeKey = ResizeObserverSizeKeysOrdered[h];
         this._scrollToKey = ScrollToKeysOrdered[h];
     }
 
     private _updateWidgetSize = () => {
-        // all null checks are already done
-        const scrollEl = this._scrollElement as ScrollElement;
         const availableWidgetSize =
-            scrollEl[this._scrollElementSizeKey] - this._stickyOffset;
+            (this._scrollElement as ScrollElement)[this._scrollElementSizeKey] -
+            this._stickyOffset;
 
         if (availableWidgetSize !== this._availableWidgetSize) {
             this._availableWidgetSize = availableWidgetSize;
@@ -351,30 +361,33 @@ class List {
         const firstVisibleIndex = this._exactFrom;
         return (
             firstVisibleIndex +
-            (this._scrollPos -
-                this._scrollElementOffset -
-                this.getOffset(firstVisibleIndex)) /
+            (this._alignedScrollPos - this.getOffset(firstVisibleIndex)) /
                 this._itemSizes[firstVisibleIndex]
         );
     }
 
-    /*
-        "scroll" is the only event here, so switch/case is not needed.
-    */
-    handleEvent() {
-        // scrollEl may not be null here, because handleEvent is attached directly to it.
-        const scrollEl = this._scrollElement as ScrollElement;
-        const curScrollPos = this._scrollPos,
-            newScrollPos = scrollEl[this._scrollKey];
+    private _syncScrollPosition = () => {
+        /*
+            scrollElement may not be null here.
+            Math.round, because scrollY/scrollX may be float on Safari
+        */
+        const curAlignedScrollPos = this._alignedScrollPos,
+            newAlignedScrollPos =
+                Math.round(
+                    (this._scrollElement as ScrollElement)[this._scrollKey]
+                ) - this._scrollElementOffset;
 
-        if (newScrollPos !== curScrollPos) {
-            if ((this._scrollPos = newScrollPos) > curScrollPos) {
+        if (newAlignedScrollPos !== curAlignedScrollPos) {
+            if (
+                (this._alignedScrollPos = newAlignedScrollPos) >
+                curAlignedScrollPos
+            ) {
                 this._updateRangeFromEnd();
             } else {
                 this._updateRangeFromStart();
             }
         }
-    }
+    };
 
     /*
         Performs as destructor when null is passed
@@ -384,7 +397,10 @@ class List {
         if (element !== this._scrollElement) {
             if (this._scrollElement) {
                 this._unobserveResize();
-                this._scrollElement.removeEventListener("scroll", this);
+                this._scrollElement.removeEventListener(
+                    "scroll",
+                    this._syncScrollPosition
+                );
             }
 
             if ((this._scrollElement = element)) {
@@ -393,11 +409,13 @@ class List {
                     element,
                     this._updateWidgetSize
                 );
-                this.handleEvent();
-                element.addEventListener("scroll", this, {
-                    passive: true
-                });
-                this.updateScrollerOffset();
+                element.addEventListener(
+                    "scroll",
+                    this._syncScrollPosition,
+                    SCROLL_EVENT_OPTIONS
+                );
+                this._updateScrollerOffsetRaw();
+                this._syncScrollPosition();
             } else {
                 this._ElResizeObserver.disconnect();
                 this._StickyElResizeObserver.disconnect();
@@ -406,70 +424,78 @@ class List {
         }
     };
 
-    setContainer = (element: HTMLElement | null) => {
+    setContainer = (element: Element | null) => {
         if (element !== this._initialElement) {
             this._initialElement = element;
             this.updateScrollerOffset();
         }
     };
 
-    updateScrollerOffset() {
+    _updateScrollerOffsetRaw() {
         const newScrollElementOffset = /*@__NOINLINE__*/ getDistanceBetween(
             this._scrollElement,
             this._initialElement,
-            this._scrollPos,
+            this._scrollKey,
             this._scrollToKey
         );
+        const diff = newScrollElementOffset - this._scrollElementOffset;
 
-        if (newScrollElementOffset !== this._scrollElementOffset) {
-            this._scrollElementOffset = newScrollElementOffset;
-            this._updateRangeFromEnd();
+        this._scrollElementOffset += diff;
+        this._alignedScrollPos -= diff;
+
+        return diff;
+    }
+
+    updateScrollerOffset() {
+        if (this._updateScrollerOffsetRaw()) {
+            this._syncScrollPosition();
         }
     }
 
-    el(i: number, node: HTMLElement) {
-        const oldNode = this._idxToEl.get(i);
+    el(i: number, element: Element) {
+        const oldElement = this._idxToEl.get(i);
 
-        if (oldNode) {
+        if (oldElement) {
             this._idxToEl.delete(i);
-            this._elToIdx.delete(oldNode);
-            this._ElResizeObserver.unobserve(oldNode);
+            this._elToIdx.delete(oldElement);
+            this._ElResizeObserver.unobserve(oldElement);
         }
 
-        if (node) {
-            this._elToIdx.set(node, i);
-            this._idxToEl.set(i, node);
-            this._ElResizeObserver.observe(node);
+        if (element) {
+            this._elToIdx.set(element, i);
+            this._idxToEl.set(i, element);
+            this._ElResizeObserver.observe(element, OBSERVE_OPTIONS);
         }
     }
 
-    private _stickyEl(i: number, node: HTMLElement) {
-        const oldNode = this._stickyElements[i];
+    private _stickyEl(i: number, element: Element) {
+        const oldElement = this._stickyElements[i];
 
-        if (oldNode) {
-            this._StickyElResizeObserver.unobserve(oldNode);
+        if (oldElement) {
+            this._StickyElResizeObserver.unobserve(oldElement);
             this._updateStickyOffset(-this._stickyElementsSizes[i]);
             this._stickyElements[i] = null;
             this._stickyElementsSizes[i] = 0;
         }
 
-        if (node) {
+        if (element) {
             this._StickyElResizeObserver.observe(
-                (this._stickyElements[i] = node)
+                (this._stickyElements[i] = element),
+                OBSERVE_OPTIONS
             );
         }
     }
 
-    setStickyHeader(node: HTMLElement) {
-        this._stickyEl(STICKY_HEADER_INDEX, node);
+    setStickyHeader(element: Element) {
+        this._stickyEl(STICKY_HEADER_INDEX, element);
     }
 
-    setStickyFooter(node: HTMLElement) {
-        this._stickyEl(STICKY_FOOTER_INDEX, node);
+    setStickyFooter(element: Element) {
+        this._stickyEl(STICKY_FOOTER_INDEX, element);
     }
 
     private get _exactFrom() {
-        return this.getIndex(this._scrollPos - this._scrollElementOffset);
+        return this.getIndex(this._alignedScrollPos);
     }
 
     private get _exactTo() {
@@ -477,28 +503,34 @@ class List {
             this._itemCount &&
             1 +
                 this.getIndex(
-                    this._scrollPos -
-                        this._scrollElementOffset +
-                        this._availableWidgetSize
+                    this._alignedScrollPos + this._availableWidgetSize
                 )
         );
     }
 
+    /*
+        Used when scrolling down/right;
+        adds overscan reserve forward to reduce rerenders quantity
+    */
     private _updateRangeFromEnd() {
-        const to = this._exactTo;
+        const { _exactTo } = this;
 
-        if (to > this.to) {
-            this.to = Math.min(this._itemCount, to + this._overscanCount);
+        if (_exactTo > this.to) {
+            this.to = Math.min(this._itemCount, _exactTo + this._overscanCount);
             this.from = this._exactFrom;
             this._run(Event.RANGE);
         }
     }
 
+    /*
+        Used when scrolling up/left;
+        adds overscan reserve backward to reduce rerenders quantity
+    */
     private _updateRangeFromStart() {
-        const from = this._exactFrom;
+        const { _exactFrom } = this;
 
-        if (from < this.from) {
-            this.from = Math.max(0, from - this._overscanCount);
+        if (_exactFrom < this.from) {
+            this.from = Math.max(0, _exactFrom - this._overscanCount);
             this.to = this._exactTo;
             this._run(Event.RANGE);
         }
@@ -516,7 +548,7 @@ class List {
         );
 
         if (
-            desiredScrollPos !== this._scrollPos - this._scrollElementOffset &&
+            desiredScrollPos !== this._alignedScrollPos &&
             this._scrollElement &&
             --attemptsLeft
         ) {
@@ -526,7 +558,7 @@ class List {
                 behavior: smooth ? "smooth" : undefined
             });
 
-            this._scrollToTimer = window.setTimeout(
+            this._scrollToTimer = setTimeout(
                 () => this.scrollTo(index, smooth, attemptsLeft),
                 smooth
                     ? SMOOTH_SCROLL_CHECK_TIMER
@@ -585,11 +617,13 @@ class List {
             this._run(Event.SCROLL_SIZE);
 
             if (this.to > itemCount) {
-                // Forcing shift range to end
-                this.to = -1;
+                /*
+                    We already reached scroll end. It is possible to scroll only backwards at this moment.
+                    So will let overscan help us here;
+                */
+                this.from = MAX_ITEM_COUNT;
+                this._updateRangeFromStart();
             }
-
-            this._updateRangeFromEnd();
         }
 
         if (horizontal !== undefined && this.horizontal !== horizontal) {
@@ -607,7 +641,5 @@ class List {
         Batch._end();
     }
 }
-
-export type PublicList = Omit<List, "handleEvent">;
 
 export default List;

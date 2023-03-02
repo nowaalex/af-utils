@@ -8,8 +8,8 @@ const observeResize = (target: Element | Window, callback: () => void) => {
     }
     // resizeObserver has required 1st call
     callback();
-    window.addEventListener("resize", callback);
-    return () => window.removeEventListener("resize", callback);
+    target.addEventListener("resize", callback);
+    return () => target.removeEventListener("resize", callback);
 };
 
 export default observeResize;

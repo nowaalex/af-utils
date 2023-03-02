@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { EVT_ALL, Event } from "constants/";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
-import type PublicList from "models/List";
+import type List from "models/List";
 
-const useComponentSubscription = (model: PublicList, events: Array<Event>) => {
+const useComponentSubscription = (model: List, events: Array<Event>) => {
     events ||= EVT_ALL;
 
     // szudzik pair

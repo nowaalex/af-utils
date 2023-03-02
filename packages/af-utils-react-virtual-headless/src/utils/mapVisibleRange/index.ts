@@ -1,8 +1,8 @@
-import type PublicList from "models/List";
+import type List from "models/List";
 import type { ReactElement } from "react";
 
 const mapVisibleRange = (
-    model: PublicList,
+    model: List,
     cb: (index: number, delta: number) => ReactElement,
     countOffset?: boolean
 ) => {

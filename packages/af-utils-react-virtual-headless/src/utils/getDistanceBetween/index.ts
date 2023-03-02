@@ -1,11 +1,14 @@
-import type { ScrollToKey } from "constants/";
+import type { ScrollToKey, ScrollKey } from "constants/";
 import type { ScrollElement } from "models/List";
+
+const getElementOffset = (element: Element, scrollToKey: ScrollToKey) =>
+    element.getBoundingClientRect()[scrollToKey];
 
 const getDistanceBetween = (
     scrollElement: ScrollElement | null,
     containerElement: Element | null,
-    scrollOffset: number,
-    param: ScrollToKey
+    scrollKey: ScrollKey,
+    scrollToKey: ScrollToKey
 ) => {
     if (
         !containerElement ||
@@ -16,11 +19,11 @@ const getDistanceBetween = (
     }
 
     return (
-        scrollOffset +
+        scrollElement[scrollKey] +
         Math.round(
-            containerElement.getBoundingClientRect()[param] -
+            getElementOffset(containerElement, scrollToKey) -
                 (scrollElement instanceof Element
-                    ? scrollElement.getBoundingClientRect()[param]
+                    ? getElementOffset(scrollElement, scrollToKey)
                     : 0)
         )
     );

@@ -1,7 +1,7 @@
 import useIsomorphicLayoutEffect from "hooks/useIsomorphicLayoutEffect";
-import type { PublicList, ScrollElement } from "models/List";
+import List, { ScrollElement } from "models/List";
 
-const useScroller = (model: PublicList, scroller: ScrollElement) =>
+const useScroller = (model: List, scroller: ScrollElement) =>
     useIsomorphicLayoutEffect(() => {
         model.setScroller(scroller);
         return () => model.setScroller(null);
