@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.9
+
+### Patch Changes
+
+-   upgraded deps
+
 ## 0.1.8
 
 ### Patch Changes
