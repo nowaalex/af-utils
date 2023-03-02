@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.8
+
+### Patch Changes
+
+-   1950a5d: changeset added for github actions
+
 ## 0.1.7
 
 ### Patch Changes
