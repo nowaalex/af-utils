@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.23
+
+### Patch Changes
+
+-   upgraded deps, fixed headless updating range on itemCount change, improved syntax highlighting
+
 ## 0.0.22
 
 ### Patch Changes

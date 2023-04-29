@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 type SubscriptionProps = {
     model: List;
-    events: Array<Event>;
+    events: Event[];
     children: () => ReactNode;
 };
 

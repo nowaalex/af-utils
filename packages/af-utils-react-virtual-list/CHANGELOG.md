@@ -1,5 +1,14 @@
 # @af-utils/react-virtual-list
 
+## 1.0.3
+
+### Patch Changes
+
+-   upgraded deps, fixed headless updating range on itemCount change, improved syntax highlighting
+-   Updated dependencies
+    -   @af-utils/react-virtual-headless@0.1.11
+    -   @af-utils/styled@0.0.23
+
 ## 1.0.2
 
 ### Patch Changes

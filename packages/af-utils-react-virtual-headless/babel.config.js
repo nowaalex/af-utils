@@ -1,12 +1,4 @@
-const plugins = [
-    "@babel/plugin-transform-runtime",
-    [
-        "transform-react-remove-prop-types",
-        {
-            mode: "unsafe-wrap"
-        }
-    ]
-];
+const plugins = ["@babel/plugin-transform-runtime"];
 
 const presets = [
     [

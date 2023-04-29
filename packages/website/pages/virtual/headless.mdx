@@ -116,7 +116,7 @@ Scroll to element at certain index. For example `3.6` will scroll to element at 
 
 ### `setScroller: Bound Function(el: HTMLElement | Window) => void`
 
-Pass scrollable element to model. Must be attached to outermost element with `~sass~overflow: auto`.
+Pass scrollable element to model. Must be attached to outermost element with `overflow: auto{:sass}`.
 
 ### `setContainer: Bound Function(el: Element) => void`
 
@@ -169,7 +169,7 @@ Should provide offset to callback or not. Needed for lists, where each item is a
 
 ### Returns
 
-`Array<ReactElement>`
+`ReactElement[]`
 
 ---
 
@@ -187,7 +187,7 @@ Scroller model has build-in event emitter. All possible events are exported.
 
 -   `EVT_SIZES`
 
-    At least one item size changed. Used, when all items are `~sass~position: absolute` and are not automatically realigned
+    At least one item size changed. Used, when all items are `position: absolute{:sass}` and are not automatically realigned
     when siblinbgs are resized.
 
 -   `EVT_ALL`_(array of events above)_
@@ -206,7 +206,7 @@ useSubscription(model, events, callback);
 
 **Required**. Return value of [`useVirtual`](#usevirtual).
 
-### `events: Array<Integer>`
+### `events: Integer[]`
 
 **Required**. Array of [events](#numeric-event-constants) to subscribe
 
@@ -244,7 +244,7 @@ Rerendered, when at least one of passed [events](#numeric-event-constants) is tr
 
 **Required**. Render prop.
 
-### `events: Array<Integer>`
+### `events: Integer[]`
 
 **Required**. Defaults to: [`EVT_ALL`](#numeric-event-constants)
 

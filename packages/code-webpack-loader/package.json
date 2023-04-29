@@ -1,0 +1,14 @@
+{
+	"name": "code-webpack-loader",
+	"private": true,
+	"version": "0.0.1",
+	"license": "MIT",
+	"sideEffects": false,
+	"scripts": {},
+	"main": "index.js",
+	"module": "index.js",
+	"keywords": [],
+	"devDependencies": {
+		"shiki": "^0.14.1"
+	}
+}

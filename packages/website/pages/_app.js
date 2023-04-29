@@ -4,7 +4,6 @@ import VirtualLayout from "/components/layouts/Virtual";
 import ProgressIndicator from "/components/ProgressIndicator";
 
 import "/styles/globals.css";
-import "/styles/code.css";
 
 const Prose = ({ children }) => (
     <div className="overflow-auto px-8 py-4 w-full h-full">

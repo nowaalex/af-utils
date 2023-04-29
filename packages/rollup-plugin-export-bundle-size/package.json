@@ -1,7 +1,7 @@
 {
   "name": "@rollup/plugin-export-bundle-size",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
   "license": "MIT",
   "sideEffects": false,
@@ -14,6 +14,6 @@
   "module": "index.js",
   "keywords": [],
   "devDependencies": {
-    "terser": "^5.16.5"
+    "terser": "^5.17.1"
   }
 }

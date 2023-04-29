@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.11
+
+### Patch Changes
+
+-   upgraded deps, fixed headless updating range on itemCount change, improved syntax highlighting
+
 ## 0.1.10
 
 ### Patch Changes

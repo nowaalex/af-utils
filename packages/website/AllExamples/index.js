@@ -22,7 +22,7 @@ const requireComponent = require.context(
     "lazy"
 );
 const requireCode = require.context(
-    "!!prism-webpack-loader!/components/examples",
+    "!!code-webpack-loader!/components/examples",
     true,
     /index\.js$/,
     "lazy"
@@ -48,20 +48,7 @@ const table = components.reduce(
             Component: dynamic(() => requireComponent(v.path), {
                 ssr: false
             }),
-            Code: dynamic(
-                () =>
-                    requireCode(v.path).then(code => ({
-                        default: () => (
-                            <code
-                                className="language-jsx"
-                                dangerouslySetInnerHTML={{
-                                    __html: code.default
-                                }}
-                            />
-                        )
-                    })),
-                { ssr: false }
-            ),
+            Code: dynamic(() => requireCode(v.path), { ssr: false }),
             meta: null,
             Description: null
         }),

@@ -25,9 +25,7 @@ const Example = ({ name }) => {
                         <div className="shadow-lg min-h-0 h-full prose-table:m-0 prose-table:p-0 overflow-hidden contain-strict">
                             <Component />
                         </div>
-                        <pre className="language-jsx overflow-scroll !m-0 shadow-lg contain-strict">
-                            <Code />
-                        </pre>
+                        <Code className="!rounded-none overflow-scroll !m-0 shadow-lg contain-strict" />
                     </div>
                 </Suspense>
             </div>

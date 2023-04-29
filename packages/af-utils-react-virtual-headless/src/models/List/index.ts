@@ -10,12 +10,14 @@ import {
     DEFAULT_ESTIMATED_ITEM_SIZE,
     DEFAULT_OVERSCAN_COUNT,
     DEFAULT_ESTIMATED_WIDGET_SIZE
-} from "constants/";
+} from "constants/index";
 import FTreeArray from "models/FTreeArray";
 import FinalResizeObserver from "models/ResizeObserver";
 import call from "utils/call";
+import assert from "utils/assert";
 import observeResize from "utils/observeResize";
-import { build, update, getLiftingLimit } from "utils/fTree";
+import growTypedArray from "utils/growTypedArray";
+import { build as buildFtree, update, getLiftingLimit } from "utils/fTree";
 import getDistanceBetween from "utils/getDistanceBetween";
 import Batch from "singletons/Batch";
 
@@ -35,11 +37,11 @@ export type ListInitialParams = ListRuntimeParams & {
 
 const OBSERVE_OPTIONS: ResizeObserverOptions = {
     box: "border-box"
-};
+} as const;
 
 const SCROLL_EVENT_OPTIONS: AddEventListenerOptions = {
     passive: true
-};
+} as const;
 
 const ITEMS_ROOM = 32;
 
@@ -69,21 +71,24 @@ const ScrollElementSizeKeysOrdered = [
     ScrollElementSizeKey.ELEMENT_HORIZONTAL,
     ScrollElementSizeKey.WINDOW_VERTICAL,
     ScrollElementSizeKey.WINDOW_HORIZONTAL
-];
+] as const;
 
 const ScrollKeysOrdered = [
     ScrollKey.ELEMENT_VERTICAL,
     ScrollKey.ELEMENT_HORIZONTAL,
     ScrollKey.WINDOW_VERTICAL,
     ScrollKey.WINDOW_HORIZONTAL
-];
+] as const;
 
 const ResizeObserverSizeKeysOrdered = [
     ResizeObserverSizeKey.VERTICAL,
     ResizeObserverSizeKey.HORIZONTAL
-];
+] as const;
 
-const ScrollToKeysOrdered = [ScrollToKey.VERTICAL, ScrollToKey.HORIZONTAL];
+const ScrollToKeysOrdered = [
+    ScrollToKey.VERTICAL,
+    ScrollToKey.HORIZONTAL
+] as const;
 
 const getBoxSize = (
     borderBox: readonly ResizeObserverSize[],
@@ -239,7 +244,7 @@ class List {
         }
     });
 
-    private _EventsList: Array<Array<() => void>> = EVT_ALL.map(() => []);
+    private _EventsList: (() => void)[][] = EVT_ALL.map(() => []);
 
     private _updatePropertyKeys() {
         const h = +this.horizontal;
@@ -289,7 +294,7 @@ class List {
         }
     }
 
-    on(callBack: () => void, deps: Array<Event>) {
+    on(callBack: () => void, deps: Event[]) {
         deps.forEach(evt => this._EventsList[evt].push(callBack));
         return () =>
             deps.forEach(evt =>
@@ -334,9 +339,7 @@ class List {
 
     getOffset(index: number) {
         if (process.env.NODE_ENV !== "production") {
-            if (index > this._itemCount) {
-                throw new Error("index must not be > itemCount");
-            }
+            assert(index <= this._itemCount, "index must not be > itemCount");
         }
 
         let result = 0;
@@ -350,9 +353,10 @@ class List {
 
     getSize(itemIndex: number) {
         if (process.env.NODE_ENV !== "production") {
-            if (itemIndex >= this._itemSizes.length) {
-                throw new Error("itemIndex must be < itemCount in getSize");
-            }
+            assert(
+                itemIndex < this._itemSizes.length,
+                "itemIndex must be < itemCount in getSize"
+            );
         }
         return this._itemSizes[itemIndex];
     }
@@ -585,45 +589,33 @@ class List {
         }
 
         if (itemCount !== undefined && this._itemCount !== itemCount) {
-            if (itemCount > MAX_ITEM_COUNT) {
-                throw new Error(
-                    `itemCount must be <= ${MAX_ITEM_COUNT}. Got: ${itemCount}.`
+            assert(
+                itemCount <= MAX_ITEM_COUNT,
+                `itemCount must be <= ${MAX_ITEM_COUNT}. Got: ${itemCount}.`
+            );
+
+            this._itemCount = itemCount;
+            this._msb = itemCount && 1 << (31 - Math.clz32(itemCount));
+
+            if (itemCount > this._itemSizes.length) {
+                this._itemSizes = /*@__NOINLINE__*/ growTypedArray(
+                    this._itemSizes,
+                    Math.min(itemCount + ITEMS_ROOM, MAX_ITEM_COUNT),
+                    this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE
                 );
-            }
-            this._msb =
-                (this._itemCount = itemCount) &&
-                1 << (31 - Math.clz32(itemCount));
-
-            const oldItemSizes = this._itemSizes;
-            const curRowHeighsLength = oldItemSizes.length;
-
-            if (itemCount > curRowHeighsLength) {
-                (this._itemSizes = new FTreeArray(
-                    Math.min(itemCount + ITEMS_ROOM, MAX_ITEM_COUNT)
-                )).set(oldItemSizes);
-
-                this._fTree = /*@__NOINLINE__*/ build(
-                    this._itemSizes.fill(
-                        this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE,
-                        curRowHeighsLength
-                    )
-                );
+                this._fTree = /*@__NOINLINE__*/ buildFtree(this._itemSizes);
             }
 
-            this.scrollSize =
-                (this._rawScrollSize = this.getOffset(itemCount)) +
-                this._stickyOffset;
+            this._rawScrollSize = this.getOffset(itemCount);
+            this.scrollSize = this._rawScrollSize + this._stickyOffset;
 
             this._run(Event.SCROLL_SIZE);
 
             if (this.to > itemCount) {
-                /*
-                    We already reached scroll end. It is possible to scroll only backwards at this moment.
-                    So will let overscan help us here;
-                */
-                this.from = MAX_ITEM_COUNT;
-                this._updateRangeFromStart();
+                this.to = -1;
             }
+
+            this._updateRangeFromEnd();
         }
 
         if (horizontal !== undefined && this.horizontal !== horizontal) {

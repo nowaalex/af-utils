@@ -7,7 +7,7 @@ import { EVT_ALL, Event } from "constants/";
 import { useSyncExternalStore } from "use-sync-external-store/shim/index.js";
 import type List from "models/List";
 
-const useComponentSubscription = (model: List, events: Array<Event>) => {
+const useComponentSubscription = (model: List, events: Event[]) => {
     events ||= EVT_ALL;
 
     // szudzik pair
