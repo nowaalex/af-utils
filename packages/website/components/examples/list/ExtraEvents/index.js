@@ -37,7 +37,7 @@ const ExtraEvents = () => {
                         {() => (
                             <>
                                 Rendered {rows.to - rows.from} items. Range:{" "}
-                                {rows.from} - ${rows.to}
+                                {rows.from} - {rows.to}
                             </>
                         )}
                     </Subscription>
