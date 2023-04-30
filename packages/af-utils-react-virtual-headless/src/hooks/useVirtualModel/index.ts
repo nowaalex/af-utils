@@ -1,7 +1,9 @@
 import { useRef } from "react";
-import List, { ListInitialParams } from "models/List";
+import VirtualScroller, {
+    VirtualScrollerInitialParams
+} from "models/VirtualScroller";
 
-const useVirtualModel = (params: ListInitialParams) =>
-    (useRef<List>().current ||= new List(params));
+const useVirtualModel = (params: VirtualScrollerInitialParams) =>
+    (useRef<VirtualScroller>().current ||= new VirtualScroller(params));
 
 export default useVirtualModel;

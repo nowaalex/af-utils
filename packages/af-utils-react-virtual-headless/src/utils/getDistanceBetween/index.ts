@@ -1,5 +1,5 @@
 import type { ScrollToKey, ScrollKey } from "constants/";
-import type { ScrollElement } from "models/List";
+import type { ScrollElement } from "models/VirtualScroller";
 
 const getElementOffset = (element: Element, scrollToKey: ScrollToKey) =>
     element.getBoundingClientRect()[scrollToKey];

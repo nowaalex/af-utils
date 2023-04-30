@@ -1,8 +1,9 @@
 {
-    "include": ["src"],
+    "include": ["src", "./decs.d.ts"],
     "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
     "compilerOptions": {
         "lib": ["DOM"],
+        "jsx": "react-jsx",
         "baseUrl": "src",
         "moduleResolution": "node",
         "outDir": "lib",

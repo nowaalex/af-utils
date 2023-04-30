@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-headless
 
+## 0.1.12
+
+### Patch Changes
+
+-   added tsdoc, moved List to typescript, removed prop-types
+
 ## 0.1.11
 
 ### Patch Changes

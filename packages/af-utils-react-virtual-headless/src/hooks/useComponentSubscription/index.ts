@@ -5,9 +5,9 @@ import { EVT_ALL, Event } from "constants/";
     BREAKING CHANGE: The request 'use-sync-external-store/shim' failed to resolve only because it was resolved as fully specified
 */
 import { useSyncExternalStore } from "use-sync-external-store/shim/index.js";
-import type List from "models/List";
+import type VirtualScroller from "models/VirtualScroller";
 
-const useComponentSubscription = (model: List, events: Event[]) => {
+const useComponentSubscription = (model: VirtualScroller, events: Event[]) => {
     events ||= EVT_ALL;
 
     // szudzik pair

@@ -1,16 +1,6 @@
-const plugins = [
-    ["module-resolver", { root: ["./src"] }],
-    "@babel/plugin-transform-runtime",
-    [
-        "transform-react-remove-prop-types",
-        {
-            mode: "unsafe-wrap"
-        }
-    ]
-];
+const plugins = ["@babel/plugin-transform-runtime"];
 
 const presets = [
-    ["@babel/preset-react", { runtime: "automatic" }],
     [
         "@babel/preset-env",
         {

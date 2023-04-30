@@ -1,13 +1,12 @@
-import PropTypes from "prop-types";
-
 import {
     Subscription,
     mapVisibleRange,
     EVT_SCROLL_SIZE,
-    EVT_RANGE
+    EVT_RANGE,
+    VirtualScroller
 } from "@af-utils/react-virtual-headless";
-
 import { css, cx } from "@af-utils/styled";
+import { ElementType, ReactElement } from "react";
 
 const verticalWrapperClass = css("overflow: auto", "position: relative");
 
@@ -54,6 +53,19 @@ const RANGE_EVENTS = [EVT_RANGE];
 
 const SCROLL_SIZE_EVENTS = [EVT_SCROLL_SIZE];
 
+type ListProps = {
+    model: VirtualScroller;
+    children: ElementType;
+    itemData?: any;
+    getKey?: (index: number, itemData: any) => string | number;
+    component?: ElementType;
+    header?: ReactElement | null;
+    footer?: ReactElement | null;
+    className?: string;
+    tabIndex?: number;
+    [restProps: string]: any;
+};
+
 const List = ({
     model,
     children: Item,
@@ -65,7 +77,7 @@ const List = ({
     getKey = i => i,
     tabIndex = -1,
     ...props
-}) => {
+}: ListProps) => {
     const [primaryAxis, baseClassName, scrollClassName, offsetClassName] =
         model.horizontal ? HORIZONTAL_PROPS : VERTICAL_PROPS;
 
@@ -109,18 +121,6 @@ const List = ({
             {footer}
         </Component>
     );
-};
-
-List.propTypes = {
-    model: PropTypes.object.isRequired,
-    children: PropTypes.elementType.isRequired,
-    getKey: PropTypes.func,
-    component: PropTypes.elementType,
-    header: PropTypes.element,
-    footer: PropTypes.element,
-    className: PropTypes.string,
-    itemData: PropTypes.any,
-    tabIndex: PropTypes.number
 };
 
 export default List;

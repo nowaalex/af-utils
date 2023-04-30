@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { Event } from "constants/";
-import type List from "models/List";
+import type { Event } from "constants/";
+import type VirtualScroller from "models/VirtualScroller";
 
 const useSubscription = (
-    model: List,
-    events: Array<Event>,
+    model: VirtualScroller,
+    events: Event[],
     callBack: () => void
 ) =>
     useEffect(() => {

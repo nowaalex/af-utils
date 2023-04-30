@@ -1,8 +1,8 @@
 import useVirtualModel from "hooks/useVirtualModel";
 import useIsomorphicLayoutEffect from "hooks/useIsomorphicLayoutEffect";
-import type { ListInitialParams } from "models/List";
+import type { VirtualScrollerInitialParams } from "models/VirtualScroller";
 
-const useVirtual = (params: ListInitialParams) => {
+const useVirtual = (params: VirtualScrollerInitialParams) => {
     const model = useVirtualModel(params);
 
     useIsomorphicLayoutEffect(() => model.set(params));

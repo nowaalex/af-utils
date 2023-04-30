@@ -1,10 +1,12 @@
 const shiki = require("shiki");
 
+const theme = "one-dark-pro";
+
 function highlight(content, map, meta) {
     const callback = this.async();
     shiki
         .getHighlighter({
-            theme: "one-dark-pro"
+            theme
         })
         .then(highlighter => {
             const tokens = highlighter.codeToThemedTokens(content, "tsx");
@@ -24,7 +26,7 @@ function highlight(content, map, meta) {
 					...props,
 					style: {
 						...props.style,
-						background: "${highlighter.getBackgroundColor("one-dark-pro")}"
+						background: "${highlighter.getBackgroundColor(theme)}"
 					},
 					tabIndex: props.tabIndex || 0,
 					dangerouslySetInnerHTML: { __html: ${JSON.stringify(str)} }

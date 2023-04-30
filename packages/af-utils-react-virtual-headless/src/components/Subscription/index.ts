@@ -1,16 +1,16 @@
 import useComponentSubscription from "hooks/useComponentSubscription";
-import List from "models/List";
-import { Event } from "constants/";
-import type { ReactNode } from "react";
+import type List from "models/VirtualScroller";
+import type { Event } from "constants/";
 
 type SubscriptionProps = {
     model: List;
     events: Event[];
-    children: () => ReactNode;
+    children: () => JSX.Element;
 };
 
-const Subscription = (props: SubscriptionProps) => (
-    useComponentSubscription(props.model, props.events), props.children()
-);
+const Subscription = (props: SubscriptionProps) => {
+    useComponentSubscription(props.model, props.events);
+    return props.children();
+};
 
 export default Subscription;

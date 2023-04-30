@@ -1,4 +1,4 @@
-import type List from "models/List";
+import type List from "models/VirtualScroller";
 import type { ReactElement } from "react";
 
 const mapVisibleRange = (
@@ -15,7 +15,7 @@ const mapVisibleRange = (
             delta += model.getSize(from++);
         }
     } else {
-        for (; from < to; ) {
+        while (from < to) {
             result.push(cb(from++, 0));
         }
     }

@@ -1,14 +1,14 @@
-import List from "./index";
+import VirtualScroller from "./index";
 
-describe("List creation works", () => {
+describe("VirtualScroller creation works", () => {
     test("constructor without params works", () => {
-        expect(() => new List()).not.toThrow();
+        expect(() => new VirtualScroller()).not.toThrow();
     });
 
     test("constructor with params works", () => {
         expect(
             () =>
-                new List({
+                new VirtualScroller({
                     estimatedWidgetSize: 200,
                     estimatedScrollElementOffset: 300
                 })

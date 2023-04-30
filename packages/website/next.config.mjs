@@ -15,7 +15,7 @@ const withMDX = nextMdx({
         providerImportSource: "@mdx-js/react",
         remarkPlugins: [remarkGfm, remarkToc],
         rehypePlugins: [
-            [rehypePrettyCode, { theme: "one-dark-pro" }],
+            [rehypePrettyCode, { theme: "one-dark-pro", keepBackground: true }],
             rehypeSlug
         ]
     }

@@ -1,4 +1,5 @@
 export { default as mapVisibleRange } from "utils/mapVisibleRange";
+export { default as VirtualScroller } from "models/VirtualScroller";
 
 export { default as useVirtual } from "hooks/useVirtual";
 export { default as useVirtualModel } from "hooks/useVirtualModel";

@@ -18,10 +18,10 @@ You can work with it directly or delegate rendering to [List](/virtual/list) or 
 
 ```bash
 # npm
-npm i -S @af-utils/react-virtual-headless prop-types use-sync-external-store
+npm i -S @af-utils/react-virtual-headless use-sync-external-store
 
 # yarn
-yarn add @af-utils/react-virtual-headless prop-types use-sync-external-store
+yarn add @af-utils/react-virtual-headless use-sync-external-store
 ```
 
 <p className="clear-both" />
@@ -43,23 +43,23 @@ const model = useVirtual({
 });
 ```
 
-### `itemCount: Integer`
+### `itemCount: number`
 
 Quantity of items. Defaults to `0`.
 
-### `estimatedItemSize: Integer`
+### `estimatedItemSize: number`
 
 Best-guess item size. Defaults to `40`.
 
-### `overscanCount: Integer`
+### `overscanCount: number`
 
 Minimum amount of items to load behind/ahead(depends on scroll direction) of the current visible range. Defaults to `3`. [Example](/virtual/examples/list/ExtraEvents).
 
-### `horizontal: Boolean`
+### `horizontal: boolean`
 
 Determines, whether scrollTop/offsetHeight or scrollLeft/offsetWidth are used in calculations. Defaults to `false`.
 
-### `estimatedWidgetSize: Integer`
+### `estimatedWidgetSize: number`
 
 Widget size to use before ResizeObserver measurements are ready.
 Used mainly for server-side rendering. Defaults to `200`.
@@ -68,61 +68,61 @@ Used mainly for server-side rendering. Defaults to `200`.
 
 Scroller model instance with following public props:
 
-### `from: Integer`
+### `from: number`
 
 Items range start.
 
-### `to: Integer`
+### `to: number`
 
 Items range end.
 
-### `scrollSize: Integer`
+### `scrollSize: number`
 
 Sum of all item sizes.
 
-### `el: Function(index: Integer, element: Element) => void`
+### `el: (index: number, element: Element) => void`
 
 Start observing size of `element` at `index`. Observing is finished if `element` is falsy.
 
-### `setStickyHeader: Function(element: Element) => void`
+### `setStickyHeader: (element: Element) => void`
 
 Start observing size of sticky header element. Observing is finished if `element` is falsy.
 
-### `setStickyFooter: Function(element: Element) => void`
+### `setStickyFooter: (element: Element) => void`
 
 Start observing size of sticky footer element. Observing is finished if `element` is falsy.
 
-### `getIndex: Function(offset: Integer) => Integer`
+### `getIndex: Function(offset: number) => number`
 
 Get element index pixel offset.
 
-### `getOffset: Function(index: Integer) => Integer`
+### `getOffset: Function(index: number) => number`
 
 Get pixel offset for element index.
 
-### `getSize: Function(index: Integer) => Integer`
+### `getSize: Function(index: number) => number`
 
 Get cached size for element at index.
 
-### `visibleFrom: Getter() => Double`
+### `visibleFrom: Getter() => number`
 
 Get snapshot of current scroll position. For example `5.3` stands for element at index `5` + `30%` of its height.
 Used to remember scroll position before prepending elements.
 [Example](/virtual/examples/list/PrependItems).
 
-### `scrollTo: Function(index: Double, smooth: Boolean ) => void`
+### `scrollTo: (index: Double, smooth: Boolean ) => void`
 
 Scroll to element at certain index. For example `3.6` will scroll to element at index `3` plus `60%` of its height.
 
-### `setScroller: Bound Function(el: HTMLElement | Window) => void`
+### `setScroller: (el: HTMLElement | Window) => void`
 
 Pass scrollable element to model. Must be attached to outermost element with `overflow: auto{:sass}`.
 
-### `setContainer: Bound Function(el: Element) => void`
+### `setContainer: Function(el: Element) => void`
 
 Should be used ONLY if scroller is located outside (for example window scroll). Needed for proper top/left offset calculation.
 
-### `set: Function(params: Object) => void`
+### `set: (params: Object) => void`
 
 Manually updates model params. Should be used **ONLY** with [`useVirtualModel`](#usevirtualmodel).
 Accepts all params of [`useVirtual`](#usevirtual) except [`estimatedWidgetSize`](#estimatedwidgetsize-integer).
@@ -134,7 +134,7 @@ Accepts all params of [`useVirtual`](#usevirtual) except [`estimatedWidgetSize`]
 Low-level react hook, used by [`useVirtual`](#usevirtual) internally. Accepts same params, but without synchronization with props.
 [Usage example](/virtual/examples/list/PrependItems). Difference and interconnection between these 2 hooks:
 
-```
+```ts
 import { useLayoutEffect } from "react";
 import useVirtualModel from "../useVirtualModel";
 
@@ -163,7 +163,7 @@ mapVisibleRange(model, callback, provideOffset);
 
 **Required**. Function called for each visible element index.
 
-### `countOffset: Boolean`
+### `countOffset: boolean`
 
 Should provide offset to callback or not. Needed for lists, where each item is absolutely positioned. Defaults to: `false`.
 
@@ -206,11 +206,11 @@ useSubscription(model, events, callback);
 
 **Required**. Return value of [`useVirtual`](#usevirtual).
 
-### `events: Integer[]`
+### `events: number[]`
 
 **Required**. Array of [events](#numeric-event-constants) to subscribe
 
-### `callback: Function() => void`
+### `callback: () => void`
 
 Gets called when at least one of [events](#numeric-event-constants) gets triggered. In case you do not want to subscribe - pass `null`.
 
@@ -230,7 +230,7 @@ useScroller(model, window);
 
 Rerendered, when at least one of passed [events](#numeric-event-constants) is triggered. [Example](/virtual/examples/list/ExtraEvents).
 
-```jsx
+```tsx
 <Subscription model={model} events={events}>
     {() => {}}
 </Subscription>
@@ -240,11 +240,11 @@ Rerendered, when at least one of passed [events](#numeric-event-constants) is tr
 
 **Required**. Return value of [`useVirtual`](#usevirtual).
 
-### `children: Function() => ReactElement`
+### `children: () => ReactElement`
 
 **Required**. Render prop.
 
-### `events: Integer[]`
+### `events: number[]`
 
 **Required**. Defaults to: [`EVT_ALL`](#numeric-event-constants)
 

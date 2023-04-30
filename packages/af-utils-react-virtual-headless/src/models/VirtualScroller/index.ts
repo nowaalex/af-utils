@@ -23,14 +23,14 @@ import Batch from "singletons/Batch";
 
 export type ScrollElement = HTMLElement & Window;
 
-export type ListRuntimeParams = {
+export type VirtualScrollerRuntimeParams = {
     overscanCount?: number;
     horizontal?: boolean;
     itemCount?: number;
     estimatedItemSize?: number;
 };
 
-export type ListInitialParams = ListRuntimeParams & {
+export type VirtualScrollerInitialParams = VirtualScrollerRuntimeParams & {
     estimatedWidgetSize?: number;
     estimatedScrollElementOffset?: number;
 };
@@ -94,7 +94,8 @@ const getBoxSize = (
     borderBox: readonly ResizeObserverSize[],
     sizeKey: ResizeObserverSizeKey
 ) => Math.round(borderBox[0][sizeKey]);
-class List {
+
+class VirtualScroller {
     private _scrollElementSizeKey: ScrollElementSizeKey =
         ScrollElementSizeKeysOrdered[0];
     private _scrollKey: ScrollKey = ScrollKeysOrdered[0];
@@ -138,17 +139,25 @@ class List {
     private _itemSizes = EMPTY_TYPED_ARRAY;
     private _fTree = EMPTY_TYPED_ARRAY;
 
-    /*
-        most significant bit of this._itemCount;
-        caching it to avoid Math.clz32 calculations on every getIndex call
-    */
+    /**
+     * Most significant bit of this._itemCount;
+     * caching it to avoid Math.clz32 calculations on every getIndex call
+     */
     private _msb = 0;
 
+    /** Scroll direction */
     horizontal = false;
 
+    /** Sum of all item sizes */
     scrollSize = 0;
+
+    /** Items range start */
     from = 0;
+
+    /** Items range end */
     to = 0;
+
+    /** Hash of item sizes. Changed when at least one visible item is resized. */
     sizesHash = 0;
 
     private _elToIdx = new Map<Element, number>();
@@ -246,6 +255,14 @@ class List {
 
     private _EventsList: (() => void)[][] = EVT_ALL.map(() => []);
 
+    /**
+     * Update property names for resize events, dimensions and scroll position extraction
+     *
+     * @remarks
+     *
+     * `window.resize` event must be used for window scroller, `ResizeObserver` must be used in other cases.
+     * `offsetWidth` is used as item size in horizontal mode, `offsetHeight` - in vertical.
+     */
     private _updatePropertyKeys() {
         const h = +this.horizontal;
         const w = +(this._scrollElement instanceof Window);
@@ -282,7 +299,7 @@ class List {
 
     private _unobserveResize = () => {};
 
-    constructor(params?: ListInitialParams) {
+    constructor(params?: VirtualScrollerInitialParams) {
         // stickyOffset is included;
 
         if (params) {
@@ -294,10 +311,18 @@ class List {
         }
     }
 
-    on(callBack: () => void, deps: Event[]) {
-        deps.forEach(evt => this._EventsList[evt].push(callBack));
+    /**
+     * Subscribe to model events
+     *
+     * @param callBack - event to be triggered
+     * @param events - events to subscribe
+     *
+     * @returns unsubscribe function
+     */
+    on(callBack: () => void, events: Event[]) {
+        events.forEach(evt => this._EventsList[evt].push(callBack));
         return () =>
-            deps.forEach(evt =>
+            events.forEach(evt =>
                 this._EventsList[evt].splice(
                     this._EventsList[evt].indexOf(callBack),
                     1
@@ -305,10 +330,22 @@ class List {
             );
     }
 
-    private _run(evt: Event) {
-        this._EventsList[evt].forEach(Batch._level === 0 ? call : Batch._queue);
+    /**
+     * Call all `event` subscribers
+     * @param event - event to emit
+     */
+    private _run(event: Event) {
+        this._EventsList[event].forEach(
+            Batch._level === 0 ? call : Batch._queue
+        );
     }
 
+    /**
+     * Get item index by pixel offset
+     *
+     * @param offset - pixel offset
+     * @returns item index
+     */
     getIndex(offset: number) {
         if (offset <= 0) {
             return 0;
@@ -337,6 +374,12 @@ class List {
         return index;
     }
 
+    /**
+     * Get pixel offset by item index
+     *
+     * @param index - item index
+     * @returns pixel offset
+     */
     getOffset(index: number) {
         if (process.env.NODE_ENV !== "production") {
             assert(index <= this._itemCount, "index must not be > itemCount");
@@ -351,6 +394,10 @@ class List {
         return result;
     }
 
+    /**
+     * @param itemIndex - item index
+     * @returns last cached item size
+     */
     getSize(itemIndex: number) {
         if (process.env.NODE_ENV !== "production") {
             assert(
@@ -361,6 +408,16 @@ class List {
         return this._itemSizes[itemIndex];
     }
 
+    /**
+     * Get snapshot of current scroll position.
+     *
+     * @remarks
+     *
+     * For example `5.3` stands for item at index `5` + `30%` of its size.
+     * Used to remember scroll position before prepending elements.
+     *
+     * @returns visible item index (double number)
+     */
     get visibleFrom() {
         const firstVisibleIndex = this._exactFrom;
         return (
@@ -370,6 +427,9 @@ class List {
         );
     }
 
+    /**
+     * Synchronize current scroll position with visible range
+     */
     private _syncScrollPosition = () => {
         /*
             scrollElement may not be null here.
@@ -456,18 +516,23 @@ class List {
         }
     }
 
-    el(i: number, element: Element) {
-        const oldElement = this._idxToEl.get(i);
+    /**
+     * Start observing size of `element` at `index`. Observing is finished if element is falsy.
+     * @param index - item index
+     * @param element - element for item
+     */
+    el(index: number, element: Element) {
+        const oldElement = this._idxToEl.get(index);
 
         if (oldElement) {
-            this._idxToEl.delete(i);
+            this._idxToEl.delete(index);
             this._elToIdx.delete(oldElement);
             this._ElResizeObserver.unobserve(oldElement);
         }
 
         if (element) {
-            this._elToIdx.set(element, i);
-            this._idxToEl.set(i, element);
+            this._elToIdx.set(element, index);
+            this._idxToEl.set(index, element);
             this._ElResizeObserver.observe(element, OBSERVE_OPTIONS);
         }
     }
@@ -490,18 +555,34 @@ class List {
         }
     }
 
+    /**
+     * Start observing size of sticky header `element`. Observing is finished if element is falsy.
+     * @param element - header element
+     */
     setStickyHeader(element: Element) {
         this._stickyEl(STICKY_HEADER_INDEX, element);
     }
 
+    /**
+     * Start observing size of sticky footer `element`. Observing is finished if element is falsy.
+     * @param element - footer element
+     */
     setStickyFooter(element: Element) {
         this._stickyEl(STICKY_FOOTER_INDEX, element);
     }
 
+    /**
+     * Get first visible item index (without overscan)
+     * @returns first visible item index
+     */
     private get _exactFrom() {
         return this.getIndex(this._alignedScrollPos);
     }
 
+    /**
+     * Get last visible item index (without overscan)
+     * @returns last visible item index
+     */
     private get _exactTo() {
         return (
             this._itemCount &&
@@ -512,10 +593,10 @@ class List {
         );
     }
 
-    /*
-        Used when scrolling down/right;
-        adds overscan reserve forward to reduce rerenders quantity
-    */
+    /**
+     * Used to update current visible items range when scrolling down/right;
+     * adds overscan reserve forward to reduce rerenders quantity
+     */
     private _updateRangeFromEnd() {
         const { _exactTo } = this;
 
@@ -526,10 +607,10 @@ class List {
         }
     }
 
-    /*
-        Used when scrolling up/left;
-        adds overscan reserve backward to reduce rerenders quantity
-    */
+    /**
+     * Used to update current visible items range when scrolling up/left;
+     * adds overscan reserve backward to reduce rerenders quantity
+     */
     private _updateRangeFromStart() {
         const { _exactFrom } = this;
 
@@ -540,6 +621,13 @@ class List {
         }
     }
 
+    /**
+     * Scroll to item index
+     *
+     * @param index - item index to scroll to
+     * @param smooth - should smooth scroll be used
+     * @param attemptsLeft - should not be used
+     */
     scrollTo(index: number, smooth?: boolean, attemptsLeft?: number) {
         clearTimeout(this._scrollToTimer);
         attemptsLeft ??= SCROLL_TO_MAX_ATTEMPTS;
@@ -571,12 +659,16 @@ class List {
         }
     }
 
+    /**
+     * Synchronize runtime parameters
+     * @param runtimeParams - runtime parameters
+     */
     set({
         overscanCount,
         horizontal,
         itemCount,
         estimatedItemSize
-    }: ListRuntimeParams) {
+    }: VirtualScrollerRuntimeParams) {
         Batch._start();
 
         if (estimatedItemSize) {
@@ -634,4 +726,4 @@ class List {
     }
 }
 
-export default List;
+export default VirtualScroller;

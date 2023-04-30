@@ -34,11 +34,12 @@ const ExtraEvents = () => {
                     ref={el => rows.setStickyHeader(el)}
                 >
                     <Subscription model={rows} events={[EVT_RANGE]}>
-                        {() =>
-                            `Rendered ${rows.to - rows.from} items. Range: ${
-                                rows.from
-                            } - ${rows.to}`
-                        }
+                        {() => (
+                            <>
+                                Rendered {rows.to - rows.from} items. Range:{" "}
+                                {rows.from} - ${rows.to}
+                            </>
+                        )}
                     </Subscription>
                 </div>
             }
@@ -49,7 +50,7 @@ const ExtraEvents = () => {
                 >
                     Scroll size:{" "}
                     <Subscription model={rows} events={[EVT_SCROLL_SIZE]}>
-                        {() => rows.scrollSize}
+                        {() => <>{rows.scrollSize}</>}
                     </Subscription>
                     px
                 </div>
