@@ -1,5 +1,6 @@
 import type { ScrollToKey, ScrollKey } from "constants/";
 import type { ScrollElement } from "models/VirtualScroller";
+import isElement from "utils/isElement";
 
 const getElementOffset = (element: Element, scrollToKey: ScrollToKey) =>
     element.getBoundingClientRect()[scrollToKey];
@@ -22,7 +23,7 @@ const getDistanceBetween = (
         scrollElement[scrollKey] +
         Math.round(
             getElementOffset(containerElement, scrollToKey) -
-                (scrollElement instanceof Element
+                (isElement(scrollElement)
                     ? getElementOffset(scrollElement, scrollToKey)
                     : 0)
         )

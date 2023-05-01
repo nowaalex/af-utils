@@ -57,7 +57,7 @@
         "babel-plugin-module-resolver": "^5.0.0",
         "jest": "^29.5.0",
         "lodash": "^4.17.21",
-        "rollup": "^3.21.1"
+        "rollup": "^3.21.2"
     },
     "publishConfig": {
         "access": "public"

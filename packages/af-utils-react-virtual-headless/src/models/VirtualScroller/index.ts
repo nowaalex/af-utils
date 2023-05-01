@@ -16,6 +16,7 @@ import FinalResizeObserver from "models/ResizeObserver";
 import call from "utils/call";
 import assert from "utils/assert";
 import observeResize from "utils/observeResize";
+import isElement from "utils/isElement";
 import growTypedArray from "utils/growTypedArray";
 import { build as buildFtree, update, getLiftingLimit } from "utils/fTree";
 import getDistanceBetween from "utils/getDistanceBetween";
@@ -25,12 +26,12 @@ export type ScrollElement = HTMLElement & Window;
 
 export type VirtualScrollerRuntimeParams = {
     overscanCount?: number;
-    horizontal?: boolean;
     itemCount?: number;
     estimatedItemSize?: number;
 };
 
 export type VirtualScrollerInitialParams = VirtualScrollerRuntimeParams & {
+    horizontal?: boolean;
     estimatedWidgetSize?: number;
     estimatedScrollElementOffset?: number;
 };
@@ -94,6 +95,12 @@ const getBoxSize = (
     borderBox: readonly ResizeObserverSize[],
     sizeKey: ResizeObserverSizeKey
 ) => Math.round(borderBox[0][sizeKey]);
+
+const getAvailableWidgetSize = (
+    scrollElement: ScrollElement,
+    sizeKey: ScrollElementSizeKey,
+    stickyOffset: number
+) => scrollElement[sizeKey] - stickyOffset;
 
 class VirtualScroller {
     private _scrollElementSizeKey: ScrollElementSizeKey =
@@ -264,8 +271,8 @@ class VirtualScroller {
      * `offsetWidth` is used as item size in horizontal mode, `offsetHeight` - in vertical.
      */
     private _updatePropertyKeys() {
-        const h = +this.horizontal;
-        const w = +(this._scrollElement instanceof Window);
+        const h = this.horizontal ? 1 : 0;
+        const w = isElement(this._scrollElement) ? 0 : 1;
         const i = h + 2 * w;
 
         this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
@@ -274,10 +281,13 @@ class VirtualScroller {
         this._scrollToKey = ScrollToKeysOrdered[h];
     }
 
-    private _updateWidgetSize = () => {
-        const availableWidgetSize =
-            (this._scrollElement as ScrollElement)[this._scrollElementSizeKey] -
-            this._stickyOffset;
+    private _handleScrollElementResize = () => {
+        const availableWidgetSize = getAvailableWidgetSize(
+            // casting type here because this stuff is used only as scrollElement resize event handler
+            this._scrollElement as ScrollElement,
+            this._scrollElementSizeKey,
+            this._stickyOffset
+        );
 
         if (availableWidgetSize !== this._availableWidgetSize) {
             this._availableWidgetSize = availableWidgetSize;
@@ -300,9 +310,9 @@ class VirtualScroller {
     private _unobserveResize = () => {};
 
     constructor(params?: VirtualScrollerInitialParams) {
-        // stickyOffset is included;
-
         if (params) {
+            this.horizontal = !!params.horizontal;
+            // stickyOffset is included;
             this._scrollElementOffset =
                 params.estimatedScrollElementOffset || 0;
             this._availableWidgetSize =
@@ -442,10 +452,9 @@ class VirtualScroller {
                 ) - this._scrollElementOffset;
 
         if (newAlignedScrollPos !== curAlignedScrollPos) {
-            if (
-                (this._alignedScrollPos = newAlignedScrollPos) >
-                curAlignedScrollPos
-            ) {
+            this._alignedScrollPos = newAlignedScrollPos;
+
+            if (newAlignedScrollPos > curAlignedScrollPos) {
                 this._updateRangeFromEnd();
             } else {
                 this._updateRangeFromStart();
@@ -459,19 +468,19 @@ class VirtualScroller {
     */
     setScroller = (element: ScrollElement | null) => {
         if (element !== this._scrollElement) {
-            if (this._scrollElement) {
-                this._unobserveResize();
-                this._scrollElement.removeEventListener(
-                    "scroll",
-                    this._syncScrollPosition
-                );
-            }
+            this._unobserveResize();
+            this._scrollElement?.removeEventListener(
+                "scroll",
+                this._syncScrollPosition
+            );
 
-            if ((this._scrollElement = element)) {
+            this._scrollElement = element;
+
+            if (element) {
                 this._updatePropertyKeys();
                 this._unobserveResize = /*@__NOINLINE__*/ observeResize(
                     element,
-                    this._updateWidgetSize
+                    this._handleScrollElementResize
                 );
                 element.addEventListener(
                     "scroll",
@@ -521,7 +530,7 @@ class VirtualScroller {
      * @param index - item index
      * @param element - element for item
      */
-    el(index: number, element: Element) {
+    el(index: number, element: Element | null) {
         const oldElement = this._idxToEl.get(index);
 
         if (oldElement) {
@@ -622,15 +631,24 @@ class VirtualScroller {
     }
 
     /**
-     * Scroll to item index
+     * Scroll to pixel offset
      *
-     * @param index - item index to scroll to
+     * @param offset - offset to scroll to
      * @param smooth - should smooth scroll be used
-     * @param attemptsLeft - should not be used
      */
-    scrollTo(index: number, smooth?: boolean, attemptsLeft?: number) {
+    scrollToOffset(offset: number, smooth?: boolean) {
+        this._scrollElement?.scroll({
+            [this._scrollToKey]: this._scrollElementOffset + offset,
+            behavior: smooth ? "smooth" : undefined
+        });
+    }
+
+    _attemptToScrollToIndex(
+        attemptsLeft: number,
+        index: number,
+        smooth?: boolean
+    ) {
         clearTimeout(this._scrollToTimer);
-        attemptsLeft ??= SCROLL_TO_MAX_ATTEMPTS;
 
         const whole = index | 0;
         const desiredScrollPos = Math.min(
@@ -644,14 +662,10 @@ class VirtualScroller {
             this._scrollElement &&
             --attemptsLeft
         ) {
-            this._scrollElement.scroll({
-                [this._scrollToKey]:
-                    this._scrollElementOffset + desiredScrollPos,
-                behavior: smooth ? "smooth" : undefined
-            });
+            this.scrollToOffset(desiredScrollPos, smooth);
 
             this._scrollToTimer = setTimeout(
-                () => this.scrollTo(index, smooth, attemptsLeft),
+                () => this._attemptToScrollToIndex(attemptsLeft, index, smooth),
                 smooth
                     ? SMOOTH_SCROLL_CHECK_TIMER
                     : NON_SMOOTH_SCROLL_CHECK_TIMER
@@ -660,27 +674,23 @@ class VirtualScroller {
     }
 
     /**
-     * Synchronize runtime parameters
-     * @param runtimeParams - runtime parameters
+     * Scroll to item index
+     *
+     * @param index - item index to scroll to
+     * @param smooth - should smooth scroll be used
      */
-    set({
-        overscanCount,
-        horizontal,
-        itemCount,
-        estimatedItemSize
-    }: VirtualScrollerRuntimeParams) {
-        Batch._start();
+    scrollToIndex(index: number, smooth?: boolean) {
+        this._attemptToScrollToIndex(SCROLL_TO_MAX_ATTEMPTS, index, smooth);
+    }
 
-        if (estimatedItemSize) {
-            // must not be falsy, so not checking for undefined here.
-            this._estimatedItemSize = estimatedItemSize;
-        }
+    /**
+     * Notify model about items quantity change
+     * @param itemCount - new items quantity
+     */
+    setItemCount(itemCount: number) {
+        if (this._itemCount !== itemCount) {
+            Batch._start();
 
-        if (overscanCount !== undefined) {
-            this._overscanCount = overscanCount;
-        }
-
-        if (itemCount !== undefined && this._itemCount !== itemCount) {
             assert(
                 itemCount <= MAX_ITEM_COUNT,
                 `itemCount must be <= ${MAX_ITEM_COUNT}. Got: ${itemCount}.`
@@ -704,25 +714,37 @@ class VirtualScroller {
             this._run(Event.SCROLL_SIZE);
 
             if (this.to > itemCount) {
+                // after this range would be 100% updated
                 this.to = -1;
             }
 
             this._updateRangeFromEnd();
+
+            Batch._end();
+        }
+    }
+
+    /**
+     * Synchronize runtime parameters
+     * @param runtimeParams - runtime parameters
+     */
+    set({
+        overscanCount,
+        itemCount,
+        estimatedItemSize
+    }: VirtualScrollerRuntimeParams) {
+        if (estimatedItemSize) {
+            // must not be falsy, so not checking for undefined here.
+            this._estimatedItemSize = estimatedItemSize;
         }
 
-        if (horizontal !== undefined && this.horizontal !== horizontal) {
-            this.horizontal = horizontal;
-            this._updatePropertyKeys();
-
-            if (this._scrollElement) {
-                /* TODO: Needs testing */
-                this._updateWidgetSize();
-            }
-
-            this.scrollTo(0);
+        if (overscanCount !== undefined) {
+            this._overscanCount = overscanCount;
         }
 
-        Batch._end();
+        if (itemCount !== undefined) {
+            this.setItemCount(itemCount);
+        }
     }
 }
 

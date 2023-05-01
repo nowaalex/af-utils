@@ -58,7 +58,7 @@ const SimpleTable = () => {
                 className="shrink-0 flex gap-4 p-2 bg-gray-200"
                 onSubmit={e => {
                     e.preventDefault();
-                    model.scrollTo(+e.currentTarget.idx.value, true);
+                    model.scrollToIndex(+e.currentTarget.idx.value, true);
                 }}
             >
                 <input type="number" min={0} max={99999} name="idx" />

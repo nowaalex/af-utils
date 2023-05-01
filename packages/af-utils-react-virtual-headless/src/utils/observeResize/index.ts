@@ -1,9 +1,10 @@
 import FinalResizeObserver from "models/ResizeObserver";
+import isElement from "utils/isElement";
 
 const observeResize = (target: Element | Window, callback: () => void) => {
-    if (target instanceof Element) {
+    if (isElement(target)) {
         const RO = new FinalResizeObserver(callback);
-        RO.observe(target);
+        RO.observe(target as Element);
         return () => RO.disconnect();
     }
     // resizeObserver has required 1st call

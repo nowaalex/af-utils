@@ -50,7 +50,7 @@
         "babel-jest": "^29.5.0",
         "babel-plugin-module-resolver": "^5.0.0",
         "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-        "rollup": "^3.21.1"
+        "rollup": "^3.21.2"
     },
     "peerDependencies": {
         "@af-utils/react-table": "^1.0.3",

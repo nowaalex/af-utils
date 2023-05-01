@@ -40,7 +40,7 @@ const PrependButton = ({ model, items }) => {
         const newItems = await fetch100RandomItemsAsync();
         const desiredScrollPos = newItems.length + model.visibleFrom;
         model.set({ itemCount: items.unshift(...newItems) });
-        model.scrollTo(desiredScrollPos);
+        model.scrollToIndex(desiredScrollPos);
         setLoading(false);
     };
 

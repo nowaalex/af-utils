@@ -33,7 +33,7 @@ const ScrollToItem = () => {
     });
 
     useIsomorphicLayoutEffect(() => {
-        model.scrollTo(pseudoRandomSizes.length - 1);
+        model.scrollToIndex(pseudoRandomSizes.length - 1);
     }, [model, pseudoRandomSizes.length]);
 
     const scrollSubmitHandler = e => {
@@ -41,7 +41,7 @@ const ScrollToItem = () => {
         const idx = Number.parseInt(e.currentTarget.idx.value, 10);
 
         if (!Number.isNaN(idx)) {
-            model.scrollTo(idx, true);
+            model.scrollToIndex(idx, true);
         }
     };
 

@@ -20,4 +20,4 @@ https://af-utils.vercel.app/
 -   2d grid
 -   Easy ui libraries integration
 -   Vertical and horizontal scroll directions
--   `scrollTo(index, smooth = false)` method is available
+-   `scrollToIndex(index, smooth = false)` method is available

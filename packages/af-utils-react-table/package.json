@@ -59,7 +59,7 @@
         "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
         "jest": "^29.5.0",
         "lodash": "^4.17.21",
-        "rollup": "^3.21.1"
+        "rollup": "^3.21.2"
     },
     "peerDependencies": {
         "@af-utils/react-virtual-headless": "^0.1.11",
