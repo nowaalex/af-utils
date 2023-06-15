@@ -196,22 +196,21 @@ class VirtualScroller {
     });
 
     private _ElResizeObserver = new FinalResizeObserver(entries => {
-        let index = 0,
-            diff = 0,
-            buff = 0,
-            wasAtLeastOneSizeChanged = false,
-            lim = /*@__NOINLINE__*/ getLiftingLimit(
-                this._fTree,
-                this.from + 1,
-                this.to
-            );
+        let buff = 0,
+            wasAtLeastOneSizeChanged = false;
+
+        const lim = /*@__NOINLINE__*/ getLiftingLimit(
+            this._fTree,
+            this.from + 1,
+            this.to
+        );
 
         /*
             TODO: check perf of borderBoxSize vs offsetWidth/offsetHeight
         */
         for (const { target, borderBoxSize } of entries) {
             // cannot be undefined, because element is being added to this map before getting into ResizeObserver
-            index = this._elToIdx.get(target) as number;
+            const index = this._elToIdx.get(target) as number;
 
             /*
                 ResizeObserver may give us elements, which are not in visible range => will be unmounted soon.
@@ -219,7 +218,7 @@ class VirtualScroller {
                 This is done for performance + updateItemHeight hack would not work without it
             */
             if (index < lim) {
-                diff =
+                const diff =
                     getBoxSize(borderBoxSize, this._resizeObserverSizeKey) -
                     this._itemSizes[index];
                 if (diff) {
@@ -272,7 +271,7 @@ class VirtualScroller {
      */
     private _updatePropertyKeys() {
         const h = this.horizontal ? 1 : 0;
-        const w = isElement(this._scrollElement) ? 0 : 1;
+        const w = isElement(this._scrollElement as Element) ? 0 : 1;
         const i = h + 2 * w;
 
         this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
@@ -307,7 +306,9 @@ class VirtualScroller {
         }
     }
 
-    private _unobserveResize = () => {};
+    private _unobserveResize = () => {
+        // nothing to unobserve initially
+    };
 
     constructor(params?: VirtualScrollerInitialParams) {
         if (params) {

@@ -1,11 +1,12 @@
-import { useRef, memo } from "react";
+"use client";
+
+import { useRef, memo, ReactNode } from "react";
 import { VscMenu, VscClose } from "react-icons/vsc";
-import Menu from "/components/Menu";
+import Menu from "components/Menu";
 import Link from "next/link";
 
-// layouts are rendered in unoptimal way
 const Nav = memo(() => {
-    const defailsRef = useRef();
+    const defailsRef = useRef<HTMLDetailsElement>(null);
 
     return (
         <>
@@ -29,11 +30,12 @@ const Nav = memo(() => {
                         &nbsp;/&nbsp;virtual
                     </h2>
                 </summary>
+
                 <Menu
                     className="overflow-auto p-4 fixed inset-0 top-[61px] bg-white"
                     onClick={e => {
                         if (e.target.getAttribute("href")?.startsWith("/")) {
-                            defailsRef.current.removeAttribute("open");
+                            defailsRef.current?.removeAttribute("open");
                         }
                     }}
                 />
@@ -45,17 +47,16 @@ const Nav = memo(() => {
                         &nbsp;/&nbsp;virtual
                     </h1>
                 </div>
-
                 <Menu className="p-4" />
             </div>
         </>
     );
 });
 
-const Virtual = ({ children }) => (
-    <div className="h-screen flex flex-col lg:flex-row prose prose-zinc max-w-full">
+const Virtual = ({ children }: { children: ReactNode }) => (
+    <div className="h-screen flex">
         <Nav />
-        {children}
+        <div className="h-full grow">{children}</div>
     </div>
 );
 

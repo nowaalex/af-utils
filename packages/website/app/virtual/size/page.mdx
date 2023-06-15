@@ -1,5 +1,10 @@
-import CommonHead from "/components/CommonHead";
 import SizesTable from "/components/SizesTable";
+
+export const metadata = {
+    title: "Bundle size",
+    description:
+        "All packages were carefully optimized to be as small as possible. Exact sizes are provided here."
+};
 
 # Bundle size impact
 
@@ -23,16 +28,3 @@ const TERSER_OPTS = {
     }
 };
 ```
-
-export default ({ children }) => (
-    <>
-        <CommonHead
-            lib="virtual"
-            title="Bundle size"
-            description="All packages were carefully optimized to be as small as possible. Exact sizes are provided here."
-        />
-        {children}
-    </>
-);
-
-export const getStaticProps = () => ({ props: { dirtyMdxLayout: "virtual" } });

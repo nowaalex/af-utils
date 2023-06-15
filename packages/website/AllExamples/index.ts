@@ -1,13 +1,14 @@
 import dynamic from "next/dynamic";
-import startCase from "/utils/startCase";
+import startCase from "utils/startCase";
+import { ElementType } from "react";
 
-const EXCEPTIONS = {
+const EXCEPTIONS: Record<string, string> = {
     complexTable: "Complex Table (unstable)",
     StickyHeaderAndFooter: "Sticky Header and Footer"
-};
+} as const;
 
-const getPathInfo = path => {
-    const short = path.slice(2).replace(/\/[^/]+\.(js|mdx)$/, "");
+const getPathInfo = (path: string) => {
+    const short = path.slice(2).replace(/\/[^/]+\.(js|tsx|mdx)$/, "");
     return {
         staticPaths: short.split("/"),
         short,
@@ -16,32 +17,37 @@ const getPathInfo = path => {
 };
 
 const requireComponent = require.context(
-    "/components/examples",
+    "../components/examples",
     true,
-    /index\.js$/,
+    /index\.(js|tsx)$/,
     "lazy"
 );
 const requireCode = require.context(
-    "!!code-webpack-loader!/components/examples",
+    "!!code-webpack-loader!../components/examples",
     true,
-    /index\.js$/,
+    /index\.(js|tsx)$/,
     "lazy"
 );
 
 const requireDescription = require.context(
-    "/components/examples",
+    "../components/examples",
     true,
     /index\.mdx$/,
     "lazy"
 );
 
-const requireMeta = require.context("/components/examples", true, /meta\.js$/);
+const requireMeta = require.context(
+    "../components/examples",
+    true,
+    /meta\.(js|ts|tsx)$/
+);
 
 export const components = requireComponent.keys().map(getPathInfo);
 
-const table = components.reduce(
-    (acc, v) => (
-        (acc[v.short] = {
+export const table = Object.fromEntries(
+    components.map(v => [
+        v.short,
+        {
             title: v.staticPaths
                 .map(v => EXCEPTIONS[v] || startCase(v))
                 .join(" / "),
@@ -50,12 +56,14 @@ const table = components.reduce(
             }),
             Code: dynamic(() => requireCode(v.path), { ssr: false }),
             meta: null,
-            Description: null
-        }),
-        acc
-    ),
-    {}
+            Description: null as ElementType | null
+        }
+    ])
 );
+
+if (process.env.NODE_ENV !== "production") {
+    console.table(components);
+}
 
 requireDescription
     .keys()
@@ -72,5 +80,3 @@ requireMeta
     .forEach(v => {
         table[v.short].meta = requireMeta(v.path);
     });
-
-export { table };

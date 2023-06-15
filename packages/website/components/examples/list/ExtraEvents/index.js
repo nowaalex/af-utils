@@ -50,7 +50,7 @@ const ExtraEvents = () => {
                 >
                     Scroll size:{" "}
                     <Subscription model={rows} events={[EVT_SCROLL_SIZE]}>
-                        {() => <>{rows.scrollSize}</>}
+                        {() => rows.scrollSize}
                     </Subscription>
                     px
                 </div>

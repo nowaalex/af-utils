@@ -1,10 +1,11 @@
+"use client";
+
 import { memo } from "react";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import Head from "next/head";
 
 const LinksFragment = memo(() => {
-    const { asPath } = useRouter();
-    const fullLink = process.env.NEXT_PUBLIC_ORIGIN + asPath;
+    const fullLink = process.env.NEXT_PUBLIC_ORIGIN + usePathname();
 
     return (
         <Head>

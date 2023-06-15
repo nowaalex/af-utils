@@ -6,7 +6,7 @@ import {
     VirtualScroller
 } from "@af-utils/react-virtual-headless";
 import { css, cx } from "@af-utils/styled";
-import { ElementType, ReactElement } from "react";
+import { ElementType } from "react";
 
 const verticalWrapperClass = css("overflow: auto", "position: relative");
 
@@ -59,8 +59,8 @@ type ListProps = {
     itemData?: any;
     getKey?: (index: number, itemData: any) => string | number;
     component?: ElementType;
-    header?: ReactElement | null;
-    footer?: ReactElement | null;
+    header?: JSX.Element | null;
+    footer?: JSX.Element | null;
     className?: string;
     tabIndex?: number;
     [restProps: string]: any;

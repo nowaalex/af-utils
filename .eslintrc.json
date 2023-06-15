@@ -1,6 +1,14 @@
 {
-    "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
-    "plugins": ["@babel", "react", "jest"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "prettier",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "ignorePatterns": ["**/lib/**"],
+    "root": true,
+    "plugins": ["@babel", "react", "jest", "@typescript-eslint"],
     "env": {
         "browser": true,
         "node": true,

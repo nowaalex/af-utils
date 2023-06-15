@@ -1,4 +1,4 @@
-const startCase = str =>
+const startCase = (str: string) =>
     str
         .replace(/[-_]/g, " ")
         /*

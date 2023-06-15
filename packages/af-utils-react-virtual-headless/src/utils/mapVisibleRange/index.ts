@@ -1,13 +1,13 @@
 import type List from "models/VirtualScroller";
-import type { ReactElement } from "react";
 
 const mapVisibleRange = (
     model: List,
-    cb: (index: number, delta: number) => ReactElement,
+    cb: (index: number, delta: number) => JSX.Element,
     countOffset?: boolean
 ) => {
-    const result: ReactElement[] = [];
-    let { from, to } = model;
+    const result: JSX.Element[] = [];
+    let { from } = model;
+    const { to } = model;
 
     if (countOffset) {
         for (let delta = model.getOffset(from); from < to; ) {

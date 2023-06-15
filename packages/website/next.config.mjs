@@ -4,6 +4,7 @@ import remarkToc from "remark-toc";
 import nextMdx from "@next/mdx";
 import rehypeSlug from "rehype-slug";
 import nextBundleAnalyzer from "@next/bundle-analyzer";
+import glob from "fast-glob";
 
 const withBundleAnalyzer = nextBundleAnalyzer({
     enabled: process.env.ANALYZE === "true",
@@ -12,7 +13,6 @@ const withBundleAnalyzer = nextBundleAnalyzer({
 
 const withMDX = nextMdx({
     options: {
-        providerImportSource: "@mdx-js/react",
         remarkPlugins: [remarkGfm, remarkToc],
         rehypePlugins: [
             [rehypePrettyCode, { theme: "one-dark-pro", keepBackground: true }],
@@ -23,18 +23,30 @@ const withMDX = nextMdx({
 
 const config = withBundleAnalyzer(
     withMDX({
+        experimental: {
+            appDir: true
+        },
+        env: {
+            VIRTUAL_EXAMPLE_ROUTES_MAP: glob
+                .sync("./app/virtual/examples/**/page.{js,tsx}")
+                .reduce(
+                    (result, path) => (
+                        path
+                            .replace(/^.+examples\//, "")
+                            .replace(/\/page.+$/, "")
+                            .split("/")
+                            .reduce((acc, v) => (acc[v] ||= {}), result),
+                        result
+                    ),
+                    {}
+                )
+        },
         i18n: {
             locales: ["en"],
             defaultLocale: "en"
         },
-        pageExtensions: ["js", "jsx", "md", "mdx"],
+        pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
         reactStrictMode: true,
-        webpack(config) {
-            if (config.optimization?.splitChunks) {
-                config.optimization.splitChunks.minSize = 1024;
-            }
-            return config;
-        },
         async redirects() {
             return [
                 {

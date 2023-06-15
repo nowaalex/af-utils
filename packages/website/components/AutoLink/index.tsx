@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-const AutoLink = ({ href, ...props }) => {
+const AutoLink = ({ href, ...props }: any) => {
     if (href) {
         if (href.startsWith("/") || href.startsWith("#")) {
             return <Link href={href} {...props} />;

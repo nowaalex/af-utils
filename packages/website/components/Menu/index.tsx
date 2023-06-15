@@ -1,9 +1,9 @@
+// @ts-ignore
 import { cx } from "@af-utils/styled";
 import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
-import { components } from "/AllExamples";
 import NavLink from "../NavLink";
-import startCase from "/utils/startCase";
+import startCase from "utils/startCase";
 
 const DOCS_STRUCTURE = [
     ["Getting started", ""],
@@ -15,39 +15,32 @@ const DOCS_STRUCTURE = [
     ["Bundle size impact", "/size"]
 ];
 
-const walk = (obj, arr, path) => {
+type Node = {
+    name: string;
+    path: string;
+    children: Node[];
+};
+
+const walk = (obj: Record<string, {}>, arr: any[], path: string) => {
     for (const k in obj) {
         const newPath = `${path}/${k}`;
         arr.push({
             name: k,
             path: newPath,
             children: walk(obj[k], [], newPath)
-        });
+        } as Node);
     }
     return arr;
 };
 
-const toTree = (paths, start = "") =>
-    walk(
-        paths.reduce(
-            (result, path) => (
-                path.staticPaths.reduce((acc, v) => (acc[v] ||= {}), result),
-                result
-            ),
-            {}
-        ),
-        [],
-        start
-    );
+const H = ["h2", "h3", "h4", "h4"] as const;
 
-const H = ["h2", "h3", "h4", "h4"];
-
-const getHeader = (depth, path) => {
+const getHeader = (depth: number, path: string) => {
     const C = H[depth];
     return <C>{path}</C>;
 };
 
-const ExamplesSubtree = ({ node, depth = 0 }) =>
+const ExamplesSubtree = ({ node, depth }: { node: Node; depth: number }) =>
     node.children.length ? (
         <>
             {getHeader(depth, startCase(node.name))}
@@ -70,11 +63,15 @@ const ExamplesSubtree = ({ node, depth = 0 }) =>
 
 const COMPONENTS_TREE = {
     name: "examples",
-    children: toTree(components, "/examples"),
+    children: walk(
+        process.env.VIRTUAL_EXAMPLE_ROUTES_MAP as any,
+        [],
+        "/examples"
+    ),
     path: ""
 };
 
-const Menu = ({ className, onClick }) => (
+const Menu = ({ className, onClick }: JSX.IntrinsicElements["aside"]) => (
     <aside
         onClick={onClick}
         className={cx(
@@ -97,7 +94,7 @@ const Menu = ({ className, onClick }) => (
             ))}
         </ul>
 
-        <ExamplesSubtree node={COMPONENTS_TREE} />
+        <ExamplesSubtree node={COMPONENTS_TREE} depth={0} />
 
         <h2>Links</h2>
 
