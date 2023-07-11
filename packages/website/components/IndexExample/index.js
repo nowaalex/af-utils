@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import List from "/components/examples/list/Simple";
+import List from "app/virtual/examples/list/Simple/page";
 
 const IndexExample = () => (
     <div className="grid gap-8 lg:grid-cols-[5fr_3fr]">

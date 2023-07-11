@@ -1,11 +1,16 @@
-import { ElementType, ReactNode } from "react";
+import type { ElementType, ReactNode } from "react";
 
 const Example =
-    (CodeComponent: ElementType) =>
+    (CodeComponent: ElementType, DescriptionComponent?: ElementType) =>
     ({ children }: { children: ReactNode }) =>
         (
-            <div className="flex h-full grow">
-                <div className="contain-strict basis-80 grow">{children}</div>
+            <div className="flex flex-wrap h-full grow gap-4 p-4">
+                {DescriptionComponent && (
+                    <DescriptionComponent className="w-full" />
+                )}
+                <div className="contain-strict h-[300px] basis-80 grow">
+                    {children}
+                </div>
                 <CodeComponent className="overflow-auto p-4 text-sm" />
             </div>
         );

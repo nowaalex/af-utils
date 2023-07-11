@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: "Not found"
 };
 
-const Landing = () => (
+const NotFound = () => (
     <div className="prose-2xl text-center p-8">
         <h1 className="flex items-center justify-center gap-3">
             <BiSad />
@@ -24,4 +24,4 @@ const Landing = () => (
     </div>
 );
 
-export default Landing;
+export default NotFound;

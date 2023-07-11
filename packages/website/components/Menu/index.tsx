@@ -13,7 +13,7 @@ const DOCS_STRUCTURE = [
     ["Table", "/table"],
     ["ComplexTable", "/complexTable"],
     ["Bundle size impact", "/size"]
-];
+] as const;
 
 type Node = {
     name: string;
@@ -71,9 +71,9 @@ const COMPONENTS_TREE = {
     path: ""
 };
 
-const Menu = ({ className, onClick }: JSX.IntrinsicElements["aside"]) => (
+const Menu = ({ className, ...props }: JSX.IntrinsicElements["aside"]) => (
     <aside
-        onClick={onClick}
+        {...props}
         className={cx(
             "prose prose-sm prose-ul:list-none prose-a:no-underline max-w-full",
             className
