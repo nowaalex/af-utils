@@ -40,14 +40,14 @@ const VERTICAL_PROPS = [
     verticalWrapperClass,
     verticalScrollClass,
     verticalOffsetClass
-];
+] as const;
 
 const HORIZONTAL_PROPS = [
     "width",
     horizontalWrapperClass,
     horizontalScrollClass,
     horizontalOffsetClass
-];
+] as const;
 
 const RANGE_EVENTS = [EVT_RANGE];
 

@@ -2,11 +2,12 @@ import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import exportBundleSize from "@rollup/plugin-export-bundle-size";
 import terser from "@rollup/plugin-terser";
+import typescript from "@rollup/plugin-typescript";
 
 const OUTPUT_DIR = "lib";
 
 export default {
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
         format: "es",
         dir: OUTPUT_DIR,
@@ -14,6 +15,7 @@ export default {
         sourcemap: true
     },
     plugins: [
+        typescript(),
         terser({
             mangle: {
                 properties: {

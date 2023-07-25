@@ -1,9 +1,8 @@
 import Code from "!!code-webpack-loader!./page";
 import Example from "components/layouts/Example";
-import Description from "./index.mdx";
 
 export const metadata = {
-    title: "Extra Events"
+    title: "Simple Table"
 };
 
-export default Example(Code, Description);
+export default Example(Code);

@@ -1,12 +1,14 @@
 {
     "include": ["src"],
-    "exclude": ["src/**/*.test.ts"],
+    "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
     "compilerOptions": {
-        "lib": ["DOM"],
+        "lib": ["DOM", "ESNext"],
         "baseUrl": "src",
+        "jsx": "react-jsx",
         "moduleResolution": "node",
         "outDir": "lib",
         "target": "ESNext",
+        "types": ["node"],
         "declaration": true,
         "declarationMap": true,
         "allowSyntheticDefaultImports": true,

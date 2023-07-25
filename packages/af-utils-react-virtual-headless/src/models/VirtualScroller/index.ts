@@ -373,8 +373,9 @@ class VirtualScroller {
             bitMask > 0;
             bitMask >>= 1
         ) {
+            tempIndex = index + bitMask;
             if (
-                (tempIndex = index + bitMask) <= this._itemCount &&
+                tempIndex <= this._itemCount &&
                 offset > this._fTree[tempIndex]
             ) {
                 index = tempIndex;
