@@ -1,8 +1,16 @@
-import { useMemo, memo, useSyncExternalStore } from "react";
+import {
+    useMemo,
+    memo,
+    useSyncExternalStore,
+    useLayoutEffect,
+    Fragment
+} from "react";
 import DEFAULT_COMPONENTS_MAP from "components";
 import Table from "models/Table";
 import type Column from "models/Columns/Column";
 import type Cell from "models/Rows/Row/Cell";
+import type Row from "models/Rows/Row";
+import type RowsGroup from "models/Rows/RowsGroup";
 
 /*
     Todo:
@@ -14,20 +22,15 @@ type TableProps = {
     components: object;
 };
 
-const Rows = ({
-    model,
-    components: C
-}: {
-    model: Table;
-    components: typeof DEFAULT_COMPONENTS_MAP;
-}) => {
-    useSyncExternalStore(model.rows.on, () => model.rows.list);
-    useSyncExternalStore(model.columns.on, () => model.columns.hash);
-
-    return model.rows.list.map(row => (
-        <C.Tr key={row.index}>
+const rrr = (
+    model: Table,
+    C: typeof DEFAULT_COMPONENTS_MAP,
+    child: Row | RowsGroup
+) =>
+    "key" in child ? (
+        <C.Tr key={child.key}>
             {model.columns.map(col => {
-                const cell = row.cells.get(col);
+                const cell = child.cells.get(col);
 
                 if (cell) {
                     return (
@@ -40,7 +43,26 @@ const Rows = ({
                 throw new Error("Hmm");
             })}
         </C.Tr>
-    ));
+    ) : (
+        <Fragment key={child.value}>
+            <C.Tr>
+                <C.Td colSpan={model.columns.length}>{child.value}</C.Td>
+            </C.Tr>
+            {child.children.map(v => rrr(model, C, v))}
+        </Fragment>
+    );
+
+const Rows = ({
+    model,
+    components: C
+}: {
+    model: Table;
+    components: typeof DEFAULT_COMPONENTS_MAP;
+}) => {
+    useSyncExternalStore(model.rows.on, () => model.rows.hash);
+    useSyncExternalStore(model.columns.on, () => model.columns.hash);
+
+    return rrr(model, C, model.rows.root);
 };
 
 const HeaderColumn = ({
@@ -52,11 +74,31 @@ const HeaderColumn = ({
 }) => {
     useSyncExternalStore(column.on, () => column.label);
 
-    return column.label;
+    return (
+        <>
+            {column.label}
+            <button
+                onClick={() => {
+                    const gr = column.columns.table.rows.groupState;
+                    const idx = gr.indexOf(column.key);
+                    column.columns.table.rows.group(
+                        idx !== -1 ? gr.toSpliced(idx, 1) : [...gr, column.key]
+                    );
+                }}
+            >
+                G
+            </button>
+        </>
+    );
 };
 
 const BodyCell = ({ cell }: { cell: Cell }) => {
     useSyncExternalStore(cell.on, () => cell.value);
+
+    useLayoutEffect(() => {
+        cell.setRendered(true);
+        return () => cell.setRendered(false);
+    }, []);
 
     return cell.value;
 };

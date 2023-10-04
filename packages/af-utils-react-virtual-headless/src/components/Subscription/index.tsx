@@ -4,8 +4,8 @@ import type { Event } from "constants/";
 
 type SubscriptionProps = {
     model: List;
-    events: Event[];
     children: () => JSX.Element;
+    events?: Event[];
 };
 
 const Subscription = (props: SubscriptionProps) => {

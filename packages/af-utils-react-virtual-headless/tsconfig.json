@@ -1,6 +1,5 @@
 {
     "include": ["src"],
-    "exclude": ["src/**/*.test.ts"],
     "compilerOptions": {
         "lib": ["DOM"],
         "baseUrl": "src",
@@ -11,6 +10,8 @@
         "declarationMap": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
-        "alwaysStrict": true
+        "alwaysStrict": true,
+        "jsx": "react-jsx",
+        "types": ["node", "react", "jest"]
     }
 }

@@ -7,6 +7,7 @@ export interface ColumnDefinition {
     hidden?: boolean;
     align?: "left" | "center" | "right";
     style?: object;
+    watch?: () => () => void;
 }
 
 class Column extends PubSub {
@@ -14,14 +15,16 @@ class Column extends PubSub {
 
     key: string;
     hidden = false;
-    align = "left";
-    style = undefined;
-    label = "";
+    align: ColumnDefinition["align"] = "left";
+    style: ColumnDefinition["style"] = undefined;
+    label: ColumnDefinition["label"] = "";
+    watch: ColumnDefinition["watch"];
 
     constructor(col: ColumnDefinition, columns: Columns) {
         super();
         this.columns = columns;
         this.key = col.key;
+        this.watch = col.watch;
         Object.assign(this, col);
     }
 

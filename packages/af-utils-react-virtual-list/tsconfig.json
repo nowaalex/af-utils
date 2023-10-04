@@ -1,6 +1,5 @@
 {
     "include": ["src", "./decs.d.ts"],
-    "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
     "compilerOptions": {
         "lib": ["DOM"],
         "jsx": "react-jsx",

@@ -5,10 +5,11 @@ import { memo } from "react";
 import {
     useVirtual,
     mapVisibleRange,
-    Subscription
+    Subscription,
+    VirtualScroller
 } from "@af-utils/react-virtual-headless";
 
-const Item = memo(({ i, model }) => (
+const Item = memo<{ i: number; model: VirtualScroller }>(({ i, model }) => (
     <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">
         row {i}
     </div>

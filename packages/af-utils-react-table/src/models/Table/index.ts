@@ -4,8 +4,18 @@ import type { ColumnDefinition } from "models/Columns/Column";
 import type { RowDataGetter, RowKeyGetter } from "types";
 
 class Table {
-    columns = new Columns(this);
-    rows = new Rows(this);
+    columns: Columns;
+    rows: Rows;
+
+    constructor(
+        columns: ColumnDefinition[],
+        count: number,
+        getRowData: RowDataGetter,
+        getRowKey: RowKeyGetter
+    ) {
+        this.columns = new Columns(this, columns);
+        this.rows = new Rows(this, count, getRowData, getRowKey);
+    }
 
     set(
         columns: ColumnDefinition[],

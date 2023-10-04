@@ -1,5 +1,6 @@
 import useIsomorphicLayoutEffect from "hooks/useIsomorphicLayoutEffect";
-import VirtualScroller, { ScrollElement } from "models/VirtualScroller";
+import VirtualScroller from "models/VirtualScroller";
+import type { ScrollElement } from "types";
 
 const useScroller = (model: VirtualScroller, scroller: ScrollElement) =>
     useIsomorphicLayoutEffect(() => {

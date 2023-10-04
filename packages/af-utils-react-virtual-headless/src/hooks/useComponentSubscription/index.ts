@@ -1,16 +1,12 @@
 import { useMemo } from "react";
 import { EVT_ALL, Event } from "constants/";
-/*
-    Reason for specifying index.js:
-    BREAKING CHANGE: The request 'use-sync-external-store/shim' failed to resolve only because it was resolved as fully specified
-*/
-import { useSyncExternalStore } from "use-sync-external-store/shim/index.js";
+import { useSyncExternalStore } from "use-sync-external-store/shim";
 import type VirtualScroller from "models/VirtualScroller";
 
-const useComponentSubscription = (model: VirtualScroller, events: Event[]) => {
-    events ||= EVT_ALL;
-
-    // szudzik pair
+const useComponentSubscription = (
+    model: VirtualScroller,
+    events: Event[] = EVT_ALL
+) => {
     const [subscribe, getHash] = useMemo(
         () => [
             (listener: () => void) => model.on(listener, events),
@@ -20,7 +16,7 @@ const useComponentSubscription = (model: VirtualScroller, events: Event[]) => {
                         acc +
                         "_" +
                         (e === Event.RANGE
-                            ? model.to ** 2 + model.from
+                            ? model.to ** 2 + model.from // szudzik pair
                             : e === Event.SCROLL_SIZE
                             ? model.scrollSize
                             : model.sizesHash),

@@ -21,28 +21,19 @@ import growTypedArray from "utils/growTypedArray";
 import { build as buildFtree, update, getLiftingLimit } from "utils/fTree";
 import getDistanceBetween from "utils/getDistanceBetween";
 import Batch from "singletons/Batch";
+import type {
+    ScrollElement,
+    VirtualScrollerInitialParams,
+    VirtualScrollerRuntimeParams
+} from "types";
 
-export type ScrollElement = HTMLElement & Window;
-
-export type VirtualScrollerRuntimeParams = {
-    overscanCount?: number;
-    itemCount?: number;
-    estimatedItemSize?: number;
-};
-
-export type VirtualScrollerInitialParams = VirtualScrollerRuntimeParams & {
-    horizontal?: boolean;
-    estimatedWidgetSize?: number;
-    estimatedScrollElementOffset?: number;
-};
-
-const OBSERVE_OPTIONS: ResizeObserverOptions = {
+const OBSERVE_OPTIONS = {
     box: "border-box"
-} as const;
+} as const satisfies ResizeObserverOptions;
 
-const SCROLL_EVENT_OPTIONS: AddEventListenerOptions = {
+const SCROLL_EVENT_OPTIONS = {
     passive: true
-} as const;
+} as const satisfies AddEventListenerOptions;
 
 const ITEMS_ROOM = 32;
 
@@ -100,7 +91,7 @@ const getAvailableWidgetSize = (
     scrollElement: ScrollElement,
     sizeKey: ScrollElementSizeKey,
     stickyOffset: number
-) => scrollElement[sizeKey] - stickyOffset;
+) => (scrollElement as any)[sizeKey] - stickyOffset;
 
 class VirtualScroller {
     private _scrollElementSizeKey: ScrollElementSizeKey =
@@ -259,7 +250,7 @@ class VirtualScroller {
         }
     });
 
-    private _EventsList: (() => void)[][] = EVT_ALL.map(() => []);
+    private _EventsList = EVT_ALL.map<(() => void)[]>(() => []);
 
     /**
      * Update property names for resize events, dimensions and scroll position extraction
@@ -449,9 +440,8 @@ class VirtualScroller {
         */
         const curAlignedScrollPos = this._alignedScrollPos,
             newAlignedScrollPos =
-                Math.round(
-                    (this._scrollElement as ScrollElement)[this._scrollKey]
-                ) - this._scrollElementOffset;
+                Math.round((this._scrollElement as any)[this._scrollKey]) -
+                this._scrollElementOffset;
 
         if (newAlignedScrollPos !== curAlignedScrollPos) {
             this._alignedScrollPos = newAlignedScrollPos;
@@ -645,7 +635,7 @@ class VirtualScroller {
         });
     }
 
-    _attemptToScrollToIndex(
+    private _attemptToScrollToIndex(
         attemptsLeft: number,
         index: number,
         smooth?: boolean

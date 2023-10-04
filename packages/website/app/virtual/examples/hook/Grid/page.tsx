@@ -5,10 +5,16 @@ import { Fragment, memo } from "react";
 import {
     useVirtual,
     mapVisibleRange,
-    useComponentSubscription
+    useComponentSubscription,
+    VirtualScroller
 } from "@af-utils/react-virtual-headless";
 
-const Cell = memo(({ rowI, colI, rowOffset, colOffset }) => (
+const Cell = memo<{
+    rowI: number;
+    colI: number;
+    rowOffset: number;
+    colOffset: number;
+}>(({ rowI, colI, rowOffset, colOffset }) => (
     <div
         className="absolute border top-0 left-0 leading-[100px] w-[200px] text-center"
         style={{
@@ -19,7 +25,13 @@ const Cell = memo(({ rowI, colI, rowOffset, colOffset }) => (
     </div>
 ));
 
-const GridItems = ({ rows, cols }) => {
+const GridItems = ({
+    rows,
+    cols
+}: {
+    rows: VirtualScroller;
+    cols: VirtualScroller;
+}) => {
     useComponentSubscription(rows);
     useComponentSubscription(cols);
 

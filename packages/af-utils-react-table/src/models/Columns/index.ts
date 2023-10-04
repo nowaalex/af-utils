@@ -1,17 +1,19 @@
 import PubSub from "models/PubSub";
 import Column from "./Column";
+import hash from "utils/hash";
 import type { ColumnDefinition } from "./Column";
 import type Table from "models/Table";
-import hash from "utils/hash";
+import type { ColumnKey } from "types";
 
 class Columns extends PubSub {
     table: Table;
     hash = 0;
-    private list: Column[] = [];
+    private list: Column[];
 
-    constructor(table: Table) {
+    constructor(table: Table, initialColumns: ColumnDefinition[]) {
         super();
         this.table = table;
+        this.list = initialColumns.map(col => new Column(col, this));
     }
 
     upsert(columns: ColumnDefinition[]) {
@@ -49,12 +51,16 @@ class Columns extends PubSub {
         return this.list[index];
     }
 
-    atKey(key: string) {
+    atKey(key: ColumnKey) {
         return this.list.find(col => col.key === key);
     }
 
     map(fn: (col: Column, index: number, columns: Column[]) => any) {
         return this.list.map(fn);
+    }
+
+    get length() {
+        return this.list.length;
     }
 
     [Symbol.iterator]() {

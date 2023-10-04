@@ -14,6 +14,6 @@
   "module": "index.js",
   "keywords": [],
   "devDependencies": {
-    "terser": "^5.19.2"
+    "terser": "^5.21.0"
   }
 }

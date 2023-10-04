@@ -1,28 +1,60 @@
 "use client";
 
 import { useTable, Root } from "@af-utils/react-table";
+import { autorun, observable, runInAction } from "mobx";
+import {
+    randAnimal,
+    randBaseballTeam,
+    randAccessory,
+    randAlphaNumeric
+} from "@ngneat/falso";
 
 const columns = [
-    { key: "a", label: "a" },
-    { key: "b", label: "b" },
-    { key: "c", label: "c" }
+    {
+        key: "n",
+        label: "Some Alphanumeric",
+        watch: cell => autorun(() => cell.updateValue())
+    },
+    { key: "a", label: "Animal" },
+    { key: "b", label: "Baseball team" },
+    { key: "c", label: "Accessory" }
 ];
 
-const getRowData = i => ({
-    a: `cell_a_${i}`,
-    b: `cell_b_${i}`,
-    c: `cell_c_${i}`
-});
+const arr = Array.from({ length: 20 }, () =>
+    observable({
+        n: randAlphaNumeric(),
+        a: randAnimal(),
+        b: randBaseballTeam(),
+        c: randAccessory()
+    })
+);
+
+const getRowData = i => arr[i];
+
+const getRowKey = d => d.a;
 
 const SimpleTable = () => {
     const model = useTable({
         columns,
-        rowCount: 10,
+        rowCount: arr.length,
         getRowData,
-        getRowKey: d => d.a
+        getRowKey
     });
 
-    return <Root model={model} />;
+    return (
+        <>
+            <button
+                onClick={() =>
+                    runInAction(() => {
+                        arr.forEach(v => (v.n = randAlphaNumeric()));
+                    })
+                }
+            >
+                Change
+            </button>
+            <Root model={model} />
+        </>
+    );
 };
 
 export default SimpleTable;

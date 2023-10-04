@@ -1,5 +1,5 @@
 abstract class PubSub {
-    _Subscribers = new Set<() => void>();
+    private _Subscribers = new Set<() => void>();
 
     on = (cb: () => void) => {
         this._Subscribers.add(cb);

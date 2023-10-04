@@ -23,9 +23,6 @@ const withMDX = nextMdx({
 
 const config = withBundleAnalyzer(
     withMDX({
-        experimental: {
-            appDir: true
-        },
         env: {
             VIRTUAL_EXAMPLE_ROUTES_MAP: glob
                 .sync("./app/virtual/examples/**/page.{js,ts,tsx}")

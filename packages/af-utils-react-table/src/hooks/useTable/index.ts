@@ -11,9 +11,16 @@ type Params = {
 };
 
 const useTable = ({ columns, rowCount, getRowData, getRowKey }: Params) => {
-    const model = (useRef<Table>().current ||= new Table());
+    const model = (useRef<Table>().current ||= new Table(
+        columns,
+        rowCount,
+        getRowData,
+        getRowKey
+    ));
 
-    useLayoutEffect(() => model.set(columns, rowCount, getRowData, getRowKey));
+    useLayoutEffect(() => {
+        model.set(columns, rowCount, getRowData, getRowKey);
+    });
 
     return model;
 };
