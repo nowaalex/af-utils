@@ -1,5 +1,4 @@
 import Link from "next/link";
-// @ts-ignore
 import { cx } from "@af-utils/styled";
 import { usePathname } from "next/navigation";
 import { ComponentPropsWithoutRef } from "react";
@@ -15,7 +14,9 @@ const NavLink = ({
     activeClassName,
     ...props
 }: NavLinkProps) => {
-    const isActive = usePathname().startsWith(href);
+    const pathname = usePathname();
+    const isActive =
+        href === "/virtual" ? pathname === href : pathname.startsWith(href);
 
     return (
         <Link

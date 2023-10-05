@@ -1,9 +1,10 @@
 "use client";
 
-import { memo } from "react";
-
+import { memo, useState } from "react";
+import { createPortal } from "react-dom";
 import {
     useVirtual,
+    useScroller,
     mapVisibleRange,
     Subscription,
     VirtualScroller
@@ -15,18 +16,19 @@ const Item = memo<{ i: number; model: VirtualScroller }>(({ i, model }) => (
     </div>
 ));
 
-const DifferentScrollElementHook = () => {
+const WindowScrollHook = ({
+    contentWindow
+}: {
+    contentWindow: HTMLIFrameElement["contentWindow"];
+}) => {
     const model = useVirtual({
         itemCount: 5000
     });
 
-    /*
-        for window scroll use this instead of model.setScroller:
-        useScroller( model, window );
-    */
+    useScroller(model, contentWindow || null);
 
     return (
-        <div className="overflow-auto" ref={model.setScroller}>
+        <>
             <div className="py-4 min-h-[20vh] bg-slate-100 text-center">
                 Some offset
             </div>
@@ -55,8 +57,24 @@ const DifferentScrollElementHook = () => {
                     </Subscription>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
-export default DifferentScrollElementHook;
+const IframeWrapper = () => {
+    const [ref, setRef] = useState<HTMLIFrameElement | null>(null);
+
+    const contentWindow = ref?.contentWindow;
+
+    return (
+        <iframe className="w-full h-full" ref={setRef}>
+            {contentWindow &&
+                createPortal(
+                    <WindowScrollHook contentWindow={contentWindow} />,
+                    contentWindow.document.body
+                )}
+        </iframe>
+    );
+};
+
+export default IframeWrapper;

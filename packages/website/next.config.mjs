@@ -25,7 +25,7 @@ const config = withBundleAnalyzer(
     withMDX({
         env: {
             VIRTUAL_EXAMPLE_ROUTES_MAP: glob
-                .sync("./app/virtual/examples/**/page.{js,ts,tsx}")
+                .sync("./app/virtual/examples/**/page.{js,tsx}")
                 .reduce(
                     (result, path) => (
                         path

@@ -1,5 +1,11 @@
 # @af-utils/styled
 
+## 0.0.24
+
+### Patch Changes
+
+-   types fix
+
 ## 0.0.23
 
 ### Patch Changes

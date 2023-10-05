@@ -1,6 +1,5 @@
 import Script from "next/script";
 import type { ReactNode } from "react";
-import type { Metadata } from "next";
 import "styles/globals.css";
 
 const ID = "P68JT3P";

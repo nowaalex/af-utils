@@ -538,7 +538,7 @@ class VirtualScroller {
         }
     }
 
-    private _stickyEl(i: number, element: Element) {
+    private _stickyEl(i: number, element: Element | null) {
         const oldElement = this._stickyElements[i];
 
         if (oldElement) {
@@ -560,7 +560,7 @@ class VirtualScroller {
      * Start observing size of sticky header `element`. Observing is finished if element is falsy.
      * @param element - header element
      */
-    setStickyHeader(element: Element) {
+    setStickyHeader(element: Element | null) {
         this._stickyEl(STICKY_HEADER_INDEX, element);
     }
 
@@ -568,7 +568,7 @@ class VirtualScroller {
      * Start observing size of sticky footer `element`. Observing is finished if element is falsy.
      * @param element - footer element
      */
-    setStickyFooter(element: Element) {
+    setStickyFooter(element: Element | null) {
         this._stickyEl(STICKY_FOOTER_INDEX, element);
     }
 

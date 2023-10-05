@@ -1,4 +1,3 @@
-// @ts-ignore
 import { cx } from "@af-utils/styled";
 import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
@@ -10,8 +9,6 @@ const DOCS_STRUCTURE = [
     ["FAQ", "/faq"],
     ["Headless", "/headless"],
     ["List", "/list"],
-    ["Table", "/table"],
-    ["ComplexTable", "/complexTable"],
     ["Bundle size impact", "/size"]
 ] as const;
 
@@ -21,7 +18,7 @@ type Node = {
     children: Node[];
 };
 
-const walk = (obj: Record<string, {}>, arr: any[], path: string) => {
+const walk = (obj: Record<string, any>, arr: any[], path: string) => {
     for (const k in obj) {
         const newPath = `${path}/${k}`;
         arr.push({

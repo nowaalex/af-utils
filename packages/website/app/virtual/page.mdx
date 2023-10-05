@@ -1,4 +1,4 @@
-import IndexExample from "/components/IndexExample";
+import IndexExample from "components/IndexExample";
 
 export const metadata = {
     title: "Docs: Getting started",
@@ -8,7 +8,7 @@ export const metadata = {
 
 # Getting started
 
-When you need to render a list, table or grid with a lot of rows or columns, you may face performance problems.
+When you need to render a list or grid with a lot of rows or columns, you may face performance problems.
 A lot of DOM nodes must be created, but only a few of them are visible.
 
 One way to optimize this is called **virtual scroll**.
@@ -17,7 +17,7 @@ Only visible elements are rendered with this approach.
 
 <IndexExample />
 
-Components ([List](/virtual/list), [Table](/virtual/table)) are available for basic use cases.
+[List](/virtual/list) is available for basic use cases.
 If you want maximum flexibility — [headless](/virtual/headless) API is for you.
 Variable item sizes with <span className="whitespace-nowrap">on-the-fly</span> remeasurement are also supported.
 

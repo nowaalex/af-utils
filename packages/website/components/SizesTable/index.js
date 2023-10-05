@@ -2,15 +2,13 @@ import prettyBytes from "pretty-bytes";
 import * as styledSizes from "@af-utils/styled/lib/bundlesize.index.js";
 import * as headlessSizes from "@af-utils/react-virtual-headless/lib/bundlesize.index.js";
 import * as listSizes from "@af-utils/react-virtual-list/lib/bundlesize.index.js";
-import * as tableSizes from "@af-utils/react-table/lib/bundlesize.index.js";
 
 const sizeColumns = ["raw", "min", "minGz", "minBrotli"];
 
 const rows = [
     [styledSizes, "@af-utils/styled"],
     [headlessSizes, "@af-utils/react-virtual-headless"],
-    [listSizes, "@af-utils/react-virtual-list"],
-    [tableSizes, "@af-utils/react-table"]
+    [listSizes, "@af-utils/react-virtual-list"]
 ];
 
 const SizesTable = () => (

@@ -21,7 +21,7 @@ const SimpleHook = () => {
     });
 
     return (
-        <div className="h-full overflow-auto" ref={model.setScroller}>
+        <div className="overflow-auto" ref={model.setScroller}>
             <Subscription model={model}>
                 {() => {
                     const fromOffset = model.getOffset(model.from);

@@ -9,7 +9,6 @@ https://af-utils.vercel.app/
 ## Features
 
 -   All dimensions are calculated automatically, so there is no need to provide them.
--   Uses position: sticky for tables
 -   Mobx - ready
 -   Supports window or any other detached scroller (beta)
 -   Optimized for performance

@@ -36,6 +36,8 @@
         "no-param-reassign": [0],
         "no-multi-assign": [0],
         "no-nested-ternary": [0],
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/ban-ts-comment": 0,
         "import/prefer-default-export": [0],
         "no-cond-assign": [0],
         "max-classes-per-file": [0],

@@ -82,7 +82,7 @@ const SimpleHook = () => {
 
     return (
         <div
-            className="overflow-auto h-full"
+            className="overflow-auto"
             ref={el => {
                 rows.setScroller(el);
                 cols.setScroller(el);

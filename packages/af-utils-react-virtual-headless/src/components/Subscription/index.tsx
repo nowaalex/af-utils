@@ -1,10 +1,11 @@
 import useComponentSubscription from "hooks/useComponentSubscription";
 import type List from "models/VirtualScroller";
 import type { Event } from "constants/";
+import type { ReactNode } from "react";
 
 type SubscriptionProps = {
     model: List;
-    children: () => JSX.Element;
+    children: () => ReactNode;
     events?: Event[];
 };
 

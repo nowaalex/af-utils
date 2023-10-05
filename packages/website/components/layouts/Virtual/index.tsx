@@ -14,7 +14,7 @@ const Nav = memo(() => {
                 ref={defailsRef}
                 className="lg:hidden ds-menu z-10 relative"
             >
-                <summary className="list-none flex-none border-b flex h-[60px] items-center px-4 gap-8">
+                <summary className="list-none flex-none border-b flex h-[60px] items-center px-4 gap-8 prose">
                     <VscMenu
                         data-opener
                         size="28px"
@@ -34,14 +34,18 @@ const Nav = memo(() => {
                 <Menu
                     className="overflow-auto p-4 fixed inset-0 top-[61px] bg-white"
                     onClick={e => {
-                        if (e.target.getAttribute("href")?.startsWith("/")) {
+                        if (
+                            (e.target as HTMLElement)
+                                .getAttribute("href")
+                                ?.startsWith("/")
+                        ) {
                             defailsRef.current?.removeAttribute("open");
                         }
                     }}
                 />
             </details>
             <div className="shadow-lg hidden lg:flex h-screen overflow-y-scroll flex-none flex-col min-w-[20em]">
-                <div className="sticky top-0 bg-white p-5 border-b">
+                <div className="sticky top-0 bg-white p-5 border-b prose">
                     <h1 className="m-0 p-0">
                         <Link href="/">af-utils</Link>
                         &nbsp;/&nbsp;virtual
@@ -54,9 +58,9 @@ const Nav = memo(() => {
 });
 
 const Virtual = ({ children }: { children: ReactNode }) => (
-    <div className="h-screen flex">
+    <div className="h-screen w-screen flex flex-col lg:flex-row">
         <Nav />
-        <div className="h-full grow">{children}</div>
+        <div className="h-full flex-1 overflow-auto p-4">{children}</div>
     </div>
 );
 
