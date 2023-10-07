@@ -1,16 +1,12 @@
 "use client";
 
 import { memo } from "react";
-import {
-    useVirtual,
-    List,
-    EVT_RANGE,
-    EVT_SCROLL_SIZE,
-    Subscription,
-    VirtualScroller
-} from "@af-utils/react-virtual-list";
 
-const Item = memo<{ i: number; model: VirtualScroller }>(({ i, model }) => (
+import { EVT_RANGE, EVT_SCROLL_SIZE } from "@af-utils/virtual-core";
+import { useVirtual, List, Subscription } from "@af-utils/virtual-react";
+import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
+
+const Item = memo<ListItemProps>(({ i, model }) => (
     <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">
         row {i}
     </div>

@@ -1,0 +1,64 @@
+{
+    "name": "@af-utils/virtual-core",
+    "private": false,
+    "version": "1.0.0",
+    "description": "Model for rendering large scrollable data",
+    "repository": "https://github.com/nowaalex/af-utils.git",
+    "bugs": "https://github.com/nowaalex/af-utils/issues",
+    "homepage": "https://af-utils.vercel.app/",
+    "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
+    "license": "MIT",
+    "sideEffects": false,
+    "scripts": {
+        "dev": "rollup --watch --config rollup.config.ts --configPlugin typescript & tsc-alias -w",
+        "build": "rollup --config rollup.config.ts --configPlugin typescript && tsc-alias",
+        "test": "jest"
+    },
+    "engines": {
+        "node": ">=14.0.0",
+        "npm": ">=6.0.0"
+    },
+    "files": [
+        "lib/*"
+    ],
+    "type": "module",
+    "main": "lib/index.server.js",
+    "types": "lib/index.d.ts",
+    "browser": "lib/index.js",
+    "keywords": [
+        "virtual",
+        "list",
+        "recycle",
+        "dom-recycle",
+        "dynamic-size",
+        "scroll",
+        "scrolling",
+        "infinite",
+        "virtualized",
+        "virtual",
+        "virtualization",
+        "sortable",
+        "windowing"
+    ],
+    "devDependencies": {
+        "@babel/plugin-transform-runtime": "^7.22.15",
+        "@babel/preset-env": "^7.22.20",
+        "@rollup/plugin-babel": "^6.0.4",
+        "@rollup/plugin-commonjs": "^25.0.5",
+        "@rollup/plugin-export-bundle-size": "workspace:*",
+        "@rollup/plugin-replace": "^5.0.3",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^11.1.5",
+        "@types/jest": "^29.5.5",
+        "@types/node": "^20.8.3",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "rollup": "^4.0.2",
+        "ts-jest": "^29.1.1",
+        "tsc-alias": "^1.8.8",
+        "typescript": "^5.2.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

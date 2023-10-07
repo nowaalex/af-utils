@@ -1,13 +1,10 @@
 "use client";
 
 import { memo } from "react";
-import {
-    useVirtual,
-    List,
-    VirtualScroller
-} from "@af-utils/react-virtual-list";
+import { useVirtual, List } from "@af-utils/virtual-react";
+import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
 
-const Item = memo<{ i: number; model: VirtualScroller }>(({ i, model }) => (
+const Item = memo<ListItemProps>(({ i, model }) => (
     <div
         ref={el => model.el(i, el)}
         className={`

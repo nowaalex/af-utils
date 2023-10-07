@@ -4,12 +4,15 @@ import { memo } from "react";
 
 import {
     useVirtual,
-    mapVisibleRange,
     Subscription,
-    VirtualScroller
-} from "@af-utils/react-virtual-headless";
+    mapVisibleRange,
+    useSyncedStyles
+} from "@af-utils/virtual-react";
 
-const Item = memo<{ i: number; model: VirtualScroller }>(({ i, model }) => (
+import { EVT_RANGE } from "@af-utils/virtual-core";
+import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
+
+const Item = memo<ListItemProps>(({ i, model }) => (
     <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">
         row {i}
     </div>
@@ -19,6 +22,8 @@ const DifferentScrollElementHook = () => {
     const model = useVirtual({
         itemCount: 5000
     });
+
+    const [outerRef, innerRef] = useSyncedStyles(model);
 
     /*
         for window scroll use this instead of model.setScroller:
@@ -35,24 +40,17 @@ const DifferentScrollElementHook = () => {
                     Some offset 2
                 </div>
                 <div ref={model.setContainer}>
-                    <Subscription model={model}>
-                        {() => {
-                            const fromOffset = model.getOffset(model.from);
-
-                            return (
-                                <div
-                                    style={{
-                                        height: model.scrollSize - fromOffset,
-                                        marginTop: fromOffset
-                                    }}
-                                >
-                                    {mapVisibleRange(model, i => (
+                    <div ref={outerRef}>
+                        <div ref={innerRef}>
+                            <Subscription model={model} events={[EVT_RANGE]}>
+                                {() =>
+                                    mapVisibleRange(model, i => (
                                         <Item key={i} model={model} i={i} />
-                                    ))}
-                                </div>
-                            );
-                        }}
-                    </Subscription>
+                                    ))
+                                }
+                            </Subscription>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,12 +4,15 @@ import { memo } from "react";
 
 import {
     useVirtual,
-    mapVisibleRange,
     Subscription,
-    VirtualScroller
-} from "@af-utils/react-virtual-headless";
+    mapVisibleRange,
+    useSyncedStyles
+} from "@af-utils/virtual-react";
 
-const Item = memo<{ i: number; model: VirtualScroller }>(({ i, model }) => (
+import { EVT_RANGE } from "@af-utils/virtual-core";
+import { ListItemProps } from "@af-utils/virtual-react/lib/types";
+
+const Item = memo<ListItemProps>(({ i, model }) => (
     <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">
         row {i}
     </div>
@@ -20,26 +23,21 @@ const SimpleHook = () => {
         itemCount: 50000
     });
 
-    return (
-        <div className="overflow-auto" ref={model.setScroller}>
-            <Subscription model={model}>
-                {() => {
-                    const fromOffset = model.getOffset(model.from);
+    const [outerRef, innerRef] = useSyncedStyles(model);
 
-                    return (
-                        <div
-                            style={{
-                                height: model.scrollSize - fromOffset,
-                                marginTop: fromOffset
-                            }}
-                        >
-                            {mapVisibleRange(model, i => (
+    return (
+        <div className="overflow-auto contain-strict" ref={model.setScroller}>
+            <div ref={outerRef}>
+                <div ref={innerRef}>
+                    <Subscription model={model} events={[EVT_RANGE]}>
+                        {() =>
+                            mapVisibleRange(model, i => (
                                 <Item key={i} model={model} i={i} />
-                            ))}
-                        </div>
-                    );
-                }}
-            </Subscription>
+                            ))
+                        }
+                    </Subscription>
+                </div>
+            </div>
         </div>
     );
 };

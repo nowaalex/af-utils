@@ -1,0 +1,17 @@
+{
+    "include": ["src", "decs.d.ts", "rollup.config.ts"],
+    "compilerOptions": {
+        "baseUrl": "src",
+        "moduleResolution": "Bundler",
+        "module": "ESNext",
+        "outDir": "lib",
+        "target": "ESNext",
+        "declaration": true,
+        "declarationMap": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "alwaysStrict": true,
+        "resolveJsonModule": true,
+        "types": ["node", "jest"]
+    }
+}

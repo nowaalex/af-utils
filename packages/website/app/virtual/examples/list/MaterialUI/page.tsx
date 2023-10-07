@@ -5,13 +5,10 @@ import MuiList from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import {
-    useVirtual,
-    List,
-    VirtualScroller
-} from "@af-utils/react-virtual-list";
+import { useVirtual, List } from "@af-utils/virtual-react";
+import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
 
-const Item = memo<{ i: number; model: VirtualScroller }>(({ i, model }) => (
+const Item = memo<ListItemProps>(({ i, model }) => (
     <ListItem ref={el => model.el(i, el)} disablePadding>
         <ListItemButton>
             <ListItemText primary={`row ${i}`} />

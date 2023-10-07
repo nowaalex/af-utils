@@ -1,28 +1,23 @@
 "use client";
 
 import { useState, memo } from "react";
-import {
-    useVirtual,
-    List,
-    VirtualScroller
-} from "@af-utils/react-virtual-list";
+import { useVirtual, List } from "@af-utils/virtual-react";
+import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
 
 const DEFAULT_ROW_COUNT = 100000;
 
-const Item = memo<{ i: number; model: VirtualScroller; data: number[] }>(
-    ({ i, model, data: pseudoRandomSizes }) => (
-        <div
-            ref={el => model.el(i, el)}
-            className="text-center border-t border-zinc-800"
-            style={{
-                lineHeight: `${pseudoRandomSizes[i]}px`,
-                background: `hsl(${(i * 11) % 360},60%,60%)`
-            }}
-        >
-            row {i}:&nbsp;{pseudoRandomSizes[i]}px
-        </div>
-    )
-);
+const Item = memo<ListItemProps>(({ i, model, data: pseudoRandomSizes }) => (
+    <div
+        ref={el => model.el(i, el)}
+        className="text-center border-t border-zinc-800"
+        style={{
+            lineHeight: `${pseudoRandomSizes[i]}px`,
+            background: `hsl(${(i * 11) % 360},60%,60%)`
+        }}
+    >
+        row {i}:&nbsp;{pseudoRandomSizes[i]}px
+    </div>
+));
 
 const VariableSizeList = () => {
     const [pseudoRandomSizes] = useState(() =>

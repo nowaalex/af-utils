@@ -4,10 +4,11 @@ import { Fragment, memo } from "react";
 
 import {
     useVirtual,
-    mapVisibleRange,
     useComponentSubscription,
-    VirtualScroller
-} from "@af-utils/react-virtual-headless";
+    mapVisibleRangeWithOffset
+} from "@af-utils/virtual-react";
+
+import type { VirtualScroller } from "@af-utils/virtual-core";
 
 const Cell = memo<{
     rowI: number;
@@ -37,33 +38,25 @@ const GridItems = ({
 
     return (
         <div
-            className="relative overflow-hidden"
+            className="relative overflow-hidden contain-strict"
             style={{
                 height: rows.scrollSize,
                 width: cols.scrollSize
             }}
         >
-            {mapVisibleRange(
-                rows,
-                (rowI, rowOffset) => (
-                    <Fragment key={rowI}>
-                        {mapVisibleRange(
-                            cols,
-                            (colI, colOffset) => (
-                                <Cell
-                                    key={colI}
-                                    rowOffset={rowOffset}
-                                    colOffset={colOffset}
-                                    rowI={rowI}
-                                    colI={colI}
-                                />
-                            ),
-                            true
-                        )}
-                    </Fragment>
-                ),
-                true
-            )}
+            {mapVisibleRangeWithOffset(rows, (rowI, rowOffset) => (
+                <Fragment key={rowI}>
+                    {mapVisibleRangeWithOffset(cols, (colI, colOffset) => (
+                        <Cell
+                            key={colI}
+                            rowOffset={rowOffset}
+                            colOffset={colOffset}
+                            rowI={rowI}
+                            colI={colI}
+                        />
+                    ))}
+                </Fragment>
+            ))}
         </div>
     );
 };
@@ -82,7 +75,7 @@ const SimpleHook = () => {
 
     return (
         <div
-            className="overflow-auto"
+            className="overflow-auto contain-strict"
             ref={el => {
                 rows.setScroller(el);
                 cols.setScroller(el);

@@ -8,6 +8,9 @@ const TERSER_OPTS = {
         global_defs: {
             "process.env.NODE_ENV": "production"
         }
+    },
+    output: {
+        comments: false
     }
 };
 
@@ -30,10 +33,13 @@ async function write(fileName, fileSizes) {
     await writeFile(fileName, str);
 }
 
-const getFileSizes = async code => {
+async function getFileSizes(code) {
     const { code: minifiedCode } = await minify(code, TERSER_OPTS);
-    const minifiedGzip = await gzip(minifiedCode);
-    const minifiedBrotli = await brotli(minifiedCode);
+
+    const [minifiedGzip, minifiedBrotli] = await Promise.all([
+        gzip(minifiedCode),
+        brotli(minifiedCode)
+    ]);
 
     return {
         raw: code.length,
@@ -41,7 +47,7 @@ const getFileSizes = async code => {
         minGz: minifiedGzip.length,
         minBrotli: minifiedBrotli.length
     };
-};
+}
 
 const createPlugin = ({ dir, fake = false }) => ({
     writeBundle: async (_, output) => {

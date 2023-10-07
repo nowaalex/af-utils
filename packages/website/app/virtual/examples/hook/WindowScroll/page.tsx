@@ -2,16 +2,23 @@
 
 import { memo, useState } from "react";
 import { createPortal } from "react-dom";
+
 import {
     useVirtual,
     useScroller,
-    mapVisibleRange,
+    useSyncedStyles,
     Subscription,
-    VirtualScroller
-} from "@af-utils/react-virtual-headless";
+    mapVisibleRange
+} from "@af-utils/virtual-react";
 
-const Item = memo<{ i: number; model: VirtualScroller }>(({ i, model }) => (
-    <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">
+import { EVT_RANGE } from "@af-utils/virtual-core";
+import { ListItemProps } from "@af-utils/virtual-react/lib/types";
+
+const Item = memo<ListItemProps>(({ i, model }) => (
+    <div
+        ref={el => model.el(i, el)}
+        style={{ borderTop: "1px solid #ccc", padding: "1em" }}
+    >
         row {i}
     </div>
 ));
@@ -26,35 +33,35 @@ const WindowScrollHook = ({
     });
 
     useScroller(model, contentWindow || null);
+    const [outerRef, innerRef] = useSyncedStyles(model);
 
     return (
         <>
-            <div className="py-4 min-h-[20vh] bg-slate-100 text-center">
+            <div style={{ lineHeight: 4, padding: "1em", background: "#ccc" }}>
                 Some offset
             </div>
             <div>
-                <div className="py-4 min-h-[10vh] bg-slate-300 text-center">
+                <div
+                    style={{
+                        lineHeight: 8,
+                        padding: "1em",
+                        background: "#999"
+                    }}
+                >
                     Some offset 2
                 </div>
                 <div ref={model.setContainer}>
-                    <Subscription model={model}>
-                        {() => {
-                            const fromOffset = model.getOffset(model.from);
-
-                            return (
-                                <div
-                                    style={{
-                                        height: model.scrollSize - fromOffset,
-                                        marginTop: fromOffset
-                                    }}
-                                >
-                                    {mapVisibleRange(model, i => (
+                    <div ref={outerRef}>
+                        <div ref={innerRef}>
+                            <Subscription model={model} events={[EVT_RANGE]}>
+                                {() =>
+                                    mapVisibleRange(model, i => (
                                         <Item key={i} model={model} i={i} />
-                                    ))}
-                                </div>
-                            );
-                        }}
-                    </Subscription>
+                                    ))
+                                }
+                            </Subscription>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
@@ -65,6 +72,10 @@ const IframeWrapper = () => {
     const [ref, setRef] = useState<HTMLIFrameElement | null>(null);
 
     const contentWindow = ref?.contentWindow;
+
+    if (contentWindow) {
+        contentWindow.document.body.style.margin = "0";
+    }
 
     return (
         <iframe className="w-full h-full" ref={setRef}>

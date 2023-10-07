@@ -10,9 +10,8 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@af-utils/react-virtual-headless": "workspace:*",
-        "@af-utils/react-virtual-list": "workspace:*",
-        "@af-utils/styled": "workspace:*",
+        "@af-utils/virtual-core": "workspace:*",
+        "@af-utils/virtual-react": "workspace:*",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
@@ -40,7 +39,7 @@
         "@next/bundle-analyzer": "^13.5.4",
         "@next/mdx": "^13.5.4",
         "@types/react": "^18.2.25",
-        "@types/react-dom": "^18.2.10",
+        "@types/react-dom": "^18.2.11",
         "autoprefixer": "^10.4.16",
         "code-webpack-loader": "^0.0.2",
         "eslint-config-next": "13.5.4",

@@ -1,20 +1,13 @@
 "use client";
 
 import { memo, useRef, useState } from "react";
-import {
-    useVirtualModel,
-    List,
-    VirtualScroller
-} from "@af-utils/react-virtual-list";
+import { useVirtualModel, List } from "@af-utils/virtual-react";
 import { randNumber, randFullName } from "@ngneat/falso";
 import { BiLoaderCircle } from "react-icons/bi";
 import useFakerSeed from "hooks/useFakerSeed";
+import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
 
-const Item = memo<{
-    i: number;
-    model: VirtualScroller;
-    data: ReturnType<typeof getRandomItem>[];
-}>(({ i, model, data }) => (
+const Item = memo<ListItemProps>(({ i, model, data }) => (
     <div
         ref={el => model.el(i, el)}
         className="border-t p-2 border-zinc-400"
@@ -47,7 +40,7 @@ const PrependButton = ({
     model,
     items
 }: {
-    model: VirtualScroller;
+    model: ReturnType<typeof useVirtualModel>;
     items: ReturnType<typeof getRandomItem>[];
 }) => {
     const [isLoading, setLoading] = useState(false);
