@@ -142,19 +142,29 @@ class VirtualScroller {
      */
     private _msb = 0;
 
-    /** Scroll direction */
+    /**
+     * @readonly
+     * Scroll direction */
     horizontal = false;
 
-    /** Sum of all item sizes */
+    /**
+     * @readonly
+     * Sum of all item sizes */
     scrollSize = 0;
 
-    /** Items range start */
+    /**
+     * @readonly
+     * Items range start */
     from = 0;
 
-    /** Items range end */
+    /**
+     * @readonly
+     * Items range end */
     to = 0;
 
-    /** Hash of item sizes. Changed when at least one visible item is resized. */
+    /**
+     * @readonly
+     * Hash of item sizes. Changed when at least one visible item is resized. */
     sizesHash = 0;
 
     private _elToIdx = new Map<Element, number>();
@@ -312,12 +322,9 @@ class VirtualScroller {
     }
 
     /**
-     * Subscribe to model events
-     *
+     * Subscribe to model events ad returns unsubscribe function
      * @param callBack - event to be triggered
      * @param events - events to subscribe
-     *
-     * @returns unsubscribe function
      */
     on(callBack: () => void, events: readonly Event[] | Event[]) {
         events.forEach(evt => this._EventsList[evt].push(callBack));

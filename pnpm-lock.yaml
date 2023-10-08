@@ -101,12 +101,6 @@ importers:
       tsc-alias:
         specifier: ^1.8.8
         version: 1.8.8
-      typedoc:
-        specifier: ^0.25.1
-        version: 0.25.1(typescript@5.2.2)
-      typedoc-plugin-markdown:
-        specifier: ^3.16.0
-        version: 3.16.0(typedoc@0.25.1)
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -301,6 +295,12 @@ importers:
       tailwindcss:
         specifier: ^3.3.3
         version: 3.3.3
+      typedoc:
+        specifier: ^0.25.1
+        version: 0.25.1(typescript@5.2.2)
+      typedoc-plugin-markdown:
+        specifier: ^4.0.0-next.22
+        version: 4.0.0-next.22(typedoc@0.25.1)
 
 packages:
 
@@ -5242,19 +5242,6 @@ packages:
       duplexer: 0.1.2
     dev: true
 
-  /handlebars@4.7.8:
-    resolution: {integrity: sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==}
-    engines: {node: '>=0.4.7'}
-    hasBin: true
-    dependencies:
-      minimist: 1.2.8
-      neo-async: 2.6.2
-      source-map: 0.6.1
-      wordwrap: 1.0.0
-    optionalDependencies:
-      uglify-js: 3.17.4
-    dev: true
-
   /hard-rejection@2.1.0:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}
     engines: {node: '>=6'}
@@ -8880,12 +8867,11 @@ packages:
       is-typed-array: 1.1.12
     dev: true
 
-  /typedoc-plugin-markdown@3.16.0(typedoc@0.25.1):
-    resolution: {integrity: sha512-eeiC78fDNGFwemPIHiwRC+mEC7W5jwt3fceUev2gJ2nFnXpVHo8eRrpC9BLWZDee6ehnz/sPmNjizbXwpfaTBw==}
+  /typedoc-plugin-markdown@4.0.0-next.22(typedoc@0.25.1):
+    resolution: {integrity: sha512-OguaCi7gW/2kofSF+V2E/XGLfOtYXLEc/tq83g+5Hn6J1i5V0sUsCMs8VFjx9fP4e8TRDvZDpfkiZ55RTOQH/w==}
     peerDependencies:
-      typedoc: '>=0.24.0'
+      typedoc: '>=0.25.0'
     dependencies:
-      handlebars: 4.7.8
       typedoc: 0.25.1(typescript@5.2.2)
     dev: true
 
@@ -8908,14 +8894,6 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true
-
-  /uglify-js@3.17.4:
-    resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
-    engines: {node: '>=0.8.0'}
-    hasBin: true
-    requiresBuild: true
-    dev: true
-    optional: true
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
@@ -9331,10 +9309,6 @@ packages:
     hasBin: true
     dependencies:
       isexe: 2.0.0
-    dev: true
-
-  /wordwrap@1.0.0:
-    resolution: {integrity: sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==}
     dev: true
 
   /wrap-ansi@6.2.0:

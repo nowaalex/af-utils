@@ -12,6 +12,7 @@
     "scripts": {
         "dev": "rollup --watch --config rollup.config.ts --configPlugin typescript",
         "build": "rollup --config rollup.config.ts --configPlugin typescript",
+        "typedoc": "npx typedoc",
         "test": "jest"
     },
     "engines": {
