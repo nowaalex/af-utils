@@ -10,23 +10,35 @@ export const SIZES_HASH_MODULO = 0x7fffffff;
 */
 export const MAX_ITEM_COUNT = 0x7fffffff;
 
-export const enum Event {
-    /** model.from or model.to changed */
+/** @ignore */
+export const enum InternalEvent {
     RANGE = 0,
-
-    /** sum of item sizes changed */
     SCROLL_SIZE = 1,
-
-    /** at least one item size changed */
     SIZES = 2
 }
 
-export const EVT_ALL = [
-    Event.RANGE,
-    Event.SCROLL_SIZE,
-    Event.SIZES
-] as const satisfies readonly Event[];
+/** @enum */
+export const Event = {
+    /** model.from or model.to changed */
+    RANGE: 0,
 
+    /** sum of item sizes changed */
+    SCROLL_SIZE: 1,
+
+    /** at least one item size changed */
+    SIZES: 2
+} as const satisfies Record<string, InternalEvent>;
+
+export type Event = (typeof Event)[keyof typeof Event];
+
+/** @ignore */
+export const ALL_EVENTS = [
+    InternalEvent.RANGE,
+    InternalEvent.SCROLL_SIZE,
+    InternalEvent.SIZES
+] as const;
+
+/** @ignore */
 export const enum ScrollElementSizeKey {
     WINDOW_HORIZONTAL = "innerWidth",
     WINDOW_VERTICAL = "innerHeight",
@@ -34,11 +46,13 @@ export const enum ScrollElementSizeKey {
     ELEMENT_VERTICAL = "offsetHeight"
 }
 
+/** @ignore */
 export const enum ResizeObserverSizeKey {
     HORIZONTAL = "inlineSize",
     VERTICAL = "blockSize"
 }
 
+/** @ignore */
 export const enum ScrollKey {
     WINDOW_HORIZONTAL = "scrollX",
     WINDOW_VERTICAL = "scrollY",
@@ -46,6 +60,7 @@ export const enum ScrollKey {
     ELEMENT_VERTICAL = "scrollTop"
 }
 
+/** @ignore */
 export const enum ScrollToKey {
     HORIZONTAL = "left",
     VERTICAL = "top"

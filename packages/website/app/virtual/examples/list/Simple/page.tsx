@@ -1,8 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { useVirtual, List } from "@af-utils/virtual-react";
-import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
+import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
 
 const Item = memo<ListItemProps>(({ i, model }) => (
     <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">

@@ -12,3 +12,5 @@ export {
     mapVisibleRange,
     mapVisibleRangeWithOffset
 } from "./utils/rangeMappers";
+
+export * from "./types";

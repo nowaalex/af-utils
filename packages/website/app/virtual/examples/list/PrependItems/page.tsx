@@ -1,11 +1,10 @@
 "use client";
 
 import { memo, useRef, useState } from "react";
-import { useVirtualModel, List } from "@af-utils/virtual-react";
+import { useVirtualModel, List, ListItemProps } from "@af-utils/virtual-react";
 import { randNumber, randFullName } from "@ngneat/falso";
 import { BiLoaderCircle } from "react-icons/bi";
 import useFakerSeed from "hooks/useFakerSeed";
-import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
 
 const Item = memo<ListItemProps>(({ i, model, data }) => (
     <div

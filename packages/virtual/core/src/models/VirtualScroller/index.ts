@@ -1,16 +1,17 @@
 import {
     SIZES_HASH_MODULO,
-    Event,
+    InternalEvent,
     ScrollElementSizeKey,
     ResizeObserverSizeKey,
     ScrollKey,
     ScrollToKey,
-    EVT_ALL,
     MAX_ITEM_COUNT,
+    ALL_EVENTS,
     DEFAULT_ESTIMATED_ITEM_SIZE,
     DEFAULT_OVERSCAN_COUNT,
-    DEFAULT_ESTIMATED_WIDGET_SIZE
-} from "constants/index";
+    DEFAULT_ESTIMATED_WIDGET_SIZE,
+    type Event
+} from "constants/";
 import FTreeArray from "models/FTreeArray";
 import FinalResizeObserver from "models/ResizeObserver";
 import call from "utils/call";
@@ -226,7 +227,7 @@ class VirtualScroller {
             if (buff !== 0) {
                 update(this._fTree, lim, buff, this._fTree.length);
                 this.scrollSize += buff;
-                this._run(Event.SCROLL_SIZE);
+                this._run(InternalEvent.SCROLL_SIZE);
                 if (buff < 0) {
                     /*
                         If visible item sizes reduced - holes may appear, so rerender is a must.
@@ -242,13 +243,13 @@ class VirtualScroller {
                 5 % 2 === 5 & 1 && 9 % 4 === 9 & 3
             */
             this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
-            this._run(Event.SIZES);
+            this._run(InternalEvent.SIZES);
 
             Batch._end();
         }
     });
 
-    private _EventsList = EVT_ALL.map<(() => void)[]>(() => []);
+    private _EventsList = ALL_EVENTS.map<(() => void)[]>(() => []);
 
     /**
      * Update property names for resize events, dimensions and scroll position extraction
@@ -288,7 +289,7 @@ class VirtualScroller {
             Batch._start();
             this._stickyOffset += relativeOffset;
             this._availableWidgetSize -= relativeOffset;
-            this._run(Event.SCROLL_SIZE);
+            this._run(InternalEvent.SCROLL_SIZE);
             this._updateRangeFromEnd();
             Batch._end();
         }
@@ -493,7 +494,7 @@ class VirtualScroller {
         }
     };
 
-    _updateScrollerOffsetRaw() {
+    private _updateScrollerOffsetRaw() {
         const newScrollElementOffset = /*@__NOINLINE__*/ getDistanceBetween(
             this._scrollElement,
             this._initialElement,
@@ -508,7 +509,7 @@ class VirtualScroller {
         return diff;
     }
 
-    updateScrollerOffset() {
+    private updateScrollerOffset() {
         if (this._updateScrollerOffsetRaw() && this._scrollElement) {
             this._syncScrollPosition();
         }
@@ -599,7 +600,7 @@ class VirtualScroller {
         if (_exactTo > this.to) {
             this.to = Math.min(this._itemCount, _exactTo + this._overscanCount);
             this.from = this._exactFrom;
-            this._run(Event.RANGE);
+            this._run(InternalEvent.RANGE);
         }
     }
 
@@ -613,7 +614,7 @@ class VirtualScroller {
         if (_exactFrom < this.from) {
             this.from = Math.max(0, _exactFrom - this._overscanCount);
             this.to = this._exactTo;
-            this._run(Event.RANGE);
+            this._run(InternalEvent.RANGE);
         }
     }
 
@@ -697,7 +698,7 @@ class VirtualScroller {
 
             this.scrollSize = this.getOffset(itemCount);
 
-            this._run(Event.SCROLL_SIZE);
+            this._run(InternalEvent.SCROLL_SIZE);
 
             if (this.to > itemCount) {
                 // after this range would be 100% updated

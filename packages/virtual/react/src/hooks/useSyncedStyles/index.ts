@@ -1,11 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 
-import {
-    EVT_SCROLL_SIZE,
-    EVT_RANGE,
-    EVT_SIZES,
-    VirtualScroller
-} from "@af-utils/virtual-core";
+import { Event, VirtualScroller } from "@af-utils/virtual-core";
 
 const SIZE_PROVIDER_STYLE_BASE = {
     position: "relative",
@@ -54,7 +49,7 @@ const useSyncedStyles = (model: VirtualScroller) => {
             const unsubSize = model.on(() => {
                 outer.style[model.horizontal ? "width" : "height"] =
                     model.scrollSize + "px";
-            }, [EVT_SCROLL_SIZE]);
+            }, [Event.SCROLL_SIZE]);
 
             const unsubScroll = model.on(() => {
                 const fromOffset = model.getOffset(model.from);
@@ -64,7 +59,7 @@ const useSyncedStyles = (model: VirtualScroller) => {
                 }(${fromOffset}px)`;
                 inner.style[model.horizontal ? "width" : "height"] =
                     toOffset - fromOffset + "px";
-            }, [EVT_RANGE, EVT_SIZES]);
+            }, [Event.RANGE, Event.SIZES]);
 
             Object.assign(
                 outer.style,

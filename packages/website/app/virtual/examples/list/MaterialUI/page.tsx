@@ -5,8 +5,7 @@ import MuiList from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { useVirtual, List } from "@af-utils/virtual-react";
-import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
+import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
 
 const Item = memo<ListItemProps>(({ i, model }) => (
     <ListItem ref={el => model.el(i, el)} disablePadding>

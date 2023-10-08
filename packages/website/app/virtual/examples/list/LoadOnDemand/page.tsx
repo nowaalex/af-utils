@@ -1,11 +1,15 @@
 "use client";
 
 import { useState, useRef, useCallback, memo } from "react";
-import { useVirtual, useSubscription, List } from "@af-utils/virtual-react";
-import { EVT_RANGE } from "@af-utils/virtual-core";
+import {
+    useVirtual,
+    useSubscription,
+    List,
+    ListItemProps
+} from "@af-utils/virtual-react";
+import { Event } from "@af-utils/virtual-core";
 import useFakerSeed from "hooks/useFakerSeed";
 import { randNumber, randParagraph } from "@ngneat/falso";
-import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
 
 const fetchRandomDescriptions = () =>
     new Promise<string[]>(resolve =>
@@ -27,7 +31,7 @@ const Item = memo<ListItemProps>(({ i, model, data: posts }) => (
     </div>
 ));
 
-const EVENTS = [EVT_RANGE] as const;
+const EVENTS = [Event.RANGE] as const;
 
 const Posts = () => {
     // fake data should be consistent for ssr purpose

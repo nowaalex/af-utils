@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, memo, useEffect, useLayoutEffect, FormEvent } from "react";
-import { useVirtual, List } from "@af-utils/virtual-react";
-import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
+import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
 
 const DEFAULT_ROW_COUNT = 100000;
 

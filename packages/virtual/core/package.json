@@ -56,6 +56,8 @@
         "rollup": "^4.0.2",
         "ts-jest": "^29.1.1",
         "tsc-alias": "^1.8.8",
+        "typedoc": "^0.25.1",
+        "typedoc-plugin-markdown": "^3.16.0",
         "typescript": "^5.2.2"
     },
     "publishConfig": {

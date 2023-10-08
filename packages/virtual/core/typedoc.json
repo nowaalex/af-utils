@@ -1,0 +1,22 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "visibilityFilters": {
+        "protected": false,
+        "private": false,
+        "external": false,
+        "@alpha": false,
+        "@beta": false
+    },
+    "plugin": ["typedoc-plugin-markdown"],
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "disableSources": true,
+    "hideBreadcrumbs": true,
+    "hideInPageTOC": true,
+    "githubPages": false,
+    "disableGit": true,
+    "readme": "none",
+    "sort": ["kind", "source-order"],
+    "entryPoints": ["./src/index.ts"],
+    "out": "typedoc"
+}

@@ -12,6 +12,7 @@
         "strict": true,
         "alwaysStrict": true,
         "resolveJsonModule": true,
+        "preserveConstEnums": true,
         "types": ["node", "jest"]
     }
 }

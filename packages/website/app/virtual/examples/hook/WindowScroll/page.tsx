@@ -8,11 +8,11 @@ import {
     useScroller,
     useSyncedStyles,
     Subscription,
-    mapVisibleRange
+    mapVisibleRange,
+    ListItemProps
 } from "@af-utils/virtual-react";
 
-import { EVT_RANGE } from "@af-utils/virtual-core";
-import { ListItemProps } from "@af-utils/virtual-react/lib/types";
+import { Event } from "@af-utils/virtual-core";
 
 const Item = memo<ListItemProps>(({ i, model }) => (
     <div
@@ -53,7 +53,7 @@ const WindowScrollHook = ({
                 <div ref={model.setContainer}>
                     <div ref={outerRef}>
                         <div ref={innerRef}>
-                            <Subscription model={model} events={[EVT_RANGE]}>
+                            <Subscription model={model} events={[Event.RANGE]}>
                                 {() =>
                                     mapVisibleRange(model, i => (
                                         <Item key={i} model={model} i={i} />

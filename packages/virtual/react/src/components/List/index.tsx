@@ -1,7 +1,7 @@
 import { mapVisibleRange } from "utils/rangeMappers";
 import useSyncedStyles from "hooks/useSyncedStyles";
 import Subscription from "components/Subscription";
-import { EVT_RANGE } from "@af-utils/virtual-core";
+import { Event } from "@af-utils/virtual-core";
 import type { ElementType } from "react";
 import type { ListProps } from "types";
 
@@ -34,7 +34,7 @@ const List = <T extends ElementType = "div">({
             {header}
             <div ref={outerRef}>
                 <div ref={innerRef}>
-                    <Subscription model={model} events={[EVT_RANGE]}>
+                    <Subscription model={model} events={[Event.RANGE]}>
                         {() =>
                             mapVisibleRange(model, i => (
                                 <Item

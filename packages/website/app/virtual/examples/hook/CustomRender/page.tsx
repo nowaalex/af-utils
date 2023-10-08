@@ -5,12 +5,11 @@ import { memo, useState, useLayoutEffect } from "react";
 import {
     useVirtual,
     Subscription,
-    mapVisibleRange
+    mapVisibleRange,
+    ListItemProps
 } from "@af-utils/virtual-react";
 
-import { EVT_SCROLL_SIZE, EVT_RANGE, EVT_SIZES } from "@af-utils/virtual-core";
-
-import type { ListItemProps } from "@af-utils/virtual-react/lib/types";
+import { Event } from "@af-utils/virtual-core";
 
 const Item = memo<ListItemProps>(({ i, model }) => (
     <tr ref={el => model.el(i, el)}>
@@ -31,12 +30,12 @@ const CustomRender = () => {
         if (before && after) {
             const unsubBefore = model.on(() => {
                 before.style.height = model.getOffset(model.from) + "px";
-            }, [EVT_RANGE]);
+            }, [Event.RANGE]);
 
             const unsubAfter = model.on(() => {
                 after.style.height =
                     model.scrollSize - model.getOffset(model.to) + "px";
-            }, [EVT_RANGE, EVT_SCROLL_SIZE, EVT_SIZES]);
+            }, [Event.RANGE, Event.SCROLL_SIZE, Event.SIZES]);
 
             return () => {
                 unsubBefore();
@@ -65,7 +64,7 @@ const CustomRender = () => {
                         <td className="!p-0 !border-y-0" />
                         <td className="!p-0 !border-y-0" />
                     </tr>
-                    <Subscription model={model} events={[EVT_RANGE]}>
+                    <Subscription model={model} events={[Event.RANGE]}>
                         {() =>
                             mapVisibleRange(model, i => (
                                 <Item key={i} i={i} model={model} />
