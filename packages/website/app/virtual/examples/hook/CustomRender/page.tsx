@@ -9,7 +9,7 @@ import {
     ListItemProps
 } from "@af-utils/virtual-react";
 
-import { Event } from "@af-utils/virtual-core";
+import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 
 const Item = memo<ListItemProps>(({ i, model }) => (
     <tr ref={el => model.el(i, el)}>
@@ -30,12 +30,16 @@ const CustomRender = () => {
         if (before && after) {
             const unsubBefore = model.on(() => {
                 before.style.height = model.getOffset(model.from) + "px";
-            }, [Event.RANGE]);
+            }, [VirtualScrollerEvent.RANGE]);
 
             const unsubAfter = model.on(() => {
                 after.style.height =
                     model.scrollSize - model.getOffset(model.to) + "px";
-            }, [Event.RANGE, Event.SCROLL_SIZE, Event.SIZES]);
+            }, [
+                VirtualScrollerEvent.RANGE,
+                VirtualScrollerEvent.SCROLL_SIZE,
+                VirtualScrollerEvent.SIZES
+            ]);
 
             return () => {
                 unsubBefore();
@@ -64,7 +68,10 @@ const CustomRender = () => {
                         <td className="!p-0 !border-y-0" />
                         <td className="!p-0 !border-y-0" />
                     </tr>
-                    <Subscription model={model} events={[Event.RANGE]}>
+                    <Subscription
+                        model={model}
+                        events={[VirtualScrollerEvent.RANGE]}
+                    >
                         {() =>
                             mapVisibleRange(model, i => (
                                 <Item key={i} i={i} model={model} />

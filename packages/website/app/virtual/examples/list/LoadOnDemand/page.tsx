@@ -7,7 +7,7 @@ import {
     List,
     ListItemProps
 } from "@af-utils/virtual-react";
-import { Event } from "@af-utils/virtual-core";
+import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 import useFakerSeed from "hooks/useFakerSeed";
 import { randNumber, randParagraph } from "@ngneat/falso";
 
@@ -31,7 +31,7 @@ const Item = memo<ListItemProps>(({ i, model, data: posts }) => (
     </div>
 ));
 
-const EVENTS = [Event.RANGE] as const;
+const EVENTS = [VirtualScrollerEvent.RANGE] as const;
 
 const Posts = () => {
     // fake data should be consistent for ssr purpose

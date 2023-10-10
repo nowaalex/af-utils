@@ -10,7 +10,7 @@ import {
     ListItemProps
 } from "@af-utils/virtual-react";
 
-import { Event } from "@af-utils/virtual-core";
+import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 
 const Item = memo<ListItemProps>(({ i, model }) => (
     <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">
@@ -42,7 +42,10 @@ const DifferentScrollElementHook = () => {
                 <div ref={model.setContainer}>
                     <div ref={outerRef}>
                         <div ref={innerRef}>
-                            <Subscription model={model} events={[Event.RANGE]}>
+                            <Subscription
+                                model={model}
+                                events={[VirtualScrollerEvent.RANGE]}
+                            >
                                 {() =>
                                     mapVisibleRange(model, i => (
                                         <Item key={i} model={model} i={i} />
