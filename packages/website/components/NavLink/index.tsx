@@ -16,9 +16,7 @@ const NavLink = ({
 }: NavLinkProps) => {
     const pathname = usePathname();
     const isActive =
-        href === "/virtual"
-            ? pathname === href
-            : pathname.startsWith(href) || href.startsWith(pathname);
+        href === "/virtual" ? pathname === href : pathname.startsWith(href);
 
     return (
         <Link

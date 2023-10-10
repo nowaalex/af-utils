@@ -7,7 +7,7 @@ import startCase from "utils/startCase";
 const DOCS_STRUCTURE = [
     ["Getting started", ""],
     ["FAQ", "/faq"],
-    ["Reference", "/reference/index.md"],
+    ["Reference", "/reference"],
     ["Bundle size impact", "/size"]
 ] as const;
 
