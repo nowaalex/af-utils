@@ -1,7 +1,7 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import nextDynamic from "next/dynamic";
-import type { Metadata, ResolvingMetadata } from "next";
 import startCase from "utils/startCase";
+import type { Metadata } from "next";
 
 const map = process.env.VIRTUAL_REFERENCE_MAP as unknown as Record<
     string,
