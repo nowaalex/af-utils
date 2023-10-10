@@ -10,6 +10,10 @@ const M = require.context(
 
 const K = M.keys();
 
+export async function generateStaticParams() {
+    return K.map(reference => ["reference", reference]);
+}
+
 const Cache: Record<string, any> = {};
 
 const Page = ({ params }: { params: any }) => {

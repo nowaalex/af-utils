@@ -181,10 +181,10 @@ importers:
   packages/website:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: workspace:*
+        specifier: ^0.0.3
         version: link:../virtual/core
       '@af-utils/virtual-react':
-        specifier: workspace:*
+        specifier: ^0.0.3
         version: link:../virtual/react
       '@emotion/css':
         specifier: ^11.11.2

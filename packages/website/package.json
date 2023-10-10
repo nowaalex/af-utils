@@ -11,8 +11,8 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@af-utils/virtual-core": "workspace:*",
-        "@af-utils/virtual-react": "workspace:*",
+        "@af-utils/virtual-core": "^0.0.3",
+        "@af-utils/virtual-react": "^0.0.3",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
