@@ -6,6 +6,8 @@ const map = process.env.VIRTUAL_REFERENCE_MAP as unknown as Record<
     boolean
 >;
 
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
     const result = Object.keys(map).map(reference => [{ reference }]);
 
