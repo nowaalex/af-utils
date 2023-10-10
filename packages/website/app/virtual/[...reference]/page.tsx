@@ -1,4 +1,4 @@
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { lazy } from "react";
 
 const map = process.env.VIRTUAL_REFERENCE_MAP as unknown as Record<
