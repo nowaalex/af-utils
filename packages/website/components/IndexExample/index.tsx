@@ -4,9 +4,9 @@ import Image from "next/image";
 import List from "app/virtual/examples/list/Simple/page";
 
 const IndexExample = () => (
-    <div className="grid gap-8 lg:grid-cols-[5fr_3fr] not-prose">
+    <div className="flex gap-8 not-prose">
         <Image width={768} height={592} alt="messy" src="/messy.jpg" />
-        <div className="overflow-hidden contain-strict grid">
+        <div className="overflow-hidden contain-strict grid grow">
             <List />
         </div>
     </div>

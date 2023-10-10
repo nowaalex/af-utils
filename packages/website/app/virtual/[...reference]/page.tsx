@@ -1,11 +1,14 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import nextDynamic from "next/dynamic";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import startCase from "utils/startCase";
 
 const map = process.env.VIRTUAL_REFERENCE_MAP as unknown as Record<
     string,
     boolean
 >;
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
     const result = Object.keys(map).map(reference => [{ reference }]);
@@ -13,12 +16,15 @@ export function generateStaticParams() {
     return result;
 }
 
-export const metadata = {
-    title: {
-        template: "reference / %s",
-        default: "Reference"
-    }
-} satisfies Metadata;
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+    return params.reference.length > 1
+        ? {
+              title: `${startCase(
+                  params.reference[1].replace(".md", "").replace(".", " | ")
+              )} | Reference`
+          }
+        : {};
+}
 
 const Cache: Record<string, any> = {};
 
