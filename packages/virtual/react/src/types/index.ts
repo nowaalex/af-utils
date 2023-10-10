@@ -8,13 +8,13 @@ import type {
  * @public
  * Props passed to List item
  */
-export type ListItemProps = {
+export interface ListItemProps {
     model: VirtualScroller;
-    /** index */
+    /** item index */
     i: number;
     data?: any;
     offset?: number;
-};
+}
 
 /**
  * @public
@@ -40,8 +40,8 @@ export type ListProps<T extends ElementType = "div"> = Omit<
  * @public
  * {@link Subscription} component props
  */
-export type SubscriptionProps = {
+export interface SubscriptionProps {
     model: VirtualScroller;
     children: () => ReactNode;
     events?: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[];
-};
+}

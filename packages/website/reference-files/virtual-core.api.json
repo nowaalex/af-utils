@@ -237,7 +237,7 @@
                 {
                   "kind": "Reference",
                   "text": "VirtualScrollerInitialParams",
-                  "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams:type"
+                  "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams:interface"
                 },
                 {
                   "kind": "Content",
@@ -783,7 +783,7 @@
                 {
                   "kind": "Reference",
                   "text": "VirtualScrollerRuntimeParams",
-                  "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:type"
+                  "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:interface"
                 },
                 {
                   "kind": "Content",
@@ -1213,61 +1213,216 @@
           }
         },
         {
-          "kind": "TypeAlias",
-          "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams:type",
-          "docComment": "/**\n * {@link VirtualScroller} constructor argument type\n *\n * @public\n */\n",
+          "kind": "Interface",
+          "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams:interface",
+          "docComment": "/**\n * {@link VirtualScroller} constructor argument type\n *\n * @remarks\n *\n * Implemented as interface for better documentation output (api-extractor)\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "export type VirtualScrollerInitialParams = "
+              "text": "export interface VirtualScrollerInitialParams extends "
             },
             {
               "kind": "Reference",
               "text": "VirtualScrollerRuntimeParams",
-              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:type"
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:interface"
             },
             {
               "kind": "Content",
-              "text": " & {\n    horizontal?: boolean;\n    estimatedWidgetSize?: number;\n    estimatedScrollElementOffset?: number;\n}"
-            },
-            {
-              "kind": "Content",
-              "text": ";"
+              "text": " "
             }
           ],
           "fileUrlPath": "lib/types/types/index.d.ts",
           "releaseTag": "Public",
           "name": "VirtualScrollerInitialParams",
-          "typeTokenRange": {
-            "startIndex": 1,
-            "endIndex": 3
-          }
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams#estimatedScrollElementOffset:member",
+              "docComment": "/**\n * Used is scenarios with different scroll/container elements\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "estimatedScrollElementOffset?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "estimatedScrollElementOffset",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams#estimatedWidgetSize:member",
+              "docComment": "/**\n * Estimated size of scroll element.\n *\n * @remarks\n *\n * Actual size is always reported by `ResizeObserver`, but this property together with {@link VirtualScrollerRuntimeParams.estimatedItemSize} and {@link VirtualScrollerRuntimeParams.overscanCount} can be used in server-side rendering.\n *\n * Quantity of SSR-rendered elements can be calculated this way:\n * ```typescript\n * Math.min( itemCount, Math.ceil( estimatedWidgetSize / estimatedItemSize ) + overscanCount )\n * ```\n *\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "estimatedWidgetSize?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "estimatedWidgetSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams#horizontal:member",
+              "docComment": "/**\n * Container scroll orientation\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "horizontal?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "horizontal",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": [
+            {
+              "startIndex": 1,
+              "endIndex": 2
+            }
+          ]
         },
         {
-          "kind": "TypeAlias",
-          "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:type",
-          "docComment": "/**\n * {@link VirtualScroller.set} argument type\n *\n * @public\n */\n",
+          "kind": "Interface",
+          "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:interface",
+          "docComment": "/**\n * {@link VirtualScroller.set} argument type\n *\n * @remarks\n *\n * Implemented as interface for better documentation output (api-extractor)\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
-              "text": "export type VirtualScrollerRuntimeParams = "
-            },
-            {
-              "kind": "Content",
-              "text": "{\n    overscanCount?: number;\n    itemCount?: number;\n    estimatedItemSize?: number;\n}"
-            },
-            {
-              "kind": "Content",
-              "text": ";"
+              "text": "export interface VirtualScrollerRuntimeParams "
             }
           ],
           "fileUrlPath": "lib/types/types/index.d.ts",
           "releaseTag": "Public",
           "name": "VirtualScrollerRuntimeParams",
-          "typeTokenRange": {
-            "startIndex": 1,
-            "endIndex": 2
-          }
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams#estimatedItemSize:member",
+              "docComment": "/**\n * Estimated height/width of scrollable item. Orientation is determined by {@link VirtualScrollerInitialParams.horizontal}.\n *\n * @remarks\n *\n * Actual size is always reported by `ResizeObserver`. Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "estimatedItemSize?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "estimatedItemSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams#itemCount:member",
+              "docComment": "/**\n * Total items quantity\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "itemCount?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "itemCount",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams#overscanCount:member",
+              "docComment": "/**\n * Amount of items rendered before or after visible ones. If scrolling is done forward - these items are rendered after visible ones. If backward - before.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "overscanCount?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "overscanCount",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": []
         }
       ]
     }

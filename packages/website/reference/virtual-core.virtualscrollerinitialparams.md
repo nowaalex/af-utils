@@ -2,18 +2,26 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md)
 
-## VirtualScrollerInitialParams type
+## VirtualScrollerInitialParams interface
 
 [VirtualScroller](./virtual-core.virtualscroller.md) constructor argument type
 
 **Signature:**
 
 ```typescript
-export type VirtualScrollerInitialParams = VirtualScrollerRuntimeParams & {
-    horizontal?: boolean;
-    estimatedWidgetSize?: number;
-    estimatedScrollElementOffset?: number;
-};
+export interface VirtualScrollerInitialParams extends VirtualScrollerRuntimeParams 
 ```
-**References:** [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md)
+**Extends:** [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md)
+
+## Remarks
+
+Implemented as interface for better documentation output (api-extractor)
+
+## Properties
+
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [estimatedScrollElementOffset?](./virtual-core.virtualscrollerinitialparams.estimatedscrollelementoffset.md) |  | number | _(Optional)_ Used is scenarios with different scroll/container elements |
+|  [estimatedWidgetSize?](./virtual-core.virtualscrollerinitialparams.estimatedwidgetsize.md) |  | number | _(Optional)_ Estimated size of scroll element. |
+|  [horizontal?](./virtual-core.virtualscrollerinitialparams.horizontal.md) |  | boolean | _(Optional)_ Container scroll orientation |
 

@@ -2,16 +2,25 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md)
 
-## VirtualScrollerRuntimeParams type
+## VirtualScrollerRuntimeParams interface
 
 [VirtualScroller.set()](./virtual-core.virtualscroller.set.md) argument type
 
 **Signature:**
 
 ```typescript
-export type VirtualScrollerRuntimeParams = {
-    overscanCount?: number;
-    itemCount?: number;
-    estimatedItemSize?: number;
-};
+export interface VirtualScrollerRuntimeParams 
 ```
+
+## Remarks
+
+Implemented as interface for better documentation output (api-extractor)
+
+## Properties
+
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [estimatedItemSize?](./virtual-core.virtualscrollerruntimeparams.estimateditemsize.md) |  | number | _(Optional)_ Estimated height/width of scrollable item. Orientation is determined by [VirtualScrollerInitialParams.horizontal](./virtual-core.virtualscrollerinitialparams.horizontal.md)<!-- -->. |
+|  [itemCount?](./virtual-core.virtualscrollerruntimeparams.itemcount.md) |  | number | _(Optional)_ Total items quantity |
+|  [overscanCount?](./virtual-core.virtualscrollerruntimeparams.overscancount.md) |  | number | _(Optional)_ Amount of items rendered before or after visible ones. If scrolling is done forward - these items are rendered after visible ones. If backward - before. |
+

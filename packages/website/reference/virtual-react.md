@@ -6,6 +6,13 @@
 
 React components/hooks/utils used to easily connect to [VirtualScroller](./virtual-core.virtualscroller.md)
 
+## Interfaces
+
+|  Interface | Description |
+|  --- | --- |
+|  [ListItemProps](./virtual-react.listitemprops.md) | Props passed to List item |
+|  [SubscriptionProps](./virtual-react.subscriptionprops.md) | [Subscription](./virtual-react.subscription.md) component props |
+
 ## Variables
 
 |  Variable | Description |
@@ -25,7 +32,5 @@ React components/hooks/utils used to easily connect to [VirtualScroller](./virtu
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [ListItemProps](./virtual-react.listitemprops.md) | Props passed to List item |
 |  [ListProps](./virtual-react.listprops.md) | [List](./virtual-react.list.md) component props |
-|  [SubscriptionProps](./virtual-react.subscriptionprops.md) | [Subscription](./virtual-react.subscription.md) component props |
 

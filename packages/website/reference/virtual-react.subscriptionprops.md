@@ -2,18 +2,21 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [SubscriptionProps](./virtual-react.subscriptionprops.md)
 
-## SubscriptionProps type
+## SubscriptionProps interface
 
 [Subscription](./virtual-react.subscription.md) component props
 
 **Signature:**
 
 ```typescript
-export type SubscriptionProps = {
-    model: VirtualScroller;
-    children: () => ReactNode;
-    events?: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[];
-};
+export interface SubscriptionProps 
 ```
-**References:** [VirtualScroller](./virtual-core.virtualscroller.md)<!-- -->, [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)
+
+## Properties
+
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [children](./virtual-react.subscriptionprops.children.md) |  | () =&gt; ReactNode |  |
+|  [events?](./virtual-react.subscriptionprops.events.md) |  | readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] | _(Optional)_ |
+|  [model](./virtual-react.subscriptionprops.model.md) |  | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
 

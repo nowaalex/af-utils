@@ -2,19 +2,22 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [ListItemProps](./virtual-react.listitemprops.md)
 
-## ListItemProps type
+## ListItemProps interface
 
 Props passed to List item
 
 **Signature:**
 
 ```typescript
-export type ListItemProps = {
-    model: VirtualScroller;
-    i: number;
-    data?: any;
-    offset?: number;
-};
+export interface ListItemProps 
 ```
-**References:** [VirtualScroller](./virtual-core.virtualscroller.md)
+
+## Properties
+
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [data?](./virtual-react.listitemprops.data.md) |  | any | _(Optional)_ |
+|  [i](./virtual-react.listitemprops.i.md) |  | number | item index |
+|  [model](./virtual-react.listitemprops.model.md) |  | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
+|  [offset?](./virtual-react.listitemprops.offset.md) |  | number | _(Optional)_ |
 
