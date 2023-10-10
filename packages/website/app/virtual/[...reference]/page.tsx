@@ -1,13 +1,11 @@
 import { notFound, permanentRedirect } from "next/navigation";
-import { lazy } from "react";
+import nextDynamic from "next/dynamic";
 import type { Metadata } from "next";
 
 const map = process.env.VIRTUAL_REFERENCE_MAP as unknown as Record<
     string,
     boolean
 >;
-
-export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
     const result = Object.keys(map).map(reference => [{ reference }]);
@@ -38,7 +36,7 @@ const Page = ({ params }: { params: any }) => {
     let C = Cache[key];
 
     if (!C) {
-        C = lazy(() => import(`../../../reference/${key}`));
+        C = nextDynamic(() => import(`../../../reference/${key}`));
         Cache[key] = C;
     }
 
