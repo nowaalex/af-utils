@@ -4,10 +4,15 @@
 
 ## mapVisibleRangeWithOffset variable
 
-Map current visible items and provide offset for each item. Used in scenarios, when each item is absolutely positioned
+Map current visible items and provide offset for each item.
 
 **Signature:**
 
 ```typescript
 mapVisibleRangeWithOffset: (model: VirtualScroller, cb: (index: number, offset: number) => JSX.Element) => JSX.Element[]
 ```
+
+## Remarks
+
+Used in scenarios, when each item is absolutely positioned
+

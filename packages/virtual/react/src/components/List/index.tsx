@@ -2,7 +2,7 @@ import { mapVisibleRange } from "utils/rangeMappers";
 import useSyncedStyles from "hooks/useSyncedStyles";
 import Subscription from "components/Subscription";
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
-import type { ElementType } from "react";
+import type { ElementType, ReactNode } from "react";
 import type { ListProps } from "types";
 
 /**
@@ -11,7 +11,9 @@ import type { ListProps } from "types";
  * {@link ListProps}.
  * Small abstraction, which in 90% cases allows to avoid hook boilerplate.
  */
-const List = <T extends ElementType = "div">({
+const List: <T extends ElementType = "div">(
+    props: ListProps<T>
+) => JSX.Element = ({
     model,
     children: Item,
     itemData,
@@ -22,7 +24,7 @@ const List = <T extends ElementType = "div">({
     tabIndex = -1,
     style,
     ...props
-}: ListProps<T>) => {
+}) => {
     const Component = component || "div";
     const [outerRef, innerRef] = useSyncedStyles(model);
 

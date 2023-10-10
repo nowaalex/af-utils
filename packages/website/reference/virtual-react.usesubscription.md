@@ -4,10 +4,15 @@
 
 ## useSubscription variable
 
-React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) without unnecessary rerenders. For example can be used in load-on-demand.
+React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) without unnecessary rerenders.
 
 **Signature:**
 
 ```typescript
 useSubscription: (model: VirtualScroller, events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[], callBack: () => void) => void
 ```
+
+## Remarks
+
+For example can be used in load-on-demand.
+

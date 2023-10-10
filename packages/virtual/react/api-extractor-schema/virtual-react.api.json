@@ -193,16 +193,7 @@
             },
             {
               "kind": "Content",
-              "text": " = \"div\">({ model, "
-            },
-            {
-              "kind": "Reference",
-              "text": "children",
-              "canonicalReference": "@af-utils/virtual-react!~__type#children"
-            },
-            {
-              "kind": "Content",
-              "text": ": Item, itemData, component, header, footer, getKey, tabIndex, style, ...props }: "
+              "text": " = \"div\">(props: "
             },
             {
               "kind": "Reference",
@@ -211,12 +202,12 @@
             },
             {
               "kind": "Content",
-              "text": "<T>) => import(\"react/jsx-runtime\")."
+              "text": "<T>) => "
             },
             {
               "kind": "Reference",
               "text": "JSX.Element",
-              "canonicalReference": "@types/react!JSX.Element:interface"
+              "canonicalReference": "@types/react!__global.JSX.Element:interface"
             }
           ],
           "fileUrlPath": "lib/types/components/List/index.d.ts",
@@ -225,7 +216,7 @@
           "name": "List",
           "variableTypeTokenRange": {
             "startIndex": 1,
-            "endIndex": 9
+            "endIndex": 7
           }
         },
         {
@@ -399,7 +390,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@af-utils/virtual-react!mapVisibleRange:var",
-          "docComment": "/**\n * Map current visible items\n *\n * @public\n */\n",
+          "docComment": "/**\n * Map current visible items\n *\n * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance\n *\n * @param cb - callback, returning ONLY ONE react element\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -449,7 +440,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@af-utils/virtual-react!mapVisibleRangeWithOffset:var",
-          "docComment": "/**\n * Map current visible items and provide offset for each item. Used in scenarios, when each item is absolutely positioned\n *\n * @public\n */\n",
+          "docComment": "/**\n * Map current visible items and provide offset for each item.\n *\n * @remarks\n *\n * Used in scenarios, when each item is absolutely positioned\n *\n * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance\n *\n * @param cb - callback, returning ONLY ONE react element\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -499,7 +490,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@af-utils/virtual-react!Subscription:var",
-          "docComment": "/**\n * React component. Rerenders only on certain {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)}. Allows to optimize performance.\n *\n * @public\n */\n",
+          "docComment": "/**\n * React component. {@link SubscriptionProps}. Rerenders only on certain {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)}. Allows to optimize performance.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -516,7 +507,7 @@
             },
             {
               "kind": "Content",
-              "text": ") => import(\"react\")."
+              "text": ") => "
             },
             {
               "kind": "Reference",
@@ -689,7 +680,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@af-utils/virtual-react!useSubscription:var",
-          "docComment": "/**\n * React hook. Allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)} without unnecessary rerenders. For example can be used in load-on-demand.\n *\n * @public\n */\n",
+          "docComment": "/**\n * React hook. Allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)} without unnecessary rerenders.\n *\n * @remarks\n *\n * For example can be used in load-on-demand.\n *\n * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance\n *\n * @param events - array of {@link @af-utils/virtual-core#VirtualScrollerEvent} to subscribe\n *\n * @param callBack - callback to be called\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",

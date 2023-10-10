@@ -9,5 +9,5 @@ React component. [ListProps](./virtual-react.listprops.md)<!-- -->. Small abstra
 **Signature:**
 
 ```typescript
-List: <T extends ElementType = "div">({ model, children: Item, itemData, component, header, footer, getKey, tabIndex, style, ...props }: ListProps<T>) => import("react/jsx-runtime").JSX.Element
+List: <T extends ElementType = "div">(props: ListProps<T>) => JSX.Element
 ```

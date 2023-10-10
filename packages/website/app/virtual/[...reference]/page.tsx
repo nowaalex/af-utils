@@ -17,10 +17,6 @@ export function generateStaticParams() {
 const Cache: Record<string, any> = {};
 
 const Page = ({ params }: { params: any }) => {
-    /* if (params.reference.length < 2) {
-        permanentRedirect("/virtual/reference/index.md");
-    }*/
-
     const key = params.reference[1];
 
     if (!map[key]) {

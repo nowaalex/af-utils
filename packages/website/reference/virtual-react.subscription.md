@@ -4,10 +4,10 @@
 
 ## Subscription variable
 
-React component. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance.
+React component. [SubscriptionProps](./virtual-react.subscriptionprops.md)<!-- -->. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance.
 
 **Signature:**
 
 ```typescript
-Subscription: (props: SubscriptionProps) => import("react").ReactNode
+Subscription: (props: SubscriptionProps) => ReactNode
 ```
