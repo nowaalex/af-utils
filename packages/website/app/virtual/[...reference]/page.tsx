@@ -9,7 +9,7 @@ const map = process.env.VIRTUAL_REFERENCE_MAP as unknown as Record<
 export function generateStaticParams() {
     const result = Object.keys(map).map(reference => ["reference", reference]);
 
-    // console.log({ result });
+    console.log({ referenceFiles: result });
 
     return result;
 }
@@ -17,6 +17,8 @@ export function generateStaticParams() {
 const Cache: Record<string, any> = {};
 
 const Page = ({ params }: { params: any }) => {
+    console.log({ params });
+
     if (params.reference.length < 2) {
         permanentRedirect("/virtual/reference/index.md");
     }
