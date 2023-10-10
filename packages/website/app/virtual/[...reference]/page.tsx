@@ -10,15 +10,22 @@ const M = require.context(
 
 const K = M.keys();
 
-export async function generateStaticParams() {
-    return K.map(reference => ["reference", reference]);
+export function generateStaticParams() {
+    const result = K.map(reference => [
+        "reference",
+        reference.replace(/^reference\//, "")
+    ]);
+
+    // console.log({ result });
+
+    return result;
 }
 
 const Cache: Record<string, any> = {};
 
 const Page = ({ params }: { params: any }) => {
     if (params.reference.length < 2) {
-        permanentRedirect("reference/index.md");
+        permanentRedirect("/virtual/reference/index.md");
     }
 
     const key = "reference/" + params.reference[1];
