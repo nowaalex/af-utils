@@ -10,7 +10,7 @@ Something is not working as expected? Here is the list of hints that may help.
 
 ## Why do I need to use ref?
 
-In order to work smoothly, library must know scrolled item sizes. Initially they equal [`estimatedItemSize`](/virtual/headless#estimateditemsize-integer). But this is usually not
+In order to work smoothly, library must know scrolled item sizes. Initially they equal `estimatedItemSize`. But this is usually not
 enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
 for more accurate measurements, but you must provide mounted items explicitly in
 conjunction with their indexes.
@@ -22,7 +22,7 @@ but you may use your styling approach.
 
 ## How many items virtual scroller can handle?
 
-Maximum [`itemcount`](/virtual/headless#itemcount-integer) value is `2_147_483_647` (int32 max).
+Maximum `itemcount` value is `2_147_483_647` (int32 max).
 This limit exists, because item sizes cache implementation has bitwise operations, which work only with int32.
 But there is one more limit. W3C does not provide maximum allowed values for height, width, margin, etc.
 
@@ -31,9 +31,9 @@ But there is one more limit. W3C does not provide maximum allowed values for hei
 > UAs should support reasonably useful ranges and precisions
 
 This quote was found [here](https://www.w3.org/TR/css3-values/). Chrome's experimentally found maximum value is `33_554_428`.
-So some problems _may_ happen if [`scrollSize`](/virtual/headless#scrollsize-integer) is bigger.
+So some problems _may_ happen if `scrollSize` is bigger.
 
 ## Is Server-side rendering supported?
 
-Yes, use [`estimatedWidgetSize`](/virtual/headless#estimatedwidgetsize-integer) and [`estimatedItemSize`](/virtual/headless#estimateditemsize-integer) for fine-tuning.
+Yes, use `estimatedWidgetSize` and `estimatedItemSize` for fine-tuning.
 Quantity of server-rendered items can be determined like this: `Math.min( itemCount, Math.ceil( estimatedWidgetSize / estimatedItemSize ) + overscanCount )`.

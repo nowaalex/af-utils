@@ -1,10 +1,16 @@
 import { useEffect } from "react";
-import type { VirtualScroller } from "@af-utils/virtual-core";
+import { VirtualScroller, VirtualScrollerEvent } from "@af-utils/virtual-core";
 
+/**
+ * @public
+ * React hook.
+ * Allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)} without unnecessary rerenders.
+ * For example can be used in load-on-demand.
+ */
 const useSubscription = (
     model: VirtualScroller,
-    events: Parameters<VirtualScroller["on"]>[1],
-    callBack: Parameters<VirtualScroller["on"]>[0]
+    events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[],
+    callBack: () => void
 ) =>
     useEffect(() => {
         if (callBack) {

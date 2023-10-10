@@ -1,0 +1,866 @@
+{
+  "metadata": {
+    "toolPackage": "@microsoft/api-extractor",
+    "toolVersion": "7.38.0",
+    "schemaVersion": 1011,
+    "oldestForwardsCompatibleVersion": 1001,
+    "tsdocConfig": {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
+      "tagDefinitions": [
+        {
+          "tagName": "@alpha",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@beta",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@defaultValue",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@decorator",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@deprecated",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@eventProperty",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@example",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@experimental",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@inheritDoc",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@internal",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@label",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@link",
+          "syntaxKind": "inline",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@override",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@packageDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@param",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@privateRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@public",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@readonly",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@remarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@returns",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@sealed",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@see",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@throws",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@typeParam",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@virtual",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@betaDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@internalRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@preapproved",
+          "syntaxKind": "modifier"
+        }
+      ],
+      "supportForTags": {
+        "@alpha": true,
+        "@beta": true,
+        "@defaultValue": true,
+        "@decorator": true,
+        "@deprecated": true,
+        "@eventProperty": true,
+        "@example": true,
+        "@experimental": true,
+        "@inheritDoc": true,
+        "@internal": true,
+        "@label": true,
+        "@link": true,
+        "@override": true,
+        "@packageDocumentation": true,
+        "@param": true,
+        "@privateRemarks": true,
+        "@public": true,
+        "@readonly": true,
+        "@remarks": true,
+        "@returns": true,
+        "@sealed": true,
+        "@see": true,
+        "@throws": true,
+        "@typeParam": true,
+        "@virtual": true,
+        "@betaDocumentation": true,
+        "@internalRemarks": true,
+        "@preapproved": true
+      },
+      "reportUnsupportedHtmlElements": false
+    }
+  },
+  "projectFolderUrl": "https://github.com/nowaalex/af-utils",
+  "kind": "Package",
+  "canonicalReference": "@af-utils/virtual-react!",
+  "docComment": "/**\n * React components/hooks/utils used to easily connect to {@link @af-utils/virtual-core#VirtualScroller}\n *\n * @packageDocumentation\n */\n",
+  "name": "@af-utils/virtual-react",
+  "preserveMemberOrder": false,
+  "members": [
+    {
+      "kind": "EntryPoint",
+      "canonicalReference": "@af-utils/virtual-react!",
+      "name": "",
+      "preserveMemberOrder": false,
+      "members": [
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!List:var",
+          "docComment": "/**\n * React component. {@link ListProps}. Small abstraction, which in 90% cases allows to avoid hook boilerplate.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "List: "
+            },
+            {
+              "kind": "Content",
+              "text": "<T extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "ElementType",
+              "canonicalReference": "@types/react!React.ElementType:type"
+            },
+            {
+              "kind": "Content",
+              "text": " = \"div\">({ model, "
+            },
+            {
+              "kind": "Reference",
+              "text": "children",
+              "canonicalReference": "@af-utils/virtual-react!~__type#children"
+            },
+            {
+              "kind": "Content",
+              "text": ": Item, itemData, component, header, footer, getKey, tabIndex, style, ...props }: "
+            },
+            {
+              "kind": "Reference",
+              "text": "ListProps",
+              "canonicalReference": "@af-utils/virtual-react!ListProps:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<T>) => import(\"react/jsx-runtime\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "JSX.Element",
+              "canonicalReference": "@types/react!JSX.Element:interface"
+            }
+          ],
+          "fileUrlPath": "lib/types/components/List/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "List",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 9
+          }
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@af-utils/virtual-react!ListItemProps:type",
+          "docComment": "/**\n * Props passed to List item\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type ListItemProps = "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    model: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    i: number;\n    data?: any;\n    offset?: number;\n}"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "lib/types/types/index.d.ts",
+          "releaseTag": "Public",
+          "name": "ListItemProps",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@af-utils/virtual-react!ListProps:type",
+          "docComment": "/**\n * {@link List} component props\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type ListProps<T extends "
+            },
+            {
+              "kind": "Reference",
+              "text": "ElementType",
+              "canonicalReference": "@types/react!React.ElementType:type"
+            },
+            {
+              "kind": "Content",
+              "text": " = "
+            },
+            {
+              "kind": "Content",
+              "text": "\"div\""
+            },
+            {
+              "kind": "Content",
+              "text": "> = "
+            },
+            {
+              "kind": "Reference",
+              "text": "Omit",
+              "canonicalReference": "!Omit:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<"
+            },
+            {
+              "kind": "Reference",
+              "text": "ComponentProps",
+              "canonicalReference": "@types/react!React.ComponentProps:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<T>, \"children\" | \"ref\"> & {\n    model: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    children: "
+            },
+            {
+              "kind": "Reference",
+              "text": "ElementType",
+              "canonicalReference": "@types/react!React.ElementType:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<"
+            },
+            {
+              "kind": "Reference",
+              "text": "ListItemProps",
+              "canonicalReference": "@af-utils/virtual-react!ListItemProps:type"
+            },
+            {
+              "kind": "Content",
+              "text": ">;\n    itemData?: "
+            },
+            {
+              "kind": "Reference",
+              "text": "ListItemProps",
+              "canonicalReference": "@af-utils/virtual-react!ListItemProps:type"
+            },
+            {
+              "kind": "Content",
+              "text": "[\"data\"];\n    getKey?: (index: number, itemData: "
+            },
+            {
+              "kind": "Reference",
+              "text": "ListItemProps",
+              "canonicalReference": "@af-utils/virtual-react!ListItemProps:type"
+            },
+            {
+              "kind": "Content",
+              "text": "[\"data\"]) => string | number;\n    component?: T;\n    header?: "
+            },
+            {
+              "kind": "Reference",
+              "text": "JSX.Element",
+              "canonicalReference": "@types/react!__global.JSX.Element:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " | null;\n    footer?: "
+            },
+            {
+              "kind": "Reference",
+              "text": "JSX.Element",
+              "canonicalReference": "@types/react!__global.JSX.Element:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " | null;\n}"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "lib/types/types/index.d.ts",
+          "releaseTag": "Public",
+          "name": "ListProps",
+          "typeParameters": [
+            {
+              "typeParameterName": "T",
+              "constraintTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "defaultTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              }
+            }
+          ],
+          "typeTokenRange": {
+            "startIndex": 5,
+            "endIndex": 23
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!mapVisibleRange:var",
+          "docComment": "/**\n * Map current visible items\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "mapVisibleRange: "
+            },
+            {
+              "kind": "Content",
+              "text": "(model: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", cb: (index: number) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "JSX.Element",
+              "canonicalReference": "@types/react!__global.JSX.Element:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ") => "
+            },
+            {
+              "kind": "Reference",
+              "text": "JSX.Element",
+              "canonicalReference": "@types/react!__global.JSX.Element:interface"
+            },
+            {
+              "kind": "Content",
+              "text": "[]"
+            }
+          ],
+          "fileUrlPath": "lib/types/utils/rangeMappers/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "mapVisibleRange",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 8
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!mapVisibleRangeWithOffset:var",
+          "docComment": "/**\n * Map current visible items and provide offset for each item. Used in scenarios, when each item is absolutely positioned\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "mapVisibleRangeWithOffset: "
+            },
+            {
+              "kind": "Content",
+              "text": "(model: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", cb: (index: number, offset: number) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "JSX.Element",
+              "canonicalReference": "@types/react!__global.JSX.Element:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ") => "
+            },
+            {
+              "kind": "Reference",
+              "text": "JSX.Element",
+              "canonicalReference": "@types/react!__global.JSX.Element:interface"
+            },
+            {
+              "kind": "Content",
+              "text": "[]"
+            }
+          ],
+          "fileUrlPath": "lib/types/utils/rangeMappers/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "mapVisibleRangeWithOffset",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 8
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!Subscription:var",
+          "docComment": "/**\n * React component. Rerenders only on certain {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)}. Allows to optimize performance.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "Subscription: "
+            },
+            {
+              "kind": "Content",
+              "text": "(props: "
+            },
+            {
+              "kind": "Reference",
+              "text": "SubscriptionProps",
+              "canonicalReference": "@af-utils/virtual-react!SubscriptionProps:type"
+            },
+            {
+              "kind": "Content",
+              "text": ") => import(\"react\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "ReactNode",
+              "canonicalReference": "@types/react!React.ReactNode:type"
+            }
+          ],
+          "fileUrlPath": "lib/types/components/Subscription/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "Subscription",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 5
+          }
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@af-utils/virtual-react!SubscriptionProps:type",
+          "docComment": "/**\n * {@link Subscription} component props\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type SubscriptionProps = "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    model: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    children: () => "
+            },
+            {
+              "kind": "Reference",
+              "text": "ReactNode",
+              "canonicalReference": "@types/react!React.ReactNode:type"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    events?: readonly "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerEvent",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:type"
+            },
+            {
+              "kind": "Content",
+              "text": "[] | "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerEvent",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:type"
+            },
+            {
+              "kind": "Content",
+              "text": "[];\n}"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "lib/types/types/index.d.ts",
+          "releaseTag": "Public",
+          "name": "SubscriptionProps",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 10
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!useComponentSubscription:var",
+          "docComment": "/**\n * React hook. Rerenders component when one of {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)} gets emitted. Usually {@link Subscription} is a better alternative\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "useComponentSubscription: "
+            },
+            {
+              "kind": "Content",
+              "text": "(model: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", events?: readonly "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerEvent",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:type"
+            },
+            {
+              "kind": "Content",
+              "text": "[] | "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerEvent",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:type"
+            },
+            {
+              "kind": "Content",
+              "text": "[]) => void"
+            }
+          ],
+          "fileUrlPath": "lib/types/hooks/useComponentSubscription/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "useComponentSubscription",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 8
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!useScroller:var",
+          "docComment": "/**\n * React hook. Synchronizes scroller with model. Should be used in window-scroll cases, otherwise `ref={model.setScroller}` is preferrable.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "useScroller: "
+            },
+            {
+              "kind": "Content",
+              "text": "(model: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", scroller: "
+            },
+            {
+              "kind": "Reference",
+              "text": "ScrollElement",
+              "canonicalReference": "@af-utils/virtual-core!ScrollElement:type"
+            },
+            {
+              "kind": "Content",
+              "text": " | null) => void"
+            }
+          ],
+          "fileUrlPath": "lib/types/hooks/useScroller/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "useScroller",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 6
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!useSubscription:var",
+          "docComment": "/**\n * React hook. Allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)} without unnecessary rerenders. For example can be used in load-on-demand.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "useSubscription: "
+            },
+            {
+              "kind": "Content",
+              "text": "(model: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            },
+            {
+              "kind": "Content",
+              "text": ", events: readonly "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerEvent",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:type"
+            },
+            {
+              "kind": "Content",
+              "text": "[] | "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerEvent",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:type"
+            },
+            {
+              "kind": "Content",
+              "text": "[], callBack: () => void) => void"
+            }
+          ],
+          "fileUrlPath": "lib/types/hooks/useSubscription/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "useSubscription",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 8
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!useSyncedStyles:var",
+          "docComment": "/**\n * React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hook to avoid unneeded boilerplate.\n *\n * @returns Array of 2 callback refs: [ outer, inner ].\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "useSyncedStyles: "
+            },
+            {
+              "kind": "Content",
+              "text": "(model: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            },
+            {
+              "kind": "Content",
+              "text": ") => [(el: "
+            },
+            {
+              "kind": "Reference",
+              "text": "HTMLElement",
+              "canonicalReference": "!HTMLElement:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " | null) => void, (el: "
+            },
+            {
+              "kind": "Reference",
+              "text": "HTMLElement",
+              "canonicalReference": "!HTMLElement:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " | null) => void]"
+            }
+          ],
+          "fileUrlPath": "lib/types/hooks/useSyncedStyles/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "useSyncedStyles",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 8
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!useVirtual:var",
+          "docComment": "/**\n * React hook. Calls {@link useVirtualModel} and synchronizes it with props\n *\n * @param params - {@link @af-utils/virtual-core#VirtualScrollerInitialParams}\n *\n * @returns same {@link @af-utils/virtual-core#VirtualScroller} instance\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "useVirtual: "
+            },
+            {
+              "kind": "Content",
+              "text": "(params: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerInitialParams",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams:type"
+            },
+            {
+              "kind": "Content",
+              "text": ") => import(\"@af-utils/virtual-core\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            }
+          ],
+          "fileUrlPath": "lib/types/hooks/useVirtual/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "useVirtual",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 5
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-react!useVirtualModel:var",
+          "docComment": "/**\n * React hook. Creates and stores one {@link @af-utils/virtual-core#VirtualScroller} instance. It does not get recreated during component lifecycle. Normally {@link useVirtual} should be used.\n *\n * @param params - {@link @af-utils/virtual-core#VirtualScrollerInitialParams}\n *\n * @returns same {@link @af-utils/virtual-core#VirtualScroller} instance\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "useVirtualModel: "
+            },
+            {
+              "kind": "Content",
+              "text": "(params: "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerInitialParams",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams:type"
+            },
+            {
+              "kind": "Content",
+              "text": ") => "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScroller",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class"
+            }
+          ],
+          "fileUrlPath": "lib/types/hooks/useVirtualModel/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "useVirtualModel",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 5
+          }
+        }
+      ]
+    }
+  ]
+}

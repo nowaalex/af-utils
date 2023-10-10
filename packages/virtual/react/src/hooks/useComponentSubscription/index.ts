@@ -1,28 +1,37 @@
 import { useMemo } from "react";
-import { Event, ALL_EVENTS } from "@af-utils/virtual-core";
+import {
+    VirtualScrollerEvent,
+    _ALL_EVENTS,
+    VirtualScroller
+} from "@af-utils/virtual-core";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
-import type { VirtualScroller } from "@af-utils/virtual-core";
 
-type On = Parameters<VirtualScroller["on"]>;
-
-function getSingleEventHash(this: VirtualScroller, e: On[1][number]) {
+function getSingleEventHash(this: VirtualScroller, e: VirtualScrollerEvent) {
     switch (e) {
-        case Event.RANGE:
+        case VirtualScrollerEvent.RANGE:
             return this.to ** 2 + this.from; // szudzik pair
-        case Event.SCROLL_SIZE:
+        case VirtualScrollerEvent.SCROLL_SIZE:
             return this.scrollSize;
         default:
             return this.sizesHash;
     }
 }
 
+/**
+ * @public
+ * React hook.
+ * Rerenders component when one of {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)} gets emitted.
+ * Usually {@link Subscription} is a better alternative
+ */
 const useComponentSubscription = (
     model: VirtualScroller,
-    events: On[1] = ALL_EVENTS
+    events:
+        | readonly VirtualScrollerEvent[]
+        | VirtualScrollerEvent[] = _ALL_EVENTS
 ) => {
     const [subscribe, getHash] = useMemo(
         () => [
-            (listener: On[0]) => model.on(listener, events),
+            (listener: () => void) => model.on(listener, events),
             () => events.map(getSingleEventHash, model).join()
         ],
         [model, events]

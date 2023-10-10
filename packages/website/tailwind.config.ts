@@ -24,7 +24,13 @@ export default {
                             "font-size": "1.3em"
                         },
                         h3: {
-                            "font-size": "inherit"
+                            "font-size": "1.2em"
+                        },
+                        h4: {
+                            "font-size": "1.1em"
+                        },
+                        h5: {
+                            "font-size": "1em"
                         }
                     }
                 }

@@ -6,11 +6,11 @@ import {
     ScrollKey,
     ScrollToKey,
     MAX_ITEM_COUNT,
-    ALL_EVENTS,
+    _ALL_EVENTS,
     DEFAULT_ESTIMATED_ITEM_SIZE,
     DEFAULT_OVERSCAN_COUNT,
     DEFAULT_ESTIMATED_WIDGET_SIZE,
-    type Event
+    VirtualScrollerEvent
 } from "constants/";
 import FTreeArray from "models/FTreeArray";
 import FinalResizeObserver from "models/ResizeObserver";
@@ -93,6 +93,11 @@ const getAvailableWidgetSize = (
     stickyOffset: number
 ) => (scrollElement as any)[sizeKey] - stickyOffset;
 
+/**
+ * @public
+ * Core framework-agnostic model.
+ * Stores item sizes, positions and provides fast way to calculate offsets
+ */
 class VirtualScroller {
     private _scrollElementSizeKey: ScrollElementSizeKey =
         ScrollElementSizeKeysOrdered[0];
@@ -131,7 +136,7 @@ class VirtualScroller {
     private _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
 
     private _scrollElement: ScrollElement | null = null;
-    private _initialElement: Element | null = null;
+    private _initialElement: HTMLElement | null = null;
 
     private _itemSizes = EMPTY_TYPED_ARRAY;
     private _fTree = EMPTY_TYPED_ARRAY;
@@ -259,7 +264,7 @@ class VirtualScroller {
         }
     });
 
-    private _EventsList = ALL_EVENTS.map<(() => void)[]>(() => []);
+    private _EventsList = _ALL_EVENTS.map<(() => void)[]>(() => []);
 
     /**
      * Update property names for resize events, dimensions and scroll position extraction
@@ -322,11 +327,15 @@ class VirtualScroller {
     }
 
     /**
-     * Subscribe to model events ad returns unsubscribe function
+     * Subscribe to model events
+     * @returns unsubscribe function
      * @param callBack - event to be triggered
      * @param events - events to subscribe
      */
-    on(callBack: () => void, events: readonly Event[] | Event[]) {
+    on(
+        callBack: () => void,
+        events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]
+    ) {
         events.forEach(evt => this._EventsList[evt].push(callBack));
         return () =>
             events.forEach(evt =>
@@ -341,17 +350,16 @@ class VirtualScroller {
      * Call all `event` subscribers
      * @param event - event to emit
      */
-    private _run(event: Event) {
+    private _run(event: VirtualScrollerEvent) {
         this._EventsList[event].forEach(
             Batch._level === 0 ? call : Batch._queue
         );
     }
 
     /**
-     * Get item index by pixel offset
-     *
+     * Get item index by pixel offset;
      * @param offset - pixel offset
-     * @returns item index
+     * @returns item index;
      */
     getIndex(offset: number) {
         if (offset <= 0) {
@@ -383,8 +391,7 @@ class VirtualScroller {
     }
 
     /**
-     * Get pixel offset by item index
-     *
+     * Get pixel offset by item index;
      * @param index - item index
      * @returns pixel offset
      */
@@ -403,7 +410,8 @@ class VirtualScroller {
     }
 
     /**
-     * @param itemIndex - item index
+     * Get last cached item size by item index
+     * @param itemIndex - item index;
      * @returns last cached item size
      */
     getSize(itemIndex: number) {
@@ -420,7 +428,6 @@ class VirtualScroller {
      * Get snapshot of current scroll position.
      *
      * @remarks
-     *
      * For example `5.3` stands for item at index `5` + `30%` of its size.
      * Used to remember scroll position before prepending elements.
      *
@@ -459,10 +466,14 @@ class VirtualScroller {
         }
     };
 
-    /*
-        Performs as destructor when null is passed
-        will ne used as callback, so using =>
-    */
+    /**
+     * Tells model about scrollable element
+     *
+     * @remarks
+     *
+     * Performs as destructor when null is passed
+     * will ne used as callback, so this function is bound
+     */
     setScroller = (element: ScrollElement | null) => {
         if (element !== this._scrollElement) {
             this._unobserveResize();
@@ -494,7 +505,10 @@ class VirtualScroller {
         }
     };
 
-    setContainer = (element: Element | null) => {
+    /**
+     * Should be used only when scrollable container has some "foreign" elements to properly integrate them.
+     */
+    setContainer = (element: HTMLElement | null) => {
         if (element !== this._initialElement) {
             this._initialElement = element;
             this.updateScrollerOffset();
@@ -527,7 +541,7 @@ class VirtualScroller {
      * @param index - item index
      * @param element - element for item
      */
-    el(index: number, element: Element | null) {
+    el(index: number, element: HTMLElement | null) {
         const oldElement = this._idxToEl.get(index);
 
         if (oldElement) {
@@ -543,7 +557,7 @@ class VirtualScroller {
         }
     }
 
-    private _stickyEl(i: 0 | 1, element: Element | null) {
+    private _stickyEl(i: 0 | 1, element: HTMLElement | null) {
         const oldElement = this._stickyElements[i];
 
         if (oldElement) {
@@ -563,7 +577,7 @@ class VirtualScroller {
      * Start observing size of sticky header `element`. Observing is finished if element is falsy.
      * @param element - header element
      */
-    setStickyHeader(element: Element | null) {
+    setStickyHeader(element: HTMLElement | null) {
         this._stickyEl(STICKY_HEADER_INDEX, element);
     }
 
@@ -571,7 +585,7 @@ class VirtualScroller {
      * Start observing size of sticky footer `element`. Observing is finished if element is falsy.
      * @param element - footer element
      */
-    setStickyFooter(element: Element | null) {
+    setStickyFooter(element: HTMLElement | null) {
         this._stickyEl(STICKY_FOOTER_INDEX, element);
     }
 

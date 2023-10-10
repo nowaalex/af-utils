@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 
-import { Event, VirtualScroller } from "@af-utils/virtual-core";
+import { VirtualScrollerEvent, VirtualScroller } from "@af-utils/virtual-core";
 
 const SIZE_PROVIDER_STYLE_BASE = {
     position: "relative",
@@ -40,6 +40,13 @@ const SCROLL_PROVIDER_STYLE_VERTICAL = {
     width: "100%"
 } as const;
 
+/**
+ * @public
+ * React hook.
+ * Optimal CSS markup for virtual scroll is not intuitive.
+ * Use this hook to avoid unneeded boilerplate.
+ * @returns Array of 2 callback refs: [ outer, inner ].
+ */
 const useSyncedStyles = (model: VirtualScroller) => {
     const [outer, outerRef] = useState<HTMLElement | null>(null);
     const [inner, innerRef] = useState<HTMLElement | null>(null);
@@ -49,7 +56,7 @@ const useSyncedStyles = (model: VirtualScroller) => {
             const unsubSize = model.on(() => {
                 outer.style[model.horizontal ? "width" : "height"] =
                     model.scrollSize + "px";
-            }, [Event.SCROLL_SIZE]);
+            }, [VirtualScrollerEvent.SCROLL_SIZE]);
 
             const unsubScroll = model.on(() => {
                 const fromOffset = model.getOffset(model.from);
@@ -59,7 +66,7 @@ const useSyncedStyles = (model: VirtualScroller) => {
                 }(${fromOffset}px)`;
                 inner.style[model.horizontal ? "width" : "height"] =
                     toOffset - fromOffset + "px";
-            }, [Event.RANGE, Event.SIZES]);
+            }, [VirtualScrollerEvent.RANGE, VirtualScrollerEvent.SIZES]);
 
             Object.assign(
                 outer.style,
@@ -82,7 +89,10 @@ const useSyncedStyles = (model: VirtualScroller) => {
         }
     }, [model, outer, inner]);
 
-    return [outerRef, innerRef] as const;
+    return [outerRef, innerRef] as [
+        (el: HTMLElement | null) => void,
+        (el: HTMLElement | null) => void
+    ];
 };
 
 export default useSyncedStyles;

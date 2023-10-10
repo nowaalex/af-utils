@@ -1,0 +1,1275 @@
+{
+  "metadata": {
+    "toolPackage": "@microsoft/api-extractor",
+    "toolVersion": "7.38.0",
+    "schemaVersion": 1011,
+    "oldestForwardsCompatibleVersion": 1001,
+    "tsdocConfig": {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
+      "tagDefinitions": [
+        {
+          "tagName": "@alpha",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@beta",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@defaultValue",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@decorator",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@deprecated",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@eventProperty",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@example",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@experimental",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@inheritDoc",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@internal",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@label",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@link",
+          "syntaxKind": "inline",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@override",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@packageDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@param",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@privateRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@public",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@readonly",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@remarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@returns",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@sealed",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@see",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@throws",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@typeParam",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@virtual",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@betaDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@internalRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@preapproved",
+          "syntaxKind": "modifier"
+        }
+      ],
+      "supportForTags": {
+        "@alpha": true,
+        "@beta": true,
+        "@defaultValue": true,
+        "@decorator": true,
+        "@deprecated": true,
+        "@eventProperty": true,
+        "@example": true,
+        "@experimental": true,
+        "@inheritDoc": true,
+        "@internal": true,
+        "@label": true,
+        "@link": true,
+        "@override": true,
+        "@packageDocumentation": true,
+        "@param": true,
+        "@privateRemarks": true,
+        "@public": true,
+        "@readonly": true,
+        "@remarks": true,
+        "@returns": true,
+        "@sealed": true,
+        "@see": true,
+        "@throws": true,
+        "@typeParam": true,
+        "@virtual": true,
+        "@betaDocumentation": true,
+        "@internalRemarks": true,
+        "@preapproved": true
+      },
+      "reportUnsupportedHtmlElements": false
+    }
+  },
+  "projectFolderUrl": "https://github.com/nowaalex/af-utils",
+  "kind": "Package",
+  "canonicalReference": "@af-utils/virtual-core!",
+  "docComment": "/**\n * {@inheritDoc VirtualScroller}\n *\n * @packageDocumentation\n */\n",
+  "name": "@af-utils/virtual-core",
+  "preserveMemberOrder": false,
+  "members": [
+    {
+      "kind": "EntryPoint",
+      "canonicalReference": "@af-utils/virtual-core!",
+      "name": "",
+      "preserveMemberOrder": false,
+      "members": [
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@af-utils/virtual-core!ScrollElement:type",
+          "docComment": "/**\n * Scrollable container type\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type ScrollElement = "
+            },
+            {
+              "kind": "Reference",
+              "text": "HTMLElement",
+              "canonicalReference": "!HTMLElement:interface"
+            },
+            {
+              "kind": "Content",
+              "text": " | "
+            },
+            {
+              "kind": "Reference",
+              "text": "Window",
+              "canonicalReference": "!Window:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "lib/types/types/index.d.ts",
+          "releaseTag": "Public",
+          "name": "ScrollElement",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "Class",
+          "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class",
+          "docComment": "/**\n * Core framework-agnostic model. Stores item sizes, positions and provides fast way to calculate offsets\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "declare class VirtualScroller "
+            }
+          ],
+          "fileUrlPath": "lib/types/models/VirtualScroller/index.d.ts",
+          "releaseTag": "Public",
+          "isAbstract": false,
+          "name": "VirtualScroller",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "Constructor",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller:constructor(1)",
+              "docComment": "/**\n * Constructs a new instance of the `VirtualScroller` class\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "constructor(params?: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "VirtualScrollerInitialParams",
+                  "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ");"
+                }
+              ],
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "params",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": true
+                }
+              ]
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#el:member(1)",
+              "docComment": "/**\n * Start observing size of `element` at `index`. Observing is finished if element is falsy.\n *\n * @param index - item index\n *\n * @param element - element for item\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "el(index: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", element: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 6,
+                "endIndex": 7
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "index",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "element",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 5
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "el"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#from:member",
+              "docComment": "/**\n * Items range start\n *\n * @readonly\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "from: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "from",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#getIndex:member(1)",
+              "docComment": "/**\n * Get item index by pixel offset;\n *\n * @param offset - pixel offset\n *\n * @returns item index;\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "getIndex(offset: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "offset",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "getIndex"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#getOffset:member(1)",
+              "docComment": "/**\n * Get pixel offset by item index;\n *\n * @param index - item index\n *\n * @returns pixel offset\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "getOffset(index: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "index",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "getOffset"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#getSize:member(1)",
+              "docComment": "/**\n * Get last cached item size by item index\n *\n * @param itemIndex - item index;\n *\n * @returns last cached item size\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "getSize(itemIndex: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "itemIndex",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "getSize"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#horizontal:member",
+              "docComment": "/**\n * Scroll direction\n *\n * @readonly\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "horizontal: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "horizontal",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#on:member(1)",
+              "docComment": "/**\n * Subscribe to model events\n *\n * @param callBack - event to be triggered\n *\n * @param events - events to subscribe\n *\n * @returns unsubscribe function\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "on(callBack: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "() => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", events: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "readonly "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "VirtualScrollerEvent",
+                  "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[] | "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "VirtualScrollerEvent",
+                  "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "() => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 9,
+                "endIndex": 10
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "callBack",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "events",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 8
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "on"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#scrollSize:member",
+              "docComment": "/**\n * Sum of all item sizes\n *\n * @readonly\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "scrollSize: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "scrollSize",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#scrollToIndex:member(1)",
+              "docComment": "/**\n * Scroll to item index\n *\n * @param index - item index to scroll to\n *\n * @param smooth - should smooth scroll be used\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "scrollToIndex(index: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", smooth?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "index",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "smooth",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "scrollToIndex"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#scrollToOffset:member(1)",
+              "docComment": "/**\n * Scroll to pixel offset\n *\n * @param offset - offset to scroll to\n *\n * @param smooth - should smooth scroll be used\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "scrollToOffset(offset: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", smooth?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 5,
+                "endIndex": 6
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "offset",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                },
+                {
+                  "parameterName": "smooth",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 3,
+                    "endIndex": 4
+                  },
+                  "isOptional": true
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "scrollToOffset"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#set:member(1)",
+              "docComment": "/**\n * Synchronize runtime parameters\n *\n * @param runtimeParams - runtime parameters\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "set({ overscanCount, itemCount, estimatedItemSize }: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "VirtualScrollerRuntimeParams",
+                  "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "{ overscanCount, itemCount, estimatedItemSize }",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "set"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setContainer:member",
+              "docComment": "/**\n * Should be used only when scrollable container has some \"foreign\" elements to properly integrate them.\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "setContainer: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(element: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | null) => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "setContainer",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setItemCount:member(1)",
+              "docComment": "/**\n * Notify model about items quantity change\n *\n * @param itemCount - new items quantity\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "setItemCount(itemCount: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "itemCount",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 2
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "setItemCount"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setScroller:member",
+              "docComment": "/**\n * Tells model about scrollable element\n *\n * @remarks\n *\n * Performs as destructor when null is passed will ne used as callback, so this function is bound\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "setScroller: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "(element: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ScrollElement",
+                  "canonicalReference": "@af-utils/virtual-core!ScrollElement:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | null) => void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "setScroller",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 4
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setStickyFooter:member(1)",
+              "docComment": "/**\n * Start observing size of sticky footer `element`. Observing is finished if element is falsy.\n *\n * @param element - footer element\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "setStickyFooter(element: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 4,
+                "endIndex": 5
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "element",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 3
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "setStickyFooter"
+            },
+            {
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setStickyHeader:member(1)",
+              "docComment": "/**\n * Start observing size of sticky header `element`. Observing is finished if element is falsy.\n *\n * @param element - header element\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "setStickyHeader(element: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "HTMLElement",
+                  "canonicalReference": "!HTMLElement:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 4,
+                "endIndex": 5
+              },
+              "releaseTag": "Public",
+              "isProtected": false,
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "element",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 3
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "setStickyHeader"
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#sizesHash:member",
+              "docComment": "/**\n * Hash of item sizes. Changed when at least one visible item is resized.\n *\n * @readonly\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "sizesHash: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "sizesHash",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#to:member",
+              "docComment": "/**\n * Items range end\n *\n * @readonly\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "to: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "to",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            },
+            {
+              "kind": "Property",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#visibleFrom:member",
+              "docComment": "/**\n * Get snapshot of current scroll position.\n *\n * @remarks\n *\n * For example `5.3` stands for item at index `5` + `30%` of its size. Used to remember scroll position before prepending elements.\n *\n * @returns visible item index (double number)\n */\n",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "get visibleFrom(): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "number"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": true,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "visibleFrom",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              },
+              "isStatic": false,
+              "isProtected": false,
+              "isAbstract": false
+            }
+          ],
+          "implementsTokenRanges": []
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:type",
+          "docComment": "/**\n * {@link (VirtualScrollerEvent:variable)} is exported as constant, so separate type is needed to emulate enum behavior\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type VirtualScrollerEvent = "
+            },
+            {
+              "kind": "Content",
+              "text": "(typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerEvent",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:var"
+            },
+            {
+              "kind": "Content",
+              "text": ")[keyof typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerEvent",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:var"
+            },
+            {
+              "kind": "Content",
+              "text": "]"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "lib/types/constants/index.d.ts",
+          "releaseTag": "Public",
+          "name": "VirtualScrollerEvent",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 6
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:var",
+          "docComment": "/**\n * Possible events, supported by {@link VirtualScroller.on} method\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "VirtualScrollerEvent: "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    readonly RANGE: 0;\n    readonly SCROLL_SIZE: 1;\n    readonly SIZES: 2;\n}"
+            }
+          ],
+          "fileUrlPath": "lib/types/constants/index.d.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "VirtualScrollerEvent",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams:type",
+          "docComment": "/**\n * {@link VirtualScroller} constructor argument type\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type VirtualScrollerInitialParams = "
+            },
+            {
+              "kind": "Reference",
+              "text": "VirtualScrollerRuntimeParams",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:type"
+            },
+            {
+              "kind": "Content",
+              "text": " & {\n    horizontal?: boolean;\n    estimatedWidgetSize?: number;\n    estimatedScrollElementOffset?: number;\n}"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "lib/types/types/index.d.ts",
+          "releaseTag": "Public",
+          "name": "VirtualScrollerInitialParams",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
+          }
+        },
+        {
+          "kind": "TypeAlias",
+          "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:type",
+          "docComment": "/**\n * {@link VirtualScroller.set} argument type\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export type VirtualScrollerRuntimeParams = "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    overscanCount?: number;\n    itemCount?: number;\n    estimatedItemSize?: number;\n}"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "lib/types/types/index.d.ts",
+          "releaseTag": "Public",
+          "name": "VirtualScrollerRuntimeParams",
+          "typeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -12,6 +12,7 @@ const withBundleAnalyzer = nextBundleAnalyzer({
 });
 
 const withMDX = nextMdx({
+    extension: /\.mdx?$/,
     options: {
         remarkPlugins: [remarkGfm, remarkToc],
         rehypePlugins: [
@@ -43,31 +44,7 @@ const config = withBundleAnalyzer(
             defaultLocale: "en"
         },
         pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-        reactStrictMode: true,
-        async redirects() {
-            return [
-                {
-                    source: "/examples/:v*",
-                    destination: "/virtual/examples/:v*",
-                    permanent: true
-                },
-                {
-                    source: "/docs/:d*",
-                    destination: "/virtual",
-                    permanent: true
-                },
-                {
-                    source: "/why",
-                    destination: "/virtual",
-                    permanent: true
-                },
-                ...["/headless", "/size", "/table", "/list"].map(oldPath => ({
-                    source: oldPath,
-                    destination: `/virtual${oldPath}`,
-                    permanent: true
-                }))
-            ];
-        }
+        reactStrictMode: true
     })
 );
 

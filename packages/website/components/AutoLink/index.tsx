@@ -1,10 +1,8 @@
-/* eslint-disable react/jsx-no-target-blank */
-
 import Link from "next/link";
 
 const AutoLink = ({ href, ...props }: any) => {
     if (href) {
-        if (href.startsWith("/") || href.startsWith("#")) {
+        if (!/^https?:\//.test(href)) {
             return <Link href={href} {...props} />;
         }
     }

@@ -1,19 +1,25 @@
 import type { ReactNode, ElementType, ComponentProps } from "react";
-import type { VirtualScroller } from "@af-utils/virtual-core";
+import type {
+    VirtualScroller,
+    VirtualScrollerEvent
+} from "@af-utils/virtual-core";
 
-export type SubscriptionProps = {
-    model: VirtualScroller;
-    children: () => ReactNode;
-    events?: Parameters<VirtualScroller["on"]>[1];
-};
-
+/**
+ * @public
+ * Props passed to List item
+ */
 export type ListItemProps = {
     model: VirtualScroller;
+    /** index */
     i: number;
     data?: any;
     offset?: number;
 };
 
+/**
+ * @public
+ * {@link List} component props
+ */
 export type ListProps<T extends ElementType = "div"> = Omit<
     ComponentProps<T>,
     "children" | "ref"
@@ -28,4 +34,14 @@ export type ListProps<T extends ElementType = "div"> = Omit<
     component?: T;
     header?: JSX.Element | null;
     footer?: JSX.Element | null;
+};
+
+/**
+ * @public
+ * {@link Subscription} component props
+ */
+export type SubscriptionProps = {
+    model: VirtualScroller;
+    children: () => ReactNode;
+    events?: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[];
 };

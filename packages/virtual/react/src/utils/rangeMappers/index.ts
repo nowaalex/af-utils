@@ -1,5 +1,9 @@
 import type { VirtualScroller } from "@af-utils/virtual-core";
 
+/**
+ * @public
+ * Map current visible items
+ */
 export const mapVisibleRange = (
     model: VirtualScroller,
     cb: (index: number) => JSX.Element
@@ -13,6 +17,11 @@ export const mapVisibleRange = (
     return result;
 };
 
+/**
+ * @public
+ * Map current visible items and provide offset for each item.
+ * Used in scenarios, when each item is absolutely positioned
+ */
 export const mapVisibleRangeWithOffset = (
     model: VirtualScroller,
     cb: (index: number, offset: number) => JSX.Element

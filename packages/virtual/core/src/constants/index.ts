@@ -10,35 +10,41 @@ export const SIZES_HASH_MODULO = 0x7fffffff;
 */
 export const MAX_ITEM_COUNT = 0x7fffffff;
 
-/** @ignore */
+/** @internal */
 export const enum InternalEvent {
     RANGE = 0,
     SCROLL_SIZE = 1,
     SIZES = 2
 }
 
-/** @enum */
-export const Event = {
-    /** model.from or model.to changed */
+/**
+ * @public
+ * Possible events, supported by {@link VirtualScroller.on} method
+ */
+export const VirtualScrollerEvent = {
+    /** {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed */
     RANGE: 0,
 
-    /** sum of item sizes changed */
+    /** sum of all item sizes changed */
     SCROLL_SIZE: 1,
 
     /** at least one item size changed */
     SIZES: 2
 } as const satisfies Record<string, InternalEvent>;
 
-export type Event = (typeof Event)[keyof typeof Event];
+/**
+ * @public
+ * {@link (VirtualScrollerEvent:variable)} is exported as constant, so separate type is needed to emulate enum behavior
+ */
+export type VirtualScrollerEvent =
+    (typeof VirtualScrollerEvent)[keyof typeof VirtualScrollerEvent];
 
-/** @ignore */
-export const ALL_EVENTS = [
-    InternalEvent.RANGE,
-    InternalEvent.SCROLL_SIZE,
-    InternalEvent.SIZES
-] as const;
+/** @internal */
+export const _ALL_EVENTS = [
+    0, 1, 2
+] as const satisfies readonly InternalEvent[];
 
-/** @ignore */
+/** @internal */
 export const enum ScrollElementSizeKey {
     WINDOW_HORIZONTAL = "innerWidth",
     WINDOW_VERTICAL = "innerHeight",
@@ -46,13 +52,13 @@ export const enum ScrollElementSizeKey {
     ELEMENT_VERTICAL = "offsetHeight"
 }
 
-/** @ignore */
+/** @internal */
 export const enum ResizeObserverSizeKey {
     HORIZONTAL = "inlineSize",
     VERTICAL = "blockSize"
 }
 
-/** @ignore */
+/** @internal */
 export const enum ScrollKey {
     WINDOW_HORIZONTAL = "scrollX",
     WINDOW_VERTICAL = "scrollY",
@@ -60,7 +66,7 @@ export const enum ScrollKey {
     ELEMENT_VERTICAL = "scrollTop"
 }
 
-/** @ignore */
+/** @internal */
 export const enum ScrollToKey {
     HORIZONTAL = "left",
     VERTICAL = "top"

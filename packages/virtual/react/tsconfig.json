@@ -1,14 +1,16 @@
 {
-    "include": ["src", "decs.d.ts", "rollup.config.ts"],
+    "include": ["src"],
     "compilerOptions": {
         "lib": ["DOM"],
         "baseUrl": "src",
+        "rootDir": "src",
         "moduleResolution": "Bundler",
         "module": "ESNext",
         "outDir": "lib",
         "target": "ESNext",
         "declaration": true,
-        "declarationMap": true,
+        "declarationMap": false,
+        "declarationDir": "lib/types",
         "allowSyntheticDefaultImports": true,
         "strict": true,
         "alwaysStrict": true,

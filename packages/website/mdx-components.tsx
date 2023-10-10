@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 export const useMDXComponents = (components: any) => ({
     ...components,
     wrapper: ({ children }: { children: ReactNode }) => (
-        <div className="prose max-w-[1200px] w-full">{children}</div>
+        <div className="prose max-w-full w-full">{children}</div>
     ),
     a: AutoLink
 });

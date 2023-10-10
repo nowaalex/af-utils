@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "ANALYZE=true next build",
+        "docs:collect": "rm -rf ./reference-files && mkdir ./reference-files && cp `find ../ -wholename *api-extractor-schema/*.json*` ./reference-files && npx api-documenter markdown -i ./reference-files -o ./reference",
         "postbuild": "next-sitemap",
         "typedoc": "npx typedoc",
         "start": "next start",
@@ -39,8 +40,9 @@
         "@mdx-js/react": "^2.3.0",
         "@next/bundle-analyzer": "^13.5.4",
         "@next/mdx": "^13.5.4",
-        "@types/react": "^18.2.25",
-        "@types/react-dom": "^18.2.11",
+        "@types/react": "^18.2.27",
+        "@types/react-dom": "^18.2.12",
+        "@types/webpack-env": "^1.18.2",
         "autoprefixer": "^10.4.16",
         "code-webpack-loader": "^0.0.2",
         "eslint-config-next": "13.5.4",
@@ -53,8 +55,6 @@
         "remark-gfm": "3.0.1",
         "remark-toc": "^9.0.0",
         "shiki": "^0.14.4",
-        "tailwindcss": "^3.3.3",
-        "typedoc": "^0.25.1",
-        "typedoc-plugin-markdown": "^4.0.0-next.22"
+        "tailwindcss": "^3.3.3"
     }
 }
