@@ -7,7 +7,6 @@
         "build": "ANALYZE=true next build",
         "docs:collect": "rm -rf ./reference-files && mkdir ./reference-files && cp `find ../ -wholename *api-extractor-schema/*.json*` ./reference-files && npx api-documenter markdown -i ./reference-files -o ./reference",
         "postbuild": "next-sitemap",
-        "typedoc": "npx typedoc",
         "start": "next start",
         "lint": "next lint"
     },

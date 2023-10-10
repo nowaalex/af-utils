@@ -4,7 +4,8 @@
     "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
     "license": "MIT",
     "scripts": {
-        "test": "jest"
+        "test": "jest",
+        "build": "pnpm -r build"
     },
     "engines": {
         "node": ">=14.0.0",
