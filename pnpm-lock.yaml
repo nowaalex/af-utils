@@ -265,9 +265,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.12
         version: 18.2.12
-      '@types/webpack-env':
-        specifier: ^1.18.2
-        version: 1.18.2
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
@@ -3159,10 +3156,6 @@ packages:
 
   /@types/use-sync-external-store@0.0.4:
     resolution: {integrity: sha512-DMBc2WDEfaGsWXqH/Sk2oBaUkvlUwqgt/YEygpqX0MaiEjqR7afd1QgE4Pq2zBr/TRz0Mpu92eBBo5UQjtTD5Q==}
-    dev: true
-
-  /@types/webpack-env@1.18.2:
-    resolution: {integrity: sha512-BFqcTHHTrrI8EBmIzNAmLPP3IqtEG9J1IPFWbPeS/F0/TGNmo0pI5svOa7JbMF9vSCXQCvJWT2gxLJNVuf9blw==}
     dev: true
 
   /@types/yargs-parser@21.0.1:

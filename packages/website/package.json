@@ -41,7 +41,6 @@
         "@next/mdx": "^13.5.4",
         "@types/react": "^18.2.27",
         "@types/react-dom": "^18.2.12",
-        "@types/webpack-env": "^1.18.2",
         "autoprefixer": "^10.4.16",
         "code-webpack-loader": "^0.0.2",
         "eslint-config-next": "13.5.4",

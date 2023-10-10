@@ -1,20 +1,13 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import { lazy } from "react";
 
-const M = require.context(
-    "../../../reference",
-    true,
-    /reference.*\.md/,
-    "lazy"
-);
-
-const K = M.keys();
+const map = process.env.VIRTUAL_REFERENCE_MAP as unknown as Record<
+    string,
+    boolean
+>;
 
 export function generateStaticParams() {
-    const result = K.map(reference => [
-        "reference",
-        reference.replace(/^reference\//, "")
-    ]);
+    const result = Object.keys(map).map(reference => ["reference", reference]);
 
     // console.log({ result });
 
@@ -28,16 +21,16 @@ const Page = ({ params }: { params: any }) => {
         permanentRedirect("/virtual/reference/index.md");
     }
 
-    const key = "reference/" + params.reference[1];
+    const key = params.reference[1];
 
-    if (!K.includes(key)) {
+    if (!map[key]) {
         notFound();
     }
 
     let C = Cache[key];
 
     if (!C) {
-        C = lazy(() => M(key));
+        C = lazy(() => import(`../../../reference/${key}`));
         Cache[key] = C;
     }
 

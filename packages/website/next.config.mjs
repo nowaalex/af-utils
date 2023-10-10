@@ -37,7 +37,12 @@ const config = withBundleAnalyzer(
                         result
                     ),
                     {}
-                )
+                ),
+            VIRTUAL_REFERENCE_MAP: Object.fromEntries(
+                glob
+                    .sync("./reference/*.md")
+                    .map(f => [f.replace("./reference/", ""), true])
+            )
         },
         i18n: {
             locales: ["en"],
