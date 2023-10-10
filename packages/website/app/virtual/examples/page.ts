@@ -7,4 +7,6 @@ export const metadata = {
     }
 } satisfies Metadata;
 
-export default () => null;
+const Page = () => null;
+
+export default Page;
