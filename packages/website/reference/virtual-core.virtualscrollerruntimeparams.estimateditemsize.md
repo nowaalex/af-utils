@@ -4,7 +4,7 @@
 
 ## VirtualScrollerRuntimeParams.estimatedItemSize property
 
-Estimated height/width of scrollable item. Orientation is determined by [VirtualScrollerInitialParams.horizontal](./virtual-core.virtualscrollerinitialparams.horizontal.md)<!-- -->. \*
+Estimated height/width of scrollable item. Orientation is determined by [VirtualScrollerInitialParams.horizontal](./virtual-core.virtualscrollerinitialparams.horizontal.md)<!-- -->.
 
 **Signature:**
 
