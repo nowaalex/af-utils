@@ -65,6 +65,7 @@
         animation: progress-indeterminate 1s ease infinite;
     }
 
+    /* for api-extractor lists */
     .prose li > p {
         margin: 0;
     }
