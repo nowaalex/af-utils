@@ -1,15 +1,10 @@
 import {
-    SIZES_HASH_MODULO,
     InternalEvent,
     ScrollElementSizeKey,
     ResizeObserverSizeKey,
     ScrollKey,
     ScrollToKey,
-    MAX_ITEM_COUNT,
     _ALL_EVENTS,
-    DEFAULT_ESTIMATED_ITEM_SIZE,
-    DEFAULT_OVERSCAN_COUNT,
-    DEFAULT_ESTIMATED_WIDGET_SIZE,
     VirtualScrollerEvent
 } from "constants/";
 import FTreeArray from "models/FTreeArray";
@@ -31,21 +26,25 @@ const OBSERVE_OPTIONS = {
     box: "border-box"
 } as const satisfies ResizeObserverOptions;
 
-const SCROLL_EVENT_OPTIONS = {
+const PASSIVE_HANDLER_OPTIONS = {
     passive: true
 } as const satisfies AddEventListenerOptions;
 
 const ITEMS_ROOM = 32;
 
+const DEFAULT_OVERSCAN_COUNT = 3;
+
+const DEFAULT_ESTIMATED_WIDGET_SIZE = 200;
+
+const DEFAULT_ESTIMATED_ITEM_SIZE = 40;
+
+export const SIZES_HASH_MODULO = 0x7fffffff;
+
 /*
-    Chrome works ok with 0;
-    FF needs some timer to place scrollTo call after ResizeObserver callback
+    0x7fffffff - maximum 32bit integer.
+    Bitwise operations, used in fenwick tree, cannot be applied to numbers > int32.
 */
-const NON_SMOOTH_SCROLL_CHECK_TIMER = 32;
-
-const SMOOTH_SCROLL_CHECK_TIMER = 512;
-
-const SCROLL_TO_MAX_ATTEMPTS = 16;
+export const MAX_ITEM_COUNT = 0x7fffffff;
 
 /* 
     Creating fenwick tree from an array in linear time;
@@ -95,8 +94,21 @@ const getAvailableWidgetSize = (
 
 /**
  * @public
- * Core framework-agnostic model.
- * Stores item sizes, positions and provides fast way to calculate offsets
+ *
+ * Core framework-agnostic model.<br />
+ *
+ * @remarks
+ * What it does:<br />
+ * - stores item sizes and positions;<br />
+ * - tracks elements resizing;<br />
+ * - provides performant way to calculate offsets;<br />
+ * - deals with scrolling to item index or to offset;<br />
+ * - emits and allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable) | events}.<br />
+ *
+ * What it doesn't do:<br />
+ * - rendering;<br />
+ * - styling;<br />
+ * - all other framework-related stuff.
  */
 class VirtualScroller {
     private _scrollElementSizeKey: ScrollElementSizeKey =
@@ -105,24 +117,9 @@ class VirtualScroller {
     private _resizeObserverSizeKey: ResizeObserverSizeKey =
         ResizeObserverSizeKeysOrdered[0];
     private _scrollToKey: ScrollToKey = ScrollToKeysOrdered[0];
-
-    /*
-        When using window scroll mode, some blocks may go before & after virtual container.
-
-        [ ---- window start ---- ] |.|
-        Some header                |s|
-        Another header             |c|
-        <Virtual>                  |r|
-            item 1                 [o]
-            item 2                 [l]
-            item 3                 [l]
-            ...                    [b]
-        </Virtual>                 |a|
-        Some footer                |r|
-        [ ----  window end  ---- ] |.|
-
-        Actually any div may be used instead of window, but offset should be calculated.
-    */
+    private _desiredScrollIndex = -1;
+    private _desiredScrollSmooth = false;
+    private _scrollSyncTimer: ReturnType<typeof setTimeout> | 0 = 0;
 
     /* It is more useful to store scrollPos - scrollElementOffset in one variable for future calculations */
     private _alignedScrollPos = 0;
@@ -131,7 +128,6 @@ class VirtualScroller {
     private _stickyOffset = 0;
     private _itemCount = 0;
     private _availableWidgetSize = 0;
-    private _scrollToTimer: ReturnType<typeof setTimeout> | 0 = 0;
     private _overscanCount = DEFAULT_OVERSCAN_COUNT;
     private _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
 
@@ -270,7 +266,6 @@ class VirtualScroller {
      * Update property names for resize events, dimensions and scroll position extraction
      *
      * @remarks
-     *
      * `window.resize` event must be used for window scroller, `ResizeObserver` must be used in other cases.
      * `offsetWidth` is used as item size in horizontal mode, `offsetHeight` - in vertical.
      */
@@ -360,6 +355,9 @@ class VirtualScroller {
      * Get item index by pixel offset;
      * @param offset - pixel offset
      * @returns item index;
+     *
+     * @remarks
+     * Time complexity: `O(log2(itemCount))`
      */
     getIndex(offset: number) {
         if (offset <= 0) {
@@ -394,6 +392,9 @@ class VirtualScroller {
      * Get pixel offset by item index;
      * @param index - item index
      * @returns pixel offset
+     *
+     * @remarks
+     * Time complexity: `O(log2(itemCount))`
      */
     getOffset(index: number) {
         if (process.env.NODE_ENV !== "production") {
@@ -413,6 +414,9 @@ class VirtualScroller {
      * Get last cached item size by item index
      * @param itemIndex - item index;
      * @returns last cached item size
+     *
+     * @remarks
+     * Time complexity: `O(1)`
      */
     getSize(itemIndex: number) {
         if (process.env.NODE_ENV !== "production") {
@@ -467,20 +471,21 @@ class VirtualScroller {
     };
 
     /**
-     * Tells model about scrollable element
+     * Informs model about scrollable element.
+     * @param element - scroller element
      *
      * @remarks
-     *
-     * Performs as destructor when null is passed
-     * will ne used as callback, so this function is bound
+     * Must be called with `null` before killing the instance.
      */
-    setScroller = (element: ScrollElement | null) => {
+    setScroller(element: ScrollElement | null) {
         if (element !== this._scrollElement) {
+            clearTimeout(this._scrollSyncTimer);
             this._unobserveResize();
             this._scrollElement?.removeEventListener(
                 "scroll",
                 this._syncScrollPosition
             );
+            this._killScrollEnd();
 
             this._scrollElement = element;
 
@@ -493,27 +498,59 @@ class VirtualScroller {
                 element.addEventListener(
                     "scroll",
                     this._syncScrollPosition,
-                    SCROLL_EVENT_OPTIONS
+                    PASSIVE_HANDLER_OPTIONS
                 );
-                this._updateScrollerOffsetRaw();
-                this._syncScrollPosition();
-            } else {
-                this._ElResizeObserver.disconnect();
-                this._StickyElResizeObserver.disconnect();
-                clearTimeout(this._scrollToTimer);
+
+                /*
+                 otherwise scroll does not happen during initial render; we need to wait for resize event
+                 TODO: reimplement cleaner with subscribing to resize
+                */
+                this._scrollSyncTimer = setTimeout(() => {
+                    this._updateScrollerOffsetRaw();
+                    const desiredScrollIndex = this._desiredScrollIndex;
+                    this._desiredScrollIndex = -1;
+                    this._syncScrollPosition();
+                    if (desiredScrollIndex !== -1) {
+                        this.scrollToIndex(desiredScrollIndex, false);
+                    }
+                }, 0);
             }
         }
-    };
+    }
 
     /**
-     * Should be used only when scrollable container has some "foreign" elements to properly integrate them.
+     * Informs model about items container element. Usually not needed.
+     *
+     * @param element - container element
+     *
+     * @remarks
+     * By default top/left offset between scroll container and first scrollable item is `0`.
+     * In this case just {@link VirtualScroller.setScroller} is needed.
+     * But extra element is needed when something "foreign" stands between scroll container and first scrollable item to measure distance between them.
+     * That extra element is represented as `ItemsContainer` on this schema:
+     *
+     * ```plaintext
+     * <ScrollContainer>            |.|
+     *    Some header               |s|
+     *    Another header            |c|
+     *    <ItemsContainer>          |r|
+     *         item 1               [o]
+     *         item 2               [l]
+     *         item 3               [l]
+     *         ...                  [b]
+     *    </ItemsContainer>         |a|
+     *    Some footer               |r|
+     * </ScrollContainer>           |.|
+     * ```
+     *
+     * Must be called with `null` before killing the instance.
      */
-    setContainer = (element: HTMLElement | null) => {
+    setContainer(element: HTMLElement | null) {
         if (element !== this._initialElement) {
             this._initialElement = element;
             this.updateScrollerOffset();
         }
-    };
+    }
 
     private _updateScrollerOffsetRaw() {
         const newScrollElementOffset = /*@__NOINLINE__*/ getDistanceBetween(
@@ -537,9 +574,12 @@ class VirtualScroller {
     }
 
     /**
-     * Start observing size of `element` at `index`. Observing is finished if element is falsy.
+     * Start observing size of `element` at `index`. Observing is finished if element is `null`.
      * @param index - item index
      * @param element - element for item
+     *
+     * @remarks
+     * If an item was registered like `el( 5, HTMLElement )` it must be killed with `el( 5, null )` before killing the instance.
      */
     el(index: number, element: HTMLElement | null) {
         const oldElement = this._idxToEl.get(index);
@@ -574,16 +614,22 @@ class VirtualScroller {
     }
 
     /**
-     * Start observing size of sticky header `element`. Observing is finished if element is falsy.
+     * Start observing size of sticky header `element`. Observing is finished if element is `null`.
      * @param element - header element
+     *
+     * @remarks
+     * Must be called with `null` before killing the instance.
      */
     setStickyHeader(element: HTMLElement | null) {
         this._stickyEl(STICKY_HEADER_INDEX, element);
     }
 
     /**
-     * Start observing size of sticky footer `element`. Observing is finished if element is falsy.
+     * Start observing size of sticky footer `element`. Observing is finished if element is `null`.
      * @param element - footer element
+     *
+     * @remarks
+     * Must be called with `null` before killing the instance.
      */
     setStickyFooter(element: HTMLElement | null) {
         this._stickyEl(STICKY_FOOTER_INDEX, element);
@@ -639,6 +685,30 @@ class VirtualScroller {
         }
     }
 
+    private _killScrollEnd() {
+        this._scrollElement?.removeEventListener(
+            "scrollend",
+            this._attemptToScrollToIndex
+        );
+    }
+
+    private _attemptToScrollToIndex = () => {
+        const index = this._desiredScrollIndex;
+        const whole = index | 0;
+        const desiredScrollPos = Math.min(
+            this.scrollSize - this._availableWidgetSize,
+            this.getOffset(whole) +
+                Math.round(this._itemSizes[whole] * (index - whole))
+        );
+
+        if (desiredScrollPos === this._alignedScrollPos) {
+            this._desiredScrollIndex = -1;
+            this._killScrollEnd();
+        } else {
+            this.scrollToOffset(desiredScrollPos, this._desiredScrollSmooth);
+        }
+    };
+
     /**
      * Scroll to pixel offset
      *
@@ -652,36 +722,6 @@ class VirtualScroller {
         });
     }
 
-    private _attemptToScrollToIndex(
-        attemptsLeft: number,
-        index: number,
-        smooth?: boolean
-    ) {
-        clearTimeout(this._scrollToTimer);
-
-        const whole = index | 0;
-        const desiredScrollPos = Math.min(
-            this.scrollSize - this._availableWidgetSize,
-            this.getOffset(whole) +
-                Math.round(this._itemSizes[whole] * (index - whole))
-        );
-
-        if (
-            desiredScrollPos !== this._alignedScrollPos &&
-            this._scrollElement &&
-            --attemptsLeft
-        ) {
-            this.scrollToOffset(desiredScrollPos, smooth);
-
-            this._scrollToTimer = setTimeout(
-                () => this._attemptToScrollToIndex(attemptsLeft, index, smooth),
-                smooth
-                    ? SMOOTH_SCROLL_CHECK_TIMER
-                    : NON_SMOOTH_SCROLL_CHECK_TIMER
-            );
-        }
-    }
-
     /**
      * Scroll to item index
      *
@@ -689,7 +729,17 @@ class VirtualScroller {
      * @param smooth - should smooth scroll be used
      */
     scrollToIndex(index: number, smooth?: boolean) {
-        this._attemptToScrollToIndex(SCROLL_TO_MAX_ATTEMPTS, index, smooth);
+        if (this._desiredScrollIndex === -1) {
+            this._scrollElement?.addEventListener(
+                "scrollend",
+                this._attemptToScrollToIndex,
+                PASSIVE_HANDLER_OPTIONS
+            );
+        }
+
+        this._desiredScrollIndex = index;
+        this._desiredScrollSmooth = !!smooth;
+        this._attemptToScrollToIndex();
     }
 
     /**

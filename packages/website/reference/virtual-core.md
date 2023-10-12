@@ -4,20 +4,26 @@
 
 ## virtual-core package
 
-Core framework-agnostic model. Stores item sizes, positions and provides fast way to calculate offsets
+Core framework-agnostic model.<br />
+
+## Remarks
+
+What it does:<br /> - stores item sizes and positions;<br /> - tracks elements resizing;<br /> - provides performant way to calculate offsets;<br /> - deals with scrolling to item index or to offset;<br /> - emits and allows to subscribe to [events](./virtual-core.virtualscrollerevent.md)<!-- -->.<br />
+
+What it doesn't do:<br /> - rendering;<br /> - styling;<br /> - all other framework-related stuff.
 
 ## Classes
 
 |  Class | Description |
 |  --- | --- |
-|  [VirtualScroller](./virtual-core.virtualscroller.md) | Core framework-agnostic model. Stores item sizes, positions and provides fast way to calculate offsets |
+|  [VirtualScroller](./virtual-core.virtualscroller.md) | Core framework-agnostic model.<br /> |
 
 ## Interfaces
 
 |  Interface | Description |
 |  --- | --- |
-|  [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) | [VirtualScroller](./virtual-core.virtualscroller.md) constructor argument type |
-|  [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md) | [VirtualScroller.set()](./virtual-core.virtualscroller.set.md) argument type |
+|  [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) | All [VirtualScroller](./virtual-core.virtualscroller.md) parameters (that may / may not change over time). |
+|  [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md) | [VirtualScroller](./virtual-core.virtualscroller.md) parameters that may change over time. Used as [VirtualScroller.set()](./virtual-core.virtualscroller.set.md) argument type. |
 
 ## Variables
 

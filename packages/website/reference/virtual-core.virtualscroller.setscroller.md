@@ -2,17 +2,27 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [setScroller](./virtual-core.virtualscroller.setscroller.md)
 
-## VirtualScroller.setScroller property
+## VirtualScroller.setScroller() method
 
-Tells model about scrollable element
+Informs model about scrollable element.
 
 **Signature:**
 
 ```typescript
-setScroller: (element: ScrollElement | null) => void;
+setScroller(element: ScrollElement | null): void;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  element | [ScrollElement](./virtual-core.scrollelement.md) \| null | scroller element |
+
+**Returns:**
+
+void
 
 ## Remarks
 
-Performs as destructor when null is passed will ne used as callback, so this function is bound
+Must be called with `null` before killing the instance.
 

@@ -4,10 +4,15 @@
 
 ## VirtualScrollerInitialParams.horizontal property
 
-Container scroll orientation
+Scroll container orientation.
 
 **Signature:**
 
 ```typescript
 horizontal?: boolean;
 ```
+
+## Remarks
+
+Determines properties used for dimension/scroll calculations, for example: <br /> - `scrollTop` / `scrollLeft`<!-- -->;<br /> - `height` / `width`<!-- -->;<br /> - `innerHeight` / `innerWidth`<!-- -->.
+

@@ -4,7 +4,7 @@
 
 ## VirtualScroller.setStickyFooter() method
 
-Start observing size of sticky footer `element`<!-- -->. Observing is finished if element is falsy.
+Start observing size of sticky footer `element`<!-- -->. Observing is finished if element is `null`<!-- -->.
 
 **Signature:**
 
@@ -21,4 +21,8 @@ setStickyFooter(element: HTMLElement | null): void;
 **Returns:**
 
 void
+
+## Remarks
+
+Must be called with `null` before killing the instance.
 

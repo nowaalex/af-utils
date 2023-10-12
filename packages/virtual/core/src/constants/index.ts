@@ -1,15 +1,3 @@
-export const DEFAULT_OVERSCAN_COUNT = 3;
-export const DEFAULT_ESTIMATED_WIDGET_SIZE = 200;
-export const DEFAULT_ESTIMATED_ITEM_SIZE = 40;
-
-export const SIZES_HASH_MODULO = 0x7fffffff;
-
-/*
-    0x7fffffff - maximum 32bit integer.
-    Bitwise operations, used in fenwick tree, cannot be applied to numbers > int32.
-*/
-export const MAX_ITEM_COUNT = 0x7fffffff;
-
 /** @internal */
 export const enum InternalEvent {
     RANGE = 0,
@@ -20,15 +8,22 @@ export const enum InternalEvent {
 /**
  * @public
  * Possible events, supported by {@link VirtualScroller.on} method
+ *
+ * @remarks
+ * Events Description: <br />
+ * - `RANGE`: {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed; <br />
+ * - `SCROLL_SIZE`: sum of all item sizes was changed; <br />
+ * - `SIZES`: at least one item size was changed.
+ *
+ * @privateRemarks
+ * Did not export enum because I don't like reverse-mapped result in code.
+ * Did not refer to InternalEvent because in this case api-extractor wants it to be exported.
+ * Did not use enum modifier because api-extractor doesn't support it.
+ * Used `Events Desctipton` just because list without header is rendered badly by api-documenter.
  */
 export const VirtualScrollerEvent = {
-    /** {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed */
     RANGE: 0,
-
-    /** sum of all item sizes changed */
     SCROLL_SIZE: 1,
-
-    /** at least one item size changed */
     SIZES: 2
 } as const satisfies Record<string, InternalEvent>;
 

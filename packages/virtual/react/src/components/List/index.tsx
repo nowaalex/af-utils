@@ -2,7 +2,7 @@ import { mapVisibleRange } from "utils/rangeMappers";
 import useSyncedStyles from "hooks/useSyncedStyles";
 import Subscription from "components/Subscription";
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
-import type { ElementType, ReactNode } from "react";
+import { useCallback, ElementType } from "react";
 import type { ListProps } from "types";
 
 /**
@@ -36,7 +36,10 @@ const List: <T extends ElementType = "div">(
                 contain: "strict",
                 ...style
             }}
-            ref={model.setScroller}
+            ref={useCallback(
+                (el: HTMLElement | null) => model.setScroller(el),
+                [model]
+            )}
             tabIndex={tabIndex}
         >
             {header}

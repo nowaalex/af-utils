@@ -4,13 +4,19 @@
 
 ## VirtualScroller class
 
-Core framework-agnostic model. Stores item sizes, positions and provides fast way to calculate offsets
+Core framework-agnostic model.<br />
 
 **Signature:**
 
 ```typescript
 declare class VirtualScroller 
 ```
+
+## Remarks
+
+What it does:<br /> - stores item sizes and positions;<br /> - tracks elements resizing;<br /> - provides performant way to calculate offsets;<br /> - deals with scrolling to item index or to offset;<br /> - emits and allows to subscribe to [events](./virtual-core.virtualscrollerevent.md)<!-- -->.<br />
+
+What it doesn't do:<br /> - rendering;<br /> - styling;<br /> - all other framework-related stuff.
 
 ## Constructors
 
@@ -25,8 +31,6 @@ declare class VirtualScroller
 |  [from](./virtual-core.virtualscroller.from.md) | <code>readonly</code> | number | Items range start |
 |  [horizontal](./virtual-core.virtualscroller.horizontal.md) | <code>readonly</code> | boolean | Scroll direction |
 |  [scrollSize](./virtual-core.virtualscroller.scrollsize.md) | <code>readonly</code> | number | Sum of all item sizes |
-|  [setContainer](./virtual-core.virtualscroller.setcontainer.md) |  | (element: HTMLElement \| null) =&gt; void | Should be used only when scrollable container has some "foreign" elements to properly integrate them. |
-|  [setScroller](./virtual-core.virtualscroller.setscroller.md) |  | (element: [ScrollElement](./virtual-core.scrollelement.md) \| null) =&gt; void | Tells model about scrollable element |
 |  [sizesHash](./virtual-core.virtualscroller.sizeshash.md) | <code>readonly</code> | number | Hash of item sizes. Changed when at least one visible item is resized. |
 |  [to](./virtual-core.virtualscroller.to.md) | <code>readonly</code> | number | Items range end |
 |  [visibleFrom](./virtual-core.virtualscroller.visiblefrom.md) | <code>readonly</code> | number | Get snapshot of current scroll position. |
@@ -35,7 +39,7 @@ declare class VirtualScroller
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [el(index, element)](./virtual-core.virtualscroller.el.md) |  | Start observing size of <code>element</code> at <code>index</code>. Observing is finished if element is falsy. |
+|  [el(index, element)](./virtual-core.virtualscroller.el.md) |  | Start observing size of <code>element</code> at <code>index</code>. Observing is finished if element is <code>null</code>. |
 |  [getIndex(offset)](./virtual-core.virtualscroller.getindex.md) |  | Get item index by pixel offset; |
 |  [getOffset(index)](./virtual-core.virtualscroller.getoffset.md) |  | Get pixel offset by item index; |
 |  [getSize(itemIndex)](./virtual-core.virtualscroller.getsize.md) |  | Get last cached item size by item index |
@@ -43,7 +47,9 @@ declare class VirtualScroller
 |  [scrollToIndex(index, smooth)](./virtual-core.virtualscroller.scrolltoindex.md) |  | Scroll to item index |
 |  [scrollToOffset(offset, smooth)](./virtual-core.virtualscroller.scrolltooffset.md) |  | Scroll to pixel offset |
 |  [set({ overscanCount, itemCount, estimatedItemSize })](./virtual-core.virtualscroller.set.md) |  | Synchronize runtime parameters |
+|  [setContainer(element)](./virtual-core.virtualscroller.setcontainer.md) |  | Informs model about items container element. Usually not needed. |
 |  [setItemCount(itemCount)](./virtual-core.virtualscroller.setitemcount.md) |  | Notify model about items quantity change |
-|  [setStickyFooter(element)](./virtual-core.virtualscroller.setstickyfooter.md) |  | Start observing size of sticky footer <code>element</code>. Observing is finished if element is falsy. |
-|  [setStickyHeader(element)](./virtual-core.virtualscroller.setstickyheader.md) |  | Start observing size of sticky header <code>element</code>. Observing is finished if element is falsy. |
+|  [setScroller(element)](./virtual-core.virtualscroller.setscroller.md) |  | Informs model about scrollable element. |
+|  [setStickyFooter(element)](./virtual-core.virtualscroller.setstickyfooter.md) |  | Start observing size of sticky footer <code>element</code>. Observing is finished if element is <code>null</code>. |
+|  [setStickyHeader(element)](./virtual-core.virtualscroller.setstickyheader.md) |  | Start observing size of sticky header <code>element</code>. Observing is finished if element is <code>null</code>. |
 

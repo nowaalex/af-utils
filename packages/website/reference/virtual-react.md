@@ -22,7 +22,7 @@ React components/hooks/utils used to easily connect to [VirtualScroller](./virtu
 |  [mapVisibleRangeWithOffset](./virtual-react.mapvisiblerangewithoffset.md) | Map current visible items and provide offset for each item. |
 |  [Subscription](./virtual-react.subscription.md) | React component. [SubscriptionProps](./virtual-react.subscriptionprops.md)<!-- -->. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance. |
 |  [useComponentSubscription](./virtual-react.usecomponentsubscription.md) | React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted. Usually [Subscription](./virtual-react.subscription.md) is a better alternative |
-|  [useScroller](./virtual-react.usescroller.md) | React hook. Synchronizes scroller with model. Should be used in window-scroll cases, otherwise <code>ref={model.setScroller}</code> is preferrable. |
+|  [useScroller](./virtual-react.usescroller.md) | React hook. Synchronizes scroller with model. |
 |  [useSubscription](./virtual-react.usesubscription.md) | React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) without unnecessary rerenders. |
 |  [useSyncedStyles](./virtual-react.usesyncedstyles.md) | React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hook to avoid unneeded boilerplate. |
 |  [useVirtual](./virtual-react.usevirtual.md) | React hook. Calls [useVirtualModel](./virtual-react.usevirtualmodel.md) and synchronizes it with props |

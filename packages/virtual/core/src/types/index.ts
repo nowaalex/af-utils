@@ -6,7 +6,8 @@ export type ScrollElement = HTMLElement | Window;
 
 /**
  * @public
- * {@link VirtualScroller.set} argument type
+ * {@link VirtualScroller} parameters that may change over time.
+ * Used as {@link VirtualScroller.set} argument type.
  *
  * @remarks
  * Implemented as interface for better documentation output (api-extractor)
@@ -14,8 +15,11 @@ export type ScrollElement = HTMLElement | Window;
 export interface VirtualScrollerRuntimeParams {
     /**
      * Amount of items rendered before or after visible ones.
-     * If scrolling is done forward - these items are rendered after visible ones.
-     * If backward - before.
+     *     *
+     * @remarks
+     * Render place depends on scroll direction:<br />
+     * - if scrolling is done forward - these items are rendered after visible ones;<br />
+     * - If backward - before.
      */
     overscanCount?: number;
     /**
@@ -24,9 +28,9 @@ export interface VirtualScrollerRuntimeParams {
     itemCount?: number;
     /**
      * Estimated height/width of scrollable item. Orientation is determined by {@link VirtualScrollerInitialParams.horizontal}.
-     *
+     *     *
      * @remarks
-     * Actual size is always reported by `ResizeObserver`.
+     * Actual size is always reported by internal `ResizeObserver`.
      * Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.
      */
     estimatedItemSize?: number;
@@ -34,7 +38,7 @@ export interface VirtualScrollerRuntimeParams {
 
 /**
  * @public
- * {@link VirtualScroller} constructor argument type
+ * All {@link VirtualScroller} parameters (that may / may not change over time).
  *
  * @remarks
  * Implemented as interface for better documentation output (api-extractor)
@@ -42,7 +46,13 @@ export interface VirtualScrollerRuntimeParams {
 export interface VirtualScrollerInitialParams
     extends VirtualScrollerRuntimeParams {
     /**
-     * Container scroll orientation
+     * Scroll container orientation.
+     *
+     * @remarks
+     * Determines properties used for dimension/scroll calculations, for example: <br />
+     * - `scrollTop` / `scrollLeft`;<br />
+     * - `height` / `width`;<br />
+     * - `innerHeight` / `innerWidth`.
      */
     horizontal?: boolean;
     /**
@@ -59,8 +69,13 @@ export interface VirtualScrollerInitialParams
      * ```
      */
     estimatedWidgetSize?: number;
+
     /**
-     * Used is scenarios with different scroll/container elements
+     * Estimated distance between top/left edges of scrollable container and first scrollable item.
+     *
+     * @remarks
+     * Does not equal `0` only when scrollable container and items container are different elements.
+     * {@link @af-utils/virtual-core#VirtualScroller.setContainer} has more explanation.
      */
     estimatedScrollElementOffset?: number;
 }

@@ -4,10 +4,15 @@
 
 ## VirtualScrollerInitialParams.estimatedScrollElementOffset property
 
-Used is scenarios with different scroll/container elements
+Estimated distance between top/left edges of scrollable container and first scrollable item.
 
 **Signature:**
 
 ```typescript
 estimatedScrollElementOffset?: number;
 ```
+
+## Remarks
+
+Does not equal `0` only when scrollable container and items container are different elements. [VirtualScroller.setContainer()](./virtual-core.virtualscroller.setcontainer.md) has more explanation.
+

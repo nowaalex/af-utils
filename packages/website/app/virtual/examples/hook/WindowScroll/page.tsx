@@ -50,7 +50,7 @@ const WindowScrollHook = ({
                 >
                     Some offset 2
                 </div>
-                <div ref={model.setContainer}>
+                <div ref={el => model.setContainer(el)}>
                     <div ref={outerRef}>
                         <div ref={innerRef}>
                             <Subscription

@@ -5,3 +5,4 @@ declare module "*.mdx" {
 
 declare module "@af-utils/virtual-core/lib/bundlesize*";
 declare module "@af-utils/virtual-react/lib/bundlesize*";
+declare module "@af-utils/scrollend-polyfill/lib/bundlesize*";

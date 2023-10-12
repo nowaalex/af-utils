@@ -4,10 +4,15 @@
 
 ## useScroller variable
 
-React hook. Synchronizes scroller with model. Should be used in window-scroll cases, otherwise `ref={model.setScroller}` is preferrable.
+React hook. Synchronizes scroller with model.
 
 **Signature:**
 
 ```typescript
 useScroller: (model: VirtualScroller, scroller: ScrollElement | null) => void
 ```
+
+## Remarks
+
+Should be used in window-scroll cases, otherwise `ref={el => model.setScroller( el )}` is preferrable.
+

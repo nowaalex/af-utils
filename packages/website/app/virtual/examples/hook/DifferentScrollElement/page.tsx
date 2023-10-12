@@ -25,13 +25,8 @@ const DifferentScrollElementHook = () => {
 
     const [outerRef, innerRef] = useSyncedStyles(model);
 
-    /*
-        for window scroll use this instead of model.setScroller:
-        useScroller( model, window );
-    */
-
     return (
-        <div className="overflow-auto" ref={model.setScroller}>
+        <div className="overflow-auto" ref={el => model.setScroller(el)}>
             <div className="py-4 min-h-[20vh] bg-slate-100 text-center">
                 Some offset
             </div>
@@ -39,7 +34,7 @@ const DifferentScrollElementHook = () => {
                 <div className="py-4 min-h-[10vh] bg-slate-300 text-center">
                     Some offset 2
                 </div>
-                <div ref={model.setContainer}>
+                <div ref={el => model.setContainer(el)}>
                     <div ref={outerRef}>
                         <div ref={innerRef}>
                             <Subscription

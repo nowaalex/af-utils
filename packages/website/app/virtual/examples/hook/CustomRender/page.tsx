@@ -51,7 +51,7 @@ const CustomRender = () => {
     return (
         <div
             className="overflow-auto relative border contain-strict"
-            ref={model.setScroller}
+            ref={el => model.setScroller(el)}
         >
             <table className="w-full basic-table-container text-center border-separate border-spacing-0">
                 <thead

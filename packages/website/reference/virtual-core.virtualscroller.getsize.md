@@ -24,3 +24,7 @@ number
 
 last cached item size
 
+## Remarks
+
+Time complexity: `O(1)`
+

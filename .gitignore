@@ -1,17 +1,8 @@
-.directory
-.DS_Store
-.DS_Store?
-.Trashes
-.tags
-ehthumbs.db
-Thumbs.db
-desktop.ini
+# Logs
+logs
+*.log
 
 **/node_modules/
-**/build/
 **/lib
-**/dist/
-**/treeshake_bundles/
 
-*.log
 **/.next/**

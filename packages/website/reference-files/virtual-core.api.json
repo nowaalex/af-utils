@@ -212,7 +212,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class",
-          "docComment": "/**\n * Core framework-agnostic model. Stores item sizes, positions and provides fast way to calculate offsets\n *\n * @public\n */\n",
+          "docComment": "/**\n * Core framework-agnostic model.<br />\n *\n * @remarks\n *\n * What it does:<br /> - stores item sizes and positions;<br /> - tracks elements resizing;<br /> - provides performant way to calculate offsets;<br /> - deals with scrolling to item index or to offset;<br /> - emits and allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable) | events}.<br />\n *\n * What it doesn't do:<br /> - rendering;<br /> - styling;<br /> - all other framework-related stuff.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -261,7 +261,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@af-utils/virtual-core!VirtualScroller#el:member(1)",
-              "docComment": "/**\n * Start observing size of `element` at `index`. Observing is finished if element is falsy.\n *\n * @param index - item index\n *\n * @param element - element for item\n */\n",
+              "docComment": "/**\n * Start observing size of `element` at `index`. Observing is finished if element is `null`.\n *\n * @remarks\n *\n * If an item was registered like `el( 5, HTMLElement )` it must be killed with `el( 5, null )` before killing the instance.\n *\n * @param index - item index\n *\n * @param element - element for item\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -360,7 +360,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@af-utils/virtual-core!VirtualScroller#getIndex:member(1)",
-              "docComment": "/**\n * Get item index by pixel offset;\n *\n * @param offset - pixel offset\n *\n * @returns item index;\n */\n",
+              "docComment": "/**\n * Get item index by pixel offset;\n *\n * @remarks\n *\n * Time complexity: `O(log2(itemCount))`\n *\n * @param offset - pixel offset\n *\n * @returns item index;\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -408,7 +408,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@af-utils/virtual-core!VirtualScroller#getOffset:member(1)",
-              "docComment": "/**\n * Get pixel offset by item index;\n *\n * @param index - item index\n *\n * @returns pixel offset\n */\n",
+              "docComment": "/**\n * Get pixel offset by item index;\n *\n * @remarks\n *\n * Time complexity: `O(log2(itemCount))`\n *\n * @param index - item index\n *\n * @returns pixel offset\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -456,7 +456,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@af-utils/virtual-core!VirtualScroller#getSize:member(1)",
-              "docComment": "/**\n * Get last cached item size by item index\n *\n * @param itemIndex - item index;\n *\n * @returns last cached item size\n */\n",
+              "docComment": "/**\n * Get last cached item size by item index\n *\n * @remarks\n *\n * Time complexity: `O(1)`\n *\n * @param itemIndex - item index;\n *\n * @returns last cached item size\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -821,17 +821,13 @@
               "name": "set"
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setContainer:member",
-              "docComment": "/**\n * Should be used only when scrollable container has some \"foreign\" elements to properly integrate them.\n */\n",
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setContainer:member(1)",
+              "docComment": "/**\n * Informs model about items container element. Usually not needed.\n *\n * @remarks\n *\n * By default top/left offset between scroll container and first scrollable item is `0`. In this case just {@link VirtualScroller.setScroller} is needed. But extra element is needed when something \"foreign\" stands between scroll container and first scrollable item to measure distance between them. That extra element is represented as `ItemsContainer` on this schema:\n * ```plaintext\n * <ScrollContainer>            |.|\n *    Some header               |s|\n *    Another header            |c|\n *    <ItemsContainer>          |r|\n *         item 1               [o]\n *         item 2               [l]\n *         item 3               [l]\n *         ...                  [b]\n *    </ItemsContainer>         |a|\n *    Some footer               |r|\n * </ScrollContainer>           |.|\n * ```\n *\n * Must be called with `null` before killing the instance.\n *\n * @param element - container element\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "setContainer: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "(element: "
+                  "text": "setContainer(element: "
                 },
                 {
                   "kind": "Reference",
@@ -840,24 +836,42 @@
                 },
                 {
                   "kind": "Content",
-                  "text": " | null) => void"
+                  "text": " | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
                 },
                 {
                   "kind": "Content",
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "setContainer",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 4
-              },
               "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 4,
+                "endIndex": 5
+              },
+              "releaseTag": "Public",
               "isProtected": false,
-              "isAbstract": false
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "element",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 3
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "setContainer"
             },
             {
               "kind": "Method",
@@ -908,17 +922,13 @@
               "name": "setItemCount"
             },
             {
-              "kind": "Property",
-              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setScroller:member",
-              "docComment": "/**\n * Tells model about scrollable element\n *\n * @remarks\n *\n * Performs as destructor when null is passed will ne used as callback, so this function is bound\n */\n",
+              "kind": "Method",
+              "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setScroller:member(1)",
+              "docComment": "/**\n * Informs model about scrollable element.\n *\n * @remarks\n *\n * Must be called with `null` before killing the instance.\n *\n * @param element - scroller element\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
-                  "text": "setScroller: "
-                },
-                {
-                  "kind": "Content",
-                  "text": "(element: "
+                  "text": "setScroller(element: "
                 },
                 {
                   "kind": "Reference",
@@ -927,29 +937,47 @@
                 },
                 {
                   "kind": "Content",
-                  "text": " | null) => void"
+                  "text": " | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": "): "
+                },
+                {
+                  "kind": "Content",
+                  "text": "void"
                 },
                 {
                   "kind": "Content",
                   "text": ";"
                 }
               ],
-              "isReadonly": false,
-              "isOptional": false,
-              "releaseTag": "Public",
-              "name": "setScroller",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 4
-              },
               "isStatic": false,
+              "returnTypeTokenRange": {
+                "startIndex": 4,
+                "endIndex": 5
+              },
+              "releaseTag": "Public",
               "isProtected": false,
-              "isAbstract": false
+              "overloadIndex": 1,
+              "parameters": [
+                {
+                  "parameterName": "element",
+                  "parameterTypeTokenRange": {
+                    "startIndex": 1,
+                    "endIndex": 3
+                  },
+                  "isOptional": false
+                }
+              ],
+              "isOptional": false,
+              "isAbstract": false,
+              "name": "setScroller"
             },
             {
               "kind": "Method",
               "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setStickyFooter:member(1)",
-              "docComment": "/**\n * Start observing size of sticky footer `element`. Observing is finished if element is falsy.\n *\n * @param element - footer element\n */\n",
+              "docComment": "/**\n * Start observing size of sticky footer `element`. Observing is finished if element is `null`.\n *\n * @remarks\n *\n * Must be called with `null` before killing the instance.\n *\n * @param element - footer element\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1002,7 +1030,7 @@
             {
               "kind": "Method",
               "canonicalReference": "@af-utils/virtual-core!VirtualScroller#setStickyHeader:member(1)",
-              "docComment": "/**\n * Start observing size of sticky header `element`. Observing is finished if element is falsy.\n *\n * @param element - header element\n */\n",
+              "docComment": "/**\n * Start observing size of sticky header `element`. Observing is finished if element is `null`.\n *\n * @remarks\n *\n * Must be called with `null` before killing the instance.\n *\n * @param element - header element\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1192,7 +1220,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:var",
-          "docComment": "/**\n * Possible events, supported by {@link VirtualScroller.on} method\n *\n * @public\n */\n",
+          "docComment": "/**\n * Possible events, supported by {@link VirtualScroller.on} method\n *\n * @remarks\n *\n * Events Description: <br /> - `RANGE`: {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed; <br /> - `SCROLL_SIZE`: sum of all item sizes was changed; <br /> - `SIZES`: at least one item size was changed.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -1215,7 +1243,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams:interface",
-          "docComment": "/**\n * {@link VirtualScroller} constructor argument type\n *\n * @remarks\n *\n * Implemented as interface for better documentation output (api-extractor)\n *\n * @public\n */\n",
+          "docComment": "/**\n * All {@link VirtualScroller} parameters (that may / may not change over time).\n *\n * @remarks\n *\n * Implemented as interface for better documentation output (api-extractor)\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -1239,7 +1267,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams#estimatedScrollElementOffset:member",
-              "docComment": "/**\n * Used is scenarios with different scroll/container elements\n */\n",
+              "docComment": "/**\n * Estimated distance between top/left edges of scrollable container and first scrollable item.\n *\n * @remarks\n *\n * Does not equal `0` only when scrollable container and items container are different elements. {@link @af-utils/virtual-core#VirtualScroller.setContainer} has more explanation.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1293,7 +1321,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams#horizontal:member",
-              "docComment": "/**\n * Container scroll orientation\n */\n",
+              "docComment": "/**\n * Scroll container orientation.\n *\n * @remarks\n *\n * Determines properties used for dimension/scroll calculations, for example: <br /> - `scrollTop` / `scrollLeft`;<br /> - `height` / `width`;<br /> - `innerHeight` / `innerWidth`.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1328,7 +1356,7 @@
         {
           "kind": "Interface",
           "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams:interface",
-          "docComment": "/**\n * {@link VirtualScroller.set} argument type\n *\n * @remarks\n *\n * Implemented as interface for better documentation output (api-extractor)\n *\n * @public\n */\n",
+          "docComment": "/**\n * {@link VirtualScroller} parameters that may change over time. Used as {@link VirtualScroller.set} argument type.\n *\n * @remarks\n *\n * Implemented as interface for better documentation output (api-extractor)\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -1343,7 +1371,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams#estimatedItemSize:member",
-              "docComment": "/**\n * Estimated height/width of scrollable item. Orientation is determined by {@link VirtualScrollerInitialParams.horizontal}.\n *\n * @remarks\n *\n * Actual size is always reported by `ResizeObserver`. Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.\n */\n",
+              "docComment": "/**\n * Estimated height/width of scrollable item. Orientation is determined by {@link VirtualScrollerInitialParams.horizontal}. *\n *\n * @remarks\n *\n * Actual size is always reported by internal `ResizeObserver`. Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1397,7 +1425,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams#overscanCount:member",
-              "docComment": "/**\n * Amount of items rendered before or after visible ones. If scrolling is done forward - these items are rendered after visible ones. If backward - before.\n */\n",
+              "docComment": "/**\n * Amount of items rendered before or after visible ones. *\n *\n * @remarks\n *\n * Render place depends on scroll direction:<br /> - if scrolling is done forward - these items are rendered after visible ones;<br /> - If backward - before.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",

@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@af-utils/virtual-core": "workspace:*",
+        "@af-utils/scrollend-polyfill": "workspace:*",
         "@af-utils/virtual-react": "workspace:*",
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.1",

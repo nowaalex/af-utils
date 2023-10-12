@@ -10,9 +10,9 @@ https://af-utils.vercel.app/
 
 -   All dimensions are calculated automatically, so there is no need to provide them.
 -   Mobx - ready
--   Supports window or any other detached scroller (beta)
+-   Supports window or any other detached scroller
 -   Optimized for performance
--   Typescript-ready (in progress)
+-   Typescript-ready
 -   Decoupled architecture
 -   Sticky header and footer
 -   Infinite scrolling with load on demand

@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.4
+
+### Patch Changes
+
+-   upgraded scrollToIndex, improved docs, added scrollend polyfill
+-   Updated dependencies
+    -   @af-utils/virtual-core@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes

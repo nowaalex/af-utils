@@ -4,7 +4,10 @@ import type { ScrollElement, VirtualScroller } from "@af-utils/virtual-core";
 /**
  * @public
  * React hook.
- * Synchronizes scroller with model. Should be used in window-scroll cases, otherwise `ref={model.setScroller}` is preferrable.
+ * Synchronizes scroller with model.
+ *
+ * @remarks
+ * Should be used in window-scroll cases, otherwise `ref={el => model.setScroller( el )}` is preferrable.
  */
 const useScroller = (model: VirtualScroller, scroller: ScrollElement | null) =>
     useIsomorphicLayoutEffect(() => {

@@ -24,3 +24,7 @@ number
 
 pixel offset
 
+## Remarks
+
+Time complexity: `O(log2(itemCount))`
+

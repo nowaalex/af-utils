@@ -4,7 +4,7 @@
 
 ## VirtualScrollerInitialParams interface
 
-[VirtualScroller](./virtual-core.virtualscroller.md) constructor argument type
+All [VirtualScroller](./virtual-core.virtualscroller.md) parameters (that may / may not change over time).
 
 **Signature:**
 
@@ -21,7 +21,7 @@ Implemented as interface for better documentation output (api-extractor)
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [estimatedScrollElementOffset?](./virtual-core.virtualscrollerinitialparams.estimatedscrollelementoffset.md) |  | number | _(Optional)_ Used is scenarios with different scroll/container elements |
+|  [estimatedScrollElementOffset?](./virtual-core.virtualscrollerinitialparams.estimatedscrollelementoffset.md) |  | number | _(Optional)_ Estimated distance between top/left edges of scrollable container and first scrollable item. |
 |  [estimatedWidgetSize?](./virtual-core.virtualscrollerinitialparams.estimatedwidgetsize.md) |  | number | _(Optional)_ Estimated size of scroll element. |
-|  [horizontal?](./virtual-core.virtualscrollerinitialparams.horizontal.md) |  | boolean | _(Optional)_ Container scroll orientation |
+|  [horizontal?](./virtual-core.virtualscrollerinitialparams.horizontal.md) |  | boolean | _(Optional)_ Scroll container orientation. |
 

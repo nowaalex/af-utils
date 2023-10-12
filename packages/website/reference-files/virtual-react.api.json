@@ -792,7 +792,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@af-utils/virtual-react!useScroller:var",
-          "docComment": "/**\n * React hook. Synchronizes scroller with model. Should be used in window-scroll cases, otherwise `ref={model.setScroller}` is preferrable.\n *\n * @public\n */\n",
+          "docComment": "/**\n * React hook. Synchronizes scroller with model.\n *\n * @remarks\n *\n * Should be used in window-scroll cases, otherwise `ref={el => model.setScroller( el )}` is preferrable.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",

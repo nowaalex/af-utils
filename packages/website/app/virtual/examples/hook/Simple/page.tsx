@@ -26,7 +26,10 @@ const SimpleHook = () => {
     const [outerRef, innerRef] = useSyncedStyles(model);
 
     return (
-        <div className="overflow-auto contain-strict" ref={model.setScroller}>
+        <div
+            className="overflow-auto contain-strict"
+            ref={el => model.setScroller(el)}
+        >
             <div ref={outerRef}>
                 <div ref={innerRef}>
                     <Subscription

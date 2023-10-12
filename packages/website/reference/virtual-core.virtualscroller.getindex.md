@@ -24,3 +24,7 @@ number
 
 item index;
 
+## Remarks
+
+Time complexity: `O(log2(itemCount))`
+

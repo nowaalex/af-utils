@@ -2,12 +2,42 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [setContainer](./virtual-core.virtualscroller.setcontainer.md)
 
-## VirtualScroller.setContainer property
+## VirtualScroller.setContainer() method
 
-Should be used only when scrollable container has some "foreign" elements to properly integrate them.
+Informs model about items container element. Usually not needed.
 
 **Signature:**
 
 ```typescript
-setContainer: (element: HTMLElement | null) => void;
+setContainer(element: HTMLElement | null): void;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  element | HTMLElement \| null | container element |
+
+**Returns:**
+
+void
+
+## Remarks
+
+By default top/left offset between scroll container and first scrollable item is `0`<!-- -->. In this case just [VirtualScroller.setScroller()](./virtual-core.virtualscroller.setscroller.md) is needed. But extra element is needed when something "foreign" stands between scroll container and first scrollable item to measure distance between them. That extra element is represented as `ItemsContainer` on this schema:
+
+```plaintext
+<ScrollContainer>            |.|
+   Some header               |s|
+   Another header            |c|
+   <ItemsContainer>          |r|
+        item 1               [o]
+        item 2               [l]
+        item 3               [l]
+        ...                  [b]
+   </ItemsContainer>         |a|
+   Some footer               |r|
+</ScrollContainer>           |.|
+```
+Must be called with `null` before killing the instance.
+
