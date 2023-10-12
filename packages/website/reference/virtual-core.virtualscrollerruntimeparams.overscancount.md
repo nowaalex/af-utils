@@ -4,7 +4,7 @@
 
 ## VirtualScrollerRuntimeParams.overscanCount property
 
-Amount of items rendered before or after visible ones. \*
+Amount of items rendered before or after visible ones.
 
 **Signature:**
 
@@ -14,5 +14,9 @@ overscanCount?: number;
 
 ## Remarks
 
-Render place depends on scroll direction:<br /> - if scrolling is done forward - these items are rendered after visible ones;<br /> - If backward - before.
+Render place depends on scroll direction:
+
+- if scrolling is done forward - these items are rendered after visible ones;
+
+- If backward - before.
 

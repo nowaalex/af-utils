@@ -64,4 +64,8 @@
         transition: width 0.25s ease;
         animation: progress-indeterminate 1s ease infinite;
     }
+
+    .prose li > p {
+        margin: 0;
+    }
 }

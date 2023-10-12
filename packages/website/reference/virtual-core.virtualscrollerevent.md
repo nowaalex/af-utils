@@ -18,5 +18,11 @@ VirtualScrollerEvent: {
 
 ## Remarks
 
-Events Description: <br /> - `RANGE`<!-- -->: [VirtualScroller.from](./virtual-core.virtualscroller.from.md) or [VirtualScroller.to](./virtual-core.virtualscroller.to.md) was changed; <br /> - `SCROLL_SIZE`<!-- -->: sum of all item sizes was changed; <br /> - `SIZES`<!-- -->: at least one item size was changed.
+Events Description:
+
+- `RANGE`<!-- -->: [VirtualScroller.from](./virtual-core.virtualscroller.from.md) or [VirtualScroller.to](./virtual-core.virtualscroller.to.md) was changed;
+
+- `SCROLL_SIZE`<!-- -->: sum of all item sizes was changed;
+
+- `SIZES`<!-- -->: at least one item size was changed.
 

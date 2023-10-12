@@ -8,7 +8,13 @@ Polyfills `scrollend` event for [PolyfilledTarget](./scrollend-polyfill.polyfill
 
 ## Remarks
 
-Scroll is considered ended when touch events are not active ( user released touch ) and `scroll` event was not fired within [SCROLL\_DEBOUNCE\_INTERVAL](./scrollend-polyfill.scroll_debounce_interval.md) since last invocation. Does nothing when used in `node` environment.
+Scroll is considered ended when:
+
+- touch events are not active ( user released touch );
+
+- `scroll` event was not fired within [SCROLL\_DEBOUNCE\_INTERVAL](./scrollend-polyfill.scroll_debounce_interval.md) since last invocation.
+
+Does nothing when used in `node` environment.
 
 ## Variables
 

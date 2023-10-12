@@ -4,6 +4,7 @@
     "bundledPackages": [],
     "enumMemberOrder": "preserve",
     "compiler": {},
+    "newlineKind": "lf",
     "apiReport": {
         "enabled": false
     },

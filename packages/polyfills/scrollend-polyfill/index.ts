@@ -3,8 +3,12 @@
  * Polyfills `scrollend` event for {@link @af-utils/scrollend-polyfill#PolyfilledTarget}.
  *
  * @remarks
- * Scroll is considered ended when touch events are not active ( user released touch )
- * and `scroll` event was not fired within {@link SCROLL_DEBOUNCE_INTERVAL} since last invocation.
+ * Scroll is considered ended when:
+ *
+ * - touch events are not active ( user released touch );
+ *
+ * - `scroll` event was not fired within {@link SCROLL_DEBOUNCE_INTERVAL} since last invocation.
+ *
  * Does nothing when used in `node` environment.
  */
 

@@ -22,6 +22,7 @@ const withMDX = nextMdx({
     }
 });
 
+/** @type {import('next').NextConfig} */
 const config = withBundleAnalyzer(
     withMDX({
         env: {

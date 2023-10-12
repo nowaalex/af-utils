@@ -15,10 +15,12 @@ export type ScrollElement = HTMLElement | Window;
 export interface VirtualScrollerRuntimeParams {
     /**
      * Amount of items rendered before or after visible ones.
-     *     *
+     *
      * @remarks
-     * Render place depends on scroll direction:<br />
-     * - if scrolling is done forward - these items are rendered after visible ones;<br />
+     * Render place depends on scroll direction:
+     *
+     * - if scrolling is done forward - these items are rendered after visible ones;
+     *
      * - If backward - before.
      */
     overscanCount?: number;
@@ -28,7 +30,7 @@ export interface VirtualScrollerRuntimeParams {
     itemCount?: number;
     /**
      * Estimated height/width of scrollable item. Orientation is determined by {@link VirtualScrollerInitialParams.horizontal}.
-     *     *
+     *
      * @remarks
      * Actual size is always reported by internal `ResizeObserver`.
      * Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.
@@ -49,9 +51,12 @@ export interface VirtualScrollerInitialParams
      * Scroll container orientation.
      *
      * @remarks
-     * Determines properties used for dimension/scroll calculations, for example: <br />
-     * - `scrollTop` / `scrollLeft`;<br />
-     * - `height` / `width`;<br />
+     * Determines properties used for dimension/scroll calculations, for example:
+     *
+     * - `scrollTop` / `scrollLeft`;
+     *
+     * - `height` / `width`;
+     *
      * - `innerHeight` / `innerWidth`.
      */
     horizontal?: boolean;

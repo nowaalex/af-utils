@@ -1,7 +1,8 @@
 import AutoLink from "components/AutoLink";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
+import type { MDXComponents } from "mdx/types";
 
-export const useMDXComponents = (components: any) => ({
+export const useMDXComponents = (components: MDXComponents) => ({
     ...components,
     wrapper: ({ children }: { children: ReactNode }) => (
         <div className="prose max-w-full w-full">{children}</div>

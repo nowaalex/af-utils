@@ -212,7 +212,7 @@
         {
           "kind": "Class",
           "canonicalReference": "@af-utils/virtual-core!VirtualScroller:class",
-          "docComment": "/**\n * Core framework-agnostic model.<br />\n *\n * @remarks\n *\n * What it does:<br /> - stores item sizes and positions;<br /> - tracks elements resizing;<br /> - provides performant way to calculate offsets;<br /> - deals with scrolling to item index or to offset;<br /> - emits and allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable) | events}.<br />\n *\n * What it doesn't do:<br /> - rendering;<br /> - styling;<br /> - all other framework-related stuff.\n *\n * @public\n */\n",
+          "docComment": "/**\n * Core framework-agnostic model.\n *\n * @remarks\n *\n * What it does:\n *\n * - stores item sizes and positions;\n *\n * - tracks elements resizing;\n *\n * - provides performant way to calculate offsets;\n *\n * - deals with scrolling to item index or to offset;\n *\n * - emits and allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable) | events}.\n *\n * What it doesn't do:\n *\n * - rendering;\n *\n * - styling;\n *\n * - all other framework-related stuff.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -1220,7 +1220,7 @@
         {
           "kind": "Variable",
           "canonicalReference": "@af-utils/virtual-core!VirtualScrollerEvent:var",
-          "docComment": "/**\n * Possible events, supported by {@link VirtualScroller.on} method\n *\n * @remarks\n *\n * Events Description: <br /> - `RANGE`: {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed; <br /> - `SCROLL_SIZE`: sum of all item sizes was changed; <br /> - `SIZES`: at least one item size was changed.\n *\n * @public\n */\n",
+          "docComment": "/**\n * Possible events, supported by {@link VirtualScroller.on} method\n *\n * @remarks\n *\n * Events Description:\n *\n * - `RANGE`: {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed;\n *\n * - `SCROLL_SIZE`: sum of all item sizes was changed;\n *\n * - `SIZES`: at least one item size was changed.\n *\n * @public\n */\n",
           "excerptTokens": [
             {
               "kind": "Content",
@@ -1321,7 +1321,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@af-utils/virtual-core!VirtualScrollerInitialParams#horizontal:member",
-              "docComment": "/**\n * Scroll container orientation.\n *\n * @remarks\n *\n * Determines properties used for dimension/scroll calculations, for example: <br /> - `scrollTop` / `scrollLeft`;<br /> - `height` / `width`;<br /> - `innerHeight` / `innerWidth`.\n */\n",
+              "docComment": "/**\n * Scroll container orientation.\n *\n * @remarks\n *\n * Determines properties used for dimension/scroll calculations, for example:\n *\n * - `scrollTop` / `scrollLeft`;\n *\n * - `height` / `width`;\n *\n * - `innerHeight` / `innerWidth`.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1371,7 +1371,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams#estimatedItemSize:member",
-              "docComment": "/**\n * Estimated height/width of scrollable item. Orientation is determined by {@link VirtualScrollerInitialParams.horizontal}. *\n *\n * @remarks\n *\n * Actual size is always reported by internal `ResizeObserver`. Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.\n */\n",
+              "docComment": "/**\n * Estimated height/width of scrollable item. Orientation is determined by {@link VirtualScrollerInitialParams.horizontal}.\n *\n * @remarks\n *\n * Actual size is always reported by internal `ResizeObserver`. Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",
@@ -1425,7 +1425,7 @@
             {
               "kind": "PropertySignature",
               "canonicalReference": "@af-utils/virtual-core!VirtualScrollerRuntimeParams#overscanCount:member",
-              "docComment": "/**\n * Amount of items rendered before or after visible ones. *\n *\n * @remarks\n *\n * Render place depends on scroll direction:<br /> - if scrolling is done forward - these items are rendered after visible ones;<br /> - If backward - before.\n */\n",
+              "docComment": "/**\n * Amount of items rendered before or after visible ones.\n *\n * @remarks\n *\n * Render place depends on scroll direction:\n *\n * - if scrolling is done forward - these items are rendered after visible ones;\n *\n * - If backward - before.\n */\n",
               "excerptTokens": [
                 {
                   "kind": "Content",

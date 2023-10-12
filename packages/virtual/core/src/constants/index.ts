@@ -10,9 +10,12 @@ export const enum InternalEvent {
  * Possible events, supported by {@link VirtualScroller.on} method
  *
  * @remarks
- * Events Description: <br />
- * - `RANGE`: {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed; <br />
- * - `SCROLL_SIZE`: sum of all item sizes was changed; <br />
+ * Events Description:
+ *
+ * - `RANGE`: {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed;
+ *
+ * - `SCROLL_SIZE`: sum of all item sizes was changed;
+ *
  * - `SIZES`: at least one item size was changed.
  *
  * @privateRemarks

@@ -14,5 +14,11 @@ horizontal?: boolean;
 
 ## Remarks
 
-Determines properties used for dimension/scroll calculations, for example: <br /> - `scrollTop` / `scrollLeft`<!-- -->;<br /> - `height` / `width`<!-- -->;<br /> - `innerHeight` / `innerWidth`<!-- -->.
+Determines properties used for dimension/scroll calculations, for example:
+
+- `scrollTop` / `scrollLeft`<!-- -->;
+
+- `height` / `width`<!-- -->;
+
+- `innerHeight` / `innerWidth`<!-- -->.
 

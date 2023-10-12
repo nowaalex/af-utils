@@ -9,6 +9,6 @@
 |  Package | Description |
 |  --- | --- |
 |  [@af-utils/scrollend-polyfill](./scrollend-polyfill.md) | Polyfills <code>scrollend</code> event for [PolyfilledTarget](./scrollend-polyfill.polyfilledtarget.md)<!-- -->. |
-|  [@af-utils/virtual-core](./virtual-core.md) | Core framework-agnostic model.<br /> |
+|  [@af-utils/virtual-core](./virtual-core.md) | Core framework-agnostic model. |
 |  [@af-utils/virtual-react](./virtual-react.md) | React components/hooks/utils used to easily connect to [VirtualScroller](./virtual-core.virtualscroller.md) |
 

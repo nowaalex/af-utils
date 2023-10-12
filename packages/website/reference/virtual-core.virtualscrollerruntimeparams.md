@@ -22,5 +22,5 @@ Implemented as interface for better documentation output (api-extractor)
 |  --- | --- | --- | --- |
 |  [estimatedItemSize?](./virtual-core.virtualscrollerruntimeparams.estimateditemsize.md) |  | number | _(Optional)_ Estimated height/width of scrollable item. Orientation is determined by [VirtualScrollerInitialParams.horizontal](./virtual-core.virtualscrollerinitialparams.horizontal.md)<!-- -->. \* |
 |  [itemCount?](./virtual-core.virtualscrollerruntimeparams.itemcount.md) |  | number | _(Optional)_ Total items quantity |
-|  [overscanCount?](./virtual-core.virtualscrollerruntimeparams.overscancount.md) |  | number | _(Optional)_ Amount of items rendered before or after visible ones. \* |
+|  [overscanCount?](./virtual-core.virtualscrollerruntimeparams.overscancount.md) |  | number | _(Optional)_ Amount of items rendered before or after visible ones. |
 

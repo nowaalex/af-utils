@@ -95,19 +95,28 @@ const getAvailableWidgetSize = (
 /**
  * @public
  *
- * Core framework-agnostic model.<br />
+ * Core framework-agnostic model.
  *
  * @remarks
- * What it does:<br />
- * - stores item sizes and positions;<br />
- * - tracks elements resizing;<br />
- * - provides performant way to calculate offsets;<br />
- * - deals with scrolling to item index or to offset;<br />
- * - emits and allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable) | events}.<br />
+ * What it does:
  *
- * What it doesn't do:<br />
- * - rendering;<br />
- * - styling;<br />
+ * - stores item sizes and positions;
+ *
+ * - tracks elements resizing;
+ *
+ * - provides performant way to calculate offsets;
+ *
+ * - deals with scrolling to item index or to offset;
+ *
+ * - emits and allows to subscribe to {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable) | events}.
+ *
+ *
+ * What it doesn't do:
+ *
+ * - rendering;
+ *
+ * - styling;
+ *
  * - all other framework-related stuff.
  */
 class VirtualScroller {
