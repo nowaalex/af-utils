@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.5
+
+### Patch Changes
+
+-   upgraded scrollend-polyfill
+-   Updated dependencies
+    -   @af-utils/virtual-core@0.0.5
+
 ## 0.0.4
 
 ### Patch Changes

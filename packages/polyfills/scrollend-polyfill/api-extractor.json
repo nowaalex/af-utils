@@ -1,5 +1,8 @@
 {
     "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
     "extends": "../../../api-extractor-base.json",
-    "mainEntryPointFilePath": "<projectFolder>/lib/index.d.ts"
+    "mainEntryPointFilePath": "<projectFolder>/lib/index.d.ts",
+    "dtsRollup": {
+        "enabled": false
+    }
 }

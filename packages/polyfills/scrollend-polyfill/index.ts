@@ -26,8 +26,9 @@ export const SCROLL_DEBOUNCE_INTERVAL = 100;
  */
 export type PolyfilledTarget = HTMLElement | Window | Document;
 
-/** @internal */
-type MethodOf<T extends object> = (this: T, ...args: unknown[]) => unknown;
+type ListenerMethod = "addEventListener" | "removeEventListener";
+
+type PossibleListenerType = Parameters<PolyfilledTarget[ListenerMethod]>[1];
 
 const SCROLLEND_EVENT = "scrollend";
 
@@ -35,7 +36,11 @@ if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
     const dispatchedEvent = new Event(SCROLLEND_EVENT);
 
     const pointers = new Set<number>();
-    const handlersMap = new WeakMap<() => void, ReturnType<typeof debounce>>();
+
+    const handlersMap = new WeakMap<
+        PossibleListenerType,
+        ReturnType<typeof debounce>
+    >();
 
     let lastTarget: PolyfilledTarget | null = null;
 
@@ -84,54 +89,26 @@ if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
         return result;
     };
 
-    const patchScrollEnd = <T extends object, K extends keyof T>(
-        object: T,
-        method: K,
-        fn: MethodOf<T>
-    ) => {
-        const originalMethod = object[method] as MethodOf<T>;
+    const patchScrollEnd = <T extends ListenerMethod>(
+        objects: readonly PolyfilledTarget[],
+        method: T,
+        fn: (
+            this: PolyfilledTarget,
+            type: string,
+            listener: PossibleListenerType,
+            options?: AddEventListenerOptions
+        ) => void
+    ) =>
+        objects.forEach(object => {
+            const originalMethod = object[method];
 
-        (object[method] as MethodOf<T>) = function (this: T) {
-            originalMethod.apply(this, arguments as any);
-            if (arguments[0] === SCROLLEND_EVENT) {
-                fn.apply(this, arguments as any);
-            }
-        };
-    };
-
-    function onAdd(
-        this: PolyfilledTarget,
-        type: any,
-        listener: any,
-        options: any
-    ) {
-        const fn = debounce(() => {
-            if (pointers.size === 0) {
-                dispatchScrollEvent(this);
-            } else {
-                lastTarget = this;
-            }
-        }, SCROLL_DEBOUNCE_INTERVAL);
-        handlersMap.set(listener, fn);
-        this.addEventListener("scroll", fn, options);
-    }
-
-    function onRemove(
-        this: PolyfilledTarget,
-        type: any,
-        listener: any,
-        options: any
-    ) {
-        const fn = handlersMap.get(listener);
-        if (fn) {
-            fn._cancel();
-            handlersMap.delete(listener);
-            if (lastTarget === this) {
-                lastTarget = null;
-            }
-            this.removeEventListener("scroll", fn, options);
-        }
-    }
+            object[method] = function () {
+                originalMethod.apply(this, arguments as any);
+                if (arguments[0] === SCROLLEND_EVENT) {
+                    fn.apply(this, arguments as any);
+                }
+            };
+        });
 
     const targets = [
         HTMLElement.prototype,
@@ -139,8 +116,35 @@ if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
         document
     ] as const satisfies readonly PolyfilledTarget[];
 
-    targets.forEach(tgt => {
-        patchScrollEnd(tgt, "addEventListener", onAdd);
-        patchScrollEnd(tgt, "removeEventListener", onRemove);
-    });
+    patchScrollEnd(
+        targets,
+        "addEventListener",
+        function (type, listener, options) {
+            const fn = debounce(() => {
+                if (pointers.size === 0) {
+                    dispatchScrollEvent(this);
+                } else {
+                    lastTarget = this;
+                }
+            }, SCROLL_DEBOUNCE_INTERVAL);
+
+            handlersMap.set(listener, fn);
+            this.addEventListener("scroll", fn, options);
+        }
+    );
+    patchScrollEnd(
+        targets,
+        "removeEventListener",
+        function (type, listener, options) {
+            const fn = handlersMap.get(listener);
+            if (fn) {
+                fn._cancel();
+                handlersMap.delete(listener);
+                if (lastTarget === this) {
+                    lastTarget = null;
+                }
+                this.removeEventListener("scroll", fn, options);
+            }
+        }
+    );
 }

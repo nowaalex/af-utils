@@ -1,5 +1,13 @@
 # @af-utils/virtual-core
 
+## 0.0.5
+
+### Patch Changes
+
+-   upgraded scrollend-polyfill
+-   Updated dependencies
+    -   @af-utils/scrollend-polyfill@0.0.3
+
 ## 0.0.4
 
 ### Patch Changes

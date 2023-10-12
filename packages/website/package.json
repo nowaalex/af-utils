@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "ANALYZE=true next build",
-        "docs:collect": "rm -rf ./reference-files && mkdir ./reference-files && cp `find ../ -wholename *api-extractor-schema/*.json*` ./reference-files && npx api-documenter markdown -i ./reference-files -o ./reference",
+        "docs:collect": "./docs-collect.sh",
         "postbuild": "next-sitemap",
         "start": "next start",
         "lint": "next lint"
