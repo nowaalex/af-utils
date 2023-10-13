@@ -20,13 +20,17 @@ const brotli = promisify(brotliCompress);
 
 async function write(
     fileName: string,
-    fileSizes: Awaited<ReturnType<typeof getFileSizes>>
+    fileSizes: Awaited<ReturnType<typeof getFileSizes>>,
+    dts: boolean
 ) {
     const str = Object.entries(fileSizes)
-        .map(([name, size]) => `export const ${name} = ${size};`)
+        .map(
+            ([name, size]) =>
+                `export ${dts ? "declare " : ""}const ${name} = ${size};`
+        )
         .join("\n");
 
-    await writeFile(fileName, str);
+    await writeFile(dts ? fileName.replace(/.js$/, ".d.ts") : fileName, str);
 }
 
 async function getFileSizes(code: string) {
@@ -64,7 +68,10 @@ function createPlugin({ dir }: { dir: string }) {
 
                 if ("code" in outputContent) {
                     const fileSizes = await getFileSizes(outputContent.code);
-                    await write(newFileName, fileSizes);
+                    await Promise.all([
+                        write(newFileName, fileSizes, false),
+                        write(newFileName, fileSizes, true)
+                    ]);
                 }
             }
         }

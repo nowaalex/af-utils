@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.7
+
+### Patch Changes
+
+-   mjs > ts conversion, pruned unused deps
+-   Updated dependencies
+    -   @af-utils/virtual-core@0.0.7
+
 ## 0.0.6
 
 ### Patch Changes

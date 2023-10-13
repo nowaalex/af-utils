@@ -1,5 +1,13 @@
 # @af-utils/virtual-core
 
+## 0.0.7
+
+### Patch Changes
+
+-   mjs > ts conversion, pruned unused deps
+-   Updated dependencies
+    -   @af-utils/scrollend-polyfill@0.0.5
+
 ## 0.0.6
 
 ### Patch Changes

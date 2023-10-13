@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-react",
     "private": false,
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "React components and hooks for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-utils.git",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
@@ -39,7 +39,7 @@
         "windowing"
     ],
     "devDependencies": {
-        "@rollup/plugin-export-bundle-size": "workspace:*",
+        "@af-utils/rollup-plugin-export-bundle-size": "workspace:*",
         "@rollup/plugin-replace": "^5.0.3",
         "@rollup/plugin-terser": "^0.4.4",
         "@rollup/plugin-typescript": "^11.1.5",

@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "ANALYZE=true next build",
-        "docs:collect": "./docs-collect.sh",
+        "build:docs": "./build-docs.sh",
         "postbuild": "next-sitemap",
         "start": "next start",
         "lint": "next lint"

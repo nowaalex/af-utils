@@ -1,5 +1,11 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.5
+
+### Patch Changes
+
+-   mjs > ts conversion, pruned unused deps
+
 ## 0.0.4
 
 ### Patch Changes

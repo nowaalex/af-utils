@@ -1,7 +1,6 @@
 {
-    "name": "@rollup/plugin-export-bundle-size",
-    "private": true,
-    "version": "0.0.3",
+    "name": "@af-utils/rollup-plugin-export-bundle-size",
+    "version": "0.0.4",
     "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
     "license": "MIT",
     "sideEffects": false,
@@ -19,5 +18,8 @@
         "terser": "^5.21.0",
         "typescript": "^5.2.2",
         "@types/node": "^20.8.5"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

@@ -1,5 +1,11 @@
 # @rollup/plugin-export-bundle-size
 
+## 0.0.4
+
+### Patch Changes
+
+-   mjs > ts conversion, pruned unused deps
+
 ## 0.0.3
 
 ### Patch Changes

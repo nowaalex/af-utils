@@ -1,5 +1,5 @@
 import typescript from "@rollup/plugin-typescript";
-import exportBundleSize from "@rollup/plugin-export-bundle-size";
+import exportBundleSize from "@af-utils/rollup-plugin-export-bundle-size";
 import terser from "@rollup/plugin-terser";
 
 const OUTPUT_DIR = "lib/";
