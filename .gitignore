@@ -4,5 +4,6 @@ logs
 
 **/node_modules/
 **/lib
+**/api-extractor-schema
 
 **/.next/**

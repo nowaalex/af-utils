@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-core",
     "private": false,
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Model for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-utils.git",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
@@ -10,13 +10,9 @@
     "license": "MIT",
     "sideEffects": false,
     "scripts": {
-        "dev": "rollup --watch --config rollup.config.mjs & tsc-alias -w",
-        "build": "rollup --config rollup.config.mjs && tsc-alias && api-extractor run",
+        "dev": "rollup -w -c rollup.config.ts --configPlugin typescript & tsc-alias -w",
+        "build": "rollup -c rollup.config.ts --configPlugin typescript && tsc-alias && api-extractor run && rm -r lib/types",
         "test": "jest"
-    },
-    "engines": {
-        "node": ">=14.0.0",
-        "npm": ">=6.0.0"
     },
     "files": [
         "lib/*"
@@ -41,10 +37,6 @@
         "windowing"
     ],
     "devDependencies": {
-        "@babel/plugin-transform-runtime": "^7.23.2",
-        "@babel/preset-env": "^7.23.2",
-        "@rollup/plugin-babel": "^6.0.4",
-        "@rollup/plugin-commonjs": "^25.0.5",
         "@rollup/plugin-export-bundle-size": "workspace:*",
         "@rollup/plugin-replace": "^5.0.3",
         "@rollup/plugin-terser": "^0.4.4",
@@ -55,6 +47,7 @@
         "jest-environment-jsdom": "^29.7.0",
         "rollup": "^4.0.2",
         "ts-jest": "^29.1.1",
+        "ts-node": "^10.9.1",
         "tsc-alias": "^1.8.8",
         "typescript": "^5.2.2"
     },

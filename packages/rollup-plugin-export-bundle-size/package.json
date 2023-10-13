@@ -1,19 +1,23 @@
 {
-  "name": "@rollup/plugin-export-bundle-size",
-  "private": true,
-  "version": "0.0.2",
-  "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
-  "license": "MIT",
-  "sideEffects": false,
-  "scripts": {},
-  "engines": {
-    "node": ">=14.0.0",
-    "npm": ">=6.0.0"
-  },
-  "main": "index.js",
-  "module": "index.js",
-  "keywords": [],
-  "devDependencies": {
-    "terser": "^5.21.0"
-  }
+    "name": "@rollup/plugin-export-bundle-size",
+    "private": true,
+    "version": "0.0.3",
+    "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
+    "license": "MIT",
+    "sideEffects": false,
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "dev": "pnpm run build"
+    },
+    "types": "lib/index.d.ts",
+    "main": "lib/index.js",
+    "module": "lib/index.js",
+    "keywords": [],
+    "devDependencies": {
+        "rollup": "^4.0.2",
+        "terser": "^5.21.0",
+        "typescript": "^5.2.2",
+        "@types/node": "^20.8.5"
+    }
 }

@@ -1,9 +1,8 @@
 {
-    "include": ["src"],
+    "include": ["src", "rollup.config.ts"],
     "compilerOptions": {
         "lib": ["DOM"],
         "baseUrl": "src",
-        "rootDir": "src",
         "moduleResolution": "Bundler",
         "module": "ESNext",
         "outDir": "lib",

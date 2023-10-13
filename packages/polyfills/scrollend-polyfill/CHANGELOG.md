@@ -1,5 +1,11 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.4
+
+### Patch Changes
+
+-   shrinked build size
+
 ## 0.0.3
 
 ### Patch Changes
