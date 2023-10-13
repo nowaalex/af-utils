@@ -26,7 +26,6 @@
         "reactjs",
         "virtual",
         "list",
-        "recycle",
         "dom-recycle",
         "dynamic-size",
         "scroll",
@@ -35,7 +34,6 @@
         "virtualized",
         "virtual",
         "virtualization",
-        "sortable",
         "windowing"
     ],
     "devDependencies": {

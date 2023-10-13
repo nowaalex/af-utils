@@ -28,6 +28,9 @@ jobs:
             - name: Install Dependencies
               run: pnpm i
 
+            - name: Build public libraries
+              run: pnpm --filter=\!website build
+
             - name: Create Release Pull Request
               uses: changesets/action@v1
               env:
