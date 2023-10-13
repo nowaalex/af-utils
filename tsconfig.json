@@ -2,6 +2,8 @@
     "files": [],
     "references": [
         { "path": "./packages/virtual/core" },
-        { "path": "./packages/virtual/react" }
+        { "path": "./packages/virtual/react" },
+        { "path": "./packages/polyfills/scrollend-polyfill" },
+        { "path": "./packages/rollup-plugin-export-bundle-size" }
     ]
 }
