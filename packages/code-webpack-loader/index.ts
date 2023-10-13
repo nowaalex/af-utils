@@ -23,6 +23,10 @@ const highlight: LoaderDefinitionFunction = function (content, map, meta) {
                 null,
                 `import { createElement } from "react";
 
+                const dangerouslySetInnerHTML = { __html: ${JSON.stringify(
+                    str
+                )} };
+
 				const Code = props => createElement( "pre", {
 					...props,
 					style: {
@@ -30,7 +34,7 @@ const highlight: LoaderDefinitionFunction = function (content, map, meta) {
 						background: "${highlighter.getBackgroundColor(theme)}"
 					},
 					tabIndex: props.tabIndex || 0,
-					dangerouslySetInnerHTML: { __html: ${JSON.stringify(str)} }
+					dangerouslySetInnerHTML
 				});
 
 				export default Code`,
