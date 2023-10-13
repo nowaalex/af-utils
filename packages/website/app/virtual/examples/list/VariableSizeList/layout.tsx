@@ -1,4 +1,3 @@
-// @ts-ignore
 import Code from "!!code-webpack-loader!./page";
 import Example from "components/layouts/Example";
 import Description from "./index.mdx";

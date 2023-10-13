@@ -1,0 +1,14 @@
+{
+    "include": ["index.ts"],
+    "compilerOptions": {
+        "moduleResolution": "Node",
+        "module": "ESNext",
+        "outDir": "lib/",
+        "target": "ESNext",
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "alwaysStrict": true,
+        "declaration": true,
+        "types": ["node"]
+    }
+}

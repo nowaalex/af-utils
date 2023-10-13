@@ -53,9 +53,18 @@ importers:
 
   packages/code-webpack-loader:
     devDependencies:
+      '@types/node':
+        specifier: ^20.8.5
+        version: 20.8.5
       shiki:
         specifier: ^0.14.5
         version: 0.14.5
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+      webpack:
+        specifier: ^5.88.2
+        version: 5.88.2
 
   packages/polyfills/scrollend-polyfill:
     devDependencies:

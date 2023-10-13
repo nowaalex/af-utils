@@ -1,8 +1,9 @@
-const shiki = require("shiki");
+import shiki from "shiki";
+import type { LoaderDefinitionFunction } from "webpack";
 
 const theme = "one-dark-pro";
 
-function highlight(content, map, meta) {
+const highlight: LoaderDefinitionFunction = function (content, map, meta) {
     const callback = this.async();
     shiki
         .getHighlighter({
@@ -37,6 +38,6 @@ function highlight(content, map, meta) {
                 meta
             );
         });
-}
+};
 
-module.exports = highlight;
+export default highlight;

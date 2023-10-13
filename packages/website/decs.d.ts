@@ -1,4 +1,7 @@
 declare module "*.mdx" {
-    let MDXComponent: (props) => JSX.Element;
-    export default MDXComponent;
+    export default props => JSX.Element;
+}
+
+declare module "!!code-webpack-loader!*" {
+    export default props => JSX.Element;
 }
