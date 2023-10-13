@@ -62,6 +62,8 @@ const ScrollToItem = () => {
                       )
                     : rows.slice(0, rowsToAdd)
             );
+        } else {
+            model.scrollToIndex(pseudoRandomSizes.length - 1);
         }
     };
 
