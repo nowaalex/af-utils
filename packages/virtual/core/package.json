@@ -25,15 +25,15 @@
         "virtual",
         "list",
         "recycle",
-        "dom-recycle",
-        "dynamic-size",
+        "dom recycle",
+        "dynamic size",
+        "load on demand",
         "scroll",
         "scrolling",
         "infinite",
         "virtualized",
         "virtual",
         "virtualization",
-        "sortable",
         "windowing"
     ],
     "devDependencies": {
