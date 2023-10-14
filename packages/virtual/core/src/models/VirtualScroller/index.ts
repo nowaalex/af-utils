@@ -248,6 +248,7 @@ class VirtualScroller {
                 update(this._fTree, lim, buff, this._fTree.length);
                 this.scrollSize += buff;
                 this._run(InternalEvent.SCROLL_SIZE);
+
                 if (buff < 0) {
                     /*
                         If visible item sizes reduced - holes may appear, so rerender is a must.
@@ -331,6 +332,23 @@ class VirtualScroller {
     }
 
     /**
+     * Unsubscribe from model events
+     * @param callBack - callBack to unsubscribe
+     * @param events - events to unsubscribe
+     */
+    private _off(
+        callBack: () => void,
+        events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]
+    ) {
+        events.forEach(evt =>
+            this._EventsList[evt].splice(
+                this._EventsList[evt].indexOf(callBack),
+                1
+            )
+        );
+    }
+
+    /**
      * Subscribe to model events
      * @returns unsubscribe function
      * @param callBack - event to be triggered
@@ -341,13 +359,7 @@ class VirtualScroller {
         events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]
     ) {
         events.forEach(evt => this._EventsList[evt].push(callBack));
-        return () =>
-            events.forEach(evt =>
-                this._EventsList[evt].splice(
-                    this._EventsList[evt].indexOf(callBack),
-                    1
-                )
-            );
+        return () => this._off(callBack, events);
     }
 
     /**

@@ -14,10 +14,10 @@
     "module": "lib/index.js",
     "keywords": [],
     "devDependencies": {
+        "@types/node": "^20.8.6",
         "rollup": "^4.0.2",
         "terser": "^5.21.0",
-        "typescript": "^5.2.2",
-        "@types/node": "^20.8.5"
+        "typescript": "^5.2.2"
     },
     "publishConfig": {
         "access": "public"
