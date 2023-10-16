@@ -1,5 +1,12 @@
 # code-webpack-loader
 
+## 0.0.3
+
+### Patch Changes
+
+-   improved VirtualScroller.scrollToIndex
+-   900f29c: imroved VirtualScroller.scrollToIndex
+
 ## 0.0.2
 
 ### Patch Changes

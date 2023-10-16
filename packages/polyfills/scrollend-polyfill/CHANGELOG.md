@@ -1,5 +1,12 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.6
+
+### Patch Changes
+
+-   improved VirtualScroller.scrollToIndex
+-   900f29c: imroved VirtualScroller.scrollToIndex
+
 ## 0.0.5
 
 ### Patch Changes
