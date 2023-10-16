@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.8
+
+### Patch Changes
+
+-   900f29c: imroved VirtualScroller.scrollToIndex
+-   Updated dependencies [900f29c]
+    -   @af-utils/virtual-core@0.0.8
+
 ## 0.0.7
 
 ### Patch Changes
