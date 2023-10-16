@@ -8,7 +8,7 @@
     "parser": "@typescript-eslint/parser",
     "ignorePatterns": ["**/lib/**"],
     "root": true,
-    "plugins": ["@babel", "react", "jest", "@typescript-eslint"],
+    "plugins": ["react", "jest", "@typescript-eslint"],
     "env": {
         "browser": true,
         "node": true,
@@ -23,11 +23,7 @@
         "semi": ["error", "always"],
         "lodash/prefer-lodash-chain": [0],
         "lodash/prefer-lodash-method": [0],
-        "no-restricted-syntax": [
-            "error",
-            "WithStatement",
-            "BinaryExpression[operator='in']"
-        ],
+        "no-restricted-syntax": ["error", "WithStatement"],
         "no-bitwise": [0],
         "no-underscore-dangle": [0],
         "no-plusplus": [0],

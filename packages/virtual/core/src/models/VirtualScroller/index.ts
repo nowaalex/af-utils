@@ -128,7 +128,6 @@ class VirtualScroller {
     private _scrollToKey: ScrollToKey = ScrollToKeysOrdered[0];
     private _desiredScrollIndex = -1;
     private _desiredScrollSmooth = false;
-    private _scrollSyncTimer: ReturnType<typeof setTimeout> | 0 = 0;
 
     /* It is more useful to store scrollPos - scrollElementOffset in one variable for future calculations */
     private _alignedScrollPos = 0;
@@ -315,9 +314,9 @@ class VirtualScroller {
         }
     }
 
-    private _unobserveResize = () => {
-        // nothing to unobserve initially
-    };
+    private _unobserveResize = () => {};
+    private _scrollSyncTimer: ReturnType<typeof setTimeout> | 0 = 0;
+    private _scrollLastCheckTimer: ReturnType<typeof setTimeout> | 0 = 0;
 
     constructor(params?: VirtualScrollerInitialParams) {
         if (params) {
@@ -342,7 +341,8 @@ class VirtualScroller {
     ) {
         events.forEach(evt =>
             this._EventsList[evt].splice(
-                this._EventsList[evt].indexOf(callBack),
+                // >>> 0 - protection against -1
+                this._EventsList[evt].indexOf(callBack) >>> 0,
                 1
             )
         );
@@ -501,12 +501,16 @@ class VirtualScroller {
     setScroller(element: ScrollElement | null) {
         if (element !== this._scrollElement) {
             clearTimeout(this._scrollSyncTimer);
+            this._cancelPendingScrollPositionCheck();
             this._unobserveResize();
             this._scrollElement?.removeEventListener(
                 "scroll",
                 this._syncScrollPosition
             );
-            this._killScrollEnd();
+            this._scrollElement?.removeEventListener(
+                "scrollend",
+                this._handleScrollEnd
+            );
 
             this._scrollElement = element;
 
@@ -521,6 +525,11 @@ class VirtualScroller {
                     this._syncScrollPosition,
                     PASSIVE_HANDLER_OPTIONS
                 );
+                element.addEventListener(
+                    "scrollend",
+                    this._handleScrollEnd,
+                    PASSIVE_HANDLER_OPTIONS
+                );
 
                 /*
                  otherwise scroll does not happen during initial render; we need to wait for resize event
@@ -528,12 +537,8 @@ class VirtualScroller {
                 */
                 this._scrollSyncTimer = setTimeout(() => {
                     this._updateScrollerOffsetRaw();
-                    const desiredScrollIndex = this._desiredScrollIndex;
-                    this._desiredScrollIndex = -1;
                     this._syncScrollPosition();
-                    if (desiredScrollIndex !== -1) {
-                        this.scrollToIndex(desiredScrollIndex, false);
-                    }
+                    this._attemptToScrollIfNeeded(false);
                 }, 0);
             }
         }
@@ -706,29 +711,44 @@ class VirtualScroller {
         }
     }
 
-    private _killScrollEnd() {
-        this._scrollElement?.removeEventListener(
-            "scrollend",
-            this._attemptToScrollToIndex
-        );
+    private _cancelPendingScrollPositionCheck() {
+        clearTimeout(this._scrollLastCheckTimer);
     }
 
-    private _attemptToScrollToIndex = () => {
-        const index = this._desiredScrollIndex;
-        const whole = index | 0;
-        const desiredScrollPos = Math.min(
-            this.scrollSize - this._availableWidgetSize,
-            this.getOffset(whole) +
-                Math.round(this._itemSizes[whole] * (index - whole))
-        );
+    private _attemptToScrollIfNeeded(final: boolean) {
+        if (this._desiredScrollIndex !== -1) {
+            this._cancelPendingScrollPositionCheck();
 
-        if (desiredScrollPos === this._alignedScrollPos) {
-            this._desiredScrollIndex = -1;
-            this._killScrollEnd();
-        } else {
-            this.scrollToOffset(desiredScrollPos, this._desiredScrollSmooth);
+            const whole = Math.trunc(this._desiredScrollIndex);
+
+            const desiredScrollPos = Math.min(
+                this.scrollSize - this._availableWidgetSize,
+                this.getOffset(whole) +
+                    Math.round(
+                        this._itemSizes[whole] *
+                            (this._desiredScrollIndex - whole)
+                    )
+            );
+
+            if (desiredScrollPos === this._alignedScrollPos) {
+                if (final) {
+                    this._desiredScrollIndex = -1;
+                } else {
+                    this._scrollLastCheckTimer = setTimeout(
+                        () => this._attemptToScrollIfNeeded(true),
+                        32
+                    );
+                }
+            } else {
+                this.scrollToOffset(
+                    desiredScrollPos,
+                    this._desiredScrollSmooth
+                );
+            }
         }
-    };
+    }
+
+    private _handleScrollEnd = () => this._attemptToScrollIfNeeded(false);
 
     /**
      * Scroll to pixel offset
@@ -750,17 +770,9 @@ class VirtualScroller {
      * @param smooth - should smooth scroll be used
      */
     scrollToIndex(index: number, smooth?: boolean) {
-        if (this._desiredScrollIndex === -1) {
-            this._scrollElement?.addEventListener(
-                "scrollend",
-                this._attemptToScrollToIndex,
-                PASSIVE_HANDLER_OPTIONS
-            );
-        }
-
         this._desiredScrollIndex = index;
         this._desiredScrollSmooth = !!smooth;
-        this._attemptToScrollToIndex();
+        this._attemptToScrollIfNeeded(false);
     }
 
     /**
