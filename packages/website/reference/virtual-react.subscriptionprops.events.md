@@ -7,5 +7,5 @@
 **Signature:**
 
 ```typescript
-events?: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[];
+events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[];
 ```

@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.9
+
+### Patch Changes
+
+-   improved docs & scroll
+-   Updated dependencies
+    -   @af-utils/virtual-core@0.0.9
+
 ## 0.0.8
 
 ### Patch Changes

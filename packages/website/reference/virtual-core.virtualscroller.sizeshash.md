@@ -4,7 +4,7 @@
 
 ## VirtualScroller.sizesHash property
 
-Hash of item sizes. Changed when at least one visible item is resized.
+Hash of item sizes. Changed when at least one visible item is resized
 
 **Signature:**
 

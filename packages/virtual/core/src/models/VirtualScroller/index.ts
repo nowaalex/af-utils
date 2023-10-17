@@ -17,9 +17,10 @@ import { build as buildFtree, update, getLiftingLimit } from "utils/fTree";
 import getDistanceBetween from "utils/getDistanceBetween";
 import Batch from "singletons/Batch";
 import type {
-    ScrollElement,
+    VirtualScrollerScrollElement,
     VirtualScrollerInitialParams,
-    VirtualScrollerRuntimeParams
+    VirtualScrollerRuntimeParams,
+    VirtualScrollerExactPosition
 } from "types";
 
 const OBSERVE_OPTIONS = {
@@ -87,7 +88,7 @@ const getBoxSize = (
 ) => Math.round(borderBox[0][sizeKey]);
 
 const getAvailableWidgetSize = (
-    scrollElement: ScrollElement,
+    scrollElement: VirtualScrollerScrollElement,
     sizeKey: ScrollElementSizeKey,
     stickyOffset: number
 ) => (scrollElement as any)[sizeKey] - stickyOffset;
@@ -139,7 +140,7 @@ class VirtualScroller {
     private _overscanCount = DEFAULT_OVERSCAN_COUNT;
     private _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
 
-    private _scrollElement: ScrollElement | null = null;
+    private _scrollElement: VirtualScrollerScrollElement | null = null;
     private _initialElement: HTMLElement | null = null;
 
     private _itemSizes = EMPTY_TYPED_ARRAY;
@@ -163,17 +164,17 @@ class VirtualScroller {
 
     /**
      * @readonly
-     * Items range start */
+     * Items range start with {@link VirtualScrollerRuntimeParams.overscanCount | overscanCount} included */
     from = 0;
 
     /**
      * @readonly
-     * Items range end */
+     * Items range end with {@link VirtualScrollerRuntimeParams.overscanCount | overscanCount} included */
     to = 0;
 
     /**
      * @readonly
-     * Hash of item sizes. Changed when at least one visible item is resized. */
+     * Hash of item sizes. Changed when at least one visible item is resized */
     sizesHash = 0;
 
     private _elToIdx = new Map<Element, number>();
@@ -280,7 +281,7 @@ class VirtualScroller {
      */
     private _updatePropertyKeys() {
         const h = this.horizontal ? 1 : 0;
-        const w = this._scrollElement instanceof Element ? 0 : 1;
+        const w = this._scrollElement instanceof HTMLElement ? 0 : 1;
         const i = h + 2 * w;
 
         this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
@@ -292,7 +293,7 @@ class VirtualScroller {
     private _handleScrollElementResize = () => {
         const availableWidgetSize = getAvailableWidgetSize(
             // casting type here because this stuff is used only as scrollElement resize event handler
-            this._scrollElement as ScrollElement,
+            this._scrollElement as VirtualScrollerScrollElement,
             this._scrollElementSizeKey,
             this._stickyOffset
         );
@@ -450,15 +451,13 @@ class VirtualScroller {
     }
 
     /**
-     * Get snapshot of current scroll position.
+     * Returns snapshot of current scroll position. {@link VirtualScrollerExactPosition}
      *
-     * @remarks
-     * For example `5.3` stands for item at index `5` + `30%` of its size.
-     * Used to remember scroll position before prepending elements.
-     *
-     * @returns visible item index (double number)
+     * @privateRemarks
+     * "returns" tag is missed by api-extractor for getters (for now).
+     * So using Regular description + type link.
      */
-    get visibleFrom() {
+    get visibleFrom(): VirtualScrollerExactPosition {
         const firstVisibleIndex = this._exactFrom;
         return (
             firstVisibleIndex +
@@ -498,7 +497,7 @@ class VirtualScroller {
      * @remarks
      * Must be called with `null` before killing the instance.
      */
-    setScroller(element: ScrollElement | null) {
+    setScroller(element: VirtualScrollerScrollElement | null) {
         if (element !== this._scrollElement) {
             clearTimeout(this._scrollSyncTimer);
             this._cancelPendingScrollPositionCheck();
@@ -736,7 +735,7 @@ class VirtualScroller {
                 } else {
                     this._scrollLastCheckTimer = setTimeout(
                         () => this._attemptToScrollIfNeeded(true),
-                        32
+                        64
                     );
                 }
             } else {
@@ -759,7 +758,7 @@ class VirtualScroller {
     scrollToOffset(offset: number, smooth?: boolean) {
         this._scrollElement?.scroll({
             [this._scrollToKey]: this._scrollElementOffset + offset,
-            behavior: smooth ? "smooth" : undefined
+            behavior: smooth ? "smooth" : "instant"
         });
     }
 
@@ -768,8 +767,12 @@ class VirtualScroller {
      *
      * @param index - item index to scroll to
      * @param smooth - should smooth scroll be used
+     *
+     * @remarks
+     * Calls {@link VirtualScroller.scrollToOffset | scrollToOffset} with calcuated offset until desired scroll position is reached.
+     * This method relies on `scrollend` event.
      */
-    scrollToIndex(index: number, smooth?: boolean) {
+    scrollToIndex(index: VirtualScrollerExactPosition, smooth?: boolean) {
         this._desiredScrollIndex = index;
         this._desiredScrollSmooth = !!smooth;
         this._attemptToScrollIfNeeded(false);
@@ -810,6 +813,11 @@ class VirtualScroller {
             }
 
             this._updateRangeFromEnd();
+
+            /* Covers rare case when setItemCount is called during scroll */
+            if (this._desiredScrollIndex >= itemCount) {
+                this._desiredScrollIndex = itemCount - 1;
+            }
 
             Batch._end();
         }

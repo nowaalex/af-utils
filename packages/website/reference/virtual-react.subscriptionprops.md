@@ -17,6 +17,6 @@ export interface SubscriptionProps
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [children](./virtual-react.subscriptionprops.children.md) |  | () =&gt; ReactNode |  |
-|  [events?](./virtual-react.subscriptionprops.events.md) |  | readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] | _(Optional)_ |
+|  [events](./virtual-react.subscriptionprops.events.md) |  | readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] |  |
 |  [model](./virtual-react.subscriptionprops.model.md) |  | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
 

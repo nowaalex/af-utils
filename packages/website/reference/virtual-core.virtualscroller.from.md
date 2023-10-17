@@ -4,7 +4,7 @@
 
 ## VirtualScroller.from property
 
-Items range start
+Items range start with [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md) included
 
 **Signature:**
 

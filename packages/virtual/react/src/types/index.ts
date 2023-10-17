@@ -43,5 +43,5 @@ export type ListProps<T extends ElementType = "div"> = Omit<
 export interface SubscriptionProps {
     model: VirtualScroller;
     children: () => ReactNode;
-    events?: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[];
+    events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[];
 }

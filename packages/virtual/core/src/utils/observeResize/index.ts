@@ -1,8 +1,11 @@
 import FinalResizeObserver from "models/ResizeObserver";
-import type { ScrollElement } from "types";
+import type { VirtualScrollerScrollElement } from "types";
 
-const observeResize = (target: ScrollElement, callback: () => void) => {
-    if (target instanceof Element) {
+const observeResize = (
+    target: VirtualScrollerScrollElement,
+    callback: () => void
+) => {
+    if (target instanceof HTMLElement) {
         const RO = new FinalResizeObserver(callback);
         RO.observe(target);
         return () => RO.disconnect();

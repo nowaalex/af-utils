@@ -8,7 +8,13 @@ import {
     mapVisibleRangeWithOffset
 } from "@af-utils/virtual-react";
 
-import type { VirtualScroller } from "@af-utils/virtual-core";
+import { VirtualScroller, VirtualScrollerEvent } from "@af-utils/virtual-core";
+
+const events = [
+    VirtualScrollerEvent.RANGE,
+    VirtualScrollerEvent.SCROLL_SIZE,
+    VirtualScrollerEvent.SIZES
+] as const;
 
 const Cell = memo<{
     rowI: number;
@@ -33,8 +39,8 @@ const GridItems = ({
     rows: VirtualScroller;
     cols: VirtualScroller;
 }) => {
-    useComponentSubscription(rows);
-    useComponentSubscription(cols);
+    useComponentSubscription(rows, events);
+    useComponentSubscription(cols, events);
 
     return (
         <div

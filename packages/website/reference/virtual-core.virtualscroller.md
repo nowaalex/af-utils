@@ -44,12 +44,12 @@ What it doesn't do:
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [from](./virtual-core.virtualscroller.from.md) | <code>readonly</code> | number | Items range start |
+|  [from](./virtual-core.virtualscroller.from.md) | <code>readonly</code> | number | Items range start with [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md) included |
 |  [horizontal](./virtual-core.virtualscroller.horizontal.md) | <code>readonly</code> | boolean | Scroll direction |
 |  [scrollSize](./virtual-core.virtualscroller.scrollsize.md) | <code>readonly</code> | number | Sum of all item sizes |
-|  [sizesHash](./virtual-core.virtualscroller.sizeshash.md) | <code>readonly</code> | number | Hash of item sizes. Changed when at least one visible item is resized. |
-|  [to](./virtual-core.virtualscroller.to.md) | <code>readonly</code> | number | Items range end |
-|  [visibleFrom](./virtual-core.virtualscroller.visiblefrom.md) | <code>readonly</code> | number | Get snapshot of current scroll position. |
+|  [sizesHash](./virtual-core.virtualscroller.sizeshash.md) | <code>readonly</code> | number | Hash of item sizes. Changed when at least one visible item is resized |
+|  [to](./virtual-core.virtualscroller.to.md) | <code>readonly</code> | number | Items range end with [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md) included |
+|  [visibleFrom](./virtual-core.virtualscroller.visiblefrom.md) | <code>readonly</code> | [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md) | Returns snapshot of current scroll position. [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md) |
 
 ## Methods
 

@@ -2,7 +2,18 @@
  * @public
  * Scrollable container type
  */
-export type ScrollElement = HTMLElement | Window;
+export type VirtualScrollerScrollElement = HTMLElement | Window;
+
+/**
+ * @public
+ * Numeric snapshot of scroll position
+ *
+ * @example
+ * `5.3` stands for item at index `5` + `30%` of its size.
+ *
+ * Used to save/restore scroll position
+ */
+export type VirtualScrollerExactPosition = number;
 
 /**
  * @public

@@ -1,9 +1,5 @@
 import { useMemo } from "react";
-import {
-    VirtualScrollerEvent,
-    _ALL_EVENTS,
-    VirtualScroller
-} from "@af-utils/virtual-core";
+import { VirtualScrollerEvent, VirtualScroller } from "@af-utils/virtual-core";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 
 function getSingleEventHash(this: VirtualScroller, e: VirtualScrollerEvent) {
@@ -25,9 +21,7 @@ function getSingleEventHash(this: VirtualScroller, e: VirtualScrollerEvent) {
  */
 const useComponentSubscription = (
     model: VirtualScroller,
-    events:
-        | readonly VirtualScrollerEvent[]
-        | VirtualScrollerEvent[] = _ALL_EVENTS
+    events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]
 ) => {
     const [subscribe, getHash] = useMemo(
         () => [

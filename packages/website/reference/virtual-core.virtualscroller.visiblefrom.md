@@ -4,15 +4,10 @@
 
 ## VirtualScroller.visibleFrom property
 
-Get snapshot of current scroll position.
+Returns snapshot of current scroll position. [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md)
 
 **Signature:**
 
 ```typescript
-get visibleFrom(): number;
+get visibleFrom(): VirtualScrollerExactPosition;
 ```
-
-## Remarks
-
-For example `5.3` stands for item at index `5` + `30%` of its size. Used to remember scroll position before prepending elements.
-

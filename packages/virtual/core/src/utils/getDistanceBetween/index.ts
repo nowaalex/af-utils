@@ -1,11 +1,11 @@
 import type { ScrollToKey, ScrollKey } from "constants/";
-import type { ScrollElement } from "types";
+import type { VirtualScrollerScrollElement } from "types";
 
 const getElementOffset = (element: HTMLElement, scrollToKey: ScrollToKey) =>
     element.getBoundingClientRect()[scrollToKey];
 
 const getDistanceBetween = (
-    scrollElement: ScrollElement | null,
+    scrollElement: VirtualScrollerScrollElement | null,
     containerElement: HTMLElement | null,
     scrollKey: ScrollKey,
     scrollToKey: ScrollToKey

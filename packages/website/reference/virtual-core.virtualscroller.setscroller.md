@@ -9,14 +9,14 @@ Informs model about scrollable element.
 **Signature:**
 
 ```typescript
-setScroller(element: ScrollElement | null): void;
+setScroller(element: VirtualScrollerScrollElement | null): void;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  element | [ScrollElement](./virtual-core.scrollelement.md) \| null | scroller element |
+|  element | [VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md) \| null | scroller element |
 
 **Returns:**
 

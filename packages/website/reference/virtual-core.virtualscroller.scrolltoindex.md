@@ -9,17 +9,21 @@ Scroll to item index
 **Signature:**
 
 ```typescript
-scrollToIndex(index: number, smooth?: boolean): void;
+scrollToIndex(index: VirtualScrollerExactPosition, smooth?: boolean): void;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  index | number | item index to scroll to |
+|  index | [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md) | item index to scroll to |
 |  smooth | boolean | _(Optional)_ should smooth scroll be used |
 
 **Returns:**
 
 void
+
+## Remarks
+
+Calls [scrollToOffset](./virtual-core.virtualscroller.scrolltooffset.md) with calcuated offset until desired scroll position is reached. This method relies on `scrollend` event.
 

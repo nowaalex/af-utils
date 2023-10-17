@@ -51,6 +51,7 @@ What it doesn't do:
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [ScrollElement](./virtual-core.scrollelement.md) | Scrollable container type |
 |  [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) | [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) is exported as constant, so separate type is needed to emulate enum behavior |
+|  [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md) | Numeric snapshot of scroll position |
+|  [VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md) | Scrollable container type |
 
