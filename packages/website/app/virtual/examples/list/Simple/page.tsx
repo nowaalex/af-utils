@@ -11,7 +11,7 @@ const Item = memo<ListItemProps>(({ i, model }) => (
 
 const SimpleList = () => {
     const rows = useVirtual({
-        itemCount: 250000
+        itemCount: 150000
     });
 
     return <List model={rows}>{Item}</List>;

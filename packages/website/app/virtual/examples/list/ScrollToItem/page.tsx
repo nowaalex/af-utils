@@ -67,7 +67,6 @@ const ScrollToItem = () => {
         <List
             model={model}
             itemData={pseudoRandomSizes}
-            className="grow basis-96 h-full"
             header={
                 <form
                     className="flex justify-center p-2 flex-wrap gap-4 bg-orange-100 sticky top-0"

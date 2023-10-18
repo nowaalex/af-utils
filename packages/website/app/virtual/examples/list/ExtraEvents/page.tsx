@@ -19,13 +19,8 @@ const Item = memo<ListItemProps>(({ i, model }) => (
 
 const ExtraEvents = () => {
     const rows = useVirtual({
-        itemCount: 250000,
-        estimatedItemSize: 45,
-        /*
-            Such a big overscanCount is rarely needed;
-            just for example here
-        */
-        overscanCount: 10
+        itemCount: 150000,
+        estimatedItemSize: 45
     });
 
     return (
