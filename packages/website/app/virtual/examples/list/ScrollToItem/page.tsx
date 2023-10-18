@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, memo, useEffect, useLayoutEffect, FormEvent } from "react";
+import { useState, memo, useEffect, FormEvent } from "react";
 import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
 
-const DEFAULT_ROW_COUNT = 100000;
+const DEFAULT_ROW_COUNT = 1000;
 
 const Item = memo<ListItemProps>(({ i, model, data: pseudoRandomSizes }) => (
     <div
@@ -16,10 +16,6 @@ const Item = memo<ListItemProps>(({ i, model, data: pseudoRandomSizes }) => (
         row {i}:&nbsp;{pseudoRandomSizes[i]}px
     </div>
 ));
-
-/* If you do not use SSR - just use useLayoutEffect */
-const useIsomorphicLayoutEffect =
-    typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const ScrollToItem = () => {
     const [pseudoRandomSizes, changeRows] = useState(() =>
@@ -34,7 +30,7 @@ const ScrollToItem = () => {
         estimatedItemSize: 75
     });
 
-    useIsomorphicLayoutEffect(() => {
+    useEffect(() => {
         model.scrollToIndex(pseudoRandomSizes.length - 1);
     }, [model, pseudoRandomSizes.length]);
 

@@ -13,7 +13,6 @@
     "module": "lib/index.js",
     "keywords": [],
     "devDependencies": {
-        "@types/node": "^20.8.6",
         "shiki": "^0.14.5",
         "typescript": "^5.2.2",
         "webpack": "^5.89.0"

@@ -52,13 +52,13 @@ const useSyncedStyles = (model: VirtualScroller) => {
     const [inner, innerRef] = useState<HTMLElement | null>(null);
 
     useLayoutEffect(() => {
-        if (outer && inner) {
-            const unsubSize = model.on(() => {
+        if (model && outer && inner) {
+            const updateSizeStyle = () => {
                 outer.style[model.horizontal ? "width" : "height"] =
                     model.scrollSize + "px";
-            }, [VirtualScrollerEvent.SCROLL_SIZE]);
+            };
 
-            const unsubScroll = model.on(() => {
+            const updateScrollStyle = () => {
                 const fromOffset = model.getOffset(model.from);
                 const toOffset = model.getOffset(model.to);
                 inner.style.transform = `translate${
@@ -66,7 +66,16 @@ const useSyncedStyles = (model: VirtualScroller) => {
                 }(${fromOffset}px)`;
                 inner.style[model.horizontal ? "width" : "height"] =
                     toOffset - fromOffset + "px";
-            }, [VirtualScrollerEvent.RANGE, VirtualScrollerEvent.SIZES]);
+            };
+
+            const unsubSize = model.on(updateSizeStyle, [
+                VirtualScrollerEvent.SCROLL_SIZE
+            ]);
+
+            const unsubScroll = model.on(updateScrollStyle, [
+                VirtualScrollerEvent.RANGE,
+                VirtualScrollerEvent.SIZES
+            ]);
 
             Object.assign(
                 outer.style,
@@ -81,6 +90,9 @@ const useSyncedStyles = (model: VirtualScroller) => {
                     ? SCROLL_PROVIDER_STYLE_HORIZONTAL
                     : SCROLL_PROVIDER_STYLE_VERTICAL
             );
+
+            updateSizeStyle();
+            updateScrollStyle();
 
             return () => {
                 unsubSize();

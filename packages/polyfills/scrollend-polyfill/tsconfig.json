@@ -1,13 +1,7 @@
 {
     "files": ["index.ts"],
+    "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
-        "module": "ESNext",
-        "outDir": "lib/",
-        "target": "ESNext",
-        "declaration": true,
-        "strict": true,
-        "alwaysStrict": true,
-        "moduleResolution": "Bundler",
-        "types": ["node"]
+        "outDir": "lib"
     }
 }

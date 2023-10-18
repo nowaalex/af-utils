@@ -1,14 +1,8 @@
 {
     "include": ["index.ts"],
+    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "moduleResolution": "Node",
-        "module": "ESNext",
-        "outDir": "lib/",
-        "target": "ESNext",
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "alwaysStrict": true,
-        "declaration": true,
-        "types": ["node"]
+        "outDir": "lib"
     }
 }

@@ -1,17 +1,15 @@
-import { notFound, permanentRedirect } from "next/navigation";
 import nextDynamic from "next/dynamic";
 import startCase from "utils/startCase";
 import type { Metadata } from "next";
 
-const map = process.env.VIRTUAL_REFERENCE_MAP as unknown as Record<
-    string,
-    boolean
->;
+export const dynamicParams = false;
 
-export const dynamic = "force-dynamic";
+export async function generateStaticParams() {
+    const glob = await import("fast-glob");
 
-export function generateStaticParams() {
-    const result = Object.keys(map).map(reference => [{ reference }]);
+    const result = glob.default
+        .sync("reference/*.md")
+        .map(f => ({ reference: f.split("/") }));
 
     return result;
 }
@@ -26,23 +24,15 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
         : {};
 }
 
-const Cache: Record<string, any> = {};
+const Cache: Record<string, ReturnType<typeof nextDynamic>> = {};
 
 const Page = ({ params }: { params: any }) => {
-    if (params.reference.length < 2) {
-        permanentRedirect("/virtual/reference/index.md");
-    }
-
     const key = params.reference[1];
-
-    if (!map[key]) {
-        notFound();
-    }
 
     let C = Cache[key];
 
     if (!C) {
-        C = nextDynamic(() => import(`../../../reference/${key}`));
+        C = nextDynamic(() => import(`reference/${key}`));
         Cache[key] = C;
     }
 

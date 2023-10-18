@@ -1,5 +1,13 @@
 # @af-utils/virtual-core
 
+## 0.0.10
+
+### Patch Changes
+
+-   upgraded scroll algo & types
+-   Updated dependencies
+    -   @af-utils/scrollend-polyfill@0.0.7
+
 ## 0.0.9
 
 ### Patch Changes

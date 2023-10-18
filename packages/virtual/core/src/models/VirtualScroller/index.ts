@@ -27,10 +27,6 @@ const OBSERVE_OPTIONS = {
     box: "border-box"
 } as const satisfies ResizeObserverOptions;
 
-const PASSIVE_HANDLER_OPTIONS = {
-    passive: true
-} as const satisfies AddEventListenerOptions;
-
 const ITEMS_ROOM = 32;
 
 const DEFAULT_OVERSCAN_COUNT = 3;
@@ -39,13 +35,11 @@ const DEFAULT_ESTIMATED_WIDGET_SIZE = 200;
 
 const DEFAULT_ESTIMATED_ITEM_SIZE = 40;
 
-export const SIZES_HASH_MODULO = 0x7fffffff;
-
 /*
     0x7fffffff - maximum 32bit integer.
     Bitwise operations, used in fenwick tree, cannot be applied to numbers > int32.
 */
-export const MAX_ITEM_COUNT = 0x7fffffff;
+const MAX_INT_32 = 0x7fffffff;
 
 /* 
     Creating fenwick tree from an array in linear time;
@@ -93,6 +87,22 @@ const getAvailableWidgetSize = (
     stickyOffset: number
 ) => (scrollElement as any)[sizeKey] - stickyOffset;
 
+const BORROW_EVENTS = ["scrollend", "pointerdown", "wheel", "keydown"] as const;
+const SCROLL_EVENT = ["scroll"] as const;
+
+const toggleEvents = (
+    events: readonly string[] | string[],
+    el: VirtualScrollerScrollElement | null,
+    callBack: EventListener,
+    flag: boolean
+) =>
+    events.forEach(
+        e =>
+            el?.[`${flag ? "add" : "remove"}EventListener`](e, callBack, {
+                passive: true
+            })
+    );
+
 /**
  * @public
  *
@@ -127,8 +137,10 @@ class VirtualScroller {
     private _resizeObserverSizeKey: ResizeObserverSizeKey =
         ResizeObserverSizeKeysOrdered[0];
     private _scrollToKey: ScrollToKey = ScrollToKeysOrdered[0];
-    private _desiredScrollIndex = -1;
+    private _desiredScrollIndex = 0;
     private _desiredScrollSmooth = false;
+    private _reachedScrollTs = MAX_INT_32;
+    private _scrollBorrowed = false;
 
     /* It is more useful to store scrollPos - scrollElementOffset in one variable for future calculations */
     private _alignedScrollPos = 0;
@@ -263,7 +275,7 @@ class VirtualScroller {
                 Using bitwise hack to optimize modulo.
                 5 % 2 === 5 & 1 && 9 % 4 === 9 & 3
             */
-            this.sizesHash = (this.sizesHash + 1) & SIZES_HASH_MODULO;
+            this.sizesHash = (this.sizesHash + 1) & MAX_INT_32;
             this._run(InternalEvent.SIZES);
 
             Batch._end();
@@ -316,8 +328,6 @@ class VirtualScroller {
     }
 
     private _unobserveResize = () => {};
-    private _scrollSyncTimer: ReturnType<typeof setTimeout> | 0 = 0;
-    private _scrollLastCheckTimer: ReturnType<typeof setTimeout> | 0 = 0;
 
     constructor(params?: VirtualScrollerInitialParams) {
         if (params) {
@@ -469,7 +479,7 @@ class VirtualScroller {
     /**
      * Synchronize current scroll position with visible range
      */
-    private _syncScrollPosition = () => {
+    private _syncScrollPosition() {
         /*
             scrollElement may not be null here.
             Math.round, because scrollY/scrollX may be float on Safari
@@ -488,6 +498,48 @@ class VirtualScroller {
                 this._updateRangeFromStart();
             }
         }
+    }
+
+    private _handleScrollEvent = (e: Event) => {
+        switch (e.type) {
+            case "scroll":
+                this._syncScrollPosition();
+                break;
+            case "scrollend":
+                if (this._scrollBorrowed) {
+                    this._attemptToScrollIfNeeded(e.timeStamp);
+                }
+                break;
+            default:
+                this._toggleScrollBorrow(false);
+        }
+    };
+
+    private _handleResizeAfterScroll = () => {
+        if (this._scrollBorrowed) {
+            const now = performance.now();
+
+            if (now - this._reachedScrollTs < 128) {
+                queueMicrotask(() => {
+                    this._attemptToScrollIfNeeded(now);
+                });
+            }
+        }
+    };
+
+    private _toggleScrollBorrow = (flag: boolean) => {
+        if (this._scrollBorrowed !== flag) {
+            this._scrollBorrowed = flag;
+            toggleEvents(
+                BORROW_EVENTS,
+                this._scrollElement,
+                this._handleScrollEvent,
+                flag
+            );
+            this[flag ? "on" : "_off"](this._handleResizeAfterScroll, [
+                InternalEvent.SCROLL_SIZE
+            ]);
+        }
     };
 
     /**
@@ -499,16 +551,13 @@ class VirtualScroller {
      */
     setScroller(element: VirtualScrollerScrollElement | null) {
         if (element !== this._scrollElement) {
-            clearTimeout(this._scrollSyncTimer);
-            this._cancelPendingScrollPositionCheck();
             this._unobserveResize();
-            this._scrollElement?.removeEventListener(
-                "scroll",
-                this._syncScrollPosition
-            );
-            this._scrollElement?.removeEventListener(
-                "scrollend",
-                this._handleScrollEnd
+            this._toggleScrollBorrow(false);
+            toggleEvents(
+                SCROLL_EVENT,
+                this._scrollElement,
+                this._handleScrollEvent,
+                false
             );
 
             this._scrollElement = element;
@@ -519,26 +568,14 @@ class VirtualScroller {
                     element,
                     this._handleScrollElementResize
                 );
-                element.addEventListener(
-                    "scroll",
-                    this._syncScrollPosition,
-                    PASSIVE_HANDLER_OPTIONS
+                toggleEvents(
+                    SCROLL_EVENT,
+                    element,
+                    this._handleScrollEvent,
+                    true
                 );
-                element.addEventListener(
-                    "scrollend",
-                    this._handleScrollEnd,
-                    PASSIVE_HANDLER_OPTIONS
-                );
-
-                /*
-                 otherwise scroll does not happen during initial render; we need to wait for resize event
-                 TODO: reimplement cleaner with subscribing to resize
-                */
-                this._scrollSyncTimer = setTimeout(() => {
-                    this._updateScrollerOffsetRaw();
-                    this._syncScrollPosition();
-                    this._attemptToScrollIfNeeded(false);
-                }, 0);
+                this._updateScrollerOffsetRaw();
+                this._syncScrollPosition();
             }
         }
     }
@@ -710,44 +747,23 @@ class VirtualScroller {
         }
     }
 
-    private _cancelPendingScrollPositionCheck() {
-        clearTimeout(this._scrollLastCheckTimer);
-    }
+    private _attemptToScrollIfNeeded(timeStamp: number) {
+        const whole = Math.trunc(this._desiredScrollIndex);
 
-    private _attemptToScrollIfNeeded(final: boolean) {
-        if (this._desiredScrollIndex !== -1) {
-            this._cancelPendingScrollPositionCheck();
+        const desiredScrollPos = Math.min(
+            this.scrollSize - this._availableWidgetSize,
+            this.getOffset(whole) +
+                Math.round(
+                    this._itemSizes[whole] * (this._desiredScrollIndex - whole)
+                )
+        );
 
-            const whole = Math.trunc(this._desiredScrollIndex);
-
-            const desiredScrollPos = Math.min(
-                this.scrollSize - this._availableWidgetSize,
-                this.getOffset(whole) +
-                    Math.round(
-                        this._itemSizes[whole] *
-                            (this._desiredScrollIndex - whole)
-                    )
-            );
-
-            if (desiredScrollPos === this._alignedScrollPos) {
-                if (final) {
-                    this._desiredScrollIndex = -1;
-                } else {
-                    this._scrollLastCheckTimer = setTimeout(
-                        () => this._attemptToScrollIfNeeded(true),
-                        64
-                    );
-                }
-            } else {
-                this.scrollToOffset(
-                    desiredScrollPos,
-                    this._desiredScrollSmooth
-                );
-            }
+        if (desiredScrollPos !== this._alignedScrollPos) {
+            this.scrollToOffset(desiredScrollPos, this._desiredScrollSmooth);
+        } else {
+            this._reachedScrollTs = timeStamp;
         }
     }
-
-    private _handleScrollEnd = () => this._attemptToScrollIfNeeded(false);
 
     /**
      * Scroll to pixel offset
@@ -773,9 +789,10 @@ class VirtualScroller {
      * This method relies on `scrollend` event.
      */
     scrollToIndex(index: VirtualScrollerExactPosition, smooth?: boolean) {
+        this._toggleScrollBorrow(true);
         this._desiredScrollIndex = index;
         this._desiredScrollSmooth = !!smooth;
-        this._attemptToScrollIfNeeded(false);
+        this._attemptToScrollIfNeeded(performance.now());
     }
 
     /**
@@ -787,8 +804,8 @@ class VirtualScroller {
             Batch._start();
 
             assert(
-                itemCount <= MAX_ITEM_COUNT,
-                `itemCount must be <= ${MAX_ITEM_COUNT}. Got: ${itemCount}.`
+                itemCount <= MAX_INT_32,
+                `itemCount must be <= ${MAX_INT_32}. Got: ${itemCount}.`
             );
 
             this._itemCount = itemCount;
@@ -797,7 +814,7 @@ class VirtualScroller {
             if (itemCount > this._itemSizes.length) {
                 this._itemSizes = /*@__NOINLINE__*/ growTypedArray(
                     this._itemSizes,
-                    Math.min(itemCount + ITEMS_ROOM, MAX_ITEM_COUNT),
+                    Math.min(itemCount + ITEMS_ROOM, MAX_INT_32),
                     this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE
                 );
                 this._fTree = /*@__NOINLINE__*/ buildFtree(this._itemSizes);
@@ -813,11 +830,6 @@ class VirtualScroller {
             }
 
             this._updateRangeFromEnd();
-
-            /* Covers rare case when setItemCount is called during scroll */
-            if (this._desiredScrollIndex >= itemCount) {
-                this._desiredScrollIndex = itemCount - 1;
-            }
 
             Batch._end();
         }

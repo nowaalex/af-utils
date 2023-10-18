@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "lib": ["DOM", "DOM.Iterable", "ES2020"],
+        "moduleResolution": "Bundler",
+        "module": "ESNext",
+        "target": "ESNext",
+        "declaration": true,
+        "declarationMap": false,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "alwaysStrict": true,
+        "resolveJsonModule": true,
+        "jsx": "react-jsx"
+    }
+}

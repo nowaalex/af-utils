@@ -1,5 +1,11 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.7
+
+### Patch Changes
+
+-   upgraded scroll algo & types
+
 ## 0.0.6
 
 ### Patch Changes

@@ -27,19 +27,28 @@ const CustomRender = () => {
     const [after, afterRef] = useState<HTMLElement | null>(null);
 
     useLayoutEffect(() => {
-        if (before && after) {
-            const unsubBefore = model.on(() => {
+        if (model && before && after) {
+            const updateBeforeStyle = () => {
                 before.style.height = model.getOffset(model.from) + "px";
-            }, [VirtualScrollerEvent.RANGE]);
+            };
 
-            const unsubAfter = model.on(() => {
+            const updateAfterStyle = () => {
                 after.style.height =
                     model.scrollSize - model.getOffset(model.to) + "px";
-            }, [
+            };
+
+            const unsubBefore = model.on(updateBeforeStyle, [
+                VirtualScrollerEvent.RANGE
+            ]);
+
+            const unsubAfter = model.on(updateAfterStyle, [
                 VirtualScrollerEvent.RANGE,
                 VirtualScrollerEvent.SCROLL_SIZE,
                 VirtualScrollerEvent.SIZES
             ]);
+
+            updateBeforeStyle();
+            updateAfterStyle();
 
             return () => {
                 unsubBefore();

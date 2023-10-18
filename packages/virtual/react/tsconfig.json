@@ -1,20 +1,9 @@
 {
+    "extends": "../../../tsconfig.base.json",
     "include": ["src", "rollup.config.ts"],
     "compilerOptions": {
-        "lib": ["DOM"],
         "baseUrl": "src",
-        "moduleResolution": "Bundler",
-        "module": "ESNext",
         "outDir": "lib",
-        "target": "ESNext",
-        "declaration": true,
-        "declarationMap": false,
-        "declarationDir": "lib/types",
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "alwaysStrict": true,
-        "resolveJsonModule": true,
-        "jsx": "react-jsx",
-        "types": ["node", "react", "jest"]
+        "declarationDir": "lib/types"
     }
 }

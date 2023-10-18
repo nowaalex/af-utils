@@ -38,19 +38,23 @@ const config = withBundleAnalyzer(
                         result
                     ),
                     {}
-                ),
-            VIRTUAL_REFERENCE_MAP: Object.fromEntries(
-                glob
-                    .sync("./reference/*.md")
-                    .map(f => [f.replace("./reference/", ""), true])
-            )
+                )
         },
         i18n: {
             locales: ["en"],
             defaultLocale: "en"
         },
         pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-        reactStrictMode: true
+        reactStrictMode: true,
+        async redirects() {
+            return [
+                {
+                    source: "/virtual/reference",
+                    destination: "/virtual/reference/index.md",
+                    permanent: true
+                }
+            ];
+        }
     })
 );
 

@@ -14,7 +14,6 @@
     "module": "lib/index.js",
     "keywords": [],
     "devDependencies": {
-        "@types/node": "^20.8.6",
         "rollup": "^4.1.4",
         "terser": "^5.22.0",
         "typescript": "^5.2.2"
