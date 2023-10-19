@@ -69,7 +69,7 @@ const COMPONENTS_TREE = {
 };
 
 const Menu = ({ className, ...props }: JSX.IntrinsicElements["aside"]) => (
-    <aside
+    <nav
         {...props}
         className={cx(
             "prose prose-sm prose-ul:list-none prose-a:no-underline max-w-full",
@@ -104,7 +104,7 @@ const Menu = ({ className, ...props }: JSX.IntrinsicElements["aside"]) => (
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"
                 >
-                    <VscGithub size="1.2em" />
+                    <VscGithub size="1.2em" aria-hidden="true" />
                     Github
                 </a>
             </li>
@@ -115,12 +115,12 @@ const Menu = ({ className, ...props }: JSX.IntrinsicElements["aside"]) => (
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"
                 >
-                    <SiDiscord size="1.2em" />
+                    <SiDiscord size="1.2em" aria-hidden="true" />
                     Discord
                 </a>
             </li>
         </ul>
-    </aside>
+    </nav>
 );
 
 export default Menu;

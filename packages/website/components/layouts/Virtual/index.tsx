@@ -18,8 +18,20 @@ const Virtual = ({ children }: { children: ReactNode }) => (
     <div className="h-screen w-screen flex flex-col lg:flex-row">
         <details className="lg:hidden ds-menu z-10 relative">
             <summary className="list-none max-w-full border-b flex h-[60px] items-center px-4 gap-8">
-                <VscMenu data-opener size="28px" className="cursor-pointer" />
-                <VscClose data-closer size="28px" className="cursor-pointer" />
+                <VscMenu
+                    data-opener
+                    size="28px"
+                    className="cursor-pointer"
+                    aria-label="Open menu"
+                    role="button"
+                />
+                <VscClose
+                    data-closer
+                    size="28px"
+                    className="cursor-pointer"
+                    aria-label="Close menu"
+                    role="button"
+                />
                 {renderTopLink("text-lg")}
             </summary>
             <ClientMenu className="overflow-auto p-4 fixed inset-0 top-[61px] bg-white" />
