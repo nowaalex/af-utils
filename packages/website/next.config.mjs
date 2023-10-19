@@ -72,6 +72,16 @@ const config = withBundleAnalyzer(
                     source: "/virtual/headless",
                     destination: "/virtual",
                     permanent: true
+                },
+                {
+                    source: "/virtual/list",
+                    destination: "/virtual",
+                    permanent: true
+                },
+                {
+                    source: "/virtual/table",
+                    destination: "/virtual",
+                    permanent: true
                 }
             ];
         }
