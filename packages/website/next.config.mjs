@@ -67,6 +67,11 @@ const config = withBundleAnalyzer(
                     source: "/virtual/react-examples/:type",
                     destination: "/virtual/react-examples/:type/simple",
                     permanent: true
+                },
+                {
+                    source: "/virtual/headless",
+                    destination: "/virtual",
+                    permanent: true
                 }
             ];
         }
