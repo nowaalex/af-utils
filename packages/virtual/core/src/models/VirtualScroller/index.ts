@@ -147,9 +147,15 @@ class VirtualScroller {
     private _scrollElementOffset = 0;
 
     private _stickyOffset = 0;
+
+    /** {@inheritDoc VirtualScrollerRuntimeParams.itemCount} */
     private _itemCount = 0;
     private _availableWidgetSize = 0;
+
+    /** {@inheritDoc VirtualScrollerRuntimeParams.overscanCount} */
     private _overscanCount = DEFAULT_OVERSCAN_COUNT;
+
+    /** {@inheritDoc VirtualScrollerRuntimeParams.estimatedItemSize} */
     private _estimatedItemSize = DEFAULT_ESTIMATED_ITEM_SIZE;
 
     private _scrollElement: VirtualScrollerScrollElement | null = null;
@@ -164,9 +170,7 @@ class VirtualScroller {
      */
     private _msb = 0;
 
-    /**
-     * @readonly
-     * Scroll direction */
+    /** @readonly {@inheritDoc VirtualScrollerInitialParams.horizontal} */
     horizontal = false;
 
     /**
@@ -461,7 +465,10 @@ class VirtualScroller {
     }
 
     /**
-     * Returns snapshot of current scroll position. {@link VirtualScrollerExactPosition}
+     * Returns snapshot of current scroll position.
+     *
+     * @remarks
+     * {@link VirtualScrollerExactPosition}
      *
      * @privateRemarks
      * "returns" tag is missed by api-extractor for getters (for now).
@@ -636,12 +643,12 @@ class VirtualScroller {
     }
 
     /**
-     * Start observing size of `element` at `index`. Observing is finished if element is `null`.
+     * Start/finish observing size of `element` at `index`. Observing is finished if element is `null`.
      * @param index - item index
      * @param element - element for item
      *
      * @remarks
-     * If an item was registered like `el( 5, HTMLElement )` it must be killed with `el( 5, null )` before killing the instance.
+     * If an item was registered like `el(5, HTMLElement)` - it must be killed with `el(5, null)` before killing the instance.
      */
     el(index: number, element: HTMLElement | null) {
         const oldElement = this._idxToEl.get(index);
@@ -797,7 +804,7 @@ class VirtualScroller {
 
     /**
      * Notify model about items quantity change
-     * @param itemCount - new items quantity
+     * @param itemCount - new items quantity. {@link VirtualScrollerRuntimeParams.itemCount}
      */
     setItemCount(itemCount: number) {
         if (this._itemCount !== itemCount) {

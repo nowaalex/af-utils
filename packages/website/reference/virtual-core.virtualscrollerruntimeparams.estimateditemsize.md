@@ -14,5 +14,5 @@ estimatedItemSize?: number;
 
 ## Remarks
 
-Actual size is always reported by internal `ResizeObserver`<!-- -->. Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.
+Actual size is always reported by internal `ResizeObserver` when [VirtualScroller.el()](./virtual-core.virtualscroller.el.md) is called. Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.
 

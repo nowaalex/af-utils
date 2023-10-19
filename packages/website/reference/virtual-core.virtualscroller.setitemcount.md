@@ -16,7 +16,7 @@ setItemCount(itemCount: number): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  itemCount | number | new items quantity |
+|  itemCount | number | new items quantity. [VirtualScrollerRuntimeParams.itemCount](./virtual-core.virtualscrollerruntimeparams.itemcount.md) |
 
 **Returns:**
 

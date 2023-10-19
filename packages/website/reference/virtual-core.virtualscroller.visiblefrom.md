@@ -4,10 +4,15 @@
 
 ## VirtualScroller.visibleFrom property
 
-Returns snapshot of current scroll position. [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md)
+Returns snapshot of current scroll position.
 
 **Signature:**
 
 ```typescript
 get visibleFrom(): VirtualScrollerExactPosition;
 ```
+
+## Remarks
+
+[VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md)
+

@@ -45,17 +45,17 @@ What it doesn't do:
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [from](./virtual-core.virtualscroller.from.md) | <code>readonly</code> | number | Items range start with [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md) included |
-|  [horizontal](./virtual-core.virtualscroller.horizontal.md) | <code>readonly</code> | boolean | Scroll direction |
+|  [horizontal](./virtual-core.virtualscroller.horizontal.md) | <code>readonly</code> | boolean | Scroll container orientation. |
 |  [scrollSize](./virtual-core.virtualscroller.scrollsize.md) | <code>readonly</code> | number | Sum of all item sizes |
 |  [sizesHash](./virtual-core.virtualscroller.sizeshash.md) | <code>readonly</code> | number | Hash of item sizes. Changed when at least one visible item is resized |
 |  [to](./virtual-core.virtualscroller.to.md) | <code>readonly</code> | number | Items range end with [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md) included |
-|  [visibleFrom](./virtual-core.virtualscroller.visiblefrom.md) | <code>readonly</code> | [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md) | Returns snapshot of current scroll position. [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md) |
+|  [visibleFrom](./virtual-core.virtualscroller.visiblefrom.md) | <code>readonly</code> | [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md) | Returns snapshot of current scroll position. |
 
 ## Methods
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [el(index, element)](./virtual-core.virtualscroller.el.md) |  | Start observing size of <code>element</code> at <code>index</code>. Observing is finished if element is <code>null</code>. |
+|  [el(index, element)](./virtual-core.virtualscroller.el.md) |  | Start/finish observing size of <code>element</code> at <code>index</code>. Observing is finished if element is <code>null</code>. |
 |  [getIndex(offset)](./virtual-core.virtualscroller.getindex.md) |  | Get item index by pixel offset; |
 |  [getOffset(index)](./virtual-core.virtualscroller.getoffset.md) |  | Get pixel offset by item index; |
 |  [getSize(itemIndex)](./virtual-core.virtualscroller.getsize.md) |  | Get last cached item size by item index |

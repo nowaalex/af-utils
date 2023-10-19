@@ -4,7 +4,7 @@
 
 ## VirtualScroller.el() method
 
-Start observing size of `element` at `index`<!-- -->. Observing is finished if element is `null`<!-- -->.
+Start/finish observing size of `element` at `index`<!-- -->. Observing is finished if element is `null`<!-- -->.
 
 **Signature:**
 
@@ -25,5 +25,5 @@ void
 
 ## Remarks
 
-If an item was registered like `el( 5, HTMLElement )` it must be killed with `el( 5, null )` before killing the instance.
+If an item was registered like `el(5, HTMLElement)` - it must be killed with `el(5, null)` before killing the instance.
 

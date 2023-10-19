@@ -35,15 +35,33 @@ export interface VirtualScrollerRuntimeParams {
      * - If backward - before.
      */
     overscanCount?: number;
+
     /**
      * Total items quantity
+     *
+     * @remarks
+     * Maximum suported value is `2_147_483_647` (int32 max).
+     * This limit exists, because item sizes cache implementation has bitwise operations, which work only with int32.
+     * But there is one more limit. W3C does not provide maximum allowed values for height, width, margin, etc.
+     *
+     * CSS theoretically supports infinite precision and infinite ranges for all value types;
+     * however in reality implementations have finite capacity.
+     * UAs should support reasonably useful ranges and precisions
+     *
+     * This quote was found {@link https://www.w3.org/TR/css3-values/#numeric-ranges | here}.
+     * Chrome's experimentally found maximum value is `33_554_428`.
+     * So some problems may happen if {@link @af-utils/virtual-core#VirtualScroller.scrollSize} is bigger.
+     *
+     * @privateRemarks
+     * TODO: format remarks with blockquote when api-extractor starts supporting it
      */
     itemCount?: number;
+
     /**
      * Estimated height/width of scrollable item. Orientation is determined by {@link VirtualScrollerInitialParams.horizontal}.
      *
      * @remarks
-     * Actual size is always reported by internal `ResizeObserver`.
+     * Actual size is always reported by internal `ResizeObserver` when {@link VirtualScroller.el} is called.
      * Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.
      */
     estimatedItemSize?: number;
@@ -71,6 +89,7 @@ export interface VirtualScrollerInitialParams
      * - `innerHeight` / `innerWidth`.
      */
     horizontal?: boolean;
+
     /**
      * Estimated size of scroll element.
      *
