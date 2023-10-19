@@ -57,6 +57,16 @@ const config = withBundleAnalyzer(
                     source: "/virtual/examples/:example*",
                     destination: "/virtual/react-examples/:example*",
                     permanent: true
+                },
+                {
+                    source: "/virtual/react-examples",
+                    destination: "/virtual/react-examples/list/simple*",
+                    permanent: true
+                },
+                {
+                    source: "/virtual/react-examples/:type",
+                    destination: "/virtual/react-examples/:type/simple*",
+                    permanent: true
                 }
             ];
         }
