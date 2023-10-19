@@ -1,7 +1,7 @@
 "use client";
 
 import startCase from "lodash/startCase";
-import { usePathname, useSelectedLayoutSegments } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const ExampleHeader = () => {
     const segments = usePathname()
