@@ -14,9 +14,9 @@ export const enum InternalEvent {
  *
  * - `RANGE`: {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed;
  *
- * - `SCROLL_SIZE`: sum of all item sizes was changed;
+ * - `SCROLL_SIZE`: {@link VirtualScroller.scrollSize} was changed;
  *
- * - `SIZES`: at least one item size was changed.
+ * - `SIZES`: at least one item size was changed. {@link VirtualScroller.sizesHash}.
  *
  * @privateRemarks
  * Did not export enum because I don't like reverse-mapped result in code.

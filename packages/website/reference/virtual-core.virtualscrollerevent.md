@@ -22,7 +22,7 @@ Events Description:
 
 - `RANGE`<!-- -->: [VirtualScroller.from](./virtual-core.virtualscroller.from.md) or [VirtualScroller.to](./virtual-core.virtualscroller.to.md) was changed;
 
-- `SCROLL_SIZE`<!-- -->: sum of all item sizes was changed;
+- `SCROLL_SIZE`<!-- -->: [VirtualScroller.scrollSize](./virtual-core.virtualscroller.scrollsize.md) was changed;
 
-- `SIZES`<!-- -->: at least one item size was changed.
+- `SIZES`<!-- -->: at least one item size was changed. [VirtualScroller.sizesHash](./virtual-core.virtualscroller.sizeshash.md)<!-- -->.
 
