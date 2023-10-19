@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: {
-        template: "%s | Virtual",
-        default: ""
+        template: "%s | af-utils | Virtual",
+        default: "Getting started | af-utils | Virtual"
     }
 };
 

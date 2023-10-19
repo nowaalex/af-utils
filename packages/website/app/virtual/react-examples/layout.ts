@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 
 export const metadata = {
     title: {
-        template: "examples / %s",
+        template: "%s Example | af-utils | Virtual",
         default: "Example"
     }
 } satisfies Metadata;
 
-const Page = () => null;
+const EmptyLayout = (v: any) => v.children;
 
-export default Page;
+export default EmptyLayout;

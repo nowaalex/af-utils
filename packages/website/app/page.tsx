@@ -4,7 +4,7 @@ import { SiDiscord } from "react-icons/si";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Getting started",
+    title: "af-utils | Simple open-source tools that just work",
     description:
         "Based on scroll position and size of each item we can calculate the range to show. Only visible elements are rendered with this approach."
 };
@@ -35,7 +35,7 @@ const IndexPage = () => (
         <div className="flex-auto prose-xl prose prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] max-w-full sm:bg-sloth bg-right-bottom bg-[length:55vmin] xl:bg-contain bg-no-repeat">
             <h1>af-utils/*</h1>
             <h2 className="text-lg font-light text-inherit italic">
-                Simple tools that just work&nbsp;
+                Simple open-source tools that just work&nbsp;
                 <small>(usually fast)</small>
             </h2>
             <ul className="max-w-[28em]">
