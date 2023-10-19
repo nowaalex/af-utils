@@ -1,9 +1,3 @@
 # *
 User-agent: *
 Allow: /
-
-# Host
-Host: https://af-utils.vercel.app
-
-# Sitemaps
-Sitemap: https://af-utils.vercel.app/sitemap.xml
