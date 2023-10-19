@@ -1,19 +1,14 @@
 import FTreeArray from "models/FTreeArray";
 
-export const build = (sourceArray: FTreeArray) => {
-    const fTreeLength = sourceArray.length + 1;
-    const fTree = new FTreeArray(fTreeLength);
-
+export const syncWithArray = (fTree: FTreeArray, sourceArray: FTreeArray) => {
     fTree.set(sourceArray, 1);
 
-    for (let i = 1, j; i < fTreeLength; i++) {
+    for (let i = 1, fTreeLength = fTree.length, j; i < fTreeLength; i++) {
         j = i + (i & -i);
         if (j < fTreeLength) {
             fTree[j] += fTree[i];
         }
     }
-
-    return fTree;
 };
 
 export const update = (

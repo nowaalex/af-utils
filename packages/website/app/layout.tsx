@@ -1,4 +1,5 @@
 import Script from "next/script";
+import { Exo as createFont } from "next/font/google";
 import type { ReactNode } from "react";
 import "styles/globals.css";
 
@@ -8,8 +9,11 @@ type RootLayoutProps = {
     children: ReactNode;
 };
 
+// If loading a variable font, you don't need to specify the font weight
+const font = createFont({ subsets: ["latin"] });
+
 const RootLayout = ({ children }: RootLayoutProps) => (
-    <html lang="en">
+    <html lang="en" className={font.className}>
         <head>
             {process.env.NODE_ENV === "production" ? (
                 <Script

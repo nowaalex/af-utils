@@ -13,7 +13,7 @@ import call from "utils/call";
 import assert from "utils/assert";
 import observeResize from "utils/observeResize";
 import growTypedArray from "utils/growTypedArray";
-import { build as buildFtree, update, getLiftingLimit } from "utils/fTree";
+import { update, getLiftingLimit, syncWithArray } from "utils/fTree";
 import getDistanceBetween from "utils/getDistanceBetween";
 import Batch from "singletons/Batch";
 import type {
@@ -812,12 +812,14 @@ class VirtualScroller {
             this._msb = itemCount && 1 << (31 - Math.clz32(itemCount));
 
             if (itemCount > this._itemSizes.length) {
+                const newLen = Math.min(itemCount + ITEMS_ROOM, MAX_INT_32);
                 this._itemSizes = /*@__NOINLINE__*/ growTypedArray(
                     this._itemSizes,
-                    Math.min(itemCount + ITEMS_ROOM, MAX_INT_32),
+                    newLen,
                     this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE
                 );
-                this._fTree = /*@__NOINLINE__*/ buildFtree(this._itemSizes);
+                this._fTree = new FTreeArray(newLen + 1);
+                /*@__NOINLINE__*/ syncWithArray(this._fTree, this._itemSizes);
             }
 
             this.scrollSize = this.getOffset(itemCount);

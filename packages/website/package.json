@@ -38,6 +38,7 @@
         "@mdx-js/loader": "^2.3.0",
         "@next/bundle-analyzer": "^13.5.5",
         "@next/mdx": "^13.5.5",
+        "@types/lodash": "^4.14.200",
         "autoprefixer": "^10.4.16",
         "code-webpack-loader": "^0.0.3",
         "eslint-config-next": "13.5.5",

@@ -4,7 +4,7 @@
 
 ## virtual-react package
 
-React components/hooks/utils used to easily connect to [VirtualScroller](./virtual-core.virtualscroller.md)
+React components, hooks and utils used to connect to [VirtualScroller](./virtual-core.virtualscroller.md)
 
 ## Interfaces
 

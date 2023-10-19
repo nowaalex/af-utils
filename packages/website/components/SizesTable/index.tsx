@@ -1,14 +1,12 @@
 import prettyBytes from "pretty-bytes";
 import * as coreSizes from "@af-utils/virtual-core/lib/bundlesize.index.js";
 import * as reactSizes from "@af-utils/virtual-react/lib/bundlesize.index.js";
-import * as scrollendSizes from "@af-utils/scrollend-polyfill/lib/bundlesize.index.js";
 
 const sizeColumns = ["raw", "min", "minGz", "minBrotli"] as const;
 
 const rows = [
     [coreSizes, "@af-utils/virtual-core"],
-    [reactSizes, "@af-utils/virtual-react"],
-    [scrollendSizes, "@af-utils/scrollend-polyfill"]
+    [reactSizes, "@af-utils/virtual-react"]
 ] as const;
 
 const SizesTable = () => (

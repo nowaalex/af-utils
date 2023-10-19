@@ -1,34 +1,6 @@
-/**
- * @packageDocumentation
- * Polyfills `scrollend` event for {@link @af-utils/scrollend-polyfill#PolyfilledTarget}.
- *
- * @remarks
- * Scroll is considered ended when:
- *
- * - touch events are not active ( user released touch );
- *
- * - `scroll` event was not fired within {@link SCROLL_DEBOUNCE_INTERVAL} since last invocation.
- *
- * Does nothing when used in `node` environment.
- */
+const SCROLL_DEBOUNCE_INTERVAL = 100;
 
-/**
- * @public
- * debounce interval in milliseconds for attached `scroll` event.
- *
- * @remarks
- * exported this just for api-extractor documentation, should not be used normally
- */
-export const SCROLL_DEBOUNCE_INTERVAL = 100;
-
-/**
- * @public
- * Targets to monkey-patch `addEventListener` / `removeEventListener`.
- *
- * @remarks
- * exported this just for api-extractor documentation, should not be used normally
- */
-export type PolyfilledTarget = HTMLElement | Window | Document;
+type PolyfilledTarget = HTMLElement | Window | Document;
 
 type ListenerMethod = "addEventListener" | "removeEventListener";
 

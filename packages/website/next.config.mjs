@@ -27,11 +27,11 @@ const config = withBundleAnalyzer(
     withMDX({
         env: {
             VIRTUAL_EXAMPLE_ROUTES_MAP: glob
-                .sync("./app/virtual/examples/**/page.{js,tsx}")
+                .sync("./app/virtual/react-examples/**/page.{js,tsx}")
                 .reduce(
                     (result, path) => (
                         path
-                            .replace(/^.+examples\//, "")
+                            .replace(/^.+react-examples\//, "")
                             .replace(/\/page.+$/, "")
                             .split("/")
                             .reduce((acc, v) => (acc[v] ||= {}), result),
@@ -51,6 +51,11 @@ const config = withBundleAnalyzer(
                 {
                     source: "/virtual/reference",
                     destination: "/virtual/reference/index.md",
+                    permanent: true
+                },
+                {
+                    source: "/virtual/examples/:example*",
+                    destination: "/virtual/react-examples/:example*",
                     permanent: true
                 }
             ];

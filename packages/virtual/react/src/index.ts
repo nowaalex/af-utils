@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * React components/hooks/utils used to easily connect to {@link @af-utils/virtual-core#VirtualScroller}
+ * React components, hooks and utils used to connect to {@link @af-utils/virtual-core#VirtualScroller}
  */
 
 export { default as List } from "./components/List";

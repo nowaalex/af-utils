@@ -1,5 +1,5 @@
 import nextDynamic from "next/dynamic";
-import startCase from "utils/startCase";
+import startCase from "lodash/startCase";
 import type { Metadata } from "next";
 
 export const dynamicParams = false;

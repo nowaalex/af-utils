@@ -1,8 +1,8 @@
 import { cx } from "@emotion/css";
 import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
-import NavLink from "../NavLink";
-import startCase from "utils/startCase";
+import NavLink from "components/NavLink";
+import startCase from "lodash/startCase";
 
 const DOCS_STRUCTURE = [
     ["Getting started", ""],
@@ -51,18 +51,19 @@ const ExamplesSubtree = ({ node, depth }: { node: Node; depth: number }) =>
     ) : (
         <NavLink
             href={`/virtual${node.path}`}
-            activeClassName="font-bold text-orange-700 translate-y-20"
+            className="font-normal"
+            activeClassName="!font-semibold text-orange-700 translate-y-20"
         >
             {startCase(node.name)}
         </NavLink>
     );
 
 const COMPONENTS_TREE = {
-    name: "examples",
+    name: "React examples",
     children: walk(
         process.env.VIRTUAL_EXAMPLE_ROUTES_MAP as any,
         [],
-        "/examples"
+        "/react-examples"
     ),
     path: ""
 };
@@ -75,14 +76,15 @@ const Menu = ({ className, ...props }: JSX.IntrinsicElements["aside"]) => (
             className
         )}
     >
-        <h2>Docs</h2>
+        <h2>Description</h2>
 
         <ul>
             {DOCS_STRUCTURE.map(([label, url]) => (
                 <li key={url}>
                     <NavLink
                         href={`/virtual${url}`}
-                        activeClassName="font-bold text-orange-700 translate-y-20"
+                        className="font-normal"
+                        activeClassName="!font-semibold text-orange-700 translate-y-20"
                     >
                         {label}
                     </NavLink>

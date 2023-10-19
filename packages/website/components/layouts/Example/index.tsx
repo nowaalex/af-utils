@@ -1,9 +1,13 @@
+import ExampleHeader from "components/ExampleHeader";
 import type { ElementType, ReactNode } from "react";
 
 const Example =
     (CodeComponent: ElementType, DescriptionComponent?: ElementType) =>
     ({ children }: { children: ReactNode }) => (
         <div className="flex flex-col h-full grow gap-4">
+            <div className="prose mb-4">
+                <ExampleHeader />
+            </div>
             {DescriptionComponent && <DescriptionComponent />}
             <div className="grid grid-cols-1 xl:grid-cols-2 flex-1 gap-4 grow xl:basis-0 xl:overflow-hidden xl:contain-strict">
                 <div className="overflow-hidden contain-strict not-prose xl:h-auto h-[40vh] grid">

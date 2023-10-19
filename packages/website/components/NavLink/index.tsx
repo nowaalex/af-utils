@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { cx } from "@emotion/css";
 import { usePathname } from "next/navigation";
