@@ -1,3 +1,6 @@
+import docHref from "utils/docHref";
+import AutoLink from "components/AutoLink";
+
 export const metadata = {
     title: "Frequently asked questions",
     description:
@@ -10,7 +13,7 @@ Something is not working as expected? Here is the list of hints that may help.
 
 ## Why do I need to use ref?
 
-In order to work smoothly, library must know scrolled item sizes. Initially they equal [estimatedItemSize](/virtual/reference/virtual-core.virtualscrollerruntimeparams.estimateditemsize.md). But this is usually not
+In order to work smoothly, library must know scrolled item sizes. Initially they equal <AutoLink href={docHref("virtual-core", "virtualscrollerruntimeparams.estimateditemsize")}>estimatedItemSize</AutoLink>. But this is usually not
 enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
 for more accurate measurements, but you must provide mounted items explicitly in
 conjunction with their indexes.
@@ -22,8 +25,8 @@ but you may use your styling approach.
 
 ## How many items virtual scroller can handle?
 
-Maximum quantity library can handle is `2_147_483_647` (int32 max), but it is better not to use such huge values. [Read more](/virtual/reference/virtual-core.virtualscrollerruntimeparams.itemcount.md)
+Maximum quantity library can handle is `2_147_483_647` (int32 max), but it is better not to use such huge values. <AutoLink href={docHref("virtual-core", "virtualscrollerruntimeparams.itemcount")}>Read more</AutoLink>
 
 ## Is Server-side rendering supported?
 
-Yes, you can adjust quantity of server-rendered items. [Read more](/virtual/reference/virtual-core.virtualscrollerinitialparams.estimatedwidgetsize.md)
+Yes, you can adjust quantity of server-rendered items. <AutoLink href={docHref("virtual-core", "virtualscrollerinitialparams.estimatedwidgetsize" )}>Read more</AutoLink>

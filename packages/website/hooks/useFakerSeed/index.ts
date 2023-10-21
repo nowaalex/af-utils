@@ -1,12 +1,9 @@
+import { useState, useEffect } from "react";
 import { seed } from "@ngneat/falso";
 
-let seeded = false;
-
 const useFakerSeed = (seedNumber: number) => {
-    if (!seeded) {
-        seed("" + seedNumber);
-        seeded = true;
-    }
+    useState(() => seed("" + seedNumber));
+    useEffect(() => () => seed(), []);
 };
 
 export default useFakerSeed;

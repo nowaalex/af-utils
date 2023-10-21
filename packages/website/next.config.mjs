@@ -27,12 +27,12 @@ const config = withBundleAnalyzer(
     withMDX({
         env: {
             VIRTUAL_EXAMPLE_ROUTES_MAP: glob
-                .sync("./app/virtual/react-examples/**/page.{js,tsx}")
+                .sync("./components/examples/react-examples/**/code.tsx")
                 .reduce(
                     (result, path) => (
                         path
                             .replace(/^.+react-examples\//, "")
-                            .replace(/\/page.+$/, "")
+                            .replace(/\/code.+$/, "")
                             .split("/")
                             .reduce((acc, v) => (acc[v] ||= {}), result),
                         result
