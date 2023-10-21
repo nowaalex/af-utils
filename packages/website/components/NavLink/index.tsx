@@ -14,6 +14,7 @@ const NavLink = ({
     href,
     className,
     activeClassName,
+    prefetch = false,
     ...props
 }: NavLinkProps) => {
     const pathname = usePathname();
@@ -23,6 +24,7 @@ const NavLink = ({
     return (
         <Link
             {...props}
+            prefetch={prefetch}
             href={href}
             className={cx(className || "", isActive ? activeClassName : "")}
         />

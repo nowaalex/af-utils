@@ -1,9 +1,14 @@
 import Link from "next/link";
+import { ComponentPropsWithoutRef } from "react";
 
-const AutoLink = ({ href, ...props }: any) => {
+type AutoLinkProps = ComponentPropsWithoutRef<typeof Link> & {
+    href: string;
+};
+
+const AutoLink = ({ href, prefetch = false, ...props }: AutoLinkProps) => {
     if (href) {
         if (!/^https?:\//.test(href)) {
-            return <Link href={href} {...props} />;
+            return <Link href={href} prefetch={prefetch} {...props} />;
         }
     }
 
