@@ -14,7 +14,7 @@ const NavLink = ({
     href,
     className,
     activeClassName,
-    prefetch = false,
+    prefetch = true,
     ...props
 }: NavLinkProps) => {
     const pathname = usePathname();

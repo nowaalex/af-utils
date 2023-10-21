@@ -5,7 +5,7 @@ type AutoLinkProps = ComponentPropsWithoutRef<typeof Link> & {
     href: string;
 };
 
-const AutoLink = ({ href, prefetch = false, ...props }: AutoLinkProps) => {
+const AutoLink = ({ href, prefetch = true, ...props }: AutoLinkProps) => {
     if (href) {
         if (!/^https?:\//.test(href)) {
             return <Link href={href} prefetch={prefetch} {...props} />;
