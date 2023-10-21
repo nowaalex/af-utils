@@ -4,7 +4,6 @@ import remarkToc from "remark-toc";
 import nextMdx from "@next/mdx";
 import rehypeSlug from "rehype-slug";
 import nextBundleAnalyzer from "@next/bundle-analyzer";
-import glob from "fast-glob";
 
 const withBundleAnalyzer = nextBundleAnalyzer({
     enabled: process.env.ANALYZE === "true",
@@ -25,23 +24,6 @@ const withMDX = nextMdx({
 /** @type {import('next').NextConfig} */
 const config = withBundleAnalyzer(
     withMDX({
-        env: {
-            VIRTUAL_EXAMPLE_ROUTES_MAP: JSON.stringify(
-                glob
-                    .sync("./components/examples/react-examples/**/code.tsx")
-                    .reduce(
-                        (result, path) => (
-                            path
-                                .replace(/^.+react-examples\//, "")
-                                .replace(/\/code.+$/, "")
-                                .split("/")
-                                .reduce((acc, v) => (acc[v] ||= {}), result),
-                            result
-                        ),
-                        {}
-                    )
-            )
-        },
         i18n: {
             locales: ["en"],
             defaultLocale: "en"
