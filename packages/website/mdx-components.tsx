@@ -5,7 +5,7 @@ import type { MDXComponents } from "mdx/types";
 export const useMDXComponents = (components: MDXComponents) => ({
     ...components,
     wrapper: ({ children }: { children: ReactNode }) => (
-        <div className="prose max-w-full w-full">{children}</div>
+        <div className="prose">{children}</div>
     ),
     a: AutoLink
 });

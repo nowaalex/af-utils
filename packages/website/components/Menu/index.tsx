@@ -18,14 +18,14 @@ type Node = {
     children: Node[];
 };
 
-const walk = (obj: Record<string, any>, arr: any[], path: string) => {
+const walk = (obj: Record<string, any>, arr: Node[], path: string) => {
     for (const k in obj) {
         const newPath = `${path}/${k}`;
         arr.push({
             name: k,
             path: newPath,
             children: walk(obj[k], [], newPath)
-        } as Node);
+        });
     }
     return arr;
 };
@@ -77,7 +77,7 @@ const Menu = ({ className, map, ...props }: MenuProps) => {
         <nav
             {...props}
             className={cx(
-                "prose prose-sm prose-ul:list-none prose-a:no-underline max-w-full",
+                "prose prose-sm prose-ul:list-none prose-a:no-underline",
                 className
             )}
         >

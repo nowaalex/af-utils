@@ -32,7 +32,7 @@ const IndexPage = () => (
                 Discord
             </a>
         </header>
-        <main className="flex-auto prose-xl prose prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] max-w-full sm:bg-sloth bg-right-bottom bg-[length:55vmin] xl:bg-contain bg-no-repeat">
+        <main className="flex-auto prose prose-xl prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] sm:bg-sloth bg-right-bottom bg-[length:55vmin] xl:bg-contain bg-no-repeat">
             <h1>af-utils/*</h1>
             <h2 className="text-lg font-light text-inherit italic">
                 Simple open-source tools that just work&nbsp;

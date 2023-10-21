@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const NotFound = () => (
-    <div className="prose-2xl text-center p-8">
+    <div className="prose prose-2xl text-center p-8">
         <h1 className="flex items-center justify-center gap-3">
             <BiSad />
             404

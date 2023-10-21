@@ -45,6 +45,10 @@
         display: block;
     }
 
+    .prose {
+        max-width: none;
+    }
+
     /* for api-extractor lists */
     .prose li > p {
         margin: 0;
