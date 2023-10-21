@@ -32,7 +32,7 @@ const IndexPage = () => (
                 Discord
             </a>
         </header>
-        <div className="flex-auto prose-xl prose prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] max-w-full sm:bg-sloth bg-right-bottom bg-[length:55vmin] xl:bg-contain bg-no-repeat">
+        <main className="flex-auto prose-xl prose prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] max-w-full sm:bg-sloth bg-right-bottom bg-[length:55vmin] xl:bg-contain bg-no-repeat">
             <h1>af-utils/*</h1>
             <h2 className="text-lg font-light text-inherit italic">
                 Simple open-source tools that just work&nbsp;
@@ -48,7 +48,7 @@ const IndexPage = () => (
                 </li>
                 <li>To be continued...</li>
             </ul>
-        </div>
+        </main>
         <footer className="text-center p-6 mx-[5vmin] border-t">
             © {new Date().getFullYear()} Alex Fomin
         </footer>

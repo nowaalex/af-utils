@@ -42,7 +42,7 @@ const Virtual = ({ children }: { children: ReactNode }) => (
             </div>
             <Menu className="p-4" />
         </div>
-        <div className="h-full flex-1 overflow-auto p-4">{children}</div>
+        <main className="h-full flex-1 overflow-auto p-4">{children}</main>
     </div>
 );
 

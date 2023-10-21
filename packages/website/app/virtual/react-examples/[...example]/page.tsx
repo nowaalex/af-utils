@@ -4,6 +4,8 @@ import startCase from "lodash/startCase";
 import type { Metadata } from "next";
 import type { ComponentProps } from "react";
 
+type Params = { params: { example: string[] } };
+
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
@@ -16,7 +18,7 @@ export async function generateStaticParams() {
     return result;
 }
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
     return {
         title: `${startCase(
             params.example.slice(0).reverse().join(" ")
@@ -26,7 +28,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 
 const Cache: Record<string, ComponentProps<typeof Example>["C"]> = {};
 
-const Page = ({ params }: { params: any }) => {
+const Page = ({ params }: Params) => {
     const key = params.example.join("/");
 
     const C = (Cache[key] ||= {

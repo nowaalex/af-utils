@@ -2,6 +2,8 @@ import nextDynamic from "next/dynamic";
 import startCase from "lodash/startCase";
 import type { Metadata } from "next";
 
+type Params = { params: { reference: string[] } };
+
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
@@ -14,7 +16,7 @@ export async function generateStaticParams() {
     return result;
 }
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
     return {
         title: `${params.reference
             .join("")
@@ -27,7 +29,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 
 const Cache: Record<string, ReturnType<typeof nextDynamic>> = {};
 
-const Page = ({ params }: { params: any }) => {
+const Page = ({ params }: Params) => {
     const key = params.reference.join("/");
 
     let C = Cache[key];

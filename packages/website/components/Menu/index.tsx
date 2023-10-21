@@ -50,7 +50,7 @@ const ExamplesSubtree = ({ node, depth }: { node: Node; depth: number }) =>
         </>
     ) : (
         <NavLink
-            href={`/virtual${node.path}`}
+            href={`/virtual${node.path}` as any}
             className="font-normal"
             activeClassName="!font-semibold text-orange-700 translate-y-20"
         >
@@ -61,7 +61,7 @@ const ExamplesSubtree = ({ node, depth }: { node: Node; depth: number }) =>
 const COMPONENTS_TREE = {
     name: "React examples",
     children: walk(
-        process.env.VIRTUAL_EXAMPLE_ROUTES_MAP as any,
+        JSON.parse(process.env.VIRTUAL_EXAMPLE_ROUTES_MAP as string),
         [],
         "/react-examples"
     ),

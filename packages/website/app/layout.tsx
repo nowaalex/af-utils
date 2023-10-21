@@ -5,14 +5,10 @@ import "styles/globals.css";
 
 const ID = "P68JT3P";
 
-type RootLayoutProps = {
-    children: ReactNode;
-};
-
 // If loading a variable font, you don't need to specify the font weight
 const font = createFont({ subsets: ["latin"] });
 
-const RootLayout = ({ children }: RootLayoutProps) => (
+const RootLayout = ({ children }: { children: ReactNode }) => (
     <html lang="en" className={font.className}>
         <head>
             {process.env.NODE_ENV === "production" ? (
@@ -37,7 +33,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         height="0"
                         width="0"
                         className="hidden invisible"
-                    ></iframe>
+                    />
                 </noscript>
             ) : null}
             {children}
