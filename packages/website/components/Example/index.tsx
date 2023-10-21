@@ -1,4 +1,4 @@
-import ExampleHeader from "components/ExampleHeader";
+import ExampleHeader from "./ExampleHeader";
 import type dynamic from "next/dynamic";
 
 type Components = {

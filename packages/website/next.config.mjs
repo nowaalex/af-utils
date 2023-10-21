@@ -82,6 +82,11 @@ const config = withBundleAnalyzer(
                     source: "/virtual/table",
                     destination: "/virtual",
                     permanent: true
+                },
+                {
+                    source: "/virtual/react-examples/list/LoadOnDemand",
+                    destination: "/virtual/react-examples/list/load-on-demand",
+                    permanent: true
                 }
             ];
         }
