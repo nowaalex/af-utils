@@ -50,7 +50,7 @@ const ExamplesSubtree = ({ node, depth }: { node: Node; depth: number }) =>
         </>
     ) : (
         <NavLink
-            href={`/virtual${node.path}` as any}
+            href={`/virtual${node.path}`}
             className="font-normal"
             activeClassName="!font-semibold text-orange-700 translate-y-20"
         >

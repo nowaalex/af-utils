@@ -5,17 +5,17 @@ import { cx } from "@emotion/css";
 import { usePathname } from "next/navigation";
 import { ComponentPropsWithoutRef } from "react";
 
-type NavLinkProps<T> = ComponentPropsWithoutRef<typeof Link> & {
+type NavLinkProps = ComponentPropsWithoutRef<typeof Link> & {
     activeClassName: string;
 };
 
-const NavLink = <T,>({
+const NavLink = ({
     href,
     className,
     activeClassName,
     prefetch = true,
     ...props
-}: NavLinkProps<T>) => {
+}: NavLinkProps) => {
     const pathname = usePathname();
     const isActive =
         href === "/virtual"
