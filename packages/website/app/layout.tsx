@@ -11,6 +11,10 @@ const font = createFont({ subsets: ["latin"] });
 const RootLayout = ({ children }: { children: ReactNode }) => (
     <html lang="en" className={font.className}>
         <head>
+            <meta
+                name="google-site-verification"
+                content="7SCiNq_CFCadLWK2XGowuH1UViEKIciYdit7apdjDVg"
+            />
             {process.env.NODE_ENV === "production" ? (
                 <Script
                     id="tag-manager"
