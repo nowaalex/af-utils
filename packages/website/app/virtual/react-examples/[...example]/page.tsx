@@ -1,12 +1,12 @@
 import Example from "components/Example";
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 import startCase from "lodash/startCase";
 import type { Metadata } from "next";
 import type { ComponentProps } from "react";
 
 type Params = { params: { example: string[] } };
 
-export const dynamicParams = false;
+export const dynamic = "force-static";
 
 export async function generateStaticParams() {
     const glob = await import("fast-glob");
@@ -32,16 +32,16 @@ const Page = ({ params }: Params) => {
     const key = params.example.join("/");
 
     const C = (Cache[key] ||= {
-        Example: dynamic(
+        Example: nextDynamic(
             () => import(`components/examples/react-examples/${key}/code.tsx`)
         ),
-        Code: dynamic(
+        Code: nextDynamic(
             () =>
                 import(
                     `!!code-webpack-loader!components/examples/react-examples/${key}/code.tsx`
                 )
         ),
-        Description: dynamic(() =>
+        Description: nextDynamic(() =>
             import(
                 `components/examples/react-examples/${key}/description.mdx`
             ).catch(() => () => null)

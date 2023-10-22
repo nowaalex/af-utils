@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 type Params = { params: { reference: string[] } };
 
-export const dynamicParams = false;
+export const dynamic = "force-static";
 
 export async function generateStaticParams() {
     const glob = await import("fast-glob");
