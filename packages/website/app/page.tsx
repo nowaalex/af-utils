@@ -1,7 +1,7 @@
 import Readme from "../../../README.md";
 import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "af-utils | Simple open-source tools that just work",

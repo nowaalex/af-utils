@@ -7,7 +7,7 @@ import { cx } from "@emotion/css";
 
 const renderTopLink = (className: string, productName: string) => (
     <h1 className={cx("flex gap-2 font-medium", className)}>
-        <Link href="/" prefetch={false} className="underline">
+        <Link href="/" className="underline">
             af-utils
         </Link>
         /<span className="text-slate-500">{productName}</span>
