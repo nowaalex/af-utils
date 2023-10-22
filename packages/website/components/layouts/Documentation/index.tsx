@@ -52,7 +52,9 @@ const getDocumentationLayout =
                 </div>
                 <Menu items={items} prefix={prefix} className="p-4" />
             </aside>
-            <main className="h-full flex-1 overflow-auto p-4">{children}</main>
+            <main className="h-full flex-1 overflow-auto p-4 prose">
+                {children}
+            </main>
         </div>
     );
 

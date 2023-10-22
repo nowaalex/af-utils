@@ -32,10 +32,9 @@ const IndexPage = () => (
                 Discord
             </a>
         </header>
-        <Readme
-            component="main"
-            className="flex-auto prose-xl prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] sm:bg-sloth bg-right-bottom bg-[length:40vmax] 2xl:bg-contain bg-no-repeat"
-        />
+        <main className="flex-auto prose prose-xl prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] sm:bg-sloth bg-right-bottom bg-[length:40vmax] 2xl:bg-contain bg-no-repeat">
+            <Readme />
+        </main>
         <footer className="text-center p-6 mx-[5vmin] border-t">
             © {new Date().getFullYear()} Alex Fomin
         </footer>
