@@ -2,7 +2,6 @@ import Example from "components/Example";
 import nextDynamic from "next/dynamic";
 import startCase from "lodash/startCase";
 import type { Metadata } from "next";
-import type { ComponentProps } from "react";
 
 type Params = { params: { example: string[] } };
 
