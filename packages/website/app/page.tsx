@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Readme from "../../../README.md";
 import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
 import { Metadata } from "next";
@@ -6,7 +6,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
     title: "af-utils | Simple open-source tools that just work",
     description:
-        "Based on scroll position and size of each item we can calculate the range to show. Only visible elements are rendered with this approach."
+        "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
 };
 
 const IndexPage = () => (
@@ -32,23 +32,10 @@ const IndexPage = () => (
                 Discord
             </a>
         </header>
-        <main className="flex-auto prose prose-xl prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] sm:bg-sloth bg-right-bottom bg-[length:55vmin] xl:bg-contain bg-no-repeat">
-            <h1>af-utils/*</h1>
-            <h2 className="text-lg font-light text-inherit italic">
-                Simple open-source tools that just work&nbsp;
-                <small>(usually fast)</small>
-            </h2>
-            <ul className="max-w-[28em]">
-                <li>
-                    <Link href="/virtual">Virtual scroll</Link> for rendering
-                    only visible part of huge lists or grids{" "}
-                    <small>
-                        <i>(currently available for React)</i>
-                    </small>
-                </li>
-                <li>To be continued...</li>
-            </ul>
-        </main>
+        <Readme
+            component="main"
+            className="flex-auto prose-xl prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] sm:bg-sloth bg-right-bottom bg-[length:40vmax] 2xl:bg-contain bg-no-repeat"
+        />
         <footer className="text-center p-6 mx-[5vmin] border-t">
             © {new Date().getFullYear()} Alex Fomin
         </footer>

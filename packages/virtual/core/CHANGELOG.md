@@ -1,5 +1,12 @@
 # @af-utils/virtual-core
 
+## 0.0.12
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @af-utils/scrollend-polyfill@0.0.9
+
 ## 0.0.11
 
 ### Patch Changes

@@ -1,22 +1,8 @@
-# @af-utils
+# af-utils/\*
 
-![Virtual scroll preview](https://af-utils.vercel.app/preview.gif)
+Simple open-source tools that just work _(usually fast)_
 
-## Website
-
-https://af-utils.vercel.app/
-
-## Features
-
--   All dimensions are calculated automatically, so there is no need to provide them.
--   Mobx - ready
--   Supports window or any other detached scroller
--   Optimized for performance
--   Typescript-ready
--   Decoupled architecture
--   Sticky header and footer
--   Infinite scrolling with load on demand
--   2d grid
--   Easy ui libraries integration
--   Vertical and horizontal scroll directions
--   `scrollToIndex(index, smooth = false)` method is available
+-   [Virtual scroll](https://af-utils.vercel.app/virtual) for rendering
+    only visible part of huge lists or grids _(currently available for React)_
+-   [Scrollend polyfill](https://af-utils.vercel.app/scrollend-polyfill) for cross-browser scrollend event support
+-   To be continued...

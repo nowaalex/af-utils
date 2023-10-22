@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/scrollend-polyfill",
     "private": false,
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "Polyfill for scrollend event",
     "repository": "https://github.com/nowaalex/af-utils.git",
     "bugs": "https://github.com/nowaalex/af-utils/issues",

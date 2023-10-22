@@ -46,11 +46,26 @@
     }
 
     .prose {
-        max-width: none;
+        @apply max-w-none;
+    }
+
+    .prose table {
+        /* prevent strething */
+        @apply w-auto;
+    }
+
+    .prose table td:not(:first-child),
+    .prose table th:not(:first-child) {
+        @apply pl-4;
+    }
+
+    .prose table td:not(:last-child),
+    .prose table th:not(:last-child) {
+        @apply pr-4;
     }
 
     /* for api-extractor lists */
     .prose li > p {
-        margin: 0;
+        @apply m-0;
     }
 }

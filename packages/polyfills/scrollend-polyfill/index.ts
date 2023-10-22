@@ -8,7 +8,15 @@ type PossibleListenerType = Parameters<PolyfilledTarget[ListenerMethod]>[1];
 
 const SCROLLEND_EVENT = "scrollend";
 
-if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
+let set = false;
+
+if (
+    !set &&
+    typeof window !== "undefined" &&
+    !("on" + SCROLLEND_EVENT in window)
+) {
+    set = true;
+
     const dispatchedEvent = new Event(SCROLLEND_EVENT);
 
     const pointers = new Set<number>();

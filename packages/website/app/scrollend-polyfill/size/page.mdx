@@ -1,6 +1,5 @@
 import SizesTable from "/components/SizesTable";
-import * as coreSizes from "@af-utils/virtual-core/lib/bundlesize.index.js";
-import * as reactSizes from "@af-utils/virtual-react/lib/bundlesize.index.js";
+import * as coreSizes from "@af-utils/scrollend-polyfill/lib/bundlesize.index.js";
 
 export const metadata = {
     title: "Bundle size",
@@ -10,16 +9,11 @@ export const metadata = {
 
 # Bundle size impact
 
-All packages were carefully optimized to be as small as possible.
-In order to provide exact numbers, each of them is shipped with `bundlesize.index.js` file.
-Contents of all those files are shown in this table in human-readable format.
+This package was carefully optimized to be as small as possible.
+In order to provide exact numbers it is shipped with `bundlesize.index.js` file.
+Contents of this file is shown in this table in human-readable format.
 
-<SizesTable
-    items={[
-        [coreSizes, "@af-utils/virtual-core"],
-        [reactSizes, "@af-utils/virtual-react"]
-    ]}
-/>
+<SizesTable items={[[coreSizes, "@af-utils/scrollend-polyfill"]]} />
 
 ## Terser configuration
 

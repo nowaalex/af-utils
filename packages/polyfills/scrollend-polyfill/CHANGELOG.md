@@ -1,5 +1,11 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.9
+
+### Patch Changes
+
+-   added check if polyfill was already applied
+
 ## 0.0.8
 
 ### Patch Changes
