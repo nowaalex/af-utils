@@ -1,4 +1,3 @@
-import { ElementType } from "react";
 import ExampleHeader from "./ExampleHeader";
 import type dynamic from "next/dynamic";
 
