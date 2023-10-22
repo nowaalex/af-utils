@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 type Params = { params: { reference: string[] } };
 
-export const dynamic = "force-static";
+export const dynamic = "error";
 
 export async function generateStaticParams() {
     const glob = await import("fast-glob");
@@ -27,17 +27,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     };
 }
 
-const Cache: Record<string, ReturnType<typeof nextDynamic>> = {};
-
 const Page = ({ params }: Params) => {
     const key = params.reference.join("/");
 
-    let C = Cache[key];
-
-    if (!C) {
-        C = nextDynamic(() => import(`reference/${key}`));
-        Cache[key] = C;
-    }
+    const C = nextDynamic(() => import(`reference/${key}`));
 
     return <C />;
 };

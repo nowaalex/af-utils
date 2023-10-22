@@ -6,7 +6,7 @@ import type { ComponentProps } from "react";
 
 type Params = { params: { example: string[] } };
 
-export const dynamic = "force-static";
+export const dynamic = "error";
 
 export async function generateStaticParams() {
     const glob = await import("fast-glob");
@@ -26,29 +26,32 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     };
 }
 
-const Cache: Record<string, ComponentProps<typeof Example>["C"]> = {};
-
 const Page = ({ params }: Params) => {
     const key = params.example.join("/");
 
-    const C = (Cache[key] ||= {
-        Example: nextDynamic(
-            () => import(`components/examples/react-examples/${key}/code.tsx`)
-        ),
-        Code: nextDynamic(
-            () =>
-                import(
-                    `!!code-webpack-loader!components/examples/react-examples/${key}/code.tsx`
+    return (
+        <Example
+            C={{
+                Example: nextDynamic(
+                    () =>
+                        import(
+                            `components/examples/react-examples/${key}/code.tsx`
+                        )
+                ),
+                Code: nextDynamic(
+                    () =>
+                        import(
+                            `!!code-webpack-loader!components/examples/react-examples/${key}/code.tsx`
+                        )
+                ),
+                Description: nextDynamic(() =>
+                    import(
+                        `components/examples/react-examples/${key}/description.mdx`
+                    ).catch(() => () => null)
                 )
-        ),
-        Description: nextDynamic(() =>
-            import(
-                `components/examples/react-examples/${key}/description.mdx`
-            ).catch(() => () => null)
-        )
-    });
-
-    return <Example C={C} />;
+            }}
+        />
+    );
 };
 
 export default Page;
