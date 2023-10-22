@@ -1,13 +1,6 @@
 import Readme from "../../../README.md";
 import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-    title: "af-utils | Simple open-source tools that just work",
-    description:
-        "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
-};
 
 const IndexPage = () => (
     <div className="h-screen w-screen flex flex-col gap-12">

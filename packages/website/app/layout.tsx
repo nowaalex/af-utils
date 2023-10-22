@@ -1,7 +1,14 @@
 import Script from "next/script";
 import { Exo as createFont } from "next/font/google";
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
 import "styles/globals.css";
+
+export const metadata: Metadata = {
+    title: "af-utils | Simple open-source tools that just work",
+    description:
+        "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
+};
 
 const ID = "P68JT3P";
 
