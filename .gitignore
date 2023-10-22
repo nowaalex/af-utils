@@ -7,6 +7,3 @@ logs
 **/api-extractor-schema
 
 **/.next/**
-
-packages/website/public/sitemap**
-packages/website/public/robots.txt
