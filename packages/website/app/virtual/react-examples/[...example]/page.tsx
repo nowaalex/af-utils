@@ -1,6 +1,5 @@
+import { lazy } from "react";
 import Example from "components/Example";
-import nextDynamic from "next/dynamic";
-import startCase from "lodash/startCase";
 import type { Metadata } from "next";
 
 type Params = { params: { example: string[] } };
@@ -18,8 +17,10 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
+    const startCase = await import("lodash/startCase");
+
     return {
-        title: `${startCase(
+        title: `${startCase.default(
             params.example.slice(0).reverse().join(" ")
         )} React Example`
     };
@@ -31,22 +32,22 @@ const Page = ({ params }: Params) => {
     return (
         <Example
             C={{
-                Example: nextDynamic(
+                Example: lazy(
                     () =>
                         import(
                             `components/examples/react-examples/${key}/code.tsx`
                         )
                 ),
-                Code: nextDynamic(
+                Code: lazy(
                     () =>
                         import(
                             `!!code-webpack-loader!components/examples/react-examples/${key}/code.tsx`
                         )
                 ),
-                Description: nextDynamic(() =>
+                Description: lazy(() =>
                     import(
                         `components/examples/react-examples/${key}/description.mdx`
-                    ).catch(() => () => null)
+                    ).catch(() => ({ default: () => null }))
                 )
             }}
         />

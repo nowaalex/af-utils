@@ -1,5 +1,4 @@
-import nextDynamic from "next/dynamic";
-import startCase from "lodash/startCase";
+import { Suspense, lazy } from "react";
 import type { Metadata } from "next";
 
 type Params = { params: { reference: string[] } };
@@ -17,12 +16,14 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
+    const startCase = await import("lodash/startCase");
+
     return {
         title: `${params.reference
             .join("")
             .replace(".md", "")
             .split(".")
-            .map(startCase)
+            .map(startCase.default)
             .join(" | ")} | Reference`
     };
 }
@@ -30,9 +31,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 const Page = ({ params }: Params) => {
     const key = params.reference.join("/");
 
-    const C = nextDynamic(() => import(`reference/${key}`));
+    const C = lazy(() => import(`reference/${key}`));
 
-    return <C />;
+    return (
+        <Suspense fallback="Loading virtual reference...">
+            <C />
+        </Suspense>
+    );
 };
 
 export default Page;
