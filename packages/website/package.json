@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "ANALYZE=true next build",
+        "build": "next build",
         "build:docs": "./build-docs.sh",
         "start": "next start",
         "lint": "next lint"

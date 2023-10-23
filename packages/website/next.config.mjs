@@ -24,11 +24,7 @@ const withMDX = nextMdx({
 /** @type {import('next').NextConfig} */
 const config = withBundleAnalyzer(
     withMDX({
-        i18n: {
-            locales: ["en"],
-            defaultLocale: "en"
-        },
-        pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+        pageExtensions: ["md", "mdx", "ts", "tsx"],
         reactStrictMode: true,
         async redirects() {
             return [
