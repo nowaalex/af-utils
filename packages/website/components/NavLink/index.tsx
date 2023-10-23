@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { cx } from "@emotion/css";
+import cx from "utils/cx";
 import { usePathname } from "next/navigation";
 import { ComponentPropsWithoutRef } from "react";
 
@@ -27,7 +27,7 @@ const NavLink = ({
         <Link
             {...props}
             href={href}
-            className={cx(className || "", isActive ? activeClassName : "")}
+            className={cx(className, isActive ? activeClassName : "")}
         />
     );
 };

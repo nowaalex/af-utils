@@ -39,7 +39,7 @@
         "@next/mdx": "^13.5.6",
         "@types/lodash": "^4.14.200",
         "autoprefixer": "^10.4.16",
-        "code-webpack-loader": "^0.0.3",
+        "code-webpack-loader": "workspace:*",
         "eslint-config-next": "13.5.6",
         "fast-glob": "^3.3.1",
         "postcss": "^8.4.31",

@@ -3,7 +3,7 @@ import { VscMenu, VscClose } from "react-icons/vsc";
 import Menu, { MenuItem } from "components/Menu";
 import ClientMenu from "components/ClientMenu";
 import Link from "next/link";
-import { cx } from "@emotion/css";
+import cx from "utils/cx";
 
 const renderTopLink = (className: string, productName: string) => (
     <h1 className={cx("flex gap-2 font-medium", className)}>

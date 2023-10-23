@@ -15,9 +15,8 @@ const map = glob
     .reduce<Record<string, any>>(
         (result, path) => (
             path
-                .replace(/^.+react-examples\//, "")
-                .replace(/\/code.+$/, "")
                 .split("/")
+                .slice(4, -1)
                 .reduce((acc, v) => (acc[v] ||= {}), result),
             result
         ),

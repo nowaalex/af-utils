@@ -3,15 +3,15 @@ import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
 
 const IndexPage = () => (
-    <div className="h-screen w-screen flex flex-col prose prose-xl">
-        <header className="flex gap-8 p-6 justify-center prose-a:no-underline">
+    <div className="h-screen w-screen flex flex-col prose">
+        <header className="mx-[5vmin] border-b prose-lg flex gap-8 p-6 justify-center prose-a:no-underline">
             <a
                 href="https://github.com/nowaalex/af-utils"
                 target="_blank"
                 rel="noopener"
                 className="flex items-center gap-2 hover:underline"
             >
-                <VscGithub size="1em" />
+                <VscGithub />
                 Github
             </a>
             <a
@@ -20,16 +20,14 @@ const IndexPage = () => (
                 rel="noopener"
                 className="flex items-center gap-2 hover:underline"
             >
-                <SiDiscord size="1em" />
+                <SiDiscord />
                 Discord
             </a>
         </header>
-        <hr className="mx-[5vmin] my-0" />
-        <main className="py-12 pl-[5vmin] flex-auto prose-a:text-blue-700 bg-no-repeat bg-right-bottom bg-[length:36vmax] sm:bg-sloth 2xl:bg-contain">
+        <main className="py-12 px-[5vmin] lg:pr-0 flex-auto prose-xl prose-a:text-blue-700 bg-no-repeat bg-right-bottom bg-[length:40vmax] sm:bg-sloth 2xl:bg-contain">
             <Readme />
         </main>
-        <hr className="mx-[5vmin] my-0" />
-        <footer className="text-center p-6 text-base">
+        <footer className="mx-[5vmin] border-t text-center p-6">
             © {new Date().getFullYear()} Alex Fomin
         </footer>
     </div>
