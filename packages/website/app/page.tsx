@@ -3,8 +3,8 @@ import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
 
 const IndexPage = () => (
-    <div className="h-screen w-screen flex flex-col gap-12">
-        <header className="flex gap-8 mx-[5vmin] p-6 justify-center border-b flex-none text-lg">
+    <div className="h-screen w-screen flex flex-col prose prose-xl">
+        <header className="flex gap-8 p-6 justify-center prose-a:no-underline">
             <a
                 href="https://github.com/nowaalex/af-utils"
                 target="_blank"
@@ -14,7 +14,6 @@ const IndexPage = () => (
                 <VscGithub size="1em" />
                 Github
             </a>
-
             <a
                 href="https://discord.gg/6uQZB2y4cz"
                 target="_blank"
@@ -25,10 +24,12 @@ const IndexPage = () => (
                 Discord
             </a>
         </header>
-        <main className="flex-auto prose prose-xl prose-zinc prose-a:text-blue-700 prose-a:underline px-[5vmin] sm:bg-sloth bg-right-bottom bg-[length:40vmax] 2xl:bg-contain bg-no-repeat">
+        <hr className="mx-[5vmin] my-0" />
+        <main className="py-12 pl-[5vmin] flex-auto prose-a:text-blue-700 bg-no-repeat bg-right-bottom bg-[length:36vmax] sm:bg-sloth 2xl:bg-contain">
             <Readme />
         </main>
-        <footer className="text-center p-6 mx-[5vmin] border-t">
+        <hr className="mx-[5vmin] my-0" />
+        <footer className="text-center p-6 text-base">
             © {new Date().getFullYear()} Alex Fomin
         </footer>
     </div>
