@@ -6,12 +6,17 @@ import Link from "next/link";
 import cx from "utils/cx";
 
 const renderTopLink = (className: string, productName: string) => (
-    <h1 className={cx("flex gap-2 font-medium", className)}>
+    <nav aria-label="Breadcrumb" className={cx("font-medium", className)}>
         <Link href="/" className="underline">
             af-utils
         </Link>
-        /<span className="text-slate-500">{productName}</span>
-    </h1>
+        <span className="px-2" aria-hidden="true">
+            /
+        </span>
+        <span className="text-slate-500" aria-current="page">
+            {productName}
+        </span>
+    </nav>
 );
 
 const getDocumentationLayout =

@@ -50,6 +50,7 @@ type MenuProps = JSX.IntrinsicElements["nav"] & {
 const Menu = ({ className, items, prefix, ...props }: MenuProps) => (
     <nav
         {...props}
+        aria-label="Main navigation"
         className={cx(
             "prose prose-sm prose-ul:list-none prose-a:no-underline p-4",
             className

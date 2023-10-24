@@ -27,6 +27,7 @@ const NavLink = ({
         <Link
             {...props}
             href={href}
+            aria-current={isActive ? "page" : undefined}
             className={cx(className, isActive ? activeClassName : "")}
         />
     );
