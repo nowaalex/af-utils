@@ -28,8 +28,6 @@ export const metadata = {
     }
 } as const satisfies Metadata;
 
-const ID = "P68JT3P";
-
 // If loading a variable font, you don't need to specify the font weight
 const font = createFont({ subsets: ["latin"] });
 
@@ -37,32 +35,21 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
     <html lang="en" className={font.className}>
         <head>
             {process.env.NODE_ENV === "production" ? (
-                <Script
-                    id="tag-manager"
-                    strategy="afterInteractive"
-                    dangerouslySetInnerHTML={{
-                        __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-${ID}');`
-                    }}
-                ></Script>
+                <>
+                    <Script
+                        strategy="lazyOnload"
+                        src="https://www.googletagmanager.com/gtag/js?id=G-CBQ8S96MEK"
+                    ></Script>
+                    <Script
+                        strategy="lazyOnload"
+                        dangerouslySetInnerHTML={{
+                            __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-CBQ8S96MEK');`
+                        }}
+                    />
+                </>
             ) : null}
         </head>
-        <body suppressHydrationWarning>
-            {process.env.NODE_ENV === "production" ? (
-                <noscript>
-                    <iframe
-                        src={`https://www.googletagmanager.com/ns.html?id=GTM-${ID}`}
-                        height="0"
-                        width="0"
-                        className="hidden invisible"
-                    />
-                </noscript>
-            ) : null}
-            {children}
-        </body>
+        <body suppressHydrationWarning>{children}</body>
     </html>
 );
 
