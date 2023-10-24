@@ -40,12 +40,14 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
                         strategy="lazyOnload"
                         src="https://www.googletagmanager.com/gtag/js?id=G-CBQ8S96MEK"
                     ></Script>
-                    <Script
-                        strategy="lazyOnload"
-                        dangerouslySetInnerHTML={{
-                            __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-CBQ8S96MEK');`
-                        }}
-                    />
+                    <Script id="google-analytics" strategy="lazyOnload">
+                        {`
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', 'G-CBQ8S96MEK');
+                        `}
+                    </Script>
                 </>
             ) : null}
         </head>
