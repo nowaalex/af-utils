@@ -5,6 +5,10 @@ import type { Metadata } from "next";
 import "styles/globals.css";
 
 export const metadata = {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_ORIGIN as string),
+    alternates: {
+        canonical: "./"
+    },
     title: "af-utils | Simple open-source tools that just work",
     description:
         "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript",
@@ -17,6 +21,10 @@ export const metadata = {
     twitter: {
         creator: "@fominalex24",
         site: "@fominalex24"
+    },
+    other: {
+        "google-site-verification":
+            "7SCiNq_CFCadLWK2XGowuH1UViEKIciYdit7apdjDVg"
     }
 } as const satisfies Metadata;
 
@@ -28,10 +36,6 @@ const font = createFont({ subsets: ["latin"] });
 const RootLayout = ({ children }: { children: ReactNode }) => (
     <html lang="en" className={font.className}>
         <head>
-            <meta
-                name="google-site-verification"
-                content="7SCiNq_CFCadLWK2XGowuH1UViEKIciYdit7apdjDVg"
-            />
             {process.env.NODE_ENV === "production" ? (
                 <Script
                     id="tag-manager"
