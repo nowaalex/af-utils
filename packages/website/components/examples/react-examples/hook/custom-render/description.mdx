@@ -1,0 +1,8 @@
+import docHref from "utils/docHref";
+import AutoLink from "components/AutoLink";
+
+Normally <AutoLink href={docHref("virtual-react", "useSyncedStyles")}>useSyncedStyles</AutoLink> should be used to help with rendering.
+But in some cases (for example table) you may want to render things in different way.
+Use <AutoLink href={docHref("virtual-core", "VirtualScroller.on")}>VirtualScroller.on</AutoLink> method
+to subscribe to desired <AutoLink href={docHref("virtual-core", "VirtualScrollerEvent")}>events</AutoLink>.
+Do not forget to unsubscribe in the end.

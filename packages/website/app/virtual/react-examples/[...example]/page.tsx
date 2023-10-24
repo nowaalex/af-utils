@@ -20,13 +20,21 @@ export async function generateMetadata({ params }: Params) {
     const startCase = await import("lodash/startCase");
 
     const title = `${startCase.default(
-        params.example.slice(0).reverse().join(" ")
+        params.example.slice().reverse().join(" ")
     )} React Example`;
+
+    const descriptionModule = await import(
+        `components/examples/react-examples/${params.example.join("/")}/meta.ts`
+    ).catch(() => ({ default: null }));
+
+    const description = descriptionModule?.default?.description;
 
     return {
         title,
+        description,
         openGraph: {
-            title
+            title,
+            description
         }
     } satisfies Metadata;
 }

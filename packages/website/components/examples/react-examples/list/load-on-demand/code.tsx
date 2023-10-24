@@ -61,7 +61,7 @@ const Posts = () => {
     );
 
     return (
-        <List model={model} itemData={posts}>
+        <List model={model} itemData={posts} className="border border-zinc-400">
             {Item}
         </List>
     );

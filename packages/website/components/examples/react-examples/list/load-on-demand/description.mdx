@@ -1,5 +1,7 @@
 import docHref from "utils/docHref";
 import AutoLink from "components/AutoLink";
 
-Virtual scroll model can emit <AutoLink href={docHref("virtual-core","VirtualScrollerEvent")}>events</AutoLink>, which is very convenient for loading something on demand.
+Virtual scroll model can emit <AutoLink href={docHref("virtual-core","VirtualScrollerEvent")}>events</AutoLink>,
+which is very convenient for loading something on demand.
 Here new posts are loaded when list is scrolled till the end, but this behavior can be easily customized.
+Use <AutoLink href={docHref("virtual-react", "useSubscription")}>useSubscription</AutoLink> hook to subscribe to events.
