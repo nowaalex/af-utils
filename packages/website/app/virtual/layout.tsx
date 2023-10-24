@@ -3,12 +3,23 @@ import glob from "fast-glob";
 import walkMenu from "utils/walkMenu";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata = {
     title: {
         template: "%s | af-utils | Virtual",
         default: "Getting started | af-utils | Virtual"
+    },
+    description:
+        "Virtualize large lists with variable or fixed item sizes. Typescript-friendly, react and core adapters currently available",
+    openGraph: {
+        type: "website",
+        title: {
+            template: "%s | af-utils | Virtual",
+            default: "Getting started | af-utils | Virtual"
+        },
+        description:
+            "Virtualize large lists with variable or fixed item sizes. Typescript-friendly, react and core adapters currently available"
     }
-};
+} satisfies Metadata;
 
 const map = glob
     .sync("./components/examples/react-examples/**/code.tsx")

@@ -18,14 +18,19 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
     const startCase = await import("lodash/startCase");
 
+    const title = `${params.reference
+        .join("")
+        .replace(".md", "")
+        .split(".")
+        .map(startCase.default)
+        .join(" | ")} | Reference`;
+
     return {
-        title: `${params.reference
-            .join("")
-            .replace(".md", "")
-            .split(".")
-            .map(startCase.default)
-            .join(" | ")} | Reference`
-    };
+        title,
+        openGraph: {
+            title
+        }
+    } satisfies Metadata;
 }
 
 const Page = ({ params }: Params) => {

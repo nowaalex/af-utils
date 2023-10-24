@@ -16,14 +16,19 @@ export async function generateStaticParams() {
     return result;
 }
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+export async function generateMetadata({ params }: Params) {
     const startCase = await import("lodash/startCase");
 
+    const title = `${startCase.default(
+        params.example.slice(0).reverse().join(" ")
+    )} React Example`;
+
     return {
-        title: `${startCase.default(
-            params.example.slice(0).reverse().join(" ")
-        )} React Example`
-    };
+        title,
+        openGraph: {
+            title
+        }
+    } satisfies Metadata;
 }
 
 const Page = ({ params }: Params) => {

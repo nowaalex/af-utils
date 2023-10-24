@@ -4,11 +4,21 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import "styles/globals.css";
 
-export const metadata: Metadata = {
+export const metadata = {
     title: "af-utils | Simple open-source tools that just work",
     description:
-        "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
-};
+        "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript",
+    openGraph: {
+        type: "website",
+        title: "Simple open-source tools that just work",
+        description:
+            "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
+    },
+    twitter: {
+        creator: "@fominalex24",
+        site: "@fominalex24"
+    }
+} as const satisfies Metadata;
 
 const ID = "P68JT3P";
 

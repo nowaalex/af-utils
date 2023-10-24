@@ -51,7 +51,7 @@ const Menu = ({ className, items, prefix, ...props }: MenuProps) => (
     <nav
         {...props}
         className={cx(
-            "prose prose-sm prose-ul:list-none prose-a:no-underline",
+            "prose prose-sm prose-ul:list-none prose-a:no-underline p-4",
             className
         )}
     >

@@ -43,14 +43,14 @@ const getDocumentationLayout =
                 <ClientMenu
                     items={items}
                     prefix={prefix}
-                    className="overflow-auto p-34 fixed inset-0 top-[61px] bg-white"
+                    className="overflow-auto fixed inset-0 top-[61px] bg-white"
                 />
             </details>
             <aside className="shadow-lg hidden lg:flex h-screen overflow-y-scroll flex-none flex-col min-w-[20em]">
                 <div className="sticky top-0 bg-white p-5 border-b">
                     {renderTopLink("text-xl", productName)}
                 </div>
-                <Menu items={items} prefix={prefix} className="p-4" />
+                <Menu items={items} prefix={prefix} />
             </aside>
             <main className="h-full flex-1 overflow-auto p-4 prose">
                 {children}
