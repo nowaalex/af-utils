@@ -4,7 +4,7 @@
 
 ## SubscriptionProps interface
 
-[Subscription](./virtual-react.subscription.md) component props
+[Subscription()](./virtual-react.subscription.md) component props
 
 **Signature:**
 

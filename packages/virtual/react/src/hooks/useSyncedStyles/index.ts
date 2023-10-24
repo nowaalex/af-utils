@@ -46,8 +46,11 @@ const SCROLL_PROVIDER_STYLE_VERTICAL = {
  * Optimal CSS markup for virtual scroll is not intuitive.
  * Use this hook to avoid unneeded boilerplate.
  * @returns Array of 2 callback refs: [ outer, inner ].
+ *
+ * @privateRemarks
+ * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-const useSyncedStyles = (model: VirtualScroller) => {
+function useSyncedStyles(model: VirtualScroller) {
     const [outer, outerRef] = useState<HTMLElement | null>(null);
     const [inner, innerRef] = useState<HTMLElement | null>(null);
 
@@ -105,6 +108,6 @@ const useSyncedStyles = (model: VirtualScroller) => {
         (el: HTMLElement | null) => void,
         (el: HTMLElement | null) => void
     ];
-};
+}
 
 export default useSyncedStyles;

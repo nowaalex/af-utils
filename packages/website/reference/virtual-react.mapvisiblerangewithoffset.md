@@ -2,15 +2,26 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [mapVisibleRangeWithOffset](./virtual-react.mapvisiblerangewithoffset.md)
 
-## mapVisibleRangeWithOffset variable
+## mapVisibleRangeWithOffset() function
 
 Map current visible items and provide offset for each item.
 
 **Signature:**
 
 ```typescript
-mapVisibleRangeWithOffset: (model: VirtualScroller, cb: (index: number, offset: number) => JSX.Element) => JSX.Element[]
+export declare function mapVisibleRangeWithOffset(model: VirtualScroller, cb: (index: number, offset: number) => JSX.Element): JSX.Element[];
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  model | [VirtualScroller](./virtual-core.virtualscroller.md) | [VirtualScroller](./virtual-core.virtualscroller.md) instance |
+|  cb | (index: number, offset: number) =&gt; JSX.Element | callback, returning ONLY ONE react element |
+
+**Returns:**
+
+JSX.Element\[\]
 
 ## Remarks
 

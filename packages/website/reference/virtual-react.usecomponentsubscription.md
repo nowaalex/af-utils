@@ -2,12 +2,24 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useComponentSubscription](./virtual-react.usecomponentsubscription.md)
 
-## useComponentSubscription variable
+## useComponentSubscription() function
 
-React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted. Usually [Subscription](./virtual-react.subscription.md) is a better alternative
+React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted. Usually [Subscription()](./virtual-react.subscription.md) is a better alternative
 
 **Signature:**
 
 ```typescript
-useComponentSubscription: (model: VirtualScroller, events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]) => void
+declare function useComponentSubscription(model: VirtualScroller, events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]): void;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  model | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
+|  events | readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] |  |
+
+**Returns:**
+
+void
+

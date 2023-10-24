@@ -62,7 +62,7 @@ What it doesn't do:
 |  [on(callBack, events)](./virtual-core.virtualscroller.on.md) |  | Subscribe to model events |
 |  [scrollToIndex(index, smooth)](./virtual-core.virtualscroller.scrolltoindex.md) |  | Scroll to item index |
 |  [scrollToOffset(offset, smooth)](./virtual-core.virtualscroller.scrolltooffset.md) |  | Scroll to pixel offset |
-|  [set({ overscanCount, itemCount, estimatedItemSize })](./virtual-core.virtualscroller.set.md) |  | Synchronize runtime parameters |
+|  [set(runtimeParams)](./virtual-core.virtualscroller.set.md) |  | Synchronize runtime parameters |
 |  [setContainer(element)](./virtual-core.virtualscroller.setcontainer.md) |  | Informs model about items container element. Usually not needed. |
 |  [setItemCount(itemCount)](./virtual-core.virtualscroller.setitemcount.md) |  | Notify model about items quantity change |
 |  [setScroller(element)](./virtual-core.virtualscroller.setscroller.md) |  | Informs model about scrollable element. |

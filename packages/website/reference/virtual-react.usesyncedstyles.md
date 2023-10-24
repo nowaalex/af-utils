@@ -2,12 +2,25 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useSyncedStyles](./virtual-react.usesyncedstyles.md)
 
-## useSyncedStyles variable
+## useSyncedStyles() function
 
 React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hook to avoid unneeded boilerplate.
 
 **Signature:**
 
 ```typescript
-useSyncedStyles: (model: VirtualScroller) => [(el: HTMLElement | null) => void, (el: HTMLElement | null) => void]
+declare function useSyncedStyles(model: VirtualScroller): [(el: HTMLElement | null) => void, (el: HTMLElement | null) => void];
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  model | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
+
+**Returns:**
+
+\[(el: HTMLElement \| null) =&gt; void, (el: HTMLElement \| null) =&gt; void\]
+
+Array of 2 callback refs: \[ outer, inner \].
+

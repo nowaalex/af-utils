@@ -2,12 +2,23 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [Subscription](./virtual-react.subscription.md)
 
-## Subscription variable
+## Subscription() function
 
-React component. [SubscriptionProps](./virtual-react.subscriptionprops.md)<!-- -->. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance.
+React component. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance.
 
 **Signature:**
 
 ```typescript
-Subscription: (props: SubscriptionProps) => ReactNode
+declare function Subscription(props: SubscriptionProps): ReactNode;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  props | [SubscriptionProps](./virtual-react.subscriptionprops.md) |  |
+
+**Returns:**
+
+ReactNode
+

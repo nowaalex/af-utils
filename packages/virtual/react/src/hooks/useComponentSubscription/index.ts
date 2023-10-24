@@ -18,11 +18,14 @@ function getSingleEventHash(this: VirtualScroller, e: VirtualScrollerEvent) {
  * React hook.
  * Rerenders component when one of {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)} gets emitted.
  * Usually {@link Subscription} is a better alternative
+ *
+ * @privateRemarks
+ * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-const useComponentSubscription = (
+function useComponentSubscription(
     model: VirtualScroller,
     events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]
-) => {
+) {
     const [subscribe, getHash] = useMemo(
         () => [
             (listener: () => void) => model.on(listener, events),
@@ -32,6 +35,6 @@ const useComponentSubscription = (
     );
 
     useSyncExternalStore(subscribe, getHash, getHash);
-};
+}
 
 export default useComponentSubscription;

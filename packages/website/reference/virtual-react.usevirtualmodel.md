@@ -2,12 +2,25 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useVirtualModel](./virtual-react.usevirtualmodel.md)
 
-## useVirtualModel variable
+## useVirtualModel() function
 
-React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle. Normally [useVirtual](./virtual-react.usevirtual.md) should be used.
+React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle. Normally [useVirtual()](./virtual-react.usevirtual.md) should be used.
 
 **Signature:**
 
 ```typescript
-useVirtualModel: (params: VirtualScrollerInitialParams) => VirtualScroller
+declare function useVirtualModel(params: VirtualScrollerInitialParams): VirtualScroller;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  params | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) |
+
+**Returns:**
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+same [VirtualScroller](./virtual-core.virtualscroller.md) instance
+

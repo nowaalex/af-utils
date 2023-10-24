@@ -2,12 +2,25 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useVirtual](./virtual-react.usevirtual.md)
 
-## useVirtual variable
+## useVirtual() function
 
-React hook. Calls [useVirtualModel](./virtual-react.usevirtualmodel.md) and synchronizes it with props
+React hook. Calls [useVirtualModel()](./virtual-react.usevirtualmodel.md) and synchronizes it with props
 
 **Signature:**
 
 ```typescript
-useVirtual: (params: VirtualScrollerInitialParams) => import("@af-utils/virtual-core").VirtualScroller
+declare function useVirtual(params: VirtualScrollerInitialParams): import("@af-utils/virtual-core").VirtualScroller;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  params | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) |
+
+**Returns:**
+
+import("@af-utils/virtual-core").[VirtualScroller](./virtual-core.virtualscroller.md)
+
+same [VirtualScroller](./virtual-core.virtualscroller.md) instance
+

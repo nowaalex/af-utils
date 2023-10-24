@@ -8,29 +8,33 @@ import type { ListProps } from "types";
 /**
  * @public
  * React component.
- * {@link ListProps}.
  * Small abstraction, which in 90% cases allows to avoid hook boilerplate.
+ *
+ * @privateRemarks
+ * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-const List: <T extends ElementType = "div">(
-    props: ListProps<T>
-) => JSX.Element = ({
-    model,
-    children: Item,
-    itemData,
-    component,
-    header = null,
-    footer = null,
-    getKey = (i: number) => i,
-    tabIndex = -1,
-    style,
-    ...props
-}) => {
+function List<Component extends ElementType = "div">(
+    props: ListProps<Component>
+): JSX.Element {
+    const {
+        model,
+        children: Item,
+        itemData,
+        component,
+        header = null,
+        footer = null,
+        getKey = (i: number) => i,
+        tabIndex = -1,
+        style,
+        ...rest
+    } = props;
+
     const Component = component || "div";
     const [outerRef, innerRef] = useSyncedStyles(model);
 
     return (
         <Component
-            {...props}
+            {...rest}
             style={{
                 overflow: "auto",
                 contain: "strict",
@@ -65,6 +69,6 @@ const List: <T extends ElementType = "div">(
             {footer}
         </Component>
     );
-};
+}
 
 export default List;

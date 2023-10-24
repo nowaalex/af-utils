@@ -848,22 +848,18 @@ class VirtualScroller {
      * Synchronize runtime parameters
      * @param runtimeParams - runtime parameters
      */
-    set({
-        overscanCount,
-        itemCount,
-        estimatedItemSize
-    }: VirtualScrollerRuntimeParams) {
-        if (estimatedItemSize) {
+    set(runtimeParams: VirtualScrollerRuntimeParams) {
+        if (runtimeParams.estimatedItemSize) {
             // must not be falsy, so not checking for undefined here.
-            this._estimatedItemSize = estimatedItemSize;
+            this._estimatedItemSize = runtimeParams.estimatedItemSize;
         }
 
-        if (overscanCount !== undefined) {
-            this._overscanCount = overscanCount;
+        if (runtimeParams.overscanCount !== undefined) {
+            this._overscanCount = runtimeParams.overscanCount;
         }
 
-        if (itemCount !== undefined) {
-            this.setItemCount(itemCount);
+        if (runtimeParams.itemCount !== undefined) {
+            this.setItemCount(runtimeParams.itemCount);
         }
     }
 }

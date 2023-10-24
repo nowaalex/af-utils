@@ -2,15 +2,26 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useScroller](./virtual-react.usescroller.md)
 
-## useScroller variable
+## useScroller() function
 
 React hook. Synchronizes scroller with model.
 
 **Signature:**
 
 ```typescript
-useScroller: (model: VirtualScroller, scroller: VirtualScrollerScrollElement | null) => void
+declare function useScroller(model: VirtualScroller, scroller: VirtualScrollerScrollElement | null): void;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  model | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
+|  scroller | [VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md) \| null |  |
+
+**Returns:**
+
+void
 
 ## Remarks
 

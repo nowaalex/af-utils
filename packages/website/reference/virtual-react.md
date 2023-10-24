@@ -6,31 +6,31 @@
 
 React components, hooks and utils used to connect to [VirtualScroller](./virtual-core.virtualscroller.md)
 
+## Functions
+
+|  Function | Description |
+|  --- | --- |
+|  [List(props)](./virtual-react.list.md) | React component. Small abstraction, which in 90% cases allows to avoid hook boilerplate. |
+|  [mapVisibleRange(model, cb)](./virtual-react.mapvisiblerange.md) | Map current visible items |
+|  [mapVisibleRangeWithOffset(model, cb)](./virtual-react.mapvisiblerangewithoffset.md) | Map current visible items and provide offset for each item. |
+|  [Subscription(props)](./virtual-react.subscription.md) | React component. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance. |
+|  [useComponentSubscription(model, events)](./virtual-react.usecomponentsubscription.md) | React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted. Usually [Subscription()](./virtual-react.subscription.md) is a better alternative |
+|  [useScroller(model, scroller)](./virtual-react.usescroller.md) | React hook. Synchronizes scroller with model. |
+|  [useSubscription(model, events, callBack)](./virtual-react.usesubscription.md) | React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) without unnecessary rerenders. |
+|  [useSyncedStyles(model)](./virtual-react.usesyncedstyles.md) | React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hook to avoid unneeded boilerplate. |
+|  [useVirtual(params)](./virtual-react.usevirtual.md) | React hook. Calls [useVirtualModel()](./virtual-react.usevirtualmodel.md) and synchronizes it with props |
+|  [useVirtualModel(params)](./virtual-react.usevirtualmodel.md) | React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle. Normally [useVirtual()](./virtual-react.usevirtual.md) should be used. |
+
 ## Interfaces
 
 |  Interface | Description |
 |  --- | --- |
 |  [ListItemProps](./virtual-react.listitemprops.md) | Props passed to List item |
-|  [SubscriptionProps](./virtual-react.subscriptionprops.md) | [Subscription](./virtual-react.subscription.md) component props |
-
-## Variables
-
-|  Variable | Description |
-|  --- | --- |
-|  [List](./virtual-react.list.md) | React component. [ListProps](./virtual-react.listprops.md)<!-- -->. Small abstraction, which in 90% cases allows to avoid hook boilerplate. |
-|  [mapVisibleRange](./virtual-react.mapvisiblerange.md) | Map current visible items |
-|  [mapVisibleRangeWithOffset](./virtual-react.mapvisiblerangewithoffset.md) | Map current visible items and provide offset for each item. |
-|  [Subscription](./virtual-react.subscription.md) | React component. [SubscriptionProps](./virtual-react.subscriptionprops.md)<!-- -->. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance. |
-|  [useComponentSubscription](./virtual-react.usecomponentsubscription.md) | React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted. Usually [Subscription](./virtual-react.subscription.md) is a better alternative |
-|  [useScroller](./virtual-react.usescroller.md) | React hook. Synchronizes scroller with model. |
-|  [useSubscription](./virtual-react.usesubscription.md) | React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) without unnecessary rerenders. |
-|  [useSyncedStyles](./virtual-react.usesyncedstyles.md) | React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hook to avoid unneeded boilerplate. |
-|  [useVirtual](./virtual-react.usevirtual.md) | React hook. Calls [useVirtualModel](./virtual-react.usevirtualmodel.md) and synchronizes it with props |
-|  [useVirtualModel](./virtual-react.usevirtualmodel.md) | React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle. Normally [useVirtual](./virtual-react.usevirtual.md) should be used. |
+|  [SubscriptionProps](./virtual-react.subscriptionprops.md) | [Subscription()](./virtual-react.subscription.md) component props |
 
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [ListProps](./virtual-react.listprops.md) | [List](./virtual-react.list.md) component props |
+|  [ListProps](./virtual-react.listprops.md) | [List()](./virtual-react.list.md) component props |
 

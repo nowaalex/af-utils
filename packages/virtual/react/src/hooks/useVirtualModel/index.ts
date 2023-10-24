@@ -12,8 +12,12 @@ import {
  * Normally {@link useVirtual} should be used.
  * @param params - {@link @af-utils/virtual-core#VirtualScrollerInitialParams}
  * @returns same {@link @af-utils/virtual-core#VirtualScroller} instance
+ *
+ * @privateRemarks
+ * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-const useVirtualModel = (params: VirtualScrollerInitialParams) =>
-    (useRef<VirtualScroller>().current ||= new VirtualScroller(params));
+function useVirtualModel(params: VirtualScrollerInitialParams) {
+    return (useRef<VirtualScroller>().current ||= new VirtualScroller(params));
+}
 
 export default useVirtualModel;

@@ -2,12 +2,24 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [mapVisibleRange](./virtual-react.mapvisiblerange.md)
 
-## mapVisibleRange variable
+## mapVisibleRange() function
 
 Map current visible items
 
 **Signature:**
 
 ```typescript
-mapVisibleRange: (model: VirtualScroller, cb: (index: number) => JSX.Element) => JSX.Element[]
+export declare function mapVisibleRange(model: VirtualScroller, cb: (index: number) => JSX.Element): JSX.Element[];
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  model | [VirtualScroller](./virtual-core.virtualscroller.md) | [VirtualScroller](./virtual-core.virtualscroller.md) instance |
+|  cb | (index: number) =&gt; JSX.Element | callback, returning ONLY ONE react element |
+
+**Returns:**
+
+JSX.Element\[\]
+

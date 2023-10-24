@@ -17,6 +17,7 @@ export default {
                 unsafe: true,
                 unsafe_comps: true,
                 unsafe_math: true,
+                unsafe_arrows: true,
                 passes: 2
             },
             output: {

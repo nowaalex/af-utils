@@ -9,14 +9,14 @@ Synchronize runtime parameters
 **Signature:**
 
 ```typescript
-set({ overscanCount, itemCount, estimatedItemSize }: VirtualScrollerRuntimeParams): void;
+set(runtimeParams: VirtualScrollerRuntimeParams): void;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  { overscanCount, itemCount, estimatedItemSize } | [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md) |  |
+|  runtimeParams | [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md) | runtime parameters |
 
 **Returns:**
 

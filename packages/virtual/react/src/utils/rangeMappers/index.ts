@@ -5,11 +5,14 @@ import type { VirtualScroller } from "@af-utils/virtual-core";
  * Map current visible items
  * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance
  * @param cb - callback, returning ONLY ONE react element
+ *
+ * @privateRemarks
+ * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-export const mapVisibleRange = (
+export function mapVisibleRange(
     model: VirtualScroller,
     cb: (index: number) => JSX.Element
-) => {
+) {
     const result: JSX.Element[] = [];
 
     for (let from = model.from, to = model.to; from < to; from++) {
@@ -17,7 +20,7 @@ export const mapVisibleRange = (
     }
 
     return result;
-};
+}
 
 /**
  * @public
@@ -28,11 +31,14 @@ export const mapVisibleRange = (
  *
  * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance
  * @param cb - callback, returning ONLY ONE react element
+ *
+ * @privateRemarks
+ * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-export const mapVisibleRangeWithOffset = (
+export function mapVisibleRangeWithOffset(
     model: VirtualScroller,
     cb: (index: number, offset: number) => JSX.Element
-) => {
+) {
     const result: JSX.Element[] = [];
 
     for (
@@ -44,4 +50,4 @@ export const mapVisibleRangeWithOffset = (
     }
 
     return result;
-};
+}

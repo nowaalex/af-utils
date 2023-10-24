@@ -2,12 +2,23 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [List](./virtual-react.list.md)
 
-## List variable
+## List() function
 
-React component. [ListProps](./virtual-react.listprops.md)<!-- -->. Small abstraction, which in 90% cases allows to avoid hook boilerplate.
+React component. Small abstraction, which in 90% cases allows to avoid hook boilerplate.
 
 **Signature:**
 
 ```typescript
-List: <T extends ElementType = "div">(props: ListProps<T>) => JSX.Element
+declare function List<Component extends ElementType = "div">(props: ListProps<Component>): JSX.Element;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  props | [ListProps](./virtual-react.listprops.md)<!-- -->&lt;Component&gt; |  |
+
+**Returns:**
+
+JSX.Element
+

@@ -4,7 +4,7 @@
 
 ## ListProps type
 
-[List](./virtual-react.list.md) component props
+[List()](./virtual-react.list.md) component props
 
 **Signature:**
 
