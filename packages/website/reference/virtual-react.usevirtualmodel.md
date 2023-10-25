@@ -16,11 +16,9 @@ declare function useVirtualModel(params: VirtualScrollerInitialParams): VirtualS
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) |
+|  params | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) |  |
 
 **Returns:**
 
 [VirtualScroller](./virtual-core.virtualscroller.md)
-
-same [VirtualScroller](./virtual-core.virtualscroller.md) instance
 

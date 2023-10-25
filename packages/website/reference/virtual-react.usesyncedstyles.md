@@ -9,7 +9,10 @@ React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hoo
 **Signature:**
 
 ```typescript
-declare function useSyncedStyles(model: VirtualScroller): [(el: HTMLElement | null) => void, (el: HTMLElement | null) => void];
+declare function useSyncedStyles(model: VirtualScroller): [
+    (outerRef: HTMLElement | null) => void,
+    (innerRef: HTMLElement | null) => void
+];
 ```
 
 ## Parameters
@@ -20,7 +23,5 @@ declare function useSyncedStyles(model: VirtualScroller): [(el: HTMLElement | nu
 
 **Returns:**
 
-\[(el: HTMLElement \| null) =&gt; void, (el: HTMLElement \| null) =&gt; void\]
-
-Array of 2 callback refs: \[ outer, inner \].
+\[ (outerRef: HTMLElement \| null) =&gt; void, (innerRef: HTMLElement \| null) =&gt; void \]
 

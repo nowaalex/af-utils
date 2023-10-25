@@ -1,5 +1,4 @@
 import { useLayoutEffect, useState } from "react";
-
 import { VirtualScrollerEvent, VirtualScroller } from "@af-utils/virtual-core";
 
 const SIZE_PROVIDER_STYLE_BASE = {
@@ -45,12 +44,16 @@ const SCROLL_PROVIDER_STYLE_VERTICAL = {
  * React hook.
  * Optimal CSS markup for virtual scroll is not intuitive.
  * Use this hook to avoid unneeded boilerplate.
- * @returns Array of 2 callback refs: [ outer, inner ].
  *
  * @privateRemarks
  * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-function useSyncedStyles(model: VirtualScroller) {
+function useSyncedStyles(
+    model: VirtualScroller
+): [
+    (outerRef: HTMLElement | null) => void,
+    (innerRef: HTMLElement | null) => void
+] {
     const [outer, outerRef] = useState<HTMLElement | null>(null);
     const [inner, innerRef] = useState<HTMLElement | null>(null);
 
@@ -104,10 +107,7 @@ function useSyncedStyles(model: VirtualScroller) {
         }
     }, [model, outer, inner]);
 
-    return [outerRef, innerRef] as [
-        (el: HTMLElement | null) => void,
-        (el: HTMLElement | null) => void
-    ];
+    return [outerRef, innerRef];
 }
 
 export default useSyncedStyles;

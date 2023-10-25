@@ -9,18 +9,16 @@ React hook. Calls [useVirtualModel()](./virtual-react.usevirtualmodel.md) and sy
 **Signature:**
 
 ```typescript
-declare function useVirtual(params: VirtualScrollerInitialParams): import("@af-utils/virtual-core").VirtualScroller;
+declare function useVirtual(params: VirtualScrollerInitialParams): VirtualScroller;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) |
+|  params | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) |  |
 
 **Returns:**
 
-import("@af-utils/virtual-core").[VirtualScroller](./virtual-core.virtualscroller.md)
-
-same [VirtualScroller](./virtual-core.virtualscroller.md) instance
+[VirtualScroller](./virtual-core.virtualscroller.md)
 
