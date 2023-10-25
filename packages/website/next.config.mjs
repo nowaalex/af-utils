@@ -67,6 +67,11 @@ const config = withBundleAnalyzer(
                     source: "/virtual/react-examples/list/LoadOnDemand",
                     destination: "/virtual/react-examples/list/load-on-demand",
                     permanent: true
+                },
+                {
+                    source: "/virtual/react-examples/list/PrependItems",
+                    destination: "/virtual/react-examples/list/prepend-items",
+                    permanent: true
                 }
             ];
         }
