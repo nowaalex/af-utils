@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.13
+
+### Patch Changes
+
+-   changed scroll resize timers. Fixes rare bug on slow devices
+
 ## 0.0.12
 
 ### Patch Changes

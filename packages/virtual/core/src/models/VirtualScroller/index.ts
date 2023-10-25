@@ -526,7 +526,7 @@ class VirtualScroller {
         if (this._scrollBorrowed) {
             const now = performance.now();
 
-            if (now - this._reachedScrollTs < 128) {
+            if (now - this._reachedScrollTs < 1024) {
                 queueMicrotask(() => {
                     this._attemptToScrollIfNeeded(now);
                 });
