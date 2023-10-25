@@ -15,14 +15,16 @@ const Example = ({ C }: { C: Components }) => (
                 <C.Description />
             </Suspense>
         </div>
-        <Suspense>
-            <div className="not-prose grid grid-cols-1 xl:grid-cols-2 flex-1 gap-4 grow xl:basis-0 xl:overflow-hidden xl:contain-strict">
-                <div className="overflow-hidden contain-strict xl:h-auto h-[40vh] grid">
+        <div className="not-prose grid grid-cols-1 xl:grid-cols-2 flex-1 gap-4 grow xl:basis-0 xl:overflow-hidden xl:contain-strict">
+            <div className="overflow-hidden contain-strict xl:h-auto h-[40vh] grid">
+                <Suspense fallback="Loading example...">
                     <C.Example />
-                </div>
-                <C.Code className="xl:overflow-auto p-4 text-sm" />
+                </Suspense>
             </div>
-        </Suspense>
+            <Suspense fallback="Loading example code...">
+                <C.Code className="xl:overflow-auto p-4 text-sm" />
+            </Suspense>
+        </div>
     </div>
 );
 
