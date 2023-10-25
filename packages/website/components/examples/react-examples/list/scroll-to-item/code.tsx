@@ -3,7 +3,7 @@
 import { useState, memo, useEffect, FormEvent } from "react";
 import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
 
-const DEFAULT_ROW_COUNT = 1000;
+const DEFAULT_ROW_COUNT = 50000;
 
 const Item = memo<ListItemProps>(({ i, model, data: pseudoRandomSizes }) => (
     <div

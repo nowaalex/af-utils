@@ -2,9 +2,10 @@ import docHref from "utils/docHref";
 import AutoLink from "components/AutoLink";
 
 Visible elements range must be persisted after new ones are prepended?
-Virtual scroll model exposes <AutoLink href={docHref("virtual-core", "VirtualScroller.visibleFrom")}>visibleFrom</AutoLink>,
-which allows to get the position of the first visible item.
+VirtualScroller exposes <AutoLink href={docHref("virtual-core", "VirtualScroller.visibleFrom")}>visibleFrom</AutoLink>,
+which allows to get the position of the first visible item
+and <AutoLink href={docHref("virtual-core","VirtualScroller.scrollToIndex")}>scroll to it</AutoLink>.
 
 This example also shows <AutoLink href={docHref("virtual-react", "useVirtualModel")}>useVirtualModel</AutoLink> opportuninies.
-Classical approach would require `useState` to store items and `useEffect`/`useLayoutEffect` to scroll when they are updated.
+Classical approach would require `useState` to store items and `useEffect` / `useLayoutEffect` to scroll when they are updated.
 If your data flow is very specific or you like to sacrifice readability for the sake of performance - go ahead.

@@ -70,7 +70,7 @@ const PrependItems = () => {
     useFakerSeed(1234);
 
     const items = (useRef<ReturnType<typeof getRandomItem>[]>().current ||=
-        Array.from({ length: 1000 }, getRandomItem));
+        Array.from({ length: 10000 }, getRandomItem));
 
     const model = useVirtualModel({
         estimatedItemSize: 85,
