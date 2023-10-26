@@ -72,6 +72,11 @@ const config = withBundleAnalyzer(
                     source: "/virtual/react-examples/list/PrependItems",
                     destination: "/virtual/react-examples/list/prepend-items",
                     permanent: true
+                },
+                {
+                    source: "/windowScroll",
+                    destination: "/virtual/react-examples/hook/window-scroll",
+                    permanent: true
                 }
             ];
         }
