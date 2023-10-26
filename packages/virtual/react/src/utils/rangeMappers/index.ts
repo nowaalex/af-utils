@@ -9,11 +9,11 @@ import type { VirtualScroller } from "@af-utils/virtual-core";
  * @privateRemarks
  * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-export function mapVisibleRange(
+export function mapVisibleRange<T>(
     model: VirtualScroller,
-    cb: (index: number) => JSX.Element
+    cb: (index: number) => T
 ) {
-    const result: JSX.Element[] = [];
+    const result: T[] = [];
 
     for (let from = model.from, to = model.to; from < to; from++) {
         result.push(cb(from));
@@ -35,11 +35,11 @@ export function mapVisibleRange(
  * @privateRemarks
  * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-export function mapVisibleRangeWithOffset(
+export function mapVisibleRangeWithOffset<T>(
     model: VirtualScroller,
-    cb: (index: number, offset: number) => JSX.Element
+    cb: (index: number, offset: number) => T
 ) {
-    const result: JSX.Element[] = [];
+    const result: T[] = [];
 
     for (
         let from = model.from, to = model.to, delta = model.getOffset(from);

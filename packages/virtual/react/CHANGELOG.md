@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-list
 
+## 0.0.15
+
+### Patch Changes
+
+-   changed rangeMappers typing
+
 ## 0.0.14
 
 ### Patch Changes

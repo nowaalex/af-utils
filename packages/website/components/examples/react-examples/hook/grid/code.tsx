@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, memo, useRef } from "react";
+import { memo, useRef } from "react";
 
 import {
     useVirtual,
@@ -72,21 +72,19 @@ const GridItems = ({
                 width: cols.scrollSize
             }}
         >
-            {mapVisibleRangeWithOffset(rows, (rowI, rowOffset) => (
-                <Fragment key={rowI}>
-                    {mapVisibleRangeWithOffset(cols, (colI, colOffset) => (
-                        <Cell
-                            key={colI}
-                            rows={rows}
-                            cols={cols}
-                            rowOffset={rowOffset}
-                            colOffset={colOffset}
-                            rowI={rowI}
-                            colI={colI}
-                        />
-                    ))}
-                </Fragment>
-            ))}
+            {mapVisibleRangeWithOffset(rows, (rowI, rowOffset) =>
+                mapVisibleRangeWithOffset(cols, (colI, colOffset) => (
+                    <Cell
+                        key={colI}
+                        rows={rows}
+                        cols={cols}
+                        rowOffset={rowOffset}
+                        colOffset={colOffset}
+                        rowI={rowI}
+                        colI={colI}
+                    />
+                ))
+            )}
         </div>
     );
 };
