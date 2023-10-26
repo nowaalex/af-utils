@@ -17,7 +17,7 @@ export declare function mapVisibleRange<T>(model: VirtualScroller, cb: (index: n
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  model | [VirtualScroller](./virtual-core.virtualscroller.md) | [VirtualScroller](./virtual-core.virtualscroller.md) instance |
-|  cb | (index: number) =&gt; T | callback, returning ONLY ONE react element |
+|  cb | (index: number) =&gt; T | callback |
 
 **Returns:**
 

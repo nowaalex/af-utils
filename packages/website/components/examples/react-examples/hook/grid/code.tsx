@@ -75,7 +75,7 @@ const GridItems = ({
             {mapVisibleRangeWithOffset(rows, (rowI, rowOffset) =>
                 mapVisibleRangeWithOffset(cols, (colI, colOffset) => (
                     <Cell
-                        key={colI}
+                        key={rowI + "_" + colI}
                         rows={rows}
                         cols={cols}
                         rowOffset={rowOffset}

@@ -4,7 +4,7 @@ import type { VirtualScroller } from "@af-utils/virtual-core";
  * @public
  * Map current visible items
  * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance
- * @param cb - callback, returning ONLY ONE react element
+ * @param cb - callback
  *
  * @privateRemarks
  * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
@@ -30,7 +30,7 @@ export function mapVisibleRange<T>(
  * Used in scenarios, when each item is absolutely positioned
  *
  * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance
- * @param cb - callback, returning ONLY ONE react element
+ * @param cb - callback
  *
  * @privateRemarks
  * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved

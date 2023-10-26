@@ -17,7 +17,7 @@ export declare function mapVisibleRangeWithOffset<T>(model: VirtualScroller, cb:
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  model | [VirtualScroller](./virtual-core.virtualscroller.md) | [VirtualScroller](./virtual-core.virtualscroller.md) instance |
-|  cb | (index: number, offset: number) =&gt; T | callback, returning ONLY ONE react element |
+|  cb | (index: number, offset: number) =&gt; T | callback |
 
 **Returns:**
 
