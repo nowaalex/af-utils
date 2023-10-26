@@ -20,7 +20,7 @@ function List<Component extends ElementType = "div">(
         model,
         children: Item,
         itemData,
-        component,
+        component: C = "div",
         header = null,
         footer = null,
         getKey = (i: number) => i,
@@ -29,11 +29,10 @@ function List<Component extends ElementType = "div">(
         ...rest
     } = props;
 
-    const Component = component || "div";
     const [outerRef, innerRef] = useSyncedStyles(model);
 
     return (
-        <Component
+        <C
             {...rest}
             style={{
                 overflow: "auto",
@@ -67,7 +66,7 @@ function List<Component extends ElementType = "div">(
                 </div>
             </div>
             {footer}
-        </Component>
+        </C>
     );
 }
 

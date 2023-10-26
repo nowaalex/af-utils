@@ -13,7 +13,10 @@ import {
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 
 const Item = memo<ListItemProps>(({ i, model }) => (
-    <div ref={el => model.el(i, el)} className="border-t p-2 border-zinc-400">
+    <div
+        ref={el => model.el(i, el)}
+        className="border-b p-2 border-zinc-400 last:border-none"
+    >
         row {i}
     </div>
 ));
@@ -27,7 +30,7 @@ const SimpleHook = () => {
 
     return (
         <div
-            className="overflow-auto contain-strict"
+            className="overflow-auto contain-strict border border-zinc-300"
             ref={el => model.setScroller(el)}
         >
             <div ref={outerRef}>
