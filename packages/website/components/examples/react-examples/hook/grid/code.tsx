@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, memo } from "react";
+import { Fragment, memo, useRef } from "react";
 
 import {
     useVirtual,
@@ -17,20 +17,42 @@ const events = [
 ] as const;
 
 const Cell = memo<{
+    rows: VirtualScroller;
+    cols: VirtualScroller;
     rowI: number;
     colI: number;
     rowOffset: number;
     colOffset: number;
-}>(({ rowI, colI, rowOffset, colOffset }) => (
-    <div
-        className="absolute border top-0 left-0 leading-[100px] w-[200px] text-center"
-        style={{
-            transform: `translateX(${colOffset}px) translateY(${rowOffset}px)`
-        }}
-    >
-        cell {rowI} * {colI}
-    </div>
-));
+}>(({ rows, cols, rowI, colI, rowOffset, colOffset }) => {
+    // caching for proper unmount in ref
+    const [colFrom, rowFrom] = useRef([cols.from, rows.from]).current;
+
+    return (
+        <div
+            ref={el => {
+                if (colI === colFrom) {
+                    rows.el(rowI, el);
+                }
+                if (rowI === rowFrom) {
+                    cols.el(colI, el);
+                }
+            }}
+            className="absolute border top-0 left-0 text-center"
+            style={{
+                width: Math.max(colI ** 2 % 256, 190),
+                padding: `${Math.max(rowI ** 2 % 64, 30)}px 0`,
+                transform: `translateX(${colOffset}px) translateY(${rowOffset}px)`
+            }}
+        >
+            <div className="inline-grid grid-cols-2 gap-x-2 place-items-start">
+                <span>row:</span>
+                {rowI}
+                <span>col:</span>
+                {colI}
+            </div>
+        </div>
+    );
+});
 
 const GridItems = ({
     rows,
@@ -55,6 +77,8 @@ const GridItems = ({
                     {mapVisibleRangeWithOffset(cols, (colI, colOffset) => (
                         <Cell
                             key={colI}
+                            rows={rows}
+                            cols={cols}
                             rowOffset={rowOffset}
                             colOffset={colOffset}
                             rowI={rowI}
@@ -67,29 +91,72 @@ const GridItems = ({
     );
 };
 
-const SimpleHook = () => {
+const SIZE = 50000;
+
+const scrollModelTo = (model: VirtualScroller, value: string | undefined) => {
+    if (value !== undefined) {
+        const idx = Number.parseInt(value, 10);
+
+        if (!Number.isNaN(idx)) {
+            model.scrollToIndex(idx, true);
+        }
+    }
+};
+
+const GridHook = () => {
     const rows = useVirtual({
-        itemCount: 50000,
-        estimatedItemSize: 102
+        itemCount: SIZE,
+        estimatedItemSize: 130
     });
 
     const cols = useVirtual({
-        itemCount: 50000,
+        itemCount: SIZE,
         estimatedItemSize: 200,
         horizontal: true
     });
 
     return (
-        <div
-            className="overflow-auto contain-strict"
-            ref={el => {
-                rows.setScroller(el);
-                cols.setScroller(el);
-            }}
-        >
-            <GridItems rows={rows} cols={cols} />
+        <div className="flex flex-col">
+            <form
+                className="flex-none flex flex-wrap gap-2 p-4 bg-orange-200"
+                onSubmit={e => {
+                    e.preventDefault();
+                    scrollModelTo(
+                        e.currentTarget.type.value === "row" ? rows : cols,
+                        e.currentTarget.index.value
+                    );
+                }}
+            >
+                <select name="type">
+                    <option value="row">Row</option>
+                    <option value="col">Col</option>
+                </select>
+                <input
+                    placeholder="index"
+                    type="number"
+                    name="index"
+                    min={0}
+                    max={SIZE}
+                    className="w-28"
+                />
+                <button
+                    type="submit"
+                    className="px-4 border border-gray-500 bg-white hover:bg-gray-200"
+                >
+                    Scroll
+                </button>
+            </form>
+            <div
+                className="overflow-auto contain-strict flex-grow"
+                ref={el => {
+                    rows.setScroller(el);
+                    cols.setScroller(el);
+                }}
+            >
+                <GridItems rows={rows} cols={cols} />
+            </div>
         </div>
     );
 };
 
-export default SimpleHook;
+export default GridHook;

@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.14
+
+### Patch Changes
+
+-   fixed react mapVisibleRangeWithOffset bug + improved scroll
+
 ## 0.0.13
 
 ### Patch Changes

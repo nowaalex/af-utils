@@ -44,7 +44,7 @@ export function mapVisibleRangeWithOffset(
     for (
         let from = model.from, to = model.to, delta = model.getOffset(from);
         from < to;
-        from++, delta += model.getSize(from)
+        delta += model.getSize(from), from++
     ) {
         result.push(cb(from, delta));
     }

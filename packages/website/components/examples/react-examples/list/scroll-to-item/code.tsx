@@ -2,6 +2,7 @@
 
 import { useState, memo, useEffect, FormEvent } from "react";
 import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
+import { VirtualScroller } from "@af-utils/virtual-core";
 
 const DEFAULT_ROW_COUNT = 50000;
 
@@ -16,6 +17,16 @@ const Item = memo<ListItemProps>(({ i, model, data: pseudoRandomSizes }) => (
         row {i}:&nbsp;{pseudoRandomSizes[i]}px
     </div>
 ));
+
+const getScrollSubmitHandler =
+    (model: VirtualScroller) => (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const idx = Number.parseInt(e.currentTarget.idx.value, 10);
+
+        if (!Number.isNaN(idx)) {
+            model.scrollToIndex(idx, true);
+        }
+    };
 
 const ScrollToItem = () => {
     const [pseudoRandomSizes, changeRows] = useState(() =>
@@ -33,15 +44,6 @@ const ScrollToItem = () => {
     useEffect(() => {
         model.scrollToIndex(pseudoRandomSizes.length - 1);
     }, [model, pseudoRandomSizes.length]);
-
-    const scrollSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const idx = Number.parseInt(e.currentTarget.idx.value, 10);
-
-        if (!Number.isNaN(idx)) {
-            model.scrollToIndex(idx, true);
-        }
-    };
 
     const rowsAddSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -71,7 +73,7 @@ const ScrollToItem = () => {
                 <form
                     className="flex justify-center p-2 flex-wrap gap-4 bg-orange-100 sticky top-0"
                     ref={el => model.setStickyHeader(el)}
-                    onSubmit={scrollSubmitHandler}
+                    onSubmit={getScrollSubmitHandler(model)}
                 >
                     <label>
                         Smooth scroll to index:&nbsp;

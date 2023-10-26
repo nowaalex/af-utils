@@ -25,5 +25,5 @@ void
 
 ## Remarks
 
-Calls [scrollToOffset](./virtual-core.virtualscroller.scrolltooffset.md) with calcuated offset until desired scroll position is reached. This method relies on `scrollend` event.
+Calls [scrollToOffset](./virtual-core.virtualscroller.scrolltooffset.md) with calcuated offset until desired scroll position is reached.
 

@@ -1,0 +1,7 @@
+import docHref from "utils/docHref";
+import AutoLink from "components/AutoLink";
+
+Virtualized dynamic-sized grids are supported,
+just call <AutoLink href={docHref("virtual-react", "useVirtual")}>useVirtual</AutoLink> two times for rows and columns.
+**Important limitation:** masonry mode is not supported, so height of rows is taken from first rendered column and width of columns
+is taken from first rendered row.

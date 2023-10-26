@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-core",
     "private": false,
-    "version": "0.0.13",
+    "version": "0.0.14",
     "description": "Model for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-utils.git",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
