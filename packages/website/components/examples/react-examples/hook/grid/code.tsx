@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useRef } from "react";
+import { Fragment, memo, useRef } from "react";
 
 import {
     useVirtual,
@@ -72,19 +72,21 @@ const GridItems = ({
                 width: cols.scrollSize
             }}
         >
-            {mapVisibleRangeWithOffset(rows, (rowI, rowOffset) =>
-                mapVisibleRangeWithOffset(cols, (colI, colOffset) => (
-                    <Cell
-                        key={rowI + "_" + colI}
-                        rows={rows}
-                        cols={cols}
-                        rowOffset={rowOffset}
-                        colOffset={colOffset}
-                        rowI={rowI}
-                        colI={colI}
-                    />
-                ))
-            )}
+            {mapVisibleRangeWithOffset(rows, (rowI, rowOffset) => (
+                <Fragment key={rowI}>
+                    {mapVisibleRangeWithOffset(cols, (colI, colOffset) => (
+                        <Cell
+                            key={colI}
+                            rows={rows}
+                            cols={cols}
+                            rowOffset={rowOffset}
+                            colOffset={colOffset}
+                            rowI={rowI}
+                            colI={colI}
+                        />
+                    ))}
+                </Fragment>
+            ))}
         </div>
     );
 };
@@ -104,12 +106,14 @@ const scrollModelTo = (model: VirtualScroller, value: string | undefined) => {
 const GridHook = () => {
     const rows = useVirtual({
         itemCount: SIZE,
-        estimatedItemSize: 130
+        estimatedItemSize: 120,
+        overscanCount: 2
     });
 
     const cols = useVirtual({
         itemCount: SIZE,
         estimatedItemSize: 200,
+        overscanCount: 2,
         horizontal: true
     });
 
