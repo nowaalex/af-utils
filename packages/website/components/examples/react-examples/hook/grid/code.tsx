@@ -120,7 +120,7 @@ const GridHook = () => {
     return (
         <div className="flex flex-col">
             <form
-                className="flex-none flex flex-wrap gap-2 p-4 bg-orange-200"
+                className="flex-none flex flex-wrap gap-2 p-2 bg-orange-200"
                 onSubmit={e => {
                     e.preventDefault();
                     scrollModelTo(
