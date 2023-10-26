@@ -9,7 +9,7 @@ Map current visible items
 **Signature:**
 
 ```typescript
-export declare function mapVisibleRange(model: VirtualScroller, cb: (index: number) => JSX.Element): JSX.Element[];
+export declare function mapVisibleRange<T>(model: VirtualScroller, cb: (index: number) => T): T[];
 ```
 
 ## Parameters
@@ -17,9 +17,9 @@ export declare function mapVisibleRange(model: VirtualScroller, cb: (index: numb
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  model | [VirtualScroller](./virtual-core.virtualscroller.md) | [VirtualScroller](./virtual-core.virtualscroller.md) instance |
-|  cb | (index: number) =&gt; JSX.Element | callback, returning ONLY ONE react element |
+|  cb | (index: number) =&gt; T | callback, returning ONLY ONE react element |
 
 **Returns:**
 
-JSX.Element\[\]
+T\[\]
 

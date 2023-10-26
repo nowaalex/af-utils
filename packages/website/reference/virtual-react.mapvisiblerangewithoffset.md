@@ -9,7 +9,7 @@ Map current visible items and provide offset for each item.
 **Signature:**
 
 ```typescript
-export declare function mapVisibleRangeWithOffset(model: VirtualScroller, cb: (index: number, offset: number) => JSX.Element): JSX.Element[];
+export declare function mapVisibleRangeWithOffset<T>(model: VirtualScroller, cb: (index: number, offset: number) => T): T[];
 ```
 
 ## Parameters
@@ -17,11 +17,11 @@ export declare function mapVisibleRangeWithOffset(model: VirtualScroller, cb: (i
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  model | [VirtualScroller](./virtual-core.virtualscroller.md) | [VirtualScroller](./virtual-core.virtualscroller.md) instance |
-|  cb | (index: number, offset: number) =&gt; JSX.Element | callback, returning ONLY ONE react element |
+|  cb | (index: number, offset: number) =&gt; T | callback, returning ONLY ONE react element |
 
 **Returns:**
 
-JSX.Element\[\]
+T\[\]
 
 ## Remarks
 
