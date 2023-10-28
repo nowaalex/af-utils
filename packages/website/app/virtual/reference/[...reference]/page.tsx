@@ -1,4 +1,3 @@
-import { Suspense, lazy } from "react";
 import type { Metadata } from "next";
 
 type Params = { params: { reference: string[] } };
@@ -33,16 +32,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     } satisfies Metadata;
 }
 
-const Page = ({ params }: Params) => {
+const Page = async ({ params }: Params) => {
     const key = params.reference.join("/");
 
-    const C = lazy(() => import(`reference/${key}`));
+    const { default: C } = await import(`reference/${key}`);
 
-    return (
-        <Suspense fallback="Loading virtual reference...">
-            <C />
-        </Suspense>
-    );
+    return <C />;
 };
 
 export default Page;

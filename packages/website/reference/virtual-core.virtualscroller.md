@@ -68,4 +68,5 @@ What it doesn't do:
 |  [setScroller(element)](./virtual-core.virtualscroller.setscroller.md) |  | Informs model about scrollable element. |
 |  [setStickyFooter(element)](./virtual-core.virtualscroller.setstickyfooter.md) |  | Start observing size of sticky footer <code>element</code>. Observing is finished if element is <code>null</code>. |
 |  [setStickyHeader(element)](./virtual-core.virtualscroller.setstickyheader.md) |  | Start observing size of sticky header <code>element</code>. Observing is finished if element is <code>null</code>. |
+|  [updateScrollerOffset()](./virtual-core.virtualscroller.updatescrolleroffset.md) |  | Recalculates the offset between [scroller element](./virtual-core.virtualscroller.setscroller.md) and [container element](./virtual-core.virtualscroller.setcontainer.md)<!-- -->. |
 

@@ -1,7 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
-import { createPortal } from "react-dom";
+import { memo, useRef } from "react";
 
 import {
     useVirtual,
@@ -17,39 +16,31 @@ import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 const Item = memo<ListItemProps>(({ i, model }) => (
     <div
         ref={el => model.el(i, el)}
-        style={{ borderTop: "1px solid #ccc", padding: "1em" }}
+        className="p-4 border-b border-b-slate-400"
     >
         row {i}
     </div>
 ));
 
-const WindowScrollHook = ({
-    contentWindow
-}: {
-    contentWindow: HTMLIFrameElement["contentWindow"];
-}) => {
+const WindowScrollHook = () => {
     const model = useVirtual({
         itemCount: 5000
     });
 
-    useScroller(model, contentWindow || null);
     const [outerRef, innerRef] = useSyncedStyles(model);
 
+    /*
+    normally this ref is not needed; just `window` should be used instead.
+    Using this temporary hack just for documentation website
+    */
+    const rootRef = useRef<HTMLDivElement>(null);
+    useScroller(model, rootRef.current?.ownerDocument?.defaultView || null);
+
     return (
-        <>
-            <div style={{ lineHeight: 4, padding: "1em", background: "#ccc" }}>
-                Some offset
-            </div>
+        <div className="h-full w-full grid" ref={rootRef}>
+            <div className="py-8 px-4 bg-slate-400">Some offset</div>
             <div>
-                <div
-                    style={{
-                        lineHeight: 8,
-                        padding: "1em",
-                        background: "#999"
-                    }}
-                >
-                    Some offset 2
-                </div>
+                <div className="py-16 px-4 bg-slate-500">Some offset 2</div>
                 <div ref={el => model.setContainer(el)}>
                     <div ref={outerRef}>
                         <div ref={innerRef}>
@@ -67,28 +58,8 @@ const WindowScrollHook = ({
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
-const IframeWrapper = () => {
-    const [ref, setRef] = useState<HTMLIFrameElement | null>(null);
-
-    const contentWindow = ref?.contentWindow;
-
-    if (contentWindow) {
-        contentWindow.document.body.style.margin = "0";
-    }
-
-    return (
-        <iframe className="w-full h-full" ref={setRef}>
-            {contentWindow &&
-                createPortal(
-                    <WindowScrollHook contentWindow={contentWindow} />,
-                    contentWindow.document.body
-                )}
-        </iframe>
-    );
-};
-
-export default IframeWrapper;
+export default WindowScrollHook;

@@ -122,7 +122,8 @@ class VirtualScroller {
         ResizeObserverSizeKeysOrdered[0];
     private _scrollToKey: ScrollToKey = ScrollToKeysOrdered[0];
     private _lastScrollEventTs = 0;
-    private _scrollToIndexTimer: ReturnType<typeof setTimeout> | 0 = 0;
+    private _scrollToIndexTimer: ReturnType<typeof setInterval> | 0 = 0;
+    private _scrollerOffsetTimer: ReturnType<typeof setTimeout> | 0 = 0;
 
     /* It is more useful to store scrollPos - scrollElementOffset in one variable for future calculations */
     private _alignedScrollPos = 0;
@@ -298,6 +299,7 @@ class VirtualScroller {
 
         if (availableWidgetSize !== this._availableWidgetSize) {
             this._availableWidgetSize = availableWidgetSize;
+            this.updateScrollerOffset();
             this._updateRangeFromEnd();
         }
     };
@@ -501,6 +503,7 @@ class VirtualScroller {
     setScroller(element: VirtualScrollerScrollElement | null) {
         if (element !== this._scrollElement) {
             clearInterval(this._scrollToIndexTimer);
+            clearTimeout(this._scrollerOffsetTimer);
             this._unobserveResize();
             this._scrollElement?.removeEventListener(
                 "scroll",
@@ -518,7 +521,7 @@ class VirtualScroller {
                 element.addEventListener("scroll", this._handleScrollEvent, {
                     passive: true
                 });
-                this._updateScrollerOffsetRaw();
+                this.updateScrollerOffset();
                 this._syncScrollPosition();
             }
         }
@@ -558,25 +561,42 @@ class VirtualScroller {
         }
     }
 
-    private _updateScrollerOffsetRaw() {
-        const newScrollElementOffset = /*@__NOINLINE__*/ getDistanceBetween(
-            this._scrollElement,
-            this._initialElement,
-            this._scrollKey,
-            this._scrollToKey
-        );
-        const diff = newScrollElementOffset - this._scrollElementOffset;
+    /**
+     * Recalculates the offset between
+     * {@link VirtualScroller.setScroller | scroller element} and {@link VirtualScroller.setContainer | container element}.
+     *
+     * @remarks
+     * By default debounced at `256` milliseconds and called automatically when:
+     *
+     * - {@link VirtualScroller.setScroller | setScroller} was called;
+     *
+     * - {@link VirtualScroller.setContainer | setContainer} was called;
+     *
+     * - {@link VirtualScroller.setScroller | scroller element} was resized.
+     *
+     * Normally this is enough, needed only if something else would trigger this offset change.
+     */
+    updateScrollerOffset() {
+        clearTimeout(this._scrollerOffsetTimer);
+        this._scrollerOffsetTimer = setTimeout(() => {
+            if (this._scrollElement) {
+                const newScrollElementOffset =
+                    /*@__NOINLINE__*/ getDistanceBetween(
+                        this._scrollElement,
+                        this._initialElement,
+                        this._scrollKey,
+                        this._scrollToKey
+                    );
 
-        this._scrollElementOffset += diff;
-        this._alignedScrollPos -= diff;
+                const diff = newScrollElementOffset - this._scrollElementOffset;
 
-        return diff;
-    }
-
-    private updateScrollerOffset() {
-        if (this._updateScrollerOffsetRaw() && this._scrollElement) {
-            this._syncScrollPosition();
-        }
+                if (diff) {
+                    this._scrollElementOffset = newScrollElementOffset;
+                    this._alignedScrollPos -= diff;
+                    this._syncScrollPosition();
+                }
+            }
+        }, 256);
     }
 
     /**

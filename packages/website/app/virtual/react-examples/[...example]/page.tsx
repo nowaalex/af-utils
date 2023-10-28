@@ -1,5 +1,4 @@
-import { lazy } from "react";
-import Example from "components/Example";
+import ExampleLayout from "components/Example";
 import type { Metadata } from "next";
 
 type Params = { params: { example: string[] } };
@@ -39,29 +38,32 @@ export async function generateMetadata({ params }: Params) {
     } satisfies Metadata;
 }
 
-const Page = ({ params }: Params) => {
+const Page = async ({ params }: Params) => {
     const key = params.example.join("/");
 
+    const { default: meta } = await import(
+        `components/examples/react-examples/${key}/meta.ts`
+    ).catch(() => ({ default: null }));
+
+    const { default: Example } = await import(
+        `components/examples/react-examples/${key}/code.tsx`
+    );
+
+    const { default: Code } = await import(
+        `!!code-webpack-loader!components/examples/react-examples/${key}/code.tsx`
+    );
+
+    const { default: Description } = await import(
+        `components/examples/react-examples/${key}/description.mdx`
+    ).catch(() => ({ default: null }));
+
     return (
-        <Example
+        <ExampleLayout
+            iframe={!!meta?.iframe}
             C={{
-                Example: lazy(
-                    () =>
-                        import(
-                            `components/examples/react-examples/${key}/code.tsx`
-                        )
-                ),
-                Code: lazy(
-                    () =>
-                        import(
-                            `!!code-webpack-loader!components/examples/react-examples/${key}/code.tsx`
-                        )
-                ),
-                Description: lazy(() =>
-                    import(
-                        `components/examples/react-examples/${key}/description.mdx`
-                    ).catch(() => ({ default: () => null }))
-                )
+                Example,
+                Code,
+                Description
             }}
         />
     );

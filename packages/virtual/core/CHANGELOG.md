@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.15
+
+### Patch Changes
+
+-   improved updateScrollOffset & docs
+
 ## 0.0.14
 
 ### Patch Changes

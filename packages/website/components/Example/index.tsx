@@ -1,31 +1,31 @@
-import { Suspense, type ElementType } from "react";
+import { ElementType } from "react";
 import ExampleHeader from "./ExampleHeader";
+import IframeWrapper from "components/IframeWrapper";
 
 type Components = {
     Example: ElementType;
-    Description: ElementType;
     Code: ElementType;
+    Description: ElementType | null;
 };
 
-const Example = ({ C }: { C: Components }) => (
-    <div className="flex flex-col h-full">
-        <div>
-            <ExampleHeader />
-            <Suspense>
-                <C.Description />
-            </Suspense>
-        </div>
-        <div className="not-prose grid grid-cols-1 xl:grid-cols-2 flex-1 gap-4 grow xl:basis-0 xl:overflow-hidden xl:contain-strict">
-            <div className="overflow-hidden contain-strict xl:h-auto h-[40vh] grid">
-                <Suspense fallback="Loading example...">
-                    <C.Example />
-                </Suspense>
-            </div>
-            <Suspense fallback="Loading example code...">
-                <C.Code className="xl:overflow-auto p-4 text-sm" />
-            </Suspense>
-        </div>
-    </div>
-);
+const Example = ({ C, iframe }: { C: Components; iframe: boolean }) => {
+    const ExampleWrapper = iframe ? IframeWrapper : "div";
 
+    return (
+        <div className="flex flex-col h-full">
+            <div>
+                <ExampleHeader />
+                {C.Description && <C.Description />}
+            </div>
+            <div className="not-prose grid grid-cols-1 xl:grid-cols-2 flex-1 gap-4 grow xl:basis-0 xl:overflow-hidden xl:contain-strict">
+                <ExampleWrapper className="overflow-hidden contain-strict xl:h-full h-[40vh] w-full">
+                    <div className="grid h-full w-full">
+                        <C.Example />
+                    </div>
+                </ExampleWrapper>
+                <C.Code className="xl:overflow-auto p-4 text-sm" />
+            </div>
+        </div>
+    );
+};
 export default Example;

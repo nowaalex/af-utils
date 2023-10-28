@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, lazy } from "react";
+import { memo, lazy, Suspense } from "react";
 import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
 
 /*
@@ -27,9 +27,11 @@ const SimpleList = () => {
     });
 
     return (
-        <List component={MuiList} disablePadding model={rows}>
-            {Item}
-        </List>
+        <Suspense fallback="Loading MUI...">
+            <List component={MuiList} disablePadding model={rows}>
+                {Item}
+            </List>
+        </Suspense>
     );
 };
 
