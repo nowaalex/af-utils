@@ -1,8 +1,10 @@
-import cx from "utils/cx";
-import { VscGithub } from "react-icons/vsc";
+"use client";
+
+import Link from "next/link";
+import { VscGithub, VscMenu, VscClose } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
 import NavLink from "components/NavLink";
-import { Fragment } from "react";
+import { Fragment, MouseEventHandler } from "react";
 
 export type MenuItem = {
     name: string;
@@ -45,46 +47,93 @@ const renderSubtree = (node: MenuItem, prefix: string, depth: number) =>
 type MenuProps = JSX.IntrinsicElements["nav"] & {
     items: readonly MenuItem[] | MenuItem[];
     prefix: string;
+    productName: string;
 };
 
-const Menu = ({ className, items, prefix, ...props }: MenuProps) => (
-    <nav
-        {...props}
-        aria-label="Main navigation"
-        className={cx(
-            "prose prose-sm prose-ul:list-none prose-a:no-underline p-4",
-            className
-        )}
-    >
-        {items.map(node => renderSubtree(node, prefix, 0))}
+const toggleMenu = () => {
+    const el = document.querySelector<HTMLInputElement>("#menu-checkbox");
 
-        <h2>Links</h2>
+    if (el) {
+        el.checked = !el.checked;
+    }
+};
 
-        <ul>
-            <li>
-                <a
-                    href="https://github.com/nowaalex/af-utils/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
+const toggleMenuWhenClickedOnLink: MouseEventHandler<HTMLElement> = e => {
+    if (
+        e.target instanceof HTMLAnchorElement &&
+        e.target.getAttribute("href")?.startsWith("/")
+    ) {
+        toggleMenu();
+    }
+};
+
+const Menu = ({ items, prefix, productName }: MenuProps) => (
+    <>
+        <input
+            aria-hidden="true"
+            type="checkbox"
+            className="hidden ds-menu-checkbox"
+            id="menu-checkbox"
+        />
+        <div className="ds-menu-container">
+            <div className="flex gap-4 p-4 border-b sticky top-0 bg-inherit">
+                <button onClick={toggleMenu} className="ds-menu-opener">
+                    <VscMenu size="28px" aria-label="Open menu" />
+                </button>
+                <button onClick={toggleMenu} className="ds-menu-closer">
+                    <VscClose size="28px" aria-label="Close menu" />
+                </button>
+                <nav
+                    aria-label="Breadcrumb"
+                    className="font-medium text-lg lg:text-xl"
                 >
-                    <VscGithub size="1.2em" aria-hidden="true" />
-                    Github
-                </a>
-            </li>
-            <li>
-                <a
-                    href="https://discord.gg/6uQZB2y4cz"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
-                >
-                    <SiDiscord size="1.2em" aria-hidden="true" />
-                    Discord
-                </a>
-            </li>
-        </ul>
-    </nav>
+                    <Link href="/" className="underline">
+                        af-utils
+                    </Link>
+                    <span className="px-2" aria-hidden="true">
+                        /
+                    </span>
+                    <span className="text-slate-500" aria-current="page">
+                        {productName}
+                    </span>
+                </nav>
+            </div>
+            <nav
+                aria-label="Main navigation"
+                onClick={toggleMenuWhenClickedOnLink}
+                className="prose prose-sm prose-ul:list-none prose-a:no-underline ds-menu-items"
+            >
+                {items.map(node => renderSubtree(node, prefix, 0))}
+
+                <h2>Links</h2>
+
+                <ul>
+                    <li>
+                        <a
+                            href="https://github.com/nowaalex/af-utils/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2"
+                        >
+                            <VscGithub size="1.2em" aria-hidden="true" />
+                            Github
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="https://discord.gg/6uQZB2y4cz"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2"
+                        >
+                            <SiDiscord size="1.2em" aria-hidden="true" />
+                            Discord
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </>
 );
 
 export default Menu;
