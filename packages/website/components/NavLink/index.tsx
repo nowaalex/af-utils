@@ -8,10 +8,12 @@ import { ComponentPropsWithoutRef } from "react";
 type NavLinkProps = ComponentPropsWithoutRef<typeof Link> & {
     activeClassName: string;
     exact?: boolean;
+    compareHref?: ComponentPropsWithoutRef<typeof Link>["href"];
 };
 
 const NavLink = ({
     href,
+    compareHref = href,
     exact,
     className,
     activeClassName,
@@ -20,8 +22,8 @@ const NavLink = ({
     const pathname = usePathname();
 
     const isActive = exact
-        ? pathname === href
-        : typeof href === "string" && pathname.startsWith(href);
+        ? pathname === compareHref
+        : typeof compareHref === "string" && pathname.startsWith(compareHref);
 
     return (
         <Link

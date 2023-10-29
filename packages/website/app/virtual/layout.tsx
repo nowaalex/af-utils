@@ -50,7 +50,8 @@ const items = [
             },
             {
                 name: "Reference",
-                path: "/reference"
+                path: "/reference/index.md",
+                comparePath: "/reference"
             },
             {
                 name: "Bundle size impact",

@@ -10,6 +10,7 @@ export type MenuItem = {
     name: string;
     path: string;
     exact?: boolean;
+    comparePath?: string;
     children?: readonly MenuItem[] | MenuItem[];
 };
 
@@ -37,6 +38,7 @@ const renderSubtree = (node: MenuItem, prefix: string, depth: number) =>
             key={node.path}
             exact={node.exact}
             href={prefix + node.path}
+            compareHref={prefix + (node.comparePath ?? node.path)}
             className="font-normal"
             activeClassName="!font-semibold text-orange-700 translate-y-20"
         >
