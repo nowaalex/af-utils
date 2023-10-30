@@ -42,7 +42,8 @@ const CSP = [
     },
     {
         "script-src":
-            "'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com",
+            "'unsafe-inline' https://*.googletagmanager.com" +
+            (process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"),
         "img-src":
             "https://*.google-analytics.com https://*.googletagmanager.com",
         "connect-src":
@@ -77,7 +78,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
                 </>
             ) : null}
         </head>
-        <body suppressHydrationWarning>{children}</body>
+        <body>{children}</body>
     </html>
 );
 
