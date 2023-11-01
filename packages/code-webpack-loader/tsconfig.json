@@ -1,8 +1,0 @@
-{
-    "include": ["index.ts"],
-    "extends": "../../tsconfig.base.json",
-    "compilerOptions": {
-        "moduleResolution": "Node",
-        "outDir": "lib"
-    }
-}

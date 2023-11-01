@@ -1,4 +1,6 @@
 import ExampleLayout from "components/Example";
+import shiki from "shiki";
+import theme from "shiki/themes/material-theme-palenight.json";
 import type { Metadata } from "next";
 
 type Params = { params: { example: string[] } };
@@ -24,7 +26,7 @@ export async function generateMetadata({ params }: Params) {
 
     const descriptionModule = await import(
         `components/examples/react-examples/${params.example.join("/")}/meta.ts`
-    ).catch(() => ({ default: null }));
+    );
 
     const description = descriptionModule?.default?.description;
 
@@ -49,13 +51,47 @@ const Page = async ({ params }: Params) => {
         `components/examples/react-examples/${key}/code.tsx`
     );
 
-    const { default: Code } = await import(
-        `!!code-webpack-loader!components/examples/react-examples/${key}/code.tsx`
-    );
-
     const { default: Description } = await import(
         `components/examples/react-examples/${key}/description.mdx`
-    ).catch(() => ({ default: null }));
+    );
+
+    const { default: codeString } = await import(
+        `!!raw-loader!components/examples/react-examples/${key}/code.tsx`
+    );
+
+    const highlighter = await shiki.getHighlighter({
+        theme: theme.name
+    });
+
+    const tokens = highlighter.codeToThemedTokens(codeString, "tsx");
+
+    const htmlString = shiki.renderToHtml(tokens, {
+        elements: {
+            pre({ children }) {
+                return children;
+            }
+        }
+    });
+
+    const background = highlighter.getBackgroundColor(theme.name);
+
+    const Code = ({
+        style,
+        tabIndex = 0,
+        ...props
+    }: JSX.IntrinsicElements["pre"]) => (
+        <pre
+            {...props}
+            tabIndex={tabIndex}
+            style={{
+                ...style,
+                background
+            }}
+            dangerouslySetInnerHTML={{
+                __html: htmlString
+            }}
+        />
+    );
 
     return (
         <ExampleLayout

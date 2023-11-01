@@ -42,7 +42,10 @@ const withMDX = nextMdx({
     options: {
         remarkPlugins: [remarkGfm, remarkToc],
         rehypePlugins: [
-            [rehypePrettyCode, { theme: "one-dark-pro", keepBackground: true }],
+            [
+                rehypePrettyCode,
+                { theme: "material-theme-palenight", keepBackground: true }
+            ],
             rehypeSlug
         ]
     }
