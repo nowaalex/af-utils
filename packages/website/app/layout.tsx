@@ -1,6 +1,5 @@
 import Script from "next/script";
 import { Exo as createFont } from "next/font/google";
-import mergeWith from "lodash/mergeWith";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import "styles/globals.css";
@@ -31,36 +30,9 @@ export const metadata = {
 // If loading a variable font, you don't need to specify the font weight
 const font = createFont({ subsets: ["latin"] });
 
-const CSP = [
-    {
-        "default-src": "'self'",
-        "img-src": "'self' data: w3.org/svg/2000"
-    },
-    {
-        "font-src": "fonts.gstatic.com",
-        "style-src": "'unsafe-inline' fonts.googleapis.com"
-    },
-    {
-        "script-src":
-            "'unsafe-inline' https://*.googletagmanager.com" +
-            (process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"),
-        "img-src":
-            "https://*.google-analytics.com https://*.googletagmanager.com",
-        "connect-src":
-            "https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com"
-    }
-].reduce((acc, obj) =>
-    mergeWith(acc, obj, (v, v2) => (v || "'self'") + " " + v2)
-);
-
-const cspString = Object.entries(CSP)
-    .map(([k, v]) => `${k} ${v};`)
-    .join(" ");
-
 const RootLayout = ({ children }: { children: ReactNode }) => (
     <html lang="en" className={font.className}>
         <head>
-            <meta httpEquiv="Content-Security-Policy" content={cspString} />
             {process.env.NODE_ENV === "production" ? (
                 <>
                     <Script
