@@ -45,7 +45,7 @@ const Page = async ({ params }: Params) => {
 
     const { default: meta } = await import(
         `components/examples/react-examples/${key}/meta.ts`
-    ).catch(() => ({ default: null }));
+    );
 
     const { default: Example } = await import(
         `components/examples/react-examples/${key}/code.tsx`

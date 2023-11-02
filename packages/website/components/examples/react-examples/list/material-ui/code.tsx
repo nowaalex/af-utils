@@ -7,7 +7,7 @@ import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
 Website does not use MUI, so importing dynamically for code splitting.
 Suspense component is located upper, so ignoring it here
 */
-const MuiList = lazy(() => import("@mui/material/List"));
+const MuiListNative = lazy(() => import("@mui/material/List"));
 const ListItem = lazy(() => import("@mui/material/ListItem"));
 const ListItemButton = lazy(() => import("@mui/material/ListItemButton"));
 const ListItemText = lazy(() => import("@mui/material/ListItemText"));
@@ -20,7 +20,7 @@ const Item = memo<ListItemProps>(({ i, model }) => (
     </ListItem>
 ));
 
-const SimpleList = () => {
+const MuiList = () => {
     const rows = useVirtual({
         itemCount: 50000,
         estimatedItemSize: 48
@@ -28,11 +28,11 @@ const SimpleList = () => {
 
     return (
         <Suspense fallback="Loading MUI...">
-            <List component={MuiList} disablePadding model={rows}>
+            <List component={MuiListNative} disablePadding model={rows}>
                 {Item}
             </List>
         </Suspense>
     );
 };
 
-export default SimpleList;
+export default MuiList;
