@@ -15,11 +15,11 @@ importers:
         specifier: ^2.26.2
         version: 2.26.2
       '@microsoft/api-documenter':
-        specifier: ^7.23.10
-        version: 7.23.10(@types/node@20.8.10)
+        specifier: ^7.23.11
+        version: 7.23.11(@types/node@20.8.10)
       '@microsoft/api-extractor':
-        specifier: ^7.38.1
-        version: 7.38.1(@types/node@20.8.10)
+        specifier: ^7.38.2
+        version: 7.38.2(@types/node@20.8.10)
       '@types/jest':
         specifier: ^29.5.7
         version: 29.5.7
@@ -30,8 +30,8 @@ importers:
         specifier: ^20.8.10
         version: 20.8.10
       '@types/react':
-        specifier: ^18.2.33
-        version: 18.2.33
+        specifier: ^18.2.34
+        version: 18.2.34
       '@types/react-dom':
         specifier: ^18.2.14
         version: 18.2.14
@@ -1343,14 +1343,14 @@ packages:
       '@types/react': 18.2.33
       react: 18.2.0
 
-  /@microsoft/api-documenter@7.23.10(@types/node@20.8.10):
-    resolution: {integrity: sha512-9jPlK5EeScxmkhaAyhQI+C84zJ34sjD/k/dEEsJGOrgrLfS8G/wlkVEJZdTz3oBxtWd9SqsxopvcQECUlnoicQ==}
+  /@microsoft/api-documenter@7.23.11(@types/node@20.8.10):
+    resolution: {integrity: sha512-lrtB1DDN3xlvadGPKtR+Rdo3Dn6039D7URrHtINCG8o4bUdrRrMidU3WNWjAXktM94XLa58nxeoKCscOmEqVtQ==}
     hasBin: true
     dependencies:
       '@microsoft/api-extractor-model': 7.28.2(@types/node@20.8.10)
       '@microsoft/tsdoc': 0.14.2
       '@rushstack/node-core-library': 3.61.0(@types/node@20.8.10)
-      '@rushstack/ts-command-line': 4.17.0
+      '@rushstack/ts-command-line': 4.17.1
       colors: 1.2.5
       js-yaml: 3.13.1
       resolve: 1.22.8
@@ -1368,8 +1368,8 @@ packages:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor@7.38.1(@types/node@20.8.10):
-    resolution: {integrity: sha512-Hxu/RrVpItQ4dzeMyfwlk4lGQFsXMoMS7bYU9YUrpW16hH04PXLRiTXJz77WhBiSGNtTuufz2xh6hWyXhC9JuQ==}
+  /@microsoft/api-extractor@7.38.2(@types/node@20.8.10):
+    resolution: {integrity: sha512-JOARuhTwOcOMIU0O2czscoJy3ddVzIRhSA9/7T1ALuZSNphgWsPk+Bv4E7AnBDmTV4pP4lBNLtCxEHjjpWaytQ==}
     hasBin: true
     dependencies:
       '@microsoft/api-extractor-model': 7.28.2(@types/node@20.8.10)
@@ -1377,7 +1377,7 @@ packages:
       '@microsoft/tsdoc-config': 0.16.2
       '@rushstack/node-core-library': 3.61.0(@types/node@20.8.10)
       '@rushstack/rig-package': 0.5.1
-      '@rushstack/ts-command-line': 4.17.0
+      '@rushstack/ts-command-line': 4.17.1
       colors: 1.2.5
       lodash: 4.17.21
       resolve: 1.22.8
@@ -1901,8 +1901,8 @@ packages:
       strip-json-comments: 3.1.1
     dev: true
 
-  /@rushstack/ts-command-line@4.17.0:
-    resolution: {integrity: sha512-1S0sXuEpZlzKTfvUqNs7Rg4leVkeLJc4Dn9cm+pSIn35a0Ztp5GxPN2gabD2G4RrQoQcJLLyVu+twzrJl1C0eA==}
+  /@rushstack/ts-command-line@4.17.1:
+    resolution: {integrity: sha512-2jweO1O57BYP5qdBGl6apJLB+aRIn5ccIRTPDyULh0KMwVzFqWtw6IZWt1qtUoZD/pD2RNkIOosH6Cq45rIYeg==}
     dependencies:
       '@types/argparse': 1.0.38
       argparse: 1.0.10
@@ -2145,7 +2145,7 @@ packages:
   /@types/react-dom@18.2.14:
     resolution: {integrity: sha512-V835xgdSVmyQmI1KLV2BEIUgqEuinxp9O4G6g3FqO/SqLac049E53aysv0oEFD2kHfejeKU+ZqL2bcFWj9gLAQ==}
     dependencies:
-      '@types/react': 18.2.33
+      '@types/react': 18.2.34
     dev: true
 
   /@types/react-transition-group@4.4.8:
@@ -2160,6 +2160,14 @@ packages:
       '@types/prop-types': 15.7.9
       '@types/scheduler': 0.16.5
       csstype: 3.1.2
+
+  /@types/react@18.2.34:
+    resolution: {integrity: sha512-U6eW/alrRk37FU/MS2RYMjx0Va2JGIVXELTODaTIYgvWGCV4Y4TfTUzG8DdmpDNIT0Xpj/R7GfyHOJJrDttcvg==}
+    dependencies:
+      '@types/prop-types': 15.7.9
+      '@types/scheduler': 0.16.5
+      csstype: 3.1.2
+    dev: true
 
   /@types/scheduler@0.16.5:
     resolution: {integrity: sha512-s/FPdYRmZR8SjLWGMCuax7r3qCWQw9QKHzXVukAuuIJkXkDRwp+Pu5LMIVFi0Fxbav35WURicYr8u1QsoybnQw==}
