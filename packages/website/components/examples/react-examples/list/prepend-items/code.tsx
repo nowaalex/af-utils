@@ -9,8 +9,8 @@ import useFakerSeed from "hooks/useFakerSeed";
 const Item = memo<ListItemProps>(({ i, model, data }) => (
     <div
         ref={el => model.el(i, el)}
-        className="border-t p-2 border-zinc-400"
-        style={{ lineHeight: data[i].height + "px" }}
+        className="border-t px-2 border-zinc-400"
+        style={{ padding: `${data[i].height}px 0` }}
     >
         Idx:&nbsp;{i};&emsp;{data[i].name}
     </div>
@@ -21,7 +21,7 @@ const getKey = (i: number, itemData: ReturnType<typeof getRandomItem>[]) =>
 
 const getRandomItem = () => ({
     name: randFullName(),
-    height: randNumber({ min: 30, max: 140 })
+    height: randNumber({ min: 20, max: 80 })
 });
 
 /* new Promise is made to simulate asynchronous fetch request */

@@ -11,7 +11,7 @@ const Item = memo<ListItemProps>(({ i, model, data: pseudoRandomSizes }) => (
         ref={el => model.el(i, el)}
         className="text-center border-t border-zinc-400"
         style={{
-            lineHeight: `${pseudoRandomSizes[i]}px`
+            padding: `${pseudoRandomSizes[i]}px 0`
         }}
     >
         row {i}:&nbsp;{pseudoRandomSizes[i]}px
@@ -32,7 +32,7 @@ const ScrollToItem = () => {
     const [pseudoRandomSizes, changeRows] = useState(() =>
         Array.from(
             { length: DEFAULT_ROW_COUNT },
-            (_, i) => 50 + ((i ** 2) & 63)
+            (_, i) => 20 + ((i ** 2) & 31)
         )
     );
 

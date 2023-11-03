@@ -10,7 +10,7 @@ const Item = memo<ListItemProps>(({ i, model, data: pseudoRandomSizes }) => (
         ref={el => model.el(i, el)}
         className="text-center border-t border-zinc-800"
         style={{
-            lineHeight: `${pseudoRandomSizes[i]}px`,
+            padding: `${pseudoRandomSizes[i]}px 0`,
             background: `hsl(${(i * 11) % 360},60%,60%)`
         }}
     >
@@ -22,7 +22,7 @@ const VariableSizeList = () => {
     const [pseudoRandomSizes] = useState(() =>
         Array.from(
             { length: DEFAULT_ROW_COUNT },
-            (_, i) => 50 + ((i ** 2) & 63)
+            (_, i) => 20 + ((i ** 2) & 31)
         )
     );
 
