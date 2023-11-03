@@ -4,18 +4,18 @@ import AutoLink from "components/AutoLink";
 export const metadata = {
     title: "Frequently asked questions",
     description:
-        "Something is not working as expected? Here is the list of hints that may help.",
+        "Something is not working as expected? Or just curious? Here is the list of hints that may be interesting.",
     openGraph: {
         type: "website",
         title: "Frequently asked questions",
         description:
-            "Something is not working as expected? Here is the list of hints that may help."
+            "Something is not working as expected? Or just curious? Here is the list of hints that may be interesting."
     }
 };
 
 # Frequently asked questions
 
-Something is not working as expected? Here is the list of hints that may help.
+Something is not working as expected? Or just curious? Here is the list of hints that may be interesting.
 
 ## Why do I need to use ref?
 
@@ -36,3 +36,24 @@ Maximum quantity library can handle is `2_147_483_647` (int32 max), but it is be
 ## Is Server-side rendering supported?
 
 Yes, you can adjust quantity of server-rendered items. <AutoLink href={docHref("virtual-core", "virtualscrollerinitialparams.estimatedwidgetsize" )}>Read more</AutoLink>
+
+## There are other virtual scroll libraries. Why this one?
+
+Awesome libraries, which inspired me to create my own:
+
+-   [tanstack virtual](https://tanstack.com/virtual/)
+-   [react-virtualized](https://github.com/bvaughn/react-virtualized)
+-   [react-window](https://github.com/bvaughn/react-window)
+-   [react-cool-virtual](https://github.com/wellyshen/react-cool-virtual)
+-   [react-virtuoso](https://virtuoso.dev/)
+
+Features I was missing there and implemented/improved here:
+
+-   flexible [core api](/virtual/reference/virtual-core.virtualscroller.md),
+    which exposes <AutoLink href={docHref("virtual-core", "VirtualScroller.getIndex")}>getIndex</AutoLink> and
+    {""}<AutoLink href={docHref("virtual-core", "VirtualScroller.getOffset")}>getOffset</AutoLink> methods;
+-   built-in event emitter, supporting different {""}<AutoLink href={docHref("virtual-core", "VirtualScrollerEvent")}>events</AutoLink>;
+-   scroll position persistence after [prepending items](/virtual/react-examples/list/prepend-items);
+-   isolated rerendering with separate [subscriptions](/virtual/react-examples/list/extra-events);
+-   support of both [react hook](/virtual/react-examples/hook/simple) and [react component](/virtual/react-examples/list/simple) api, which allows to
+    combine advantages of both aproaches.
