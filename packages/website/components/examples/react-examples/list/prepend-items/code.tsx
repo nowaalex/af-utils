@@ -17,10 +17,13 @@ const Item = memo<ListItemProps>(({ i, model, data }) => (
 ));
 
 const getKey = (i: number, itemData: ReturnType<typeof getRandomItem>[]) =>
-    itemData[i].name;
+    itemData[i].hash;
+
+let hashCounter = 0;
 
 const getRandomItem = () => ({
     name: randFullName(),
+    hash: hashCounter++,
     height: randNumber({ min: 20, max: 80 })
 });
 
@@ -67,7 +70,7 @@ const PrependButton = ({
 
 const PrependItems = () => {
     // fake data should be consistent for ssr purpose
-    useFakerSeed(1234);
+    useFakerSeed();
 
     const items = (useRef<ReturnType<typeof getRandomItem>[]>().current ||=
         Array.from({ length: 10000 }, getRandomItem));

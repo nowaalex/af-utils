@@ -34,7 +34,7 @@ const Item = memo<ListItemProps>(({ i, model, data: posts }) => (
 const EVENTS = [VirtualScrollerEvent.RANGE] as const;
 
 const Posts = () => {
-    useFakerSeed(12345);
+    useFakerSeed();
 
     const [posts, setPosts] = useState(() =>
         randParagraph({ length: randNumber({ min: 1, max: 3 }) })
