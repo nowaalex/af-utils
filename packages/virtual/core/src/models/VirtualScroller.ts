@@ -8,7 +8,6 @@ import {
     VirtualScrollerEvent
 } from "constants/";
 import FTreeArray from "models/FTreeArray";
-import FinalResizeObserver from "models/ResizeObserver";
 import call from "utils/call";
 import assert from "utils/assert";
 import observeResize from "utils/observeResize";
@@ -183,7 +182,7 @@ class VirtualScroller {
     private _stickyElements: [Element | null, Element | null] = [null, null];
     private _stickyElementsSizes: [number, number] = [0, 0];
 
-    private _StickyElResizeObserver = new FinalResizeObserver(entries => {
+    private _StickyElResizeObserver = new ResizeObserver(entries => {
         let buff = 0;
 
         for (const entry of entries) {
@@ -203,7 +202,7 @@ class VirtualScroller {
         this._updateStickyOffset(buff);
     });
 
-    private _ElResizeObserver = new FinalResizeObserver(entries => {
+    private _ElResizeObserver = new ResizeObserver(entries => {
         let buff = 0,
             wasAtLeastOneSizeChanged = false;
 
@@ -327,24 +326,6 @@ class VirtualScroller {
     }
 
     /**
-     * Unsubscribe from model events
-     * @param callBack - callBack to unsubscribe
-     * @param events - events to unsubscribe
-     */
-    private _off(
-        callBack: () => void,
-        events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]
-    ) {
-        events.forEach(evt =>
-            this._EventsList[evt].splice(
-                // >>> 0 - protection against -1
-                this._EventsList[evt].indexOf(callBack) >>> 0,
-                1
-            )
-        );
-    }
-
-    /**
      * Subscribe to model events
      * @returns unsubscribe function
      * @param callBack - event to be triggered
@@ -355,7 +336,14 @@ class VirtualScroller {
         events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]
     ) {
         events.forEach(evt => this._EventsList[evt].push(callBack));
-        return () => this._off(callBack, events);
+        return () =>
+            events.forEach(evt =>
+                this._EventsList[evt].splice(
+                    // >>> 0 - protection against -1
+                    this._EventsList[evt].indexOf(callBack) >>> 0,
+                    1
+                )
+            );
     }
 
     /**

@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.16
+
+### Patch Changes
+
+-   improved folder structure, improved testing
+
 ## 0.0.15
 
 ### Patch Changes
