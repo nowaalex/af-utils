@@ -1,6 +1,6 @@
 import ExampleLayout from "components/Example";
 import shiki from "shiki";
-import theme from "shiki/themes/material-theme-palenight.json";
+import theme from "shiki/themes/github-light.json";
 import type { Metadata } from "next";
 
 type Params = { params: { example: string[] } };
@@ -73,20 +73,11 @@ const Page = async ({ params }: Params) => {
         }
     });
 
-    const background = highlighter.getBackgroundColor(theme.name);
-
-    const Code = ({
-        style,
-        tabIndex = 0,
-        ...props
-    }: JSX.IntrinsicElements["pre"]) => (
+    const Code = ({ tabIndex = 0, ...props }: JSX.IntrinsicElements["pre"]) => (
         <pre
             {...props}
+            data-theme
             tabIndex={tabIndex}
-            style={{
-                ...style,
-                background
-            }}
             dangerouslySetInnerHTML={{
                 __html: htmlString
             }}

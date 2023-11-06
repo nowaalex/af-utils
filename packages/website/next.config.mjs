@@ -44,7 +44,7 @@ const withMDX = nextMdx({
         rehypePlugins: [
             [
                 rehypePrettyCode,
-                { theme: "material-theme-palenight", keepBackground: true }
+                { theme: "github-light", keepBackground: false }
             ],
             rehypeSlug
         ]

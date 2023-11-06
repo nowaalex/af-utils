@@ -65,4 +65,8 @@
     .prose {
         @apply max-w-none;
     }
+
+    pre[data-theme] {
+        @apply bg-zinc-50 drop-shadow;
+    }
 }
