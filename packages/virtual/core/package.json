@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-core",
     "private": false,
-    "version": "0.0.17",
+    "version": "0.0.18",
     "description": "Model for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-utils.git",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
@@ -18,9 +18,19 @@
         "lib/*"
     ],
     "type": "module",
-    "main": "lib/index.server.js",
+    "main": "lib/index.js",
     "types": "lib/index.d.ts",
-    "browser": "lib/index.js",
+    "exports": {
+        "./lib/bundlesize.index.js": "./lib/bundlesize.index.js",
+        ".": {
+            "types": "./lib/index.d.ts",
+            "node": "./lib/index.polyfilled.js",
+            "default": "./lib/index.js"
+        }
+    },
+    "engines": {
+        "node": ">=13.2"
+    },
     "keywords": [
         "virtual",
         "list",

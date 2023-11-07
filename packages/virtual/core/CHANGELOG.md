@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.18
+
+### Patch Changes
+
+-   started using exports
+
 ## 0.0.17
 
 ### Patch Changes

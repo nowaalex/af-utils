@@ -6,11 +6,7 @@ import type { RollupOptions } from "rollup";
 const OUTPUT_DIR = "lib/";
 
 export default {
-    input: [
-        "src/index.ts",
-        "src/index.server.ts",
-        "src/resize-observer-node.ts"
-    ],
+    input: "src/index.ts",
     plugins: [
         typescript({
             exclude: ["*rollup.config*"]
@@ -37,12 +33,25 @@ export default {
             sourceMap: true
         })
     ],
-    output: {
-        format: "es",
-        dir: OUTPUT_DIR,
-        generatedCode: "es2015",
-        sourcemap: true,
-        plugins: [exportBundleSize({ dir: OUTPUT_DIR, whitelist: /index\.js/ })]
-    },
+    output: [
+        {
+            format: "es",
+            file: `${OUTPUT_DIR}/index.js`,
+            generatedCode: "es2015",
+            sourcemap: true,
+            plugins: [exportBundleSize({ dir: OUTPUT_DIR })]
+        },
+        {
+            format: "es",
+            file: `${OUTPUT_DIR}/index.polyfilled.js`,
+            intro: `
+            global.ResizeObserver ||= class ResizeObserver {
+                observe() {}
+                unobserve() {}
+                disconnect() {}
+            };
+            `
+        }
+    ],
     external: [/@af-utils/]
 } satisfies RollupOptions;
