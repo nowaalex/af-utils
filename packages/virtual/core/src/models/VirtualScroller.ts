@@ -75,16 +75,10 @@ const ScrollToKeysOrdered = [
     ScrollToKey.HORIZONTAL
 ] as const;
 
-const getBoxSize = (
-    borderBox: readonly ResizeObserverSize[],
+const getEntrySize = (
+    resizeObserverEntry: ResizeObserverEntry,
     sizeKey: ResizeObserverSizeKey
-) => Math.round(borderBox[0][sizeKey]);
-
-const getAvailableWidgetSize = (
-    scrollElement: VirtualScrollerScrollElement,
-    sizeKey: ScrollElementSizeKey,
-    stickyOffset: number
-) => (scrollElement as any)[sizeKey] - stickyOffset;
+) => Math.round(resizeObserverEntry.borderBoxSize[0][sizeKey]);
 
 /**
  * @public
@@ -189,10 +183,8 @@ class VirtualScroller {
             const index = this._stickyElements.indexOf(entry.target);
             if (index !== -1) {
                 const diff =
-                    getBoxSize(
-                        entry.borderBoxSize,
-                        this._resizeObserverSizeKey
-                    ) - this._stickyElementsSizes[index];
+                    getEntrySize(entry, this._resizeObserverSizeKey) -
+                    this._stickyElementsSizes[index];
 
                 this._stickyElementsSizes[index] += diff;
                 buff += diff;
@@ -206,7 +198,7 @@ class VirtualScroller {
         let buff = 0,
             wasAtLeastOneSizeChanged = false;
 
-        const lim = /*@__NOINLINE__*/ getLiftingLimit(
+        const lim = /*#__NOINLINE__*/ getLiftingLimit(
             this._fTree,
             this.from + 1,
             this.to
@@ -226,10 +218,8 @@ class VirtualScroller {
             */
             if (index < lim) {
                 const diff =
-                    getBoxSize(
-                        entry.borderBoxSize,
-                        this._resizeObserverSizeKey
-                    ) - this._itemSizes[index];
+                    getEntrySize(entry, this._resizeObserverSizeKey) -
+                    this._itemSizes[index];
                 if (diff) {
                     wasAtLeastOneSizeChanged = true;
                     this._itemSizes[index] += diff;
@@ -289,12 +279,10 @@ class VirtualScroller {
     }
 
     private _handleScrollElementResize = () => {
-        const availableWidgetSize = getAvailableWidgetSize(
-            // casting type here because this stuff is used only as scrollElement resize event handler
-            this._scrollElement as VirtualScrollerScrollElement,
-            this._scrollElementSizeKey,
-            this._stickyOffset
-        );
+        // casting type here because this stuff is used only as scrollElement resize event handler
+        const availableWidgetSize =
+            (this._scrollElement as any)[this._scrollElementSizeKey] -
+            this._stickyOffset;
 
         if (availableWidgetSize !== this._availableWidgetSize) {
             this._availableWidgetSize = availableWidgetSize;
@@ -502,7 +490,7 @@ class VirtualScroller {
 
             if (element) {
                 this._updatePropertyKeys();
-                this._unobserveResize = /*@__NOINLINE__*/ observeResize(
+                this._unobserveResize = /*#__NOINLINE__*/ observeResize(
                     element,
                     this._handleScrollElementResize
                 );
@@ -569,7 +557,7 @@ class VirtualScroller {
         this._scrollerOffsetTimer = setTimeout(() => {
             if (this._scrollElement) {
                 const newScrollElementOffset =
-                    /*@__NOINLINE__*/ getDistanceBetween(
+                    /*#__NOINLINE__*/ getDistanceBetween(
                         this._scrollElement,
                         this._initialElement,
                         this._scrollKey,
@@ -770,13 +758,13 @@ class VirtualScroller {
 
             if (itemCount > this._itemSizes.length) {
                 const newLen = Math.min(itemCount + ITEMS_ROOM, MAX_INT_32);
-                this._itemSizes = /*@__NOINLINE__*/ growTypedArray(
+                this._itemSizes = /*#__NOINLINE__*/ growTypedArray(
                     this._itemSizes,
                     newLen,
                     this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE
                 );
                 this._fTree = new FTreeArray(newLen + 1);
-                /*@__NOINLINE__*/ syncWithArray(this._fTree, this._itemSizes);
+                /*#__NOINLINE__*/ syncWithArray(this._fTree, this._itemSizes);
             }
 
             this.scrollSize = this.getOffset(itemCount);

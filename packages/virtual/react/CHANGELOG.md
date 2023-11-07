@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.18
+
+### Patch Changes
+
+-   improved bundle size, improved rollup scripts, repaired annotations
+-   Updated dependencies
+    -   @af-utils/virtual-core@0.0.17
+
 ## 0.0.17
 
 ### Patch Changes

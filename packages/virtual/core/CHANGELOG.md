@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.17
+
+### Patch Changes
+
+-   improved bundle size, improved rollup scripts, repaired annotations
+
 ## 0.0.16
 
 ### Patch Changes

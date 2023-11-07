@@ -1,6 +1,7 @@
 import typescript from "@rollup/plugin-typescript";
 import exportBundleSize from "@af-utils/rollup-plugin-export-bundle-size";
 import terser from "@rollup/plugin-terser";
+import { RollupOptions } from "rollup";
 
 const OUTPUT_DIR = "lib/";
 
@@ -22,9 +23,10 @@ export default {
             },
             output: {
                 beautify: true,
-                comments: "all",
-                preserve_annotations: true
-            }
+                preserve_annotations: true,
+                comments: /^[@#].+/
+            },
+            sourceMap: true
         }),
         exportBundleSize({ dir: OUTPUT_DIR })
     ],
@@ -40,4 +42,4 @@ export default {
         "react",
         "use-sync-external-store/shim"
     ]
-};
+} satisfies RollupOptions;

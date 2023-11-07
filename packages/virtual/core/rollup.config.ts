@@ -1,19 +1,19 @@
-import typescript from "@rollup/plugin-typescript";
 import exportBundleSize from "@af-utils/rollup-plugin-export-bundle-size";
-import replace from "@rollup/plugin-replace";
+import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
+import type { RollupOptions } from "rollup";
 
 const OUTPUT_DIR = "lib/";
 
-export default [true, false].map(isServer => ({
-    input: "src/index.ts",
+export default {
+    input: [
+        "src/index.ts",
+        "src/index.server.ts",
+        "src/resize-observer-node.ts"
+    ],
     plugins: [
         typescript({
             exclude: ["*rollup.config*"]
-        }),
-        replace({
-            "preventAssignment": true,
-            "process.env.__IS_SERVER__": isServer
         }),
         terser({
             mangle: {
@@ -29,19 +29,20 @@ export default [true, false].map(isServer => ({
                 unsafe_math: true,
                 passes: 2
             },
-            output: {
+            format: {
                 beautify: true,
+                comments: /^[@#].+/,
                 preserve_annotations: true
-            }
-        }),
-        isServer ? null : exportBundleSize({ dir: OUTPUT_DIR })
+            },
+            sourceMap: true
+        })
     ],
     output: {
         format: "es",
         dir: OUTPUT_DIR,
         generatedCode: "es2015",
-        sourcemap: !isServer,
-        entryFileNames: `[name].${isServer ? "server." : ""}js`
+        sourcemap: true,
+        plugins: [exportBundleSize({ dir: OUTPUT_DIR, whitelist: /index\.js/ })]
     },
     external: [/@af-utils/]
-}));
+} satisfies RollupOptions;

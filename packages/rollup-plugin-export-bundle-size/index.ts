@@ -1,7 +1,7 @@
 import { writeFile } from "fs/promises";
 import { gzip as gzipCallback, brotliCompress } from "zlib";
 import { promisify } from "util";
-import { minify } from "terser";
+import { MinifyOptions, minify } from "terser";
 import type { Plugin } from "rollup";
 
 const TERSER_OPTS = {
@@ -11,9 +11,10 @@ const TERSER_OPTS = {
         }
     },
     output: {
-        comments: false
+        comments: false,
+        preserve_annotations: false
     }
-};
+} satisfies MinifyOptions;
 
 const gzip = promisify(gzipCallback);
 const brotli = promisify(brotliCompress);
@@ -58,20 +59,24 @@ async function getFileSizes(code: string) {
     } as const;
 }
 
-function createPlugin({ dir }: { dir: string }) {
+function createPlugin({ dir, whitelist }: { dir: string; whitelist?: RegExp }) {
     return {
         name: "export-bundle-size",
         writeBundle: async (_, output) => {
             for (const file in output) {
-                const newFileName = `${dir}/bundlesize.${file}`;
-                const outputContent = output[file];
+                if (!whitelist || whitelist.test(file)) {
+                    const newFileName = `${dir}/bundlesize.${file}`;
+                    const outputContent = output[file];
 
-                if ("code" in outputContent) {
-                    const fileSizes = await getFileSizes(outputContent.code);
-                    await Promise.all([
-                        write(newFileName, fileSizes, false),
-                        write(newFileName, fileSizes, true)
-                    ]);
+                    if ("code" in outputContent) {
+                        const fileSizes = await getFileSizes(
+                            outputContent.code
+                        );
+                        await Promise.all([
+                            write(newFileName, fileSizes, false),
+                            write(newFileName, fileSizes, true)
+                        ]);
+                    }
                 }
             }
         }
