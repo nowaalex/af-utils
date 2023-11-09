@@ -5,4 +5,10 @@
 
 export { default as VirtualScroller } from "models/VirtualScroller";
 export { VirtualScrollerEvent } from "constants/";
-export * from "./types";
+
+export {
+    VirtualScrollerExactPosition,
+    VirtualScrollerScrollElement,
+    VirtualScrollerInitialParams,
+    VirtualScrollerRuntimeParams
+} from "./types";

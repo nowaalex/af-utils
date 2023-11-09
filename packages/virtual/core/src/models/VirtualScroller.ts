@@ -7,7 +7,6 @@ import {
     _ALL_EVENTS,
     VirtualScrollerEvent
 } from "constants/";
-import FTreeArray from "models/FTreeArray";
 import call from "utils/call";
 import assert from "utils/assert";
 import observeResize from "utils/observeResize";
@@ -34,6 +33,8 @@ const DEFAULT_ESTIMATED_WIDGET_SIZE = 200;
 
 const DEFAULT_ESTIMATED_ITEM_SIZE = 40;
 
+const EMPTY_TYPED_ARRAY = new Uint32Array(0);
+
 /*
     0x7fffffff - maximum 32bit integer.
     Bitwise operations, used in fenwick tree, cannot be applied to numbers > int32.
@@ -44,8 +45,6 @@ const MAX_INT_32 = 0x7fffffff;
     Creating fenwick tree from an array in linear time;
     It is much more efficient, than calling updateItemHeight N times.
 */
-
-const EMPTY_TYPED_ARRAY = new FTreeArray(0);
 
 const STICKY_HEADER_INDEX = 0;
 const STICKY_FOOTER_INDEX = 1;
@@ -763,7 +762,7 @@ class VirtualScroller {
                     newLen,
                     this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE
                 );
-                this._fTree = new FTreeArray(newLen + 1);
+                this._fTree = new Uint32Array(newLen + 1);
                 /*#__NOINLINE__*/ syncWithArray(this._fTree, this._itemSizes);
             }
 

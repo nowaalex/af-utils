@@ -1,6 +1,7 @@
-import FTreeArray from "models/FTreeArray";
-
-export const syncWithArray = (fTree: FTreeArray, sourceArray: FTreeArray) => {
+export const syncWithArray = (
+    fTree: Uint32Array,
+    sourceArray: ArrayLike<number>
+) => {
     fTree.set(sourceArray, 1);
 
     for (let i = 1, fTreeLength = fTree.length, j; i < fTreeLength; i++) {
@@ -12,7 +13,7 @@ export const syncWithArray = (fTree: FTreeArray, sourceArray: FTreeArray) => {
 };
 
 export const update = (
-    fTree: FTreeArray,
+    fTree: Uint32Array,
     i: number,
     delta: number,
     limitTreeLiftingIndex: number
@@ -23,7 +24,7 @@ export const update = (
 };
 
 export const getLiftingLimit = (
-    fTree: FTreeArray,
+    fTree: Uint32Array,
     from: number,
     to: number
 ) => {
