@@ -23,7 +23,7 @@ const Example = ({ C, iframe }: { C: Components; iframe: boolean }) => {
                         <C.Example />
                     </div>
                 </ExampleWrapper>
-                <C.Code className="xl:overflow-auto p-4 text-sm" />
+                <C.Code className="overflow-x-auto xl:overflow-y-auto p-4 text-sm" />
             </div>
         </div>
     );
