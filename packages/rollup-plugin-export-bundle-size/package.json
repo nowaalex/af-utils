@@ -14,7 +14,8 @@
     "module": "lib/index.js",
     "keywords": [],
     "devDependencies": {
-        "terser": "^5.25.0"
+        "terser": "^5.26.0",
+        "rollup": "^4.9.1"
     },
     "publishConfig": {
         "access": "public"

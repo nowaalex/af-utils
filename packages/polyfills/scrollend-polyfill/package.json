@@ -26,7 +26,8 @@
     "devDependencies": {
         "@af-utils/rollup-plugin-export-bundle-size": "workspace:*",
         "@rollup/plugin-terser": "^0.4.4",
-        "@rollup/plugin-typescript": "^11.1.5"
+        "@rollup/plugin-typescript": "^11.1.5",
+        "rollup": "^4.9.1"
     },
     "publishConfig": {
         "access": "public"
