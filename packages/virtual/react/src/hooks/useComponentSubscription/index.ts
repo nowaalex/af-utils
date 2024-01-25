@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { VirtualScrollerEvent, VirtualScroller } from "@af-utils/virtual-core";
-import { useSyncExternalStore } from "use-sync-external-store/shim";
+import { useSyncExternalStore } from "use-sync-external-store/shim/index.js";
 
 function getSingleEventHash(this: VirtualScroller, e: VirtualScrollerEvent) {
     switch (e) {

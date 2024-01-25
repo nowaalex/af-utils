@@ -1,6 +1,6 @@
 {
     "name": "@af-utils/rollup-plugin-export-bundle-size",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
     "license": "MIT",
     "sideEffects": false,
@@ -14,8 +14,8 @@
     "module": "lib/index.js",
     "keywords": [],
     "devDependencies": {
-        "terser": "^5.26.0",
-        "rollup": "^4.9.1"
+        "rollup": "^4.9.6",
+        "terser": "^5.27.0"
     },
     "publishConfig": {
         "access": "public"

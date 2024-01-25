@@ -40,6 +40,6 @@ export default {
         /@af-utils/,
         "react/jsx-runtime",
         "react",
-        "use-sync-external-store/shim"
+        "use-sync-external-store/shim/index.js"
     ]
 } satisfies RollupOptions;

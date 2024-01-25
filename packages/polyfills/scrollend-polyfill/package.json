@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/scrollend-polyfill",
     "private": false,
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "Polyfill for scrollend event",
     "repository": "https://github.com/nowaalex/af-utils.git",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
@@ -26,8 +26,8 @@
     "devDependencies": {
         "@af-utils/rollup-plugin-export-bundle-size": "workspace:*",
         "@rollup/plugin-terser": "^0.4.4",
-        "@rollup/plugin-typescript": "^11.1.5",
-        "rollup": "^4.9.1"
+        "@rollup/plugin-typescript": "^11.1.6",
+        "rollup": "^4.9.6"
     },
     "publishConfig": {
         "access": "public"

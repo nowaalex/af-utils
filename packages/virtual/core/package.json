@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-core",
     "private": false,
-    "version": "0.0.18",
+    "version": "0.0.19",
     "description": "Model for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-utils.git",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
@@ -49,9 +49,9 @@
     "devDependencies": {
         "@af-utils/rollup-plugin-export-bundle-size": "workspace:*",
         "@rollup/plugin-terser": "^0.4.4",
-        "@rollup/plugin-typescript": "^11.1.5",
-        "ts-jest": "^29.1.1",
-        "rollup": "^4.9.1"
+        "@rollup/plugin-typescript": "^11.1.6",
+        "rollup": "^4.9.6",
+        "ts-jest": "^29.1.2"
     },
     "publishConfig": {
         "access": "public"
