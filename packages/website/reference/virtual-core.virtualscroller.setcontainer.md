@@ -27,17 +27,17 @@ void
 By default top/left offset between scroll container and first scrollable item is `0`<!-- -->. In this case just [VirtualScroller.setScroller()](./virtual-core.virtualscroller.setscroller.md) is needed. But extra element is needed when something "foreign" stands between scroll container and first scrollable item to measure distance between them. That extra element is represented as `ItemsContainer` on this schema:
 
 ```plaintext
-<ScrollContainer>            |.|
-   Some header               |s|
-   Another header            |c|
-   <ItemsContainer>          |r|
-        item 1               [o]
-        item 2               [l]
-        item 3               [l]
-        ...                  [b]
-   </ItemsContainer>         |a|
-   Some footer               |r|
-</ScrollContainer>           |.|
+<ScrollContainer>                |.|
+     Some header                 |s|
+     Another header              |c|
+     <ItemsContainer>            |r|
+        item 1                   [o]
+        item 2                   [l]
+        item 3                   [l]
+        ...                      [b]
+     </ItemsContainer>           |a|
+     Some footer                 |r|
+</ScrollContainer>               |.|
 ```
 Must be called with `null` before killing the instance.
 

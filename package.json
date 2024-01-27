@@ -16,7 +16,7 @@
         "@microsoft/api-extractor": "^7.39.4",
         "@types/jest": "^29.5.11",
         "@types/mdx": "^2.0.10",
-        "@types/node": "^20.11.6",
+        "@types/node": "^20.11.8",
         "@types/react": "^18.2.48",
         "@types/react-dom": "^18.2.18",
         "@types/use-sync-external-store": "^0.0.6",

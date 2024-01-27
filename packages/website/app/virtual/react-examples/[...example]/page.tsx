@@ -1,6 +1,6 @@
 import ExampleLayout from "components/Example";
-import shiki from "shiki";
-import theme from "shiki/themes/github-light.json";
+import { codeToHtml } from "shiki";
+import theme from "shiki/dist/themes/github-light.mjs";
 import type { Metadata } from "next";
 
 type Params = { params: { example: string[] } };
@@ -59,19 +59,28 @@ const Page = async ({ params }: Params) => {
         `!!raw-loader!components/examples/react-examples/${key}/code.tsx`
     );
 
-    const highlighter = await shiki.getHighlighter({
-        theme: theme.name
-    });
+    const htmlString = await codeToHtml( codeString, {
+        lang: "tsx",
+        theme,
+        transformers: [
+            {
+                pre({ children }){
 
-    const tokens = highlighter.codeToThemedTokens(codeString, "tsx");
+                    if( children.length !== 1 ){
+                        throw new Error( "Bad children length" );
+                    }
 
-    const htmlString = shiki.renderToHtml(tokens, {
-        elements: {
-            pre({ children }) {
-                return children;
+                    const firstCodeChild = children[ 0 ];
+
+                    if( firstCodeChild.type === 'element' && firstCodeChild.tagName === 'code' ){
+                        return firstCodeChild;
+                    }
+                    
+                    throw new Error( "Bad pre transformer" );
+                }
             }
-        }
-    });
+        ]
+    }) 
 
     const Code = ({ tabIndex = 0, ...props }: JSX.IntrinsicElements["pre"]) => (
         <pre

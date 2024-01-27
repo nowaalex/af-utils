@@ -67,6 +67,6 @@
     }
 
     pre[data-theme] {
-        @apply bg-zinc-50 drop-shadow;
+        @apply bg-zinc-50 drop-shadow text-inherit;
     }
 }
