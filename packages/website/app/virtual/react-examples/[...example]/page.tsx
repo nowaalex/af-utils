@@ -59,28 +59,30 @@ const Page = async ({ params }: Params) => {
         `!!raw-loader!components/examples/react-examples/${key}/code.tsx`
     );
 
-    const htmlString = await codeToHtml( codeString, {
+    const htmlString = await codeToHtml(codeString, {
         lang: "tsx",
         theme,
         transformers: [
             {
-                pre({ children }){
-
-                    if( children.length !== 1 ){
-                        throw new Error( "Bad children length" );
+                pre({ children }) {
+                    if (children.length !== 1) {
+                        throw new Error("Bad children length");
                     }
 
-                    const firstCodeChild = children[ 0 ];
+                    const firstCodeChild = children[0];
 
-                    if( firstCodeChild.type === "element" && firstCodeChild.tagName === "code" ){
+                    if (
+                        firstCodeChild.type === "element" &&
+                        firstCodeChild.tagName === "code"
+                    ) {
                         return firstCodeChild;
                     }
-                    
-                    throw new Error( "Bad pre transformer" );
+
+                    throw new Error("Bad pre transformer");
                 }
             }
         ]
-    }); 
+    });
 
     const Code = ({ tabIndex = 0, ...props }: JSX.IntrinsicElements["pre"]) => (
         <pre
