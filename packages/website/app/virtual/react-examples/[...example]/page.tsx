@@ -72,7 +72,7 @@ const Page = async ({ params }: Params) => {
 
                     const firstCodeChild = children[ 0 ];
 
-                    if( firstCodeChild.type === 'element' && firstCodeChild.tagName === 'code' ){
+                    if( firstCodeChild.type === "element" && firstCodeChild.tagName === "code" ){
                         return firstCodeChild;
                     }
                     
@@ -80,7 +80,7 @@ const Page = async ({ params }: Params) => {
                 }
             }
         ]
-    }) 
+    }); 
 
     const Code = ({ tabIndex = 0, ...props }: JSX.IntrinsicElements["pre"]) => (
         <pre
