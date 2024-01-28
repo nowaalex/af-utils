@@ -9,14 +9,14 @@ React component. Small abstraction, which in 90% cases allows to avoid hook boil
 **Signature:**
 
 ```typescript
-declare function List<Component extends ElementType = "div">(props: ListProps<Component>): JSX.Element;
+declare function List<C extends ElementType = "div">(props: ListProps<C> & Omit<ComponentProps<C>, "children" | "ref">): JSX.Element;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  props | [ListProps](./virtual-react.listprops.md)<!-- -->&lt;Component&gt; |  |
+|  props | [ListProps](./virtual-react.listprops.md)<!-- -->&lt;C&gt; &amp; Omit&lt;ComponentProps&lt;C&gt;, "children" \| "ref"&gt; |  |
 
 **Returns:**
 

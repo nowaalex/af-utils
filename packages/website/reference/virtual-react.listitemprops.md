@@ -16,7 +16,7 @@ export interface ListItemProps
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [data?](./virtual-react.listitemprops.data.md) |  | any | _(Optional)_ |
+|  [data?](./virtual-react.listitemprops.data.md) |  | any | _(Optional)_ links to [ListProps.itemData](./virtual-react.listprops.itemdata.md) |
 |  [i](./virtual-react.listitemprops.i.md) |  | number | item index |
 |  [model](./virtual-react.listitemprops.model.md) |  | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
 |  [offset?](./virtual-react.listitemprops.offset.md) |  | number | _(Optional)_ |

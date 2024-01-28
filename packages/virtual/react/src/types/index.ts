@@ -1,4 +1,4 @@
-import type { ReactNode, ElementType, ComponentProps } from "react";
+import type { ReactNode, ElementType } from "react";
 import type {
     VirtualScroller,
     VirtualScrollerEvent
@@ -12,6 +12,7 @@ export interface ListItemProps {
     model: VirtualScroller;
     /** item index */
     i: number;
+    /** links to {@link ListProps.itemData} */
     data?: any;
     offset?: number;
 }
@@ -20,21 +21,19 @@ export interface ListItemProps {
  * @public
  * {@link List} component props
  */
-export type ListProps<T extends ElementType = "div"> = Omit<
-    ComponentProps<T>,
-    "children" | "ref"
-> & {
+export interface ListProps<C extends ElementType = "div"> {
     model: VirtualScroller;
     children: ElementType<ListItemProps>;
-    itemData?: ListItemProps["data"];
+    /** could be accessed in {@link ListItemProps.data} */
+    itemData?: any;
     getKey?: (
         index: number,
-        itemData: ListItemProps["data"]
+        itemData: any
     ) => string | number;
-    component?: T;
+    component?: C;
     header?: JSX.Element | null;
     footer?: JSX.Element | null;
-};
+}
 
 /**
  * @public

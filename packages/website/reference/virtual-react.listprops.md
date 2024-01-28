@@ -2,22 +2,25 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [ListProps](./virtual-react.listprops.md)
 
-## ListProps type
+## ListProps interface
 
 [List()](./virtual-react.list.md) component props
 
 **Signature:**
 
 ```typescript
-export type ListProps<T extends ElementType = "div"> = Omit<ComponentProps<T>, "children" | "ref"> & {
-    model: VirtualScroller;
-    children: ElementType<ListItemProps>;
-    itemData?: ListItemProps["data"];
-    getKey?: (index: number, itemData: ListItemProps["data"]) => string | number;
-    component?: T;
-    header?: JSX.Element | null;
-    footer?: JSX.Element | null;
-};
+export interface ListProps<C extends ElementType = "div"> 
 ```
-**References:** [VirtualScroller](./virtual-core.virtualscroller.md)<!-- -->, [ListItemProps](./virtual-react.listitemprops.md)
+
+## Properties
+
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [children](./virtual-react.listprops.children.md) |  | ElementType&lt;[ListItemProps](./virtual-react.listitemprops.md)<!-- -->&gt; |  |
+|  [component?](./virtual-react.listprops.component.md) |  | C | _(Optional)_ |
+|  [footer?](./virtual-react.listprops.footer.md) |  | JSX.Element \| null | _(Optional)_ |
+|  [getKey?](./virtual-react.listprops.getkey.md) |  | (index: number, itemData: any) =&gt; string \| number | _(Optional)_ |
+|  [header?](./virtual-react.listprops.header.md) |  | JSX.Element \| null | _(Optional)_ |
+|  [itemData?](./virtual-react.listprops.itemdata.md) |  | any | _(Optional)_ could be accessed in [ListItemProps.data](./virtual-react.listitemprops.data.md) |
+|  [model](./virtual-react.listprops.model.md) |  | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
 

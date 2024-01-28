@@ -1,5 +1,5 @@
 import ExampleLayout from "components/Example";
-import { codeToHtml } from "shiki";
+import { ShikiTransformer, codeToHtml } from "shiki";
 import theme from "shiki/dist/themes/github-light.mjs";
 import type { Metadata } from "next";
 
@@ -40,6 +40,27 @@ export async function generateMetadata({ params }: Params) {
     } satisfies Metadata;
 }
 
+const transformers = [
+    {
+        pre({ children }) {
+            if (children.length !== 1) {
+                throw new Error("Bad children length");
+            }
+
+            const firstCodeChild = children[0];
+
+            if (
+                firstCodeChild.type === "element" &&
+                firstCodeChild.tagName === "code"
+            ) {
+                return firstCodeChild;
+            }
+
+            throw new Error("Bad pre transformer");
+        }
+    }
+] as ShikiTransformer[];
+
 const Page = async ({ params }: Params) => {
     const key = params.example.join("/");
 
@@ -55,33 +76,19 @@ const Page = async ({ params }: Params) => {
         `components/examples/react-examples/${key}/description.mdx`
     );
 
-    const { default: codeString } = await import(
+    const { default: rawCodeString } = await import(
         `!!raw-loader!components/examples/react-examples/${key}/code.tsx`
+    );
+
+    const codeString = rawCodeString.replace(
+        /^.*("|')use client("|')[;\s\n]*/,
+        ""
     );
 
     const htmlString = await codeToHtml(codeString, {
         lang: "tsx",
         theme,
-        transformers: [
-            {
-                pre({ children }) {
-                    if (children.length !== 1) {
-                        throw new Error("Bad children length");
-                    }
-
-                    const firstCodeChild = children[0];
-
-                    if (
-                        firstCodeChild.type === "element" &&
-                        firstCodeChild.tagName === "code"
-                    ) {
-                        return firstCodeChild;
-                    }
-
-                    throw new Error("Bad pre transformer");
-                }
-            }
-        ]
+        transformers
     });
 
     const Code = ({ tabIndex = 0, ...props }: JSX.IntrinsicElements["pre"]) => (

@@ -4,6 +4,7 @@ import Subscription from "components/Subscription";
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 import { useCallback, ElementType } from "react";
 import type { ListProps } from "types";
+import type { ComponentProps } from "react";
 
 /**
  * @public
@@ -13,8 +14,8 @@ import type { ListProps } from "types";
  * @privateRemarks
  * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-function List<Component extends ElementType = "div">(
-    props: ListProps<Component>
+function List<C extends ElementType = "div">(
+    props: ListProps<C> & Omit<ComponentProps<C>, "children" | "ref">
 ): JSX.Element {
     const {
         model,

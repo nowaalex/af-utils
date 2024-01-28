@@ -4,6 +4,8 @@
 
 ## ListItemProps.data property
 
+links to [ListProps.itemData](./virtual-react.listprops.itemdata.md)
+
 **Signature:**
 
 ```typescript
