@@ -22,3 +22,18 @@ declare function useVirtual(params: VirtualScrollerInitialParams): VirtualScroll
 
 [VirtualScroller](./virtual-core.virtualscroller.md)
 
+## Remarks
+
+[VirtualScroller.set()](./virtual-core.virtualscroller.set.md) is called internally to syncchronize model with props.
+
+## Example
+
+
+```tsx
+useVirtual({
+    itemCount: 1000,
+    estimatedItemSize: 100,
+    overscanCount: 1
+});
+```
+
