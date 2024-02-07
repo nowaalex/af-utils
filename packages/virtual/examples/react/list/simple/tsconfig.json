@@ -1,6 +1,7 @@
 {
-    "extends": "../../../../../../tsconfig.base.json",
+    "moduleResolution": "Bundler",
     "compilerOptions": {
         "outDir": "lib",
+        "jsx": "react-jsx",
     }
 }  
