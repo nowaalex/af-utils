@@ -1,0 +1,1 @@
+[List](https://af-utils.vercel.app/virtual/reference/virtual-react.list.md) supports `component` prop, so it can be easily integrated with Material UI or [Bootstrap](https://af-utils.vercel.app/virtual/react-examples/list/bootstrap). Also `disablePadding` should be passed to `MuiList`, because scroll element offsets are not supported.

@@ -1,0 +1,20 @@
+.item {
+    border-top: 1px solid #ccc;
+    text-align: center;
+    padding: 0.6em;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    padding: 1em;
+    background: lightgreen;
+}
+
+
+.footer {
+    position: sticky;
+    bottom: 0;
+    padding: 2.2em;
+    background: lightcoral;
+}

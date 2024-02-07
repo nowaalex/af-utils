@@ -1,0 +1,33 @@
+.item {
+    border-top: 1px solid #ccc;
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    padding: 0.5em;
+    flex-wrap: wrap;
+    gap: 1em;
+    background-color: lightgoldenrodyellow;
+    position: sticky;
+}
+
+.top0 {
+    top: 0;
+}
+
+.bottom0 {
+    bottom: 0;
+}
+
+.btn {
+    padding: 0 1em;
+    border: 1px solid #ccc;
+    background-color: antiquewhite;
+}
+
+.inp {
+    width: 7em;
+    padding: 0.2em 0.5em;
+}

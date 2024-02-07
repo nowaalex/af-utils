@@ -1,5 +1,5 @@
 {
-  "name": "@af-utils/virtual-examples-react-list-simple",
+  "name": "@af-utils/virtual-examples-react-list-prepend-items",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,9 +10,12 @@
   "type": "module",
   "dependencies": {
     "@af-utils/virtual-react": "^0.0.21",
+    "@af-utils/virtual-core": "^0.0.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "use-sync-external-store": "^1.2.0"
+    "use-sync-external-store": "^1.2.0",
+    "@ngneat/falso": "^7.1.1",
+    "react-icons": "^5.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
