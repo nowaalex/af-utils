@@ -23,6 +23,8 @@ export declare function mapVisibleRangeWithOffset<T>(model: VirtualScroller, cb:
 
 T\[\]
 
+Array of currently visible items
+
 ## Remarks
 
 Used in scenarios, when each item is absolutely positioned

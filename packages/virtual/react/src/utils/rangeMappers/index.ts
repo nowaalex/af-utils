@@ -6,6 +6,8 @@ import type { VirtualScroller } from "@af-utils/virtual-core";
  * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance
  * @param cb - callback
  *
+ * @returns Array of currently visible items
+ * 
  * @privateRemarks
  * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
@@ -31,6 +33,8 @@ export function mapVisibleRange<T>(
  *
  * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance
  * @param cb - callback
+ * 
+ * @returns Array of currently visible items
  *
  * @privateRemarks
  * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved

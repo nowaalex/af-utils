@@ -48,7 +48,7 @@ export interface VirtualScrollerRuntimeParams {
      * however in reality implementations have finite capacity.
      * UAs should support reasonably useful ranges and precisions
      *
-     * This quote was found {@link https://www.w3.org/TR/css3-values/#numeric-ranges | here}.
+     * This quote was found {ttps://www.w3.org/TR/css3-values/#numeric-ranges | here}.
      * Chrome's experimentally found maximum value is `33_554_428`.
      * So some problems may happen if {@link @af-utils/virtual-core#VirtualScroller.scrollSize} is bigger.
      *

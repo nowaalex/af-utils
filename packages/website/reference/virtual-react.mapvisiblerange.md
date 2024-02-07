@@ -23,3 +23,5 @@ export declare function mapVisibleRange<T>(model: VirtualScroller, cb: (index: n
 
 T\[\]
 
+Array of currently visible items
+

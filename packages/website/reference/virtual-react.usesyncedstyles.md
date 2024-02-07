@@ -25,3 +25,9 @@ declare function useSyncedStyles(model: VirtualScroller): [
 
 \[ (outerRef: HTMLElement \| null) =&gt; void, (innerRef: HTMLElement \| null) =&gt; void \]
 
+Array of two callback refs (for outer and inner elements).
+
+## Remarks
+
+An example could be found [here](https://af-utils.vercel.app/virtual/react-examples/hook/simple)
+

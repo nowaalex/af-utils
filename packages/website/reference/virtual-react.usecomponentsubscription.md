@@ -4,7 +4,7 @@
 
 ## useComponentSubscription() function
 
-React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted. Usually [Subscription()](./virtual-react.subscription.md) is a better alternative
+React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted.
 
 **Signature:**
 
@@ -22,4 +22,8 @@ declare function useComponentSubscription(model: VirtualScroller, events: readon
 **Returns:**
 
 void
+
+## Remarks
+
+Usually [Subscription()](./virtual-react.subscription.md) is a better alternative. This hook might be used in [grid](https://af-utils.vercel.app/virtual/react-examples/hook/grid) scenario.
 

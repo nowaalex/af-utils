@@ -45,6 +45,11 @@ const SCROLL_PROVIDER_STYLE_VERTICAL = {
  * Optimal CSS markup for virtual scroll is not intuitive.
  * Use this hook to avoid unneeded boilerplate.
  *
+ * @returns Array of two callback refs (for outer and inner elements).
+ * 
+ * @remarks
+ * An example could be found {@link https://af-utils.vercel.app/virtual/react-examples/hook/simple | here}
+ * 
  * @privateRemarks
  * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */

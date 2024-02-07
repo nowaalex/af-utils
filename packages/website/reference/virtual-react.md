@@ -14,12 +14,12 @@ React components, hooks and utils used to connect to [VirtualScroller](./virtual
 |  [mapVisibleRange(model, cb)](./virtual-react.mapvisiblerange.md) | Map current visible items |
 |  [mapVisibleRangeWithOffset(model, cb)](./virtual-react.mapvisiblerangewithoffset.md) | Map current visible items and provide offset for each item. |
 |  [Subscription(props)](./virtual-react.subscription.md) | React component. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance. |
-|  [useComponentSubscription(model, events)](./virtual-react.usecomponentsubscription.md) | React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted. Usually [Subscription()](./virtual-react.subscription.md) is a better alternative |
+|  [useComponentSubscription(model, events)](./virtual-react.usecomponentsubscription.md) | React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted. |
 |  [useScroller(model, scroller)](./virtual-react.usescroller.md) | React hook. Synchronizes scroller with model. |
 |  [useSubscription(model, events, callBack)](./virtual-react.usesubscription.md) | React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) without unnecessary rerenders. |
 |  [useSyncedStyles(model)](./virtual-react.usesyncedstyles.md) | React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hook to avoid unneeded boilerplate. |
 |  [useVirtual(params)](./virtual-react.usevirtual.md) | React hook. Calls [useVirtualModel()](./virtual-react.usevirtualmodel.md) and synchronizes it with props |
-|  [useVirtualModel(params)](./virtual-react.usevirtualmodel.md) | React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle. Normally [useVirtual()](./virtual-react.usevirtual.md) should be used. |
+|  [useVirtualModel(params)](./virtual-react.usevirtualmodel.md) | React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle. |
 
 ## Interfaces
 

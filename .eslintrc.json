@@ -6,7 +6,7 @@
         "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
-    "ignorePatterns": ["**/lib/**"],
+    "ignorePatterns": ["**/lib/**", "**/node_modules/**"],
     "root": true,
     "plugins": ["react", "jest", "@typescript-eslint"],
     "env": {
@@ -37,6 +37,7 @@
         "import/prefer-default-export": [0],
         "no-cond-assign": [0],
         "max-classes-per-file": [0],
+        "react/prop-types": "off",
         "react/display-name": "off",
         "react/jsx-uses-react": "off",
         "react/react-in-jsx-scope": "off",

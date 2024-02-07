@@ -4,7 +4,7 @@
 
 ## useVirtualModel() function
 
-React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle. Normally [useVirtual()](./virtual-react.usevirtual.md) should be used.
+React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle.
 
 **Signature:**
 
@@ -21,4 +21,8 @@ declare function useVirtualModel(params: VirtualScrollerInitialParams): VirtualS
 **Returns:**
 
 [VirtualScroller](./virtual-core.virtualscroller.md)
+
+## Remarks
+
+Normally [useVirtual()](./virtual-react.usevirtual.md) should be used.
 
