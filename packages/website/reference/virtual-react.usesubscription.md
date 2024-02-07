@@ -9,7 +9,7 @@ React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtual
 **Signature:**
 
 ```typescript
-declare function useSubscription(model: VirtualScroller, events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[], callBack: () => void): void;
+useSubscription: (model: VirtualScroller, events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[], callBack: () => void) => void
 ```
 
 ## Parameters

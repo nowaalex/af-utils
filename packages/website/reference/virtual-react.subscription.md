@@ -9,7 +9,7 @@ React component. Rerenders only on certain [VirtualScrollerEvent](./virtual-core
 **Signature:**
 
 ```typescript
-declare function Subscription(props: SubscriptionProps): ReactNode;
+Subscription: (props: SubscriptionProps) => ReactNode
 ```
 
 ## Parameters

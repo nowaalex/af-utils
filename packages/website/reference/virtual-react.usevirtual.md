@@ -9,7 +9,7 @@ React hook. Calls [useVirtualModel()](./virtual-react.usevirtualmodel.md) and sy
 **Signature:**
 
 ```typescript
-declare function useVirtual(params: VirtualScrollerInitialParams): VirtualScroller;
+useVirtual: (params: VirtualScrollerInitialParams) => VirtualScroller
 ```
 
 ## Parameters

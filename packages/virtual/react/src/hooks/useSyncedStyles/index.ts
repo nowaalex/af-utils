@@ -49,16 +49,13 @@ const SCROLL_PROVIDER_STYLE_VERTICAL = {
  * 
  * @remarks
  * An example could be found {@link https://af-utils.vercel.app/virtual/react-examples/hook/simple | here}
- * 
- * @privateRemarks
- * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-function useSyncedStyles(
+const useSyncedStyles = (
     model: VirtualScroller
 ): [
     (outerRef: HTMLElement | null) => void,
     (innerRef: HTMLElement | null) => void
-] {
+] => {
     const [outer, outerRef] = useState<HTMLElement | null>(null);
     const [inner, innerRef] = useState<HTMLElement | null>(null);
 
@@ -113,6 +110,6 @@ function useSyncedStyles(
     }, [model, outer, inner]);
 
     return [outerRef, innerRef];
-}
+};
 
 export default useSyncedStyles;

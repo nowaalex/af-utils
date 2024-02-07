@@ -21,14 +21,11 @@ function getSingleEventHash(this: VirtualScroller, e: VirtualScrollerEvent) {
  * @remarks
  * Usually {@link Subscription} is a better alternative.
  * This hook might be used in {@link https://af-utils.vercel.app/virtual/react-examples/hook/grid | grid} scenario.
- *
- * @privateRemarks
- * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-function useComponentSubscription(
+const useComponentSubscription = (
     model: VirtualScroller,
     events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]
-) {
+) => {
     const [subscribe, getHash] = useMemo(
         () => [
             (listener: () => void) => model.on(listener, events),
@@ -38,6 +35,6 @@ function useComponentSubscription(
     );
 
     useSyncExternalStore(subscribe, getHash, getHash);
-}
+};
 
 export default useComponentSubscription;

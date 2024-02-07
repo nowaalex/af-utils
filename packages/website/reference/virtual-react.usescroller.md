@@ -9,7 +9,7 @@ React hook. Synchronizes scroller with model.
 **Signature:**
 
 ```typescript
-declare function useScroller(model: VirtualScroller, scroller: VirtualScrollerScrollElement | null): void;
+useScroller: (model: VirtualScroller, scroller: VirtualScrollerScrollElement | null) => void
 ```
 
 ## Parameters

@@ -9,7 +9,7 @@ React component. Small abstraction, which in 90% cases allows to avoid hook boil
 **Signature:**
 
 ```typescript
-declare function List<C extends ElementType = "div">(props: ListProps<C> & Omit<ComponentProps<C>, "children" | "ref">): JSX.Element;
+List: <C extends ElementType = "div">(props: ListProps<C> & Omit<ComponentProps<C>, "children" | "ref">) => JSX.Element
 ```
 
 ## Parameters

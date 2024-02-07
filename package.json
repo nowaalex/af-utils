@@ -9,11 +9,17 @@
         "dev": "pnpm -r dev"
     },
     "browserslist": ">0.6%, not op_mini all",
+    "pnpm": {
+        "overrides": {
+            "@af-utils/virtual-core": "workspace:*",
+            "@af-utils/virtual-react": "workspace:*"
+        }
+    },
     "devDependencies": {
         "@changesets/changelog-github": "^0.5.0",
         "@changesets/cli": "^2.27.1",
-        "@microsoft/api-documenter": "^7.23.21",
-        "@microsoft/api-extractor": "^7.39.5",
+        "@microsoft/api-documenter": "^7.23.22",
+        "@microsoft/api-extractor": "^7.40.0",
         "@types/jest": "^29.5.12",
         "@types/mdx": "^2.0.11",
         "@types/node": "^20.11.16",

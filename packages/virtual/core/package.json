@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-core",
     "private": false,
-    "version": "0.0.19",
+    "version": "0.0.20",
     "description": "Model for rendering large scrollable data",
     "repository": "https://github.com/nowaalex/af-utils.git",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
@@ -11,7 +11,7 @@
     "sideEffects": false,
     "scripts": {
         "dev": "rollup -w -c rollup.config.ts --configPlugin typescript & tsc-alias -w",
-        "build": "rollup -c rollup.config.ts --configPlugin typescript && tsc-alias && api-extractor run && rm -r lib/types",
+        "build": "rollup -c rollup.config.ts --configPlugin typescript && tsc-alias && api-extractor run -v && rm -r lib/types",
         "test": "jest"
     },
     "files": [

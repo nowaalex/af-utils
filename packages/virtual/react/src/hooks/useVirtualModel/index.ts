@@ -12,14 +12,9 @@ import {
  * 
  * @remarks
  * Normally {@link useVirtual} should be used.
- *
- * @privateRemarks
- * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-function useVirtualModel(
+const useVirtualModel = (
     params: VirtualScrollerInitialParams
-): VirtualScroller {
-    return (useRef<VirtualScroller>().current ||= new VirtualScroller(params));
-}
+): VirtualScroller => (useRef<VirtualScroller>().current ||= new VirtualScroller(params));
 
 export default useVirtualModel;

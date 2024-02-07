@@ -9,7 +9,7 @@ React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-cor
 **Signature:**
 
 ```typescript
-declare function useComponentSubscription(model: VirtualScroller, events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]): void;
+useComponentSubscription: (model: VirtualScroller, events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[]) => void
 ```
 
 ## Parameters

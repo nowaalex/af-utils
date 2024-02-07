@@ -10,13 +10,10 @@ import type { ComponentProps } from "react";
  * @public
  * React component.
  * Small abstraction, which in 90% cases allows to avoid hook boilerplate.
- *
- * @privateRemarks
- * TODO: convert to arrow function when https://github.com/microsoft/rushstack/issues/1629 gets solved
  */
-function List<C extends ElementType = "div">(
+const List = <C extends ElementType = "div">(
     props: ListProps<C> & Omit<ComponentProps<C>, "children" | "ref">
-): JSX.Element {
+): JSX.Element => {
     const {
         model,
         children: Item,
@@ -69,6 +66,6 @@ function List<C extends ElementType = "div">(
             {footer}
         </C>
     );
-}
+};
 
 export default List;

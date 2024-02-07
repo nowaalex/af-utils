@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.21
+
+### Patch Changes
+
+- converted hooks to arrow functions
+- Updated dependencies
+  - @af-utils/virtual-core@0.0.20
+
 ## 0.0.20
 
 ### Patch Changes

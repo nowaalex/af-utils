@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.20
+
+### Patch Changes
+
+- converted hooks to arrow functions
+
 ## 0.0.19
 
 ### Patch Changes

@@ -9,7 +9,7 @@ React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscrol
 **Signature:**
 
 ```typescript
-declare function useVirtualModel(params: VirtualScrollerInitialParams): VirtualScroller;
+useVirtualModel: (params: VirtualScrollerInitialParams) => VirtualScroller
 ```
 
 ## Parameters
