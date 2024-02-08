@@ -1,6 +1,6 @@
 {
     "private": true,
-    "packageManager": "pnpm@8.6.7",
+    "packageManager": "pnpm@8.15.1",
     "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
     "license": "MIT",
     "scripts": {

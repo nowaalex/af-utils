@@ -124,6 +124,176 @@ importers:
         specifier: ^29.1.2
         version: 29.1.2(@babel/core@7.23.9)(jest@29.7.0)(typescript@5.3.3)
 
+  packages/virtual/examples/react/hook/custom-render:
+    dependencies:
+      '@af-utils/virtual-core':
+        specifier: workspace:*
+        version: link:../../../../core
+      '@af-utils/virtual-react':
+        specifier: workspace:*
+        version: link:../../../../react
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      use-sync-external-store:
+        specifier: ^1.2.0
+        version: 1.2.0(react@18.2.0)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.55
+        version: 18.2.55
+      '@types/react-dom':
+        specifier: ^18.2.19
+        version: 18.2.19
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@5.0.12)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.12
+        version: 5.0.12(@types/node@20.11.16)
+
+  packages/virtual/examples/react/hook/different-scroll-element:
+    dependencies:
+      '@af-utils/virtual-core':
+        specifier: workspace:*
+        version: link:../../../../core
+      '@af-utils/virtual-react':
+        specifier: workspace:*
+        version: link:../../../../react
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      use-sync-external-store:
+        specifier: ^1.2.0
+        version: 1.2.0(react@18.2.0)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.55
+        version: 18.2.55
+      '@types/react-dom':
+        specifier: ^18.2.19
+        version: 18.2.19
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@5.0.12)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.12
+        version: 5.0.12(@types/node@20.11.16)
+
+  packages/virtual/examples/react/hook/grid:
+    dependencies:
+      '@af-utils/virtual-core':
+        specifier: workspace:*
+        version: link:../../../../core
+      '@af-utils/virtual-react':
+        specifier: workspace:*
+        version: link:../../../../react
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      use-sync-external-store:
+        specifier: ^1.2.0
+        version: 1.2.0(react@18.2.0)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.55
+        version: 18.2.55
+      '@types/react-dom':
+        specifier: ^18.2.19
+        version: 18.2.19
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@5.0.12)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.12
+        version: 5.0.12(@types/node@20.11.16)
+
+  packages/virtual/examples/react/hook/simple:
+    dependencies:
+      '@af-utils/virtual-core':
+        specifier: workspace:*
+        version: link:../../../../core
+      '@af-utils/virtual-react':
+        specifier: workspace:*
+        version: link:../../../../react
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      use-sync-external-store:
+        specifier: ^1.2.0
+        version: 1.2.0(react@18.2.0)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.55
+        version: 18.2.55
+      '@types/react-dom':
+        specifier: ^18.2.19
+        version: 18.2.19
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@5.0.12)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.12
+        version: 5.0.12(@types/node@20.11.16)
+
+  packages/virtual/examples/react/hook/window-scroll:
+    dependencies:
+      '@af-utils/virtual-core':
+        specifier: workspace:*
+        version: link:../../../../core
+      '@af-utils/virtual-react':
+        specifier: workspace:*
+        version: link:../../../../react
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      use-sync-external-store:
+        specifier: ^1.2.0
+        version: 1.2.0(react@18.2.0)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.55
+        version: 18.2.55
+      '@types/react-dom':
+        specifier: ^18.2.19
+        version: 18.2.19
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@5.0.12)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.12
+        version: 5.0.12(@types/node@20.11.16)
+
   packages/virtual/examples/react/list/bootstrap:
     dependencies:
       '@af-utils/virtual-react':
@@ -406,6 +576,37 @@ importers:
         version: 5.0.12(@types/node@20.11.16)
 
   packages/virtual/examples/react/list/sticky-header-and-footer:
+    dependencies:
+      '@af-utils/virtual-react':
+        specifier: workspace:*
+        version: link:../../../../react
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      use-sync-external-store:
+        specifier: ^1.2.0
+        version: 1.2.0(react@18.2.0)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.55
+        version: 18.2.55
+      '@types/react-dom':
+        specifier: ^18.2.19
+        version: 18.2.19
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@5.0.12)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.12
+        version: 5.0.12(@types/node@20.11.16)
+
+  packages/virtual/examples/react/list/variable-size-list:
     dependencies:
       '@af-utils/virtual-react':
         specifier: workspace:*

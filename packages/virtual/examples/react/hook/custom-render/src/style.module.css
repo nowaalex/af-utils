@@ -1,0 +1,46 @@
+.wrapper {
+    overflow: auto;
+    position: relative;
+    border: 1px solid #ccc;
+    contain: strict;
+}
+
+.table {
+    width: 100%;
+    text-align: center;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table td, .table th {
+    border: 1px solid #ccc;
+    padding: 0.3em;
+}
+
+.table tfoot th,
+.table tfoot td,
+.table thead th,
+.table thead td {
+    background-color: #fff;
+}
+
+.thead {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+}
+
+.tfoot {
+    position: sticky;
+    bottom: 0;
+    background-color: #fff;
+}
+
+.spaceTr {
+    contain: strict;
+}
+
+.spaceTr td {
+    padding: 0 !important;
+    border: none !important;
+}

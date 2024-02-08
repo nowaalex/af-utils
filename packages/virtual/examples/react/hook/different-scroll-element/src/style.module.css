@@ -1,0 +1,23 @@
+.list {
+    overflow: auto;
+}
+
+.item {
+    border-top: 1px solid #ccc;
+    padding: 0.5em;
+}
+
+.offset1 {
+    padding: 1em 0;
+    min-height: 20vh;
+    background-color: lightgray;
+    text-align: center;
+}
+
+
+.offset2 {
+    padding: 1em 0;
+    min-height: 10vh;
+    background-color: lightcoral;
+    text-align: center;
+}
