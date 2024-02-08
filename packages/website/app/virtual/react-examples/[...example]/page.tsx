@@ -11,8 +11,8 @@ export async function generateStaticParams() {
     const glob = await import("fast-glob");
 
     const result = glob.default
-        .sync("components/examples/react-examples/**/code.tsx")
-        .map(f => ({ example: f.split("/").slice(3, -1) }));
+        .sync("../../../../../virtual/examples/react/**/src/code.tsx")
+        .map(f => ({ example: f.split("/").slice(5, -2) }));
 
     return result;
 }
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Params) {
     )} React Example`;
 
     const descriptionModule = await import(
-        `components/examples/react-examples/${params.example.join("/")}/meta.ts`
+        `../../../../../virtual/examples/react/${params.example.join("/")}/meta.ts`
     );
 
     const description = descriptionModule?.default?.description;
@@ -64,25 +64,18 @@ const transformers = [
 const Page = async ({ params }: Params) => {
     const key = params.example.join("/");
 
-    const { default: meta } = await import(
-        `components/examples/react-examples/${key}/meta.ts`
+    const { default: Example } = await import(
+        `../../../../../virtual/examples/react/${key}/lib/index.html`
     );
 
-    const { default: Example } = await import(
-        `components/examples/react-examples/${key}/code.tsx`
-    );
+    console.log(33, Example);
 
     const { default: Description } = await import(
-        `components/examples/react-examples/${key}/description.mdx`
+        `../../../../../virtual/examples/react/${key}/README.md`
     );
 
-    const { default: rawCodeString } = await import(
-        `!!raw-loader!components/examples/react-examples/${key}/code.tsx`
-    );
-
-    const codeString = rawCodeString.replace(
-        /^.*("|')use client("|')[;\s\n]*/,
-        ""
+    const { default: codeString } = await import(
+        `!!raw-loader!../../../../../virtual/examples/react/${key}/src/code.tsx`
     );
 
     const htmlString = await codeToHtml(codeString, {
@@ -104,9 +97,7 @@ const Page = async ({ params }: Params) => {
 
     return (
         <ExampleLayout
-            iframe={!!meta?.iframe}
             C={{
-                Example,
                 Code,
                 Description
             }}

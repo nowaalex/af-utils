@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import imgSrc from "public/messy.jpg";
-import List from "components/examples/react-examples/list/simple/code";
+import List from "../../../virtual/examples/react/list/simple/src/code";
 
 const IndexExample = () => (
     <div className="grid md:grid-cols-2 gap-8 not-prose max-w-screen-xl">
