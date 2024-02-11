@@ -65,10 +65,8 @@ const Page = async ({ params }: Params) => {
     const key = params.example.join("/");
 
     const { default: Example } = await import(
-        `../../../../../virtual/examples/react/${key}/lib/index.html`
+        `!!raw-loader!../../../../../virtual/examples/react/${key}/lib/index.html`
     );
-
-    console.log(33, Example);
 
     const { default: Description } = await import(
         `../../../../../virtual/examples/react/${key}/README.md`
@@ -99,6 +97,7 @@ const Page = async ({ params }: Params) => {
         <ExampleLayout
             C={{
                 Code,
+                Example,
                 Description
             }}
         />
