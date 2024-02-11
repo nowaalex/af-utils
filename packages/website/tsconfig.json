@@ -4,7 +4,7 @@
         "decs.d.ts",
         "**/*.ts",
         "**/*.tsx",
-        ".next/types/**/*.ts"
+        ".next/types/**/*.ts",
     ],
     "extends": "../../tsconfig.base.json",
     "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
