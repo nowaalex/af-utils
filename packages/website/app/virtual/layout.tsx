@@ -22,12 +22,12 @@ export const metadata = {
 } satisfies Metadata;
 
 const map = glob
-    .sync("../../examples/virtual/react/**/src/code.tsx")
+    .sync("../../examples/src/virtual/react/**/src/code.tsx")
     .reduce<Record<string, any>>(
         (result, path) => (
             path
                 .split("/")
-                .slice(5, -2)
+                .slice(6, -2)
                 .reduce((acc, v) => (acc[v] ||= {}), result),
             result
         ),

@@ -11,8 +11,8 @@ export async function generateStaticParams() {
     const glob = await import("fast-glob");
 
     const result = glob.default
-        .sync("../../../../../examples/virtual/react/**/src/code.tsx")
-        .map(f => ({ example: f.split("/").slice(5, -2) }));
+        .sync("../../../../../examples/src/virtual/react/**/src/code.tsx")
+        .map(f => ({ example: f.split("/").slice(6, -2) }));
 
     return result;
 }
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Params) {
     )} React Example`;
 
     const descriptionModule = await import(
-        `../../../../../../examples/virtual/react/${params.example.join("/")}/meta.ts`
+        `../../../../../../examples/src/virtual/react/${params.example.join("/")}/meta.ts`
     );
 
     const description = descriptionModule?.default?.description;
@@ -64,14 +64,14 @@ const transformers = [
 const Page = async ({ params }: Params) => {
     const key = params.example.join("/");
 
-    const src = `/examples/virtual/react/${key}/index.html`;
+    const src = `/examples/src/virtual/react/${key}/index.html`;
 
     const { default: Description } = await import(
-        `../../../../../../examples/virtual/react/${key}/README.md`
+        `../../../../../../examples/src/virtual/react/${key}/README.md`
     );
 
     const { default: codeString } = await import(
-        `!!raw-loader!../../../../../../examples/virtual/react/${key}/src/code.tsx`
+        `!!raw-loader!../../../../../../examples/src/virtual/react/${key}/src/code.tsx`
     );
 
     const htmlString = await codeToHtml(codeString, {

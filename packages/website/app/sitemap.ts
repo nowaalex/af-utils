@@ -15,9 +15,9 @@ const sitemap = () => {
         }));
 
     const virtualReactExamplePaths = glob
-        .sync("../../../examples/virtual/react/**/src/code.tsx")
+        .sync("../../../examples/src/virtual/react/**/src/code.tsx")
         .map(fileName => ({
-            url: `${URL}/virtual/${fileName.split("/").slice(5, -2).join("/")}`
+            url: `${URL}/virtual/${fileName.split("/").slice(6, -2).join("/")}`
         }));
 
     const virtualReferencePaths = glob.sync("reference/*.md").map(fileName => ({

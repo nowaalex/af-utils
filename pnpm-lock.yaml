@@ -82,14 +82,69 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  examples/virtual/react/hook/custom-render:
+  examples:
     dependencies:
       '@af-utils/virtual-core':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/core
+        version: link:../packages/virtual/core
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../packages/virtual/react
+      '@emotion/react':
+        specifier: ^11.11.3
+        version: 11.11.3(@types/react@18.2.55)(react@18.2.0)
+      '@emotion/styled':
+        specifier: ^11.11.0
+        version: 11.11.0(@emotion/react@11.11.3)(@types/react@18.2.55)(react@18.2.0)
+      '@mui/material':
+        specifier: ^5.15.9
+        version: 5.15.9(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
+      '@ngneat/falso':
+        specifier: ^7.1.1
+        version: 7.1.1
+      bootstrap:
+        specifier: ^5.3.2
+        version: 5.3.2(@popperjs/core@2.11.8)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-bootstrap:
+        specifier: ^2.10.1
+        version: 2.10.1(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      use-sync-external-store:
+        specifier: ^1.2.0
+        version: 1.2.0(react@18.2.0)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.55
+        version: 18.2.55
+      '@types/react-dom':
+        specifier: ^18.2.19
+        version: 18.2.19
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@5.1.1)
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^5.1.1
+        version: 5.1.1(@types/node@20.11.17)
+
+  examples/src/virtual/react/hook/custom-render:
+    dependencies:
+      '@af-utils/virtual-core':
+        specifier: workspace:*
+        version: link:../../../../../../packages/virtual/core
+      '@af-utils/virtual-react':
+        specifier: workspace:*
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -116,14 +171,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/hook/different-scroll-element:
+  examples/src/virtual/react/hook/different-scroll-element:
     dependencies:
       '@af-utils/virtual-core':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/core
+        version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -150,14 +205,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/hook/grid:
+  examples/src/virtual/react/hook/grid:
     dependencies:
       '@af-utils/virtual-core':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/core
+        version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -184,14 +239,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/hook/simple:
+  examples/src/virtual/react/hook/simple:
     dependencies:
       '@af-utils/virtual-core':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/core
+        version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -218,14 +273,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/hook/window-scroll:
+  examples/src/virtual/react/hook/window-scroll:
     dependencies:
       '@af-utils/virtual-core':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/core
+        version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -252,11 +307,11 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/bootstrap:
+  examples/src/virtual/react/list/bootstrap:
     dependencies:
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       bootstrap:
         specifier: ^5.3.2
         version: 5.3.2(@popperjs/core@2.11.8)
@@ -289,14 +344,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/extra-events:
+  examples/src/virtual/react/list/extra-events:
     dependencies:
       '@af-utils/virtual-core':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/core
+        version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -323,11 +378,11 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/horizontal:
+  examples/src/virtual/react/list/horizontal:
     dependencies:
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -354,14 +409,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/load-on-demand:
+  examples/src/virtual/react/list/load-on-demand:
     dependencies:
       '@af-utils/virtual-core':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/core
+        version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       '@ngneat/falso':
         specifier: ^7.1.1
         version: 7.1.1
@@ -391,11 +446,11 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/material-ui:
+  examples/src/virtual/react/list/material-ui:
     dependencies:
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       '@emotion/react':
         specifier: ^11.11.3
         version: 11.11.3(@types/react@18.2.55)(react@18.2.0)
@@ -431,14 +486,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/prepend-items:
+  examples/src/virtual/react/list/prepend-items:
     dependencies:
       '@af-utils/virtual-core':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/core
+        version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       '@ngneat/falso':
         specifier: ^7.1.1
         version: 7.1.1
@@ -471,14 +526,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/scroll-to-item:
+  examples/src/virtual/react/list/scroll-to-item:
     dependencies:
       '@af-utils/virtual-core':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/core
+        version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -505,11 +560,11 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/simple:
+  examples/src/virtual/react/list/simple:
     dependencies:
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -536,11 +591,11 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/sticky-header-and-footer:
+  examples/src/virtual/react/list/sticky-header-and-footer:
     dependencies:
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -567,11 +622,11 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@20.11.17)
 
-  examples/virtual/react/list/variable-size-list:
+  examples/src/virtual/react/list/variable-size-list:
     dependencies:
       '@af-utils/virtual-react':
         specifier: workspace:*
-        version: link:../../../../../packages/virtual/react
+        version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
         version: 18.2.0

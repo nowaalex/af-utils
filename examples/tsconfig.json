@@ -1,0 +1,9 @@
+{
+    "moduleResolution": "Bundler",
+    "include": ["global.d.ts", "src"],
+    "exclude": ["src/**/global.d.ts"],
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "lib",
+    }
+}  
