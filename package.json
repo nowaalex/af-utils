@@ -9,12 +9,6 @@
         "dev": "pnpm --filter './packages/**' dev"
     },
     "browserslist": ">0.6%, not op_mini all",
-    "pnpm": {
-        "overrides": {
-            "@af-utils/virtual-core": "workspace:*",
-            "@af-utils/virtual-react": "workspace:*"
-        }
-    },
     "devDependencies": {
         "@changesets/changelog-github": "^0.5.0",
         "@changesets/cli": "^2.27.1",
