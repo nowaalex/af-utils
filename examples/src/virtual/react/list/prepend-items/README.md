@@ -6,5 +6,3 @@ and [scroll to it](https://af-utils.vercel.app/virtual/reference/virtual-core.vi
 This example also shows [useVirtualModel](https://af-utils.vercel.app/virtual/reference/virtual-react.usevirtualmodel.md) opportuninies.
 Classical approach would require `useState` to store items and `useEffect` / `useLayoutEffect` to scroll when they are updated.
 If your data flow is very specific or you like to sacrifice readability for the sake of performance - go ahead.
-
-[useVirtualModel](https://af-utils.vercel.app/virtual/reference/virtual-react.usevirtualmodel.md)
