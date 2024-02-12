@@ -1,3 +1,4 @@
 declare module "*.mdx" {
-    export default props => JSX.Element;
+    const result = () => JSX.Element;
+    export default result;
 }

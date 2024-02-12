@@ -6,7 +6,8 @@
     "scripts": {
         "test": "pnpm -r test",
         "build": "pnpm --filter './packages/**' build",
-        "dev": "pnpm --filter './packages/**' dev"
+        "dev": "pnpm --filter './packages/**' dev",
+        "lint": "eslint --fix ."
     },
     "browserslist": ">0.6%, not op_mini all",
     "devDependencies": {
@@ -20,8 +21,8 @@
         "@types/react": "^18.2.55",
         "@types/react-dom": "^18.2.19",
         "@types/use-sync-external-store": "^0.0.6",
-        "@typescript-eslint/eslint-plugin": "^6.21.0",
-        "@typescript-eslint/parser": "^6.21.0",
+        "@typescript-eslint/eslint-plugin": "^7.0.0",
+        "@typescript-eslint/parser": "^7.0.0",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-jest": "^27.6.3",
