@@ -9,8 +9,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@af-utils/virtual-core": "workspace:*",
-    "@af-utils/virtual-react": "workspace:*",
+    "@af-utils/virtual-core": "0.0.20",
+    "@af-utils/virtual-react": "0.0.21",
     "@ngneat/falso": "^7.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
