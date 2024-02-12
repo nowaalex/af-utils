@@ -5,8 +5,8 @@
     "license": "MIT",
     "scripts": {
         "test": "pnpm -r test",
-        "build": "pnpm -r build",
-        "dev": "pnpm -r dev"
+        "build": "pnpm --filter './packages/**' build",
+        "dev": "pnpm --filter './packages/**' dev"
     },
     "browserslist": ">0.6%, not op_mini all",
     "pnpm": {

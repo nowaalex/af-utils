@@ -11,7 +11,7 @@ export async function generateStaticParams() {
     const glob = await import("fast-glob");
 
     const result = glob.default
-        .sync("../../../../../examples/src/virtual/react/**/src/code.tsx")
+        .sync("../../examples/src/virtual/react/**/src/code.tsx")
         .map(f => ({ example: f.split("/").slice(6, -2) }));
 
     return result;
