@@ -70,3 +70,11 @@ Items are remeasured on the fly. If <AutoLink href={docHref("virtual-core", "vir
 is different from the real one, <AutoLink href={docHref("virtual-core", "VirtualScroller.scrollSize")}>scrollSize</AutoLink> would jump, which causes scrollbar
 unalignment. No size discrepancies leads to no jumps, so <AutoLink href={docHref("virtual-core", "virtualscrollerruntimeparams.estimateditemsize")}>estimated item size</AutoLink>
 must be as accurate as possible.
+
+<p className="clear-both" />
+
+## Why do all items disappear after scrolling to bottom?
+
+Most likely it is related to [this Firefox 122 issue](https://github.com/webcompat/web-bugs/issues/133349), which is already fixed in version 124.
+If it happens in different browser &ndash; feel free to open new issue [here](https://github.com/nowaalex/af-utils/issues).
+If it happens in Firefox 124 or newer &ndash; feel free to reopen [existing issue](https://github.com/webcompat/web-bugs/issues/133349).
