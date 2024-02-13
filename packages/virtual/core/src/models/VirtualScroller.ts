@@ -208,7 +208,7 @@ class VirtualScroller {
         */
         for (const entry of entries) {
             // cannot be undefined, because element is being added to this map before getting into ResizeObserver
-            const index = this._elToIdx.get(entry.target) as number;
+            const index = this._elToIdx.get(entry.target)!;
 
             /*
                 ResizeObserver may give us elements, which are not in visible range => will be unmounted soon.
