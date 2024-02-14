@@ -10,7 +10,8 @@ export default {
     theme: {
         extend: {
             backgroundImage: {
-                sloth: "url('/sloth.jpg')"
+                sloth: "url('/sloth.jpg')",
+                sizif: "url('/sizif.jpg')",
             },
             typography: {
                 DEFAULT: {

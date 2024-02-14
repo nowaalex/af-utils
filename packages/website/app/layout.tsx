@@ -50,7 +50,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
                 </>
             ) : null}
         </head>
-        <body>{children}</body>
+        <body className="bg-[#fafafa]">{children}</body>
     </html>
 );
 

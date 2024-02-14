@@ -24,7 +24,7 @@ const IndexPage = () => (
                 Discord
             </a>
         </header>
-        <main className="py-12 px-[5vmin] lg:pr-0 flex-auto prose-xl prose-a:text-blue-700 bg-no-repeat bg-right-bottom bg-[length:40vmax] sm:bg-sloth 2xl:bg-contain">
+        <main className="py-12 px-[5vmin] lg:pr-0 flex-auto prose-xl prose-a:text-blue-700 bg-no-repeat bg-right-bottom bg-[length:40vmax] sm:bg-sizif 2xl:bg-contain">
             <Readme />
         </main>
         <footer className="mx-[5vmin] border-t text-center p-6">
