@@ -34,7 +34,7 @@
         "eslint-config-next": "14.1.0",
         "fast-glob": "^3.3.2",
         "postcss": "^8.4.35",
-        "postcss-import": "^16.0.0",
+        "postcss-import": "^16.0.1",
         "raw-loader": "^4.0.2",
         "rehype-pretty-code": "^0.13.0",
         "rehype-slug": "^6.0.0",
