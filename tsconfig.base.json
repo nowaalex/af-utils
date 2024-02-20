@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "lib": ["DOM", "DOM.Iterable", "ES2020"],
+        "lib": ["DOM", "DOM.Iterable", "ES2023"],
         "moduleResolution": "Bundler",
         "module": "ESNext",
         "target": "ESNext",

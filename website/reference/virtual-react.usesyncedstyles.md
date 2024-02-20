@@ -26,5 +26,5 @@ Array of two callback refs (for outer and inner elements).
 
 ## Remarks
 
-An example could be found [here](https://af-utils.vercel.app/virtual/react-examples/hook/simple)
+An example could be found [here](https://af-utils.vercel.app/virtual/examples/react/hook/simple)
 

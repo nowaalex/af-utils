@@ -25,5 +25,5 @@ void
 
 ## Remarks
 
-Usually [Subscription()](./virtual-react.subscription.md) is a better alternative. This hook might be used in [grid](https://af-utils.vercel.app/virtual/react-examples/hook/grid) scenario.
+Usually [Subscription()](./virtual-react.subscription.md) is a better alternative. This hook might be used in [grid](https://af-utils.vercel.app/virtual/examples/react/hook/grid) scenario.
 

@@ -1,6 +1,6 @@
 {
   "name": "@af-utils/virtual-examples-react-list-material-ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@af-utils/virtual-react": "0.0.21",
+    "@af-utils/virtual-react": "0.0.22",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.9",

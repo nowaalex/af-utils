@@ -6,7 +6,7 @@ const IndexPage = () => (
     <div className="h-screen w-screen flex flex-col prose">
         <header className="mx-[5vmin] border-b prose-lg flex gap-8 p-6 justify-center prose-a:no-underline">
             <a
-                href="https://github.com/nowaalex/af-utils"
+                href={process.env.NEXT_PUBLIC_GITHUB_LINK}
                 target="_blank"
                 rel="noopener"
                 className="flex items-center gap-2 hover:underline"
@@ -15,7 +15,7 @@ const IndexPage = () => (
                 Github
             </a>
             <a
-                href="https://discord.gg/6uQZB2y4cz"
+                href={process.env.NEXT_PUBLIC_DISCORD_LINK}
                 target="_blank"
                 rel="noopener"
                 className="flex items-center gap-2 hover:underline"

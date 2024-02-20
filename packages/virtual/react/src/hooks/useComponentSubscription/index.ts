@@ -20,7 +20,7 @@ function getSingleEventHash(this: VirtualScroller, e: VirtualScrollerEvent) {
  * 
  * @remarks
  * Usually {@link Subscription} is a better alternative.
- * This hook might be used in {@link https://af-utils.vercel.app/virtual/react-examples/hook/grid | grid} scenario.
+ * This hook might be used in {@link https://af-utils.vercel.app/virtual/examples/react/hook/grid | grid} scenario.
  */
 const useComponentSubscription = (
     model: VirtualScroller,

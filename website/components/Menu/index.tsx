@@ -1,10 +1,10 @@
 "use client";
 
+import { ElementType, Fragment, MouseEventHandler } from "react";
 import Link from "next/link";
 import { VscGithub, VscMenu, VscClose } from "react-icons/vsc";
-import { SiDiscord } from "react-icons/si";
+import { SiDiscord, SiReact } from "react-icons/si";
 import NavLink from "components/NavLink";
-import { Fragment, MouseEventHandler } from "react";
 
 export type MenuItem = {
     name: string;
@@ -16,9 +16,26 @@ export type MenuItem = {
 
 const H = ["h2", "h3", "h4", "h4"] as const;
 
-const getHeader = (depth: number, path: string) => {
+const HeadersMeta: Record<string, { Icon: ElementType; color: string }> = {
+    React: { Icon: SiReact, color: "#61DBFB" }
+};
+
+const getHeader = (depth: number, content: string) => {
     const C = H[depth];
-    return <C>{path}</C>;
+    const HeaderMeta = HeadersMeta[content];
+
+    return (
+        <C className="flex items-center gap-1">
+            {HeaderMeta && (
+                <HeaderMeta.Icon
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                    style={{ color: HeaderMeta.color }}
+                />
+            )}
+            {content}
+        </C>
+    );
 };
 
 const renderSubtree = (node: MenuItem, prefix: string, depth: number) =>
@@ -112,7 +129,7 @@ const Menu = ({ items, prefix, productName }: MenuProps) => (
                 <ul>
                     <li>
                         <a
-                            href="https://github.com/nowaalex/af-utils/"
+                            href={process.env.NEXT_PUBLIC_GITHUB_LINK}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2"
@@ -123,7 +140,7 @@ const Menu = ({ items, prefix, productName }: MenuProps) => (
                     </li>
                     <li>
                         <a
-                            href="https://discord.gg/6uQZB2y4cz"
+                            href={process.env.NEXT_PUBLIC_DISCORD_LINK}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2"

@@ -41,6 +41,10 @@
         @apply p-4 hidden lg:block;
     }
 
+    .ds-menu-items ul {
+        padding-left: 0.9em;
+    }
+
     .ds-menu-closer,
     .ds-menu-opener {
         @apply hidden;

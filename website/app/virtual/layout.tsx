@@ -1,6 +1,6 @@
 import getDocumentationLayout from "components/layouts/Documentation";
-import glob from "fast-glob";
 import walkMenu from "utils/walkMenu";
+import { getMenuMapForProjectExamples } from "utils/examples";
 import type { Metadata } from "next";
 
 export const metadata = {
@@ -21,47 +21,38 @@ export const metadata = {
     }
 } satisfies Metadata;
 
-const map = glob
-    .sync("../examples/src/virtual/react/**/src/code.tsx")
-    .reduce<Record<string, any>>(
-        (result, path) => (
-            path
-                .split("/")
-                .slice(5, -2)
-                .reduce((acc, v) => (acc[v] ||= {}), result),
-            result
-        ),
-        {}
-    );
+export default getDocumentationLayout(
+    async function () {
+        const examples = await getMenuMapForProjectExamples("virtual");
 
-const items = [
-    {
-        name: "Description",
-        path: "",
-        children: [
+        return [
             {
-                name: "Getting started",
+                name: "Description",
                 path: "",
-                exact: true
+                children: [
+                    {
+                        name: "Getting started",
+                        path: "",
+                        exact: true
+                    },
+                    {
+                        name: "FAQ",
+                        path: "/faq"
+                    },
+                    {
+                        name: "Reference",
+                        path: "/reference/index.md",
+                        comparePath: "/reference"
+                    },
+                    {
+                        name: "Bundle size impact",
+                        path: "/size"
+                    }
+                ]
             },
-            {
-                name: "FAQ",
-                path: "/faq"
-            },
-            {
-                name: "Reference",
-                path: "/reference/index.md",
-                comparePath: "/reference"
-            },
-            {
-                name: "Bundle size impact",
-                path: "/size"
-            }
-        ]
+            ...walkMenu(examples)
+        ];
     },
-    ...walkMenu({
-        reactExamples: map
-    })
-] as const;
-
-export default getDocumentationLayout(items, "/virtual", "virtual");
+    "/virtual",
+    "virtual"
+);

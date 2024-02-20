@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-list
 
+## 0.0.22
+
+### Patch Changes
+
+- upgraded doc links
+
 ## 0.0.21
 
 ### Patch Changes

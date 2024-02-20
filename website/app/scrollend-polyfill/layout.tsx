@@ -1,6 +1,6 @@
 import getDocumentationLayout from "components/layouts/Documentation";
-import glob from "fast-glob";
 import walkMenu from "utils/walkMenu";
+import { getMenuMapForProjectExamples } from "utils/examples";
 import type { Metadata } from "next";
 
 export const metadata = {
@@ -21,42 +21,30 @@ export const metadata = {
     }
 } satisfies Metadata;
 
-const map = glob
-    .sync("../examples/src/scrollend-polyfill/**/src/code.tsx")
-    .reduce<Record<string, any>>(
-        (result, path) => (
-            path
-                .split("/")
-                .slice(4, -2)
-                .reduce((acc, v) => (acc[v] ||= {}), result),
-            result
-        ),
-        {}
-    );
-
-const items = [
-    {
-        name: "Description",
-        path: "",
-        children: [
-            {
-                name: "Getting started",
-                path: "",
-                exact: true
-            },
-            {
-                name: "Bundle size impact",
-                path: "/size"
-            }
-        ]
-    },
-    ...walkMenu({
-        examples: map
-    })
-] as const;
-
 export default getDocumentationLayout(
-    items,
+    async function () {
+        const examples =
+            await getMenuMapForProjectExamples("scrollend-polyfill");
+
+        return [
+            {
+                name: "Description",
+                path: "",
+                children: [
+                    {
+                        name: "Getting started",
+                        path: "",
+                        exact: true
+                    },
+                    {
+                        name: "Bundle size impact",
+                        path: "/size"
+                    }
+                ]
+            },
+            ...walkMenu(examples)
+        ];
+    },
     "/scrollend-polyfill",
     "scrollend-polyfill"
 );

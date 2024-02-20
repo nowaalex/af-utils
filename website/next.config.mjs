@@ -81,59 +81,8 @@ const config = withBundleAnalyzer(
                     permanent: true
                 },
                 {
-                    source: "/virtual/examples/:example*",
-                    destination: "/virtual/react-examples/:example*",
-                    permanent: true
-                },
-                {
-                    source: "/virtual/react-examples",
-                    destination: "/virtual/react-examples/list/simple",
-                    permanent: true
-                },
-                {
-                    source: "/virtual/react-examples/:type",
-                    destination: "/virtual/react-examples/:type/simple",
-                    permanent: true
-                },
-                {
-                    source: "/virtual/headless",
-                    destination: "/virtual",
-                    permanent: true
-                },
-                {
-                    source: "/virtual/list",
-                    destination: "/virtual",
-                    permanent: true
-                },
-                {
-                    source: "/virtual/table",
-                    destination: "/virtual",
-                    permanent: true
-                },
-                {
-                    source: "/virtual/react-examples/list/LoadOnDemand",
-                    destination: "/virtual/react-examples/list/load-on-demand",
-                    permanent: true
-                },
-                {
-                    source: "/virtual/react-examples/list/PrependItems",
-                    destination: "/virtual/react-examples/list/prepend-items",
-                    permanent: true
-                },
-                {
-                    source: "/virtual/react-examples/list/VariableSizeList",
-                    destination:
-                        "/virtual/react-examples/list/variable-size-list",
-                    permanent: true
-                },
-                {
-                    source: "/virtual/react-examples/list/ExtraEvents",
-                    destination: "/virtual/react-examples/list/extra-events",
-                    permanent: true
-                },
-                {
-                    source: "/windowScroll",
-                    destination: "/virtual/react-examples/hook/window-scroll",
+                    source: "/virtual/react-examples/:example*",
+                    destination: "/virtual/examples/react/:example*",
                     permanent: true
                 }
             ];

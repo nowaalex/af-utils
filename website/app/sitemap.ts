@@ -1,13 +1,16 @@
-import glob from "fast-glob";
 import type { MetadataRoute } from "next";
+import { getProjectExamples } from "utils/examples";
 
 const URL = process.env.NEXT_PUBLIC_ORIGIN as string;
 
-const sitemap = () => {
-    const staticPaths = glob
+async function sitemap(){
+
+    const glob = await import( "fast-glob" );
+
+    const staticPaths = glob.default
         .sync([
             "app/**/page.*",
-            "!**/virtual/react-examples",
+            "!**/virtual/examples",
             "!**/virtual/reference",
             "!**/scrollend-polyfill/examples"
         ])
@@ -15,27 +18,16 @@ const sitemap = () => {
             url: `${URL}/${fileName.split("/").slice(1, -1).join("/")}`
         }));
 
-    const virtualReactExamplePaths = glob
-        .sync("../examples/src/virtual/react/**/src/code.tsx")
-        .map(fileName => ({
-            url: `${URL}/virtual/react-examples/${fileName.split("/").slice(5, -2).join("/")}`
-        }));
+    const examples = await getProjectExamples( "*" );
 
-    const virtualReferencePaths = glob.sync("reference/*.md").map(fileName => ({
+    const virtualReferencePaths = glob.default.sync("reference/*.md").map(fileName => ({
         url: `${URL}/virtual/${fileName}`
     }));
 
-    const scrollendPolyfillExamplePaths = glob
-        .sync("../examples/src/scrollend-polyfill/**/src/code.tsx")
-        .map(fileName => ({
-            url: `${URL}/scrollend-polyfill/examples/${fileName.split("/").slice(4, -2).join("/")}`
-        }));
-
     return [
         ...staticPaths,
-        ...virtualReactExamplePaths,
+        ...examples.map( e => ({ url: URL + "/" + e.toSpliced( 1, 0, "examples" ).join("/")})),
         ...virtualReferencePaths,
-        ...scrollendPolyfillExamplePaths
     ] satisfies MetadataRoute.Sitemap;
 };
 

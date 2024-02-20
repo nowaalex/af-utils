@@ -48,7 +48,7 @@ const SCROLL_PROVIDER_STYLE_VERTICAL = {
  * @returns Array of two callback refs (for outer and inner elements).
  * 
  * @remarks
- * An example could be found {@link https://af-utils.vercel.app/virtual/react-examples/hook/simple | here}
+ * An example could be found {@link https://af-utils.vercel.app/virtual/examples/react/hook/simple | here}
  */
 const useSyncedStyles = (
     model: VirtualScroller

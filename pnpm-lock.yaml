@@ -15,8 +15,8 @@ importers:
         specifier: ^2.27.1
         version: 2.27.1
       '@microsoft/api-documenter':
-        specifier: ^7.23.25
-        version: 7.23.25(@types/node@20.11.19)
+        specifier: ^7.23.26
+        version: 7.23.26(@types/node@20.11.19)
       '@microsoft/api-extractor':
         specifier: ^7.40.3
         version: 7.40.3(@types/node@20.11.19)
@@ -99,8 +99,8 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1
       bootstrap:
-        specifier: ^5.3.2
-        version: 5.3.2(@popperjs/core@2.11.8)
+        specifier: ^5.3.3
+        version: 5.3.3(@popperjs/core@2.11.8)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -337,8 +337,8 @@ importers:
         specifier: 0.0.21
         version: link:../../../../../../packages/virtual/react
       bootstrap:
-        specifier: ^5.3.2
-        version: 5.3.2(@popperjs/core@2.11.8)
+        specifier: ^5.3.3
+        version: 5.3.3(@popperjs/core@2.11.8)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -749,6 +749,9 @@ importers:
 
   website:
     dependencies:
+      '@af-utils/examples':
+        specifier: workspace:*
+        version: link:../examples
       '@af-utils/scrollend-polyfill':
         specifier: workspace:*
         version: link:../packages/polyfills/scrollend-polyfill
@@ -2162,8 +2165,8 @@ packages:
       '@types/react': 18.2.57
       react: 18.2.0
 
-  /@microsoft/api-documenter@7.23.25(@types/node@20.11.19):
-    resolution: {integrity: sha512-zb7wm2l5n+DDkU1P9D9px9dpbzB8WWWFRmIyJweCVjyAX12dNeoqHS9kr4LiOfJcDjpdRJT2zPU0vNqMpkSLWA==}
+  /@microsoft/api-documenter@7.23.26(@types/node@20.11.19):
+    resolution: {integrity: sha512-nGj/Rpcnvif66xNoxt9eAcXryQRDy8rGA25U6jJOSuLc93FVMl4CZfxd+9GNF3bOSXF3n1qE3zm74M9LgHDEgQ==}
     hasBin: true
     dependencies:
       '@microsoft/api-extractor-model': 7.28.11(@types/node@20.11.19)
@@ -3934,8 +3937,8 @@ packages:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
 
-  /bootstrap@5.3.2(@popperjs/core@2.11.8):
-    resolution: {integrity: sha512-D32nmNWiQHo94BKHLmOrdjlL05q1c8oxbtBphQFb9Z5to6eGRDCm0QgeaZ4zFBHzfg2++rqa2JkqCcxDy0sH0g==}
+  /bootstrap@5.3.3(@popperjs/core@2.11.8):
+    resolution: {integrity: sha512-8HLCdWgyoMguSO9o+aH+iuZ+aht+mzW0u3HIMzVu7Srrpv7EBBxTnrFlSCskwdY1+EOFQSm7uMJhNQHkdPcmjg==}
     peerDependencies:
       '@popperjs/core': ^2.11.8
     dependencies:
