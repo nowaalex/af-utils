@@ -1,0 +1,29 @@
+{
+    "include": [
+        "next-env.d.ts",
+        "decs.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+    ],
+    "extends": "../tsconfig.base.json",
+    "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+    "compilerOptions": {
+        "baseUrl": "./",
+        "outDir": "lib",
+        "moduleResolution": "node",
+        "noEmit": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "incremental": true
+    }
+}

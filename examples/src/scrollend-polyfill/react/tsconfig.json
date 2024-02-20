@@ -1,0 +1,8 @@
+{
+    "moduleResolution": "Bundler",
+    "include": ["src"],
+    "compilerOptions": {
+        "outDir": "lib",
+        "jsx": "react-jsx",
+    }
+}  
