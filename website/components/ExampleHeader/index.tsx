@@ -31,7 +31,7 @@ const getHeader = (segments: string[]) => {
 
 const getGitPiece = (segments: string[]) => {
     if (segments.length > 2) {
-        return `${process.env.NEXT_PUBLIC_GITHUB_LINK}/tree/${process.env.NEXT_PUBLIC_GITHUB_BRANCH}/examples/src/${segments[1]}/${segments.slice(3).join("/")}`;
+        return `${process.env.NEXT_PUBLIC_GITHUB_SUFFIX}/tree/${process.env.NEXT_PUBLIC_GITHUB_BRANCH}/examples/src/${segments[1]}/${segments.slice(3).join("/")}`;
     }
 
     throw new Error("Wrong segments");
@@ -46,7 +46,7 @@ const ExampleHeader = () => {
         <div className="flex flex-wrap gap-x-10 gap-y-4 items-center mb-6">
             <h1 className="mb-0">{getHeader(startCasedSegments)}</h1>
             <div className="flex gap-6 items-center font-medium">
-                <A href={gitPiece}>
+                <A href={`https://github.com/${gitPiece}`}>
                     <Github />
                     Github
                 </A>

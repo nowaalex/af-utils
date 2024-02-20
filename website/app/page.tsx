@@ -6,7 +6,7 @@ const IndexPage = () => (
     <div className="h-screen w-screen flex flex-col prose">
         <header className="mx-[5vmin] border-b prose-lg flex gap-8 p-6 justify-center prose-a:no-underline">
             <a
-                href={process.env.NEXT_PUBLIC_GITHUB_LINK}
+                href={`https://github.com/${process.env.NEXT_PUBLIC_GITHUB_SUFFIX}`}
                 target="_blank"
                 rel="noopener"
                 className="flex items-center gap-2 hover:underline"
