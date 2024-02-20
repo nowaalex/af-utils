@@ -129,7 +129,7 @@ const Menu = ({ items, prefix, productName }: MenuProps) => (
                 <ul>
                     <li>
                         <a
-                            href={`https://github.com/${process.env.NEXT_PUBLIC_GITHUB_LINK}`}
+                            href={`https://github.com/${process.env.NEXT_PUBLIC_GITHUB_SUFFIX}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2"
