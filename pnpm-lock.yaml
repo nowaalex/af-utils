@@ -167,7 +167,7 @@ importers:
         specifier: 0.0.20
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -201,7 +201,7 @@ importers:
         specifier: 0.0.20
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -235,7 +235,7 @@ importers:
         specifier: 0.0.20
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -269,7 +269,7 @@ importers:
         specifier: 0.0.20
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -303,7 +303,7 @@ importers:
         specifier: 0.0.20
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -334,7 +334,7 @@ importers:
   examples/src/virtual/react/list/bootstrap:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       bootstrap:
         specifier: ^5.3.3
@@ -374,7 +374,7 @@ importers:
         specifier: 0.0.20
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -405,7 +405,7 @@ importers:
   examples/src/virtual/react/list/horizontal:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -439,7 +439,7 @@ importers:
         specifier: 0.0.20
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       '@ngneat/falso':
         specifier: ^7.1.1
@@ -473,7 +473,7 @@ importers:
   examples/src/virtual/react/list/material-ui:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       '@emotion/react':
         specifier: ^11.11.3
@@ -516,7 +516,7 @@ importers:
         specifier: 0.0.20
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       '@ngneat/falso':
         specifier: ^7.1.1
@@ -556,7 +556,7 @@ importers:
         specifier: 0.0.20
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -587,7 +587,7 @@ importers:
   examples/src/virtual/react/list/simple:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -618,7 +618,7 @@ importers:
   examples/src/virtual/react/list/sticky-header-and-footer:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -649,7 +649,7 @@ importers:
   examples/src/virtual/react/list/variable-size-list:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.21
+        specifier: 0.0.22
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
