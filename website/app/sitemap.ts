@@ -8,7 +8,8 @@ const sitemap = () => {
         .sync([
             "app/**/page.*",
             "!**/virtual/react-examples",
-            "!**/virtual/reference"
+            "!**/virtual/reference",
+            "!**/scrollend-polyfill/examples"
         ])
         .map(fileName => ({
             url: `${URL}/${fileName.split("/").slice(1, -1).join("/")}`
@@ -24,10 +25,17 @@ const sitemap = () => {
         url: `${URL}/virtual/${fileName}`
     }));
 
+    const scrollendPolyfillExamplePaths = glob
+        .sync("../examples/src/scrollend-polyfill/**/src/code.tsx")
+        .map(fileName => ({
+            url: `${URL}/scrollend-polyfill/examples/${fileName.split("/").slice(4, -2).join("/")}`
+        }));
+
     return [
         ...staticPaths,
         ...virtualReactExamplePaths,
-        ...virtualReferencePaths
+        ...virtualReferencePaths,
+        ...scrollendPolyfillExamplePaths
     ] satisfies MetadataRoute.Sitemap;
 };
 
