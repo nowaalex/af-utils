@@ -19,7 +19,7 @@
     "license": "MIT",
     "scripts": {
         "test": "pnpm -r test",
-        "build": "pnpm --filter './packages/**' build",
+        "build": "pnpm --filter './packages/**' build && pnpm --filter website build",
         "dev": "pnpm --filter './packages/**' dev",
         "lint": "eslint --fix ."
     },
