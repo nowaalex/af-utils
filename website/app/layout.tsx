@@ -36,10 +36,10 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
             {process.env.NODE_ENV === "production" ? (
                 <>
                     <Script
-                        strategy="lazyOnload"
+                        async
                         src="https://www.googletagmanager.com/gtag/js?id=G-CBQ8S96MEK"
                     ></Script>
-                    <Script id="google-analytics" strategy="lazyOnload">
+                    <Script id="google-analytics">
                         {`
                             window.dataLayer = window.dataLayer || [];
                             function gtag(){dataLayer.push(arguments);}
