@@ -12,7 +12,7 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.9",
-    "@ngneat/falso": "^7.1.1",
+    "@ngneat/falso": "^7.2.0",
     "bootstrap": "^5.3.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
