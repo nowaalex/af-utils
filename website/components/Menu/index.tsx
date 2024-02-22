@@ -38,15 +38,13 @@ const getHeader = (depth: number, content: string) => {
     );
 };
 
-const renderSubtree = (node: MenuItem, prefix: string, depth: number) =>
+const renderSubtree = (node: MenuItem, depth: number) =>
     node.children?.length ? (
         <Fragment key={node.path}>
             {getHeader(depth, node.name)}
             <ul>
                 {node.children.map(child => (
-                    <li key={child.path}>
-                        {renderSubtree(child, prefix, depth + 1)}
-                    </li>
+                    <li key={child.path}>{renderSubtree(child, depth + 1)}</li>
                 ))}
             </ul>
         </Fragment>
@@ -54,8 +52,8 @@ const renderSubtree = (node: MenuItem, prefix: string, depth: number) =>
         <NavLink
             key={node.path}
             exact={node.exact}
-            href={prefix + node.path}
-            compareHref={prefix + (node.comparePath ?? node.path)}
+            href={node.path}
+            compareHref={node.comparePath ?? node.path}
             className="font-normal"
             activeClassName="!font-semibold text-orange-700 translate-y-20"
         >
@@ -65,7 +63,6 @@ const renderSubtree = (node: MenuItem, prefix: string, depth: number) =>
 
 type MenuProps = JSX.IntrinsicElements["nav"] & {
     items: readonly MenuItem[] | MenuItem[];
-    prefix: string;
     productName: string;
 };
 
@@ -86,7 +83,7 @@ const toggleMenuWhenClickedOnLink: MouseEventHandler<HTMLElement> = e => {
     }
 };
 
-const Menu = ({ items, prefix, productName }: MenuProps) => (
+const Menu = ({ items, productName }: MenuProps) => (
     <>
         <input
             aria-hidden="true"
@@ -122,7 +119,7 @@ const Menu = ({ items, prefix, productName }: MenuProps) => (
                 onClick={toggleMenuWhenClickedOnLink}
                 className="prose prose-sm prose-ul:list-none prose-a:no-underline ds-menu-items"
             >
-                {items.map(node => renderSubtree(node, prefix, 0))}
+                {items.map(node => renderSubtree(node, 0))}
 
                 <h2>Links</h2>
 

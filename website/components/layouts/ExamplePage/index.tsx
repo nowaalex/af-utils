@@ -52,7 +52,7 @@ const getExamplePage = (exampleHref: string) =>
                 </div>
                 <div className="not-prose grid grid-cols-1 xl:grid-cols-2 flex-1 gap-4 grow xl:basis-0 xl:overflow-hidden xl:contain-strict">
                     <iframe
-                        className="xl:h-full h-[40vh] w-full"
+                        className="xl:h-full h-[35vh] w-full"
                         src={`/examples/src/${exampleHref}/${key}/index.html`}
                     />
                     <pre
