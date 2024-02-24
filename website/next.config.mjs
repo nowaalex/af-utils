@@ -80,11 +80,63 @@ const config = withBundleAnalyzer(
                     destination: "/virtual/reference/index.md",
                     permanent: true
                 },
+                /** Google search console start */
                 {
                     source: "/virtual/react-examples/:example*",
                     destination: "/virtual/examples/react/:example*",
                     permanent: true
-                }
+                },
+                {
+                    source: "/docs/bundleSize",
+                    destination: "/virtual/size",
+                    permanent: true
+                },
+                {
+                    source: "/virtual/examples/list/StickyHeaderAndFooter",
+                    destination: "/virtual/examples/react/list/sticky-header-and-footer",
+                    permanent: true
+                },
+                {
+                    source: "/virtual/examples/list/ScrollToItem",
+                    destination: "/virtual/examples/react/list/scroll-to-item",
+                    permanent: true
+                },
+                {
+                    source: "/why",
+                    destination: "/virtual",
+                    permanent: true
+                },
+                {
+                    source: "/virtual/examples/list/MaterialUI",
+                    destination: "/virtual/examples/react/list/material-ui",
+                    permanent: true
+                },
+                {
+                    source: "/examples/list/LoadOnDemand",
+                    destination: "/virtual/examples/react/list/load-on-demand",
+                    permanent: true
+                },
+                {
+                    source: "/examples/list/Simple",
+                    destination: "/virtual/examples/react/list/simple",
+                    permanent: true
+                },
+                {
+                    source: "/examples/complexTable/basic",
+                    destination: "/vitual/examples/table/basic",
+                    permanent: true
+                },
+                {
+                    source: "/virtual/examples/list/Simple",
+                    destination: "/virtual/examples/react/list/simple",
+                    permanent: true
+                },
+                {
+                    source: "/list",
+                    destination: "/virtual/examples/react/list/simple",
+                    permanent: true
+                },
+                /** Google search console end */
             ];
         }
     })

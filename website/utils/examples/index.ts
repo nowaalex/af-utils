@@ -2,8 +2,8 @@
 
 import kebabCase from "lodash/kebabCase";
 import startCase from "lodash/startCase";
-import type { MenuItem } from "components/Menu";
 
+import type { MenuItem } from "components/Menu";
 import type { Metadata } from "next";
 
 export type Params = { params: { example: string[] } };
@@ -54,11 +54,18 @@ export const getMetadataGenerator = ( projectName: string ) => async function({ 
 
     const title = `${startCase.default(params.example.toReversed().join(" "))} Example`;
 
-    const descriptionModule = await import(
-        `@af-utils/examples/src/${projectName}/${params.example.join("/")}/meta.ts`
-    );
+    let description = "";
 
-    const description = descriptionModule?.default?.description;
+    try {
+        const descriptionModule = await import(
+            `@af-utils/examples/src/${projectName}/${params.example.join("/")}/meta.ts`
+        );
+
+        description = descriptionModule?.default?.description;
+    }
+    catch( e ) {
+        description = "Missing example";
+    }
 
     return {
         title,
@@ -68,4 +75,5 @@ export const getMetadataGenerator = ( projectName: string ) => async function({ 
             description
         }
     } satisfies Metadata;
+
 };

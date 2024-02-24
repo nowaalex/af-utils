@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 type Params = { params: { reference: string[] } };
-
-export const dynamicParams = false;
 
 export async function generateStaticParams() {
     const glob = await import("fast-glob");
@@ -35,9 +34,35 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 const Page = async ({ params }: Params) => {
     const key = params.reference.join("/");
 
-    const { default: C } = await import(`reference/${key}`);
+    try {
+        const { default: C } = await import(`reference/${key}`);
 
-    return <C />;
+        return <C />;
+    } catch (e) {
+        return (
+            <>
+                <h1>This virtual reference page is missing</h1>
+                <p>Some helpful links:</p>
+                <ul>
+                    <li>
+                        <Link href="/virtual/reference/index.md">
+                            virtual reference home
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/virtual/reference/virtual-core.md">
+                            vitual core reference
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/virtual/reference/virtual-react.md">
+                            vitual react reference
+                        </Link>
+                    </li>
+                </ul>
+            </>
+        );
+    }
 };
 
 export default Page;
