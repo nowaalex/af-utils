@@ -102,11 +102,6 @@ const config = withBundleAnalyzer(
                     permanent: true
                 },
                 {
-                    source: "/why",
-                    destination: "/virtual",
-                    permanent: true
-                },
-                {
                     source: "/virtual/examples/list/MaterialUI",
                     destination: "/virtual/examples/react/list/material-ui",
                     permanent: true
@@ -133,6 +128,21 @@ const config = withBundleAnalyzer(
                 },
                 {
                     source: "/list",
+                    destination: "/virtual/examples/react/list/simple",
+                    permanent: true
+                },
+                {
+                    source: "/virtual/headless",
+                    destination: "/virtual",
+                    permanent: true
+                },
+                {
+                    source: "/why",
+                    destination: "/virtual",
+                    permanent: true
+                },
+                {
+                    source: "/virtual/list",
                     destination: "/virtual/examples/react/list/simple",
                     permanent: true
                 },
