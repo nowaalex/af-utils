@@ -146,6 +146,11 @@ const config = withBundleAnalyzer(
                     destination: "/virtual/examples/react/list/simple",
                     permanent: true
                 },
+                {
+                    source: "/windowScroll",
+                    destination: "/virtual/examples/react/hook/window-scroll",
+                    permanent: true
+                }
                 /** Google search console end */
             ];
         }
