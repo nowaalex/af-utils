@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [ListItemProps](./virtual-react.listitemprops.md) &gt; [offset](./virtual-react.listitemprops.offset.md)
 
-## ListItemProps.offset property
+# ListItemProps.offset property
 
 **Signature:**
 

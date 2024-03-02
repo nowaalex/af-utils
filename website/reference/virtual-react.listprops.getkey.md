@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [ListProps](./virtual-react.listprops.md) &gt; [getKey](./virtual-react.listprops.getkey.md)
 
-## ListProps.getKey property
+# ListProps.getKey property
 
 **Signature:**
 

@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md)
 
-## virtual-react package
+# virtual-react package
 
 React components, hooks and utils used to connect to [VirtualScroller](./virtual-core.virtualscroller.md)
 

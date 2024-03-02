@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [scrollSize](./virtual-core.virtualscroller.scrollsize.md)
 
-## VirtualScroller.scrollSize property
+# VirtualScroller.scrollSize property
 
 Sum of all item sizes
 

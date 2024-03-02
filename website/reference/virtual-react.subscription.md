@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [Subscription](./virtual-react.subscription.md)
 
-## Subscription() function
+# Subscription() function
 
 React component. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance.
 

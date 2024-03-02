@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md)
 
-## VirtualScrollerExactPosition type
+# VirtualScrollerExactPosition type
 
 Numeric snapshot of scroll position
 

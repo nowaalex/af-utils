@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [mapVisibleRange](./virtual-react.mapvisiblerange.md)
 
-## mapVisibleRange() function
+# mapVisibleRange() function
 
 Map current visible items
 

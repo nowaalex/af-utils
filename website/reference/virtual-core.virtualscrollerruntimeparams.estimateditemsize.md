@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md) &gt; [estimatedItemSize](./virtual-core.virtualscrollerruntimeparams.estimateditemsize.md)
 
-## VirtualScrollerRuntimeParams.estimatedItemSize property
+# VirtualScrollerRuntimeParams.estimatedItemSize property
 
 Estimated height/width of scrollable item. Orientation is determined by [VirtualScrollerInitialParams.horizontal](./virtual-core.virtualscrollerinitialparams.horizontal.md)<!-- -->.
 

@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [SubscriptionProps](./virtual-react.subscriptionprops.md) &gt; [events](./virtual-react.subscriptionprops.events.md)
 
-## SubscriptionProps.events property
+# SubscriptionProps.events property
 
 **Signature:**
 

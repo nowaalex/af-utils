@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) &gt; [estimatedWidgetSize](./virtual-core.virtualscrollerinitialparams.estimatedwidgetsize.md)
 
-## VirtualScrollerInitialParams.estimatedWidgetSize property
+# VirtualScrollerInitialParams.estimatedWidgetSize property
 
 Estimated size of scroll element.
 

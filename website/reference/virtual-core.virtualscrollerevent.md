@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)
 
-## VirtualScrollerEvent variable
+# VirtualScrollerEvent variable
 
 Possible events, supported by [VirtualScroller.on()](./virtual-core.virtualscroller.on.md) method
 

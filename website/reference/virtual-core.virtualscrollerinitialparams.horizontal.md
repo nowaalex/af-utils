@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) &gt; [horizontal](./virtual-core.virtualscrollerinitialparams.horizontal.md)
 
-## VirtualScrollerInitialParams.horizontal property
+# VirtualScrollerInitialParams.horizontal property
 
 Scroll container orientation.
 

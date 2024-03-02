@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useSubscription](./virtual-react.usesubscription.md)
 
-## useSubscription() function
+# useSubscription() function
 
 React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) without unnecessary rerenders.
 

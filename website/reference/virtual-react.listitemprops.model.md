@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [ListItemProps](./virtual-react.listitemprops.md) &gt; [model](./virtual-react.listitemprops.model.md)
 
-## ListItemProps.model property
+# ListItemProps.model property
 
 **Signature:**
 

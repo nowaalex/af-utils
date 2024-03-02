@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md)
 
-## VirtualScroller class
+# VirtualScroller class
 
 Core framework-agnostic model.
 

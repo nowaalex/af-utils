@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md) &gt; [itemCount](./virtual-core.virtualscrollerruntimeparams.itemcount.md)
 
-## VirtualScrollerRuntimeParams.itemCount property
+# VirtualScrollerRuntimeParams.itemCount property
 
 Total items quantity
 

@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md)
 
-## virtual-core package
+# virtual-core package
 
 Core framework-agnostic model.
 

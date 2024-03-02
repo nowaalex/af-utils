@@ -2,7 +2,7 @@
 
 [Home](./index.md)
 
-## API Reference
+# API Reference
 
 ## Packages
 

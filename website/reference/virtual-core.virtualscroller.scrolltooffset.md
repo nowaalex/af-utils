@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [scrollToOffset](./virtual-core.virtualscroller.scrolltooffset.md)
 
-## VirtualScroller.scrollToOffset() method
+# VirtualScroller.scrollToOffset() method
 
 Scroll to pixel offset
 

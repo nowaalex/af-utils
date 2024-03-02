@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [(constructor)](./virtual-core.virtualscroller._constructor_.md)
 
-## VirtualScroller.(constructor)
+# VirtualScroller.(constructor)
 
 Constructs a new instance of the `VirtualScroller` class
 

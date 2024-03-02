@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) &gt; [estimatedScrollElementOffset](./virtual-core.virtualscrollerinitialparams.estimatedscrollelementoffset.md)
 
-## VirtualScrollerInitialParams.estimatedScrollElementOffset property
+# VirtualScrollerInitialParams.estimatedScrollElementOffset property
 
 Estimated distance between top/left edges of scrollable container and first scrollable item.
 

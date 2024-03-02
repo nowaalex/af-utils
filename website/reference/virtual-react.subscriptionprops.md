@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [SubscriptionProps](./virtual-react.subscriptionprops.md)
 
-## SubscriptionProps interface
+# SubscriptionProps interface
 
 [Subscription()](./virtual-react.subscription.md) component props
 

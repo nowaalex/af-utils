@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [ListProps](./virtual-react.listprops.md)
 
-## ListProps interface
+# ListProps interface
 
 [List()](./virtual-react.list.md) component props
 

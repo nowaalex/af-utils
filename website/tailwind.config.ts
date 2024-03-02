@@ -11,7 +11,7 @@ export default {
         extend: {
             backgroundImage: {
                 sloth: "url('/sloth.jpg')",
-                sizif: "url('/sizif.jpg')",
+                sizif: "url('/sizif.jpg')"
             },
             typography: {
                 DEFAULT: {
@@ -31,6 +31,15 @@ export default {
                         "li > p": {
                             /* for api-extractor lists */
                             margin: 0
+                        },
+
+                        /* api-documenter hack to format h1 as h2. all values here are copy-pasted from tailwind typography h2 styling */
+                        "p:first-child + h1": {
+                            marginTop: "2em",
+                            fontSize: "1.5em",
+                            marginBottom: "1em",
+                            lineHeight: "1.3333333",
+                            fontWeight: "700"
                         }
                     }
                 }

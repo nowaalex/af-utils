@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [on](./virtual-core.virtualscroller.on.md)
 
-## VirtualScroller.on() method
+# VirtualScroller.on() method
 
 Subscribe to model events
 

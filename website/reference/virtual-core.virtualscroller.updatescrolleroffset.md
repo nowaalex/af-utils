@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [updateScrollerOffset](./virtual-core.virtualscroller.updatescrolleroffset.md)
 
-## VirtualScroller.updateScrollerOffset() method
+# VirtualScroller.updateScrollerOffset() method
 
 Recalculates the offset between [scroller element](./virtual-core.virtualscroller.setscroller.md) and [container element](./virtual-core.virtualscroller.setcontainer.md)<!-- -->.
 

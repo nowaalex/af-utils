@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [el](./virtual-core.virtualscroller.el.md)
 
-## VirtualScroller.el() method
+# VirtualScroller.el() method
 
 Start/finish observing size of `element` at `index`<!-- -->. Observing is finished if element is `null`<!-- -->.
 

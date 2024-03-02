@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [getSize](./virtual-core.virtualscroller.getsize.md)
 
-## VirtualScroller.getSize() method
+# VirtualScroller.getSize() method
 
 Get last cached item size by item index
 

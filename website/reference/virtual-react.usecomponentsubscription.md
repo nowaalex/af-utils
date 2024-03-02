@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useComponentSubscription](./virtual-react.usecomponentsubscription.md)
 
-## useComponentSubscription() function
+# useComponentSubscription() function
 
 React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted.
 

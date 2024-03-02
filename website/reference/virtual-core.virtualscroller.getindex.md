@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [getIndex](./virtual-core.virtualscroller.getindex.md)
 
-## VirtualScroller.getIndex() method
+# VirtualScroller.getIndex() method
 
 Get item index by pixel offset;
 

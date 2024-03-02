@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md)
 
-## VirtualScrollerInitialParams interface
+# VirtualScrollerInitialParams interface
 
 All [VirtualScroller](./virtual-core.virtualscroller.md) parameters (that may / may not change over time).
 

@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [SubscriptionProps](./virtual-react.subscriptionprops.md) &gt; [children](./virtual-react.subscriptionprops.children.md)
 
-## SubscriptionProps.children property
+# SubscriptionProps.children property
 
 **Signature:**
 

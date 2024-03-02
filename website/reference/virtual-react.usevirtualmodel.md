@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useVirtualModel](./virtual-react.usevirtualmodel.md)
 
-## useVirtualModel() function
+# useVirtualModel() function
 
 React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle.
 

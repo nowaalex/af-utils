@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [set](./virtual-core.virtualscroller.set.md)
 
-## VirtualScroller.set() method
+# VirtualScroller.set() method
 
 Synchronize runtime parameters
 

@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [scrollToIndex](./virtual-core.virtualscroller.scrolltoindex.md)
 
-## VirtualScroller.scrollToIndex() method
+# VirtualScroller.scrollToIndex() method
 
 Scroll to item index
 

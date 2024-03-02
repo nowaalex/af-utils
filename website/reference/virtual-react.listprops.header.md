@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [ListProps](./virtual-react.listprops.md) &gt; [header](./virtual-react.listprops.header.md)
 
-## ListProps.header property
+# ListProps.header property
 
 **Signature:**
 

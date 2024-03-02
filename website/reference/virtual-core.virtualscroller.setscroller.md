@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [setScroller](./virtual-core.virtualscroller.setscroller.md)
 
-## VirtualScroller.setScroller() method
+# VirtualScroller.setScroller() method
 
 Informs model about scrollable element.
 

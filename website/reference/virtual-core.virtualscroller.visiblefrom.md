@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [visibleFrom](./virtual-core.virtualscroller.visiblefrom.md)
 
-## VirtualScroller.visibleFrom property
+# VirtualScroller.visibleFrom property
 
 Returns snapshot of current scroll position.
 

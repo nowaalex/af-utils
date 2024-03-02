@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [setStickyFooter](./virtual-core.virtualscroller.setstickyfooter.md)
 
-## VirtualScroller.setStickyFooter() method
+# VirtualScroller.setStickyFooter() method
 
 Start observing size of sticky footer `element`<!-- -->. Observing is finished if element is `null`<!-- -->.
 

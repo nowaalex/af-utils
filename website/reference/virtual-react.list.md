@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [List](./virtual-react.list.md)
 
-## List() function
+# List() function
 
 React component. Small abstraction, which in 90% cases allows to avoid hook boilerplate.
 

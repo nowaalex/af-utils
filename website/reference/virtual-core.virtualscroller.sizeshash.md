@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [sizesHash](./virtual-core.virtualscroller.sizeshash.md)
 
-## VirtualScroller.sizesHash property
+# VirtualScroller.sizesHash property
 
 Hash of item sizes. Changed when at least one visible item is resized
 

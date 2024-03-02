@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [setStickyHeader](./virtual-core.virtualscroller.setstickyheader.md)
 
-## VirtualScroller.setStickyHeader() method
+# VirtualScroller.setStickyHeader() method
 
 Start observing size of sticky header `element`<!-- -->. Observing is finished if element is `null`<!-- -->.
 

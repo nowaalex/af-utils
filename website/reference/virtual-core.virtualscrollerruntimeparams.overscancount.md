@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md) &gt; [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md)
 
-## VirtualScrollerRuntimeParams.overscanCount property
+# VirtualScrollerRuntimeParams.overscanCount property
 
 Amount of items rendered before or after visible ones.
 

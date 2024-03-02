@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [setItemCount](./virtual-core.virtualscroller.setitemcount.md)
 
-## VirtualScroller.setItemCount() method
+# VirtualScroller.setItemCount() method
 
 Notify model about items quantity change
 

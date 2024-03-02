@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScroller](./virtual-core.virtualscroller.md) &gt; [setContainer](./virtual-core.virtualscroller.setcontainer.md)
 
-## VirtualScroller.setContainer() method
+# VirtualScroller.setContainer() method
 
 Informs model about items container element. Usually not needed.
 

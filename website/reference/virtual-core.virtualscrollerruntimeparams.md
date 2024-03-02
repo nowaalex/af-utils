@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md)
 
-## VirtualScrollerRuntimeParams interface
+# VirtualScrollerRuntimeParams interface
 
 [VirtualScroller](./virtual-core.virtualscroller.md) parameters that may change over time. Used as [VirtualScroller.set()](./virtual-core.virtualscroller.set.md) argument type.
 

@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [SubscriptionProps](./virtual-react.subscriptionprops.md) &gt; [model](./virtual-react.subscriptionprops.model.md)
 
-## SubscriptionProps.model property
+# SubscriptionProps.model property
 
 **Signature:**
 

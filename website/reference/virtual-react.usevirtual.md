@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useVirtual](./virtual-react.usevirtual.md)
 
-## useVirtual() function
+# useVirtual() function
 
 React hook. Calls [useVirtualModel()](./virtual-react.usevirtualmodel.md) and synchronizes it with props
 

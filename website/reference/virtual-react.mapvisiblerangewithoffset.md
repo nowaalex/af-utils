@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [mapVisibleRangeWithOffset](./virtual-react.mapvisiblerangewithoffset.md)
 
-## mapVisibleRangeWithOffset() function
+# mapVisibleRangeWithOffset() function
 
 Map current visible items and provide offset for each item.
 

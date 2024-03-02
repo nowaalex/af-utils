@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useScroller](./virtual-react.usescroller.md)
 
-## useScroller() function
+# useScroller() function
 
 React hook. Synchronizes scroller with model.
 

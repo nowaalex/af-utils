@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [useSyncedStyles](./virtual-react.usesyncedstyles.md)
 
-## useSyncedStyles() function
+# useSyncedStyles() function
 
 React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hook to avoid unneeded boilerplate.
 

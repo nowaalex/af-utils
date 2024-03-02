@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-react](./virtual-react.md) &gt; [ListItemProps](./virtual-react.listitemprops.md)
 
-## ListItemProps interface
+# ListItemProps interface
 
 Props passed to List item
 

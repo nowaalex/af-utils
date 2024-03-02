@@ -2,7 +2,7 @@
 
 [Home](./index.md) &gt; [@af-utils/virtual-core](./virtual-core.md) &gt; [VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md)
 
-## VirtualScrollerScrollElement type
+# VirtualScrollerScrollElement type
 
 Scrollable container type
 
