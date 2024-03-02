@@ -34,7 +34,7 @@ export async function getProjectExamples(projectName: string) {
 
     const examplesPath = execSync("pnpm --filter @af-utils/examples exec pwd")
         .toString()
-        .replace(/[\s]*$/, "/src/");
+        .replace(/\s*$/, "/src/");
 
     return glob
         .sync(`${examplesPath}${projectName}/**${postfix}`)
@@ -61,14 +61,14 @@ export async function getMenuMapForProjectExamples(projectName: string) {
     );
 }
 
-export const getStaticParamsGenerator = (projectName: string) =>
-    async function () {
-        const examples = await getProjectExamples(projectName);
-        return examples.map(example => ({ example: example.slice(1) }));
-    };
+export const getStaticParamsGenerator = (projectName: string) => async () => {
+    const examples = await getProjectExamples(projectName);
+    return examples.map(example => ({ example: example.slice(1) }));
+};
 
-export const getMetadataGenerator = (projectName: string) =>
-    async function ({ params }: Params) {
+export const getMetadataGenerator =
+    (projectName: string) =>
+    async ({ params }: Params) => {
         const title = `${startCase(params.example.toReversed().join(" "))} Example`;
 
         let description = "";
