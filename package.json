@@ -19,19 +19,18 @@
     "license": "MIT",
     "scripts": {
         "test": "pnpm -r test",
-        "build": "pnpm --filter './packages/**' build && pnpm --filter website build",
-        "dev": "pnpm --filter './packages/**' dev",
+        "build": "pnpm --filter './packages/**' build && pnpm --filter @af-utils/examples build && pnpm --filter website build",
         "lint": "eslint --fix ."
     },
     "browserslist": ">0.6%, not op_mini all",
     "devDependencies": {
         "@changesets/changelog-github": "^0.5.0",
         "@changesets/cli": "^2.27.1",
-        "@microsoft/api-documenter": "^7.23.33",
-        "@microsoft/api-extractor": "^7.42.0",
+        "@microsoft/api-documenter": "^7.23.35",
+        "@microsoft/api-extractor": "^7.42.2",
         "@types/jest": "^29.5.12",
         "@types/mdx": "^2.0.11",
-        "@types/node": "^20.11.23",
+        "@types/node": "^20.11.24",
         "@types/react": "^18.2.61",
         "@types/react-dom": "^18.2.19",
         "@types/use-sync-external-store": "^0.0.6",
