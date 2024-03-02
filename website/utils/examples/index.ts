@@ -32,10 +32,9 @@ function walkMenu(
 export async function getProjectExamples(projectName: string) {
     const postfix = "/src/code.tsx";
 
-    const examplesPath =
-        execSync("pnpm --filter @af-utils/examples exec pwd")
-            .toString()
-            .replace(/[\s]*$/, "") + "/src/";
+    const examplesPath = execSync("pnpm --filter @af-utils/examples exec pwd")
+        .toString()
+        .replace(/[\s]*$/, "/src/");
 
     return glob
         .sync(`${examplesPath}${projectName}/**${postfix}`)
