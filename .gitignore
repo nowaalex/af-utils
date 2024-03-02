@@ -7,4 +7,4 @@ logs
 **/api-extractor-schema
 
 **/.next/**
-website/public/examples
+website/public/examples/**

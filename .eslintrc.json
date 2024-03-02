@@ -6,7 +6,7 @@
         "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
-    "ignorePatterns": ["**/lib/**", "**/node_modules/**", "**/assets/**"],
+    "ignorePatterns": ["**/lib/**", "**/node_modules/**"],
     "root": true,
     "plugins": ["react", "jest", "@typescript-eslint"],
     "env": {
