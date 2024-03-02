@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
+import glob from "fast-glob";
 import Link from "next/link";
 
 type Params = { params: { reference: string[] } };
 
 export async function generateStaticParams() {
-    const glob = await import("fast-glob");
-
-    const result = glob.default
+    const result = glob
         .sync("reference/*.md")
         .map(f => ({ reference: f.split("/").slice(1) }));
 
