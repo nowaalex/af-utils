@@ -2,12 +2,12 @@ import prettyBytes from "pretty-bytes";
 
 const sizeColumns = ["raw", "min", "minGz", "minBrotli"] as const;
 
-type SizesTableProps = {
+interface SizesTableProps {
     items: [
         { raw: number; min: number; minGz: number; minBrotli: number },
         name: string
     ][];
-};
+}
 
 const SizesTable = ({ items }: SizesTableProps) => {
     switch (items.length) {

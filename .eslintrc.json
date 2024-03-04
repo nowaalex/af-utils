@@ -1,9 +1,10 @@
 {
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
         "plugin:prettier/recommended",
-        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/strict",
+        "plugin:@typescript-eslint/stylistic",
         "plugin:tailwindcss/recommended"
     ],
     "parser": "@typescript-eslint/parser",
@@ -13,14 +14,14 @@
         "website/public/examples/**"
     ],
     "root": true,
-    "plugins": ["react", "jest", "@typescript-eslint"],
+    "plugins": ["react", "jest", "@typescript-eslint", "tailwindcss"],
     "env": {
         "browser": true,
         "node": true,
-        "es6": true
+        "es2024": true
     },
     "parserOptions": {
-        "ecmaVersion": 2022,
+        "ecmaVersion": "latest",
         "sourceType": "module",
         "ecmaFeatures": {
             "jsx": true
@@ -32,23 +33,11 @@
         }
     },
     "rules": {
-        "quotes": ["warn", "double"],
+        "quotes": ["error", "double"],
         "semi": ["error", "always"],
-        "no-restricted-syntax": ["error", "WithStatement"],
-        "no-bitwise": [0],
-        "no-plusplus": [0],
-        "lines-between-class-members": [0],
-        "one-var": [0],
-        "no-param-reassign": [0],
-        "@typescript-eslint/no-explicit-any": 0,
-        "@typescript-eslint/ban-ts-comment": 0,
-        "import/prefer-default-export": [0],
-        "no-cond-assign": [0],
-        "react/prop-types": "off",
-        "react/display-name": "off",
-        "react/jsx-uses-react": "off",
-        "react/react-in-jsx-scope": "off",
-        "react/jsx-no-target-blank": [1],
+        "no-plusplus": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
         "tailwindcss/no-custom-classname": "off"
     }
 }

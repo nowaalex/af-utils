@@ -52,8 +52,12 @@ class TestResizeObserver implements ResizeObserver {
         this.flushTimer = setTimeout(() => this.flush(), 0);
     }
 
-    unobserve() {}
-    disconnect() {}
+    unobserve() {
+        // do nothing.
+    }
+    disconnect() {
+        // do nothing.
+    }
 }
 
 export default TestResizeObserver;

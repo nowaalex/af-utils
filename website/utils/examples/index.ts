@@ -8,7 +8,9 @@ import { execSync } from "node:child_process";
 import type { MenuItem } from "components/Menu";
 import type { Metadata } from "next";
 
-export type Params = { params: { example: string[] } };
+export interface Params {
+    params: { example: string[] };
+}
 
 function walkMenu(
     obj: Record<string, any> | null,

@@ -6,13 +6,13 @@ import { VscGithub, VscMenu, VscClose } from "react-icons/vsc";
 import { SiDiscord, SiReact } from "react-icons/si";
 import NavLink from "components/NavLink";
 
-export type MenuItem = {
+export interface MenuItem {
     name: string;
     path: string;
     exact?: boolean;
     comparePath?: string;
     children?: readonly MenuItem[] | MenuItem[];
-};
+}
 
 const H = ["h2", "h3", "h4", "h4"] as const;
 

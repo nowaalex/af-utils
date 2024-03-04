@@ -298,7 +298,9 @@ class VirtualScroller {
         }
     }
 
-    private _unobserveResize = () => {};
+    private _unobserveResize = () => {
+        // do nothing.
+    };
 
     constructor(params?: VirtualScrollerInitialParams) {
         if (params) {

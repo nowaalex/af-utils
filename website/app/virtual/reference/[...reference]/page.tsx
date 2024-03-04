@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import glob from "fast-glob";
 import Link from "next/link";
 
-type Params = { params: { reference: string[] } };
+interface Params {
+    params: { reference: string[] };
+}
 
 export async function generateStaticParams() {
     const result = glob
