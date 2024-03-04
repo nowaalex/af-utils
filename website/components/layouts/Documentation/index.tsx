@@ -22,7 +22,7 @@ const getDocumentationLayout = (
     getItems: () => Promise<MenuItem[]>,
     productName: string
 ) =>
-    async function ({ children }: { children: ReactNode }) {
+    async function DocumentationLayout({ children }: { children: ReactNode }) {
         const items = await getItems();
         const flattenedItems = flattenMenu(items, []);
 
