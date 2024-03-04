@@ -1,4 +1,5 @@
 {
+    "root": true,
     "extends": [
         "eslint:recommended",
         "plugin:react/jsx-runtime",
@@ -8,12 +9,7 @@
         "plugin:tailwindcss/recommended"
     ],
     "parser": "@typescript-eslint/parser",
-    "ignorePatterns": [
-        "**/lib/**",
-        "**/node_modules/**",
-        "website/public/examples/**"
-    ],
-    "root": true,
+    "ignorePatterns": ["**/lib/**"],
     "plugins": ["react", "jest", "@typescript-eslint", "tailwindcss"],
     "env": {
         "browser": true,
@@ -33,9 +29,6 @@
         }
     },
     "rules": {
-        "quotes": ["error", "double"],
-        "semi": ["error", "always"],
-        "no-plusplus": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "tailwindcss/no-custom-classname": "off"
