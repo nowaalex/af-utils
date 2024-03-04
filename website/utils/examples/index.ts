@@ -1,5 +1,3 @@
-"use server";
-
 import kebabCase from "lodash/kebabCase";
 import startCase from "lodash/startCase";
 import glob from "fast-glob";
@@ -31,12 +29,16 @@ function walkMenu(
     return arr;
 }
 
-export async function getProjectExamples(projectName: string) {
-    const postfix = "/src/code.tsx";
-
-    const examplesPath = execSync("pnpm --filter @af-utils/examples exec pwd")
+export function getProjectExamplesPath() {
+    return execSync("pnpm --filter @af-utils/examples exec pwd")
         .toString()
         .replace(/\s*$/, "/src/");
+}
+
+export function getProjectExamples(projectName: string) {
+    const postfix = "/src/code.tsx";
+
+    const examplesPath = getProjectExamplesPath();
 
     return glob
         .sync(`${examplesPath}${projectName}/**${postfix}`)
@@ -46,7 +48,7 @@ export async function getProjectExamples(projectName: string) {
 }
 
 export async function getMenuMapForProjectExamples(projectName: string) {
-    const examples = await getProjectExamples(projectName);
+    const examples = getProjectExamples(projectName);
 
     return walkMenu(
         examples.reduce<Record<string, any>>(
@@ -63,8 +65,8 @@ export async function getMenuMapForProjectExamples(projectName: string) {
     );
 }
 
-export const getStaticParamsGenerator = (projectName: string) => async () => {
-    const examples = await getProjectExamples(projectName);
+export const getStaticParamsGenerator = (projectName: string) => () => {
+    const examples = getProjectExamples(projectName);
     return examples.map(example => ({ example: example.slice(1) }));
 };
 

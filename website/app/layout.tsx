@@ -23,7 +23,7 @@ export const metadata = {
         site: "@fominalex24"
     },
     verification: {
-        google: "7SCiNq_CFCadLWK2XGowuH1UViEKIciYdit7apdjDVg"
+        google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION
     }
 } as const satisfies Metadata;
 
@@ -37,14 +37,14 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
                 <>
                     <Script
                         async
-                        src="https://www.googletagmanager.com/gtag/js?id=G-CBQ8S96MEK"
+                        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GTAG_ID}`}
                     ></Script>
                     <Script id="google-analytics">
                         {`
                             window.dataLayer = window.dataLayer || [];
                             function gtag(){dataLayer.push(arguments);}
                             gtag('js', new Date());
-                            gtag('config', 'G-CBQ8S96MEK');
+                            gtag('config', '${process.env.NEXT_PUBLIC_GTAG_ID}');
                         `}
                     </Script>
                 </>

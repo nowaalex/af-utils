@@ -1,5 +1,3 @@
-"use server";
-
 import { ShikiTransformer, codeToHtml } from "shiki";
 import theme from "shiki/dist/themes/github-light.mjs";
 import ExampleHeader from "components/ExampleHeader";

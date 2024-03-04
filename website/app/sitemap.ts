@@ -1,12 +1,15 @@
+import glob from "fast-glob";
+import { execSync } from "node:child_process";
+import { getProjectExamples, getProjectExamplesPath } from "utils/examples";
 import type { MetadataRoute } from "next";
-import { getProjectExamples } from "utils/examples";
 
 const URL = process.env.NEXT_PUBLIC_ORIGIN as string;
 
-async function sitemap() {
-    const glob = await import("fast-glob");
+const fmt = (file: string) =>
+    execSync(`git log -1 --pretty="format:%cI" ${file}`) + "";
 
-    const staticPaths = glob.default
+function sitemap() {
+    const staticPaths = glob
         .sync([
             "app/**/page.*",
             "!**/virtual/examples",
@@ -14,22 +17,28 @@ async function sitemap() {
             "!**/scrollend-polyfill/examples"
         ])
         .map(fileName => ({
-            url: `${URL}/${fileName.split("/").slice(1, -1).join("/")}`
+            url: `${URL}/${fileName.split("/").slice(1, -1).join("/")}`,
+            changeFrequency: "weekly" as const,
+            lastModified: fmt(fileName)
         }));
 
-    const examples = await getProjectExamples("*");
+    const examplesPath = getProjectExamplesPath();
 
-    const virtualReferencePaths = glob.default
-        .sync("reference/*.md")
-        .map(fileName => ({
-            url: `${URL}/virtual/${fileName}`
-        }));
+    const examples = getProjectExamples("*").map(e => ({
+        url: URL + "/" + e.toSpliced(1, 0, "examples").join("/"),
+        changeFrequency: "weekly" as const,
+        lastModified: fmt(examplesPath + e.join("/"))
+    }));
+
+    const virtualReferencePaths = glob.sync("reference/*.md").map(fileName => ({
+        url: `${URL}/virtual/${fileName}`,
+        changeFrequency: "weekly" as const,
+        lastModified: fmt(fileName)
+    }));
 
     return [
         ...staticPaths,
-        ...examples.map(e => ({
-            url: URL + "/" + e.toSpliced(1, 0, "examples").join("/")
-        })),
+        ...examples,
         ...virtualReferencePaths
     ] satisfies MetadataRoute.Sitemap;
 }
