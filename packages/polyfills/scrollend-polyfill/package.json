@@ -3,9 +3,13 @@
     "private": false,
     "version": "0.0.10",
     "description": "Polyfill for scrollend event",
-    "repository": "https://github.com/nowaalex/af-utils.git",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nowaalex/af-utils.git",
+        "directory": "packages/polyfills/scrollend-polyfill"
+    },
+    "homepage": "https://af-utils.vercel.app/scrollend-polyfill",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
-    "homepage": "https://af-utils.vercel.app/",
     "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
     "license": "MIT",
     "scripts": {
