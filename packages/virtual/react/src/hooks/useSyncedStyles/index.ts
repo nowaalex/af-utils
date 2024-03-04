@@ -46,7 +46,7 @@ const SCROLL_PROVIDER_STYLE_VERTICAL = {
  * Use this hook to avoid unneeded boilerplate.
  *
  * @returns Array of two callback refs (for outer and inner elements).
- * 
+ *
  * @remarks
  * An example could be found {@link https://af-utils.vercel.app/virtual/examples/react/hook/simple | here}
  */

@@ -16,7 +16,7 @@ const NextPrevBlock = ({ items }: { items: MenuItem[] }) => {
                 <Link
                     href={items[idx - 1].path}
                     aria-label={`Previous: ${items[idx - 1].name}`}
-                    className="flex gap-1 items-center overflow-ellipsis break-words text-left"
+                    className="flex items-center gap-1 text-ellipsis break-words text-left"
                 >
                     <GrLinkPrevious />
                     {items[idx - 1].name}
@@ -28,7 +28,7 @@ const NextPrevBlock = ({ items }: { items: MenuItem[] }) => {
                 <Link
                     href={items[idx + 1].path}
                     aria-label={`Next: ${items[idx + 1].name}`}
-                    className="flex gap-1 items-center overflow-ellipsis break-words text-right"
+                    className="flex items-center gap-1 text-ellipsis break-words text-right"
                 >
                     {items[idx + 1].name}
                     <GrLinkNext />

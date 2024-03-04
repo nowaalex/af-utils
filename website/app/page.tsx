@@ -3,8 +3,8 @@ import { VscGithub } from "react-icons/vsc";
 import { SiDiscord } from "react-icons/si";
 
 const IndexPage = () => (
-    <div className="h-screen w-screen flex flex-col prose">
-        <header className="mx-[5vmin] border-b prose-lg flex gap-8 p-6 justify-center prose-a:no-underline">
+    <div className="prose flex h-screen w-screen flex-col">
+        <header className="prose-lg prose-a:no-underline mx-[5vmin] flex justify-center gap-8 border-b p-6">
             <a
                 href={`https://github.com/${process.env.NEXT_PUBLIC_GITHUB_SUFFIX}`}
                 target="_blank"
@@ -24,10 +24,10 @@ const IndexPage = () => (
                 Discord
             </a>
         </header>
-        <main className="py-12 px-[5vmin] lg:pr-0 flex-auto prose-xl prose-a:text-blue-700 bg-no-repeat bg-right-bottom bg-[length:40vmax] sm:bg-sizif 2xl:bg-contain">
+        <main className="prose-xl prose-a:text-blue-700 sm:bg-sizif flex-auto bg-[length:40vmax] bg-right-bottom bg-no-repeat px-[5vmin] py-12 lg:pr-0 2xl:bg-contain">
             <Readme />
         </main>
-        <footer className="mx-[5vmin] border-t text-center p-6">
+        <footer className="mx-[5vmin] border-t p-6 text-center">
             © {new Date().getFullYear()} Alex Fomin
         </footer>
     </div>

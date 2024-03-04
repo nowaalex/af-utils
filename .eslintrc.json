@@ -2,11 +2,16 @@
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "prettier",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:tailwindcss/recommended"
     ],
     "parser": "@typescript-eslint/parser",
-    "ignorePatterns": ["**/lib/**", "**/node_modules/**"],
+    "ignorePatterns": [
+        "**/lib/**",
+        "**/node_modules/**",
+        "website/public/examples/**"
+    ],
     "root": true,
     "plugins": ["react", "jest", "@typescript-eslint"],
     "env": {
@@ -16,31 +21,34 @@
     },
     "parserOptions": {
         "ecmaVersion": 2022,
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     },
     "rules": {
         "quotes": ["warn", "double"],
         "semi": ["error", "always"],
-        "lodash/prefer-lodash-chain": [0],
-        "lodash/prefer-lodash-method": [0],
         "no-restricted-syntax": ["error", "WithStatement"],
         "no-bitwise": [0],
-        "no-underscore-dangle": [0],
         "no-plusplus": [0],
         "lines-between-class-members": [0],
         "one-var": [0],
         "no-param-reassign": [0],
-        "no-multi-assign": [0],
-        "no-nested-ternary": [0],
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/ban-ts-comment": 0,
         "import/prefer-default-export": [0],
         "no-cond-assign": [0],
-        "max-classes-per-file": [0],
         "react/prop-types": "off",
         "react/display-name": "off",
         "react/jsx-uses-react": "off",
         "react/react-in-jsx-scope": "off",
-        "react/jsx-no-target-blank": [1]
+        "react/jsx-no-target-blank": [1],
+        "tailwindcss/no-custom-classname": "off"
     }
 }

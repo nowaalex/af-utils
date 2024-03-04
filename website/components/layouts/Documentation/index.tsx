@@ -27,11 +27,11 @@ const getDocumentationLayout = (
         const flattenedItems = flattenMenu(items, []);
 
         return (
-            <div className="h-screen w-screen flex flex-col lg:flex-row">
+            <div className="flex h-screen w-screen flex-col lg:flex-row">
                 <Menu items={items} productName={productName} />
-                <div className="h-full flex-1 flex flex-col overflow-auto bg-white">
-                    <main className="flex-1 p-4 prose">{children}</main>
-                    <nav className="p-4 mt-2 flex-none flex gap-4 justify-between font-medium items-center">
+                <div className="flex h-full flex-1 flex-col overflow-auto bg-white">
+                    <main className="prose flex-1 p-4">{children}</main>
+                    <nav className="mt-2 flex flex-none items-center justify-between gap-4 p-4 font-medium">
                         <NextPrevBlock items={flattenedItems} />
                     </nav>
                 </div>

@@ -5,13 +5,13 @@ import imgSrc from "public/messy.jpg";
 import List from "@af-utils/examples/src/virtual/react/list/simple/src/code";
 
 const IndexExample = () => (
-    <div className="grid md:grid-cols-2 gap-8 not-prose max-w-screen-xl">
+    <div className="not-prose grid max-w-screen-xl gap-8 md:grid-cols-2">
         <Image
             priority
             alt="Messy room with only webcam-visible piece cleaned"
             src={imgSrc}
         />
-        <div className="overflow-hidden contain-strict grid md:h-full h-64">
+        <div className="contain-strict grid h-64 overflow-hidden md:h-full">
             <List />
         </div>
     </div>

@@ -3,7 +3,7 @@ import { BiSad } from "react-icons/bi";
 import { AiFillHome } from "react-icons/ai";
 
 const NotFound = () => (
-    <div className="prose prose-2xl text-center p-8">
+    <div className="prose prose-2xl p-8 text-center">
         <h1 className="flex items-center justify-center gap-3">
             <BiSad />
             404
@@ -12,7 +12,7 @@ const NotFound = () => (
 
         <h2 className="text-2xl">Page was not found</h2>
 
-        <Link href="/" className="flex flex-col items-center mt-12 underline">
+        <Link href="/" className="mt-12 flex flex-col items-center underline">
             <AiFillHome size="4em" />
             Go home
         </Link>

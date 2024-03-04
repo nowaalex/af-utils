@@ -17,7 +17,8 @@ const useSubscription = (
     model: VirtualScroller,
     events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[],
     callBack: () => void
-) => useEffect(() => {
+) =>
+    useEffect(() => {
         if (callBack) {
             callBack();
             return model.on(callBack, events);

@@ -28,7 +28,7 @@ const getHeader = (depth: number, content: string) => {
         <C className="flex items-center gap-1">
             {HeaderMeta && (
                 <HeaderMeta.Icon
-                    className="h-6 w-6"
+                    className="size-6"
                     aria-hidden="true"
                     style={{ color: HeaderMeta.color }}
                 />
@@ -88,11 +88,11 @@ const Menu = ({ items, productName }: MenuProps) => (
         <input
             aria-hidden="true"
             type="checkbox"
-            className="hidden ds-menu-checkbox"
+            className="ds-menu-checkbox hidden"
             id="menu-checkbox"
         />
         <div className="ds-menu-container">
-            <div className="flex gap-4 p-4 border-b sticky top-0 bg-inherit">
+            <div className="sticky top-0 flex gap-4 border-b bg-inherit p-4">
                 <button onClick={toggleMenu} className="ds-menu-opener">
                     <VscMenu size="28px" aria-label="Open menu" />
                 </button>
@@ -101,7 +101,7 @@ const Menu = ({ items, productName }: MenuProps) => (
                 </button>
                 <nav
                     aria-label="Breadcrumb"
-                    className="font-medium text-lg lg:text-xl"
+                    className="text-lg font-medium lg:text-xl"
                 >
                     <Link href="/" className="underline">
                         af-utils

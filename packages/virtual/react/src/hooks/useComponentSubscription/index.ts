@@ -17,7 +17,7 @@ function getSingleEventHash(this: VirtualScroller, e: VirtualScrollerEvent) {
  * @public
  * React hook.
  * Rerenders component when one of {@link @af-utils/virtual-core#(VirtualScrollerEvent:variable)} gets emitted.
- * 
+ *
  * @remarks
  * Usually {@link Subscription} is a better alternative.
  * This hook might be used in {@link https://af-utils.vercel.app/virtual/examples/react/hook/grid | grid} scenario.

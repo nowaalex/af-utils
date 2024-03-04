@@ -30,7 +30,7 @@ export const mapVisibleRange = <T>(
  *
  * @param model - {@link @af-utils/virtual-core#VirtualScroller} instance
  * @param cb - callback
- * 
+ *
  * @returns Array of currently visible items
  */
 export const mapVisibleRangeWithOffset = <T>(

@@ -46,18 +46,18 @@ const getExamplePage = (exampleHref: string) =>
             });
 
             return (
-                <div className="flex flex-col h-full">
+                <div className="flex h-full flex-col">
                     <div>
                         <ExampleHeader />
                         <Description />
                     </div>
-                    <div className="not-prose grid grid-cols-1 xl:grid-cols-2 flex-1 gap-4 grow xl:basis-0 xl:overflow-hidden xl:contain-strict">
+                    <div className="not-prose xl:contain-strict grid flex-1 grow grid-cols-1 gap-4 xl:basis-0 xl:grid-cols-2 xl:overflow-hidden">
                         <iframe
-                            className="xl:h-full h-[35vh] w-full"
+                            className="h-[35vh] w-full xl:h-full"
                             src={`/examples/src/${exampleHref}/${key}/index.html`}
                         />
                         <pre
-                            className="overflow-x-auto xl:overflow-y-auto p-4 text-sm"
+                            className="overflow-x-auto p-4 text-sm xl:overflow-y-auto"
                             data-theme
                             tabIndex={0}
                             dangerouslySetInnerHTML={{

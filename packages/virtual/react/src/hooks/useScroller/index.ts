@@ -15,10 +15,10 @@ import type {
 const useScroller = (
     model: VirtualScroller,
     scroller: VirtualScrollerScrollElement | null
-) => useIsomorphicLayoutEffect(() => {
+) =>
+    useIsomorphicLayoutEffect(() => {
         model.setScroller(scroller);
         return () => model.setScroller(null);
     }, [model, scroller]);
-
 
 export default useScroller;

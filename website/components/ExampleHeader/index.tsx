@@ -21,9 +21,9 @@ const A = (props: ComponentPropsWithoutRef<"a">) => (
 const getHeader = (segments: string[]) => {
     switch (segments.length) {
         case 6:
-            return `${segments[1]} ${segments[3]} ${segments[2]}: ${segments[5]} (${segments[4]})`;
+            return `${segments[1]} ${segments[3]} Example: ${segments[5]} (${segments[4]})`;
         case 4:
-            return `${segments[1]} ${segments[2]}: ${segments[3]}`;
+            return `${segments[1]} Example: ${segments[3]}`;
         default:
             return "Example";
     }
@@ -38,14 +38,14 @@ const getGitPiece = (segments: string[]) => {
 };
 
 const ExampleHeader = () => {
-    const segments = usePathname().replace("/examples", "/example").split("/");
+    const segments = usePathname().split("/");
     const startCasedSegments = segments.map(startCase);
     const gitPiece = getGitPiece(segments);
 
     return (
-        <div className="flex flex-wrap gap-x-10 gap-y-4 items-center mb-6">
+        <div className="mb-6 flex flex-wrap items-center gap-x-10 gap-y-4">
             <h1 className="mb-0">{getHeader(startCasedSegments)}</h1>
-            <div className="flex gap-6 items-center font-medium">
+            <div className="flex items-center gap-6 font-medium">
                 <A href={`https://github.com/${gitPiece}`}>
                     <Github />
                     Github

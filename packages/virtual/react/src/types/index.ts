@@ -26,10 +26,7 @@ export interface ListProps<C extends ElementType = "div"> {
     children: ElementType<ListItemProps>;
     /** could be accessed in {@link ListItemProps.data} */
     itemData?: any;
-    getKey?: (
-        index: number,
-        itemData: any
-    ) => string | number;
+    getKey?: (index: number, itemData: any) => string | number;
     component?: C;
     header?: JSX.Element | null;
     footer?: JSX.Element | null;

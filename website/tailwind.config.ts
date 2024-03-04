@@ -33,7 +33,7 @@ export default {
                             margin: 0
                         },
 
-                        /* api-documenter hack to format h1 as h2. all values here are copy-pasted from tailwind typography h2 styling */
+                        /* api-documenter hack to format h1 as h2. all values here are copy-pasted from tailwind typography h2 */
                         "p:first-child + h1": {
                             marginTop: "2em",
                             fontSize: "1.5em",
