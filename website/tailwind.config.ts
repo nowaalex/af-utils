@@ -16,7 +16,7 @@ export default {
             typography: {
                 DEFAULT: {
                     css: {
-                        "table": {
+                        table: {
                             /* prevent strething */
                             width: "auto"
                         },
