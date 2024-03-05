@@ -12,16 +12,16 @@
     "@af-utils/virtual-react": "0.0.22",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.11",
+    "@mui/material": "^5.15.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "use-sync-external-store": "^1.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.62",
+    "@types/react": "^18.2.63",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
     "typescript": "^5.3.3",
-    "vite": "^5.1.4"
+    "vite": "^5.1.5"
   }
 }
