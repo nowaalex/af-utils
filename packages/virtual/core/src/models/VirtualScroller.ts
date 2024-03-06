@@ -9,7 +9,6 @@ import {
 } from "constants/";
 import call from "utils/call";
 import assert from "utils/assert";
-import observeResize from "utils/observeResize";
 import growTypedArray from "utils/growTypedArray";
 import { update, getLiftingLimit, syncWithArray } from "utils/fTree";
 import getDistanceBetween from "utils/getDistanceBetween";
@@ -433,7 +432,7 @@ class VirtualScroller {
      * So using Regular description + type link.
      */
     get visibleFrom(): VirtualScrollerExactPosition {
-        const firstVisibleIndex = this._exactFrom;
+        const firstVisibleIndex = this._getExactFrom();
         return (
             firstVisibleIndex +
             (this._alignedScrollPos - this.getOffset(firstVisibleIndex)) /
@@ -491,10 +490,24 @@ class VirtualScroller {
 
             if (element) {
                 this._updatePropertyKeys();
-                this._unobserveResize = /*#__NOINLINE__*/ observeResize(
-                    element,
-                    this._handleScrollElementResize
-                );
+
+                if (element instanceof HTMLElement) {
+                    const RO = new ResizeObserver(
+                        this._handleScrollElementResize
+                    );
+                    RO.observe(element);
+                    this._unobserveResize = () => RO.disconnect();
+                } else {
+                    // resizeObserver has required 1st call
+                    this._handleScrollElementResize();
+                    addEventListener("resize", this._handleScrollElementResize);
+                    this._unobserveResize = () =>
+                        removeEventListener(
+                            "resize",
+                            this._handleScrollElementResize
+                        );
+                }
+
                 element.addEventListener("scroll", this._handleScrollEvent, {
                     passive: true
                 });
@@ -642,7 +655,7 @@ class VirtualScroller {
      * Get first visible item index (without overscan)
      * @returns first visible item index
      */
-    private get _exactFrom() {
+    private _getExactFrom() {
         return this.getIndex(this._alignedScrollPos);
     }
 
@@ -650,7 +663,7 @@ class VirtualScroller {
      * Get last visible item index (without overscan)
      * @returns last visible item index
      */
-    private get _exactTo() {
+    private _getExactTo() {
         return (
             this._itemCount &&
             1 +
@@ -665,11 +678,11 @@ class VirtualScroller {
      * adds overscan reserve forward to reduce rerenders quantity
      */
     private _updateRangeFromEnd() {
-        const { _exactTo } = this;
+        const exactTo = this._getExactTo();
 
-        if (_exactTo > this.to) {
-            this.to = Math.min(this._itemCount, _exactTo + this._overscanCount);
-            this.from = this._exactFrom;
+        if (exactTo > this.to) {
+            this.to = Math.min(this._itemCount, exactTo + this._overscanCount);
+            this.from = this._getExactFrom();
             this._run(InternalEvent.RANGE);
         }
     }
@@ -679,11 +692,11 @@ class VirtualScroller {
      * adds overscan reserve backward to reduce rerenders quantity
      */
     private _updateRangeFromStart() {
-        const { _exactFrom } = this;
+        const exactFrom = this._getExactFrom();
 
-        if (_exactFrom < this.from) {
-            this.from = Math.max(0, _exactFrom - this._overscanCount);
-            this.to = this._exactTo;
+        if (exactFrom < this.from) {
+            this.from = Math.max(0, exactFrom - this._overscanCount);
+            this.to = this._getExactTo();
             this._run(InternalEvent.RANGE);
         }
     }
@@ -751,7 +764,7 @@ class VirtualScroller {
 
             assert(
                 itemCount <= MAX_INT_32,
-                `itemCount must be <= ${MAX_INT_32}. Got: ${itemCount}.`
+                `itemCount must be <= ${MAX_INT_32}`
             );
 
             this._itemCount = itemCount;
