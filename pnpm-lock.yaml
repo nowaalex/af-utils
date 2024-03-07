@@ -173,10 +173,10 @@ importers:
   examples/src/virtual/react/hook/custom-render:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: 0.0.20
+        specifier: 0.0.21
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -207,10 +207,10 @@ importers:
   examples/src/virtual/react/hook/different-scroll-element:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: 0.0.20
+        specifier: 0.0.21
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -241,10 +241,10 @@ importers:
   examples/src/virtual/react/hook/grid:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: 0.0.20
+        specifier: 0.0.21
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -275,10 +275,10 @@ importers:
   examples/src/virtual/react/hook/simple:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: 0.0.20
+        specifier: 0.0.21
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -309,10 +309,10 @@ importers:
   examples/src/virtual/react/hook/window-scroll:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: 0.0.20
+        specifier: 0.0.21
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -343,7 +343,7 @@ importers:
   examples/src/virtual/react/list/bootstrap:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       bootstrap:
         specifier: ^5.3.3
@@ -380,10 +380,10 @@ importers:
   examples/src/virtual/react/list/extra-events:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: 0.0.20
+        specifier: 0.0.21
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -414,7 +414,7 @@ importers:
   examples/src/virtual/react/list/horizontal:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -445,10 +445,10 @@ importers:
   examples/src/virtual/react/list/load-on-demand:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: 0.0.20
+        specifier: 0.0.21
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       '@ngneat/falso':
         specifier: ^7.2.0
@@ -482,7 +482,7 @@ importers:
   examples/src/virtual/react/list/material-ui:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       '@emotion/react':
         specifier: ^11.11.4
@@ -522,10 +522,10 @@ importers:
   examples/src/virtual/react/list/prepend-items:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: 0.0.20
+        specifier: 0.0.21
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       '@ngneat/falso':
         specifier: ^7.2.0
@@ -562,10 +562,10 @@ importers:
   examples/src/virtual/react/list/scroll-to-item:
     dependencies:
       '@af-utils/virtual-core':
-        specifier: 0.0.20
+        specifier: 0.0.21
         version: link:../../../../../../packages/virtual/core
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -596,7 +596,7 @@ importers:
   examples/src/virtual/react/list/simple:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -627,7 +627,7 @@ importers:
   examples/src/virtual/react/list/sticky-header-and-footer:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
@@ -658,7 +658,7 @@ importers:
   examples/src/virtual/react/list/variable-size-list:
     dependencies:
       '@af-utils/virtual-react':
-        specifier: 0.0.22
+        specifier: 0.0.23
         version: link:../../../../../../packages/virtual/react
       react:
         specifier: ^18.2.0
