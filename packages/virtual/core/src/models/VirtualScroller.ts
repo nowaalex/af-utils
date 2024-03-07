@@ -7,8 +7,6 @@ import {
     VirtualScrollerEvent
 } from "constants/";
 
-import { batchStart, batchEnd, batchLevel, addToBatchQueue } from "utils/batch";
-
 import {
     call,
     assert,
@@ -18,6 +16,8 @@ import {
 } from "utils/misc";
 
 import { update, getLiftingLimit, syncWithArray } from "utils/fTree";
+
+import { batchLevel, batchStart, batchEnd, addToBatchQueue } from "utils/batch";
 
 import type {
     VirtualScrollerScrollElement,
@@ -485,43 +485,41 @@ class VirtualScroller {
      * Must be called with `null` before killing the instance.
      */
     setScroller(element: VirtualScrollerScrollElement | null) {
-        if (element !== this._scrollElement) {
+        if (this._scrollElement) {
             clearInterval(this._scrollToIndexTimer);
             clearTimeout(this._scrollerOffsetTimer);
             this._unobserveResize();
-            this._scrollElement?.removeEventListener(
+            this._scrollElement.removeEventListener(
                 "scroll",
                 this._handleScrollEvent
             );
+        }
 
-            this._scrollElement = element;
+        this._scrollElement = element;
 
-            if (element) {
-                this._updatePropertyKeys();
+        if (element) {
+            this._updatePropertyKeys();
 
-                if (isElement(element)) {
-                    const RO = new ResizeObserver(
+            if (isElement(element)) {
+                const RO = new ResizeObserver(this._handleScrollElementResize);
+                RO.observe(element as HTMLElement);
+                this._unobserveResize = () => RO.disconnect();
+            } else {
+                // resizeObserver has required 1st call
+                this._handleScrollElementResize();
+                addEventListener("resize", this._handleScrollElementResize);
+                this._unobserveResize = () =>
+                    removeEventListener(
+                        "resize",
                         this._handleScrollElementResize
                     );
-                    RO.observe(element as HTMLElement);
-                    this._unobserveResize = () => RO.disconnect();
-                } else {
-                    // resizeObserver has required 1st call
-                    this._handleScrollElementResize();
-                    addEventListener("resize", this._handleScrollElementResize);
-                    this._unobserveResize = () =>
-                        removeEventListener(
-                            "resize",
-                            this._handleScrollElementResize
-                        );
-                }
-
-                element.addEventListener("scroll", this._handleScrollEvent, {
-                    passive: true
-                });
-                this.updateScrollerOffset();
-                this._syncScrollPosition();
             }
+
+            element.addEventListener("scroll", this._handleScrollEvent, {
+                passive: true
+            });
+            this.updateScrollerOffset();
+            this._syncScrollPosition();
         }
     }
 
@@ -772,7 +770,7 @@ class VirtualScroller {
 
             assert(
                 itemCount <= MAX_INT_32,
-                `itemCount must be <= ${MAX_INT_32}`
+                "itemCount must be <= " + MAX_INT_32
             );
 
             this._itemCount = itemCount;

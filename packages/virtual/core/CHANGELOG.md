@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.21
+
+### Patch Changes
+
+- optimized bundle size & batch singleton
+
 ## 0.0.20
 
 ### Patch Changes
