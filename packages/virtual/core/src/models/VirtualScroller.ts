@@ -4,15 +4,21 @@ import {
     ResizeObserverSizeKey,
     ScrollKey,
     ScrollToKey,
-    _ALL_EVENTS,
     VirtualScrollerEvent
 } from "constants/";
-import call from "utils/call";
-import assert from "utils/assert";
-import growTypedArray from "utils/growTypedArray";
+
+import { batchStart, batchEnd, batchLevel, addToBatchQueue } from "utils/batch";
+
+import {
+    call,
+    assert,
+    growTypedArray,
+    getDistanceBetween,
+    isElement
+} from "utils/misc";
+
 import { update, getLiftingLimit, syncWithArray } from "utils/fTree";
-import getDistanceBetween from "utils/getDistanceBetween";
-import Batch from "singletons/Batch";
+
 import type {
     VirtualScrollerScrollElement,
     VirtualScrollerInitialParams,
@@ -228,7 +234,7 @@ class VirtualScroller {
         }
 
         if (wasAtLeastOneSizeChanged) {
-            Batch._start();
+            /*#__INLINE__*/ batchStart();
 
             if (buff !== 0) {
                 update(this._fTree, lim, buff, this._fTree.length);
@@ -252,11 +258,15 @@ class VirtualScroller {
             this.sizesHash = (this.sizesHash + 1) & MAX_INT_32;
             this._run(InternalEvent.SIZES);
 
-            Batch._end();
+            batchEnd();
         }
     });
 
-    private _EventsList = _ALL_EVENTS.map<(() => void)[]>(() => []);
+    private _EventsList: Record<VirtualScrollerEvent, (() => void)[]> = [
+        [],
+        [],
+        []
+    ];
 
     /**
      * Update property names for resize events, dimensions and scroll position extraction
@@ -267,7 +277,7 @@ class VirtualScroller {
      */
     private _updatePropertyKeys() {
         const h = this.horizontal ? 1 : 0;
-        const w = this._scrollElement instanceof HTMLElement ? 0 : 1;
+        const w = isElement(this._scrollElement) ? 0 : 1;
         const i = h + 2 * w;
 
         this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
@@ -339,9 +349,7 @@ class VirtualScroller {
      * @param event - event to emit
      */
     private _run(event: VirtualScrollerEvent) {
-        this._EventsList[event].forEach(
-            Batch._level === 0 ? call : Batch._queue
-        );
+        this._EventsList[event].forEach(batchLevel ? addToBatchQueue : call);
     }
 
     /**
@@ -491,11 +499,11 @@ class VirtualScroller {
             if (element) {
                 this._updatePropertyKeys();
 
-                if (element instanceof HTMLElement) {
+                if (isElement(element)) {
                     const RO = new ResizeObserver(
                         this._handleScrollElementResize
                     );
-                    RO.observe(element);
+                    RO.observe(element as HTMLElement);
                     this._unobserveResize = () => RO.disconnect();
                 } else {
                     // resizeObserver has required 1st call
@@ -760,7 +768,7 @@ class VirtualScroller {
      */
     setItemCount(itemCount: number) {
         if (this._itemCount !== itemCount) {
-            Batch._start();
+            /*#__INLINE__*/ batchStart();
 
             assert(
                 itemCount <= MAX_INT_32,
@@ -792,7 +800,7 @@ class VirtualScroller {
 
             this._updateRangeFromEnd();
 
-            Batch._end();
+            batchEnd();
         }
     }
 

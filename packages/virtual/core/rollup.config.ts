@@ -27,7 +27,6 @@ export default {
             },
             format: {
                 beautify: true,
-                comments: /^[@#].+/,
                 preserve_annotations: true
             },
             sourceMap: true

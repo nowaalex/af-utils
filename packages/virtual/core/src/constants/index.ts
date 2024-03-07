@@ -38,11 +38,6 @@ export type VirtualScrollerEvent =
     (typeof VirtualScrollerEvent)[keyof typeof VirtualScrollerEvent];
 
 /** @internal */
-export const _ALL_EVENTS = [
-    0, 1, 2
-] as const satisfies readonly InternalEvent[];
-
-/** @internal */
 export const enum ScrollElementSizeKey {
     WINDOW_HORIZONTAL = "innerWidth",
     WINDOW_VERTICAL = "innerHeight",
