@@ -6,7 +6,7 @@
         "dev": "pnpm build:examples && next dev",
         "build": "pnpm build:examples && next build",
         "build:docs": "./build-docs.sh",
-        "build:examples": "./copy-example-files.sh",
+        "build:examples": "./build-examples.sh",
         "start": "next start",
         "lint": "next lint"
     },
