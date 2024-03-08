@@ -10,11 +10,6 @@
         "start": "next start",
         "lint": "next lint"
     },
-    "engines": {
-        "pnpm": "^8.0.0",
-        "node": ">20.0.0"
-    },
-    "packageManager": "pnpm@8.15.1",
     "dependencies": {
         "@af-utils/examples": "workspace:*",
         "@af-utils/scrollend-polyfill": "workspace:*",

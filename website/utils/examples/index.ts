@@ -1,7 +1,6 @@
 import kebabCase from "lodash/kebabCase";
 import startCase from "lodash/startCase";
 import glob from "fast-glob";
-import { execSync } from "node:child_process";
 
 import type { MenuItem } from "components/Menu";
 import type { Metadata } from "next";
@@ -30,9 +29,7 @@ function walkMenu(
 }
 
 export function getProjectExamplesPath() {
-    return execSync("pnpm --filter @af-utils/examples exec pwd")
-        .toString()
-        .replace(/\s*$/, "/src/");
+    return "../examples/src/";
 }
 
 export function getProjectExamples(projectName: string) {
