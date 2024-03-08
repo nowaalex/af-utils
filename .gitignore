@@ -8,4 +8,3 @@ logs
 
 **/.next/**
 website/public/examples/**
-website/generatedPaths.ts

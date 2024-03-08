@@ -1,7 +1,6 @@
 import kebabCase from "lodash/kebabCase";
 import startCase from "lodash/startCase";
 import glob from "fast-glob";
-import { examples } from "generatedPaths";
 
 import type { MenuItem } from "components/Menu";
 import type { Metadata } from "next";
@@ -30,7 +29,7 @@ function walkMenu(
 }
 
 export function getProjectExamplesPath() {
-    return `${examples}/src/`;
+    return "../examples/src/";
 }
 
 export function getProjectExamples(projectName: string) {
