@@ -14,7 +14,7 @@
     "module": "lib/index.js",
     "keywords": [],
     "devDependencies": {
-        "rollup": "^4.12.1",
+        "rollup": "^4.13.0",
         "terser": "^5.29.1"
     },
     "publishConfig": {
