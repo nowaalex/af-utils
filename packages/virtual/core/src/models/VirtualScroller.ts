@@ -262,6 +262,11 @@ class VirtualScroller {
         }
     });
 
+    /**
+     * Providing exact type here with 2 purposes:
+     * - forbid using it as an array (.map, .filter, etc.)
+     * - if events quantity does not match - type error would be shown
+     */
     private _EventsList: Record<VirtualScrollerEvent, (() => void)[]> = [
         [],
         [],
@@ -456,19 +461,16 @@ class VirtualScroller {
             scrollElement may not be null here.
             Math.round, because scrollY/scrollX may be float on Safari
         */
-        const curAlignedScrollPos = this._alignedScrollPos,
-            newAlignedScrollPos =
-                Math.round((this._scrollElement as any)[this._scrollKey]) -
-                this._scrollElementOffset;
+        const newAlignedScrollPos =
+            Math.round((this._scrollElement as any)[this._scrollKey]) -
+            this._scrollElementOffset;
 
-        if (newAlignedScrollPos !== curAlignedScrollPos) {
+        if (newAlignedScrollPos > this._alignedScrollPos) {
             this._alignedScrollPos = newAlignedScrollPos;
-
-            if (newAlignedScrollPos > curAlignedScrollPos) {
-                this._updateRangeFromEnd();
-            } else {
-                this._updateRangeFromStart();
-            }
+            this._updateRangeFromEnd();
+        } else if (newAlignedScrollPos < this._alignedScrollPos) {
+            this._alignedScrollPos = newAlignedScrollPos;
+            this._updateRangeFromStart();
         }
     }
 

@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.22
+
+### Patch Changes
+
+- squeezed some more bytes from core
+
 ## 0.0.21
 
 ### Patch Changes

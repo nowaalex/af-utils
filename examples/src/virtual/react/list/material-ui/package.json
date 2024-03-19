@@ -1,6 +1,6 @@
 {
   "name": "@af-utils/virtual-examples-react-list-material-ui",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -9,16 +9,16 @@
   },
   "type": "module",
   "dependencies": {
-    "@af-utils/virtual-react": "0.0.23",
+    "@af-utils/virtual-react": "0.0.24",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.13",
+    "@mui/material": "^5.15.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "use-sync-external-store": "^1.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.65",
+    "@types/react": "^18.2.67",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
     "typescript": "^5.4.2",

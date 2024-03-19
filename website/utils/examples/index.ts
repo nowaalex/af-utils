@@ -37,8 +37,13 @@ export function getProjectExamples(projectName: string) {
 
     const examplesPath = getProjectExamplesPath();
 
-    return glob
-        .sync(`${examplesPath}${projectName}/**${postfix}`)
+    const rawExamples = glob.sync(`${examplesPath}${projectName}/**${postfix}`);
+
+    if (!rawExamples.length) {
+        console.warn("no examples found by glob. Path: " + examplesPath);
+    }
+
+    return rawExamples
         .map(f => f.slice(examplesPath.length, -postfix.length))
         .sort((a, b) => a.localeCompare(b))
         .map(f => f.split("/"));
