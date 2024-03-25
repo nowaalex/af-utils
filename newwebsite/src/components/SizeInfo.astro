@@ -1,0 +1,56 @@
+---
+import prettyBytes from "pretty-bytes";
+
+const sizeColumns = ["raw", "min", "minGz", "minBrotli"] as const;
+
+interface Props {
+    items: [
+        { raw: number; min: number; minGz: number; minBrotli: number },
+        name: string
+    ][];
+}
+
+const { items } = Astro.props;
+---
+
+{
+    items.length === 0 ? null : items.length === 1 ? (
+        <table>
+            <thead>
+                <tr>
+                    <th>Compression</th>
+                    <th>Size</th>
+                </tr>
+            </thead>
+            <tbody>
+                {sizeColumns.map(s => (
+                    <tr>
+                        <td>{s}</td>
+                        <td>{prettyBytes(items[0]![0][s])}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    ) : (
+        <table>
+            <thead>
+                <tr>
+                    <th>Package</th>
+                    {sizeColumns.map(col => (
+                        <th>{col}</th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {items.map(([sizes, name]) => (
+                    <tr>
+                        <td>{name}</td>
+                        {sizeColumns.map(col => (
+                            <td>{prettyBytes(sizes[col])}</td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    )
+}

@@ -1,0 +1,35 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+---
+
+import SizeInfo from "components/SizeInfo.astro";
+import * as coreSizes from "@af-utils/virtual-core/lib/bundlesize.index.js";
+import * as reactSizes from "@af-utils/virtual-react/lib/bundlesize.index.js";
+
+# Virtual bundle size impact
+
+All packages were carefully optimized to be as small as possible.
+In order to provide exact numbers, each of them is shipped with `bundlesize.index.js` file.
+Contents of all those files are shown in this table in human-readable format.
+
+<SizeInfo
+    items={[
+        [coreSizes, "@af-utils/virtual-core"],
+        [reactSizes, "@af-utils/virtual-react"]
+    ]}
+/>
+
+## Terser configuration
+
+During bundle size measurement `process.env.NODE_ENV` was set to `production`
+to cut away some extra checks and verbose errors.
+
+```javascript
+const TERSER_OPTS = {
+    compress: {
+        global_defs: {
+            "process.env.NODE_ENV": "production"
+        }
+    }
+};
+```

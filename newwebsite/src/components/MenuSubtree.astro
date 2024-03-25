@@ -1,0 +1,44 @@
+---
+import NavLink from "components/NavLink.astro";
+import MenuSubtreeHeader from "components/MenuSubtreeHeader.astro";
+
+interface MenuItem {
+    name: string;
+    path: string;
+    exact?: boolean;
+    comparePath?: string;
+    children?: readonly MenuItem[] | MenuItem[];
+}
+
+interface Props {
+    node: MenuItem;
+    depth: number;
+}
+
+const { node, depth } = Astro.props;
+---
+
+{
+    node.children?.length ? (
+        <>
+            <MenuSubtreeHeader depth={depth}>{node.name}</MenuSubtreeHeader>
+            <ul>
+                {node.children.map(child => (
+                    <li>
+                        <Astro.self node={child} depth={depth + 1} />
+                    </li>
+                ))}
+            </ul>
+        </>
+    ) : (
+        <NavLink
+            exact={node.exact}
+            href={node.path}
+            compareHref={node.comparePath ?? node.path}
+            class="font-normal"
+            activeClassName="!font-semibold text-orange-700 translate-y-20"
+        >
+            {node.name}
+        </NavLink>
+    )
+}

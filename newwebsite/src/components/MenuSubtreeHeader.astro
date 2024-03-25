@@ -1,0 +1,17 @@
+---
+interface Props {
+    depth: number;
+}
+
+const { depth } = Astro.props;
+
+const H = ["h2", "h3", "h4", "h4"] as const;
+
+const C = H[depth];
+
+if (!C) {
+    throw new Error("Too deep");
+}
+---
+
+<C class="flex items-center gap-1"><slot /></C>

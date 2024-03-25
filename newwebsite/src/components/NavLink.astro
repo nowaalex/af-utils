@@ -1,0 +1,25 @@
+---
+const currentPath = Astro.url.pathname;
+
+const {
+    href,
+    class: className,
+    compareHref = href,
+    exact,
+    activeClassName,
+    ...rest
+} = Astro.props;
+
+const isActive = exact
+    ? currentPath === compareHref
+    : typeof compareHref === "string" && currentPath.startsWith(compareHref);
+---
+
+<a
+    {...rest}
+    href={href}
+    aria-current={isActive ? "page" : undefined}
+    class:list={[className, isActive ? activeClassName : ""]}
+>
+    <slot />
+</a>

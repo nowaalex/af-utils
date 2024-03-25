@@ -1,0 +1,65 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+---
+
+import { Image } from "astro:assets";
+import messyImg from "assets/messy.jpg";
+import List from "@af-utils/examples/src/virtual/react/list/simple/src/code";
+
+# Getting started
+
+When you need to render a list or grid with a lot of rows or columns, you may face performance problems.
+A lot of DOM nodes must be created, but only a few of them are visible.
+One way to optimize this is called **virtual scroll**.
+Based on scroll position and size of each item we can calculate the range to show.
+Only visible elements are rendered with this approach.
+
+<div className="not-prose grid max-w-screen-xl gap-8 md:grid-cols-2">
+    <Image
+        alt="Messy room with only webcam-visible piece cleaned"
+        src={messyImg}
+    />
+    <div className="contain-strict grid h-64 overflow-hidden md:h-full">
+        <List client:load />
+    </div>
+</div>
+
+Variable item sizes with <span className="whitespace-nowrap">on-the-fly</span> remeasurement are also supported.
+
+## Installation
+
+Install desired adapter using your package manager
+
+-   ### React
+
+    [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore) hook was introduced only in React 18, so a shim is needed for React 17 support.
+
+    ```bash
+    npm install @af-utils/virtual-react use-sync-external-store
+    ```
+
+-   ### Core (no framework)
+
+    Library core is just housing sizes and offsets, so rendering falls on your shoulders.
+
+    ```bash
+    npm install @af-utils/virtual-core
+    ```
+
+## Typescript
+
+Library core and adapters are written in [Typescript](https://www.typescriptlang.org/) with [TSDoc](https://tsdoc.org/) comments.
+This results in good [IntelliSense](https://code.visualstudio.com/docs/editor/intellisense)
+
+## Supported browsers
+
+```javascript
+// taken from package.json
+
+"browserslist": [
+    ">0.6%",
+    "not op_mini all"
+]
+```
+
+[Browserslist.dev](https://browserslist.dev/?q=PjAuNiUsbm90IG9wX21pbmkgYWxs)

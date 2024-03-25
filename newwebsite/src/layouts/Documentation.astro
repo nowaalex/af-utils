@@ -1,0 +1,35 @@
+---
+import BaseLayout from "./Base.astro";
+import Menu from "components/Menu.astro";
+/*
+function flattenMenu(arr: any[] | readonly any[], resultArr: any[]) {
+    if (arr) {
+        for (const k of arr) {
+            if (k.children?.length) {
+                flattenMenu(k.children, resultArr);
+            } else {
+                resultArr.push(k);
+            }
+        }
+    }
+    return resultArr;
+}
+*/
+interface Props {
+    items: any[];
+    productName: string;
+}
+
+const { items, productName } = Astro.props;
+
+// const flattenedItems = flattenMenu(items, []);
+---
+
+<BaseLayout title="a">
+    <div class="flex h-screen w-screen flex-col lg:flex-row">
+        <Menu items={items} productName={productName} />
+        <div class="flex h-full flex-1 flex-col overflow-auto bg-white">
+            <main class="prose flex-1 p-4"><slot /></main>
+        </div>
+    </div>
+</BaseLayout>

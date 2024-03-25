@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .contain-strict {
+        contain: strict;
+    }
+}
+
+@layer components {
+    .basic-table-container {
+        table {
+            @apply border-separate;
+            border-spacing: 0;
+        }
+
+        td,
+        th {
+            @apply p-2;
+            @apply border;
+        }
+
+        tfoot th,
+        tfoot td,
+        thead th,
+        thead td {
+            @apply bg-white;
+        }
+
+        th input {
+            @apply border;
+        }
+    }
+
+    .ds-menu-container {
+        @apply z-10 min-w-[20em] overflow-y-auto lg:border-r lg:drop-shadow-xl bg-zinc-50;
+    }
+
+    .ds-menu-items {
+        @apply p-4 hidden lg:block;
+    }
+
+    .ds-menu-items ul {
+        padding-left: 0.9em;
+    }
+
+    .ds-menu-closer,
+    .ds-menu-opener {
+        @apply hidden;
+    }
+
+    .ds-menu-checkbox:checked + .ds-menu-container {
+        @apply fixed inset-0 lg:relative;
+    }
+
+    .ds-menu-checkbox:checked + .ds-menu-container .ds-menu-items {
+        @apply block;
+    }
+
+    .ds-menu-checkbox:checked + .ds-menu-container .ds-menu-closer {
+        @apply block lg:hidden;
+    }
+
+    .ds-menu-checkbox:not(:checked) + .ds-menu-container .ds-menu-opener {
+        @apply block lg:hidden;
+    }
+
+    .prose {
+        @apply max-w-none;
+    }
+
+    pre[data-theme] {
+        @apply bg-zinc-50 drop-shadow text-inherit;
+    }
+}

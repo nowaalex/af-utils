@@ -1,0 +1,27 @@
+---
+import Documentation from "layouts/Documentation.astro";
+import { getMenuMapForProjectExamples } from "utils/examples";
+
+const items = [
+    {
+        name: "Description",
+        path: "",
+        children: [
+            {
+                name: "Getting started",
+                path: "/scrollend-polyfill",
+                exact: true
+            },
+            {
+                name: "Bundle size impact",
+                path: "/scrollend-polyfill/size"
+            }
+        ]
+    },
+    ...getMenuMapForProjectExamples("scrollend-polyfill")
+];
+---
+
+<Documentation items={items} productName="scrollend-polyfill">
+    <slot />
+</Documentation>
