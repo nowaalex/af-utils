@@ -1,0 +1,40 @@
+---
+const currentPath = Astro.url.pathname;
+
+interface Props {
+    items: any[];
+}
+
+const { items } = Astro.props;
+
+const idx = items.findIndex(item => item.path === currentPath);
+const prev = idx > 0 ? items[idx - 1] : null;
+const next = idx < items.length - 1 ? items[idx + 1] : null;
+---
+
+{
+    prev ? (
+        <a
+            href={prev.path}
+            aria-label={`Previous: ${prev.name}`}
+            class="flex items-center gap-1 text-ellipsis break-words text-left"
+        >
+            {prev.name}
+        </a>
+    ) : (
+        <div />
+    )
+}
+{
+    next ? (
+        <a
+            href={next.path}
+            aria-label={`Next: ${next.name}`}
+            class="flex items-center gap-1 text-ellipsis break-words text-right"
+        >
+            {next.name}
+        </a>
+    ) : (
+        <div />
+    )
+}
