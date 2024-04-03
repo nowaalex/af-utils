@@ -18,78 +18,95 @@ interface Props {
 }
 ---
 
-<input
-    aria-hidden="true"
-    type="checkbox"
-    class="ds-menu-checkbox hidden"
-    id="menu-checkbox"
-/>
-<div class="ds-menu-container">
-    <div class="sticky top-0 flex gap-4 border-b bg-inherit p-4">
-        <button class="ds-menu-opener">
-            <Icon size={24} name="material-symbols:menu" />
-        </button>
-        <button class="ds-menu-closer">
-            <Icon size={24} name="material-symbols:close" />
-        </button>
-        <nav aria-label="Breadcrumb" class="text-lg font-medium lg:text-xl">
-            <a href="/" class="underline"> af-utils </a>
-            <span class="px-2" aria-hidden="true"> / </span>
-            <span class="text-slate-500" aria-current="page">
-                {productName}
-            </span>
+<menu-wrapper>
+    <input aria-hidden="true" type="checkbox" class="ds-menu-checkbox hidden" />
+    <div
+        class="ds-menu-container z-10 min-w-[20em] overflow-y-auto lg:border-r lg:drop-shadow-xl bg-zinc-50"
+    >
+        <div class="sticky top-0 flex gap-4 border-b bg-inherit p-4">
+            <button class="ds-menu-opener">
+                <Icon
+                    size={24}
+                    name="material-symbols:menu"
+                    aria-label="open menu"
+                />
+            </button>
+            <button class="ds-menu-closer">
+                <Icon
+                    size={24}
+                    name="material-symbols:close"
+                    aria-label="close menu"
+                />
+            </button>
+            <nav aria-label="Breadcrumb" class="text-lg font-medium lg:text-xl">
+                <a href="/" class="underline">af-utils</a>
+                <span class="px-1" aria-hidden="true">/</span>
+                <span class="text-slate-500" aria-current="page">
+                    {productName}
+                </span>
+            </nav>
+        </div>
+        <nav
+            aria-label="Main navigation"
+            class="prose prose-sm prose-ul:pl-3 prose-ul:list-none prose-a:no-underline prose-a:font-normal ds-menu-items p-4"
+        >
+            {items.map(node => <MenuSubtree node={node} depth={0} />)}
+
+            <h2>Links</h2>
+
+            <ul>
+                <li>
+                    <a
+                        href={`https://github.com/${process.env.PUBLIC_GITHUB_SUFFIX}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center gap-2"
+                    >
+                        <Icon name="simple-icons:github" />Github
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href={process.env.PUBLIC_DISCORD_LINK}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center gap-2"
+                    >
+                        <Icon name="simple-icons:discord" />Discord
+                    </a>
+                </li>
+            </ul>
         </nav>
     </div>
-    <nav
-        aria-label="Main navigation"
-        class="prose prose-sm prose-ul:list-none prose-a:no-underline prose-a:font-normal ds-menu-items"
-    >
-        {items.map(node => <MenuSubtree node={node} depth={0} />)}
+</menu-wrapper>
 
-        <h2>Links</h2>
+<script>
+    class MenuWrapper extends HTMLElement {
+        constructor() {
+            super();
 
-        <ul>
-            <li>
-                <a
-                    href={`https://github.com/${process.env.PUBLIC_GITHUB_SUFFIX}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center gap-2"
-                >
-                    <Icon name="simple-icons:github" />Github
-                </a>
-            </li>
-            <li>
-                <a
-                    href={process.env.PUBLIC_DISCORD_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center gap-2"
-                >
-                    <Icon name="simple-icons:discord" />Discord
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <script>
-        const menuCheckbox =
-            document.querySelector<HTMLInputElement>("#menu-checkbox")!;
+            const menu =
+                this.querySelector<HTMLInputElement>(".ds-menu-checkbox")!;
 
-        const toggleMenu = () => menuCheckbox.toggleAttribute("checked");
+            const toggleMenu = () => menu.toggleAttribute("checked");
 
-        document
-            .querySelectorAll(".ds-menu-opener, .ds-menu-closer")
-            .forEach(btn => btn.addEventListener("click", toggleMenu));
+            this.querySelectorAll(".ds-menu-opener, .ds-menu-closer").forEach(
+                btn => btn.addEventListener("click", toggleMenu)
+            );
 
-        document
-            .querySelector(".ds-menu-items")!
-            .addEventListener("click", e => {
-                if (
-                    e.target instanceof HTMLAnchorElement &&
-                    e.target.getAttribute("href")?.startsWith("/")
-                ) {
-                    toggleMenu();
+            this.querySelector(".ds-menu-items")!.addEventListener(
+                "click",
+                e => {
+                    if (
+                        e.target instanceof HTMLAnchorElement &&
+                        e.target.getAttribute("href")?.startsWith("/")
+                    ) {
+                        toggleMenu();
+                    }
                 }
-            });
-    </script>
-</div>
+            );
+        }
+    }
+
+    customElements.define("menu-wrapper", MenuWrapper);
+</script>

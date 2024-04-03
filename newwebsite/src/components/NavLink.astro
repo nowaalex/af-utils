@@ -12,7 +12,7 @@ const isActive = exact
     {...rest}
     href={href}
     aria-current={isActive ? "page" : undefined}
-    class={isActive ? "text-orange-700 !font-semibold" : ""}
+    class:list={isActive ? "text-orange-700 !font-semibold" : ""}
 >
     <slot />
 </a>

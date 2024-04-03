@@ -27,7 +27,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "sharp": "^0.33.3",
-        "shiki": "1.2.3",
+        "shiki": "1.2.4",
         "typescript": "^5.4.3",
         "use-sync-external-store": "^1.2.0"
     },
