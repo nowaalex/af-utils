@@ -2,6 +2,7 @@
 import BaseLayout from "./Base.astro";
 import Menu from "components/Menu.astro";
 import NextPrevBlock from "components/NextPrevBlock.astro";
+import type { Props as BaseLayoutProps } from "layouts/Base.astro";
 
 function flattenMenu(arr: any[] | readonly any[], resultArr: any[]) {
     if (arr) {
@@ -16,17 +17,17 @@ function flattenMenu(arr: any[] | readonly any[], resultArr: any[]) {
     return resultArr;
 }
 
-interface Props {
+export interface Props extends BaseLayoutProps {
     items: any[];
     productName: string;
 }
 
-const { items, productName } = Astro.props;
+const { items, productName, ...rest } = Astro.props;
 
 const flattenedItems = flattenMenu(items, []);
 ---
 
-<BaseLayout title="a">
+<BaseLayout {...rest}>
     <div class="flex h-screen w-screen flex-col lg:flex-row">
         <Menu items={items} productName={productName} />
         <div class="flex h-full flex-1 flex-col overflow-auto bg-white">

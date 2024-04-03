@@ -2,6 +2,12 @@
 import Documentation from "layouts/Documentation.astro";
 import { getEntry } from "astro:content";
 import { getMenuMapForProjectExamples } from "utils/examples";
+import type { Props as DocumentationLayoutProps } from "layouts/Documentation.astro";
+
+export interface Props extends DocumentationLayoutProps {
+    items: never;
+    productName: never;
+}
 
 const items = [
     {

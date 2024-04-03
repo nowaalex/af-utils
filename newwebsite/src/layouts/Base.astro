@@ -1,24 +1,53 @@
 ---
 import { ViewTransitions } from "astro:transitions";
+import { SEO } from "astro-seo";
 import "@fontsource-variable/exo";
 import "styles/base.css";
-
-interface Props {
-    title: string;
-}
-
-const { title } = Astro.props;
+export type { Props } from "astro-seo";
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="description" content="Astro description" />
+        <SEO
+            charset="UTF-8"
+            title="af-utils | Simple open-source tools that just work"
+            description="Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
+            openGraph={{
+                basic: {
+                    type: "website",
+                    title: "Simple open-source tools that just work",
+                    image: "a"
+                },
+                optional: {
+                    description:
+                        "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
+                }
+            }}
+            twitter={{
+                creator: "@fominalex24",
+                site: "@fominalex24"
+            }}
+            extend={{
+                // extending the default link tags
+                link: [{ rel: "icon", href: "/favicon.ico" }],
+                // extending the default meta tags
+                meta: [
+                    {
+                        name: "twitter:image",
+                        content:
+                            "https://user-images.githubusercontent.com/5182256/131216951-8f74f425-f775-463d-a11b-0e01ad9fce8d.png"
+                    },
+                    {
+                        name: "twitter:title",
+                        content: "Tinker Tailor Soldier Spy"
+                    },
+                    { name: "twitter:description", content: "Agent" }
+                ]
+            }}
+        />
         <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
         <meta name="generator" content={Astro.generator} />
-        <title>{title}</title>
         <style is:global>
             html {
                 font-family: "Exo Variable", sans-serif;

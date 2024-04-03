@@ -23,6 +23,7 @@
         "@iconify-json/simple-icons": "^1.1.97",
         "astro": "^4.5.14",
         "astro-icon": "^1.1.0",
+        "astro-seo": "^0.8.3",
         "pretty-bytes": "^6.1.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
