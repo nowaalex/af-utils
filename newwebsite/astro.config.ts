@@ -3,6 +3,7 @@ import tailwind from "@astrojs/tailwind";
 import { visit } from "unist-util-visit";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 import dotenv from "dotenv";
 import remarkToc from "remark-toc";
 import remarkGfm from "remark-gfm";
@@ -49,6 +50,7 @@ export default defineConfig({
         tailwind({ nesting: true, applyBaseStyles: false }),
         mdx(),
         react(),
-        icon()
+        icon(),
+        sitemap()
     ]
 });

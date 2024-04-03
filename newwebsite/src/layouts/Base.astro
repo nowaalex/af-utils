@@ -1,44 +1,32 @@
 ---
+import defaultsDeep from "lodash/defaultsDeep";
 import { ViewTransitions } from "astro:transitions";
 import { SEO } from "astro-seo";
+import type { Props as SeoProps } from "astro-seo";
 import "@fontsource-variable/exo";
 import "styles/base.css";
-import type { Props as SeoProps } from "astro-seo";
 
 export interface Props extends SeoProps {
     frontmatter?: SeoProps;
 }
 
-const { props } = Astro;
+const props = defaultsDeep(Astro.props, Astro.props.frontmatter, {
+    charset: "UTF-8",
+    title: "",
+    titleTemplate: "",
+    description: "",
+    twitter: {
+        creator: "@fominalex24",
+        site: "@fominalex24"
+    }
+});
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
         <SEO
-            charset="UTF-8"
-            title={props.title || props.frontmatter?.title || ""}
-            titleTemplate={props.titleTemplate ||
-                props.frontmatter?.titleTemplate ||
-                ""}
-            description={props.description ||
-                props.frontmatter?.description ||
-                ""}
-            openGraph={{
-                basic: {
-                    type: "website",
-                    title: "Simple open-source tools that just work",
-                    image: "a"
-                },
-                optional: {
-                    description:
-                        "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
-                }
-            }}
-            twitter={{
-                creator: "@fominalex24",
-                site: "@fominalex24"
-            }}
+            {...props}
             extend={{
                 // extending the default link tags
                 link: [{ rel: "icon", href: "/favicon.ico" }]
