@@ -35,8 +35,6 @@ const { node, depth } = Astro.props;
             exact={node.exact}
             href={node.path}
             compareHref={node.comparePath ?? node.path}
-            class="font-normal"
-            activeClassName="!font-semibold text-orange-700 translate-y-20"
         >
             {node.name}
         </NavLink>

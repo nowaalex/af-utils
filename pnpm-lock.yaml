@@ -715,9 +715,6 @@ importers:
       '@iconify-json/simple-icons':
         specifier: ^1.1.97
         version: 1.1.97
-      '@iconify-json/vscode-icons':
-        specifier: ^1.1.33
-        version: 1.1.33
       astro:
         specifier: ^4.5.14
         version: 4.5.14(@types/node@20.12.3)(typescript@5.4.3)
@@ -2485,12 +2482,6 @@ packages:
 
   /@iconify-json/simple-icons@1.1.97:
     resolution: {integrity: sha512-/jTwrcAM2Gh8FtgEn8mHolaoY1iNbRgH3AE8OXu7JULi4Tdp31u7bmCSIaNDTLdBrXjcDpw0y98Dm20TbauBCg==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: false
-
-  /@iconify-json/vscode-icons@1.1.33:
-    resolution: {integrity: sha512-Aj1SoViQ5dw9hrYc4PHK8/vHpZREUA158jhnyNsD95uhN40mmeLuq+4o9OxiSakgLlac9R5OKpnp8tHTCgMhCA==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false
