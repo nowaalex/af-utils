@@ -15,8 +15,8 @@ const { path } = Astro.props;
 const Descriptions = getProjectExampleDescriptions();
 const Codes = getProjectExampleCodes();
 
-const Description = Descriptions[path];
-const codeString = Codes[path];
+const Description = await Descriptions[path]!();
+const codeString = await Codes[path]!();
 
 const htmlCodeString = await codeToHtml(codeString, {
     lang: "tsx",

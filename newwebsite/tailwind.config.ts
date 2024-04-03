@@ -7,7 +7,6 @@ export default {
     theme: {
         extend: {
             backgroundImage: {
-                sloth: "url('/sloth.jpg')",
                 sizif: "url('/sizif.jpg')"
             },
             typography: {
@@ -26,6 +25,7 @@ export default {
                                 paddingRight: "1rem"
                             },
                         "td p, th p": {
+                            /* api-documenter started to generate tags for tables instead of md syntax */
                             margin: 0
                         },
                         th: {

@@ -1,12 +1,21 @@
 ---
 import startCase from "lodash/startCase";
+import { Icon } from "astro-icon/components";
 
 const { pathname } = Astro.url;
 
 const Links = [
-    { name: "Github", url: "https://github.com/" },
-    { name: "Codesandbox", url: "https://codesandbox.io/s/github/" },
-    { name: "Stackblitz", url: "https://stackblitz.com/github/" }
+    { name: "Github", url: "https://github.com/", icon: "simple-icons:github" },
+    {
+        name: "Codesandbox",
+        url: "https://codesandbox.io/s/github/",
+        icon: "simple-icons:codesandbox"
+    },
+    {
+        name: "Stackblitz",
+        url: "https://stackblitz.com/github/",
+        icon: "simple-icons:stackblitz"
+    }
 ];
 
 const getHeader = (segments: string[]) => {
@@ -42,7 +51,9 @@ const gitPiece = getGitPiece(segments);
                     href={`${link.url}${gitPiece}`}
                     target="_blank"
                     rel="noreferrer"
+                    class="flex items-center gap-1"
                 >
+                    <Icon name={link.icon} />
                     {link.name}
                 </a>
             ))

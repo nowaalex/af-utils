@@ -8,6 +8,7 @@ import remarkToc from "remark-toc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypePrettyCode from "rehype-pretty-code";
+import icon from "astro-icon";
 import type { Root } from "hast";
 
 dotenv.config({ path: ".env.local" });
@@ -47,6 +48,7 @@ export default defineConfig({
     integrations: [
         tailwind({ nesting: true, applyBaseStyles: false }),
         mdx(),
-        react()
+        react(),
+        icon()
     ]
 });

@@ -20,60 +20,56 @@ function walkMenu(obj: Record<string, any> | null, arr: any[], path: string) {
     return arr;
 }
 
-function cutObjectKeys(
-    source: Record<string, any>,
+const cutObjectKeys = <T extends Record<string, any>>(
+    source: T,
     sliceFrom: number,
     sliceTo: number
-) {
-    return Object.fromEntries(
+) =>
+    Object.fromEntries(
         Object.keys(source).map(k => [k.slice(sliceFrom, sliceTo), source[k]])
-    );
-}
+    ) as T;
 
-export function getProjectExampleCodes() {
-    return cutObjectKeys(
-        import.meta.glob(
+export const getProjectExampleCodes = () =>
+    cutObjectKeys(
+        import.meta.glob<string>(
             ["../../../examples/src/**/src/code.tsx", "!**/lib/**"],
-            { import: "default", query: "?raw", eager: true }
+            { import: "default", query: "?raw" }
         ),
         "../../../examples/src/".length,
         -"/src/code.tsx".length
     );
-}
 
-export function getProjectExampleDescriptions() {
-    return cutObjectKeys(
-        import.meta.glob(["../../../examples/src/**/README.md", "!**/lib/**"], {
-            import: "Content",
-            eager: true
-        }),
+export const getProjectExampleDescriptions = () =>
+    cutObjectKeys(
+        import.meta.glob<astroHTML.JSX.Element>(
+            ["../../../examples/src/**/README.md", "!**/lib/**"],
+            {
+                import: "Content"
+            }
+        ),
         "../../../examples/src/".length,
         -"/README.md".length
     );
-}
 
-export function getProjectExamples(projectName: string) {
-    const rawExamples = Object.keys(getProjectExampleCodes()).filter(k =>
+export const getProjectExamples = (projectName: string) =>
+    Object.keys(getProjectExampleCodes()).filter(k =>
         k.startsWith(projectName)
     );
 
-    return rawExamples.sort((a, b) => a.localeCompare(b));
-}
-
-export function getMenuMapForProjectExamples(projectName: string) {
-    const examples = getProjectExamples(projectName);
-    return walkMenu(
-        examples.reduce<Record<string, any>>(
-            (result, path) => (
-                path
-                    .split("/")
-                    .with(0, "examples")
-                    .reduce((acc, v) => (acc[v] ||= {}), result),
-                result
+export const getMenuMapForProjectExamples = (projectName: string) =>
+    walkMenu(
+        getProjectExamples(projectName)
+            .sort((a, b) => a.localeCompare(b))
+            .reduce<Record<string, any>>(
+                (result, path) => (
+                    path
+                        .split("/")
+                        .with(0, "examples")
+                        .reduce((acc, v) => (acc[v] ||= {}), result),
+                    result
+                ),
+                {}
             ),
-            {}
-        ),
         [],
         "/" + projectName
     );
-}

@@ -1,5 +1,6 @@
 ---
 import Layout from "layouts/Base.astro";
+import { Icon } from "astro-icon/components";
 import { Content as Readme } from "../../../README.md";
 ---
 
@@ -14,7 +15,7 @@ import { Content as Readme } from "../../../README.md";
                 rel="noopener"
                 class="flex items-center gap-2 hover:underline"
             >
-                Github
+                <Icon name="simple-icons:github" />Github
             </a>
             <a
                 href={import.meta.env.PUBLIC_DISCORD_LINK}
@@ -22,7 +23,7 @@ import { Content as Readme } from "../../../README.md";
                 rel="noopener"
                 class="flex items-center gap-2 hover:underline"
             >
-                Discord
+                <Icon name="simple-icons:discord" />Discord
             </a>
         </header>
         <main

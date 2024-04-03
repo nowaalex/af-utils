@@ -1,4 +1,6 @@
 ---
+import { Icon } from "astro-icon/components";
+
 const currentPath = Astro.url.pathname;
 
 interface Props {
@@ -19,6 +21,7 @@ const next = idx < items.length - 1 ? items[idx + 1] : null;
             aria-label={`Previous: ${prev.name}`}
             class="flex items-center gap-1 text-ellipsis break-words text-left"
         >
+            <Icon name="material-symbols:arrow-back" />
             {prev.name}
         </a>
     ) : (
@@ -33,6 +36,7 @@ const next = idx < items.length - 1 ? items[idx + 1] : null;
             class="flex items-center gap-1 text-ellipsis break-words text-right"
         >
             {next.name}
+            <Icon name="material-symbols:arrow-forward" />
         </a>
     ) : (
         <div />

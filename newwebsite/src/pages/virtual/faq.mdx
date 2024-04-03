@@ -3,6 +3,8 @@ layout: layouts/virtual/VirtualDocumentation.astro
 ---
 
 import DocLink from "components/DocLink.astro";
+import { Image } from "astro:assets";
+import scrollbarMisalign from "assets/scrollbar_misalign.gif";
 
 # Frequently asked questions
 
@@ -52,10 +54,10 @@ Yes, you can adjust quantity of server-rendered items. <DocLink href="virtual-co
 
 ## Why cursor and scrollbar become unaligned after manual scrolling?
 
-<img
-    src="/scrollbar_misalign.gif"
+<Image
+    src={scrollbarMisalign}
     alt="scrollbar unaligned"
-    className="border sm:float-left sm:mr-3"
+    class="border sm:float-left sm:mr-3"
 />
 
 Items are remeasured on the fly. If <DocLink href="virtual-core.virtualscrollerruntimeparams.estimateditemsize.md">estimated item size</DocLink>
@@ -63,7 +65,7 @@ is different from the real one, <DocLink href="virtual-core.virtualscroller.scro
 unalignment. No size discrepancies leads to no jumps, so <DocLink href="virtual-core.virtualscrollerruntimeparams.estimateditemsize.md">estimated item size</DocLink>
 must be as accurate as possible.
 
-<p className="clear-both" />
+<p class="clear-both" />
 
 ## Why do all items disappear after scrolling to bottom?
 
