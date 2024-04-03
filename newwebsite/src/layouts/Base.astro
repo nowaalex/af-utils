@@ -3,7 +3,13 @@ import { ViewTransitions } from "astro:transitions";
 import { SEO } from "astro-seo";
 import "@fontsource-variable/exo";
 import "styles/base.css";
-export type { Props } from "astro-seo";
+import type { Props as SeoProps } from "astro-seo";
+
+export interface Props extends SeoProps {
+    frontmatter?: SeoProps;
+}
+
+const { props } = Astro;
 ---
 
 <!doctype html>
@@ -11,8 +17,13 @@ export type { Props } from "astro-seo";
     <head>
         <SEO
             charset="UTF-8"
-            title="af-utils | Simple open-source tools that just work"
-            description="Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
+            title={props.title || props.frontmatter?.title || ""}
+            titleTemplate={props.titleTemplate ||
+                props.frontmatter?.titleTemplate ||
+                ""}
+            description={props.description ||
+                props.frontmatter?.description ||
+                ""}
             openGraph={{
                 basic: {
                     type: "website",
@@ -30,20 +41,7 @@ export type { Props } from "astro-seo";
             }}
             extend={{
                 // extending the default link tags
-                link: [{ rel: "icon", href: "/favicon.ico" }],
-                // extending the default meta tags
-                meta: [
-                    {
-                        name: "twitter:image",
-                        content:
-                            "https://user-images.githubusercontent.com/5182256/131216951-8f74f425-f775-463d-a11b-0e01ad9fce8d.png"
-                    },
-                    {
-                        name: "twitter:title",
-                        content: "Tinker Tailor Soldier Spy"
-                    },
-                    { name: "twitter:description", content: "Agent" }
-                ]
+                link: [{ rel: "icon", href: "/favicon.ico" }]
             }}
         />
         <meta name="viewport" content="width=device-width" />

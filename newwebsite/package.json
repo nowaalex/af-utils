@@ -21,7 +21,7 @@
         "@fontsource-variable/exo": "^5.0.18",
         "@iconify-json/material-symbols": "^1.1.76",
         "@iconify-json/simple-icons": "^1.1.97",
-        "astro": "^4.5.14",
+        "astro": "^4.5.15",
         "astro-icon": "^1.1.0",
         "astro-seo": "^0.8.3",
         "pretty-bytes": "^6.1.1",
