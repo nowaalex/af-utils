@@ -25,6 +25,12 @@ export default {
                             {
                                 paddingRight: "1rem"
                             },
+                        "td p, th p": {
+                            margin: 0
+                        },
+                        th: {
+                            textAlign: "left"
+                        },
                         "li > p": {
                             /* for api-extractor lists */
                             margin: 0

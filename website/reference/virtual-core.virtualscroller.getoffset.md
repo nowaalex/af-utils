@@ -14,10 +14,39 @@ getOffset(index: number): number;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  index | number | item index |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+index
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+item index
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 number

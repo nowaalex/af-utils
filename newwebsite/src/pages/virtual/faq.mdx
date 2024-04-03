@@ -1,0 +1,72 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+---
+
+import DocLink from "components/DocLink.astro";
+
+# Frequently asked questions
+
+Something is not working as expected? Or just curious? Here is the list of hints that may be interesting.
+
+## There are other virtual scroll libraries. Why this one?
+
+Awesome libraries, which inspired me to create my own:
+
+-   [tanstack virtual](https://tanstack.com/virtual/)
+-   [react-virtualized](https://github.com/bvaughn/react-virtualized)
+-   [react-window](https://github.com/bvaughn/react-window)
+-   [react-cool-virtual](https://github.com/wellyshen/react-cool-virtual)
+-   [react-virtuoso](https://virtuoso.dev/)
+
+Features I was missing there and implemented/improved here:
+
+-   flexible <DocLink href="virtual-core.md">core api</DocLink>,
+    which exposes <DocLink href="virtual-core.virtualscroller.getindex.md">getIndex</DocLink> and <DocLink href="virtual-core.virtualscroller.getoffset.md">
+    getOffset
+    </DocLink> methods;
+-   built-in event emitter, supporting different <DocLink href="virtual-core.virtualscrollerevent.md">events</DocLink>;
+-   scroll position persistence after [prepending items](/virtual/examples/react/list/prepend-items);
+-   isolated rerendering with separate [subscriptions](/virtual/examples/react/list/extra-events);
+-   support of both [react hook](/virtual/examples/react/hook/simple) and [react component](/virtual/examples/react/list/simple) api, which allows to
+    combine advantages of both aproaches.
+
+## Why do I need to use ref?
+
+In order to work smoothly, library must know scrolled item sizes. Initially they equal <DocLink href="virtual-core.virtualscrollerruntimeparams.estimateditemsize.md">estimatedItemSize</DocLink>. But this is usually not
+enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
+for more accurate measurements, but you must provide mounted items explicitly in
+conjunction with their indexes.
+
+## Do I need to use css classes, provided in examples?
+
+Not necessary. This website was build with [tailwind](https://tailwindcss.com/),
+but you may use your styling approach.
+
+## How many items virtual scroller can handle?
+
+Maximum quantity library can handle is `2_147_483_647` (int32 max), but it is better not to use such huge values. <DocLink href="virtual-core.virtualscrollerruntimeparams.itemcount.md">Read more</DocLink>
+
+## Is Server-side rendering supported?
+
+Yes, you can adjust quantity of server-rendered items. <DocLink href="virtual-core.virtualscrollerinitialparams.estimatedwidgetsize.md">Read more</DocLink>
+
+## Why cursor and scrollbar become unaligned after manual scrolling?
+
+<img
+    src="/scrollbar_misalign.gif"
+    alt="scrollbar unaligned"
+    className="border sm:float-left sm:mr-3"
+/>
+
+Items are remeasured on the fly. If <DocLink href="virtual-core.virtualscrollerruntimeparams.estimateditemsize.md">estimated item size</DocLink>
+is different from the real one, <DocLink href="virtual-core.virtualscroller.scrollsize.md">scrollSize</DocLink> would jump, which causes scrollbar
+unalignment. No size discrepancies leads to no jumps, so <DocLink href="virtual-core.virtualscrollerruntimeparams.estimateditemsize.md">estimated item size</DocLink>
+must be as accurate as possible.
+
+<p className="clear-both" />
+
+## Why do all items disappear after scrolling to bottom?
+
+Most likely it is related to [this Firefox 122 issue](https://github.com/webcompat/web-bugs/issues/133349), which is already fixed in version 124.
+If it happens in different browser &ndash; feel free to open new issue [here](https://github.com/nowaalex/af-utils/issues).
+If it happens in Firefox 124 or newer &ndash; feel free to reopen [existing issue](https://github.com/webcompat/web-bugs/issues/133349).

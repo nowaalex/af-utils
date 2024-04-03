@@ -14,11 +14,55 @@ scrollToOffset(offset: number, smooth?: boolean): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  offset | number | offset to scroll to |
-|  smooth | boolean | _(Optional)_ should smooth scroll be used |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+offset
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+offset to scroll to
+
+
+</td></tr>
+<tr><td>
+
+smooth
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ should smooth scroll be used
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 void

@@ -14,10 +14,37 @@ useVirtualModel: (params: VirtualScrollerInitialParams) => VirtualScroller
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  params | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) |  |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+params
+
+
+</td><td>
+
+[VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 [VirtualScroller](./virtual-core.virtualscroller.md)

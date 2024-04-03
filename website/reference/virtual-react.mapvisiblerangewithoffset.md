@@ -14,11 +14,46 @@ mapVisibleRangeWithOffset: <T>(model: VirtualScroller, cb: (index: number, offse
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  model | [VirtualScroller](./virtual-core.virtualscroller.md) | [VirtualScroller](./virtual-core.virtualscroller.md) instance |
-|  cb | (index: number, offset: number) =&gt; T | callback |
+<table><thead><tr><th>
 
+Parameter
+
+</th><th>
+
+Type
+
+</th><th>
+
+Description
+
+</th></tr></thead>
+<tbody><tr><td>
+
+model
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md) instance
+
+</td></tr>
+<tr><td>
+
+cb
+
+</td><td>
+
+(index: number, offset: number) =&gt; T
+
+</td><td>
+
+callback
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 T\[\]
@@ -28,4 +63,3 @@ Array of currently visible items
 ## Remarks
 
 Used in scenarios, when each item is absolutely positioned
-

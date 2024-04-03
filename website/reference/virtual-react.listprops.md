@@ -14,13 +14,154 @@ export interface ListProps<C extends ElementType = "div">
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [children](./virtual-react.listprops.children.md) |  | ElementType&lt;[ListItemProps](./virtual-react.listitemprops.md)<!-- -->&gt; |  |
-|  [component?](./virtual-react.listprops.component.md) |  | C | _(Optional)_ |
-|  [footer?](./virtual-react.listprops.footer.md) |  | JSX.Element \| null | _(Optional)_ |
-|  [getKey?](./virtual-react.listprops.getkey.md) |  | (index: number, itemData: any) =&gt; string \| number | _(Optional)_ |
-|  [header?](./virtual-react.listprops.header.md) |  | JSX.Element \| null | _(Optional)_ |
-|  [itemData?](./virtual-react.listprops.itemdata.md) |  | any | _(Optional)_ could be accessed in [ListItemProps.data](./virtual-react.listitemprops.data.md) |
-|  [model](./virtual-react.listprops.model.md) |  | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
+<table><thead><tr><th>
 
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[children](./virtual-react.listprops.children.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ElementType&lt;[ListItemProps](./virtual-react.listitemprops.md)<!-- -->&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[component?](./virtual-react.listprops.component.md)
+
+
+</td><td>
+
+
+</td><td>
+
+C
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[footer?](./virtual-react.listprops.footer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+JSX.Element \| null
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[getKey?](./virtual-react.listprops.getkey.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(index: number, itemData: any) =&gt; string \| number
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[header?](./virtual-react.listprops.header.md)
+
+
+</td><td>
+
+
+</td><td>
+
+JSX.Element \| null
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[itemData?](./virtual-react.listprops.itemdata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+_(Optional)_ could be accessed in [ListItemProps.data](./virtual-react.listitemprops.data.md)
+
+
+</td></tr>
+<tr><td>
+
+[model](./virtual-react.listprops.model.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>

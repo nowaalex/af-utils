@@ -1,0 +1,20 @@
+---
+import { getCollection } from "astro:content";
+import VirtualDocumentation from "layouts/virtual/VirtualDocumentation.astro";
+
+export async function getStaticPaths() {
+    const entries = await getCollection("reference");
+
+    return entries.map(entry => ({
+        params: { page: entry.id },
+        props: { entry }
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<VirtualDocumentation>
+    <Content />
+</VirtualDocumentation>

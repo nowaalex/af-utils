@@ -8,24 +8,173 @@ React components, hooks and utils used to connect to [VirtualScroller](./virtual
 
 ## Functions
 
-|  Function | Description |
-|  --- | --- |
-|  [List(props)](./virtual-react.list.md) | React component. Small abstraction, which in 90% cases allows to avoid hook boilerplate. |
-|  [mapVisibleRange(model, cb)](./virtual-react.mapvisiblerange.md) | Map current visible items |
-|  [mapVisibleRangeWithOffset(model, cb)](./virtual-react.mapvisiblerangewithoffset.md) | Map current visible items and provide offset for each item. |
-|  [Subscription(props)](./virtual-react.subscription.md) | React component. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance. |
-|  [useComponentSubscription(model, events)](./virtual-react.usecomponentsubscription.md) | React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted. |
-|  [useScroller(model, scroller)](./virtual-react.usescroller.md) | React hook. Synchronizes scroller with model. |
-|  [useSubscription(model, events, callBack)](./virtual-react.usesubscription.md) | React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) without unnecessary rerenders. |
-|  [useSyncedStyles(model)](./virtual-react.usesyncedstyles.md) | React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hook to avoid unneeded boilerplate. |
-|  [useVirtual(params)](./virtual-react.usevirtual.md) | React hook. Calls [useVirtualModel()](./virtual-react.usevirtualmodel.md) and synchronizes it with props |
-|  [useVirtualModel(params)](./virtual-react.usevirtualmodel.md) | React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle. |
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[List(props)](./virtual-react.list.md)
+
+
+</td><td>
+
+React component. Small abstraction, which in 90% cases allows to avoid hook boilerplate.
+
+
+</td></tr>
+<tr><td>
+
+[mapVisibleRange(model, cb)](./virtual-react.mapvisiblerange.md)
+
+
+</td><td>
+
+Map current visible items
+
+
+</td></tr>
+<tr><td>
+
+[mapVisibleRangeWithOffset(model, cb)](./virtual-react.mapvisiblerangewithoffset.md)
+
+
+</td><td>
+
+Map current visible items and provide offset for each item.
+
+
+</td></tr>
+<tr><td>
+
+[Subscription(props)](./virtual-react.subscription.md)
+
+
+</td><td>
+
+React component. Rerenders only on certain [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->. Allows to optimize performance.
+
+
+</td></tr>
+<tr><td>
+
+[useComponentSubscription(model, events)](./virtual-react.usecomponentsubscription.md)
+
+
+</td><td>
+
+React hook. Rerenders component when one of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) gets emitted.
+
+
+</td></tr>
+<tr><td>
+
+[useScroller(model, scroller)](./virtual-react.usescroller.md)
+
+
+</td><td>
+
+React hook. Synchronizes scroller with model.
+
+
+</td></tr>
+<tr><td>
+
+[useSubscription(model, events, callBack)](./virtual-react.usesubscription.md)
+
+
+</td><td>
+
+React hook. Allows to subscribe to [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) without unnecessary rerenders.
+
+
+</td></tr>
+<tr><td>
+
+[useSyncedStyles(model)](./virtual-react.usesyncedstyles.md)
+
+
+</td><td>
+
+React hook. Optimal CSS markup for virtual scroll is not intuitive. Use this hook to avoid unneeded boilerplate.
+
+
+</td></tr>
+<tr><td>
+
+[useVirtual(params)](./virtual-react.usevirtual.md)
+
+
+</td><td>
+
+React hook. Calls [useVirtualModel()](./virtual-react.usevirtualmodel.md) and synchronizes it with props
+
+
+</td></tr>
+<tr><td>
+
+[useVirtualModel(params)](./virtual-react.usevirtualmodel.md)
+
+
+</td><td>
+
+React hook. Creates and stores one [VirtualScroller](./virtual-core.virtualscroller.md) instance. It does not get recreated during component lifecycle.
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [ListItemProps](./virtual-react.listitemprops.md) | Props passed to List item |
-|  [ListProps](./virtual-react.listprops.md) | [List()](./virtual-react.list.md) component props |
-|  [SubscriptionProps](./virtual-react.subscriptionprops.md) | [Subscription()](./virtual-react.subscription.md) component props |
+<table><thead><tr><th>
 
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ListItemProps](./virtual-react.listitemprops.md)
+
+
+</td><td>
+
+Props passed to List item
+
+
+</td></tr>
+<tr><td>
+
+[ListProps](./virtual-react.listprops.md)
+
+
+</td><td>
+
+[List()](./virtual-react.list.md) component props
+
+
+</td></tr>
+<tr><td>
+
+[SubscriptionProps](./virtual-react.subscriptionprops.md)
+
+
+</td><td>
+
+[Subscription()](./virtual-react.subscription.md) component props
+
+
+</td></tr>
+</tbody></table>

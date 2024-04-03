@@ -1,6 +1,5 @@
 import kebabCase from "lodash/kebabCase";
 import startCase from "lodash/startCase";
-import glob from "fast-glob";
 
 export interface Params {
     params: { example: string[] };
@@ -21,34 +20,53 @@ function walkMenu(obj: Record<string, any> | null, arr: any[], path: string) {
     return arr;
 }
 
-export function getProjectExamplesPath() {
-    return "../examples/src/";
+function cutObjectKeys(
+    source: Record<string, any>,
+    sliceFrom: number,
+    sliceTo: number
+) {
+    return Object.fromEntries(
+        Object.keys(source).map(k => [k.slice(sliceFrom, sliceTo), source[k]])
+    );
+}
+
+export function getProjectExampleCodes() {
+    return cutObjectKeys(
+        import.meta.glob(
+            ["../../../examples/src/**/src/code.tsx", "!**/lib/**"],
+            { import: "default", query: "?raw", eager: true }
+        ),
+        "../../../examples/src/".length,
+        -"/src/code.tsx".length
+    );
+}
+
+export function getProjectExampleDescriptions() {
+    return cutObjectKeys(
+        import.meta.glob(["../../../examples/src/**/README.md", "!**/lib/**"], {
+            import: "Content",
+            eager: true
+        }),
+        "../../../examples/src/".length,
+        -"/README.md".length
+    );
 }
 
 export function getProjectExamples(projectName: string) {
-    const postfix = "/src/code.tsx";
+    const rawExamples = Object.keys(getProjectExampleCodes()).filter(k =>
+        k.startsWith(projectName)
+    );
 
-    const examplesPath = getProjectExamplesPath();
-
-    const rawExamples = glob.sync(`${examplesPath}${projectName}/**${postfix}`);
-
-    if (!rawExamples.length) {
-        console.warn("no examples found by glob. Path: " + examplesPath);
-    }
-
-    return rawExamples
-        .map(f => f.slice(examplesPath.length, -postfix.length))
-        .sort((a, b) => a.localeCompare(b))
-        .map(f => f.split("/"));
+    return rawExamples.sort((a, b) => a.localeCompare(b));
 }
 
 export function getMenuMapForProjectExamples(projectName: string) {
     const examples = getProjectExamples(projectName);
-
     return walkMenu(
         examples.reduce<Record<string, any>>(
             (result, path) => (
                 path
+                    .split("/")
                     .with(0, "examples")
                     .reduce((acc, v) => (acc[v] ||= {}), result),
                 result
@@ -59,8 +77,3 @@ export function getMenuMapForProjectExamples(projectName: string) {
         "/" + projectName
     );
 }
-
-export const getStaticParamsGenerator = (projectName: string) => () => {
-    const examples = getProjectExamples(projectName);
-    return examples.map(example => ({ example: example.slice(1) }));
-};

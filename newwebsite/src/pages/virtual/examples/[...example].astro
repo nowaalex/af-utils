@@ -1,0 +1,20 @@
+---
+import { getProjectExamples } from "utils/examples";
+import VirtualDocumentation from "layouts/virtual/VirtualDocumentation.astro";
+import Example from "layouts/Example.astro";
+
+export function getStaticPaths() {
+    return getProjectExamples("virtual").map(path => {
+        return {
+            params: { example: path.replace("virtual/", "") },
+            props: { path }
+        };
+    });
+}
+
+const { path } = Astro.props;
+---
+
+<VirtualDocumentation>
+    <Example path={path} />
+</VirtualDocumentation>

@@ -14,11 +14,55 @@ on(callBack: () => void, events: readonly VirtualScrollerEvent[] | VirtualScroll
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  callBack | () =&gt; void | event to be triggered |
-|  events | readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] | events to subscribe |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+callBack
+
+
+</td><td>
+
+() =&gt; void
+
+
+</td><td>
+
+event to be triggered
+
+
+</td></tr>
+<tr><td>
+
+events
+
+
+</td><td>
+
+readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\]
+
+
+</td><td>
+
+events to subscribe
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 () =&gt; void

@@ -1,0 +1,20 @@
+---
+import { getProjectExamples } from "utils/examples";
+import ScrollendPolyfillDocumentation from "layouts/scrollend-polyfill/ScrollendPolyfillDocumentation.astro";
+import Example from "layouts/Example.astro";
+
+export function getStaticPaths() {
+    return getProjectExamples("scrollend-polyfill").map(path => {
+        return {
+            params: { example: path.replace("scrollend-polyfill/", "") },
+            props: { path }
+        };
+    });
+}
+
+const { path } = Astro.props;
+---
+
+<ScrollendPolyfillDocumentation>
+    <Example path={path} />
+</ScrollendPolyfillDocumentation>

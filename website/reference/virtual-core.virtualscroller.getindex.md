@@ -14,10 +14,39 @@ getIndex(offset: number): number;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  offset | number | pixel offset |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+offset
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+pixel offset
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 number

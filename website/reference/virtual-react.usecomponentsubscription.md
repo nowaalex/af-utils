@@ -14,11 +14,51 @@ useComponentSubscription: (model: VirtualScroller, events: readonly VirtualScrol
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  model | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
-|  events | readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] |  |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+model
+
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+events
+
+
+</td><td>
+
+readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 void

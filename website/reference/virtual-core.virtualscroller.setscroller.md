@@ -14,10 +14,39 @@ setScroller(element: VirtualScrollerScrollElement | null): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  element | [VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md) \| null | scroller element |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+element
+
+
+</td><td>
+
+[VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md) \| null
+
+
+</td><td>
+
+scroller element
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 void

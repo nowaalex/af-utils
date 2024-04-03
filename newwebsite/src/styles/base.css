@@ -9,30 +9,6 @@
 }
 
 @layer components {
-    .basic-table-container {
-        table {
-            @apply border-separate;
-            border-spacing: 0;
-        }
-
-        td,
-        th {
-            @apply p-2;
-            @apply border;
-        }
-
-        tfoot th,
-        tfoot td,
-        thead th,
-        thead td {
-            @apply bg-white;
-        }
-
-        th input {
-            @apply border;
-        }
-    }
-
     .ds-menu-container {
         @apply z-10 min-w-[20em] overflow-y-auto lg:border-r lg:drop-shadow-xl bg-zinc-50;
     }

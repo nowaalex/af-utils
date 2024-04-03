@@ -1,5 +1,6 @@
 ---
 import Documentation from "layouts/Documentation.astro";
+import { getEntry } from "astro:content";
 import { getMenuMapForProjectExamples } from "utils/examples";
 
 const items = [
@@ -18,7 +19,7 @@ const items = [
             },
             {
                 name: "Reference",
-                path: "/virtual/reference/index.md",
+                path: `/virtual/reference/${(await getEntry("reference", "index")).id}`,
                 comparePath: "/virtual/reference"
             },
             {

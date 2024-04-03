@@ -18,9 +18,82 @@ Implemented as interface for better documentation output (api-extractor)
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [estimatedItemSize?](./virtual-core.virtualscrollerruntimeparams.estimateditemsize.md) |  | number | _(Optional)_ Estimated height/width of scrollable item. Orientation is determined by [VirtualScrollerInitialParams.horizontal](./virtual-core.virtualscrollerinitialparams.horizontal.md)<!-- -->. |
-|  [itemCount?](./virtual-core.virtualscrollerruntimeparams.itemcount.md) |  | number | _(Optional)_ Total items quantity |
-|  [overscanCount?](./virtual-core.virtualscrollerruntimeparams.overscancount.md) |  | number | _(Optional)_ Amount of items rendered before or after visible ones. |
+<table><thead><tr><th>
 
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[estimatedItemSize?](./virtual-core.virtualscrollerruntimeparams.estimateditemsize.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Estimated height/width of scrollable item. Orientation is determined by [VirtualScrollerInitialParams.horizontal](./virtual-core.virtualscrollerinitialparams.horizontal.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[itemCount?](./virtual-core.virtualscrollerruntimeparams.itemcount.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Total items quantity
+
+
+</td></tr>
+<tr><td>
+
+[overscanCount?](./virtual-core.virtualscrollerruntimeparams.overscancount.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Amount of items rendered before or after visible ones.
+
+
+</td></tr>
+</tbody></table>

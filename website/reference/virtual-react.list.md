@@ -14,10 +14,37 @@ List: <C extends ElementType = "div">(props: ListProps<C> & Omit<ComponentProps<
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  props | [ListProps](./virtual-react.listprops.md)<!-- -->&lt;C&gt; &amp; Omit&lt;ComponentProps&lt;C&gt;, "children" \| "ref"&gt; |  |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+props
+
+
+</td><td>
+
+[ListProps](./virtual-react.listprops.md)<!-- -->&lt;C&gt; &amp; Omit&lt;ComponentProps&lt;C&gt;, "children" \| "ref"&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 JSX.Element

@@ -14,12 +14,71 @@ useSubscription: (model: VirtualScroller, events: readonly VirtualScrollerEvent[
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  model | [VirtualScroller](./virtual-core.virtualscroller.md) | [VirtualScroller](./virtual-core.virtualscroller.md) instance |
-|  events | readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] | array of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) to subscribe |
-|  callBack | () =&gt; void | callback to be called |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+model
+
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md) instance
+
+
+</td></tr>
+<tr><td>
+
+events
+
+
+</td><td>
+
+readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\]
+
+
+</td><td>
+
+array of [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) to subscribe
+
+
+</td></tr>
+<tr><td>
+
+callBack
+
+
+</td><td>
+
+() =&gt; void
+
+
+</td><td>
+
+callback to be called
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 void

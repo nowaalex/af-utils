@@ -6,8 +6,37 @@
 
 ## Packages
 
-|  Package | Description |
-|  --- | --- |
-|  [@af-utils/virtual-core](./virtual-core.md) | Core framework-agnostic model. |
-|  [@af-utils/virtual-react](./virtual-react.md) | React components, hooks and utils used to connect to [VirtualScroller](./virtual-core.virtualscroller.md) |
+<table><thead><tr><th>
 
+Package
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[@af-utils/virtual-core](./virtual-core.md)
+
+
+</td><td>
+
+Core framework-agnostic model.
+
+
+</td></tr>
+<tr><td>
+
+[@af-utils/virtual-react](./virtual-react.md)
+
+
+</td><td>
+
+React components, hooks and utils used to connect to [VirtualScroller](./virtual-core.virtualscroller.md)
+
+
+</td></tr>
+</tbody></table>

@@ -14,10 +14,37 @@ useSyncedStyles: (model: VirtualScroller) => [(outerRef: HTMLElement | null) => 
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  model | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+model
+
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 \[(outerRef: HTMLElement \| null) =&gt; void, (innerRef: HTMLElement \| null) =&gt; void\]

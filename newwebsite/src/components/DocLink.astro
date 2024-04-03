@@ -1,0 +1,11 @@
+---
+import type { ContentEntryMap } from "astro:content";
+
+const { href } = Astro.props;
+
+interface Props {
+    href: keyof ContentEntryMap["reference"];
+}
+---
+
+<a href={`/virtual/reference/${href}`}><slot /></a>

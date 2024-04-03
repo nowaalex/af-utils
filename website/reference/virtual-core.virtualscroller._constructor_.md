@@ -14,7 +14,36 @@ constructor(params?: VirtualScrollerInitialParams);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  params | [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) | _(Optional)_ |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+params
+
+
+</td><td>
+
+[VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>

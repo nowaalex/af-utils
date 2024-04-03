@@ -30,28 +30,137 @@ What it doesn't do:
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [VirtualScroller](./virtual-core.virtualscroller.md) | Core framework-agnostic model. |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+
+</td><td>
+
+Core framework-agnostic model.
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md) | All [VirtualScroller](./virtual-core.virtualscroller.md) parameters (that may / may not change over time). |
-|  [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md) | [VirtualScroller](./virtual-core.virtualscroller.md) parameters that may change over time. Used as [VirtualScroller.set()](./virtual-core.virtualscroller.set.md) argument type. |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[VirtualScrollerInitialParams](./virtual-core.virtualscrollerinitialparams.md)
+
+
+</td><td>
+
+All [VirtualScroller](./virtual-core.virtualscroller.md) parameters (that may / may not change over time).
+
+
+</td></tr>
+<tr><td>
+
+[VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md)
+
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md) parameters that may change over time. Used as [VirtualScroller.set()](./virtual-core.virtualscroller.set.md) argument type.
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) | Possible events, supported by [VirtualScroller.on()](./virtual-core.virtualscroller.on.md) method |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)
+
+
+</td><td>
+
+Possible events, supported by [VirtualScroller.on()](./virtual-core.virtualscroller.on.md) method
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) | [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) is exported as constant, so separate type is needed to emulate enum behavior |
-|  [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md) | Numeric snapshot of scroll position |
-|  [VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md) | Scrollable container type |
+<table><thead><tr><th>
 
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)
+
+
+</td><td>
+
+[VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md) is exported as constant, so separate type is needed to emulate enum behavior
+
+
+</td></tr>
+<tr><td>
+
+[VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md)
+
+
+</td><td>
+
+Numeric snapshot of scroll position
+
+
+</td></tr>
+<tr><td>
+
+[VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md)
+
+
+</td><td>
+
+Scrollable container type
+
+
+</td></tr>
+</tbody></table>

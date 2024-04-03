@@ -1,0 +1,51 @@
+---
+import startCase from "lodash/startCase";
+
+const { pathname } = Astro.url;
+
+const Links = [
+    { name: "Github", url: "https://github.com/" },
+    { name: "Codesandbox", url: "https://codesandbox.io/s/github/" },
+    { name: "Stackblitz", url: "https://stackblitz.com/github/" }
+];
+
+const getHeader = (segments: string[]) => {
+    switch (segments.length) {
+        case 6:
+            return `${segments[1]} ${segments[3]} Example: ${segments[5]} (${segments[4]})`;
+        case 4:
+            return `${segments[1]} Example: ${segments[3]}`;
+        default:
+            return "Example";
+    }
+};
+
+const getGitPiece = (segments: string[]) => {
+    if (segments.length > 2) {
+        return `${process.env.PUBLIC_GITHUB_SUFFIX}/tree/${process.env.PUBLIC_GITHUB_BRANCH}/examples/src/${segments[1]}/${segments.slice(3).join("/")}`;
+    }
+
+    throw new Error("Wrong segments");
+};
+
+const segments = pathname.split("/");
+const startCasedSegments = segments.map(startCase);
+const gitPiece = getGitPiece(segments);
+---
+
+<div class="mb-6 flex flex-wrap items-center gap-x-10 gap-y-4">
+    <h1 class="mb-0">{getHeader(startCasedSegments)}</h1>
+    <div class="flex items-center gap-6 font-medium">
+        {
+            Links.map(link => (
+                <a
+                    href={`${link.url}${gitPiece}`}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    {link.name}
+                </a>
+            ))
+        }
+    </div>
+</div>

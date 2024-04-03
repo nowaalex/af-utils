@@ -14,11 +14,55 @@ el(index: number, element: HTMLElement | null): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  index | number | item index |
-|  element | HTMLElement \| null | element for item |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+index
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+item index
+
+
+</td></tr>
+<tr><td>
+
+element
+
+
+</td><td>
+
+HTMLElement \| null
+
+
+</td><td>
+
+element for item
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 void

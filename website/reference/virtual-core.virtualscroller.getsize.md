@@ -14,10 +14,39 @@ getSize(itemIndex: number): number;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  itemIndex | number | item index; |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+itemIndex
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+item index;
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 number

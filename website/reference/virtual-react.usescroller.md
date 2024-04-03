@@ -14,11 +14,51 @@ useScroller: (model: VirtualScroller, scroller: VirtualScrollerScrollElement | n
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  model | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
-|  scroller | [VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md) \| null |  |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+model
+
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+scroller
+
+
+</td><td>
+
+[VirtualScrollerScrollElement](./virtual-core.virtualscrollerscrollelement.md) \| null
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 void

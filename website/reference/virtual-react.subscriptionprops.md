@@ -14,9 +14,76 @@ export interface SubscriptionProps
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [children](./virtual-react.subscriptionprops.children.md) |  | () =&gt; ReactNode |  |
-|  [events](./virtual-react.subscriptionprops.events.md) |  | readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] |  |
-|  [model](./virtual-react.subscriptionprops.model.md) |  | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
+<table><thead><tr><th>
 
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[children](./virtual-react.subscriptionprops.children.md)
+
+
+</td><td>
+
+
+</td><td>
+
+() =&gt; ReactNode
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[events](./virtual-react.subscriptionprops.events.md)
+
+
+</td><td>
+
+
+</td><td>
+
+readonly [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\] \| [VirtualScrollerEvent](./virtual-core.virtualscrollerevent.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[model](./virtual-react.subscriptionprops.model.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>

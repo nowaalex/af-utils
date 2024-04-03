@@ -14,10 +14,39 @@ set(runtimeParams: VirtualScrollerRuntimeParams): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  runtimeParams | [VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md) | runtime parameters |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+runtimeParams
+
+
+</td><td>
+
+[VirtualScrollerRuntimeParams](./virtual-core.virtualscrollerruntimeparams.md)
+
+
+</td><td>
+
+runtime parameters
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 void

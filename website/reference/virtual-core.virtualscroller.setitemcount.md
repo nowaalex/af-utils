@@ -14,10 +14,39 @@ setItemCount(itemCount: number): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  itemCount | number | new items quantity. [VirtualScrollerRuntimeParams.itemCount](./virtual-core.virtualscrollerruntimeparams.itemcount.md) |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+itemCount
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+new items quantity. [VirtualScrollerRuntimeParams.itemCount](./virtual-core.virtualscrollerruntimeparams.itemcount.md)
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 void

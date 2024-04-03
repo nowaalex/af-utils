@@ -19,9 +19,82 @@ Implemented as interface for better documentation output (api-extractor)
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [estimatedScrollElementOffset?](./virtual-core.virtualscrollerinitialparams.estimatedscrollelementoffset.md) |  | number | _(Optional)_ Estimated distance between top/left edges of scrollable container and first scrollable item. |
-|  [estimatedWidgetSize?](./virtual-core.virtualscrollerinitialparams.estimatedwidgetsize.md) |  | number | _(Optional)_ Estimated size of scroll element. |
-|  [horizontal?](./virtual-core.virtualscrollerinitialparams.horizontal.md) |  | boolean | _(Optional)_ Scroll container orientation. |
+<table><thead><tr><th>
 
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[estimatedScrollElementOffset?](./virtual-core.virtualscrollerinitialparams.estimatedscrollelementoffset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Estimated distance between top/left edges of scrollable container and first scrollable item.
+
+
+</td></tr>
+<tr><td>
+
+[estimatedWidgetSize?](./virtual-core.virtualscrollerinitialparams.estimatedwidgetsize.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Estimated size of scroll element.
+
+
+</td></tr>
+<tr><td>
+
+[horizontal?](./virtual-core.virtualscrollerinitialparams.horizontal.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Scroll container orientation.
+
+
+</td></tr>
+</tbody></table>

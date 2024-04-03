@@ -10,7 +10,7 @@
         "@af-utils/virtual-core": "workspace:*",
         "@af-utils/virtual-react": "workspace:*",
         "@emotion/react": "^11.11.4",
-        "@emotion/styled": "^11.11.0",
+        "@emotion/styled": "^11.11.5",
         "@mui/material": "^5.15.14",
         "@ngneat/falso": "^7.2.0",
         "bootstrap": "^5.3.3",
@@ -20,11 +20,11 @@
         "use-sync-external-store": "^1.2.0"
     },
     "devDependencies": {
-        "@types/react": "^18.2.69",
-        "@types/react-dom": "^18.2.22",
+        "@types/react": "^18.2.74",
+        "@types/react-dom": "^18.2.23",
         "@vitejs/plugin-react": "^4.2.1",
         "fast-glob": "^3.3.2",
         "typescript": "^5.4.3",
-        "vite": "^5.2.6"
+        "vite": "^5.2.7"
     }
 }

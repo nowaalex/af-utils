@@ -14,10 +14,37 @@ Subscription: (props: SubscriptionProps) => ReactNode
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  props | [SubscriptionProps](./virtual-react.subscriptionprops.md) |  |
+<table><thead><tr><th>
 
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+props
+
+
+</td><td>
+
+[SubscriptionProps](./virtual-react.subscriptionprops.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 **Returns:**
 
 ReactNode

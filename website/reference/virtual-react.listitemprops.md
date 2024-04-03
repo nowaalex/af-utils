@@ -14,10 +14,99 @@ export interface ListItemProps
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [data?](./virtual-react.listitemprops.data.md) |  | any | _(Optional)_ links to [ListProps.itemData](./virtual-react.listprops.itemdata.md) |
-|  [i](./virtual-react.listitemprops.i.md) |  | number | item index |
-|  [model](./virtual-react.listitemprops.model.md) |  | [VirtualScroller](./virtual-core.virtualscroller.md) |  |
-|  [offset?](./virtual-react.listitemprops.offset.md) |  | number | _(Optional)_ |
+<table><thead><tr><th>
 
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[data?](./virtual-react.listitemprops.data.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+_(Optional)_ links to [ListProps.itemData](./virtual-react.listprops.itemdata.md)
+
+
+</td></tr>
+<tr><td>
+
+[i](./virtual-react.listitemprops.i.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+item index
+
+
+</td></tr>
+<tr><td>
+
+[model](./virtual-react.listitemprops.model.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[VirtualScroller](./virtual-core.virtualscroller.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[offset?](./virtual-react.listitemprops.offset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>

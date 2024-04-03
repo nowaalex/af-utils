@@ -71,9 +71,7 @@ interface Props {
     const menuCheckbox =
         document.querySelector<HTMLInputElement>("#menu-checkbox")!;
 
-    const toggleMenu = () => {
-        menuCheckbox.checked = !menuCheckbox.checked;
-    };
+    const toggleMenu = () => menuCheckbox.toggleAttribute("checked");
 
     const toggleMenuWhenClickedOnLink: EventListener = e => {
         if (
@@ -84,11 +82,9 @@ interface Props {
         }
     };
 
-    for (const btn of document.querySelectorAll(
-        ".ds-menu-opener, .ds-menu-closer"
-    )) {
-        btn.addEventListener("click", toggleMenu);
-    }
+    document
+        .querySelectorAll(".ds-menu-opener, .ds-menu-closer")
+        .forEach(btn => btn.addEventListener("click", toggleMenu));
 
     document
         .querySelector(".ds-menu-items")!

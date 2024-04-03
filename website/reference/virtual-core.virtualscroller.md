@@ -36,37 +36,401 @@ What it doesn't do:
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(params)](./virtual-core.virtualscroller._constructor_.md) |  | Constructs a new instance of the <code>VirtualScroller</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(params)](./virtual-core.virtualscroller._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `VirtualScroller` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [from](./virtual-core.virtualscroller.from.md) | <code>readonly</code> | number | Items range start with [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md) included |
-|  [horizontal](./virtual-core.virtualscroller.horizontal.md) | <code>readonly</code> | boolean | Scroll container orientation. |
-|  [scrollSize](./virtual-core.virtualscroller.scrollsize.md) | <code>readonly</code> | number | Sum of all item sizes |
-|  [sizesHash](./virtual-core.virtualscroller.sizeshash.md) | <code>readonly</code> | number | Hash of item sizes. Changed when at least one visible item is resized |
-|  [to](./virtual-core.virtualscroller.to.md) | <code>readonly</code> | number | Items range end with [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md) included |
-|  [visibleFrom](./virtual-core.virtualscroller.visiblefrom.md) | <code>readonly</code> | [VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md) | Returns snapshot of current scroll position. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[from](./virtual-core.virtualscroller.from.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Items range start with [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md) included
+
+
+</td></tr>
+<tr><td>
+
+[horizontal](./virtual-core.virtualscroller.horizontal.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Scroll container orientation.
+
+
+</td></tr>
+<tr><td>
+
+[scrollSize](./virtual-core.virtualscroller.scrollsize.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Sum of all item sizes
+
+
+</td></tr>
+<tr><td>
+
+[sizesHash](./virtual-core.virtualscroller.sizeshash.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Hash of item sizes. Changed when at least one visible item is resized
+
+
+</td></tr>
+<tr><td>
+
+[to](./virtual-core.virtualscroller.to.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Items range end with [overscanCount](./virtual-core.virtualscrollerruntimeparams.overscancount.md) included
+
+
+</td></tr>
+<tr><td>
+
+[visibleFrom](./virtual-core.virtualscroller.visiblefrom.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[VirtualScrollerExactPosition](./virtual-core.virtualscrollerexactposition.md)
+
+
+</td><td>
+
+Returns snapshot of current scroll position.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [el(index, element)](./virtual-core.virtualscroller.el.md) |  | Start/finish observing size of <code>element</code> at <code>index</code>. Observing is finished if element is <code>null</code>. |
-|  [getIndex(offset)](./virtual-core.virtualscroller.getindex.md) |  | Get item index by pixel offset; |
-|  [getOffset(index)](./virtual-core.virtualscroller.getoffset.md) |  | Get pixel offset by item index; |
-|  [getSize(itemIndex)](./virtual-core.virtualscroller.getsize.md) |  | Get last cached item size by item index |
-|  [on(callBack, events)](./virtual-core.virtualscroller.on.md) |  | Subscribe to model events |
-|  [scrollToIndex(index, smooth)](./virtual-core.virtualscroller.scrolltoindex.md) |  | Scroll to item index |
-|  [scrollToOffset(offset, smooth)](./virtual-core.virtualscroller.scrolltooffset.md) |  | Scroll to pixel offset |
-|  [set(runtimeParams)](./virtual-core.virtualscroller.set.md) |  | Synchronize runtime parameters |
-|  [setContainer(element)](./virtual-core.virtualscroller.setcontainer.md) |  | Informs model about items container element. Usually not needed. |
-|  [setItemCount(itemCount)](./virtual-core.virtualscroller.setitemcount.md) |  | Notify model about items quantity change |
-|  [setScroller(element)](./virtual-core.virtualscroller.setscroller.md) |  | Informs model about scrollable element. |
-|  [setStickyFooter(element)](./virtual-core.virtualscroller.setstickyfooter.md) |  | Start observing size of sticky footer <code>element</code>. Observing is finished if element is <code>null</code>. |
-|  [setStickyHeader(element)](./virtual-core.virtualscroller.setstickyheader.md) |  | Start observing size of sticky header <code>element</code>. Observing is finished if element is <code>null</code>. |
-|  [updateScrollerOffset()](./virtual-core.virtualscroller.updatescrolleroffset.md) |  | Recalculates the offset between [scroller element](./virtual-core.virtualscroller.setscroller.md) and [container element](./virtual-core.virtualscroller.setcontainer.md)<!-- -->. |
+<table><thead><tr><th>
 
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[el(index, element)](./virtual-core.virtualscroller.el.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Start/finish observing size of `element` at `index`<!-- -->. Observing is finished if element is `null`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[getIndex(offset)](./virtual-core.virtualscroller.getindex.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Get item index by pixel offset;
+
+
+</td></tr>
+<tr><td>
+
+[getOffset(index)](./virtual-core.virtualscroller.getoffset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Get pixel offset by item index;
+
+
+</td></tr>
+<tr><td>
+
+[getSize(itemIndex)](./virtual-core.virtualscroller.getsize.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Get last cached item size by item index
+
+
+</td></tr>
+<tr><td>
+
+[on(callBack, events)](./virtual-core.virtualscroller.on.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Subscribe to model events
+
+
+</td></tr>
+<tr><td>
+
+[scrollToIndex(index, smooth)](./virtual-core.virtualscroller.scrolltoindex.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Scroll to item index
+
+
+</td></tr>
+<tr><td>
+
+[scrollToOffset(offset, smooth)](./virtual-core.virtualscroller.scrolltooffset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Scroll to pixel offset
+
+
+</td></tr>
+<tr><td>
+
+[set(runtimeParams)](./virtual-core.virtualscroller.set.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Synchronize runtime parameters
+
+
+</td></tr>
+<tr><td>
+
+[setContainer(element)](./virtual-core.virtualscroller.setcontainer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Informs model about items container element. Usually not needed.
+
+
+</td></tr>
+<tr><td>
+
+[setItemCount(itemCount)](./virtual-core.virtualscroller.setitemcount.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Notify model about items quantity change
+
+
+</td></tr>
+<tr><td>
+
+[setScroller(element)](./virtual-core.virtualscroller.setscroller.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Informs model about scrollable element.
+
+
+</td></tr>
+<tr><td>
+
+[setStickyFooter(element)](./virtual-core.virtualscroller.setstickyfooter.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Start observing size of sticky footer `element`<!-- -->. Observing is finished if element is `null`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[setStickyHeader(element)](./virtual-core.virtualscroller.setstickyheader.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Start observing size of sticky header `element`<!-- -->. Observing is finished if element is `null`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[updateScrollerOffset()](./virtual-core.virtualscroller.updatescrolleroffset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Recalculates the offset between [scroller element](./virtual-core.virtualscroller.setscroller.md) and [container element](./virtual-core.virtualscroller.setcontainer.md)<!-- -->.
+
+
+</td></tr>
+</tbody></table>
