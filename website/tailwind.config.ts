@@ -3,14 +3,10 @@ import forms from "@tailwindcss/forms";
 import type { Config } from "tailwindcss";
 
 export default {
-    content: [
-        "./app/**/*.{js,ts,jsx,tsx,mdx}",
-        "./components/**/*.{js,ts,jsx,tsx,mdx}"
-    ],
+    content: ["./src/**/*.{js,ts,jsx,tsx,mdx,astro}"],
     theme: {
         extend: {
             backgroundImage: {
-                sloth: "url('/sloth.jpg')",
                 sizif: "url('/sizif.jpg')"
             },
             typography: {
@@ -28,6 +24,13 @@ export default {
                             {
                                 paddingRight: "1rem"
                             },
+                        "td p, th p": {
+                            /* api-documenter started to generate tags for tables instead of md syntax */
+                            margin: 0
+                        },
+                        th: {
+                            textAlign: "left"
+                        },
                         "li > p": {
                             /* for api-extractor lists */
                             margin: 0

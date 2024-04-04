@@ -1,18 +1,19 @@
-import SizesTable from "/components/SizesTable";
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+title: "Bundle size"
+description: "All packages were carefully optimized to be as small as possible. Exact sizes are provided here."
+openGraph:
+    basic:
+        type: "website"
+        title: "Bundle size"
+        image: "a"
+    optional:
+        description: "All packages were carefully optimized to be as small as possible. Exact sizes are provided here."
+---
+
+import SizeInfo from "components/SizeInfo.astro";
 import * as coreSizes from "@af-utils/virtual-core/lib/bundlesize.index.js";
 import * as reactSizes from "@af-utils/virtual-react/lib/bundlesize.index.js";
-
-export const metadata = {
-    title: "Bundle size",
-    description:
-        "All packages were carefully optimized to be as small as possible. Exact sizes are provided here.",
-    openGraph: {
-        type: "website",
-        title: "Bundle size",
-        description:
-            "All packages were carefully optimized to be as small as possible. Exact sizes are provided here."
-    }
-};
 
 # Virtual bundle size impact
 
@@ -20,7 +21,7 @@ All packages were carefully optimized to be as small as possible.
 In order to provide exact numbers, each of them is shipped with `bundlesize.index.js` file.
 Contents of all those files are shown in this table in human-readable format.
 
-<SizesTable
+<SizeInfo
     items={[
         [coreSizes, "@af-utils/virtual-core"],
         [reactSizes, "@af-utils/virtual-react"]
@@ -32,7 +33,7 @@ Contents of all those files are shown in this table in human-readable format.
 During bundle size measurement `process.env.NODE_ENV` was set to `production`
 to cut away some extra checks and verbose errors.
 
-```javascript
+```tsx
 const TERSER_OPTS = {
     compress: {
         global_defs: {
