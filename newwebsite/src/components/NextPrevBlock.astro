@@ -1,7 +1,8 @@
 ---
 import { Icon } from "astro-icon/components";
+import stripTrailingSlash from "utils/stripTrailingSlash";
 
-const currentPath = Astro.url.pathname;
+const currentPath = stripTrailingSlash(Astro.url.pathname);
 
 interface Props {
     items: any[];

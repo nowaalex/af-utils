@@ -1,5 +1,7 @@
 ---
-const currentPath = Astro.url.pathname;
+import stripTrailingSlash from "utils/stripTrailingSlash";
+
+const currentPath = stripTrailingSlash(Astro.url.pathname);
 
 const { href, compareHref = href, exact, ...rest } = Astro.props;
 
