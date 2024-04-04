@@ -11,7 +11,7 @@
         "@af-utils/virtual-react": "workspace:*",
         "@emotion/react": "^11.11.4",
         "@emotion/styled": "^11.11.5",
-        "@mui/material": "^5.15.14",
+        "@mui/material": "^5.15.15",
         "@ngneat/falso": "^7.2.0",
         "bootstrap": "^5.3.3",
         "react": "^18.2.0",
@@ -24,7 +24,7 @@
         "@types/react-dom": "^18.2.24",
         "@vitejs/plugin-react": "^4.2.1",
         "fast-glob": "^3.3.2",
-        "typescript": "^5.4.3",
+        "typescript": "^5.4.4",
         "vite": "^5.2.8"
     }
 }

@@ -3,8 +3,20 @@ import defaultsDeep from "lodash/defaultsDeep";
 import { ViewTransitions } from "astro:transitions";
 import { SEO } from "astro-seo";
 import type { Props as SeoProps } from "astro-seo";
+import { getImage } from "astro:assets";
 import "@fontsource-variable/exo";
 import "styles/base.css";
+import faviconPngSrc from "assets/favicon.png";
+import faviconSvgSrc from "assets/favicon.svg";
+
+const appleTouchIcon = await getImage({
+    src: faviconPngSrc,
+    width: 180,
+    height: 180,
+    format: "png"
+});
+
+const faviconSvg = await getImage({ src: faviconSvgSrc, format: "svg" });
 
 export interface Props extends SeoProps {
     frontmatter?: SeoProps;
@@ -30,7 +42,16 @@ const props = defaultsDeep({}, rest, frontmatter, {
         <SEO
             {...props}
             extend={{
-                link: [{ rel: "icon", href: "/favicon.ico" }]
+                link: [
+                    {
+                        rel: "icon",
+                        href: faviconSvg.src,
+                        type: "image/svg+xml"
+                    },
+                    { rel: "icon", href: "/favicon.ico", sizes: "32x32" },
+                    { rel: "apple-touch-icon", href: appleTouchIcon.src },
+                    { rel: "manifest", href: "/manifest.json" }
+                ]
             }}
         />
         <meta name="viewport" content="width=device-width" />
