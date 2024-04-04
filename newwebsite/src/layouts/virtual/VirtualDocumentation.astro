@@ -2,11 +2,7 @@
 import Documentation from "layouts/Documentation.astro";
 import { getEntry } from "astro:content";
 import { getMenuMapForProjectExamples } from "utils/examples";
-import type { Props as DocumentationLayoutProps } from "layouts/Documentation.astro";
-
-export interface Props extends DocumentationLayoutProps {}
-
-const { props } = Astro;
+export type { Props } from "layouts/Base.astro";
 
 const items = [
     {
@@ -38,7 +34,7 @@ const items = [
 ---
 
 <Documentation
-    {...props}
+    {...Astro.props}
     titleTemplate="%s | af-utils | Virtual"
     items={items}
     productName="virtual"

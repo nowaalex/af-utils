@@ -11,10 +11,6 @@ export function getStaticPaths() {
         };
     });
 }
-
-const { path } = Astro.props;
 ---
 
-<ScrollendPolyfillDocumentation>
-    <Example path={path} />
-</ScrollendPolyfillDocumentation>
+<Example path={Astro.props.path} wrapper={ScrollendPolyfillDocumentation} />

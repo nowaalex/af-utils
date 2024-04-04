@@ -10,7 +10,9 @@ export interface Props extends SeoProps {
     frontmatter?: SeoProps;
 }
 
-const props = defaultsDeep(Astro.props, Astro.props.frontmatter, {
+const { frontmatter, ...rest } = Astro.props;
+
+const props = defaultsDeep({}, rest, frontmatter, {
     charset: "UTF-8",
     title: "",
     titleTemplate: "",
@@ -28,7 +30,6 @@ const props = defaultsDeep(Astro.props, Astro.props.frontmatter, {
         <SEO
             {...props}
             extend={{
-                // extending the default link tags
                 link: [{ rel: "icon", href: "/favicon.ico" }]
             }}
         />

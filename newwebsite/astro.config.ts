@@ -33,6 +33,7 @@ const rehypeLinks = () => (tree: Root) =>
 
 // https://astro.build/config
 export default defineConfig({
+    site: process.env.PUBLIC_ORIGIN as string,
     markdown: {
         rehypePlugins: [
             rehypeLinks,

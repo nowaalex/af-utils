@@ -31,7 +31,9 @@ const flattenedItems = flattenMenu(items, []);
     <div class="flex h-screen w-screen flex-col lg:flex-row">
         <Menu items={items} productName={productName} />
         <div class="flex h-full flex-1 flex-col overflow-auto bg-white">
-            <main class="prose flex-1 p-4"><slot /></main>
+            <main class="prose flex-1 p-4">
+                <slot />
+            </main>
             <nav
                 class="mt-2 flex flex-none items-center justify-between gap-4 p-4 font-medium"
             >

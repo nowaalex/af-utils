@@ -11,10 +11,6 @@ export function getStaticPaths() {
         };
     });
 }
-
-const { path } = Astro.props;
 ---
 
-<VirtualDocumentation>
-    <Example path={path} />
-</VirtualDocumentation>
+<Example path={Astro.props.path} wrapper={VirtualDocumentation} />

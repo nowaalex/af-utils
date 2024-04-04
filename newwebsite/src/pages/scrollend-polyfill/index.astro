@@ -3,6 +3,20 @@ import { Content } from "@af-utils/scrollend-polyfill/README.md";
 import ScrollendPolyfillDocumentation from "layouts/scrollend-polyfill/ScrollendPolyfillDocumentation.astro";
 ---
 
-<ScrollendPolyfillDocumentation>
+<ScrollendPolyfillDocumentation
+    title="Getting started"
+    description="This polyfill adds scrollend event support via addEventListener / removeEventLister"
+    openGraph={{
+        basic: {
+            type: "website",
+            title: "Getting started",
+            image: "a"
+        },
+        optional: {
+            description:
+                "This polyfill adds scrollend event support via addEventListener / removeEventLister"
+        }
+    }}
+>
     <Content />
 </ScrollendPolyfillDocumentation>

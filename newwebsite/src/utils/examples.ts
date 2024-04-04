@@ -1,3 +1,4 @@
+import type { SEOProps } from "astro-seo";
 import kebabCase from "lodash/kebabCase";
 import startCase from "lodash/startCase";
 
@@ -49,6 +50,18 @@ export const getProjectExampleDescriptions = () =>
         ),
         "../../../examples/src/".length,
         -"/README.md".length
+    );
+
+export const getProjectExampleMeta = () =>
+    cutObjectKeys(
+        import.meta.glob<SEOProps>(
+            ["../../../examples/src/**/meta.ts", "!**/lib/**"],
+            {
+                import: "default"
+            }
+        ),
+        "../../../examples/src/".length,
+        -"/meta.ts".length
     );
 
 export const getProjectExamples = (projectName: string) =>
