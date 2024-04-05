@@ -6,9 +6,6 @@ export default {
     content: ["./src/**/*.{js,ts,jsx,tsx,mdx,astro}"],
     theme: {
         extend: {
-            backgroundImage: {
-                sizif: "url('/sizif.jpg')"
-            },
             typography: {
                 DEFAULT: {
                     css: {

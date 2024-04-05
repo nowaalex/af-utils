@@ -1,9 +1,27 @@
 ---
 import Layout from "layouts/Base.astro";
 import { Icon } from "astro-icon/components";
+import { getImage } from "astro:assets";
+import sizifImg from "assets/sizif.jpg";
 import { Content as Readme } from "../../../README.md";
+
+const sizif = await getImage({ src: sizifImg, quality: 16 });
 ---
 
+<style define:vars={{ bg: `url(${sizif.src})` }}>
+    @media only screen and (min-width: 1024px) {
+        main {
+            background: var(--bg) no-repeat right bottom / 37%;
+            padding-right: 0;
+        }
+    }
+
+    @media only screen and (min-width: 1660px) {
+        main {
+            background-size: contain;
+        }
+    }
+</style>
 <Layout
     title="af-utils | Simple open-source tools that just work"
     description="Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
@@ -40,9 +58,7 @@ import { Content as Readme } from "../../../README.md";
                 <Icon name="simple-icons:discord" />Discord
             </a>
         </header>
-        <main
-            class="prose-xl prose-a:text-blue-700 sm:bg-sizif flex-auto bg-[length:40vmax] bg-right-bottom bg-no-repeat px-[5vmin] py-12 lg:pr-0 2xl:bg-contain"
-        >
+        <main class="prose-xl prose-a:text-blue-700 flex-auto px-[5vmin] py-12">
             <Readme />
         </main>
         <footer class="mx-[5vmin] border-t p-6 text-center">
