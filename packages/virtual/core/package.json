@@ -8,7 +8,7 @@
         "url": "https://github.com/nowaalex/af-utils.git",
         "directory": "packages/virtual/core"
     },
-    "homepage": "https://af-utils.vercel.app/virtual",
+    "homepage": "https://af-utils.com/virtual",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
     "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
     "license": "MIT",
