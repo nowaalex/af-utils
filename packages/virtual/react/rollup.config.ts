@@ -21,10 +21,9 @@ export default {
                 unsafe_arrows: true,
                 passes: 2
             },
-            output: {
+            format: {
                 beautify: true,
-                preserve_annotations: true,
-                comments: /^[@#].+/
+                preserve_annotations: true
             },
             sourceMap: true
         }),

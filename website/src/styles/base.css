@@ -9,7 +9,6 @@
 }
 
 @layer components {
-
     .ds-menu-items {
         @apply hidden lg:block;
     }
@@ -27,7 +26,7 @@
         @apply block;
     }
 
-    .ds-menu-checkbox:checked + .ds-menu-container .ds-menu-closer ,
+    .ds-menu-checkbox:checked + .ds-menu-container .ds-menu-closer,
     .ds-menu-checkbox:not(:checked) + .ds-menu-container .ds-menu-opener {
         @apply block lg:hidden;
     }

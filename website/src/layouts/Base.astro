@@ -4,10 +4,10 @@ import { ViewTransitions } from "astro:transitions";
 import { SEO } from "astro-seo";
 import type { Props as SeoProps } from "astro-seo";
 import { getImage } from "astro:assets";
-import "@fontsource-variable/exo";
-import "styles/base.css";
 import faviconPngSrc from "assets/favicon.png";
 import faviconSvgSrc from "assets/favicon.svg";
+import font from "assets/font/exo-latin-wght-normal.woff2";
+import "styles/base.css";
 
 const appleTouchIcon = await getImage({
     src: faviconPngSrc,
@@ -54,13 +54,29 @@ const props = defaultsDeep({}, rest, frontmatter, {
                 ]
             }}
         />
-        <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content={Astro.generator} />
+        <link
+            rel="preload"
+            href={font}
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
         <style is:global>
+            @font-face {
+                font-family: "Exo Variable";
+                font-style: normal;
+                font-display: swap;
+                font-weight: 100 900;
+                src: url(/src/assets/font/exo-latin-wght-normal.woff2)
+                    format("woff2-variations");
+            }
+
             html {
                 font-family: "Exo Variable", sans-serif;
             }
         </style>
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
         <ViewTransitions />
     </head>
     <body class="bg-[#fafafa]">
