@@ -776,9 +776,6 @@ importers:
       '@astrojs/sitemap':
         specifier: ^3.1.2
         version: 3.1.2
-      '@fontsource-variable/exo':
-        specifier: ^5.0.18
-        version: 5.0.18
       '@iconify-json/material-symbols':
         specifier: ^1.1.76
         version: 1.1.76
@@ -2369,10 +2366,6 @@ packages:
 
   /@floating-ui/utils@0.2.1:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
-    dev: false
-
-  /@fontsource-variable/exo@5.0.18:
-    resolution: {integrity: sha512-UPH6wIWmxWdV2v/x7+MsHsYuEFOo6QI6KpIRJOsvwzhGNUh8/HaLev/x5iN+K1SDdoUF2wtUFHimE331N6p0fA==}
     dev: false
 
   /@humanwhocodes/config-array@0.12.3:

@@ -19,7 +19,6 @@
         "@astrojs/check": "^0.5.10",
         "@astrojs/react": "^3.1.1",
         "@astrojs/sitemap": "^3.1.2",
-        "@fontsource-variable/exo": "^5.0.18",
         "@iconify-json/material-symbols": "^1.1.76",
         "@iconify-json/simple-icons": "^1.1.98",
         "astro": "^4.5.16",
