@@ -16,7 +16,7 @@
 
 @layer components {
     pre[data-theme] {
-        @apply bg-zinc-100 drop-shadow-sm text-inherit border;
+        @apply bg-[#fefdfd] drop-shadow-sm border;
     }
 }
 
