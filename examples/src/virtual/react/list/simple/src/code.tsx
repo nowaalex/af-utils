@@ -4,7 +4,7 @@ import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
 const Item = memo<ListItemProps>(({ i, model }) => (
     <div
         ref={el => model.el(i, el)}
-        style={{ border: "1px solid #ccc", padding: "0.5em" }}
+        style={{ borderTop: "1px solid #ccc", padding: "0.5em" }}
     >
         row {i}
     </div>
@@ -15,11 +15,7 @@ const SimpleList = () => {
         itemCount: 150000
     });
 
-    return (
-        <List model={rows} style={{ border: "1px solid #ccc" }}>
-            {Item}
-        </List>
-    );
+    return <List model={rows}>{Item}</List>;
 };
 
 export default SimpleList;

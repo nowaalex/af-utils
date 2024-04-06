@@ -18,11 +18,7 @@ const HorizontalList = () => {
         horizontal: true
     });
 
-    return (
-        <List model={cols} className={css.list}>
-            {Item}
-        </List>
-    );
+    return <List model={cols}>{Item}</List>;
 };
 
 export default HorizontalList;

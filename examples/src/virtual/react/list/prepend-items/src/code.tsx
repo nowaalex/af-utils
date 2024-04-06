@@ -77,7 +77,6 @@ const PrependItems = () => {
 
     return (
         <List
-            className={css.list}
             model={model}
             itemData={items}
             getKey={getKey}

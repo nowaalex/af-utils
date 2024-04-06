@@ -1,7 +1,6 @@
 .list {
     overflow: auto;
     contain: strict;
-    border: 1px solid #ccc;
 }
 
 .item {

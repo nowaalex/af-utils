@@ -55,7 +55,7 @@ const Posts = () => {
     );
 
     return (
-        <List model={model} itemData={posts} className={css.list}>
+        <List model={model} itemData={posts}>
             {Item}
         </List>
     );

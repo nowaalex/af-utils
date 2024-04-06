@@ -4,9 +4,10 @@ import { Icon } from "astro-icon/components";
 
 export interface Props {
     path: string;
+    class?: string;
 }
 
-const { path } = Astro.props;
+const { path, class: className } = Astro.props;
 
 const Links = [
     { name: "Github", url: "https://github.com/", icon: "simple-icons:github" },
@@ -39,7 +40,7 @@ const getHeader = (segments: string[]) => {
 const gitPiece = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env.PUBLIC_GITHUB_BRANCH}/examples/src/${path}`;
 ---
 
-<div class="mb-6 flex flex-wrap items-center gap-x-10 gap-y-4">
+<div class:list={["flex flex-wrap items-center gap-x-10 gap-y-4", className]}>
     <h1 class="mb-0">{getHeader(path.split("/").map(startCase))}</h1>
     <div class="flex items-center gap-6 font-medium">
         {
