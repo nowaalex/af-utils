@@ -1,6 +1,6 @@
 {
   "name": "@af-utils/virtual-examples-react-list-sticky-header-and-footer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@af-utils/virtual-react": "0.0.24",
+    "@af-utils/virtual-react": "0.0.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "use-sync-external-store": "^1.2.0"

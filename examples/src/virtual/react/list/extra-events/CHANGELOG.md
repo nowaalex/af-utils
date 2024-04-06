@@ -1,5 +1,12 @@
 # @af-utils/virtual-examples-react-list-extra-events
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-react@0.0.25
+
 ## 0.0.4
 
 ### Patch Changes

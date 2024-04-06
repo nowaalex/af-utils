@@ -1,4 +1,4 @@
-import { memo, useState, useLayoutEffect } from "react";
+import { memo, useState, useEffect, useLayoutEffect } from "react";
 
 import {
     useVirtual,
@@ -18,6 +18,10 @@ const Item = memo<ListItemProps>(({ i, model }) => (
     </tr>
 ));
 
+// Needed for server side rendering. Otherwise useLayoutEffect could be used
+const useIsomorphicLayoutEffect =
+    typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 const CustomRender = () => {
     const model = useVirtual({
         itemCount: 50000
@@ -26,7 +30,7 @@ const CustomRender = () => {
     const [before, beforeRef] = useState<HTMLElement | null>(null);
     const [after, afterRef] = useState<HTMLElement | null>(null);
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         if (model && before && after) {
             const updateBeforeStyle = () => {
                 before.style.height = model.getOffset(model.from) + "px";

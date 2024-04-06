@@ -1,4 +1,5 @@
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
+import useIsomorphicLayoutEffect from "hooks/useIsomorphicLayoutEffect";
 import { VirtualScrollerEvent, VirtualScroller } from "@af-utils/virtual-core";
 
 const SIZE_PROVIDER_STYLE_BASE = {
@@ -59,7 +60,7 @@ const useSyncedStyles = (
     const [outer, outerRef] = useState<HTMLElement | null>(null);
     const [inner, innerRef] = useState<HTMLElement | null>(null);
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         if (model && outer && inner) {
             const updateSizeStyle = () => {
                 outer.style[model.horizontal ? "width" : "height"] =

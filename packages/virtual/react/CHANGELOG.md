@@ -1,5 +1,11 @@
 # @af-utils/react-virtual-list
 
+## 0.0.25
+
+### Patch Changes
+
+- useIsomorphicLayoutEffect improvement
+
 ## 0.0.24
 
 ### Patch Changes

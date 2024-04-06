@@ -23,8 +23,8 @@ function walkMenu(obj: Record<string, any> | null, arr: any[], path: string) {
 
 const cutObjectKeys = <T extends Record<string, any>>(
     source: T,
-    sliceFrom: number,
-    sliceTo: number
+    sliceFrom?: number,
+    sliceTo?: number
 ) =>
     Object.fromEntries(
         Object.keys(source).map(k => [k.slice(sliceFrom, sliceTo), source[k]])

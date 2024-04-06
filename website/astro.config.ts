@@ -4,7 +4,7 @@ import { visit } from "unist-util-visit";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import dotenv from "dotenv";
+import { loadEnv } from "vite";
 import remarkToc from "remark-toc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
@@ -12,13 +12,13 @@ import rehypePrettyCode from "rehype-pretty-code";
 import icon from "astro-icon";
 import type { Root } from "hast";
 
-dotenv.config({ path: ".env.local" });
+const env = loadEnv(process.env.NODE_ENV as string, process.cwd(), "");
 
 const rehypeLinks = () => (tree: Root) =>
     visit(tree, "element", node => {
         if (node.tagName === "a" && typeof node.properties.href === "string") {
             const href = node.properties.href.replace(
-                process.env.PUBLIC_ORIGIN as string,
+                env.PUBLIC_ORIGIN as string,
                 ""
             );
 
@@ -33,7 +33,7 @@ const rehypeLinks = () => (tree: Root) =>
 
 // https://astro.build/config
 export default defineConfig({
-    site: process.env.PUBLIC_ORIGIN as string,
+    site: env.PUBLIC_ORIGIN as string,
     markdown: {
         rehypePlugins: [
             rehypeLinks,
