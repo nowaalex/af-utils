@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    .bg-menu {
+        @apply bg-zinc-100;
+    }
+}
+
 @layer utilities {
     .contain-strict {
         contain: strict;
@@ -10,7 +16,7 @@
 
 @layer components {
     pre[data-theme] {
-        @apply bg-zinc-50 drop-shadow text-inherit;
+        @apply bg-zinc-100 drop-shadow-sm text-inherit border;
     }
 }
 
