@@ -58,7 +58,7 @@ interface Props {
         <ul>
             <li>
                 <a
-                    href={`https://github.com/${process.env.PUBLIC_GITHUB_SUFFIX}`}
+                    href={`https://github.com/${import.meta.env.PUBLIC_GITHUB_SUFFIX}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     class="flex items-center gap-2"
@@ -68,7 +68,7 @@ interface Props {
             </li>
             <li>
                 <a
-                    href={process.env.PUBLIC_DISCORD_LINK}
+                    href={import.meta.env.PUBLIC_DISCORD_LINK}
                     target="_blank"
                     rel="noopener noreferrer"
                     class="flex items-center gap-2"
