@@ -20,17 +20,19 @@ interface Props {
 
 <input aria-hidden="true" type="checkbox" class="ds-menu-checkbox hidden" />
 <div
-    class="ds-menu-container z-10 min-w-[20em] overflow-y-auto lg:border-r lg:drop-shadow-xl bg-zinc-50"
+    class="min-w-[20em] flex flex-col lg:overflow-y-auto lg:border-r lg:drop-shadow-xl"
 >
-    <div class="sticky top-0 flex gap-4 border-b bg-inherit p-4">
-        <button class="ds-menu-opener">
+    <div
+        class="flex-none sticky top-0 flex items-center h-[62px] gap-4 border-b bg-zinc-50 px-4 z-[20]"
+    >
+        <button class="ds-menu-opener hidden">
             <Icon
                 size={24}
                 name="material-symbols:menu"
                 aria-label="open menu"
             />
         </button>
-        <button class="ds-menu-closer">
+        <button class="ds-menu-closer hidden">
             <Icon
                 size={24}
                 name="material-symbols:close"
@@ -47,7 +49,7 @@ interface Props {
     </div>
     <nav
         aria-label="Main navigation"
-        class="prose prose-sm prose-ul:pl-3 prose-ul:list-none prose-a:no-underline prose-a:font-normal ds-menu-items p-4"
+        class="ds-menu-items z-10 flex-auto p-4 bg-zinc-50 prose prose-sm prose-ul:pl-3 prose-ul:list-none prose-a:no-underline prose-a:font-normal"
     >
         {items.map(node => <MenuSubtree node={node} depth={0} />)}
 
@@ -79,6 +81,20 @@ interface Props {
 </div>
 <menu-events-appender hidden></menu-events-appender>
 
+<style is:global>
+    .ds-menu-items {
+        @apply transition-transform translate-y-full fixed inset-[62px_0_0_0] overflow-auto lg:transition-none lg:translate-y-0 lg:static lg:overflow-visible;
+    }
+
+    .ds-menu-checkbox:checked + div .ds-menu-items {
+        @apply translate-y-0;
+    }
+
+    .ds-menu-checkbox:checked + div .ds-menu-closer,
+    .ds-menu-checkbox:not(:checked) + div .ds-menu-opener {
+        @apply block lg:hidden;
+    }
+</style>
 <script>
     class MenuEventsAppender extends HTMLElement {
         constructor() {

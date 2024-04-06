@@ -61,6 +61,7 @@ const props = defaultsDeep({}, rest, frontmatter, {
             type="font/woff2"
             crossorigin
         />
+        <slot name="head" />
         <style is:global>
             @font-face {
                 font-family: "Exo Variable";

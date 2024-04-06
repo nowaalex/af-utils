@@ -36,7 +36,7 @@ const getHeader = (segments: string[]) => {
     }
 };
 
-const gitPiece = `${process.env.PUBLIC_GITHUB_SUFFIX}/tree/${process.env.PUBLIC_GITHUB_BRANCH}/examples/src/${path}`;
+const gitPiece = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env.PUBLIC_GITHUB_BRANCH}/examples/src/${path}`;
 ---
 
 <div class="mb-6 flex flex-wrap items-center gap-x-10 gap-y-4">

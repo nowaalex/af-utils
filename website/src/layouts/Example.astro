@@ -47,12 +47,11 @@ const htmlCodeString = await codeToHtml(codeString, {
         }
     ]
 });
+
+const titleBase = startCase(path.split("/").reverse().join(" "));
 ---
 
-<W
-    description={meta.description}
-    title={`${startCase(path.split("/").reverse().join(" "))} Example`}
->
+<W title={`${titleBase} Example`} description={meta.description}>
     <div class="flex h-full flex-col">
         <div>
             <ExampleHeader path={path} />
@@ -62,6 +61,7 @@ const htmlCodeString = await codeToHtml(codeString, {
             class="not-prose xl:contain-strict grid flex-1 grow grid-cols-1 gap-4 xl:basis-0 xl:grid-cols-2 xl:overflow-hidden"
         >
             <iframe
+                title={`${titleBase} Preview`}
                 class="h-[35vh] w-full xl:h-full"
                 src={`/examples/src/${path}/index.html`}></iframe>
             <pre

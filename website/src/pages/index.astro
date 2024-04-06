@@ -37,6 +37,13 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
         }
     }}
 >
+    <link
+        slot="head"
+        rel="preload"
+        href={sizif.src}
+        as="image"
+        media="only screen and (min-width: 1024px)"
+    />
     <div class="prose flex h-screen w-screen flex-col">
         <header
             class="prose-lg prose-a:no-underline mx-[5vmin] flex justify-center gap-8 border-b p-6"

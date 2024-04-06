@@ -9,6 +9,7 @@ export default {
             typography: {
                 DEFAULT: {
                     css: {
+                        maxWidth: "none",
                         table: {
                             /* prevent strething */
                             width: "auto"
