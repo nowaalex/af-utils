@@ -13,3 +13,18 @@
         @apply bg-zinc-50 drop-shadow text-inherit;
     }
 }
+
+@layer components {
+    .ds-menu-items {
+        @apply transition-transform translate-y-full fixed inset-[62px_0_0_0] overflow-auto lg:transition-none lg:translate-y-0 lg:static lg:overflow-visible;
+    }
+
+    .ds-menu-checkbox:checked + div .ds-menu-items {
+        @apply translate-y-0;
+    }
+
+    .ds-menu-checkbox:checked + div .ds-menu-closer,
+    .ds-menu-checkbox:not(:checked) + div .ds-menu-opener {
+        @apply block lg:hidden;
+    }
+}
