@@ -43,12 +43,12 @@ const titleBase = startCase(path.split("/").reverse().join(" "));
 <W
     title={`${titleBase} Example`}
     description={meta.description}
-    mainClass="flex flex-col"
+    mainClass="flex flex-col prose-p:m-0 gap-2"
 >
-    <ExampleHeader path={path} class="mb-4" />
+    <ExampleHeader path={path} class="mb-6" />
     <Description />
     <div
-        class="flex-auto xl:contain-strict grid place-items-stretch xl:grid-cols-2 gap-4"
+        class="mt-1 flex-auto xl:contain-strict grid place-items-stretch xl:grid-cols-2 gap-4"
     >
         <iframe
             title={`${titleBase} Preview`}
