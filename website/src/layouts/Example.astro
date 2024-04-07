@@ -25,7 +25,7 @@ const meta = await Metas[path]!();
 
 const htmlCodeString = await codeToHtml(codeString, {
     lang: "tsx",
-    theme: "min-light",
+    theme: "light-plus",
     transformers: [
         {
             pre({ children }) {
@@ -64,7 +64,7 @@ const titleBase = startCase(path.split("/").reverse().join(" "));
             class="h-[35vh] xl:h-auto border"
             src={`/examples/src/${path}/index.html`}></iframe>
         <pre
-            class="overflow-x-auto m-0 rounded-none text-sm xl:overflow-y-auto"
+            class="m-0 rounded-none text-sm xl:overflow-y-auto"
             data-theme
             tabindex={0}
             set:html={htmlCodeString}

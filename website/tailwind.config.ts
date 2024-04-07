@@ -10,6 +10,8 @@ export default {
                 DEFAULT: {
                     css: {
                         maxWidth: "none",
+                        "--tw-prose-pre-code": "inherit",
+                        "--tw-prose-pre-bg": "#fefdfd",
                         table: {
                             /* prevent strething */
                             width: "auto"

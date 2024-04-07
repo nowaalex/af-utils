@@ -16,7 +16,7 @@
 
 @layer components {
     pre[data-theme] {
-        @apply bg-[#fefdfd] drop-shadow-sm border;
+        @apply drop-shadow-sm border;
     }
 }
 

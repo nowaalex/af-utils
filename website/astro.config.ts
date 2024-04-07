@@ -38,7 +38,7 @@ export default defineConfig({
         rehypePlugins: [
             rehypeLinks,
             rehypeSlug,
-            [rehypePrettyCode, { theme: "min-light", keepBackground: false }]
+            [rehypePrettyCode, { theme: "light-plus", keepBackground: false }]
         ],
         remarkPlugins: [remarkToc, remarkGfm],
         gfm: true,
