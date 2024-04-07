@@ -20,9 +20,10 @@ function flattenMenu(arr: any[] | readonly any[], resultArr: any[]) {
 export interface Props extends BaseLayoutProps {
     items: any[];
     productName: string;
+    mainClass?: string;
 }
 
-const { items, productName, ...rest } = Astro.props;
+const { items, productName, mainClass, ...rest } = Astro.props;
 
 const flattenedItems = flattenMenu(items, []);
 ---
@@ -31,7 +32,7 @@ const flattenedItems = flattenMenu(items, []);
     <div class="h-screen flex flex-col lg:flex-row">
         <Menu items={items} productName={productName} class="min-w-[20em]" />
         <div class="flex flex-col flex-auto gap-8 p-4 overflow-auto">
-            <main class="prose flex-auto">
+            <main class:list={["prose flex-auto", mainClass]}>
                 <slot />
             </main>
             <nav

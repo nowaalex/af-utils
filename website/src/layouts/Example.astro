@@ -40,14 +40,16 @@ const htmlCodeString = await codeToHtml(codeString, {
 const titleBase = startCase(path.split("/").reverse().join(" "));
 ---
 
-<W title={`${titleBase} Example`} description={meta.description}>
+<W
+    title={`${titleBase} Example`}
+    description={meta.description}
+    mainClass="flex flex-col"
+>
+    <ExampleHeader path={path} class="mb-4" />
+    <Description />
     <div
-        class="grid h-full place-items-stretch gap-4 xl:grid-cols-2 xl:contain-strict grid-rows-[min-content]"
+        class="flex-auto xl:contain-strict grid place-items-stretch xl:grid-cols-2 gap-4"
     >
-        <div class="prose-p:m-0 col-span-full">
-            <ExampleHeader path={path} class="mb-8" />
-            <Description />
-        </div>
         <iframe
             title={`${titleBase} Preview`}
             class="h-[35vh] xl:h-auto border"
