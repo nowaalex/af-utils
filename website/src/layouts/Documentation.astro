@@ -28,9 +28,9 @@ const flattenedItems = flattenMenu(items, []);
 ---
 
 <BaseLayout {...rest}>
-    <div class="flex h-screen w-screen flex-col lg:flex-row">
-        <Menu items={items} productName={productName} />
-        <div class="flex flex-auto gap-8 flex-col overflow-auto p-4">
+    <div class="h-screen flex flex-col lg:flex-row">
+        <Menu items={items} productName={productName} class="min-w-[20em]" />
+        <div class="flex flex-col flex-auto gap-8 p-4 overflow-auto">
             <main class="prose flex-auto">
                 <slot />
             </main>

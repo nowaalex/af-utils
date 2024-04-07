@@ -10,17 +10,21 @@ export interface MenuItem {
     children?: readonly MenuItem[] | MenuItem[];
 }
 
-const { items, productName } = Astro.props;
+const { items, productName, class: className } = Astro.props;
 
 interface Props {
     items: readonly MenuItem[] | MenuItem[];
     productName: string;
+    class?: string;
 }
 ---
 
 <input aria-hidden="true" type="checkbox" class="ds-menu-checkbox hidden" />
 <div
-    class="min-w-[20em] flex flex-col lg:overflow-y-auto lg:border-r lg:drop-shadow-sm"
+    class:list={[
+        "flex flex-col lg:overflow-y-auto lg:border-r lg:drop-shadow-sm",
+        className
+    ]}
 >
     <div
         class="flex-none sticky top-0 flex items-center h-[62px] gap-4 border-gray-300 border-b bg-menu px-4 z-[20] drop-shadow-sm lg:drop-shadow-none"

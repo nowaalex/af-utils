@@ -28,12 +28,10 @@ const htmlCodeString = await codeToHtml(codeString, {
     theme: "light-plus",
     transformers: [
         {
-            pre(node) {
-                Object.assign(node.properties, {
-                    class: "m-0 rounded-none text-sm xl:overflow-y-auto",
-                    "data-theme": true,
-                    style: undefined
-                });
+            pre({ properties: p }) {
+                p.class = "m-0 rounded-none text-sm xl:overflow-y-auto";
+                p.style = undefined;
+                p["data-theme"] = true;
             }
         }
     ]
