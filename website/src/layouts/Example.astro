@@ -28,21 +28,12 @@ const htmlCodeString = await codeToHtml(codeString, {
     theme: "light-plus",
     transformers: [
         {
-            pre({ children }) {
-                if (children.length !== 1) {
-                    throw new Error("Bad children length");
-                }
-
-                const firstCodeChild = children[0]!;
-
-                if (
-                    firstCodeChild.type === "element" &&
-                    firstCodeChild.tagName === "code"
-                ) {
-                    return firstCodeChild;
-                }
-
-                throw new Error("Bad pre transformer");
+            pre(node) {
+                Object.assign(node.properties, {
+                    class: "m-0 rounded-none text-sm xl:overflow-y-auto",
+                    "data-theme": true,
+                    style: undefined
+                });
             }
         }
     ]
@@ -63,11 +54,6 @@ const titleBase = startCase(path.split("/").reverse().join(" "));
             title={`${titleBase} Preview`}
             class="h-[35vh] xl:h-auto border"
             src={`/examples/src/${path}/index.html`}></iframe>
-        <pre
-            class="m-0 rounded-none text-sm xl:overflow-y-auto"
-            data-theme
-            tabindex={0}
-            set:html={htmlCodeString}
-        />
+        <Fragment set:html={htmlCodeString} />
     </div>
 </W>
