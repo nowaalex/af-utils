@@ -6,6 +6,7 @@ import type { Props as SeoProps } from "astro-seo";
 import { getImage } from "astro:assets";
 import faviconPngSrc from "assets/favicon.png";
 import faviconSvgSrc from "assets/favicon.svg";
+import indexOgImageSrc from "assets/og/index.png";
 import font from "assets/font/exo-latin-wght-normal.woff2";
 import "styles/base.css";
 
@@ -18,6 +19,8 @@ const appleTouchIcon = await getImage({
 
 const faviconSvg = await getImage({ src: faviconSvgSrc, format: "svg" });
 
+const indexOgImage = await getImage({ src: indexOgImageSrc, quality: 30 });
+
 export interface Props extends SeoProps {
     frontmatter?: SeoProps;
 }
@@ -28,10 +31,26 @@ const props = defaultsDeep({}, rest, frontmatter, {
     charset: "UTF-8",
     title: "",
     titleTemplate: "",
-    description: "",
+    description: ""
+});
+
+defaultsDeep(props, {
+    openGraph: {
+        basic: {
+            title: props.title,
+            type: "website",
+            image: indexOgImage.src
+        }
+    }
+});
+
+defaultsDeep(props, {
     twitter: {
+        title: props.title,
         creator: "@fominalex24",
-        site: "@fominalex24"
+        site: "@fominalex24",
+        image: props.openGraph.basic.image,
+        card: "summary_large_image"
     }
 });
 ---

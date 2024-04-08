@@ -1,0 +1,57 @@
+---
+import Base from "layouts/Base.astro";
+
+export const getStaticPaths = () => [
+    {
+        params: { name: "index" },
+        props: {
+            name: "*",
+            description:
+                "Simple open-source tools that just work (usually fast)",
+            url: ""
+        }
+    },
+    {
+        params: { name: "virtual" },
+        props: {
+            name: "virtual",
+            description:
+                "Performant library for rendering only visible part of huge lists or grids (currently available for React)",
+            url: "/virtual"
+        }
+    },
+    {
+        params: { name: "scrollend-polyfill" },
+        props: {
+            name: "scrollend-polyfill",
+            description: "Cross-browser scrollend event support",
+            url: "/scrollend-polyfill"
+        }
+    }
+];
+
+const { name, url, description } = Astro.props;
+---
+
+<Base>
+    <main
+        class="flex flex-col text-center justify-around gap-4 p-8 w-[1200px] h-[630px] text-4xl prose"
+    >
+        <h1 class="text-[2.4em] font-extrabold m-0">af-utils/{name}</h1>
+        <p class="m-0">
+            {description}. Written in typescript.
+        </p>
+        <a href={`https://af-utils.com${url}`}>https://af-utils.com{url}</a>
+    </main>
+</Base>
+<style>
+    h1 {
+        background-color: #5c1fbe;
+        background-image: linear-gradient(45deg, #5c1fbe, #af4261);
+        background-size: 100%;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -moz-text-fill-color: transparent;
+    }
+</style>

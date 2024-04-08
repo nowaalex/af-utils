@@ -1,6 +1,9 @@
 ---
 import Documentation from "layouts/Documentation.astro";
 import { getMenuMapForProjectExamples } from "utils/examples";
+import defaultsDeep from "lodash/defaultsDeep";
+import { getImage } from "astro:assets";
+import ogScrollend from "assets/og/scrollend-polyfill.png";
 export type { Props } from "layouts/Base.astro";
 
 const items = [
@@ -21,10 +24,20 @@ const items = [
     },
     ...getMenuMapForProjectExamples("scrollend-polyfill")
 ];
+
+const img = await getImage({ src: ogScrollend, quality: 30 });
+
+const props = defaultsDeep(Astro.props, {
+    openGraph: {
+        basic: {
+            image: img.src
+        }
+    }
+});
 ---
 
 <Documentation
-    {...Astro.props}
+    {...props}
     titleTemplate="%s | af-utils | Scrollend-polyfill"
     items={items}
     productName="scrollend-polyfill"

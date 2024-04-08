@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 
 const robotsTxt = `
 User-agent: *
-Disallow: /
+Allow: /
 
 Sitemap: ${import.meta.env.PUBLIC_ORIGIN}/sitemap-index.xml`;
 

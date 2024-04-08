@@ -1,6 +1,9 @@
 ---
 import Documentation from "layouts/Documentation.astro";
 import { getMenuMapForProjectExamples } from "utils/examples";
+import defaultsDeep from "lodash/defaultsDeep";
+import { getImage } from "astro:assets";
+import ogVirtual from "assets/og/virtual.png";
 export type { Props } from "layouts/Base.astro";
 import type { ValidContentEntrySlug } from "astro:content";
 
@@ -31,10 +34,20 @@ const items = [
     },
     ...getMenuMapForProjectExamples("virtual")
 ];
+
+const img = await getImage({ src: ogVirtual, quality: 30 });
+
+const props = defaultsDeep(Astro.props, {
+    openGraph: {
+        basic: {
+            image: img.src
+        }
+    }
+});
 ---
 
 <Documentation
-    {...Astro.props}
+    {...props}
     titleTemplate="%s | af-utils | Virtual"
     items={items}
     productName="virtual"

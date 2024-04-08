@@ -23,19 +23,9 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
     }
 </style>
 <Layout
-    title="af-utils | Simple open-source tools that just work"
+    titleTemplate="af-utils | %s"
+    title="Simple open-source tools that just work"
     description="Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
-    openGraph={{
-        basic: {
-            type: "website",
-            title: "Simple open-source tools that just work",
-            image: "a"
-        },
-        optional: {
-            description:
-                "Simple and powerful tools that solve everyday problems (virtual scroll, scrollend polyfill, etc.) written in typescript"
-        }
-    }}
 >
     <link
         slot="head"
