@@ -1,8 +1,8 @@
 ---
 import Documentation from "layouts/Documentation.astro";
-import { getEntry } from "astro:content";
 import { getMenuMapForProjectExamples } from "utils/examples";
 export type { Props } from "layouts/Base.astro";
+import type { ValidContentEntrySlug } from "astro:content";
 
 const items = [
     {
@@ -20,7 +20,7 @@ const items = [
             },
             {
                 name: "Reference",
-                path: `/virtual/reference/${(await getEntry("reference", "index")).id}`,
+                path: `/virtual/reference/${"index" satisfies ValidContentEntrySlug<"reference">}`,
                 comparePath: "/virtual/reference"
             },
             {

@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@microsoft/api-documenter@7.24.1':
+    hash: h374gqh2mtouu7tgft7dyswndi
+    path: patches/@microsoft__api-documenter@7.24.1.patch
+
 importers:
 
   .:
@@ -16,7 +21,7 @@ importers:
         version: 2.27.1
       '@microsoft/api-documenter':
         specifier: ^7.24.1
-        version: 7.24.1(@types/node@20.12.5)
+        version: 7.24.1(patch_hash=h374gqh2mtouu7tgft7dyswndi)(@types/node@20.12.5)
       '@microsoft/api-extractor':
         specifier: ^7.43.0
         version: 7.43.0(@types/node@20.12.5)
@@ -2983,7 +2988,7 @@ packages:
       - supports-color
     dev: true
 
-  /@microsoft/api-documenter@7.24.1(@types/node@20.12.5):
+  /@microsoft/api-documenter@7.24.1(patch_hash=h374gqh2mtouu7tgft7dyswndi)(@types/node@20.12.5):
     resolution: {integrity: sha512-DX332aznb5SWpOLGuymvzg2OZsQ5+dCbSm8yvVYqTylDgSAiPouvKrdlWPoEeicuLU8wzxSl3xv7DMb6xgYwPw==}
     hasBin: true
     dependencies:
@@ -2997,6 +3002,7 @@ packages:
     transitivePeerDependencies:
       - '@types/node'
     dev: true
+    patched: true
 
   /@microsoft/api-extractor-model@7.28.13(@types/node@20.12.5):
     resolution: {integrity: sha512-39v/JyldX4MS9uzHcdfmjjfS6cYGAoXV+io8B5a338pkHiSt+gy2eXQ0Q7cGFJ7quSa1VqqlMdlPrB6sLR/cAw==}

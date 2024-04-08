@@ -1,11 +1,11 @@
 ---
-import type { ContentEntryMap } from "astro:content";
+import type { ValidContentEntrySlug } from "astro:content";
 
-const { href } = Astro.props;
+const { slug } = Astro.props;
 
 interface Props {
-    href: keyof ContentEntryMap["reference"];
+    slug: ValidContentEntrySlug<"reference">;
 }
 ---
 
-<a href={`/virtual/reference/${href}`}><slot /></a>
+<a href={`/virtual/reference/${slug}`}><slot /></a>

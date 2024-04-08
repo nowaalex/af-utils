@@ -1,23 +1,23 @@
 ---
 import { getCollection } from "astro:content";
-import startCase from "lodash/startCase";
 import VirtualDocumentation from "layouts/virtual/VirtualDocumentation.astro";
 
 export async function getStaticPaths() {
     const entries = await getCollection("reference");
 
     return entries.map(entry => ({
-        params: { page: entry.id },
+        params: { page: entry.slug },
         props: { entry }
     }));
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await Astro.props.entry.render();
 
-const title =
-    entry.id.replace(".md", "").split(".").map(startCase).join(" | ") +
-    " | Reference";
+if (!headings.length) {
+    throw new Error("Reference must contain at least one header");
+}
+
+const title = headings[0]!.text + " reference";
 ---
 
 <VirtualDocumentation title={title}>

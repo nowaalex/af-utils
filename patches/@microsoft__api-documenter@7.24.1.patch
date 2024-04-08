@@ -1,0 +1,64 @@
+diff --git a/lib/documenters/MarkdownDocumenter.js b/lib/documenters/MarkdownDocumenter.js
+index a0ef785a91a21071dd8cfc07054741499562a66b..f7c0200de1379b62579ba18ac5aa069c84401d93 100644
+--- a/lib/documenters/MarkdownDocumenter.js
++++ b/lib/documenters/MarkdownDocumenter.js
+@@ -103,7 +103,7 @@ class MarkdownDocumenter {
+                 output.appendNode(new DocHeading_1.DocHeading({ configuration, title: `${scopedName} function` }));
+                 break;
+             case api_extractor_model_1.ApiItemKind.Model:
+-                output.appendNode(new DocHeading_1.DocHeading({ configuration, title: `API Reference` }));
++                // output.appendNode(new DocHeading_1.DocHeading({ configuration, title: `API Reference` }));
+                 break;
+             case api_extractor_model_1.ApiItemKind.Namespace:
+                 output.appendNode(new DocHeading_1.DocHeading({ configuration, title: `${scopedName} namespace` }));
+@@ -886,7 +886,7 @@ class MarkdownDocumenter {
+         output.appendNodeInParagraph(new tsdoc_1.DocLinkTag({
+             configuration,
+             tagName: '@link',
+-            linkText: 'Home',
++            linkText: 'Reference home',
+             urlDestination: this._getLinkFilenameForApiItem(this._apiModel)
+         }));
+         for (const hierarchyItem of apiItem.getHierarchy()) {
+@@ -1003,7 +1003,7 @@ class MarkdownDocumenter {
+         return baseName + '.md';
+     }
+     _getLinkFilenameForApiItem(apiItem) {
+-        return './' + this._getFilenameForApiItem(apiItem);
++        return './' + this._getFilenameForApiItem(apiItem).replace( /\.md$/, "");
+     }
+     _deleteOldOutputFiles() {
+         console.log('Deleting old output from ' + this._outputFolder);
+diff --git a/lib/utils/Utilities.js b/lib/utils/Utilities.js
+index 42b24f5cba994395950c3f404c2943bd33f9cd07..ede9485dd056ef78f45f0f4df30bc76a1a62ddec 100644
+--- a/lib/utils/Utilities.js
++++ b/lib/utils/Utilities.js
+@@ -3,6 +3,7 @@
+ // See LICENSE in the project root for license information.
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.Utilities = void 0;
++const _ = require("lodash");
+ const api_extractor_model_1 = require("@microsoft/api-extractor-model");
+ class Utilities {
+     /**
+@@ -20,7 +21,7 @@ class Utilities {
+     static getSafeFilenameForName(name) {
+         // TODO: This can introduce naming collisions.
+         // We will fix that as part of https://github.com/microsoft/rushstack/issues/1308
+-        return name.replace(Utilities._badFilenameCharsRegExp, '_').toLowerCase();
++        return _.kebabCase( name );
+     }
+ }
+ exports.Utilities = Utilities;
+diff --git a/package.json b/package.json
+index 4172aba7026428a87a91d6d6e7ac159ec2277981..679b705979a3291b761580b5c8d0f8e70f6963e3 100644
+--- a/package.json
++++ b/package.json
+@@ -18,6 +18,7 @@
+     "@microsoft/tsdoc": "0.14.2",
+     "js-yaml": "~3.13.1",
+     "resolve": "~1.22.1",
++    "lodash": "^4.17.21",
+     "@microsoft/api-extractor-model": "7.28.13",
+     "@rushstack/node-core-library": "4.0.2",
+     "@rushstack/terminal": "0.10.0",
