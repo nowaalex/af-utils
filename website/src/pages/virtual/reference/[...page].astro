@@ -11,15 +11,43 @@ export async function getStaticPaths() {
     }));
 }
 
-const { Content, headings } = await Astro.props.entry.render();
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
 
 if (!headings.length) {
     throw new Error("Reference must contain at least one header");
 }
 
-const title = headings[0]!.text + " reference";
+const firstHeaderText = headings[0]!.text;
+
+/* Extracting description from first plaintext paragraph after <h1 /> if it exists */
+let desctiption = "";
+
+const trimmedStrings = entry.body
+    .split(/[\r\n]+/)
+    .map(str => str.trim())
+    .filter(str => !!str.length);
+
+const firstHeaderIndex = trimmedStrings.indexOf(`# ${firstHeaderText}`);
+
+if (firstHeaderIndex !== -1) {
+    const descriptionStrings = [];
+
+    for (let j = firstHeaderIndex + 1; j < trimmedStrings.length; j++) {
+        const str = trimmedStrings[j]!;
+        if (/^[^<*#_]/.test(str)) {
+            descriptionStrings.push(str);
+        } else {
+            break;
+        }
+    }
+
+    desctiption = descriptionStrings.join(" ").replace(/\[(.+)\]\(.+\)/g, "$1");
+}
+
+const title = firstHeaderText + " reference";
 ---
 
-<VirtualDocumentation title={title}>
+<VirtualDocumentation title={title} description={desctiption}>
     <Content />
 </VirtualDocumentation>
