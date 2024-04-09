@@ -11,6 +11,7 @@ import rehypeSlug from "rehype-slug";
 import rehypePrettyCode from "rehype-pretty-code";
 import icon from "astro-icon";
 import type { Root } from "hast";
+import stripTrailingSlash from "./src/utils/stripTrailingSlash";
 
 const env = loadEnv(process.env.NODE_ENV as string, process.cwd(), "");
 
@@ -52,6 +53,12 @@ export default defineConfig({
         mdx(),
         react(),
         icon(),
-        sitemap()
+        sitemap({
+            serialize( item ){
+                // trailing slashes must be the same as canonical links
+                item.url = stripTrailingSlash( item.url );
+                return item
+            }
+        })
     ]
 });
