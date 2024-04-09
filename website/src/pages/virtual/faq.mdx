@@ -25,10 +25,10 @@ Awesome libraries, which inspired me to create my own:
 Features I was missing there and implemented/improved here:
 
 -   flexible <DocLink slug="virtual-core">core api</DocLink>,
-    which exposes <DocLink slug="virtual-core.virtual-scroller.get-index">getIndex</DocLink> and <DocLink slug="virtual-core.virtual-scroller.get-offset">
+    which exposes <DocLink slug="virtual-core.virtualscroller.getindex">getIndex</DocLink> and <DocLink slug="virtual-core.virtualscroller.getoffset">
     getOffset
     </DocLink> methods;
--   built-in event emitter, supporting different <DocLink slug="virtual-core.virtual-scroller-event">events</DocLink>;
+-   built-in event emitter, supporting different <DocLink slug="virtual-core.virtualscrollerevent">events</DocLink>;
 -   scroll position persistence after [prepending items](/virtual/examples/react/list/prepend-items);
 -   isolated rerendering with separate [subscriptions](/virtual/examples/react/list/extra-events);
 -   support of both [react hook](/virtual/examples/react/hook/simple) and [react component](/virtual/examples/react/list/simple) api, which allows to
@@ -36,7 +36,7 @@ Features I was missing there and implemented/improved here:
 
 ## Why do I need to use ref?
 
-In order to work smoothly, library must know scrolled item sizes. Initially they equal <DocLink slug="virtual-core.virtual-scroller-runtime-params.estimated-item-size">estimatedItemSize</DocLink>. But this is usually not
+In order to work smoothly, library must know scrolled item sizes. Initially they equal <DocLink slug="virtual-core.virtualscrollerruntimeparams.estimateditemsize">estimatedItemSize</DocLink>. But this is usually not
 enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
 for more accurate measurements, but you must provide mounted items explicitly in
 conjunction with their indexes.
@@ -48,11 +48,11 @@ but you may use your styling approach.
 
 ## How many items virtual scroller can handle?
 
-Maximum quantity library can handle is `2_147_483_647` (int32 max), but it is better not to use such huge values. <DocLink slug="virtual-core.virtual-scroller-runtime-params.item-count">Read more</DocLink>
+Maximum quantity library can handle is `2_147_483_647` (int32 max), but it is better not to use such huge values. <DocLink slug="virtual-core.virtualscrollerruntimeparams.itemcount">Read more</DocLink>
 
 ## Is Server-side rendering supported?
 
-Yes, you can adjust quantity of server-rendered items. <DocLink slug="virtual-core.virtual-scroller-initial-params.estimated-widget-size">Read more</DocLink>
+Yes, you can adjust quantity of server-rendered items. <DocLink slug="virtual-core.virtualscrollerinitialparams.estimatedwidgetsize">Read more</DocLink>
 
 ## Why cursor and scrollbar become unaligned after manual scrolling?
 
@@ -63,9 +63,9 @@ Yes, you can adjust quantity of server-rendered items. <DocLink slug="virtual-co
     quality={60}
 />
 
-Items are remeasured on the fly. If <DocLink slug="virtual-core.virtual-scroller-runtime-params.estimated-item-size">estimated item size</DocLink>
-is different from the real one, <DocLink slug="virtual-core.virtual-scroller.scroll-size">scrollSize</DocLink> would jump, which causes scrollbar
-unalignment. No size discrepancies leads to no jumps, so <DocLink slug="virtual-core.virtual-scroller-runtime-params.estimated-item-size">estimated item size</DocLink>
+Items are remeasured on the fly. If <DocLink slug="virtual-core.virtualscrollerruntimeparams.estimateditemsize">estimated item size</DocLink>
+is different from the real one, <DocLink slug="virtual-core.virtualscroller.scrollsize">scrollSize</DocLink> would jump, which causes scrollbar
+unalignment. No size discrepancies leads to no jumps, so <DocLink slug="virtual-core.virtualscrollerruntimeparams.estimateditemsize">estimated item size</DocLink>
 must be as accurate as possible.
 
 <p class="clear-both" />
