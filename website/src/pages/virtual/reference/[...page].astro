@@ -42,7 +42,18 @@ if (firstHeaderIndex !== -1) {
         }
     }
 
-    desctiption = descriptionStrings.join(" ").replace(/\[(.+)\]\(.+\)/g, "$1");
+    desctiption = descriptionStrings
+        .join(" ")
+        // remove images
+        .replace(/\!\[(.*?)\][\[\(].*?[\]\)]/g, "")
+        // remove html tags
+        .replace(/<[^>]*>/g, "")
+        // remove inline code
+        .replace(/`(.+?)`/g, "$1")
+        // remove strike through
+        .replace(/~(.*?)~/g, "$1")
+        // remove links
+        .replace(/\[([^\]]*?)\][\[\(].*?[\]\)]/g, "$1");
 }
 
 const title = firstHeaderText + " reference";
