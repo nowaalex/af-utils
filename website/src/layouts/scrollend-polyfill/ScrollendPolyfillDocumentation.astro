@@ -25,7 +25,7 @@ const items = [
     ...getMenuMapForProjectExamples("scrollend-polyfill")
 ];
 
-const img = await getImage({ src: ogScrollend, quality: 30 });
+const img = await getImage({ src: ogScrollend, quality: 20, format: "png" });
 
 const props = defaultsDeep(Astro.props, {
     openGraph: {

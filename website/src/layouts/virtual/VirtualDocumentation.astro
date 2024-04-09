@@ -35,7 +35,7 @@ const items = [
     ...getMenuMapForProjectExamples("virtual")
 ];
 
-const img = await getImage({ src: ogVirtual, quality: 30 });
+const img = await getImage({ src: ogVirtual, quality: 20, format: "png"});
 
 const props = defaultsDeep(Astro.props, {
     openGraph: {
