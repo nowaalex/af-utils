@@ -7,6 +7,7 @@ import { getImage } from "astro:assets";
 import faviconPngSrc from "assets/favicon.png";
 import faviconSvgSrc from "assets/favicon.svg";
 import indexOgImageSrc from "assets/og/index.png";
+import stripTrailingSlash from "utils/stripTrailingSlash";
 import font from "assets/font/exo-latin-wght-normal.woff2";
 import "styles/base.css";
 
@@ -27,11 +28,14 @@ export interface Props extends SeoProps {
 
 const { frontmatter, ...rest } = Astro.props;
 
+const canonicalLinkWithoutTrailingSlash = stripTrailingSlash(Astro.url.href);
+
 const props = defaultsDeep({}, rest, frontmatter, {
     charset: "UTF-8",
     title: "",
     titleTemplate: "",
-    description: ""
+    description: "",
+    canonical: canonicalLinkWithoutTrailingSlash
 });
 
 defaultsDeep(props, {
@@ -39,7 +43,8 @@ defaultsDeep(props, {
         basic: {
             title: props.title,
             type: "website",
-            image: indexOgImage.src
+            image: indexOgImage.src,
+            url: canonicalLinkWithoutTrailingSlash
         }
     }
 });
