@@ -14,11 +14,14 @@
     "license": "MIT",
     "sideEffects": false,
     "scripts": {
-        "dev": "rollup -w -c rollup.config.ts --configPlugin typescript && pnpm export-bundle-size & pnpm tsc-alias -w",
-        "build": "rollup -c rollup.config.ts --configPlugin typescript && pnpm export-bundle-size && pnpm tsc-alias && pnpm api-extractor",
-        "tsc-alias": "tsc-alias",
+        "dev": "pnpm export-bundle-size && pnpm build:types && pnpm esbuild:dev",
+        "build": "pnpm build:types && pnpm esbuild:build && pnpm export-bundle-size && pnpm api-extractor",
+        "build:types": "tsc && tsc-alias",
+        "esbuild:build": "node build.mjs prod",
+        "esbuild:dev": "node build.mjs",
         "api-extractor": "api-extractor run && rm -r lib/types",
-        "export-bundle-size": "export-bundle-size ./lib/index.js"
+        "export-bundle-size": "export-bundle-size ./lib/index.js",
+        "test": "jest"
     },
     "files": [
         "lib/*"
@@ -44,9 +47,7 @@
     ],
     "devDependencies": {
         "@af-utils/export-bundle-size": "workspace:*",
-        "@rollup/plugin-terser": "^0.4.4",
-        "@rollup/plugin-typescript": "^11.1.6",
-        "rollup": "^4.14.1",
+        "esbuild": "^0.20.2",
         "ts-jest": "^29.1.2"
     },
     "dependencies": {

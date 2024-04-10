@@ -13,8 +13,11 @@
     "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
     "license": "MIT",
     "scripts": {
-        "dev": "rollup -w -c rollup.config.ts --configPlugin typescript && pnpm export-bundle-size",
-        "build": "rollup -c rollup.config.ts --configPlugin typescript && pnpm export-bundle-size",
+        "dev": "pnpm export-bundle-size && pnpm build:types && pnpm esbuild:dev",
+        "build": "pnpm build:types && pnpm esbuild:build && pnpm export-bundle-size",
+        "build:types": "tsc && tsc-alias",
+        "esbuild:build": "node build.mjs prod",
+        "esbuild:dev": "node build.mjs",
         "export-bundle-size": "export-bundle-size ./lib/index.js"
     },
     "files": [
@@ -30,9 +33,7 @@
     ],
     "devDependencies": {
         "@af-utils/export-bundle-size": "workspace:*",
-        "@rollup/plugin-terser": "^0.4.4",
-        "@rollup/plugin-typescript": "^11.1.6",
-        "rollup": "^4.14.1"
+        "esbuild": "^0.20.2"
     },
     "publishConfig": {
         "access": "public"

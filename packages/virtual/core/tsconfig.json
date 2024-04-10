@@ -1,9 +1,10 @@
 {
-    "include": ["src", "rollup.config.ts"],
+    "include": ["src"],
     "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
         "baseUrl": "src",
         "outDir": "lib",
-        "declarationDir": "lib/types"
+        "declarationDir": "lib/types",
+        "emitDeclarationOnly": true
     }
 }

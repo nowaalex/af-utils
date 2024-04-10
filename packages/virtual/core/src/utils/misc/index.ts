@@ -3,12 +3,6 @@ import type { VirtualScrollerScrollElement } from "types";
 
 export const call = (fn: (...args: unknown[]) => void) => fn();
 
-export const assert = (condition: boolean, errorMessage: string) => {
-    if (!condition) {
-        throw new Error(errorMessage);
-    }
-};
-
 export const growTypedArray = (
     sourceArray: ArrayLike<number>,
     newLength: number,

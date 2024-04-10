@@ -1,4 +1,5 @@
-import { writeFile, readFile } from "node:fs/promises";
+import { writeFile, readFile, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { parse, join } from "node:path";
 import { gzip as gzipCallback, brotliCompress } from "node:zlib";
 import { promisify } from "node:util";
@@ -7,6 +8,7 @@ import { MinifyOptions, minify } from "terser";
 const tStart = performance.now();
 
 const TERSER_OPTS = {
+    module: true,
     compress: {
         global_defs: {
             "process.env.NODE_ENV": "production"
@@ -67,8 +69,15 @@ for (let i = 2; i < process.argv.length; i++) {
     const newFileName = join(
         parsedPath.dir + `/bundlesize.${parsedPath.name}.js`
     );
-    const fileContent = await readFile(filePath, { encoding: "utf-8" });
+    const fileContent = existsSync(filePath)
+        ? await readFile(filePath, { encoding: "utf-8" })
+        : "";
+
     const fileSizes = await getFileSizes(fileContent);
+
+    if (!existsSync(parsedPath.dir)) {
+        await mkdir(parsedPath.dir, { recursive: true });
+    }
     await Promise.all([
         write(newFileName, fileSizes, false),
         write(newFileName, fileSizes, true)

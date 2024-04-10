@@ -9,7 +9,6 @@ import {
 
 import {
     call,
-    assert,
     growTypedArray,
     getDistanceBetween,
     isElement
@@ -17,14 +16,25 @@ import {
 
 import { update, getLiftingLimit, syncWithArray } from "utils/fTree";
 
-import { batchLevel, batchStart, batchEnd, addToBatchQueue } from "utils/batch";
-
 import type {
     VirtualScrollerScrollElement,
     VirtualScrollerInitialParams,
     VirtualScrollerRuntimeParams,
     VirtualScrollerExactPosition
 } from "types";
+
+const BatchQueue = new Set<() => void>();
+
+let batchLevel = 0;
+
+const batchEnd = () => {
+    if (!--batchLevel) {
+        BatchQueue.forEach(call);
+        BatchQueue.clear();
+    }
+};
+
+const addToBatchQueue = (fn: () => void) => BatchQueue.add(fn);
 
 const OBSERVE_OPTIONS = {
     box: "border-box"
@@ -234,7 +244,7 @@ class VirtualScroller {
         }
 
         if (wasAtLeastOneSizeChanged) {
-            /*#__INLINE__*/ batchStart();
+            ++batchLevel;
 
             if (buff !== 0) {
                 update(this._fTree, lim, buff, this._fTree.length);
@@ -404,7 +414,9 @@ class VirtualScroller {
      */
     getOffset(index: number) {
         if (process.env.NODE_ENV !== "production") {
-            assert(index <= this._itemCount, "index must not be > itemCount");
+            if (index >= this._itemCount) {
+                throw Error("index must not be > itemCount");
+            }
         }
 
         let result = 0;
@@ -426,10 +438,9 @@ class VirtualScroller {
      */
     getSize(itemIndex: number) {
         if (process.env.NODE_ENV !== "production") {
-            assert(
-                itemIndex < this._itemSizes.length,
-                "itemIndex must be < itemCount in getSize"
-            );
+            if (itemIndex >= this._itemSizes.length) {
+                throw Error("itemIndex must be < itemCount in getSize");
+            }
         }
         return this._itemSizes[itemIndex];
     }
@@ -768,12 +779,11 @@ class VirtualScroller {
      */
     setItemCount(itemCount: number) {
         if (this._itemCount !== itemCount) {
-            /*#__INLINE__*/ batchStart();
+            ++batchLevel;
 
-            assert(
-                itemCount <= MAX_INT_32,
-                "itemCount must be <= " + MAX_INT_32
-            );
+            if (itemCount > MAX_INT_32) {
+                throw Error("itemCount must be <= " + MAX_INT_32);
+            }
 
             this._itemCount = itemCount;
             this._msb = itemCount && 1 << (31 - Math.clz32(itemCount));
