@@ -1,8 +1,6 @@
 #!/bin/bash
 
-#trailing slash is important here for future maniulations
 OUTPUT_DIR=./src/content/reference
-
 REFERENCE_FILES_DIR="$(mktemp -d)"
 
 trap 'rm -rf -- "$REFERENCE_FILES_DIR"' EXIT

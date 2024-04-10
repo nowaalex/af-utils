@@ -13,8 +13,9 @@
     "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
     "license": "MIT",
     "scripts": {
-        "dev": "rollup --w --c rollup.config.ts --configPlugin typescript",
-        "build": "rollup --c rollup.config.ts --configPlugin typescript"
+        "dev": "rollup -w -c rollup.config.ts --configPlugin typescript && pnpm export-bundle-size",
+        "build": "rollup -c rollup.config.ts --configPlugin typescript && pnpm export-bundle-size",
+        "export-bundle-size": "export-bundle-size ./lib/index.js"
     },
     "files": [
         "lib/*"
@@ -28,7 +29,7 @@
         "polyfill"
     ],
     "devDependencies": {
-        "@af-utils/rollup-plugin-export-bundle-size": "workspace:*",
+        "@af-utils/export-bundle-size": "workspace:*",
         "@rollup/plugin-terser": "^0.4.4",
         "@rollup/plugin-typescript": "^11.1.6",
         "rollup": "^4.14.1"

@@ -1,5 +1,4 @@
 import typescript from "@rollup/plugin-typescript";
-import exportBundleSize from "@af-utils/rollup-plugin-export-bundle-size";
 import terser from "@rollup/plugin-terser";
 import { RollupOptions } from "rollup";
 
@@ -26,8 +25,7 @@ export default {
                 preserve_annotations: true
             },
             sourceMap: true
-        }),
-        exportBundleSize({ dir: OUTPUT_DIR })
+        })
     ],
     output: {
         format: "es",

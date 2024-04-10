@@ -1,8 +1,10 @@
-import { writeFile } from "fs/promises";
-import { gzip as gzipCallback, brotliCompress } from "zlib";
-import { promisify } from "util";
+import { writeFile, readFile } from "node:fs/promises";
+import { parse, join } from "node:path";
+import { gzip as gzipCallback, brotliCompress } from "node:zlib";
+import { promisify } from "node:util";
 import { MinifyOptions, minify } from "terser";
-import type { Plugin } from "rollup";
+
+const tStart = performance.now();
 
 const TERSER_OPTS = {
     compress: {
@@ -59,28 +61,20 @@ async function getFileSizes(code: string) {
     } as const;
 }
 
-function createPlugin({ dir, whitelist }: { dir: string; whitelist?: RegExp }) {
-    return {
-        name: "export-bundle-size",
-        writeBundle: async (_, output) => {
-            for (const file in output) {
-                if (!whitelist || whitelist.test(file)) {
-                    const newFileName = `${dir}/bundlesize.${file}`;
-                    const outputContent = output[file];
-
-                    if ("code" in outputContent) {
-                        const fileSizes = await getFileSizes(
-                            outputContent.code
-                        );
-                        await Promise.all([
-                            write(newFileName, fileSizes, false),
-                            write(newFileName, fileSizes, true)
-                        ]);
-                    }
-                }
-            }
-        }
-    } as const satisfies Plugin;
+for (let i = 2; i < process.argv.length; i++) {
+    const filePath = process.argv[i];
+    const parsedPath = parse(filePath);
+    const newFileName = join(
+        parsedPath.dir + `/bundlesize.${parsedPath.name}.js`
+    );
+    const fileContent = await readFile(filePath, { encoding: "utf-8" });
+    const fileSizes = await getFileSizes(fileContent);
+    await Promise.all([
+        write(newFileName, fileSizes, false),
+        write(newFileName, fileSizes, true)
+    ]);
 }
 
-export default createPlugin;
+console.log(
+    `Bundle sizes created in ${Math.round((performance.now() - tStart) * 100) / 100}ms`
+);

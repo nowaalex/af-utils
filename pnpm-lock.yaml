@@ -688,11 +688,17 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8(@types/node@20.12.6)
 
+  packages/export-bundle-size:
+    devDependencies:
+      terser:
+        specifier: ^5.30.3
+        version: 5.30.3
+
   packages/polyfills/scrollend-polyfill:
     devDependencies:
-      '@af-utils/rollup-plugin-export-bundle-size':
+      '@af-utils/export-bundle-size':
         specifier: workspace:*
-        version: link:../../rollup-plugin-export-bundle-size
+        version: link:../../export-bundle-size
       '@rollup/plugin-terser':
         specifier: ^0.4.4
         version: 0.4.4(rollup@4.14.1)
@@ -703,20 +709,11 @@ importers:
         specifier: ^4.14.1
         version: 4.14.1
 
-  packages/rollup-plugin-export-bundle-size:
-    devDependencies:
-      rollup:
-        specifier: ^4.14.1
-        version: 4.14.1
-      terser:
-        specifier: ^5.30.3
-        version: 5.30.3
-
   packages/virtual/core:
     devDependencies:
-      '@af-utils/rollup-plugin-export-bundle-size':
+      '@af-utils/export-bundle-size':
         specifier: workspace:*
-        version: link:../../rollup-plugin-export-bundle-size
+        version: link:../../export-bundle-size
       '@rollup/plugin-terser':
         specifier: ^0.4.4
         version: 0.4.4(rollup@4.14.1)
@@ -742,9 +739,9 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(react@18.2.0)
     devDependencies:
-      '@af-utils/rollup-plugin-export-bundle-size':
+      '@af-utils/export-bundle-size':
         specifier: workspace:*
-        version: link:../../rollup-plugin-export-bundle-size
+        version: link:../../export-bundle-size
       '@rollup/plugin-terser':
         specifier: ^0.4.4
         version: 0.4.4(rollup@4.14.1)
@@ -2902,13 +2899,6 @@ packages:
     resolution: {integrity: sha512-R8gLRTZeyp03ymzP/6Lil/28tGeGEzhx1q2k703KGWRAI1VdvPIXdG70VJc2pAMw3NA6JKL5hhFu1sJX0Mnn/A==}
     engines: {node: '>=6.0.0'}
 
-  /@jridgewell/source-map@0.3.5:
-    resolution: {integrity: sha512-UTYAUj/wviwdsMfzoSJspJxbkH5o1snzwX0//0ENX1u/55kkZZkcTZP6u9bwKGkv+dkk9at4m1Cpt0uY80kcpQ==}
-    dependencies:
-      '@jridgewell/gen-mapping': 0.3.3
-      '@jridgewell/trace-mapping': 0.3.22
-    dev: true
-
   /@jridgewell/source-map@0.3.6:
     resolution: {integrity: sha512-1ZJTZebgqllO79ue2bm3rIGud/bOe0pP5BjSRCRxxYkEZS8STV7zN84UBbiYu7jy+eCKSnVIUgoWWE/tt+shMQ==}
     dependencies:
@@ -3300,7 +3290,7 @@ packages:
       rollup: 4.14.1
       serialize-javascript: 6.0.2
       smob: 1.4.1
-      terser: 5.27.0
+      terser: 5.30.3
     dev: true
 
   /@rollup/plugin-typescript@11.1.6(rollup@4.14.1)(typescript@5.4.4):
@@ -10678,17 +10668,6 @@ packages:
   /term-size@2.2.1:
     resolution: {integrity: sha512-wK0Ri4fOGjv/XPy8SBHZChl8CM7uMc5VML7SqiQ0zG7+J5Vr+RMQDoHa2CNT6KHUnTGIXH34UDMkPzAUyapBZg==}
     engines: {node: '>=8'}
-    dev: true
-
-  /terser@5.27.0:
-    resolution: {integrity: sha512-bi1HRwVRskAjheeYl291n3JC4GgO/Ty4z1nVs5AAsmonJulGxpSektecnNedrwK9C7vpvVtcX3cw00VSLt7U2A==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      '@jridgewell/source-map': 0.3.5
-      acorn: 8.11.3
-      commander: 2.20.3
-      source-map-support: 0.5.21
     dev: true
 
   /terser@5.30.3:

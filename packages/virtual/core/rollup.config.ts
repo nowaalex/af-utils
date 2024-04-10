@@ -1,4 +1,3 @@
-import exportBundleSize from "@af-utils/rollup-plugin-export-bundle-size";
 import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
 import type { RollupOptions } from "rollup";
@@ -37,8 +36,7 @@ export default {
             format: "es",
             file: `${OUTPUT_DIR}/index.js`,
             generatedCode: "es2015",
-            sourcemap: true,
-            plugins: [exportBundleSize({ dir: OUTPUT_DIR })]
+            sourcemap: true
         },
         {
             format: "es",

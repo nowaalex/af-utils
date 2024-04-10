@@ -1,20 +1,21 @@
 {
-    "name": "@af-utils/rollup-plugin-export-bundle-size",
+    "name": "@af-utils/export-bundle-size",
     "version": "0.0.5",
     "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
     "license": "MIT",
     "sideEffects": false,
     "type": "module",
     "scripts": {
-        "build": "tsc",
-        "dev": "pnpm run build"
+        "build": "tsc"
+    },
+    "bin": {
+        "export-bundle-size": "./lib/index.js"
     },
     "types": "lib/index.d.ts",
     "main": "lib/index.js",
     "module": "lib/index.js",
     "keywords": [],
     "devDependencies": {
-        "rollup": "^4.14.1",
         "terser": "^5.30.3"
     },
     "publishConfig": {
