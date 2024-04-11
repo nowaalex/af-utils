@@ -666,6 +666,9 @@ importers:
 
   packages/export-bundle-size:
     devDependencies:
+      esbuild:
+        specifier: ^0.20.2
+        version: 0.20.2
       terser:
         specifier: ^5.30.3
         version: 5.30.3

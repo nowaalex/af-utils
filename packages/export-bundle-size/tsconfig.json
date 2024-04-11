@@ -3,6 +3,7 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "moduleResolution": "Node",
-        "outDir": "lib"
+        "outDir": "lib",
+        "declaration": false
     }
 }
