@@ -1,5 +1,6 @@
 import { useState, memo } from "react";
-import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
+import { useVirtual, List } from "@af-utils/virtual-react";
+import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
 const DEFAULT_ROW_COUNT = 50000;

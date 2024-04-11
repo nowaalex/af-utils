@@ -29,7 +29,14 @@
     "type": "module",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
-    "module": "lib/index.js",
+    "exports": {
+        "./lib/bundlesize.index.js": "./lib/bundlesize.index.js",
+        ".": {
+            "types": "./lib/index.d.ts",
+            "node": "./lib/index.js",
+            "default": "./lib/index.js"
+        }
+    },
     "keywords": [
         "react",
         "reactjs",

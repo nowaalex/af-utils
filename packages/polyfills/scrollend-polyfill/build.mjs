@@ -1,4 +1,3 @@
-import { writeFile, readFile } from "node:fs/promises";
 import { context, build } from "esbuild";
 
 /** @type {import('esbuild').BuildOptions} */

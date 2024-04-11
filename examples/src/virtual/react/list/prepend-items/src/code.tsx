@@ -1,7 +1,8 @@
 import { memo, useRef, useState } from "react";
-import { useVirtualModel, List, ListItemProps } from "@af-utils/virtual-react";
+import { useVirtualModel, List } from "@af-utils/virtual-react";
 import { randNumber, randFullName } from "@ngneat/falso";
 import { BiLoaderCircle } from "react-icons/bi";
+import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
 const Item = memo<ListItemProps>(({ i, model, data }) => (

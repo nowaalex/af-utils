@@ -13,7 +13,13 @@
     },
     "types": "lib/index.d.ts",
     "main": "lib/index.js",
-    "module": "lib/index.js",
+    "exports": {
+        ".": {
+            "types": "./lib/index.d.ts",
+            "node": "./lib/index.js",
+            "default": "./lib/index.js"
+        }
+    },
     "keywords": [],
     "devDependencies": {
         "terser": "^5.30.3"

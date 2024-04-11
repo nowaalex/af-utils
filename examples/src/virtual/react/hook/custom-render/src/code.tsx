@@ -1,14 +1,11 @@
 import { memo, useState, useEffect, useLayoutEffect } from "react";
-
 import {
     useVirtual,
     Subscription,
-    mapVisibleRange,
-    ListItemProps
+    mapVisibleRange
 } from "@af-utils/virtual-react";
-
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
-
+import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
 const Item = memo<ListItemProps>(({ i, model }) => (

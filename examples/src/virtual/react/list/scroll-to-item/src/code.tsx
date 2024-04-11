@@ -1,6 +1,8 @@
-import { useState, memo, useEffect, FormEvent } from "react";
-import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
+import { useState, memo, useEffect } from "react";
+import { useVirtual, List } from "@af-utils/virtual-react";
 import { VirtualScroller } from "@af-utils/virtual-core";
+import type { ListItemProps } from "@af-utils/virtual-react";
+import type { FormEvent } from "react";
 import css from "./style.module.css";
 
 const DEFAULT_ROW_COUNT = 50000;

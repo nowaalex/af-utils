@@ -1,5 +1,6 @@
 import { memo } from "react";
-import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
+import { useVirtual, List } from "@af-utils/virtual-react";
+import type { ListItemProps } from "@af-utils/virtual-react";
 
 const Item = memo<ListItemProps>(({ i, model }) => (
     <div

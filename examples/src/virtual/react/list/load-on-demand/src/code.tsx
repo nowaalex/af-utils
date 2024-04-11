@@ -1,12 +1,8 @@
 import { useState, useRef, useCallback, memo } from "react";
-import {
-    useVirtual,
-    useSubscription,
-    List,
-    ListItemProps
-} from "@af-utils/virtual-react";
+import { useVirtual, useSubscription, List } from "@af-utils/virtual-react";
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 import { randNumber, randParagraph } from "@ngneat/falso";
+import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
 const fetchRandomDescriptions = () =>

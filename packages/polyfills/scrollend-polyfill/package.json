@@ -25,8 +25,15 @@
     ],
     "type": "module",
     "types": "lib/index.d.ts",
-    "browser": "lib/index.js",
     "main": "lib/index.js",
+    "exports": {
+        "./lib/bundlesize.index.js": "./lib/bundlesize.index.js",
+        ".": {
+            "types": "./lib/index.d.ts",
+            "node": "./lib/index.js",
+            "default": "./lib/index.js"
+        }
+    },
     "keywords": [
         "scrollend",
         "polyfill"

@@ -20,39 +20,31 @@
     "scripts": {
         "test": "pnpm -r test",
         "build": "pnpm --filter './packages/**' build && pnpm --filter @af-utils/examples build && pnpm --filter website build",
-        "lint": "eslint --fix ."
+        "publint": "pnpm --filter './packages/**' exec publint"
     },
     "browserslist": ">0.6%, not op_mini all",
     "devDependencies": {
         "@changesets/changelog-github": "^0.5.0",
         "@changesets/cli": "^2.27.1",
-        "@microsoft/api-documenter": "^7.24.1",
-        "@microsoft/api-extractor": "^7.43.0",
+        "@microsoft/api-documenter": "^7.24.2",
+        "@microsoft/api-extractor": "^7.43.1",
         "@types/jest": "^29.5.12",
-        "@types/mdx": "^2.0.12",
+        "@types/mdx": "^2.0.13",
         "@types/node": "^20.12.7",
         "@types/react": "^18.2.75",
         "@types/react-dom": "^18.2.24",
         "@types/use-sync-external-store": "^0.0.6",
-        "@typescript-eslint/eslint-plugin": "^7.6.0",
-        "@typescript-eslint/parser": "^7.6.0",
-        "eslint": "^9.0.0",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-jest": "^28.2.0",
-        "eslint-plugin-prettier": "^5.1.3",
-        "eslint-plugin-react": "^7.34.1",
-        "eslint-plugin-tailwindcss": "^3.15.1",
         "jest": "^29.7.0",
         "jest-environment-jsdom": "^29.7.0",
         "prettier": "^3.2.5",
         "publint": "^0.2.7",
         "ts-node": "^10.9.2",
         "tsc-alias": "^1.8.8",
-        "typescript": "^5.4.4"
+        "typescript": "^5.4.5"
     },
     "pnpm": {
         "patchedDependencies": {
-            "@microsoft/api-documenter@7.24.1": "patches/@microsoft__api-documenter@7.24.1.patch"
+            "@microsoft/api-documenter@7.24.2": "patches/@microsoft__api-documenter@7.24.1.patch"
         }
     }
 }

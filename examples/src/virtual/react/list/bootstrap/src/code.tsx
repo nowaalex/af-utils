@@ -1,7 +1,8 @@
 import { memo } from "react";
-import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
+import { useVirtual, List } from "@af-utils/virtual-react";
 import BootstrapListGroup from "react-bootstrap/ListGroup";
 import BootstrapListItem from "react-bootstrap/ListGroupItem";
+import type { ListItemProps } from "@af-utils/virtual-react";
 
 /*
 Normally full style should be used.
