@@ -8,8 +8,9 @@
     },
     "packageManager": "pnpm@8.15.1",
     "author": {
-        "name": "Alex Fomin <nowaalex@gmail.com>",
-        "url": "https://github.com/nowaalex"
+        "name": "Alex Fomin",
+        "email": "nowaalex@gmail.com",
+        "url": "https://github.com/nowaalex/"
     },
     "repository": {
         "type": "git",

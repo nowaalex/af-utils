@@ -1,7 +1,11 @@
 {
     "name": "@af-utils/export-bundle-size",
     "version": "0.0.5",
-    "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
+    "author": {
+        "name": "Alex Fomin",
+        "email": "nowaalex@gmail.com",
+        "url": "https://github.com/nowaalex/"
+    },
     "license": "MIT",
     "sideEffects": false,
     "type": "module",

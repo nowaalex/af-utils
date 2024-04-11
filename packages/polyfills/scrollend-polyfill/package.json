@@ -10,7 +10,11 @@
     },
     "homepage": "https://af-utils.com/scrollend-polyfill",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
-    "author": "Alex Fomin <nowaalex@gmail.com> (https://github.com/nowaalex/)",
+    "author": {
+        "name": "Alex Fomin",
+        "email": "nowaalex@gmail.com",
+        "url": "https://github.com/nowaalex/"
+    },
     "license": "MIT",
     "scripts": {
         "dev": "pnpm export-bundle-size && pnpm build:types && pnpm esbuild:dev",
