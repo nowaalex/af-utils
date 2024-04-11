@@ -29,7 +29,7 @@
     "main": "lib/index.js",
     "exports": {
         "./README.md": "./README.md",
-        "./lib/bundlesize.index.js": "./lib/bundlesize.index.js",
+        "./bundlesizes": "./lib/bundlesizes.js",
         ".": {
             "types": "./lib/index.d.ts",
             "node": "./lib/index.js",

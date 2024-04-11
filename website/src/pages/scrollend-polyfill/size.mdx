@@ -5,7 +5,7 @@ description: "Size of this package was carefully optimized to be as small as pos
 ---
 
 import SizeInfo from "components/SizeInfo.astro";
-import * as coreSizes from "@af-utils/scrollend-polyfill/lib/bundlesize.index.js";
+import coreSizes from "@af-utils/scrollend-polyfill/bundlesizes";
 
 # Scrollend polyfill bundle size impact
 
@@ -13,7 +13,9 @@ This package was carefully optimized to be as small as possible.
 In order to provide exact numbers it is shipped with `bundlesize.index.js` file.
 Contents of this file is shown in this table in human-readable format.
 
-<SizeInfo items={[[coreSizes, "@af-utils/scrollend-polyfill"]]} />
+<SizeInfo
+    items={[[coreSizes["./lib/index.js"], "@af-utils/scrollend-polyfill"]]}
+/>
 
 ## Terser configuration
 

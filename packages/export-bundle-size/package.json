@@ -18,9 +18,11 @@
     "keywords": [],
     "devDependencies": {
         "terser": "^5.30.3",
-        "typescript": "^5.4.5"
+        "typescript": "^5.4.5",
+        "fast-glob": "^3.3.2"
     },
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "dependencies": {}
 }
