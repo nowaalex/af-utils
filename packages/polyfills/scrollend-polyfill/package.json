@@ -17,11 +17,8 @@
     },
     "license": "MIT",
     "scripts": {
-        "dev": "pnpm export-bundle-size && pnpm build:types && pnpm esbuild:dev",
-        "build": "pnpm build:types && pnpm esbuild:build && pnpm export-bundle-size",
-        "build:types": "tsc && tsc-alias",
-        "esbuild:build": "node build.mjs prod",
-        "esbuild:dev": "node build.mjs",
+        "dev": "tsc -w && pnpm export-bundle-size",
+        "build": "tsc && pnpm export-bundle-size",
         "export-bundle-size": "export-bundle-size ./lib/index.js"
     },
     "files": [
@@ -45,7 +42,6 @@
     ],
     "devDependencies": {
         "@af-utils/export-bundle-size": "workspace:*",
-        "esbuild": "^0.20.2",
         "typescript": "^5.4.5"
     },
     "publishConfig": {
