@@ -669,6 +669,9 @@ importers:
       terser:
         specifier: ^5.30.3
         version: 5.30.3
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
 
   packages/polyfills/scrollend-polyfill:
     devDependencies:
@@ -678,6 +681,9 @@ importers:
       esbuild:
         specifier: ^0.20.2
         version: 0.20.2
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
 
   packages/virtual/core:
     devDependencies:
@@ -690,6 +696,9 @@ importers:
       ts-jest:
         specifier: ^29.1.2
         version: 29.1.2(@babel/core@7.24.4)(esbuild@0.20.2)(jest@29.7.0)(typescript@5.4.5)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
 
   packages/virtual/react:
     dependencies:
@@ -712,6 +721,9 @@ importers:
       ts-jest:
         specifier: ^29.1.2
         version: 29.1.2(@babel/core@7.24.4)(esbuild@0.20.2)(jest@29.7.0)(typescript@5.4.5)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
 
   website:
     dependencies:

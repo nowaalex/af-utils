@@ -6,17 +6,16 @@ const COMMON_OPTIONS = {
     entryPoints: ["./src/index.ts"],
     format: "esm",
     outdir: "lib",
-    bundle: true
+    bundle: true,
+    // choosing 'neutral' because process.env.NODE_ENV must not be substituted
+    platform: "neutral"
 };
 
 if (process.argv.length === 3 && process.argv[2] === "prod") {
     /** @type {import('esbuild').BuildOptions} */
-    build({
+    await build({
         ...COMMON_OPTIONS,
-        mangleProps: /^_/,
-        define: {
-            "process.env.NODE_ENV": JSON.stringify("production")
-        }
+        mangleProps: /^_/
     });
     const content = await readFile("./lib/index.js", { encoding: "utf-8" });
     await writeFile(

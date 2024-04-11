@@ -15,18 +15,10 @@
     "bin": {
         "export-bundle-size": "./lib/index.js"
     },
-    "types": "lib/index.d.ts",
-    "main": "lib/index.js",
-    "exports": {
-        ".": {
-            "types": "./lib/index.d.ts",
-            "node": "./lib/index.js",
-            "default": "./lib/index.js"
-        }
-    },
     "keywords": [],
     "devDependencies": {
-        "terser": "^5.30.3"
+        "terser": "^5.30.3",
+        "typescript": "^5.4.5"
     },
     "publishConfig": {
         "access": "public"

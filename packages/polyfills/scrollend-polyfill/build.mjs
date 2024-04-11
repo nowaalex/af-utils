@@ -5,17 +5,15 @@ const COMMON_OPTIONS = {
     entryPoints: ["./index.ts"],
     format: "esm",
     outdir: "lib",
+    platform: "neutral",
     bundle: true
 };
 
 if (process.argv.length === 3 && process.argv[2] === "prod") {
     /** @type {import('esbuild').BuildOptions} */
-    build({
+    await build({
         ...COMMON_OPTIONS,
-        mangleProps: /^_/,
-        define: {
-            "process.env.NODE_ENV": JSON.stringify("production")
-        }
+        mangleProps: /^_/
     });
 } else {
     const ctx = await context(COMMON_OPTIONS);

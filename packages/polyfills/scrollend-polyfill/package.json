@@ -31,6 +31,7 @@
     "types": "lib/index.d.ts",
     "main": "lib/index.js",
     "exports": {
+        "./README.md": "./README.md",
         "./lib/bundlesize.index.js": "./lib/bundlesize.index.js",
         ".": {
             "types": "./lib/index.d.ts",
@@ -44,7 +45,8 @@
     ],
     "devDependencies": {
         "@af-utils/export-bundle-size": "workspace:*",
-        "esbuild": "^0.20.2"
+        "esbuild": "^0.20.2",
+        "typescript": "^5.4.5"
     },
     "publishConfig": {
         "access": "public"

@@ -6,6 +6,8 @@ const COMMON_OPTIONS = {
     format: "esm",
     outdir: "lib",
     bundle: true,
+    // choosing 'neutral' because process.env.NODE_ENV must not be substituted
+    platform: "neutral",
     external: [
         "@af-utils/*",
         "react/jsx-runtime",
@@ -16,12 +18,7 @@ const COMMON_OPTIONS = {
 
 if (process.argv.length === 3 && process.argv[2] === "prod") {
     /** @type {import('esbuild').BuildOptions} */
-    build({
-        ...COMMON_OPTIONS,
-        define: {
-            "process.env.NODE_ENV": JSON.stringify("production")
-        }
-    });
+    await build(COMMON_OPTIONS);
 } else {
     const ctx = await context(COMMON_OPTIONS);
     await ctx.watch();

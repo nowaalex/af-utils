@@ -59,6 +59,7 @@
     "devDependencies": {
         "@af-utils/export-bundle-size": "workspace:*",
         "esbuild": "^0.20.2",
+        "typescript": "^5.4.5",
         "ts-jest": "^29.1.2"
     },
     "dependencies": {
