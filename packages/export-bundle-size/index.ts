@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { writeFile, readFile, mkdir } from "node:fs/promises";
 import { parseArgs, promisify } from "node:util";
 import { existsSync } from "node:fs";

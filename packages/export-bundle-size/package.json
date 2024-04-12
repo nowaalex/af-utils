@@ -12,9 +12,7 @@
     "scripts": {
         "build": "tsc"
     },
-    "bin": {
-        "export-bundle-size": "./lib/index.js"
-    },
+    "bin": "./lib/index.js",
     "keywords": [],
     "devDependencies": {
         "@swc/core": "^1.4.13",
