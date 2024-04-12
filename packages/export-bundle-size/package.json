@@ -10,7 +10,8 @@
     "sideEffects": false,
     "type": "module",
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "postinstall": "pnpm build"
     },
     "main": "./lib/index.js",
     "bin": "./lib/index.js",
