@@ -7,7 +7,6 @@ import { parse, join, extname } from "node:path";
 import { gzip as gzipCallback, brotliCompress } from "node:zlib";
 import fastGlob from "fast-glob";
 import { minify } from "@swc/core";
-import type { JsMinifyOptions } from "@swc/core";
 
 const tStart = performance.now();
 
@@ -32,7 +31,7 @@ if (!values.input) {
     throw Error("input must be provided");
 }
 
-let parsedOutput: ReturnType<typeof parse> | null = null,
+let parsedOutput = null,
     outputJsFile = "",
     outputDtsFile = "";
 
@@ -63,38 +62,35 @@ const SWC_OPTS = {
         comments: false,
         preserve_annotations: false
     }
-} as const satisfies JsMinifyOptions;
+};
 
 const gzip = promisify(gzipCallback);
 const brotli = promisify(brotliCompress);
 
-async function getFileSizes(code: string) {
+async function getFileSizes(code) {
     const { code: minifiedCode } = await minify(code, SWC_OPTS);
-
     const [minifiedGzip, minifiedBrotli] = await Promise.all([
         gzip(minifiedCode),
         brotli(minifiedCode)
     ]);
-
     return {
         raw: code.length,
         min: minifiedCode.length,
         minGz: minifiedGzip.length,
         minBrotli: minifiedBrotli.length
-    } as const;
+    };
 }
 
-const fileNameToRealEntry = async (fileName: string) => {
+const fileNameToRealEntry = async fileName => {
     const fileContent = await readFile(fileName, { encoding: "utf-8" });
     const fileSizes = await getFileSizes(fileContent);
-    return [fileName, fileSizes] as const;
+    return [fileName, fileSizes];
 };
 
 if (jsInputFiles.length) {
     const fileSizesEntries = await Promise.all(
         jsInputFiles.map(fileNameToRealEntry)
     );
-
     if (!values.quiet) {
         console.table(
             fileSizesEntries.map(([file, sizes]) => ({
@@ -103,18 +99,15 @@ if (jsInputFiles.length) {
             }))
         );
     }
-
     if (parsedOutput) {
         if (!existsSync(parsedOutput.dir)) {
             await mkdir(parsedOutput.dir, { recursive: true });
         }
-
         const jsonStr = JSON.stringify(
             Object.fromEntries(fileSizesEntries),
             null,
             "\t"
         );
-
         await Promise.all([
             writeFile(outputJsFile, `export default ${jsonStr};`),
             writeFile(
@@ -123,7 +116,6 @@ if (jsInputFiles.length) {
             )
         ]);
     }
-
     console.log(
         `Bundle sizes created in ${Math.round((performance.now() - tStart) * 100) / 100}ms`
     );

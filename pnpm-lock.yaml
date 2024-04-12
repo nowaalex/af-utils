@@ -672,9 +672,6 @@ importers:
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
-      typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
 
   packages/polyfills/scrollend-polyfill:
     devDependencies:
