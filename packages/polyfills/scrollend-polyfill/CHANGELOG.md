@@ -1,5 +1,11 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.11
+
+### Patch Changes
+
+- new bundlesize format + better minification + const -> var change for better perf in output bundle
+
 ## 0.0.10
 
 ### Patch Changes

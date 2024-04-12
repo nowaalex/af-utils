@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-core",
     "private": false,
-    "version": "0.0.22",
+    "version": "0.0.23",
     "description": "Model for rendering large scrollable data",
     "repository": {
         "type": "git",
@@ -18,13 +18,13 @@
     "license": "MIT",
     "sideEffects": false,
     "scripts": {
-        "dev": "pnpm export-bundle-size && pnpm build:types && pnpm esbuild:dev",
+        "dev": "pnpm build:types && pnpm esbuild:dev",
         "build": "pnpm build:types && pnpm esbuild:build && pnpm export-bundle-size && pnpm api-extractor",
         "build:types": "tsc && tsc-alias",
         "esbuild:build": "node build.mjs prod",
         "esbuild:dev": "node build.mjs",
         "api-extractor": "api-extractor run && rm -r lib/types",
-        "export-bundle-size": "export-bundle-size ./lib/index.js",
+        "export-bundle-size": "export-bundle-size -i ./lib/index.js -o ./lib/bundlesizes.js",
         "test": "jest"
     },
     "files": [
@@ -34,7 +34,10 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "exports": {
-        "./bundlesizes": "./lib/bundlesizes.js",
+        "./bundlesizes": {
+            "types": "./lib/bundlesizes.d.ts",
+            "default": "./lib/bundlesizes.js"
+        },
         ".": {
             "types": "./lib/index.d.ts",
             "node": "./lib/index.polyfilled.js",

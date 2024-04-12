@@ -1,5 +1,13 @@
 # @af-utils/virtual-examples-react-list-prepend-items
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-react@0.0.26
+  - @af-utils/virtual-core@0.0.23
+
 ## 0.0.5
 
 ### Patch Changes

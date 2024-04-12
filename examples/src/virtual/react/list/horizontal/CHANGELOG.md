@@ -1,5 +1,12 @@
 # @af-utils/virtual-examples-react-list-horizontal
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-react@0.0.26
+
 ## 0.0.5
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/scrollend-polyfill",
     "private": false,
-    "version": "0.0.10",
+    "version": "0.0.11",
     "description": "Polyfill for scrollend event",
     "repository": {
         "type": "git",
@@ -19,7 +19,7 @@
     "scripts": {
         "dev": "tsc -w && pnpm export-bundle-size",
         "build": "tsc && pnpm export-bundle-size",
-        "export-bundle-size": "export-bundle-size ./lib/index.js"
+        "export-bundle-size": "export-bundle-size -i ./lib/index.js -o ./lib/bundlesizes.js"
     },
     "files": [
         "lib/*"
@@ -29,7 +29,10 @@
     "main": "lib/index.js",
     "exports": {
         "./README.md": "./README.md",
-        "./bundlesizes": "./lib/bundlesizes.js",
+        "./bundlesizes": {
+            "types": "./lib/bundlesizes.d.ts",
+            "default": "./lib/bundlesizes.js"
+        },
         ".": {
             "types": "./lib/index.d.ts",
             "node": "./lib/index.js",

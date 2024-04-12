@@ -1,9 +1,0 @@
-{
-    "files": [],
-    "references": [
-        { "path": "./packages/virtual/core" },
-        { "path": "./packages/virtual/react" },
-        { "path": "./packages/polyfills/scrollend-polyfill" },
-        { "path": "./packages/export-bundle-size" }
-    ]
-}

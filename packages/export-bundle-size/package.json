@@ -17,12 +17,12 @@
     },
     "keywords": [],
     "devDependencies": {
-        "terser": "^5.30.3",
-        "typescript": "^5.4.5",
-        "fast-glob": "^3.3.2"
+        "@swc/core": "^1.4.13",
+        "@types/yargs": "^17.0.32",
+        "fast-glob": "^3.3.2",
+        "typescript": "^5.4.5"
     },
     "publishConfig": {
         "access": "public"
-    },
-    "dependencies": {}
+    }
 }

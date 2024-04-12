@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.23
+
+### Patch Changes
+
+- new bundlesize format + better minification + const -> var change for better perf in output bundle
+
 ## 0.0.22
 
 ### Patch Changes

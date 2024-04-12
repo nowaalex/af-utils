@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.26
+
+### Patch Changes
+
+- new bundlesize format + better minification + const -> var change for better perf in output bundle
+- Updated dependencies
+  - @af-utils/virtual-core@0.0.23
+
 ## 0.0.25
 
 ### Patch Changes
