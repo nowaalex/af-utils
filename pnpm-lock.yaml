@@ -669,9 +669,6 @@ importers:
       '@swc/core':
         specifier: ^1.4.13
         version: 1.4.13
-      '@types/yargs':
-        specifier: ^17.0.32
-        version: 17.0.32
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2

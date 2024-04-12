@@ -12,11 +12,15 @@
     "scripts": {
         "build": "tsc"
     },
+    "main": "./lib/index.js",
     "bin": "./lib/index.js",
+    "exports": "./lib/index.js",
+    "engines": {
+        "node": ">=18.0.0"
+    },
     "keywords": [],
     "devDependencies": {
         "@swc/core": "^1.4.13",
-        "@types/yargs": "^17.0.32",
         "fast-glob": "^3.3.2",
         "typescript": "^5.4.5"
     },
