@@ -4,6 +4,6 @@
     "exclude": ["src/**/global.d.ts"],
     "extends": "../tsconfig.base.json",
     "compilerOptions": {
-        "outDir": "lib",
+        "outDir": "lib"
     }
-}  
+}

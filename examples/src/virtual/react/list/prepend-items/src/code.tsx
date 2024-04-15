@@ -1,7 +1,6 @@
 import { memo, useRef, useState } from "react";
 import { useVirtualModel, List } from "@af-utils/virtual-react";
 import { randNumber, randFullName } from "@ngneat/falso";
-import { BiLoaderCircle } from "react-icons/bi";
 import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
@@ -62,7 +61,7 @@ const PrependButton = ({
             onClick={prependItems}
         >
             Prepend 100 items
-            {isLoading ? <BiLoaderCircle size="1.5em" /> : null}
+            {isLoading ? " (loading...)" : null}
         </button>
     );
 };

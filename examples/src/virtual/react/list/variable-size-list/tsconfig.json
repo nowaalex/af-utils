@@ -3,6 +3,6 @@
     "include": ["global.d.ts", "src"],
     "compilerOptions": {
         "outDir": "lib",
-        "jsx": "react-jsx",
+        "jsx": "react-jsx"
     }
-}  
+}

@@ -19,12 +19,12 @@
     "sideEffects": false,
     "scripts": {
         "dev": "pnpm build:types && pnpm esbuild:dev",
-        "build": "pnpm build:types && pnpm esbuild:build && pnpm export-bundle-size && pnpm api-extractor",
+        "build": "pnpm build:types && pnpm esbuild:build && pnpm weigh-package && pnpm api-extractor",
         "build:types": "tsc && tsc-alias",
         "esbuild:build": "node build.mjs prod",
         "esbuild:dev": "node build.mjs",
         "api-extractor": "api-extractor run && rm -r lib/types",
-        "export-bundle-size": "export-bundle-size -i ./lib/index.js -o ./lib/bundlesizes.js",
+        "weigh-package": "weigh-package -i ./lib/index.js -o ./lib/bundlesizes.js",
         "test": "jest"
     },
     "files": [
@@ -60,7 +60,7 @@
         "windowing"
     ],
     "devDependencies": {
-        "@af-utils/export-bundle-size": "workspace:*",
+        "@af-utils/weigh-package": "workspace:*",
         "esbuild": "^0.20.2",
         "typescript": "^5.4.5",
         "ts-jest": "^29.1.2"

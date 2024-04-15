@@ -1,9 +1,10 @@
 {
-    "include": ["index.ts"],
+    "include": ["src"],
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "bin",
         "moduleResolution": "Node",
-        "outDir": "lib",
         "declaration": false
     }
 }

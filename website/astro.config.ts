@@ -54,10 +54,10 @@ export default defineConfig({
         react(),
         icon(),
         sitemap({
-            serialize( item ){
+            serialize(item) {
                 // trailing slashes must be the same as canonical links
-                item.url = stripTrailingSlash( item.url );
-                return item
+                item.url = stripTrailingSlash(item.url);
+                return item;
             }
         })
     ]

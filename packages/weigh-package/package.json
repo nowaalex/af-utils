@@ -1,5 +1,5 @@
 {
-    "name": "@af-utils/export-bundle-size",
+    "name": "@af-utils/weigh-package",
     "version": "0.0.5",
     "author": {
         "name": "Alex Fomin",
@@ -12,15 +12,19 @@
     "main": "./bin/index.js",
     "exports": "./bin/index.js",
     "bin": {
-        "export-bundle-size": "./bin/index.js"
+        "weigh-package": "./bin/index.js"
+    },
+    "scripts": {
+        "build": "tsc"
     },
     "engines": {
         "node": ">=18.0.0"
     },
     "keywords": [],
-    "devDependencies": {
-        "@swc/core": "^1.4.13",
-        "fast-glob": "^3.3.2"
+    "dependencies": {
+        "@swc/core": "^1.4.14",
+        "fast-glob": "^3.3.2",
+        "typescript": "^5.4.5"
     },
     "publishConfig": {
         "access": "public"

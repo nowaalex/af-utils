@@ -3,6 +3,6 @@
     "include": ["src"],
     "compilerOptions": {
         "outDir": "lib",
-        "jsx": "react-jsx",
+        "jsx": "react-jsx"
     }
-}  
+}

@@ -1,0 +1,17 @@
+pnpm-lock.yaml
+
+# -------------------- WEBSITE -------------------- 
+
+# build output
+website/dist/
+
+# generated types
+website/.astro/
+
+# environment variables
+.env
+.env.production
+
+# artificially generated files
+website/public/examples
+website/src/content/reference

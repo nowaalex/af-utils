@@ -4,5 +4,5 @@
 
 ### Patch Changes
 
-- Updated dependencies
-  - @af-utils/scrollend-polyfill@0.0.11
+-   Updated dependencies
+    -   @af-utils/scrollend-polyfill@0.0.11

@@ -1,12 +1,10 @@
-#!/usr/bin/env node
-
 import { writeFile, readFile, mkdir } from "node:fs/promises";
-import { parseArgs, promisify } from "node:util";
+import { parseArgs } from "node:util";
 import { existsSync } from "node:fs";
-import { parse, join, extname } from "node:path";
-import { gzip as gzipCallback, brotliCompress } from "node:zlib";
+import { parse, join } from "node:path";
 import fastGlob from "fast-glob";
-import { minify } from "@swc/core";
+import getFileSizes from "./getFileSizes";
+import exportsToGlobPatterns from "./parseExports";
 
 const tStart = performance.now();
 
@@ -27,13 +25,18 @@ const { values } = parseArgs({
     }
 });
 
-if (!values.input) {
-    throw Error("input must be provided");
+let parsedOutput: ReturnType<typeof parse> | null = null,
+    outputJsFile = "",
+    outputDtsFile = "",
+    globPaths: string[] = [];
+
+if (values.input) {
+    globPaths = values.input.trim().split(/\s+/);
 }
 
-let parsedOutput = null,
-    outputJsFile = "",
-    outputDtsFile = "";
+if (!globPaths.length) {
+    throw Error("input must be provided");
+}
 
 if (values.output) {
     parsedOutput = await parse(values.output);
@@ -41,55 +44,21 @@ if (values.output) {
     outputDtsFile = join(parsedOutput.dir, parsedOutput.name + ".d.ts");
 }
 
-const globPaths = values.input.trim().split(/\s+/);
-
 const allInputFiles = await fastGlob(
     parsedOutput ? [...globPaths, `!${outputJsFile}`] : globPaths
 );
 
-const jsInputFiles = allInputFiles.filter(
-    fileName => extname(fileName) === ".js"
+const jsInputFiles = allInputFiles.filter(fileName =>
+    /\.[cm]?js/.test(fileName)
 );
-
-const SWC_OPTS = {
-    module: true,
-    compress: {
-        global_defs: {
-            "process.env.NODE_ENV": "production"
-        }
-    },
-    format: {
-        comments: false,
-        preserve_annotations: false
-    }
-};
-
-const gzip = promisify(gzipCallback);
-const brotli = promisify(brotliCompress);
-
-async function getFileSizes(code) {
-    const { code: minifiedCode } = await minify(code, SWC_OPTS);
-    const [minifiedGzip, minifiedBrotli] = await Promise.all([
-        gzip(minifiedCode),
-        brotli(minifiedCode)
-    ]);
-    return {
-        raw: code.length,
-        min: minifiedCode.length,
-        minGz: minifiedGzip.length,
-        minBrotli: minifiedBrotli.length
-    };
-}
-
-const fileNameToRealEntry = async fileName => {
-    const fileContent = await readFile(fileName, { encoding: "utf-8" });
-    const fileSizes = await getFileSizes(fileContent);
-    return [fileName, fileSizes];
-};
 
 if (jsInputFiles.length) {
     const fileSizesEntries = await Promise.all(
-        jsInputFiles.map(fileNameToRealEntry)
+        jsInputFiles.map(async (fileName: string) => {
+            const fileContent = await readFile(fileName, { encoding: "utf-8" });
+            const fileSizes = await getFileSizes(fileContent);
+            return [fileName, fileSizes] as const;
+        })
     );
     if (!values.quiet) {
         console.table(

@@ -17,9 +17,9 @@
     },
     "license": "MIT",
     "scripts": {
-        "dev": "tsc -w && pnpm export-bundle-size",
-        "build": "tsc && pnpm export-bundle-size",
-        "export-bundle-size": "export-bundle-size -i ./lib/index.js -o ./lib/bundlesizes.js"
+        "dev": "tsc -w && pnpm weigh-package",
+        "build": "tsc && pnpm weigh-package",
+        "weigh-package": "weigh-package -i ./lib/index.js -o ./lib/bundlesizes.js"
     },
     "files": [
         "lib/*"
@@ -44,7 +44,7 @@
         "polyfill"
     ],
     "devDependencies": {
-        "@af-utils/export-bundle-size": "workspace:*",
+        "@af-utils/weigh-package": "workspace:*",
         "typescript": "^5.4.5"
     },
     "publishConfig": {
