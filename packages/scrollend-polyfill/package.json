@@ -6,7 +6,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/nowaalex/af-utils.git",
-        "directory": "packages/polyfills/scrollend-polyfill"
+        "directory": "packages/scrollend-polyfill"
     },
     "homepage": "https://af-utils.com/scrollend-polyfill",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
@@ -17,9 +17,8 @@
     },
     "license": "MIT",
     "scripts": {
-        "dev": "tsc -w && pnpm weigh-package",
-        "build": "tsc && pnpm weigh-package",
-        "weigh-package": "weigh-package -i ./lib/index.js -o ./lib/bundlesizes.js"
+        "dev": "tsc -w",
+        "build": "tsc"
     },
     "files": [
         "lib/*"
@@ -29,10 +28,6 @@
     "main": "lib/index.js",
     "exports": {
         "./README.md": "./README.md",
-        "./bundlesizes": {
-            "types": "./lib/bundlesizes.d.ts",
-            "default": "./lib/bundlesizes.js"
-        },
         ".": {
             "types": "./lib/index.d.ts",
             "node": "./lib/index.js",
@@ -44,7 +39,6 @@
         "polyfill"
     ],
     "devDependencies": {
-        "@af-utils/weigh-package": "workspace:*",
         "typescript": "^5.4.5"
     },
     "publishConfig": {

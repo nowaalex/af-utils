@@ -16,15 +16,16 @@
         "url": "https://github.com/nowaalex/"
     },
     "license": "MIT",
-    "sideEffects": false,
+    "sideEffects": [
+        "./src/polyfill.ts"
+    ],
     "scripts": {
-        "dev": "pnpm build:types && pnpm esbuild:dev",
-        "build": "pnpm build:types && pnpm esbuild:build && pnpm weigh-package && pnpm api-extractor",
-        "build:types": "tsc && tsc-alias",
-        "esbuild:build": "node build.mjs prod",
-        "esbuild:dev": "node build.mjs",
+        "dev": "tsc -p tsconfig.dev.json && pnpm esbuild:dev",
+        "build": "tsc && tsc-alias && pnpm esbuild:build && pnpm api-extractor",
+        "esbuild:base": "esbuild src/index*.ts --bundle --format=esm --outdir=lib --platform=neutral",
+        "esbuild:build": "pnpm esbuild:base --mangle-props=^_",
+        "esbuild:dev": "pnpm esbuild:base --watch",
         "api-extractor": "api-extractor run && rm -r lib/types",
-        "weigh-package": "weigh-package -i ./lib/index.js -o ./lib/bundlesizes.js",
         "test": "jest"
     },
     "files": [
@@ -34,15 +35,9 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "exports": {
-        "./bundlesizes": {
-            "types": "./lib/bundlesizes.d.ts",
-            "default": "./lib/bundlesizes.js"
-        },
-        ".": {
-            "types": "./lib/index.d.ts",
-            "node": "./lib/index.polyfilled.js",
-            "default": "./lib/index.js"
-        }
+        "types": "./lib/index.d.ts",
+        "node": "./lib/index.node.js",
+        "default": "./lib/index.js"
     },
     "engines": {
         "node": ">20.0.0"
@@ -63,7 +58,6 @@
         "windowing"
     ],
     "devDependencies": {
-        "@af-utils/weigh-package": "workspace:*",
         "esbuild": "^0.20.2",
         "typescript": "^5.4.5",
         "ts-jest": "^29.1.2"

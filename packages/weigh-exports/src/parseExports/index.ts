@@ -10,7 +10,8 @@ const IgnoredConditions = [
     "electron",
     "development",
     "react-native",
-    "electron"
+    "electron",
+    "types"
 ];
 
 const exportsToGlobPatterns = (map: Exports): string[] => {

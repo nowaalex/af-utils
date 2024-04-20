@@ -5,7 +5,9 @@
         "rootDir": "src",
         "baseUrl": "src",
         "outDir": "lib",
+        "declaration": true,
         "emitDeclarationOnly": true,
-        "declarationDir": "lib/types"
+        "declarationDir": "lib/types",
+        "jsx": "react-jsx"
     }
 }

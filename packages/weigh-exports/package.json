@@ -1,5 +1,5 @@
 {
-    "name": "@af-utils/weigh-package",
+    "name": "@af-utils/weigh-exports",
     "version": "0.0.5",
     "author": {
         "name": "Alex Fomin",
@@ -12,17 +12,22 @@
     "main": "./bin/index.js",
     "exports": "./bin/index.js",
     "bin": {
-        "weigh-package": "./bin/index.js"
+        "weigh-exports": "./bin/index.js"
     },
     "scripts": {
-        "build": "tsc"
+        "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=bin --external:@swc/* --external:chalk",
+        "esbuild:build": "pnpm esbuild:base --mangle-props=^_"
     },
     "engines": {
         "node": ">=18.0.0"
     },
     "keywords": [],
+    "devDependencies": {
+        "esbuild": "^0.20.2"
+    },
     "dependencies": {
-        "@swc/core": "^1.4.14",
+        "@swc/core": "^1.4.16",
+        "chalk": "^5.3.0",
         "fast-glob": "^3.3.2",
         "typescript": "^5.4.5"
     },

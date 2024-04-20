@@ -19,12 +19,11 @@
     "sideEffects": false,
     "scripts": {
         "dev": "pnpm build:types && pnpm esbuild:dev",
-        "build": "pnpm build:types && pnpm esbuild:build && pnpm weigh-package && pnpm api-extractor",
+        "build": "pnpm build:types && pnpm esbuild:build && pnpm api-extractor",
         "build:types": "tsc && tsc-alias",
         "esbuild:build": "node build.mjs prod",
         "esbuild:dev": "node build.mjs",
         "api-extractor": "api-extractor run && rm -r lib/types",
-        "weigh-package": "weigh-package -i ./lib/index.js -o ./lib/bundlesizes.js",
         "test": "jest"
     },
     "files": [
@@ -34,15 +33,9 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "exports": {
-        "./bundlesizes": {
-            "types": "./lib/bundlesizes.d.ts",
-            "default": "./lib/bundlesizes.js"
-        },
-        ".": {
-            "types": "./lib/index.d.ts",
-            "node": "./lib/index.js",
-            "default": "./lib/index.js"
-        }
+        "types": "./lib/index.d.ts",
+        "node": "./lib/index.js",
+        "default": "./lib/index.js"
     },
     "keywords": [
         "react",
@@ -60,7 +53,6 @@
         "windowing"
     ],
     "devDependencies": {
-        "@af-utils/weigh-package": "workspace:*",
         "esbuild": "^0.20.2",
         "typescript": "^5.4.5",
         "ts-jest": "^29.1.2"

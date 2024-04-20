@@ -5,19 +5,22 @@ description: "All packages were carefully optimized to be as small as possible. 
 ---
 
 import SizeInfo from "components/SizeInfo.astro";
-import coreSizes from "@af-utils/virtual-core/bundlesizes";
-import reactSizes from "@af-utils/virtual-react/bundlesizes";
+import sizes from "bundleSizes";
 
 # Virtual bundle size impact
 
 All packages were carefully optimized to be as small as possible.
-In order to provide exact numbers, each of them is shipped with `bundlesize.index.js` file.
-Contents of all those files are shown in this table in human-readable format.
 
 <SizeInfo
     items={[
-        [coreSizes["./lib/index.js"], "@af-utils/virtual-core"],
-        [reactSizes["./lib/index.js"], "@af-utils/virtual-react"]
+        [
+            sizes["@af-utils/virtual-core"]["./lib/index.js"],
+            "@af-utils/virtual-core"
+        ],
+        [
+            sizes["@af-utils/virtual-react"]["./lib/index.js"],
+            "@af-utils/virtual-react"
+        ]
     ]}
 />
 

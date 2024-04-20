@@ -1,11 +1,12 @@
 {
     "name": "website",
     "type": "module",
+    "private": true,
     "version": "0.0.1",
     "scripts": {
         "dev": "pnpm build:examples && astro dev",
-        "build": "pnpm build:examples && pnpm build:docs && astro check && astro build",
-        "weigh-packages": "weigh-packages @af-utils/virtual-core @af-utils/virtual-react ",
+        "build": "pnpm weigh-exports && pnpm build:examples && pnpm build:docs && astro check && astro build",
+        "weigh-exports": "weigh-exports -i '../packages/virtual/core ../packages/virtual/react ../packages/scrollend-polyfill' -o ./src/bundleSizes.ts",
         "start": "astro dev",
         "build:examples": "./build-examples.sh",
         "build:docs": "./build-docs.sh",
@@ -19,10 +20,10 @@
         "@af-utils/virtual-react": "workspace:*",
         "@astrojs/check": "^0.5.10",
         "@astrojs/react": "^3.3.0",
-        "@astrojs/sitemap": "^3.1.2",
+        "@astrojs/sitemap": "^3.1.4",
         "@iconify-json/material-symbols": "^1.1.78",
         "@iconify-json/simple-icons": "^1.1.99",
-        "astro": "^4.6.1",
+        "astro": "^4.6.3",
         "astro-icon": "^1.1.0",
         "astro-seo": "^0.8.3",
         "pretty-bytes": "^6.1.1",
@@ -32,11 +33,11 @@
         "sharp-ico": "^0.1.5",
         "shiki": "1.3.0",
         "use-sync-external-store": "^1.2.0",
-        "vite": "^5.2.8"
+        "vite": "^5.2.10"
     },
     "devDependencies": {
-        "@af-utils/weigh-package": "workspace:*",
-        "@astrojs/mdx": "^2.3.0",
+        "@af-utils/weigh-exports": "workspace:*",
+        "@astrojs/mdx": "^2.3.1",
         "@astrojs/tailwind": "^5.1.0",
         "@tailwindcss/forms": "^0.5.7",
         "@tailwindcss/typography": "^0.5.12",
