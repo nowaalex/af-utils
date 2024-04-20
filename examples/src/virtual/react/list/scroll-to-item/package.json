@@ -1,6 +1,6 @@
 {
     "name": "@af-utils/virtual-examples-react-list-scroll-to-item",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "private": true,
     "scripts": {
         "dev": "vite",
@@ -9,8 +9,8 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/virtual-core": "0.0.23",
-        "@af-utils/virtual-react": "0.0.26",
+        "@af-utils/virtual-core": "0.0.24",
+        "@af-utils/virtual-react": "0.0.27",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "use-sync-external-store": "^1.2.0"
