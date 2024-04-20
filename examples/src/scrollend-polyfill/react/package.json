@@ -1,6 +1,6 @@
 {
     "name": "@af-utils/scrollend-polyfill-examples-react",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "private": true,
     "scripts": {
         "dev": "vite",
@@ -9,7 +9,7 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/scrollend-polyfill": "0.0.11",
+        "@af-utils/scrollend-polyfill": "0.0.12",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },

@@ -2,7 +2,7 @@
     "name": "website",
     "type": "module",
     "private": true,
-    "version": "0.0.1",
+    "version": "0.0.2",
     "scripts": {
         "dev": "pnpm build:examples && astro dev",
         "build": "pnpm weigh-exports && pnpm build:examples && pnpm build:docs && astro check && astro build",
