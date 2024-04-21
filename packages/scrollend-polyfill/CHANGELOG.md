@@ -1,5 +1,11 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.13
+
+### Patch Changes
+
+- d7a22d3: automated release improvement
+
 ## 0.0.12
 
 ### Patch Changes

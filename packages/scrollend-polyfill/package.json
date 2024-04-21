@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/scrollend-polyfill",
     "private": false,
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "Polyfill for scrollend event",
     "repository": {
         "type": "git",
