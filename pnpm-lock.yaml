@@ -120,8 +120,8 @@ importers:
   examples/src/scrollend-polyfill/react:
     dependencies:
       '@af-utils/scrollend-polyfill':
-        specifier: 0.0.12
-        version: 0.0.12
+        specifier: 0.0.13
+        version: 0.0.13
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -828,8 +828,8 @@ importers:
 
 packages:
 
-  '@af-utils/scrollend-polyfill@0.0.12':
-    resolution: {integrity: sha512-uj8zgxGWdRujTZHz50/lQDtyZzs2o9FVtdWjQ3gJx7LGxCZI0ueyPdCC2NJJwkCC/8AiIPDvUxK+F66232owiw==}
+  '@af-utils/scrollend-polyfill@0.0.13':
+    resolution: {integrity: sha512-nl63zXL7jHmVuOx8WuNVHDvoxMnVnCvKZK/2H8jtx3xitnAjCV5/Ba2Pnpj3sOipClq0tg73CTO6y4YrDC1S9w==}
 
   '@af-utils/virtual-core@0.0.24':
     resolution: {integrity: sha512-BjBVk7i9P/r9GbTg8vy3bC8Vl5z6eEjfIkUD8Bu0MKAsNlWBxes6YyqSot+X3C8+1VnAqcl77rCuXYiX7nIVTg==}
@@ -5895,7 +5895,7 @@ packages:
 
 snapshots:
 
-  '@af-utils/scrollend-polyfill@0.0.12': {}
+  '@af-utils/scrollend-polyfill@0.0.13': {}
 
   '@af-utils/virtual-core@0.0.24': {}
 
