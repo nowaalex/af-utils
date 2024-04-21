@@ -21,8 +21,9 @@
         "dev": "pnpm build:types && pnpm esbuild:dev",
         "build": "pnpm build:types && pnpm esbuild:build && pnpm api-extractor",
         "build:types": "tsc && tsc-alias",
-        "esbuild:build": "node build.mjs prod",
-        "esbuild:dev": "node build.mjs",
+        "esbuild:base": "esbuild ./src/index.ts --format=esm --outdir=lib --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/*",
+        "esbuild:build": "pnpm esbuild:base",
+        "esbuild:dev": "pnpm esbuild:base --watch",
         "api-extractor": "api-extractor run && rm -r lib/types",
         "test": "jest"
     },
@@ -61,8 +62,7 @@
         "@af-utils/virtual-core": "workspace:*"
     },
     "peerDependencies": {
-        "react": "^17.0.0 || ^18.1.0",
-        "use-sync-external-store": "^1.2.0"
+        "react": "^17.0.0 || ^18.1.0"
     },
     "publishConfig": {
         "access": "public"
