@@ -1,3 +1,5 @@
+// This file was generated automatically
+
 export default {
 	"@af-utils/virtual-core": {
 		"./lib/index.js": {
@@ -9,10 +11,10 @@ export default {
 	},
 	"@af-utils/virtual-react": {
 		"./lib/index.js": {
-			"raw": 6887,
-			"min": 2636,
-			"minGz": 1185,
-			"minBrotli": 1034
+			"raw": 6831,
+			"min": 2585,
+			"minGz": 1162,
+			"minBrotli": 1032
 		}
 	},
 	"@af-utils/scrollend-polyfill": {

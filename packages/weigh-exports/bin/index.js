@@ -153,7 +153,12 @@ if (parsedOutput) {
     null,
     "	"
   );
-  await writeFile(outputTsFile, `export default ${jsonStr} as const;`);
+  await writeFile(
+    outputTsFile,
+    `// This file was generated automatically
+
+export default ${jsonStr} as const;`
+  );
 }
 console.log(
   `Bundle sizes created in ${Math.round((performance.now() - tStart) * 100) / 100}ms`
