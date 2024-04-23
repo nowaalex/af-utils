@@ -414,8 +414,9 @@ class VirtualScroller {
      */
     getOffset(index: number) {
         if (process.env.NODE_ENV !== "production") {
-            if (index >= this._itemCount) {
-                throw Error("index must not be > itemCount");
+            // fTree[0] is always empty, so minimum length of fTree equals itemCount+1
+            if (index > this._itemCount) {
+                throw Error(`index must not be > itemCount. Got: ${index}`);
             }
         }
 
