@@ -23,51 +23,55 @@ function walkMenu(obj: Record<string, any> | null, arr: any[], path: string) {
 
 const cutObjectKeys = <T extends Record<string, any>>(
     source: T,
-    sliceFrom?: number,
     sliceTo?: number
 ) =>
     Object.fromEntries(
-        Object.keys(source).map(k => [k.slice(sliceFrom, sliceTo), source[k]])
+        Object.keys(source).map(k => [
+            k.slice("../../../examples/src/".length, sliceTo),
+            source[k]
+        ])
     ) as T;
 
-export const getProjectExampleCodes = () =>
-    cutObjectKeys(
-        import.meta.glob<string>(
-            ["../../../examples/src/**/src/code.tsx", "!**/lib/**"],
-            { import: "default", query: "?raw" }
-        ),
-        "../../../examples/src/".length,
-        -"/src/code.tsx".length
-    );
+export const codes = /* @__PURE__ */ cutObjectKeys(
+    import.meta.glob<string>(
+        ["../../../examples/src/**/src/code.tsx", "!**/lib/**"],
+        { import: "default", query: "?raw" }
+    ),
+    -"/src/code.tsx".length
+);
 
-export const getProjectExampleDescriptions = () =>
-    cutObjectKeys(
-        import.meta.glob<astroHTML.JSX.Element>(
-            ["../../../examples/src/**/README.md", "!**/lib/**"],
-            {
-                import: "Content"
-            }
-        ),
-        "../../../examples/src/".length,
-        -"/README.md".length
-    );
+export const components = /* @__PURE__ */ cutObjectKeys(
+    import.meta.glob<string>(
+        ["../../../examples/src/**/src/index.tsx", "!**/lib/**"],
+        { import: "default" }
+    ),
+    -"/src/index.tsx".length
+);
 
-export const getProjectExampleMeta = () =>
-    cutObjectKeys(
-        import.meta.glob<SEOProps>(
-            ["../../../examples/src/**/meta.ts", "!**/lib/**"],
-            {
-                import: "default"
-            }
-        ),
-        "../../../examples/src/".length,
-        -"/meta.ts".length
-    );
+export const readmes = /* @__PURE__ */ cutObjectKeys(
+    import.meta.glob<astroHTML.JSX.Element>(
+        ["../../../examples/src/**/README.md", "!**/lib/**"],
+        {
+            import: "Content"
+        }
+    ),
+    -"/README.md".length
+);
+
+export const metas = /* @__PURE__ */ cutObjectKeys(
+    import.meta.glob<SEOProps>(
+        ["../../../examples/src/**/meta.ts", "!**/lib/**"],
+        {
+            import: "default"
+        }
+    ),
+    -"/meta.ts".length
+);
+
+export const list = /* @__PURE__ */ Object.keys(codes);
 
 export const getProjectExamples = (projectName: string) =>
-    Object.keys(getProjectExampleCodes()).filter(k =>
-        k.startsWith(projectName)
-    );
+    list.filter(k => k.startsWith(projectName));
 
 export const getMenuMapForProjectExamples = (projectName: string) =>
     walkMenu(

@@ -2,11 +2,7 @@
 import { codeToHtml } from "shiki";
 import startCase from "lodash/startCase";
 import ExampleHeader from "components/ExampleHeader.astro";
-import {
-    getProjectExampleDescriptions,
-    getProjectExampleCodes,
-    getProjectExampleMeta
-} from "utils/examples";
+import { readmes, codes, metas } from "utils/examples";
 
 interface Props {
     path: string;
@@ -15,13 +11,9 @@ interface Props {
 
 const { path, wrapper: W } = Astro.props;
 
-const Descriptions = getProjectExampleDescriptions();
-const Codes = getProjectExampleCodes();
-const Metas = getProjectExampleMeta();
-
-const Description = await Descriptions[path]!();
-const codeString = await Codes[path]!();
-const meta = await Metas[path]!();
+const Description = await readmes[path]!();
+const codeString = await codes[path]!();
+const meta = await metas[path]!();
 
 const htmlCodeString = await codeToHtml(codeString, {
     lang: "tsx",
