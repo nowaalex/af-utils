@@ -6,7 +6,7 @@
         "pnpm": "^9.0.0",
         "node": ">20.0.0"
     },
-    "packageManager": "pnpm@9.0.4",
+    "packageManager": "pnpm@9.0.6",
     "author": {
         "name": "Alex Fomin",
         "email": "nowaalex@gmail.com",
