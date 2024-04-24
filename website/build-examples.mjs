@@ -6,7 +6,9 @@ import { parse } from "node-html-parser";
 
 const examplePagesPath = "./src/pages/examples/";
 
-await rm(examplePagesPath, { recursive: true });
+if (existsSync(examplePagesPath)) {
+    await rm(examplePagesPath, { recursive: true });
+}
 
 for (const path of await glob([
     "../examples/src/**/index.html",
