@@ -40,14 +40,6 @@ export const codes = /* @__PURE__ */ cutObjectKeys(
     -"/src/code.tsx".length
 );
 
-export const components = /* @__PURE__ */ cutObjectKeys(
-    import.meta.glob<string>(
-        ["../../../examples/src/**/src/index.tsx", "!**/lib/**"],
-        { import: "default" }
-    ),
-    -"/src/index.tsx".length
-);
-
 export const readmes = /* @__PURE__ */ cutObjectKeys(
     import.meta.glob<astroHTML.JSX.Element>(
         ["../../../examples/src/**/README.md", "!**/lib/**"],
