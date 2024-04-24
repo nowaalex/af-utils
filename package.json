@@ -21,7 +21,7 @@
     "scripts": {
         "test": "pnpm -r test",
         "packages": "pnpm -F './packages/**'",
-        "build": "pnpm packages -F @af-utils/examples -F website build",
+        "build": "pnpm packages -F website build",
         "publint": "pnpm packages exec publint"
     },
     "browserslist": ">0.6%, not op_mini all",

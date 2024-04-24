@@ -45,7 +45,7 @@ const titleBase = startCase(path.split("/").reverse().join(" "));
         <iframe
             title={`${titleBase} Preview`}
             class="h-[35vh] xl:h-auto border"
-            src={`/examples/src/${path}/index.html`}></iframe>
+            src={`/examples/${path}`}></iframe>
         <Fragment set:html={htmlCodeString} />
     </div>
 </W>

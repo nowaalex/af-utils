@@ -23,7 +23,7 @@ const WindowScrollHook = () => {
 
     const [outerRef, innerRef] = useSyncedStyles(model);
 
-    useScroller(model, window);
+    useScroller(model, typeof window === "undefined" ? null : window);
 
     return (
         <>

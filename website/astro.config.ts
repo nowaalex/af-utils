@@ -54,6 +54,7 @@ export default defineConfig({
         react(),
         icon(),
         sitemap({
+            filter: page => !page.startsWith(env.PUBLIC_ORIGIN + "/examples"),
             serialize(item) {
                 // trailing slashes must be the same as canonical links
                 item.url = stripTrailingSlash(item.url);

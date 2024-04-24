@@ -59,57 +59,7 @@ importers:
         specifier: ^5.4.5
         version: 5.4.5
 
-  examples:
-    dependencies:
-      '@af-utils/virtual-core':
-        specifier: workspace:*
-        version: link:../packages/virtual/core
-      '@af-utils/virtual-react':
-        specifier: workspace:*
-        version: link:../packages/virtual/react
-      '@emotion/react':
-        specifier: ^11.11.4
-        version: 11.11.4(@types/react@18.2.79)(react@18.2.0)
-      '@emotion/styled':
-        specifier: ^11.11.5
-        version: 11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0)
-      '@mui/material':
-        specifier: ^5.15.15
-        version: 5.15.15(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@ngneat/falso':
-        specifier: ^7.2.0
-        version: 7.2.0
-      bootstrap:
-        specifier: ^5.3.3
-        version: 5.3.3(@popperjs/core@2.11.8)
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      react-bootstrap:
-        specifier: ^2.10.2
-        version: 2.10.2(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-    devDependencies:
-      '@types/react':
-        specifier: ^18.2.79
-        version: 18.2.79
-      '@types/react-dom':
-        specifier: ^18.2.25
-        version: 18.2.25
-      '@vitejs/plugin-react':
-        specifier: ^4.2.1
-        version: 4.2.1(vite@5.2.10(@types/node@20.12.7))
-      fast-glob:
-        specifier: ^3.3.2
-        version: 3.3.2
-      typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
-      vite:
-        specifier: ^5.2.10
-        version: 5.2.10(@types/node@20.12.7)
+  examples: {}
 
   examples/src/scrollend-polyfill/react:
     dependencies:
@@ -744,9 +694,15 @@ importers:
       '@types/lodash':
         specifier: ^4.17.0
         version: 4.17.0
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      node-html-parser:
+        specifier: ^6.1.13
+        version: 6.1.13
       prettier-plugin-astro:
         specifier: ^0.13.0
         version: 0.13.0
@@ -3272,6 +3228,10 @@ packages:
   hastscript@8.0.0:
     resolution: {integrity: sha512-dMOtzCEd3ABUeSIISmrETiKuyydk1w0pa+gE/uormcTpSYuaNJPbX1NU3JLyscSLjwAQM8bWMhhIlnCqnRvDTw==}
 
+  he@1.2.0:
+    resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
+    hasBin: true
+
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
@@ -4202,6 +4162,9 @@ packages:
 
   node-addon-api@6.1.0:
     resolution: {integrity: sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==}
+
+  node-html-parser@6.1.13:
+    resolution: {integrity: sha512-qIsTMOY4C/dAa5Q5vsobRpOOvPfC4pB61UVW2uSwZNUp0QU/jCekTal1vMmbO0DgdHeLUJpv/ARmDqErVxA3Sg==}
 
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
@@ -8937,6 +8900,8 @@ snapshots:
       property-information: 6.5.0
       space-separated-tokens: 2.0.2
 
+  he@1.2.0: {}
+
   hoist-non-react-statics@3.3.2:
     dependencies:
       react-is: 16.13.1
@@ -10291,6 +10256,11 @@ snapshots:
 
   node-addon-api@6.1.0:
     optional: true
+
+  node-html-parser@6.1.13:
+    dependencies:
+      css-select: 5.1.0
+      he: 1.2.0
 
   node-int64@0.4.0: {}
 

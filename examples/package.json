@@ -2,28 +2,5 @@
     "name": "@af-utils/examples",
     "version": "0.0.1",
     "private": true,
-    "scripts": {
-        "build": "tsc --noEmit && vite build"
-    },
-    "type": "module",
-    "dependencies": {
-        "@af-utils/virtual-core": "workspace:*",
-        "@af-utils/virtual-react": "workspace:*",
-        "@emotion/react": "^11.11.4",
-        "@emotion/styled": "^11.11.5",
-        "@mui/material": "^5.15.15",
-        "@ngneat/falso": "^7.2.0",
-        "bootstrap": "^5.3.3",
-        "react": "^18.2.0",
-        "react-bootstrap": "^2.10.2",
-        "react-dom": "^18.2.0"
-    },
-    "devDependencies": {
-        "@types/react": "^18.2.79",
-        "@types/react-dom": "^18.2.25",
-        "@vitejs/plugin-react": "^4.2.1",
-        "fast-glob": "^3.3.2",
-        "typescript": "^5.4.5",
-        "vite": "^5.2.10"
-    }
+    "type": "module"
 }

@@ -8,7 +8,7 @@
         "build": "pnpm weigh-exports && pnpm build:examples && pnpm build:docs && astro check && astro build",
         "weigh-exports": "weigh-exports -i '../packages/virtual/core ../packages/virtual/react ../packages/scrollend-polyfill' -o ./src/bundleSizes.ts",
         "start": "astro dev",
-        "build:examples": "./build-examples.sh",
+        "build:examples": "node ./build-examples.mjs",
         "build:docs": "./build-docs.sh",
         "preview": "astro preview",
         "astro": "astro"
@@ -42,7 +42,9 @@
         "@tailwindcss/typography": "^0.5.12",
         "@types/hast": "^3.0.4",
         "@types/lodash": "^4.17.0",
+        "fast-glob": "^3.3.2",
         "lodash": "^4.17.21",
+        "node-html-parser": "^6.1.13",
         "prettier-plugin-astro": "^0.13.0",
         "rehype-pretty-code": "^0.13.1",
         "rehype-slug": "^6.0.0",
