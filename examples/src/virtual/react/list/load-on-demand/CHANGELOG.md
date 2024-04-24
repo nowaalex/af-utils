@@ -1,5 +1,13 @@
 # @af-utils/virtual-examples-react-list-load-on-demand
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [dff0b7e]
+  - @af-utils/virtual-core@0.0.25
+  - @af-utils/virtual-react@0.0.28
+
 ## 0.0.7
 
 ### Patch Changes
