@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 0.0.28
+
+### Patch Changes
+
+- dff0b7e: improved logging/warnings + fixed VirtualScroller.getOffset ssr bug
+- Updated dependencies [dff0b7e]
+  - @af-utils/virtual-core@0.0.25
+
 ## 0.0.27
 
 ### Patch Changes

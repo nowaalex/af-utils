@@ -1,6 +1,6 @@
 {
     "name": "@af-utils/virtual-examples-react-hook-different-scroll-element",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "private": true,
     "scripts": {
         "dev": "vite",
@@ -9,8 +9,8 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/virtual-core": "0.0.24",
-        "@af-utils/virtual-react": "0.0.27",
+        "@af-utils/virtual-core": "0.0.25",
+        "@af-utils/virtual-react": "0.0.28",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },

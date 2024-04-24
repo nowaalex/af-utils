@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 0.0.25
+
+### Patch Changes
+
+- dff0b7e: improved logging/warnings + fixed VirtualScroller.getOffset ssr bug
+
 ## 0.0.24
 
 ### Patch Changes
