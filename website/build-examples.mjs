@@ -1,19 +1,21 @@
-import { normalize, dirname, relative, join } from "node:path";
+#!/usr/bin/env node
+
+import { chdir } from "node:process";
+import { normalize, dirname, relative, resolve, join } from "node:path";
 import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import glob from "fast-glob";
 import { parse } from "node-html-parser";
 
-const examplePagesPath = "./src/pages/examples/";
+const examplePagesPath = resolve("./src/pages/examples/");
+
+chdir("../examples/src/");
 
 if (existsSync(examplePagesPath)) {
     await rm(examplePagesPath, { recursive: true });
 }
 
-for (const path of await glob([
-    "../examples/src/**/index.html",
-    "!**/lib/**"
-])) {
+for (const path of await glob(["**/index.html", "!**/lib/**"])) {
     const fileContent = await readFile(path, { encoding: "utf-8" });
     const parsedFile = parse(fileContent);
     const scripts = parsedFile.querySelectorAll("script");
@@ -31,18 +33,19 @@ for (const path of await glob([
     scripts[0].remove();
     root.innerHTML = '<ReactExample client:only="react" />';
 
-    const routePath = join(
-        examplePagesPath + dirname(path.slice("../examples/src/".length))
-    );
-
-    const codeImportPath = relative(routePath, dirname(path) + "/src/code");
+    const dir = dirname(path);
+    const routePath = join(examplePagesPath, dir);
+    const codeImportPath = relative(routePath, join(dir, "/src/code"));
 
     if (!existsSync(routePath)) {
         await mkdir(routePath, { recursive: true });
     }
 
     await writeFile(
-        routePath + "/index.astro",
-        `---\nimport ReactExample from "${codeImportPath}";\n---\n${parsedFile.toString()}`
+        join(routePath, "index.astro"),
+        "---\n" +
+            `import ReactExample from "${codeImportPath}";\n` +
+            "---\n\n" +
+            parsedFile.toString()
     );
 }

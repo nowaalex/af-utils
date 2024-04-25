@@ -60,7 +60,7 @@ export const metas = /* @__PURE__ */ cutObjectKeys(
     -"/meta.ts".length
 );
 
-export const list = /* @__PURE__ */ Object.keys(codes);
+const list = Object.keys(codes);
 
 export const getProjectExamples = (projectName: string) =>
     list.filter(k => k.startsWith(projectName));
