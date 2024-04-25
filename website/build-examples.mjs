@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { chdir } from "node:process";
-import { normalize, dirname, relative, resolve, join } from "node:path";
+import { dirname, relative, resolve, join } from "node:path";
 import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import glob from "fast-glob";
