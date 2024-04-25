@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @ts-check
 
 import { chdir } from "node:process";
 import { dirname, relative, resolve, join } from "node:path";
@@ -30,7 +31,10 @@ for (const path of await glob(["**/index.html", "!**/lib/**"])) {
         throw Error("#root is missing");
     }
 
+    // scripts.length is 1 here
+    // @ts-ignore
     scripts[0].remove();
+
     root.innerHTML = '<ReactExample client:only="react" />';
 
     const dir = dirname(path);

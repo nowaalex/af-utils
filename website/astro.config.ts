@@ -10,12 +10,12 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypePrettyCode from "rehype-pretty-code";
 import icon from "astro-icon";
-import type { Root } from "hast";
 import stripTrailingSlash from "./src/utils/stripTrailingSlash";
+import type { RehypePlugins } from "astro";
 
 const env = loadEnv(process.env.NODE_ENV as string, process.cwd(), "");
 
-const rehypeLinks = () => (tree: Root) =>
+const rehypeLinks: RehypePlugins[number] = () => tree =>
     visit(tree, "element", node => {
         if (node.tagName === "a" && typeof node.properties.href === "string") {
             const href = node.properties.href.replace(
