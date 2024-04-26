@@ -6,21 +6,28 @@ export interface Params {
     params: { example: string[] };
 }
 
-function walkMenu(obj: Record<string, any> | null, arr: any[], path: string) {
-    if (obj) {
-        for (const k in obj) {
-            const kebabbed = kebabCase(k);
-            const newPath = `${path}/${kebabbed}`;
-            arr.push({
-                name: startCase(k),
-                path: newPath,
-                children: walkMenu(obj[k], [], newPath)
-            });
-        }
-    }
-    return arr;
+type MenuMap = { [key: string]: MenuMap };
+
+interface MenuItem {
+    name: string;
+    path: string;
+    children: MenuItem[];
 }
 
+function walkMenu(obj: MenuMap | undefined, path: string): MenuItem[] {
+    return obj
+        ? Object.keys(obj)
+              .sort((a, b) => a.localeCompare(b))
+              .map(k => {
+                  const newPath = `${path}/${kebabCase(k)}`;
+                  return {
+                      name: startCase(k),
+                      path: newPath,
+                      children: walkMenu(obj[k], newPath)
+                  };
+              })
+        : [];
+}
 const cutObjectKeys = <T extends Record<string, any>>(
     source: T,
     sliceTo?: number
@@ -67,18 +74,15 @@ export const getProjectExamples = (projectName: string) =>
 
 export const getMenuMapForProjectExamples = (projectName: string) =>
     walkMenu(
-        getProjectExamples(projectName)
-            .sort((a, b) => a.localeCompare(b))
-            .reduce<Record<string, any>>(
-                (result, path) => (
-                    path
-                        .split("/")
-                        .with(0, "examples")
-                        .reduce((acc, v) => (acc[v] ||= {}), result),
-                    result
-                ),
-                {}
+        getProjectExamples(projectName).reduce<MenuMap>(
+            (result, path) => (
+                path
+                    .split("/")
+                    .with(0, "examples")
+                    .reduce((acc, v) => (acc[v] ||= {}), result),
+                result
             ),
-        [],
+            {}
+        ),
         "/" + projectName
     );
