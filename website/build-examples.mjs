@@ -18,7 +18,7 @@ if (existsSync(examplePagesPath)) {
 
 const ASTRO_HARDCODED_ATTRS = {
     // astro has some bug with @emotion default imports, so switching off for this particular example
-    "virtual/react/list/material-ui": "client:only"
+    "virtual/react/list/material-ui": 'client:only="react"'
 };
 
 for (const path of await glob(["**/index.html", "!**/lib/**"])) {
