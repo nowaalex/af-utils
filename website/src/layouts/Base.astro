@@ -1,105 +1,17 @@
 ---
-import defaultsDeep from "lodash/defaultsDeep";
-import { ViewTransitions } from "astro:transitions";
-import { SEO } from "astro-seo";
-import type { Props as SeoProps } from "astro-seo";
-import { getImage } from "astro:assets";
-import faviconPngSrc from "assets/favicon.png";
-import faviconSvgSrc from "assets/favicon.svg";
-import indexOgImageSrc from "assets/og/index.png";
-import stripTrailingSlash from "utils/stripTrailingSlash";
-import font from "assets/font/exo-latin-wght-normal.woff2";
 import "styles/base.css";
-
-const appleTouchIcon = await getImage({
-    src: faviconPngSrc,
-    width: 180,
-    height: 180,
-    format: "png"
-});
-
-const faviconSvg = await getImage({ src: faviconSvgSrc, format: "svg" });
-
-const indexOgImage = await getImage({ src: indexOgImageSrc, quality: 20, format: "png" });
-
-export interface Props extends SeoProps {
-    frontmatter?: SeoProps;
-}
-
-const { frontmatter, ...rest } = Astro.props;
-
-const canonicalLinkWithoutTrailingSlash = stripTrailingSlash(Astro.url.href);
-
-const props = defaultsDeep({}, rest, frontmatter, {
-    charset: "UTF-8",
-    title: "",
-    titleTemplate: "",
-    description: "",
-    canonical: canonicalLinkWithoutTrailingSlash
-});
-
-defaultsDeep(props, {
-    openGraph: {
-        basic: {
-            title: props.title,
-            type: "website",
-            image: indexOgImage.src,
-            url: canonicalLinkWithoutTrailingSlash
-        }
-    }
-});
-
-defaultsDeep(props, {
-    twitter: {
-        title: props.title,
-        creator: "@fominalex24",
-        site: "@fominalex24",
-        image: props.openGraph.basic.image,
-        card: "summary_large_image"
-    }
-});
+import { ViewTransitions } from "astro:transitions";
+import HeadFont from "components/head/Font.astro";
+import SEO from "components/head/Seo.astro";
+export type { Props } from "components/head/Seo.astro";
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <SEO
-            {...props}
-            extend={{
-                link: [
-                    {
-                        rel: "icon",
-                        href: faviconSvg.src,
-                        type: "image/svg+xml"
-                    },
-                    { rel: "icon", href: "/favicon.ico", sizes: "32x32" },
-                    { rel: "apple-touch-icon", href: appleTouchIcon.src },
-                    { rel: "manifest", href: "/manifest.json" }
-                ]
-            }}
-        />
-        <link
-            rel="preload"
-            href={font}
-            as="font"
-            type="font/woff2"
-            crossorigin
-        />
+        <SEO {...Astro.props} />
+        <HeadFont />
         <slot name="head" />
-        <style is:global>
-            @font-face {
-                font-family: "Exo Variable";
-                font-style: normal;
-                font-display: swap;
-                font-weight: 100 900;
-                src: url(/src/assets/font/exo-latin-wght-normal.woff2)
-                    format("woff2-variations");
-            }
-
-            html {
-                font-family: "Exo Variable", sans-serif;
-            }
-        </style>
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
         <ViewTransitions />

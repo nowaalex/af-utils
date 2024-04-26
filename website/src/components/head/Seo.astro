@@ -1,0 +1,78 @@
+---
+import defaultsDeep from "lodash/defaultsDeep";
+import { SEO } from "astro-seo";
+import type { Props as SeoProps } from "astro-seo";
+import { getImage } from "astro:assets";
+import faviconPngSrc from "assets/favicon.png";
+import faviconSvgSrc from "assets/favicon.svg";
+import indexOgImageSrc from "assets/og/index.png";
+import stripTrailingSlash from "utils/stripTrailingSlash";
+
+const appleTouchIcon = await getImage({
+    src: faviconPngSrc,
+    width: 180,
+    height: 180,
+    format: "png"
+});
+
+const faviconSvg = await getImage({ src: faviconSvgSrc, format: "svg" });
+
+const indexOgImage = await getImage({
+    src: indexOgImageSrc,
+    quality: 20,
+    format: "png"
+});
+
+export interface Props extends SeoProps {
+    frontmatter?: SeoProps;
+}
+
+const { frontmatter, ...rest } = Astro.props;
+
+const canonicalLinkWithoutTrailingSlash = stripTrailingSlash(Astro.url.href);
+
+const props = defaultsDeep({}, rest, frontmatter, {
+    charset: "UTF-8",
+    title: "",
+    titleTemplate: "",
+    description: "",
+    canonical: canonicalLinkWithoutTrailingSlash
+});
+
+defaultsDeep(props, {
+    openGraph: {
+        basic: {
+            title: props.title,
+            type: "website",
+            image: indexOgImage.src,
+            url: canonicalLinkWithoutTrailingSlash
+        }
+    }
+});
+
+defaultsDeep(props, {
+    twitter: {
+        title: props.title,
+        creator: "@fominalex24",
+        site: "@fominalex24",
+        image: props.openGraph.basic.image,
+        card: "summary_large_image"
+    }
+});
+---
+
+<SEO
+    {...props}
+    extend={{
+        link: [
+            {
+                rel: "icon",
+                href: faviconSvg.src,
+                type: "image/svg+xml"
+            },
+            { rel: "icon", href: "/favicon.ico", sizes: "32x32" },
+            { rel: "apple-touch-icon", href: appleTouchIcon.src },
+            { rel: "manifest", href: "/manifest.json" }
+        ]
+    }}
+/>

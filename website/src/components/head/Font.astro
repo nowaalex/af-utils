@@ -1,0 +1,18 @@
+---
+import font from "assets/font/exo-latin-wght-normal.woff2";
+---
+
+<link rel="preload" href={font} as="font" type="font/woff2" crossorigin />
+<style is:global>
+    @font-face {
+        font-family: "Exo Variable";
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/src/assets/font/exo-latin-wght-normal.woff2)
+            format("woff2-variations");
+    }
+    html {
+        font-family: "Exo Variable", sans-serif;
+    }
+</style>
