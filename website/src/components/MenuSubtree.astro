@@ -1,14 +1,7 @@
 ---
 import NavLink from "components/NavLink.astro";
 import MenuSubtreeHeader from "components/MenuSubtreeHeader.astro";
-
-interface MenuItem {
-    name: string;
-    path: string;
-    exact?: boolean;
-    comparePath?: string;
-    children?: readonly MenuItem[] | MenuItem[];
-}
+import type { MenuItem } from "./Menu.astro";
 
 interface Props {
     node: MenuItem;

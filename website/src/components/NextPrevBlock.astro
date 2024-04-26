@@ -1,11 +1,12 @@
 ---
 import { Icon } from "astro-icon/components";
 import stripTrailingSlash from "utils/stripTrailingSlash";
+import type { MenuItem } from "./Menu.astro";
 
 const currentPath = stripTrailingSlash(Astro.url.pathname);
 
 interface Props {
-    items: any[];
+    items: MenuItem[];
 }
 
 const { items } = Astro.props;

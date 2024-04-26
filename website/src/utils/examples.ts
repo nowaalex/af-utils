@@ -1,18 +1,13 @@
-import type { SEOProps } from "astro-seo";
 import kebabCase from "lodash/kebabCase";
 import startCase from "lodash/startCase";
+import type { SEOProps } from "astro-seo";
+import type { MenuItem } from "components/Menu.astro";
 
 export interface Params {
     params: { example: string[] };
 }
 
 type MenuMap = { [key: string]: MenuMap };
-
-interface MenuItem {
-    name: string;
-    path: string;
-    children: MenuItem[];
-}
 
 function walkMenu(obj: MenuMap | undefined, path: string): MenuItem[] {
     return obj
@@ -24,7 +19,7 @@ function walkMenu(obj: MenuMap | undefined, path: string): MenuItem[] {
                       name: startCase(k),
                       path: newPath,
                       children: walkMenu(obj[k], newPath)
-                  };
+                  } as const satisfies MenuItem;
               })
         : [];
 }

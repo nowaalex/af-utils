@@ -3,29 +3,21 @@ import BaseLayout from "./Base.astro";
 import Menu from "components/Menu.astro";
 import NextPrevBlock from "components/NextPrevBlock.astro";
 import type { Props as BaseLayoutProps } from "layouts/Base.astro";
+import type { MenuItem } from "components/Menu.astro";
 
-function flattenMenu(arr: any[] | readonly any[], resultArr: any[]) {
-    if (arr) {
-        for (const k of arr) {
-            if (k.children?.length) {
-                flattenMenu(k.children, resultArr);
-            } else {
-                resultArr.push(k);
-            }
-        }
-    }
-    return resultArr;
+function flattenMenu(arr: MenuItem[] | readonly MenuItem[]): MenuItem[] {
+    return arr.flatMap(k => (k.children?.length ? flattenMenu(k.children) : k));
 }
 
 export interface Props extends BaseLayoutProps {
-    items: any[];
+    items: MenuItem[];
     productName: string;
     mainClass?: string;
 }
 
 const { items, productName, mainClass, ...rest } = Astro.props;
 
-const flattenedItems = flattenMenu(items, []);
+const flattenedItems = flattenMenu(items);
 ---
 
 <BaseLayout {...rest}>
