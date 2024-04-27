@@ -4,10 +4,10 @@
     "compilerOptions": {
         "rootDir": "src",
         "baseUrl": "src",
-        "outDir": "lib",
+        "outDir": "dist",
         "declaration": true,
         "emitDeclarationOnly": true,
-        "declarationDir": "lib/types",
+        "declarationDir": "dist/types",
         "jsx": "react-jsx"
     }
 }

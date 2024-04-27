@@ -36,7 +36,7 @@ const cutObjectKeys = <T extends Record<string, any>>(
 
 export const codes = /* @__PURE__ */ cutObjectKeys(
     import.meta.glob<string>(
-        ["../../../examples/src/**/src/code.tsx", "!**/lib/**"],
+        ["../../../examples/src/**/src/code.tsx", "!**/dist/**"],
         { import: "default", query: "?raw" }
     ),
     -"/src/code.tsx".length
@@ -44,7 +44,7 @@ export const codes = /* @__PURE__ */ cutObjectKeys(
 
 export const readmes = /* @__PURE__ */ cutObjectKeys(
     import.meta.glob<astroHTML.JSX.Element>(
-        ["../../../examples/src/**/README.md", "!**/lib/**"],
+        ["../../../examples/src/**/README.md", "!**/dist/**"],
         {
             import: "Content"
         }
@@ -54,7 +54,7 @@ export const readmes = /* @__PURE__ */ cutObjectKeys(
 
 export const metas = /* @__PURE__ */ cutObjectKeys(
     import.meta.glob<SEOProps>(
-        ["../../../examples/src/**/meta.ts", "!**/lib/**"],
+        ["../../../examples/src/**/meta.ts", "!**/dist/**"],
         {
             import: "default"
         }

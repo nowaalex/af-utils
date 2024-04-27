@@ -2,7 +2,7 @@
     "moduleResolution": "Bundler",
     "include": ["global.d.ts", "src"],
     "compilerOptions": {
-        "outDir": "lib",
+        "outDir": "./dist",
         "jsx": "react-jsx"
     }
 }

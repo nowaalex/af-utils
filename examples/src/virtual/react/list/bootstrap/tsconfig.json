@@ -2,7 +2,7 @@
     "moduleResolution": "Bundler",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
-        "outDir": "lib",
+        "outDir": "./dist",
         "jsx": "react-jsx"
     }
 }

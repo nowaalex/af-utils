@@ -22,22 +22,22 @@
     "scripts": {
         "dev": "tsc -p tsconfig.dev.json && pnpm esbuild:dev",
         "build": "tsc && tsc-alias && pnpm esbuild:build && pnpm api-extractor",
-        "esbuild:base": "esbuild src/index*.ts --bundle --format=esm --outdir=lib --platform=neutral",
+        "esbuild:base": "esbuild src/index*.ts --bundle --format=esm --outdir=dist --platform=neutral",
         "esbuild:build": "pnpm esbuild:base --mangle-props=^_",
         "esbuild:dev": "pnpm esbuild:base --watch",
-        "api-extractor": "api-extractor run && rm -r lib/types",
+        "api-extractor": "api-extractor run",
         "test": "jest"
     },
     "files": [
-        "lib/*"
+        "dist/*"
     ],
     "type": "module",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "exports": {
-        "types": "./lib/index.d.ts",
-        "node": "./lib/index.node.js",
-        "default": "./lib/index.js"
+        "types": "./dist/index.d.ts",
+        "node": "./dist/index.node.js",
+        "default": "./dist/index.js"
     },
     "engines": {
         "node": ">20.0.0"

@@ -2,7 +2,7 @@
 
 export default {
 	"@af-utils/virtual-core": {
-		"./lib/index.js": {
+		"./dist/index.js": {
 			"raw": 18381,
 			"min": 4594,
 			"minGz": 2005,
@@ -10,7 +10,7 @@ export default {
 		}
 	},
 	"@af-utils/virtual-react": {
-		"./lib/index.js": {
+		"./dist/index.js": {
 			"raw": 7814,
 			"min": 2902,
 			"minGz": 1295,
@@ -18,7 +18,7 @@ export default {
 		}
 	},
 	"@af-utils/scrollend-polyfill": {
-		"./lib/index.js": {
+		"./dist/index.js": {
 			"raw": 2494,
 			"min": 923,
 			"minGz": 495,

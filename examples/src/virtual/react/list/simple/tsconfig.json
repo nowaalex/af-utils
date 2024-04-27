@@ -1,7 +1,7 @@
 {
     "moduleResolution": "Bundler",
     "compilerOptions": {
-        "outDir": "lib",
+        "outDir": "./dist",
         "jsx": "react-jsx"
     }
 }

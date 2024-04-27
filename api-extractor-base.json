@@ -1,6 +1,6 @@
 {
     "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
-    "mainEntryPointFilePath": "<projectFolder>/lib/types/index.d.ts",
+    "mainEntryPointFilePath": "<projectFolder>/dist/types/index.d.ts",
     "bundledPackages": [],
     "enumMemberOrder": "preserve",
     "compiler": {},
@@ -17,7 +17,7 @@
     },
     "dtsRollup": {
         "enabled": true,
-        "untrimmedFilePath": "<projectFolder>/lib/index.d.ts",
+        "untrimmedFilePath": "<projectFolder>/dist/index.d.ts",
         "publicTrimmedFilePath": ""
     },
     "tsdocMetadata": {

@@ -21,17 +21,17 @@
         "build": "tsc"
     },
     "files": [
-        "lib/*"
+        "dist/*"
     ],
     "type": "module",
-    "types": "lib/index.d.ts",
-    "main": "lib/index.js",
+    "types": "dist/index.d.ts",
+    "main": "dist/index.js",
     "exports": {
         "./README.md": "./README.md",
         ".": {
-            "types": "./lib/index.d.ts",
-            "node": "./lib/index.js",
-            "default": "./lib/index.js"
+            "types": "./dist/index.d.ts",
+            "node": "./dist/index.js",
+            "default": "./dist/index.js"
         }
     },
     "keywords": [

@@ -5,9 +5,9 @@
     "compilerOptions": {
         "rootDir": "src",
         "baseUrl": "src",
-        "outDir": "lib",
+        "outDir": "dist",
         "declaration": true,
-        "declarationDir": "lib/types",
+        "declarationDir": "dist/types",
         "emitDeclarationOnly": true
     }
 }

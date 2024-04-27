@@ -21,7 +21,7 @@ const ASTRO_HARDCODED_ATTRS = {
     "virtual/react/list/material-ui": 'client:only="react"'
 };
 
-for (const path of await glob(["**/index.html", "!**/lib/**"])) {
+for (const path of await glob(["**/index.html", "!**/dist/**"])) {
     const fileContent = await readFile(path, { encoding: "utf-8" });
     const parsedFile = parse(fileContent);
     const scripts = parsedFile.querySelectorAll("script");
