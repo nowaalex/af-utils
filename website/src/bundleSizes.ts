@@ -3,18 +3,18 @@
 export default {
 	"@af-utils/virtual-core": {
 		"./lib/index.js": {
-			"raw": 18379,
-			"min": 4595,
-			"minGz": 2006,
-			"minBrotli": 1816
+			"raw": 18381,
+			"min": 4594,
+			"minGz": 2005,
+			"minBrotli": 1812
 		}
 	},
 	"@af-utils/virtual-react": {
 		"./lib/index.js": {
-			"raw": 7694,
-			"min": 2877,
-			"minGz": 1276,
-			"minBrotli": 1132
+			"raw": 7814,
+			"min": 2902,
+			"minGz": 1295,
+			"minBrotli": 1149
 		}
 	},
 	"@af-utils/scrollend-polyfill": {
