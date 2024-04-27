@@ -1,10 +1,15 @@
 import { memo } from "react";
-import { useVirtual, List, ListItemProps } from "@af-utils/virtual-react";
+import {
+    useVirtual,
+    List,
+    ListItemProps,
+    createListItemRef
+} from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
-const Item = memo<ListItemProps>(({ i, model }) => (
+const Item = memo<ListItemProps>(({ model, i }) => (
     <div
-        ref={el => model.el(i, el)}
+        ref={createListItemRef(model, i)}
         className={i % 2 ? css.oddItem : css.evenItem}
     >
         col&nbsp;{i}

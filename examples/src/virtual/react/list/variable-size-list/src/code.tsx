@@ -1,13 +1,13 @@
 import { useState, memo } from "react";
-import { useVirtual, List } from "@af-utils/virtual-react";
+import { useVirtual, List, createListItemRef } from "@af-utils/virtual-react";
 import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
 const DEFAULT_ROW_COUNT = 50000;
 
-const Item = memo<ListItemProps>(({ i, model, data: pseudoRandomSizes }) => (
+const Item = memo<ListItemProps>(({ model, i, data: pseudoRandomSizes }) => (
     <div
-        ref={el => model.el(i, el)}
+        ref={createListItemRef(model, i)}
         className={css.item}
         style={{
             padding: `${pseudoRandomSizes[i]}px 0`,

@@ -61,7 +61,7 @@ export interface VirtualScrollerRuntimeParams {
      * Estimated height/width of scrollable item. Orientation is determined by {@link VirtualScrollerInitialParams.horizontal}.
      *
      * @remarks
-     * Actual size is always reported by internal `ResizeObserver` when {@link VirtualScroller.el} is called.
+     * Actual size is always reported by internal `ResizeObserver` when {@link VirtualScroller.attachItem} is called.
      * Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.
      */
     estimatedItemSize?: number;

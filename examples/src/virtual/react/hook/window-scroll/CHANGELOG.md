@@ -1,5 +1,13 @@
 # @af-utils/virtual-examples-react-hook-window-scroll
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-react@1.0.0
+  - @af-utils/virtual-core@1.0.0
+
 ## 0.0.8
 
 ### Patch Changes

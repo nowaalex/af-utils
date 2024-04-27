@@ -18,4 +18,6 @@ export {
     mapVisibleRangeWithOffset
 } from "./utils/rangeMappers";
 
+export { createListItemRef, createGridItemRef } from "./utils/refCreators";
+
 export * from "./types";

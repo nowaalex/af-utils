@@ -2,14 +2,15 @@ import { memo, useState, useEffect, useLayoutEffect } from "react";
 import {
     useVirtual,
     Subscription,
-    mapVisibleRange
+    mapVisibleRange,
+    createListItemRef
 } from "@af-utils/virtual-react";
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
-const Item = memo<ListItemProps>(({ i, model }) => (
-    <tr ref={el => model.el(i, el)}>
+const Item = memo<ListItemProps>(({ model, i }) => (
+    <tr ref={createListItemRef(model, i)}>
         <td>Cell one - {i}</td>
         <td>Cell two - {i}</td>
     </tr>

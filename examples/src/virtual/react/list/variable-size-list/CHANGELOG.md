@@ -1,5 +1,12 @@
 # @af-utils/virtual-examples-react-list-variable-size-list
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-react@1.0.0
+
 ## 0.0.8
 
 ### Patch Changes

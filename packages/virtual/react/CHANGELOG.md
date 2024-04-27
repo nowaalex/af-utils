@@ -1,5 +1,16 @@
 # @af-utils/react-virtual-list
 
+## 1.0.0
+
+### Major Changes
+
+- BREAKING CHANGES: removed VirtualScroller.el, it is replaced by attachItem/detachItem.
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-core@1.0.0
+
 ## 0.0.28
 
 ### Patch Changes

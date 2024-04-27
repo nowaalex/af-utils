@@ -1,10 +1,10 @@
 import { memo } from "react";
-import { useVirtual, List } from "@af-utils/virtual-react";
+import { useVirtual, List, createListItemRef } from "@af-utils/virtual-react";
 import type { ListItemProps } from "@af-utils/virtual-react";
 
-const Item = memo<ListItemProps>(({ i, model }) => (
+const Item = memo<ListItemProps>(({ model, i }) => (
     <div
-        ref={el => model.el(i, el)}
+        ref={createListItemRef(model, i)}
         style={{ borderTop: "1px solid #ccc", padding: "0.5em" }}
     >
         row {i}

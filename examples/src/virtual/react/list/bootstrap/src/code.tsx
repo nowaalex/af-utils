@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useVirtual, List } from "@af-utils/virtual-react";
+import { useVirtual, List, createListItemRef } from "@af-utils/virtual-react";
 import BootstrapListGroup from "react-bootstrap/ListGroup";
 import BootstrapListItem from "react-bootstrap/ListGroupItem";
 import type { ListItemProps } from "@af-utils/virtual-react";
@@ -10,9 +10,9 @@ Truncating it manually, because only List is used
 */
 import "./truncated-bootstrap-style.css";
 
-const Item = memo<ListItemProps>(({ i, model }) => (
+const Item = memo<ListItemProps>(({ model, i }) => (
     <BootstrapListItem
-        ref={(el: HTMLAnchorElement | null) => model.el(i, el)}
+        ref={createListItemRef(model, i)}
         style={{ borderLeft: 0 }}
     >
         row {i}

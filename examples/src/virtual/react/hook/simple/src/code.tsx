@@ -3,14 +3,15 @@ import {
     useVirtual,
     Subscription,
     mapVisibleRange,
-    useSyncedStyles
+    useSyncedStyles,
+    createListItemRef
 } from "@af-utils/virtual-react";
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
-const Item = memo<ListItemProps>(({ i, model }) => (
-    <div ref={el => model.el(i, el)} className={css.item}>
+const Item = memo<ListItemProps>(({ model, i }) => (
+    <div ref={createListItemRef(model, i)} className={css.item}>
         row {i}
     </div>
 ));

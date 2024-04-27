@@ -1,9 +1,10 @@
-import { Fragment, memo, useRef } from "react";
+import { Fragment, memo } from "react";
 
 import {
     useVirtual,
     useComponentSubscription,
-    mapVisibleRangeWithOffset
+    mapVisibleRangeWithOffset,
+    createGridItemRef
 } from "@af-utils/virtual-react";
 
 import { VirtualScroller, VirtualScrollerEvent } from "@af-utils/virtual-core";
@@ -23,36 +24,24 @@ const Cell = memo<{
     colI: number;
     rowOffset: number;
     colOffset: number;
-}>(({ rows, cols, rowI, colI, rowOffset, colOffset }) => {
-    // caching for proper unmount in ref
-    const [colFrom, rowFrom] = useRef([cols.from, rows.from]).current;
-
-    return (
-        <div
-            ref={el => {
-                if (colI === colFrom) {
-                    rows.el(rowI, el);
-                }
-                if (rowI === rowFrom) {
-                    cols.el(colI, el);
-                }
-            }}
-            className={css.cell}
-            style={{
-                width: Math.max(colI ** 2 % 256, 190),
-                padding: `${Math.max(rowI ** 2 % 64, 30)}px 0`,
-                transform: `translateX(${colOffset}px) translateY(${rowOffset}px)`
-            }}
-        >
-            <div className={css.cellContent}>
-                <span>row:</span>
-                {rowI}
-                <span>col:</span>
-                {colI}
-            </div>
+}>(({ rows, cols, rowI, colI, rowOffset, colOffset }) => (
+    <div
+        ref={createGridItemRef(rows, rowI, cols, colI)}
+        className={css.cell}
+        style={{
+            width: Math.max(colI ** 2 % 256, 190),
+            padding: `${Math.max(rowI ** 2 % 64, 30)}px 0`,
+            transform: `translateX(${colOffset}px) translateY(${rowOffset}px)`
+        }}
+    >
+        <div className={css.cellContent}>
+            <span>row:</span>
+            {rowI}
+            <span>col:</span>
+            {colI}
         </div>
-    );
-});
+    </div>
+));
 
 const GridItems = ({
     rows,

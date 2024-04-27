@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 1.0.0
+
+### Major Changes
+
+- BREAKING CHANGES: removed VirtualScroller.el, it is replaced by attachItem/detachItem.
+
 ## 0.0.25
 
 ### Patch Changes

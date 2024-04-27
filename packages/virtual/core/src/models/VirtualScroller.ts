@@ -183,8 +183,7 @@ class VirtualScroller {
      * Hash of item sizes. Changed when at least one visible item is resized */
     sizesHash = 0;
 
-    private _elToIdx = new Map<Element, number>();
-    private _idxToEl = new Map<number, Element>();
+    private _elToIdx = new WeakMap<Element, number>();
 
     /* header and footer; lengths are hardcoded */
     private _stickyElements: [Element | null, Element | null] = [null, null];
@@ -274,7 +273,9 @@ class VirtualScroller {
 
     /**
      * Providing exact type here with 2 purposes:
+     *
      * - forbid using it as an array (.map, .filter, etc.)
+     *
      * - if events quantity does not match - type error would be shown
      */
     private _EventsList: Record<VirtualScrollerEvent, (() => void)[]> = [
@@ -610,27 +611,28 @@ class VirtualScroller {
     }
 
     /**
-     * Start/finish observing size of `element` at `index`. Observing is finished if element is `null`.
+     * Start observing size of `element` at `index`
      * @param index - item index
      * @param element - element for item
      *
      * @remarks
-     * If an item was registered like `el(5, HTMLElement)` - it must be killed with `el(5, null)` before killing the instance.
+     * Should be called when element gets mounted. Works in pair with {@link VirtualScroller.detachItem}.
      */
-    el(index: number, element: HTMLElement | null) {
-        const oldElement = this._idxToEl.get(index);
+    attachItem(element: HTMLElement, index: number) {
+        this._elToIdx.set(element, index);
+        this._ElResizeObserver.observe(element, OBSERVE_OPTIONS);
+    }
 
-        if (oldElement) {
-            this._idxToEl.delete(index);
-            this._elToIdx.delete(oldElement);
-            this._ElResizeObserver.unobserve(oldElement);
-        }
-
-        if (element) {
-            this._elToIdx.set(element, index);
-            this._idxToEl.set(index, element);
-            this._ElResizeObserver.observe(element, OBSERVE_OPTIONS);
-        }
+    /**
+     * End observing size of `element`
+     * @param element - element for item
+     *
+     * @remarks
+     * Should be called when element is about to unmount or already unmounted. Works in pair with {@link VirtualScroller.attachItem}.
+     */
+    detachItem(element: HTMLElement) {
+        this._elToIdx.delete(element);
+        this._ElResizeObserver.unobserve(element);
     }
 
     private _stickyEl(i: 0 | 1, element: HTMLElement | null) {

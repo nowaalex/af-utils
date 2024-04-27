@@ -1,5 +1,10 @@
 import { useState, useRef, useCallback, memo } from "react";
-import { useVirtual, useSubscription, List } from "@af-utils/virtual-react";
+import {
+    useVirtual,
+    useSubscription,
+    List,
+    createListItemRef
+} from "@af-utils/virtual-react";
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 import { randNumber, randParagraph } from "@ngneat/falso";
 import type { ListItemProps } from "@af-utils/virtual-react";
@@ -16,8 +21,8 @@ const fetchRandomDescriptions = () =>
         )
     );
 
-const Item = memo<ListItemProps>(({ i, model, data: posts }) => (
-    <div ref={el => model.el(i, el)} className={css.item}>
+const Item = memo<ListItemProps>(({ model, i, data: posts }) => (
+    <div ref={createListItemRef(model, i)} className={css.item}>
         <div className={css.itemHeader}>some picture</div>
         <p>{posts[i]}</p>
     </div>
