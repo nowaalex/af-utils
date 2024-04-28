@@ -16,6 +16,7 @@
     },
     "scripts": {
         "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=dist --external:@swc/* --external:chalk",
+        "postinstall": "pnpm build",
         "esbuild:build": "pnpm esbuild:base --mangle-props=^_"
     },
     "engines": {
