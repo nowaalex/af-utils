@@ -7,8 +7,12 @@ import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import glob from "fast-glob";
 import { parse } from "node-html-parser";
+import { loadEnv } from "vite";
 
 const examplePagesPath = resolve("./src/pages/examples/");
+
+// @ts-ignore
+const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
 chdir("../examples/src/");
 
@@ -48,7 +52,11 @@ for (const path of await glob(["**/index.html", "!**/dist/**"])) {
 
     head.insertAdjacentHTML(
         "beforeend",
-        "<HeadFont />\n<style>\nbody {color: #374151;}\n</style>\n"
+        `<HeadFont />
+        <link rel="canonical" href="${new URL(dir.replace(/\//, "/examples/"), env.PUBLIC_ORIGIN)}" />
+        <style>
+            body {color: #374151;}
+        </style>`
     );
 
     // scripts.length is 1 here
@@ -64,10 +72,11 @@ for (const path of await glob(["**/index.html", "!**/dist/**"])) {
 
     await writeFile(
         join(routePath, "index.astro"),
-        "---\n" +
-            `import ReactExample from "${codeImportPath}";\n` +
-            `import HeadFont from "components/head/Font.astro";\n` +
-            "---\n\n" +
-            parsedFile.toString()
+        `---
+import ReactExample from "${codeImportPath}";
+import HeadFont from "components/head/Font.astro";
+---
+            
+${parsedFile.toString()}`
     );
 }
