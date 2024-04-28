@@ -3,6 +3,7 @@
     "include": ["global.d.ts", "src"],
     "compilerOptions": {
         "outDir": "./dist",
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "lib": ["DOM", "DOM.Iterable", "ES2023"]
     }
 }

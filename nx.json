@@ -1,50 +1,5 @@
 {
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
-    "targetDefaults": {
-        "build": {
-            "outputs": ["{projectRoot}/dist"],
-            "cache": true
-        },
-        "esbuild:base": {
-            "outputs": ["{projectRoot}/dist"],
-            "cache": true
-        },
-        "esbuild:build": {
-            "outputs": ["{projectRoot}/dist"],
-            "cache": true
-        },
-        "api-extractor": {
-            "outputs": ["{projectRoot}/dist"],
-            "cache": true
-        },
-        "build:types": {
-            "outputs": ["{projectRoot}/dist"],
-            "cache": true
-        },
-        "weigh-exports": {
-            "outputs": ["{projectRoot}/dist"],
-            "cache": true
-        },
-        "build:examples": {
-            "outputs": ["{projectRoot}/dist"],
-            "cache": true
-        },
-        "build:docs": {
-            "outputs": ["{projectRoot}/dist"],
-            "cache": true
-        }
-    },
-    "defaultBase": "develop",
-    "plugins": [
-        {
-            "plugin": "@nx/vite/plugin",
-            "options": {
-                "buildTargetName": "vite:build",
-                "testTargetName": "test",
-                "serveTargetName": "vite:serve",
-                "previewTargetName": "preview",
-                "serveStaticTargetName": "serve-static"
-            }
-        }
-    ]
+    "targetDefaults": {},
+    "defaultBase": "develop"
 }

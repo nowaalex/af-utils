@@ -3,9 +3,10 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": "src",
-        "outDir": "bin",
+        "outDir": "dist",
         "moduleResolution": "Node",
         "declaration": false,
-        "noEmit": true
+        "noEmit": true,
+        "types": ["node"]
     }
 }

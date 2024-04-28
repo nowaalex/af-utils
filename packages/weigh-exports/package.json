@@ -9,21 +9,22 @@
     "license": "MIT",
     "sideEffects": false,
     "type": "module",
-    "main": "./bin/index.js",
-    "exports": "./bin/index.js",
+    "main": "./dist/index.js",
+    "exports": "./dist/index.js",
     "bin": {
-        "weigh-exports": "./bin/index.js"
+        "weigh-exports": "./dist/index.js"
     },
     "scripts": {
-        "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=bin --external:@swc/* --external:chalk",
+        "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=dist --external:@swc/* --external:chalk",
         "esbuild:build": "pnpm esbuild:base --mangle-props=^_"
     },
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=20.0.0"
     },
     "keywords": [],
     "devDependencies": {
-        "esbuild": "^0.20.2"
+        "esbuild": "^0.20.2",
+        "@types/node": "^20.12.7"
     },
     "dependencies": {
         "@swc/core": "^1.5.0",

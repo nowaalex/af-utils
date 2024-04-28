@@ -1,6 +1,6 @@
 {
     "include": ["src/**/*.ts"],
-    "exclude": ["src/__mocks__", "src/**/*.test.ts"],
+    "exclude": ["src/__mocks__", "src/**/*.test.ts", "node_modules"],
     "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": "src",
@@ -8,6 +8,7 @@
         "outDir": "dist",
         "declaration": true,
         "declarationDir": "dist/types",
-        "emitDeclarationOnly": true
+        "emitDeclarationOnly": true,
+        "types": ["node"]
     }
 }
