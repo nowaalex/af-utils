@@ -1,5 +1,4 @@
-import kebabCase from "lodash/kebabCase";
-import startCase from "lodash/startCase";
+import _ from "lodash";
 import type { SEOProps } from "astro-seo";
 import type { MenuItem } from "components/Menu.astro";
 
@@ -14,9 +13,9 @@ function walkMenu(obj: MenuMap | undefined, path: string): MenuItem[] {
         ? Object.keys(obj)
               .sort((a, b) => a.localeCompare(b))
               .map(k => {
-                  const newPath = `${path}/${kebabCase(k)}`;
+                  const newPath = `${path}/${_.kebabCase(k)}`;
                   return {
-                      name: startCase(k),
+                      name: _.startCase(k),
                       path: newPath,
                       children: walkMenu(obj[k], newPath)
                   } as const satisfies MenuItem;
@@ -70,13 +69,8 @@ export const getProjectExamples = (projectName: string) =>
 export const getMenuMapForProjectExamples = (projectName: string) =>
     walkMenu(
         getProjectExamples(projectName).reduce<MenuMap>(
-            (result, path) => (
-                path
-                    .split("/")
-                    .with(0, "examples")
-                    .reduce((acc, v) => (acc[v] ||= {}), result),
-                result
-            ),
+            (result, path) =>
+                _.set(result, path.split("/").with(0, "examples"), null),
             {}
         ),
         "/" + projectName
