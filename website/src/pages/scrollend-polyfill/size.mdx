@@ -20,13 +20,13 @@ This package was carefully optimized to be as small as possible.
     ]}
 />
 
-## Terser configuration
+## Minifier configuration
 
 During bundle size measurement `process.env.NODE_ENV` was set to `production`
 to cut away some extra checks and verbose errors.
 
-```tsx
-const TERSER_OPTS = {
+```ts
+const MINIFIER_CONFIG = {
     compress: {
         global_defs: {
             "process.env.NODE_ENV": "production"
