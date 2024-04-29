@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// @ts-check
 
 import { chdir } from "node:process";
 import { dirname, relative, resolve, join } from "node:path";
@@ -11,8 +10,7 @@ import { loadEnv } from "vite";
 
 const examplePagesPath = resolve("./src/pages/examples/");
 
-// @ts-ignore
-const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
+const env = loadEnv(process.env.NODE_ENV as string, process.cwd(), "");
 
 chdir("../examples/src/");
 
@@ -20,10 +18,10 @@ if (existsSync(examplePagesPath)) {
     await rm(examplePagesPath, { recursive: true });
 }
 
-const ASTRO_HARDCODED_ATTRS = {
+const ASTRO_HARDCODED_ATTRS: Record<string, string> = {
     // astro has some bug with @emotion default imports, so switching off for this particular example
     "virtual/react/list/material-ui": 'client:only="react"'
-};
+} as const;
 
 for (const path of await glob(["**/index.html", "!**/dist/**"])) {
     const fileContent = await readFile(path, { encoding: "utf-8" });
@@ -60,10 +58,8 @@ for (const path of await glob(["**/index.html", "!**/dist/**"])) {
     );
 
     // scripts.length is 1 here
-    // @ts-ignore
-    scripts[0].remove();
+    scripts[0]!.remove();
 
-    // @ts-ignore
     root.innerHTML = `<ReactExample ${ASTRO_HARDCODED_ATTRS[dir] || "client:idle"} />`;
 
     if (!existsSync(routePath)) {

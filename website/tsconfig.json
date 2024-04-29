@@ -1,6 +1,7 @@
 {
     "extends": "astro/tsconfigs/strictest",
-    "include": ["src"],
+    "include": ["src", "build-examples.ts", "astro.config.ts"],
+    "exclude": ["src/assets", "src/styles"],
     "compilerOptions": {
         "baseUrl": "./src",
         "types": ["node", "mdx", "react", "react-dom", "lodash"]

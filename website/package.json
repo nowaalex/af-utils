@@ -8,7 +8,7 @@
         "build": "pnpm weigh-exports && pnpm build:examples && pnpm build:docs && astro check && astro build",
         "weigh-exports": "weigh-exports -i '../packages/virtual/core ../packages/virtual/react ../packages/scrollend-polyfill' -o ./src/bundleSizes.ts",
         "start": "astro dev",
-        "build:examples": "node ./build-examples.mjs",
+        "build:examples": "tsx ./build-examples.ts",
         "build:docs": "./build-docs.sh",
         "preview": "astro preview",
         "astro": "astro"
@@ -21,8 +21,8 @@
         "@astrojs/check": "^0.5.10",
         "@astrojs/react": "^3.3.1",
         "@astrojs/sitemap": "^3.1.4",
-        "@iconify-json/material-symbols": "^1.1.78",
-        "@iconify-json/simple-icons": "^1.1.100",
+        "@iconify-json/material-symbols": "^1.1.79",
+        "@iconify-json/simple-icons": "^1.1.101",
         "astro": "^4.7.0",
         "astro-icon": "^1.1.0",
         "astro-seo": "^0.8.3",
@@ -54,6 +54,7 @@
         "remark-gfm": "4.0.0",
         "remark-toc": "^9.0.0",
         "tailwindcss": "^3.4.3",
+        "tsx": "^4.7.3",
         "unist-util-visit": "^5.0.0"
     }
 }

@@ -52,7 +52,22 @@ export default defineConfig({
         tailwind({ nesting: true, applyBaseStyles: false }),
         mdx(),
         react(),
-        icon(),
+        icon({
+            include: {
+                "material-symbols": [
+                    "arrow-forward",
+                    "arrow-back",
+                    "menu",
+                    "close"
+                ],
+                "simple-icons": [
+                    "github",
+                    "discord",
+                    "codesandbox",
+                    "stackblitz"
+                ]
+            }
+        }),
         sitemap({
             filter: page => !page.startsWith(env.PUBLIC_ORIGIN + "/examples"),
             serialize(item) {
