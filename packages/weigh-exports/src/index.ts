@@ -75,6 +75,8 @@ for (const path of packagePaths) {
                 })
             );
 
+            exports.sort((a, b) => a[1].minBrotli - b[1].minBrotli);
+
             packageExports.push([pkgJson.name, exports]);
         }
     }

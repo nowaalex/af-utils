@@ -2,10 +2,7 @@
     "include": ["src"],
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "dist",
         "moduleResolution": "Node",
-        "declaration": false,
         "noEmit": true,
         "types": ["node"]
     }

@@ -17,11 +17,9 @@ const IgnoredConditions = [
 const exportsToGlobPatterns = (map: Exports): string[] => {
     switch (typeof map) {
         case "string":
-            if (!map.startsWith(".")) {
-                return [];
-            }
-
-            return [map.endsWith("/") ? `${map}**` : map];
+            return map.startsWith(".")
+                ? [map.endsWith("/") ? `${map}**` : map]
+                : [];
 
         case "object":
             if (map === null) {
