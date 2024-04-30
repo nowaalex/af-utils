@@ -1,8 +1,12 @@
 {
-    "moduleResolution": "Bundler",
     "include": ["src"],
     "compilerOptions": {
-        "outDir": "./dist",
-        "jsx": "react-jsx"
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "lib": ["DOM", "DOM.Iterable", "ES2023"],
+        "moduleResolution": "Bundler",
+        "module": "ESNext",
+        "target": "ESNext",
+        "strict": true
     }
 }

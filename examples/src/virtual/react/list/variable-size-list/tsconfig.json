@@ -1,9 +1,12 @@
 {
-    "moduleResolution": "Bundler",
     "include": ["global.d.ts", "src"],
     "compilerOptions": {
-        "outDir": "./dist",
+        "noEmit": true,
         "jsx": "react-jsx",
-        "lib": ["DOM", "DOM.Iterable", "ES2023"]
+        "lib": ["DOM", "DOM.Iterable", "ES2023"],
+        "moduleResolution": "Bundler",
+        "module": "ESNext",
+        "target": "ESNext",
+        "strict": true
     }
 }
