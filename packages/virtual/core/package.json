@@ -59,7 +59,7 @@
     ],
     "devDependencies": {
         "@types/node": "^20.12.11",
-        "esbuild": "^0.21.1",
+        "esbuild": "^0.21.2",
         "ts-jest": "^29.1.2",
         "typescript": "^5.4.5"
     },
