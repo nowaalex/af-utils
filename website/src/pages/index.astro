@@ -3,7 +3,6 @@ import Layout from "layouts/Base.astro";
 import { Icon } from "astro-icon/components";
 import { getImage } from "astro:assets";
 import sizifImg from "assets/sizif.jpg";
-import { Content as Readme } from "../../../README.md";
 
 const sizif = await getImage({ src: sizifImg, quality: 16 });
 ---
@@ -56,7 +55,20 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
             </a>
         </header>
         <main class="prose-xl prose-a:text-blue-700 flex-auto px-[5vmin] py-12">
-            <Readme />
+            <h1>af-utils/*</h1>
+            <p>Simple open-source tools that just work <i>(usually fast)</i></p>
+            <ul>
+                <li>
+                    <a href="/virtual">Virtual scroll</a> for rendering only visible
+                    part of huge lists or grids
+                    <i>(currently available for React)</i>
+                </li>
+                <li>
+                    <a href="/scrollend-polyfill">Scrollend polyfill</a> for cross-browser
+                    scrollend event support
+                </li>
+                <li>To be continued...</li>
+            </ul>
         </main>
         <footer class="mx-[5vmin] border-t p-6 text-center">
             © {new Date().getFullYear()} Alex Fomin
