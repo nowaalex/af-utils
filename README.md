@@ -16,6 +16,6 @@ Simple open-source tools that just work _(usually fast)_
 -   [window scroll](https://af-utils.com/virtual/examples/react/hook/window-scroll)
 -   [material-ui](https://af-utils.com/virtual/examples/react/list/material-ui) / [bootstrap](https://af-utils.com/virtual/examples/react/list/bootstrap) integration
 
-## [Scrollend polyfill](https://af-utils.com/virtual)
+## [Scrollend polyfill](https://af-utils.com/scrollend-polyfill)
 
 ![Scrollend polyfill opengraph image](website/src/assets/og/scrollend-polyfill.png)
