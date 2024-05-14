@@ -33,7 +33,7 @@
         "jest-environment-jsdom": "^29.7.0",
         "prettier": "^3.2.5",
         "publint": "^0.2.7",
-        "tsc-alias": "^1.8.9",
+        "tsc-alias": "^1.8.10",
         "typescript": "^5.4.5"
     },
     "pnpm": {

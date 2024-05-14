@@ -5,5 +5,3 @@ logs
 **/node_modules/
 **/dist
 **/api-extractor-schema
-
-.nx/cache
