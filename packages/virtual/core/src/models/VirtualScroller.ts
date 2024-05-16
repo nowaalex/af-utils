@@ -741,38 +741,45 @@ class VirtualScroller {
      *
      * @param index - item index to scroll to
      * @param smooth - should smooth scroll be used
+     * @param attempts - quantity of delayed attempts to be done to ensure scroll offset is correct. Defaults to `5`
      *
      * @remarks
      * Calls {@link VirtualScroller.scrollToOffset | scrollToOffset} with calcuated offset until desired scroll position is reached.
      */
-    scrollToIndex(index: VirtualScrollerExactPosition, smooth?: boolean) {
+    scrollToIndex(
+        index: VirtualScrollerExactPosition,
+        smooth?: boolean,
+        attempts: number = 5
+    ) {
         clearInterval(this._scrollToIndexTimer);
 
-        let attempts = 5;
-
         this._scrollToIndexTimer = setInterval(
-            () => {
-                const finishedScrolling =
+            (wholeIndex: number) => {
+                // checking if last scroll is finished
+                if (
                     !smooth ||
-                    performance.now() - this._lastScrollEventTs > 128;
-
-                if (finishedScrolling) {
+                    performance.now() - this._lastScrollEventTs > 128
+                ) {
                     if (!--attempts) {
                         clearInterval(this._scrollToIndexTimer);
                     }
 
-                    const whole = Math.trunc(index);
-
-                    const desiredScrollPos = Math.min(
-                        this.scrollSize - this._availableWidgetSize,
-                        this.getOffset(whole) +
-                            Math.round(this._itemSizes[whole] * (index - whole))
+                    this.scrollToOffset(
+                        Math.min(
+                            this.scrollSize - this._availableWidgetSize,
+                            // wholeIndex < itemCount check is performed in getOffset method
+                            this.getOffset(wholeIndex) +
+                                Math.round(
+                                    this._itemSizes[wholeIndex] *
+                                        (index - wholeIndex)
+                                )
+                        ),
+                        smooth
                     );
-
-                    this.scrollToOffset(desiredScrollPos, smooth);
                 }
             },
-            smooth ? 50 : 16
+            smooth ? 50 : 16,
+            Math.trunc(index)
         );
     }
 
