@@ -56,7 +56,7 @@
     "devDependencies": {
         "@types/node": "^20.12.12",
         "@types/react": "^18.3.2",
-        "esbuild": "^0.21.2",
+        "esbuild": "^0.21.3",
         "ts-jest": "^29.1.2",
         "typescript": "^5.4.5"
     },
