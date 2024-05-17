@@ -45,6 +45,9 @@ export default defineConfig({
         gfm: true,
         syntaxHighlight: false
     },
+    devToolbar: {
+        enabled: false
+    },
     prefetch: {
         prefetchAll: true
     },
