@@ -4,6 +4,6 @@
     "exclude": ["src/assets", "src/styles"],
     "compilerOptions": {
         "baseUrl": "./src",
-        "types": ["node", "mdx", "react", "react-dom", "lodash"]
+        "types": ["node", "mdx", "react", "react-dom", "lodash", "astro/client"]
     }
 }

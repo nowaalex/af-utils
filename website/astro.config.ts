@@ -13,15 +13,16 @@ import icon from "astro-icon";
 import stripTrailingSlash from "./src/utils/stripTrailingSlash";
 import type { RehypePlugins } from "astro";
 
-const env = loadEnv(process.env.NODE_ENV as string, process.cwd(), "");
+const env = loadEnv(
+    process.env.NODE_ENV as string,
+    process.cwd(),
+    ""
+) as ImportMetaEnv;
 
 const rehypeLinks: RehypePlugins[number] = () => tree =>
     visit(tree, "element", node => {
         if (node.tagName === "a" && typeof node.properties.href === "string") {
-            const href = node.properties.href.replace(
-                env.PUBLIC_ORIGIN as string,
-                ""
-            );
+            const href = node.properties.href.replace(env.PUBLIC_ORIGIN, "");
 
             node.properties.href = href;
 
@@ -32,9 +33,8 @@ const rehypeLinks: RehypePlugins[number] = () => tree =>
         }
     });
 
-// https://astro.build/config
 export default defineConfig({
-    site: env.PUBLIC_ORIGIN as string,
+    site: env.PUBLIC_ORIGIN,
     markdown: {
         rehypePlugins: [
             rehypeLinks,
