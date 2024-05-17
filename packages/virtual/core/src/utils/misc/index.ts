@@ -4,13 +4,12 @@ import type { VirtualScrollerScrollElement } from "types";
 export const call = (fn: (...args: unknown[]) => void) => fn();
 
 export const growTypedArray = (
-    sourceArray: ArrayLike<number>,
+    sourceArray: Uint32Array,
     newLength: number,
     fillValue: number
 ) => {
     const resultArray = new Uint32Array(newLength);
-    resultArray.set(sourceArray);
-    resultArray.fill(fillValue, sourceArray.length);
+    resultArray.fill(fillValue, sourceArray.length).set(sourceArray);
     return resultArray;
 };
 
@@ -27,9 +26,9 @@ export const getDistanceBetween = (
     scrollToKey: ScrollToKey
 ) => {
     if (
+        scrollElement === containerElement ||
         !containerElement ||
-        !scrollElement ||
-        scrollElement === containerElement
+        !scrollElement
     ) {
         return 0;
     }

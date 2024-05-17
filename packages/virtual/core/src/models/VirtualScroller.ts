@@ -48,6 +48,8 @@ const DEFAULT_ESTIMATED_WIDGET_SIZE = 200;
 
 const DEFAULT_ESTIMATED_ITEM_SIZE = 40;
 
+const SCROLL_ENDED_IDLE_TIMEOUT = 128;
+
 const EMPTY_TYPED_ARRAY = new Uint32Array(0);
 
 /*
@@ -731,7 +733,10 @@ class VirtualScroller {
      */
     scrollToOffset(offset: number, smooth?: boolean) {
         this._scrollElement?.scroll({
-            [this._scrollToKey]: this._scrollElementOffset + offset,
+            [this._scrollToKey]: Math.min(
+                this.scrollSize - this._availableWidgetSize,
+                this._scrollElementOffset + offset
+            ),
             behavior: smooth ? "smooth" : "instant"
         });
     }
@@ -741,7 +746,7 @@ class VirtualScroller {
      *
      * @param index - item index to scroll to
      * @param smooth - should smooth scroll be used
-     * @param attempts - quantity of delayed attempts to be done to ensure scroll offset is correct. Defaults to `5`
+     * @param attempts - quantity of scroll attempts to be done to ensure scroll offset is correct. Defaults to `5`
      *
      * @remarks
      * Calls {@link VirtualScroller.scrollToOffset | scrollToOffset} with calcuated offset until desired scroll position is reached.
@@ -754,26 +759,24 @@ class VirtualScroller {
         clearInterval(this._scrollToIndexTimer);
 
         this._scrollToIndexTimer = setInterval(
-            (wholeIndex: number) => {
+            wholeIndex => {
                 // checking if last scroll is finished
                 if (
                     !smooth ||
-                    performance.now() - this._lastScrollEventTs > 128
+                    performance.now() - this._lastScrollEventTs >
+                        SCROLL_ENDED_IDLE_TIMEOUT
                 ) {
                     if (!--attempts) {
                         clearInterval(this._scrollToIndexTimer);
                     }
 
                     this.scrollToOffset(
-                        Math.min(
-                            this.scrollSize - this._availableWidgetSize,
-                            // wholeIndex < itemCount check is performed in getOffset method
-                            this.getOffset(wholeIndex) +
-                                Math.round(
-                                    this._itemSizes[wholeIndex] *
-                                        (index - wholeIndex)
-                                )
-                        ),
+                        // clamping is done inside scrollToOffset
+                        this.getOffset(wholeIndex) +
+                            Math.round(
+                                this._itemSizes[wholeIndex] *
+                                    (index - wholeIndex)
+                            ),
                         smooth
                     );
                 }
