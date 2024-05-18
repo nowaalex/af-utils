@@ -22,7 +22,7 @@ import type {
  * });
  * ```
  */
-const useVirtual = (params: VirtualScrollerInitialParams): VirtualScroller => {
+const useVirtual = (params: VirtualScrollerInitialParams) => {
     const model = useVirtualModel(params);
 
     useIsomorphicLayoutEffect(() => model.set(params));

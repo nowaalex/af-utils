@@ -4,7 +4,7 @@ export const syncWithArray = (
 ) => {
     fTree.set(sourceArray, 1);
 
-    for (let i = 1, fTreeLength = fTree.length, j; i < fTreeLength; i++) {
+    for (let i = 1, fTreeLength = fTree.length, j = 0; i < fTreeLength; i++) {
         j = i + (i & -i);
         if (j < fTreeLength) {
             fTree[j] += fTree[i];

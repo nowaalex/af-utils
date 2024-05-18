@@ -329,16 +329,13 @@ class VirtualScroller {
         // do nothing.
     };
 
-    constructor(params?: VirtualScrollerInitialParams) {
-        if (params) {
-            this.horizontal = !!params.horizontal;
-            // stickyOffset is included;
-            this._scrollElementOffset =
-                params.estimatedScrollElementOffset || 0;
-            this._availableWidgetSize =
-                params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
-            this.set(params);
-        }
+    constructor(params: VirtualScrollerInitialParams) {
+        this.horizontal = !!params.horizontal;
+        // stickyOffset is included;
+        this._scrollElementOffset = params.estimatedScrollElementOffset || 0;
+        this._availableWidgetSize =
+            params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
+        this.set(params);
     }
 
     /**
@@ -806,7 +803,7 @@ class VirtualScroller {
                 this._itemSizes = /*#__NOINLINE__*/ growTypedArray(
                     this._itemSizes,
                     newLen,
-                    this._estimatedItemSize || DEFAULT_ESTIMATED_ITEM_SIZE
+                    this._estimatedItemSize
                 );
                 this._fTree = new Uint32Array(newLen + 1);
                 /*#__NOINLINE__*/ syncWithArray(this._fTree, this._itemSizes);
@@ -832,18 +829,11 @@ class VirtualScroller {
      * @param runtimeParams - runtime parameters
      */
     set(runtimeParams: VirtualScrollerRuntimeParams) {
-        if (runtimeParams.estimatedItemSize) {
-            // must not be falsy, so not checking for undefined here.
-            this._estimatedItemSize = runtimeParams.estimatedItemSize;
-        }
-
-        if (runtimeParams.overscanCount !== undefined) {
-            this._overscanCount = runtimeParams.overscanCount;
-        }
-
-        if (runtimeParams.itemCount !== undefined) {
-            this.setItemCount(runtimeParams.itemCount);
-        }
+        this._estimatedItemSize =
+            runtimeParams.estimatedItemSize || this._estimatedItemSize;
+        this._overscanCount =
+            runtimeParams.overscanCount ?? this._overscanCount;
+        this.setItemCount(runtimeParams.itemCount ?? this._itemCount);
     }
 }
 

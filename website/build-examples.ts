@@ -57,7 +57,10 @@ for (const path of await glob(["**/index.html", "!**/dist/**"])) {
         </style>`
     );
 
-    // scripts.length is 1 here
+    /*
+    scripts.length is 1 here;
+    need to remove default react entry script from example, because astro will add its own
+    */
     scripts[0]!.remove();
 
     root.innerHTML = `<ReactExample ${ASTRO_HARDCODED_ATTRS[dir] || "client:idle"} />`;

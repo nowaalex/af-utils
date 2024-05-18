@@ -9,7 +9,7 @@ cp `find ../ -wholename *api-extractor-schema/*.json*` $REFERENCE_FILES_DIR
 API_DOCUMENTER_LINK_BASE=/virtual/reference/ npx api-documenter markdown -i $REFERENCE_FILES_DIR -o $OUTPUT_DIR
 
 for file in $OUTPUT_DIR/*; do
-    # api-documenter is sophisticated, so converting first h2 to h1 in each file with bash
+    # api-documenter is sophisticated, so converting first h2 to h1 in each file
     gawk -i inplace '!x{x=sub("## ","# ")}1' $file
 
     # https://github.com/microsoft/rushstack/pull/4578

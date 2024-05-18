@@ -24,7 +24,7 @@
         "esbuild:base": "esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/*",
         "esbuild:build": "pnpm esbuild:base",
         "esbuild:dev": "pnpm esbuild:base --watch",
-        "api-extractor": "api-extractor run",
+        "api-extractor": "api-extractor run && rm -r dist/types",
         "test": "jest"
     },
     "files": [
