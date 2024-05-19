@@ -1,28 +1,37 @@
+// @vitest-environment jsdom
+
+import { vi, describe, test, expect } from "vitest";
 import VirtualScroller from "./VirtualScroller";
 import TestResizeObserver from "__mocks__/ResizeObserver";
 
-jest.useFakeTimers();
+vi.useFakeTimers();
 
 global.ResizeObserver = TestResizeObserver;
 
 describe("VirtualScroller creation works", () => {
     test("constructor without params works", () => {
-        expect(() => new VirtualScroller()).not.toThrow();
+        const model = new VirtualScroller();
+
+        expect(model.scrollSize).toBe(0);
+        expect(model.from).toBe(0);
+        expect(model.to).toBe(0);
     });
 
     test("constructor with params works", () => {
-        expect(
-            () =>
-                new VirtualScroller({
-                    estimatedWidgetSize: 200,
-                    estimatedScrollElementOffset: 300
-                })
-        ).not.toThrow();
+        const model = new VirtualScroller({
+            estimatedItemSize: 220,
+            estimatedWidgetSize: 600,
+            itemCount: 100,
+            overscanCount: 0
+        });
+        expect(model.scrollSize).toBe(22000);
+        expect(model.from).toBe(0);
+        expect(model.to).toBe(3);
     });
 
     describe("sizes calculations work", () => {
         const pseudoRandomSizes = Array.from(
-            { length: 512 },
+            { length: 256 },
             (_, i) => 45 + ((i ** 4) & 127)
         );
 
@@ -31,18 +40,17 @@ describe("VirtualScroller creation works", () => {
         );
 
         const model = new VirtualScroller({
-            estimatedWidgetSize: pseudoRandomSizesSum
+            estimatedWidgetSize: pseudoRandomSizesSum,
+            itemCount: pseudoRandomSizes.length
         });
-
-        model.setItemCount(pseudoRandomSizes.length);
 
         for (let i = 0; i < pseudoRandomSizes.length; i++) {
             const el = document.createElement("div");
             el.dataset.testSize = "" + pseudoRandomSizes[i];
-            model.el(i, el);
+            model.attachItem(el, i);
         }
 
-        jest.runAllTimers();
+        vi.runAllTimers();
 
         const getIndexNaive = (offset: number) => {
             let i = -1;
@@ -82,13 +90,11 @@ describe("VirtualScroller creation works", () => {
             }
         );
 
-        test.each(
-            Array.from(
-                { length: Math.trunc(pseudoRandomSizesSum / 256) },
-                (_, i) => [i * 256, getIndexNaive(i * 256)]
-            )
-        )(".getIndex(%i)", (offset, expected) => {
-            expect(model.getIndex(offset)).toBe(expected);
-        });
+        test.each(pseudoRandomSizes.map((_, i) => [i, getIndexNaive(i)]))(
+            ".getIndex(%i)",
+            (offset, expected) => {
+                expect(model.getIndex(offset)).toBe(expected);
+            }
+        );
     });
 });

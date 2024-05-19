@@ -1,6 +1,5 @@
 {
     "include": ["src/**/*.ts"],
-    "exclude": ["src/__mocks__", "src/**/*.test.ts", "node_modules"],
     "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": "src",
@@ -9,6 +8,6 @@
         "declaration": true,
         "declarationDir": "dist/types",
         "emitDeclarationOnly": true,
-        "types": ["node"]
+        "types": ["node", "vitest/globals"]
     }
 }

@@ -26,7 +26,7 @@
         "esbuild:build": "pnpm esbuild:base --mangle-props=^_",
         "esbuild:dev": "pnpm esbuild:base --watch",
         "api-extractor": "api-extractor run && rm -r dist/types",
-        "test": "jest"
+        "test": "vitest run"
     },
     "files": [
         "dist/*"
@@ -60,8 +60,9 @@
     "devDependencies": {
         "@types/node": "^20.12.12",
         "esbuild": "^0.21.3",
-        "ts-jest": "^29.1.2",
-        "typescript": "^5.4.5"
+        "typescript": "^5.4.5",
+        "vite-tsconfig-paths": "^4.3.2",
+        "vitest": "^1.6.0"
     },
     "publishConfig": {
         "access": "public"
