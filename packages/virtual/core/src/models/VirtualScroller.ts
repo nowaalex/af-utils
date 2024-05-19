@@ -368,14 +368,22 @@ class VirtualScroller {
     }
 
     /**
-     * Get item index by pixel offset;
-     * @param offset - pixel offset
-     * @returns item index;
+     * Get nearest item index for pixel offset;
+     * @param offset - Pixel offset.
+     * @returns Nearest item index
      *
      * @remarks
+     * {@link VirtualScrollerRuntimeParams.itemCount | itemCount} must be > 0.
+     * Possible item index range: 0 <= N < {@link VirtualScrollerRuntimeParams.itemCount | itemCount}.
      * Time complexity: `O(log2(itemCount))`
      */
     getIndex(offset: number) {
+        if (process.env.NODE_ENV !== "production") {
+            if (!this._itemCount) {
+                throw Error("getIndex must not be called when itemCount === 0");
+            }
+        }
+
         if (offset <= 0) {
             return 0;
         }
@@ -406,10 +414,11 @@ class VirtualScroller {
 
     /**
      * Get pixel offset by item index;
-     * @param index - item index
-     * @returns pixel offset
+     * @param index - Item index. Must be <= itemCount
+     * @returns Pixel offset
      *
      * @remarks
+     * Possible offset range: 0 <= N <= {@link VirtualScroller.scrollSize | scrollSize}
      * Time complexity: `O(log2(itemCount))`
      */
     getOffset(index: number) {
@@ -677,7 +686,7 @@ class VirtualScroller {
      * @returns first visible item index
      */
     private _getExactFrom() {
-        return this.getIndex(this._alignedScrollPos);
+        return this._itemCount && this.getIndex(this._alignedScrollPos);
     }
 
     /**
