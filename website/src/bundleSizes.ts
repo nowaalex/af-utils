@@ -3,9 +3,9 @@
 export default {
 	"@af-utils/virtual-core": {
 		"./dist/index.js": {
-			"raw": 18342,
-			"min": 4518,
-			"minGz": 1984,
+			"raw": 18818,
+			"min": 4526,
+			"minGz": 1986,
 			"minBrotli": 1793
 		}
 	},

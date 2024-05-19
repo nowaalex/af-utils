@@ -373,8 +373,8 @@ class VirtualScroller {
      * @returns Nearest item index
      *
      * @remarks
-     * {@link VirtualScrollerRuntimeParams.itemCount | itemCount} must be > 0.
-     * Possible item index range: 0 <= N < {@link VirtualScrollerRuntimeParams.itemCount | itemCount}.
+     * {@link VirtualScrollerRuntimeParams.itemCount | itemCount} must be \> 0.
+     * Possible item index range: 0 \<= N \< {@link VirtualScrollerRuntimeParams.itemCount | itemCount}.
      * Time complexity: `O(log2(itemCount))`
      */
     getIndex(offset: number) {
@@ -414,11 +414,11 @@ class VirtualScroller {
 
     /**
      * Get pixel offset by item index;
-     * @param index - Item index. Must be <= itemCount
+     * @param index - Item index. Must be \<= itemCount
      * @returns Pixel offset
      *
      * @remarks
-     * Possible offset range: 0 <= N <= {@link VirtualScroller.scrollSize | scrollSize}
+     * Possible offset range: 0 \<= N \<= {@link VirtualScroller.scrollSize | scrollSize}
      * Time complexity: `O(log2(itemCount))`
      */
     getOffset(index: number) {
