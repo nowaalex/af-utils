@@ -335,13 +335,16 @@ class VirtualScroller {
         // do nothing.
     };
 
-    constructor(params: VirtualScrollerInitialParams) {
-        this.horizontal = !!params.horizontal;
-        // stickyOffset is included;
-        this._scrollElementOffset = params.estimatedScrollElementOffset || 0;
-        this._availableWidgetSize =
-            params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
-        this.set(params);
+    constructor(params?: VirtualScrollerInitialParams) {
+        if (params) {
+            this.horizontal = !!params.horizontal;
+            // stickyOffset is included;
+            this._scrollElementOffset =
+                params.estimatedScrollElementOffset || 0;
+            this._availableWidgetSize =
+                params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
+            this.set(params);
+        }
     }
 
     /**
@@ -783,7 +786,6 @@ class VirtualScroller {
                     }
 
                     this.scrollToOffset(
-                        // clamping is done inside scrollToOffset
                         this.getOffset(wholeIndex) +
                             Math.round(
                                 this._itemSizes[wholeIndex] *
