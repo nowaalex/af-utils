@@ -172,12 +172,18 @@ class VirtualScroller {
 
     /**
      * @readonly
-     * Items range start with {@link VirtualScrollerRuntimeParams.overscanCount | overscanCount} included */
+     * Items range start with {@link VirtualScrollerRuntimeParams.overscanCount | overscanCount} included
+     * @remarks
+     * {@link VirtualScroller.from | from} \<= N \< {@link VirtualScroller.to | to}
+     */
     from = 0;
 
     /**
      * @readonly
-     * Items range end with {@link VirtualScrollerRuntimeParams.overscanCount | overscanCount} included */
+     * Items range end with {@link VirtualScrollerRuntimeParams.overscanCount | overscanCount} included
+     * @remarks
+     * {@link VirtualScroller.from | from} \<= N \< {@link VirtualScroller.to | to}
+     */
     to = 0;
 
     /**
@@ -414,11 +420,11 @@ class VirtualScroller {
 
     /**
      * Get pixel offset by item index;
-     * @param index - Item index. Must be \<= itemCount
+     * @param index - Item index. Must be \<= {@link VirtualScrollerRuntimeParams.itemCount | itemCount}
      * @returns Pixel offset
      *
      * @remarks
-     * Possible offset range: 0 \<= N \<= {@link VirtualScroller.scrollSize | scrollSize}
+     * Possible offset range: 0 \<= N \<= {@link VirtualScroller.scrollSize | scrollSize}.
      * Time complexity: `O(log2(itemCount))`
      */
     getOffset(index: number) {
