@@ -1,5 +1,12 @@
 # @af-utils/virtual-examples-react-list-material-ui
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-react@1.0.1
+
 ## 0.0.9
 
 ### Patch Changes

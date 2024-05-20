@@ -1,5 +1,13 @@
 # @af-utils/virtual-examples-react-hook-custom-render
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-core@1.0.1
+  - @af-utils/virtual-react@1.0.1
+
 ## 0.0.9
 
 ### Patch Changes

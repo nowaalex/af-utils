@@ -1,6 +1,6 @@
 {
     "name": "@af-utils/virtual-examples-react-list-bootstrap",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "private": true,
     "type": "module",
     "scripts": {
@@ -9,7 +9,7 @@
         "serve": "vite preview"
     },
     "dependencies": {
-        "@af-utils/virtual-react": "1.0.0",
+        "@af-utils/virtual-react": "1.0.1",
         "bootstrap": "^5.3.3",
         "react": "^18.3.1",
         "react-bootstrap": "^2.10.2",

@@ -1,5 +1,13 @@
 # website
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-core@1.0.1
+  - @af-utils/virtual-react@1.0.1
+
 ## 0.0.5
 
 ### Patch Changes

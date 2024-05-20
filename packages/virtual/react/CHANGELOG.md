@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 1.0.1
+
+### Patch Changes
+
+- optimized package size, improved tsdoc and error handling
+- Updated dependencies
+  - @af-utils/virtual-core@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
