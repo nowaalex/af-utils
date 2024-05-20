@@ -13,7 +13,7 @@ import type { ComponentProps } from "react";
  */
 const List = <C extends ElementType = "div">(
     props: ListProps<C> & Omit<ComponentProps<C>, "children" | "ref">
-): JSX.Element => {
+) => {
     const {
         model,
         children: Item,
