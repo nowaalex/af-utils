@@ -23,3 +23,6 @@
 *.xml   text eol=lf
 
 *.json  linguist-language=JSON-with-Comments
+
+# https://support.github.com/ticket/personal/0/2784146
+*.ts    linguist-language=typescript
