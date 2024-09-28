@@ -57,7 +57,7 @@
         "@types/node": "^20.12.12",
         "@types/react": "^18.3.3",
         "esbuild": "^0.21.3",
-        "typescript": "^5.4.5"
+        "typescript": "^5.6.2"
     },
     "dependencies": {
         "@af-utils/virtual-core": "workspace:*"

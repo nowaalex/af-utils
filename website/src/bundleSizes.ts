@@ -5,7 +5,7 @@ export default {
 		"./dist/index.js": {
 			"raw": 19032,
 			"min": 4531,
-			"minGz": 1984,
+			"minGz": 1981,
 			"minBrotli": 1783
 		}
 	},
@@ -13,7 +13,7 @@ export default {
 		"./dist/index.js": {
 			"raw": 7814,
 			"min": 2902,
-			"minGz": 1295,
+			"minGz": 1301,
 			"minBrotli": 1149
 		}
 	},
