@@ -48,13 +48,13 @@
         "fast-glob": "^3.3.2",
         "lodash": "^4.17.21",
         "node-html-parser": "^6.1.13",
-        "prettier-plugin-astro": "^0.13.0",
+        "prettier-plugin-astro": "^0.14.1",
         "rehype-pretty-code": "^0.13.2",
         "rehype-slug": "^6.0.0",
         "remark-gfm": "4.0.0",
         "remark-toc": "^9.0.0",
         "tailwindcss": "^3.4.13",
-        "tsx": "^4.11.0",
+        "tsx": "^4.19.1",
         "unist-util-visit": "^5.0.0"
     }
 }
