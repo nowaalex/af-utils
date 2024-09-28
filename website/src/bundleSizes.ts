@@ -5,8 +5,8 @@ export default {
 		"./dist/index.js": {
 			"raw": 19032,
 			"min": 4531,
-			"minGz": 1981,
-			"minBrotli": 1783
+			"minGz": 1985,
+			"minBrotli": 1787
 		}
 	},
 	"@af-utils/virtual-react": {
