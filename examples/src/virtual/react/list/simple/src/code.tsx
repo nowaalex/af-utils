@@ -5,7 +5,7 @@ import type { ListItemProps } from "@af-utils/virtual-react";
 const Item = memo<ListItemProps>(({ model, i }) => (
     <div
         ref={createListItemRef(model, i)}
-        style={{ borderTop: "1px solid #ccc", padding: "0.5em" }}
+        style={{ borderTop: "2px solid #ccc", padding: "0.6em" }}
     >
         row {i}
     </div>
