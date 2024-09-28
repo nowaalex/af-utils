@@ -29,9 +29,9 @@
         "pretty-bytes": "^6.1.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "sharp": "^0.33.4",
+        "sharp": "^0.33.5",
         "sharp-ico": "^0.1.5",
-        "shiki": "1.6.0",
+        "shiki": "1.20.0",
         "vite": "^5.2.11"
     },
     "devDependencies": {
@@ -49,7 +49,7 @@
         "lodash": "^4.17.21",
         "node-html-parser": "^6.1.13",
         "prettier-plugin-astro": "^0.14.1",
-        "rehype-pretty-code": "^0.13.2",
+        "rehype-pretty-code": "^0.14.0",
         "rehype-slug": "^6.0.0",
         "remark-gfm": "4.0.0",
         "remark-toc": "^9.0.0",
