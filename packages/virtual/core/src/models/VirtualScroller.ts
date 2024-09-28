@@ -195,7 +195,7 @@ class VirtualScroller {
 
     /* header and footer; lengths are hardcoded */
     private _stickyElements: [Element | null, Element | null] = [null, null];
-    private _stickyElementsSizes: [number, number] = [0, 0];
+    private _stickyElementsSizes: [number, number] = [0.0, 0.0];
 
     private _StickyElResizeObserver = new ResizeObserver(entries => {
         let buff = 0.0;
@@ -258,7 +258,7 @@ class VirtualScroller {
                 this.scrollSize += buff;
                 this._run(InternalEvent.SCROLL_SIZE);
 
-                if (buff < 0) {
+                if (buff < 0.0) {
                     /*
                         If visible item sizes reduced - holes may appear, so rerender is a must.
                         No holes possible if item sizes increased => no need to rerender.
@@ -393,7 +393,7 @@ class VirtualScroller {
             }
         }
 
-        if (offset <= 0) {
+        if (offset <= 0.0) {
             return 0;
         }
 
