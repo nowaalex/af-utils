@@ -3,10 +3,10 @@
 export default {
 	"@af-utils/virtual-core": {
 		"./dist/index.js": {
-			"raw": 18993,
-			"min": 4500,
-			"minGz": 1978,
-			"minBrotli": 1783
+			"raw": 18953,
+			"min": 4488,
+			"minGz": 1972,
+			"minBrotli": 1782
 		}
 	},
 	"@af-utils/virtual-react": {
