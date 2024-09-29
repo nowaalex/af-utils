@@ -225,9 +225,6 @@ class VirtualScroller {
             this.to
         );
 
-        /*
-            TODO: check perf of borderBoxSize vs offsetWidth/offsetHeight
-        */
         for (const entry of entries) {
             // cannot be undefined, because element is being added to this map before getting into ResizeObserver
             const index = this._elToIdx.get(entry.target)!;

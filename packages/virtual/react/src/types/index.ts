@@ -21,12 +21,12 @@ export interface ListItemProps {
  * @public
  * {@link List} component props
  */
-export interface ListProps<C extends ElementType = "div"> {
+export interface ListProps<C extends ElementType = "div", T = null> {
     model: VirtualScroller;
     children: ElementType<ListItemProps>;
     /** could be accessed in {@link ListItemProps.data} */
-    itemData?: any;
-    getKey?: (index: number, itemData: any) => string | number;
+    itemData?: T;
+    getKey?: (index: number, itemData: T) => string | number;
     component?: C;
     header?: JSX.Element | null;
     footer?: JSX.Element | null;
