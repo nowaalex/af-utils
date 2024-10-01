@@ -27,7 +27,7 @@
     "browserslist": ">0.6%, not op_mini all",
     "devDependencies": {
         "@changesets/cli": "^2.27.8",
-        "@microsoft/api-documenter": "^7.25.14",
+        "@microsoft/api-documenter": "^7.25.16",
         "@microsoft/api-extractor": "^7.47.9",
         "prettier": "^3.3.3",
         "publint": "^0.2.11",
@@ -36,7 +36,7 @@
     },
     "pnpm": {
         "patchedDependencies": {
-            "@microsoft/api-documenter@7.25.14": "patches/@microsoft__api-documenter@7.24.1.patch"
+            "@microsoft/api-documenter@7.25.16": "patches/@microsoft__api-documenter@7.24.1.patch"
         }
     }
 }

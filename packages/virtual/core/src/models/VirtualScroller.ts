@@ -1,6 +1,6 @@
 import {
     InternalEvent,
-    ScrollElementSizeKey,
+    WindowScrollElementSizeKey,
     ResizeObserverSizeKey,
     ScrollKey,
     ScrollToKey,
@@ -67,11 +67,9 @@ const STICKY_HEADER_INDEX = 0;
 const STICKY_FOOTER_INDEX = 1;
 
 /* Creating specially-indexed arrays to avoid long switch-cases */
-const ScrollElementSizeKeysOrdered = [
-    ScrollElementSizeKey.ELEMENT_VERTICAL,
-    ScrollElementSizeKey.ELEMENT_HORIZONTAL,
-    ScrollElementSizeKey.WINDOW_VERTICAL,
-    ScrollElementSizeKey.WINDOW_HORIZONTAL
+const WindowScrollElementSizeKeysOrdered = [
+    WindowScrollElementSizeKey.WINDOW_VERTICAL,
+    WindowScrollElementSizeKey.WINDOW_HORIZONTAL
 ] as const;
 
 const ScrollKeysOrdered = [
@@ -124,8 +122,8 @@ const getEntrySize = (
  * - all other framework-related stuff.
  */
 class VirtualScroller {
-    private _scrollElementSizeKey: ScrollElementSizeKey =
-        ScrollElementSizeKeysOrdered[0];
+    private _windowScrollElementSizeKey: WindowScrollElementSizeKey =
+        WindowScrollElementSizeKeysOrdered[0];
     private _scrollKey: ScrollKey = ScrollKeysOrdered[0];
     private _resizeObserverSizeKey: ResizeObserverSizeKey =
         ResizeObserverSizeKeysOrdered[0];
@@ -299,26 +297,28 @@ class VirtualScroller {
     private _updatePropertyKeys() {
         const h = this.horizontal ? 1 : 0;
         const w = isElement(this._scrollElement) ? 0 : 1;
-        const i = h + 2 * w;
 
-        this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
-        this._scrollKey = ScrollKeysOrdered[i];
+        this._scrollKey = ScrollKeysOrdered[h + 2 * w];
+        this._windowScrollElementSizeKey =
+            WindowScrollElementSizeKeysOrdered[h];
         this._resizeObserverSizeKey = ResizeObserverSizeKeysOrdered[h];
         this._scrollToKey = ScrollToKeysOrdered[h];
     }
 
-    private _handleScrollElementResize = () => {
-        // casting type here because this stuff is used only as scrollElement resize event handler
-        const availableWidgetSize =
-            (this._scrollElement as any)[this._scrollElementSizeKey] -
-            this._stickyOffset;
+    private _handleWindowScrollElementResize = () =>
+        this._setScrollElementSize(
+            (this._scrollElement as Window)[this._windowScrollElementSizeKey]
+        );
 
-        if (availableWidgetSize !== this._availableWidgetSize) {
-            this._availableWidgetSize = availableWidgetSize;
+    private _setScrollElementSize(size: number) {
+        size -= this._stickyOffset;
+
+        if (size !== this._availableWidgetSize) {
+            this._availableWidgetSize = size;
             this.updateScrollerOffset();
             this._updateRangeFromEnd();
         }
-    };
+    }
 
     private _updateStickyOffset(relativeOffset: number) {
         if (relativeOffset) {
@@ -530,17 +530,27 @@ class VirtualScroller {
             this._updatePropertyKeys();
 
             if (isElement(element)) {
-                const RO = new ResizeObserver(this._handleScrollElementResize);
+                const RO = new ResizeObserver(entries => {
+                    if (entries.length !== 1) {
+                        throw new Error("Wrong entries quantity");
+                    }
+                    this._setScrollElementSize(
+                        getEntrySize(entries[0], this._resizeObserverSizeKey)
+                    );
+                });
                 RO.observe(element as HTMLElement);
                 this._unobserveResize = () => RO.disconnect();
             } else {
                 // resizeObserver has required 1st call
-                this._handleScrollElementResize();
-                addEventListener("resize", this._handleScrollElementResize);
+                this._handleWindowScrollElementResize();
+                addEventListener(
+                    "resize",
+                    this._handleWindowScrollElementResize
+                );
                 this._unobserveResize = () =>
                     removeEventListener(
                         "resize",
-                        this._handleScrollElementResize
+                        this._handleWindowScrollElementResize
                     );
             }
 
