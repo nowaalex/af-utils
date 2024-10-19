@@ -1,5 +1,11 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.14
+
+### Patch Changes
+
+- upgraded dependencies, added float dimensions support
+
 ## 0.0.13
 
 ### Patch Changes

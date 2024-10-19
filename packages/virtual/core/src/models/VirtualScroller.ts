@@ -1,6 +1,6 @@
 import {
     InternalEvent,
-    ScrollElementSizeKey,
+    WindowScrollElementSizeKey,
     ResizeObserverSizeKey,
     ScrollKey,
     ScrollToKey,
@@ -44,13 +44,13 @@ const ITEMS_ROOM = 32;
 
 const DEFAULT_OVERSCAN_COUNT = 6;
 
-const DEFAULT_ESTIMATED_WIDGET_SIZE = 200;
+const DEFAULT_ESTIMATED_WIDGET_SIZE = 200.0;
 
-const DEFAULT_ESTIMATED_ITEM_SIZE = 40;
+const DEFAULT_ESTIMATED_ITEM_SIZE = 40.0;
 
 const SCROLL_ENDED_IDLE_TIMEOUT = 128;
 
-const EMPTY_TYPED_ARRAY = new Uint32Array(0);
+const EMPTY_TYPED_ARRAY = new Float64Array(0);
 
 /*
     0x7fffffff - maximum 32bit integer.
@@ -67,11 +67,9 @@ const STICKY_HEADER_INDEX = 0;
 const STICKY_FOOTER_INDEX = 1;
 
 /* Creating specially-indexed arrays to avoid long switch-cases */
-const ScrollElementSizeKeysOrdered = [
-    ScrollElementSizeKey.ELEMENT_VERTICAL,
-    ScrollElementSizeKey.ELEMENT_HORIZONTAL,
-    ScrollElementSizeKey.WINDOW_VERTICAL,
-    ScrollElementSizeKey.WINDOW_HORIZONTAL
+const WindowScrollElementSizeKeysOrdered = [
+    WindowScrollElementSizeKey.WINDOW_VERTICAL,
+    WindowScrollElementSizeKey.WINDOW_HORIZONTAL
 ] as const;
 
 const ScrollKeysOrdered = [
@@ -94,7 +92,7 @@ const ScrollToKeysOrdered = [
 const getEntrySize = (
     resizeObserverEntry: ResizeObserverEntry,
     sizeKey: ResizeObserverSizeKey
-) => Math.round(resizeObserverEntry.borderBoxSize[0][sizeKey]);
+) => resizeObserverEntry.borderBoxSize[0][sizeKey];
 
 /**
  * @public
@@ -124,8 +122,8 @@ const getEntrySize = (
  * - all other framework-related stuff.
  */
 class VirtualScroller {
-    private _scrollElementSizeKey: ScrollElementSizeKey =
-        ScrollElementSizeKeysOrdered[0];
+    private _windowScrollElementSizeKey: WindowScrollElementSizeKey =
+        WindowScrollElementSizeKeysOrdered[0];
     private _scrollKey: ScrollKey = ScrollKeysOrdered[0];
     private _resizeObserverSizeKey: ResizeObserverSizeKey =
         ResizeObserverSizeKeysOrdered[0];
@@ -135,14 +133,14 @@ class VirtualScroller {
     private _scrollerOffsetTimer: ReturnType<typeof setTimeout> | 0 = 0;
 
     /* It is more useful to store scrollPos - scrollElementOffset in one variable for future calculations */
-    private _alignedScrollPos = 0;
-    private _scrollElementOffset = 0;
+    private _alignedScrollPos = 0.0;
+    private _scrollElementOffset = 0.0;
 
-    private _stickyOffset = 0;
+    private _stickyOffset = 0.0;
 
     /** {@inheritDoc VirtualScrollerRuntimeParams.itemCount} */
     private _itemCount = 0;
-    private _availableWidgetSize = 0;
+    private _availableWidgetSize = 0.0;
 
     /** {@inheritDoc VirtualScrollerRuntimeParams.overscanCount} */
     private _overscanCount = DEFAULT_OVERSCAN_COUNT;
@@ -168,7 +166,7 @@ class VirtualScroller {
     /**
      * @readonly
      * Sum of all item sizes */
-    scrollSize = 0;
+    scrollSize = 0.0;
 
     /**
      * @readonly
@@ -195,10 +193,10 @@ class VirtualScroller {
 
     /* header and footer; lengths are hardcoded */
     private _stickyElements: [Element | null, Element | null] = [null, null];
-    private _stickyElementsSizes: [number, number] = [0, 0];
+    private _stickyElementsSizes: [number, number] = [0.0, 0.0];
 
     private _StickyElResizeObserver = new ResizeObserver(entries => {
-        let buff = 0;
+        let buff = 0.0;
 
         for (const entry of entries) {
             const index = this._stickyElements.indexOf(entry.target);
@@ -216,7 +214,7 @@ class VirtualScroller {
     });
 
     private _ElResizeObserver = new ResizeObserver(entries => {
-        let buff = 0,
+        let buff = 0.0,
             wasAtLeastOneSizeChanged = false;
 
         const lim = /*#__NOINLINE__*/ getLiftingLimit(
@@ -225,9 +223,6 @@ class VirtualScroller {
             this.to
         );
 
-        /*
-            TODO: check perf of borderBoxSize vs offsetWidth/offsetHeight
-        */
         for (const entry of entries) {
             // cannot be undefined, because element is being added to this map before getting into ResizeObserver
             const index = this._elToIdx.get(entry.target)!;
@@ -258,7 +253,7 @@ class VirtualScroller {
                 this.scrollSize += buff;
                 this._run(InternalEvent.SCROLL_SIZE);
 
-                if (buff < 0) {
+                if (buff < 0.0) {
                     /*
                         If visible item sizes reduced - holes may appear, so rerender is a must.
                         No holes possible if item sizes increased => no need to rerender.
@@ -297,31 +292,32 @@ class VirtualScroller {
      *
      * @remarks
      * `window.resize` event must be used for window scroller, `ResizeObserver` must be used in other cases.
-     * `offsetWidth` is used as item size in horizontal mode, `offsetHeight` - in vertical.
      */
     private _updatePropertyKeys() {
         const h = this.horizontal ? 1 : 0;
         const w = isElement(this._scrollElement) ? 0 : 1;
-        const i = h + 2 * w;
 
-        this._scrollElementSizeKey = ScrollElementSizeKeysOrdered[i];
-        this._scrollKey = ScrollKeysOrdered[i];
+        this._scrollKey = ScrollKeysOrdered[h + 2 * w];
+        this._windowScrollElementSizeKey =
+            WindowScrollElementSizeKeysOrdered[h];
         this._resizeObserverSizeKey = ResizeObserverSizeKeysOrdered[h];
         this._scrollToKey = ScrollToKeysOrdered[h];
     }
 
-    private _handleScrollElementResize = () => {
-        // casting type here because this stuff is used only as scrollElement resize event handler
-        const availableWidgetSize =
-            (this._scrollElement as any)[this._scrollElementSizeKey] -
-            this._stickyOffset;
+    private _handleWindowScrollElementResize = () =>
+        this._setScrollElementSize(
+            (this._scrollElement as Window)[this._windowScrollElementSizeKey]
+        );
 
-        if (availableWidgetSize !== this._availableWidgetSize) {
-            this._availableWidgetSize = availableWidgetSize;
+    private _setScrollElementSize(size: number) {
+        size -= this._stickyOffset;
+
+        if (size !== this._availableWidgetSize) {
+            this._availableWidgetSize = size;
             this.updateScrollerOffset();
             this._updateRangeFromEnd();
         }
-    };
+    }
 
     private _updateStickyOffset(relativeOffset: number) {
         if (relativeOffset) {
@@ -340,7 +336,7 @@ class VirtualScroller {
             this.horizontal = !!params.horizontal;
             // stickyOffset is included;
             this._scrollElementOffset =
-                params.estimatedScrollElementOffset || 0;
+                params.estimatedScrollElementOffset || 0.0;
             this._availableWidgetSize =
                 params.estimatedWidgetSize ?? DEFAULT_ESTIMATED_WIDGET_SIZE;
             this.set(params);
@@ -393,7 +389,7 @@ class VirtualScroller {
             }
         }
 
-        if (offset <= 0) {
+        if (offset <= 0.0) {
             return 0;
         }
 
@@ -438,7 +434,7 @@ class VirtualScroller {
             }
         }
 
-        let result = 0;
+        let result = 0.0;
 
         for (; index > 0; index -= index & -index) {
             result += this._fTree[index];
@@ -489,10 +485,9 @@ class VirtualScroller {
     private _syncScrollPosition() {
         /*
             scrollElement may not be null here.
-            Math.round, because scrollY/scrollX may be float on Safari
         */
         const newAlignedScrollPos =
-            Math.round((this._scrollElement as any)[this._scrollKey]) -
+            (this._scrollElement as any)[this._scrollKey] -
             this._scrollElementOffset;
 
         if (newAlignedScrollPos > this._alignedScrollPos) {
@@ -533,17 +528,27 @@ class VirtualScroller {
             this._updatePropertyKeys();
 
             if (isElement(element)) {
-                const RO = new ResizeObserver(this._handleScrollElementResize);
+                const RO = new ResizeObserver(entries => {
+                    if (entries.length !== 1) {
+                        throw new Error("Wrong entries quantity");
+                    }
+                    this._setScrollElementSize(
+                        getEntrySize(entries[0], this._resizeObserverSizeKey)
+                    );
+                });
                 RO.observe(element as HTMLElement);
                 this._unobserveResize = () => RO.disconnect();
             } else {
                 // resizeObserver has required 1st call
-                this._handleScrollElementResize();
-                addEventListener("resize", this._handleScrollElementResize);
+                this._handleWindowScrollElementResize();
+                addEventListener(
+                    "resize",
+                    this._handleWindowScrollElementResize
+                );
                 this._unobserveResize = () =>
                     removeEventListener(
                         "resize",
-                        this._handleScrollElementResize
+                        this._handleWindowScrollElementResize
                     );
             }
 
@@ -659,7 +664,7 @@ class VirtualScroller {
             this._StickyElResizeObserver.unobserve(oldElement);
             this._updateStickyOffset(-this._stickyElementsSizes[i]);
             this._stickyElements[i] = null;
-            this._stickyElementsSizes[i] = 0;
+            this._stickyElementsSizes[i] = 0.0;
         }
 
         if (element) {
@@ -769,7 +774,7 @@ class VirtualScroller {
     scrollToIndex(
         index: VirtualScrollerExactPosition,
         smooth?: boolean,
-        attempts: number = 5
+        attempts = 5
     ) {
         clearInterval(this._scrollToIndexTimer);
 
@@ -787,10 +792,7 @@ class VirtualScroller {
 
                     this.scrollToOffset(
                         this.getOffset(wholeIndex) +
-                            Math.round(
-                                this._itemSizes[wholeIndex] *
-                                    (index - wholeIndex)
-                            ),
+                            this._itemSizes[wholeIndex] * (index - wholeIndex),
                         smooth
                     );
                 }
@@ -822,7 +824,7 @@ class VirtualScroller {
                     newLen,
                     this._estimatedItemSize
                 );
-                this._fTree = new Uint32Array(newLen + 1);
+                this._fTree = new Float64Array(newLen + 1);
                 /*#__NOINLINE__*/ syncWithArray(this._fTree, this._itemSizes);
             }
 

@@ -1,6 +1,6 @@
 {
     "name": "@af-utils/virtual-examples-react-hook-window-scroll",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "private": true,
     "scripts": {
         "dev": "vite",
@@ -9,16 +9,16 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/virtual-core": "1.0.1",
-        "@af-utils/virtual-react": "1.0.1",
+        "@af-utils/virtual-core": "1.0.2",
+        "@af-utils/virtual-react": "1.0.2",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"
     },
     "devDependencies": {
-        "@types/react": "^18.3.3",
-        "@types/react-dom": "^18.3.0",
-        "@vitejs/plugin-react": "^4.3.0",
-        "typescript": "^5.4.5",
-        "vite": "^5.2.11"
+        "@types/react": "^18.3.11",
+        "@types/react-dom": "^18.3.1",
+        "@vitejs/plugin-react": "^4.3.3",
+        "typescript": "^5.6.3",
+        "vite": "^5.4.9"
     }
 }

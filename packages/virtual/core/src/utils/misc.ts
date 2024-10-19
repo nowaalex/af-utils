@@ -4,11 +4,11 @@ import type { VirtualScrollerScrollElement } from "types";
 export const call = (fn: (...args: unknown[]) => void) => fn();
 
 export const growTypedArray = (
-    sourceArray: Uint32Array,
+    sourceArray: Float64Array,
     newLength: number,
     fillValue: number
 ) => {
-    const resultArray = new Uint32Array(newLength);
+    const resultArray = new Float64Array(newLength);
     resultArray.fill(fillValue, sourceArray.length).set(sourceArray);
     return resultArray;
 };
@@ -35,11 +35,9 @@ export const getDistanceBetween = (
 
     return (
         (scrollElement as any)[scrollKey] +
-        Math.round(
-            getElementOffset(containerElement, scrollToKey) -
-                (isElement(scrollElement)
-                    ? getElementOffset(scrollElement as any, scrollToKey)
-                    : 0)
-        )
+        (getElementOffset(containerElement, scrollToKey) -
+            (isElement(scrollElement)
+                ? getElementOffset(scrollElement as any, scrollToKey)
+                : 0))
     );
 };

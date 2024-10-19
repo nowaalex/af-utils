@@ -1,5 +1,13 @@
 # @af-utils/virtual-examples-react-list-scroll-to-item
 
+## 0.0.11
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/virtual-react@1.0.2
+  - @af-utils/virtual-core@1.0.2
+
 ## 0.0.10
 
 ### Patch Changes

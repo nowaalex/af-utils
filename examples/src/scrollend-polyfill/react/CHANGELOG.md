@@ -1,5 +1,12 @@
 # @af-utils/scrollend-polyfill-examples-react
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/scrollend-polyfill@0.0.14
+
 ## 0.0.4
 
 ### Patch Changes

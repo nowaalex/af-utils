@@ -1,6 +1,7 @@
 import useVirtualModel from "hooks/useVirtualModel";
 import useIsomorphicLayoutEffect from "hooks/useIsomorphicLayoutEffect";
-import type {
+import {
+    // this unused import is needed for normal api-extractor output
     VirtualScroller,
     VirtualScrollerInitialParams
 } from "@af-utils/virtual-core";

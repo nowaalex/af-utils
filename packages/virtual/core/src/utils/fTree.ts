@@ -1,5 +1,5 @@
 export const syncWithArray = (
-    fTree: Uint32Array,
+    fTree: Float64Array,
     sourceArray: ArrayLike<number>
 ) => {
     fTree.set(sourceArray, 1);
@@ -13,7 +13,7 @@ export const syncWithArray = (
 };
 
 export const update = (
-    fTree: Uint32Array,
+    fTree: Float64Array,
     i: number,
     delta: number,
     limitTreeLiftingIndex: number
@@ -24,7 +24,7 @@ export const update = (
 };
 
 export const getLiftingLimit = (
-    fTree: Uint32Array,
+    fTree: Float64Array,
     from: number,
     to: number
 ) => {
