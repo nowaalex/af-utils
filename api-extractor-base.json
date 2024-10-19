@@ -3,7 +3,12 @@
     "mainEntryPointFilePath": "<projectFolder>/dist/types/index.d.ts",
     "bundledPackages": [],
     "enumMemberOrder": "preserve",
-    "compiler": {},
+    "compiler": {
+        "overrideTsconfig": {
+            "$schema": "http://json.schemastore.org/tsconfig",
+            "include": ["**/*.ts"]
+        }
+    },
     "newlineKind": "lf",
 
     "apiReport": {

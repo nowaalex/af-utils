@@ -292,7 +292,6 @@ class VirtualScroller {
      *
      * @remarks
      * `window.resize` event must be used for window scroller, `ResizeObserver` must be used in other cases.
-     * `offsetWidth` is used as item size in horizontal mode, `offsetHeight` - in vertical.
      */
     private _updatePropertyKeys() {
         const h = this.horizontal ? 1 : 0;
@@ -486,7 +485,6 @@ class VirtualScroller {
     private _syncScrollPosition() {
         /*
             scrollElement may not be null here.
-            Math.round, because scrollY/scrollX may be float on Safari
         */
         const newAlignedScrollPos =
             (this._scrollElement as any)[this._scrollKey] -

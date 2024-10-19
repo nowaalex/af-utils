@@ -61,7 +61,7 @@ const useSyncedStyles = (
     const [inner, innerRef] = useState<HTMLElement | null>(null);
 
     useIsomorphicLayoutEffect(() => {
-        if (model && outer && inner) {
+        if (outer && inner && outer) {
             const updateSizeStyle = () => {
                 outer.style[model.horizontal ? "width" : "height"] =
                     model.scrollSize + "px";
