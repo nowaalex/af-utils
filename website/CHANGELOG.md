@@ -1,5 +1,14 @@
 # website
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies
+  - @af-utils/scrollend-polyfill@0.0.14
+  - @af-utils/virtual-react@1.0.2
+  - @af-utils/virtual-core@1.0.2
+
 ## 0.0.6
 
 ### Patch Changes

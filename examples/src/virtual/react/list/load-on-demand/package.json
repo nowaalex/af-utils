@@ -1,6 +1,6 @@
 {
     "name": "@af-utils/virtual-examples-react-list-load-on-demand",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "private": true,
     "scripts": {
         "dev": "vite",
@@ -9,8 +9,8 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/virtual-core": "1.0.1",
-        "@af-utils/virtual-react": "1.0.1",
+        "@af-utils/virtual-core": "1.0.2",
+        "@af-utils/virtual-react": "1.0.2",
         "@ngneat/falso": "^7.2.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"

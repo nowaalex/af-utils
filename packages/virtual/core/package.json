@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-core",
     "private": false,
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Model for rendering large scrollable data",
     "repository": {
         "type": "git",
