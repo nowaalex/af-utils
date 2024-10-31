@@ -26,7 +26,7 @@
         "esbuild:build": "pnpm esbuild:base --mangle-props=^_",
         "esbuild:dev": "pnpm esbuild:base --watch",
         "api-extractor": "api-extractor run && rm -r dist/types",
-        "test": "vitest run"
+        "test": "vitest bench"
     },
     "files": [
         "dist/*"
@@ -58,12 +58,12 @@
         "windowing"
     ],
     "devDependencies": {
-        "@types/node": "^22.7.7",
+        "@types/node": "^22.8.4",
         "esbuild": "^0.24.0",
         "jsdom": "^25.0.1",
         "typescript": "^5.6.3",
         "vite-tsconfig-paths": "^5.0.1",
-        "vitest": "^2.1.3"
+        "vitest": "^2.1.4"
     },
     "publishConfig": {
         "access": "public"

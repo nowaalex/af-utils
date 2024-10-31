@@ -27,16 +27,16 @@
     "browserslist": ">0.6%, not op_mini all",
     "devDependencies": {
         "@changesets/cli": "^2.27.9",
-        "@microsoft/api-documenter": "^7.25.19",
+        "@microsoft/api-documenter": "^7.25.21",
         "@microsoft/api-extractor": "^7.47.11",
         "prettier": "^3.3.3",
-        "publint": "^0.2.11",
+        "publint": "^0.2.12",
         "tsc-alias": "^1.8.10",
         "typescript": "^5.6.3"
     },
     "pnpm": {
         "patchedDependencies": {
-            "@microsoft/api-documenter@7.25.19": "patches/@microsoft__api-documenter@7.24.1.patch"
+            "@microsoft/api-documenter@7.25.21": "patches/@microsoft__api-documenter@7.24.1.patch"
         }
     }
 }

@@ -218,9 +218,9 @@ class VirtualScroller {
             wasAtLeastOneSizeChanged = false;
 
         const lim = /*#__NOINLINE__*/ getLiftingLimit(
-            this._fTree,
-            this.from + 1,
-            this.to
+            this._fTree.length,
+            this.from,
+            this.to - 1
         );
 
         for (const entry of entries) {

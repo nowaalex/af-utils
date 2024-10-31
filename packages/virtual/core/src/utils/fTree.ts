@@ -23,11 +23,12 @@ export const update = (
     }
 };
 
-export const getLiftingLimit = (
-    fTree: Float64Array,
-    from: number,
-    to: number
-) => {
-    for (; from < to; from += from & -from);
-    return Math.min(from, fTree.length);
+export const getLiftingLimit = (lim: number, from: number, to: number) => {
+    to &= -(1 << (31 - Math.clz32(from ^ to)));
+    return Math.min(to + (to & -to), lim);
+};
+
+export const getLiftingLimitNaive = (lim: number, from: number, to: number) => {
+    for (from++; from < to; from += from & -from);
+    return Math.min(from, lim);
 };

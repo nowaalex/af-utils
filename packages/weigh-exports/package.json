@@ -24,11 +24,11 @@
     },
     "keywords": [],
     "devDependencies": {
-        "@types/node": "^22.7.7",
+        "@types/node": "^22.8.4",
         "esbuild": "^0.24.0"
     },
     "dependencies": {
-        "@swc/core": "^1.7.36",
+        "@swc/core": "^1.7.40",
         "chalk": "^5.3.0",
         "fast-glob": "^3.3.2",
         "typescript": "^5.6.3"
