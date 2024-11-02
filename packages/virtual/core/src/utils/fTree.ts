@@ -23,12 +23,32 @@ export const update = (
     }
 };
 
-export const getLiftingLimit = (lim: number, from: number, to: number) => {
-    to &= -(1 << (31 - Math.clz32(from ^ to)));
-    return Math.min(to + (to & -to), lim);
+/**
+ * Get nearest common ancestor node index for 2 ftree indices.
+ * @param firstIndex range start index
+ * @param lastIndex range end index
+ * @returns nearest common ancestor node index for 2 ftree indices
+ */
+export const getLiftingLimit = (firstIndex: number, lastIndex: number) => {
+    if (firstIndex === lastIndex) {
+        return lastIndex + 1;
+    }
+    lastIndex &= -(1 << (31 - Math.clz32(firstIndex ^ lastIndex)));
+    return lastIndex + (lastIndex & -lastIndex);
 };
 
-export const getLiftingLimitNaive = (lim: number, from: number, to: number) => {
-    for (from++; from < to; from += from & -from);
-    return Math.min(from, lim);
+/**
+ * Needed just for testing
+ * Get nearest common ancestor node index for 2 ftree indices.
+ * @param firstIndex range start index
+ * @param lastIndex range end index
+ * @returns nearest common ancestor node index for 2 ftree indices
+ */
+export const getLiftingLimitNaive = (firstIndex: number, lastIndex: number) => {
+    for (
+        firstIndex++;
+        firstIndex <= lastIndex;
+        firstIndex += firstIndex & -firstIndex
+    );
+    return firstIndex;
 };

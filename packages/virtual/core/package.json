@@ -26,7 +26,7 @@
         "esbuild:build": "pnpm esbuild:base --mangle-props=^_",
         "esbuild:dev": "pnpm esbuild:base --watch",
         "api-extractor": "api-extractor run && rm -r dist/types",
-        "test": "vitest bench"
+        "test": "vitest run"
     },
     "files": [
         "dist/*"
@@ -58,7 +58,7 @@
         "windowing"
     ],
     "devDependencies": {
-        "@types/node": "^22.8.4",
+        "@types/node": "^22.8.6",
         "esbuild": "^0.24.0",
         "jsdom": "^25.0.1",
         "typescript": "^5.6.3",
