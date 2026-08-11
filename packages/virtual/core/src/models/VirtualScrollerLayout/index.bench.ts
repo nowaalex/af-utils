@@ -1,3 +1,4 @@
+import "../../benchmarks/resizeObserver";
 import { bench } from "vitest";
 import VirtualScroller from "../VirtualScroller";
 import VirtualScrollerLayout from ".";

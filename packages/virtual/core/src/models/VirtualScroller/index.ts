@@ -180,9 +180,6 @@ class VirtualScroller {
     /** Item index associated with every currently observed element. */
     private _elementIndexes = new WeakMap<HTMLElement, number>();
 
-    /** Whether new item observations must wait for a safe frame boundary. */
-    private _deferItemObservations = false;
-
     /** Items mounted by subscribers during the current resize delivery. */
     private readonly _pendingItemObservations = new Set<HTMLElement>();
 
@@ -285,7 +282,6 @@ class VirtualScroller {
         // Promise microtasks still run inside it and do not prevent loop errors.
         this._itemObservationFrame = requestAnimationFrame(() => {
             this._itemObservationFrame = null;
-            this._deferItemObservations = false;
 
             if (!this._disposed) {
                 for (const element of this._pendingItemObservations) {
@@ -300,12 +296,6 @@ class VirtualScroller {
 
             this._pendingItemObservations.clear();
         });
-    }
-
-    /** Queue an item observation until resize delivery has finished. */
-    private _deferItemObservation(element: HTMLElement) {
-        this._pendingItemObservations.add(element);
-        this._scheduleItemObservationFrame();
     }
 
     /** Apply a viewport-size observation to range geometry. */
@@ -499,7 +489,6 @@ class VirtualScroller {
 
         // React can commit RANGE subscribers just after this callback returns,
         // while the browser is still in the same ResizeObserver delivery.
-        this._deferItemObservations = true;
         this._scheduleItemObservationFrame();
         this._reconcileMeasurements(anchorDiff, totalDiff);
     }
@@ -558,9 +547,9 @@ class VirtualScroller {
      */
     private _publishDeferredScrollSize(pointerEnded = false) {
         if (
+            !this._hasDeferredScrollSize ||
             this._pointerActive ||
-            (!pointerEnded && this._scrollActivity._nativeScrollActive) ||
-            !this._hasDeferredScrollSize
+            (!pointerEnded && this._scrollActivity._nativeScrollActive)
         )
             return;
 
@@ -880,8 +869,8 @@ class VirtualScroller {
         );
         this._elementIndexes.set(element, index);
 
-        if (this._deferItemObservations) {
-            this._deferItemObservation(element);
+        if (this._itemObservationFrame !== null) {
+            this._pendingItemObservations.add(element);
         } else {
             this._pendingItemObservations.delete(element);
             this._itemResizeObserver.observe(element, OBSERVE_OPTIONS);
@@ -1306,7 +1295,6 @@ class VirtualScroller {
         this._scrollToIndexTimer = 0;
         this._scrollerOffsetTimer = 0;
         this._itemObservationFrame = null;
-        this._deferItemObservations = false;
         this._pendingItemObservations.clear();
         this._hasDeferredScrollSize = false;
         this._pointerActive = false;

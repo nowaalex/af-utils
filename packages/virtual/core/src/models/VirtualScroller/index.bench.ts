@@ -1,3 +1,6 @@
+// @vitest-environment jsdom
+
+import "../../benchmarks/resizeObserver";
 import { bench, describe } from "vitest";
 import VirtualScroller from ".";
 
