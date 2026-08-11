@@ -144,7 +144,7 @@ class VirtualScroller {
     /** Event target that owns the current pointer-start listener. */
     private _pointerElement: VirtualScrollerScrollElement | null = null;
 
-    /** Scroll correction to apply after the current event batch is published. */
+    /** Native scroll correction, in CSS pixels, applied after event publication. */
     private _pendingScrollOffset = 0.0;
 
     /** Whether `_pendingScrollOffset` contains a correction to apply. */
@@ -159,16 +159,16 @@ class VirtualScroller {
     /** Debounce timer for measuring the items-container offset. */
     private _scrollerOffsetTimer: ReturnType<typeof setTimeout> | 0 = 0;
 
-    /** Native scroll position translated into items-container coordinates. */
+    /** Native scroll position translated into item-space CSS pixels. */
     private _alignedScrollPos = 0.0;
 
-    /** Distance from the scroll origin to the items size element. */
+    /** Distance from the native scroll origin to the items element, in CSS px. */
     private _scrollElementOffset = 0.0;
 
     /** {@inheritDoc VirtualScrollerRuntimeParams.itemCount} */
     private _itemCount = 0;
 
-    /** Viewport size available to non-sticky virtual items. */
+    /** Viewport extent available to non-sticky items, in CSS pixels. */
     private _availableWidgetSize = 0.0;
 
     /** {@inheritDoc VirtualScrollerRuntimeParams.overscanCount} */
@@ -200,7 +200,27 @@ class VirtualScroller {
         return this._itemCount;
     }
 
-    /** Native scrollbar offset corresponding to the end of an item-size value. */
+    /**
+     * Convert an item-space extent to its native end-scroll offset.
+     *
+     * @param size - Total item extent in CSS pixels.
+     * @returns Native scroll offset in CSS pixels, clamped to `0`.
+     *
+     * @remarks
+     * The calculation translates item-space geometry into native-scroller
+     * coordinates:
+     *
+     * ```plaintext
+     * native origin
+     *     |-- items offset --|-- item extent: size ----------------|
+     *                                      |-- usable viewport ----|
+     *
+     * end = items offset + size - usable viewport - sticky header
+     * ```
+     *
+     * For example, `offset = 20px`, `size = 1000px`, usable viewport
+     * `= 300px` and sticky header `= 40px` produce `680px`.
+     */
     private _getNativeEndOffset(size: number) {
         return Math.max(
             0.0,
@@ -212,28 +232,55 @@ class VirtualScroller {
     }
 
     /**
-     * Whether layout must use the frozen public scroll size as its end anchor.
+     * Whether layout must align the rendered range with the frozen public end.
+     *
+     * @remarks
+     * While measurements are deferred, internal item geometry can be longer
+     * than the published native scrollbar track. Keeping the rendered range at
+     * the published end prevents a temporary blank area:
+     *
+     * ```plaintext
+     * published track  [----------------|] 1000px
+     * internal items   [------------------|] 1040px
+     * held viewport                    [==]
+     * ```
+     *
      * @internal Used only by framework-neutral layout adapters in this package.
      */
     _shouldAnchorRangeEnd() {
-        const adapter = this._scrollerAdapter;
+        return this._hasDeferredScrollSize && this._isAtPublishedEnd();
+    }
+
+    /**
+     * Whether the attached scroller is at the published native end.
+     *
+     * @returns `false` without an attached scroller; otherwise whether the
+     * remaining distance is at most `END_OFFSET_TOLERANCE` CSS pixels.
+     *
+     * @remarks For example, a `680px` end and `679.4px` native offset differ by
+     * `0.6px`, so they are treated as the same end position.
+     */
+    private _isAtPublishedEnd() {
         return (
-            this._hasDeferredScrollSize &&
-            adapter !== null &&
-            this._getNativeEndOffset(this.scrollSize) - adapter._readOffset() <=
+            this._scrollerAdapter !== null &&
+            this._getNativeEndOffset(this.scrollSize) -
+                this._scrollerAdapter._readOffset() <=
                 END_OFFSET_TOLERANCE
         );
     }
 
-    /** Whether the native offset is at the end of the currently published size. */
-    private _isAtPublishedEnd(adapter: ScrollerAdapter) {
-        return (
-            this._getNativeEndOffset(this.scrollSize) - adapter._readOffset() <=
-            END_OFFSET_TOLERANCE
-        );
-    }
-
-    /** Item-space offset of the viewport edge after a sticky header. */
+    /**
+     * Return the first visible item-space coordinate in CSS pixels.
+     *
+     * @remarks
+     * During normal scrolling this is the aligned native offset plus the sticky
+     * header. At a frozen end it is derived from internal geometry instead:
+     *
+     * ```plaintext
+     * normal: visible start = aligned scroll position + sticky header
+     * frozen: visible start = internal item extent - usable viewport
+     * ```
+     */
     private _getVisibleStart() {
         return this._shouldAnchorRangeEnd()
             ? Math.max(
@@ -244,8 +291,61 @@ class VirtualScroller {
     }
 
     /**
-     * @readonly
-     * Sum of all item sizes */
+     * Whether publishing the internal item extent must wait for interaction.
+     *
+     * @remarks Publication remains deferred while a primary pointer is held,
+     * native scrolling is active, or an earlier size change is already queued:
+     *
+     * ```plaintext
+     * public scrollbar track [----------------|] 1000px  (frozen)
+     * internal item extent   [------------------|] 1040px
+     *                                      publish on pointerup / scrollend
+     * ```
+     */
+    private get _scrollSizePublicationDeferred() {
+        return (
+            this._pointerActive ||
+            this._scrollActivity._nativeScrollActive ||
+            this._hasDeferredScrollSize
+        );
+    }
+
+    /**
+     * Whether measurement deltas may move the native scroll anchor.
+     *
+     * @remarks A correction requires an attached scroller and completely idle
+     * native/programmatic activity. If items before the visible anchor grow by
+     * `20px`, the native offset is advanced by the same `20px`:
+     *
+     * ```plaintext
+     * before: [ items before anchor ][ visible item ]
+     * after:  [ items before anchor + 20px ][ visible item ]
+     *                                      scroll offset + 20px
+     * ```
+     */
+    private get _canCorrectAnchor() {
+        return (
+            this._scrollerAdapter !== null &&
+            this._scrollActivity._anchorCorrectionAllowed
+        );
+    }
+
+    /**
+     * Whether an immediate size publication must keep the viewport at the end.
+     *
+     * @remarks Deferred geometry has its own release correction, while an
+     * active programmatic scroll owns its target. This getter covers only idle,
+     * immediately published geometry measured at the current native end.
+     */
+    private get _shouldPreservePublishedEnd() {
+        return (
+            !this._scrollSizePublicationDeferred &&
+            !this._scrollActivity._programmaticScrollActive &&
+            this._isAtPublishedEnd()
+        );
+    }
+
+    /** @readonly Sum of all published item sizes, in CSS pixels. */
     scrollSize = 0.0;
 
     /**
@@ -298,7 +398,10 @@ class VirtualScroller {
         });
     }
 
-    /** Apply a viewport-size observation to range geometry. */
+    /**
+     * Apply a measured viewport extent to range geometry.
+     * @param size - Full border-box extent of the scroller in CSS pixels.
+     */
     private _setScrollElementSize(size: number) {
         if (this._disposed) return;
         size -= this._sticky._totalSize;
@@ -310,13 +413,15 @@ class VirtualScroller {
         }
     }
 
-    /** Apply the aggregate sticky-size difference to viewport geometry. */
+    /**
+     * Apply a sticky-element size delta to usable viewport geometry.
+     * @param relativeOffset - Aggregate sticky-size change in CSS pixels;
+     * positive values reduce the space available to virtual items.
+     */
     private _updateStickyOffset(relativeOffset: number) {
         if (this._disposed) return;
         if (relativeOffset) {
-            const adapter = this._scrollerAdapter;
-            const wasAtEnd =
-                adapter !== null && this._isAtPublishedEnd(adapter);
+            const wasAtEnd = this._isAtPublishedEnd();
 
             this._availableWidgetSize -= relativeOffset;
 
@@ -399,11 +504,7 @@ class VirtualScroller {
 
     /** Keep native geometry stable until the current scroll transaction ends. */
     private _publishOrDeferScrollSize() {
-        if (
-            this._pointerActive ||
-            this._scrollActivity._nativeScrollActive ||
-            this._hasDeferredScrollSize
-        ) {
+        if (this._scrollSizePublicationDeferred) {
             this._hasDeferredScrollSize =
                 this._sizeIndex._totalSizeValue !== this.scrollSize;
         } else {
@@ -456,9 +557,7 @@ class VirtualScroller {
 
         const updateLimit = this._sizeIndex._getUpdateLimit(from, to);
 
-        const adapter = this._scrollerAdapter;
-        const canCorrectAnchor =
-            adapter !== null && this._scrollActivity._anchorCorrectionAllowed;
+        const canCorrectAnchor = this._canCorrectAnchor;
         const exactFrom = canCorrectAnchor ? this._getExactFrom() : 0;
 
         let totalDiff = 0.0;
@@ -493,20 +592,16 @@ class VirtualScroller {
         this._reconcileMeasurements(anchorDiff, totalDiff);
     }
 
-    /** Publish a measurement batch and preserve the active scroll anchor. */
+    /**
+     * Publish one measurement batch while preserving its visible anchor.
+     * @param anchorDiff - Size delta before the first visible item, in CSS px.
+     * @param totalDiff - Size delta across the complete item set, in CSS px.
+     */
     private _reconcileMeasurements(anchorDiff: number, totalDiff: number) {
         const adapter = this._scrollerAdapter;
-        const canCorrectAnchor =
-            adapter !== null && this._scrollActivity._anchorCorrectionAllowed;
-        const deferScrollSize =
-            this._pointerActive ||
-            this._scrollActivity._nativeScrollActive ||
-            this._hasDeferredScrollSize;
-        const wasAtEnd =
-            !deferScrollSize &&
-            adapter !== null &&
-            !this._scrollActivity._programmaticScrollActive &&
-            this._isAtPublishedEnd(adapter);
+        const canCorrectAnchor = this._canCorrectAnchor;
+        const deferScrollSize = this._scrollSizePublicationDeferred;
+        const wasAtEnd = this._shouldPreservePublishedEnd;
 
         this._events._beginBatch();
         try {
@@ -554,8 +649,7 @@ class VirtualScroller {
             return;
 
         this._flushScrollerOffset();
-        const adapter = this._scrollerAdapter;
-        const wasAtEnd = adapter !== null && this._isAtPublishedEnd(adapter);
+        const wasAtEnd = this._isAtPublishedEnd();
 
         this._hasDeferredScrollSize = false;
         this._events._beginBatch();
@@ -570,7 +664,14 @@ class VirtualScroller {
         }
     }
 
-    /** Read the items-container offset before publishing frozen geometry. */
+    /**
+     * Read the items-container offset before publishing frozen geometry.
+     * @returns Whether the stored native-to-item offset changed.
+     *
+     * @remarks Both the measured and stored offsets use CSS pixels. The
+     * debounced measurement timer is cancelled so end correction uses the DOM
+     * geometry from the same interaction boundary.
+     */
     private _flushScrollerOffset() {
         clearTimeout(this._scrollerOffsetTimer);
         this._scrollerOffsetTimer = 0;
@@ -590,14 +691,21 @@ class VirtualScroller {
     }
 
     /**
-     * Get nearest item index for pixel offset;
-     * @param offset - Pixel offset.
-     * @returns Nearest item index
+     * Return the item containing an item-space coordinate.
+     * @param offset - Coordinate from the start of item `0`, in CSS pixels.
+     * @returns Item index in the range `0 <= index < itemCount`.
      *
      * @remarks
      * {@link VirtualScrollerRuntimeParams.itemCount | itemCount} must be \> 0.
-     * Possible item index range: 0 \<= N \< {@link VirtualScrollerRuntimeParams.itemCount | itemCount}.
-     * Time complexity: `O(log2(itemCount))`
+     * With item sizes `[40px, 60px]`, `getIndex(55)` returns `1`:
+     *
+     * ```plaintext
+     * 0px             40px                           100px
+     * |---- item 0 ----|---------- item 1 ------------|
+     *                               ^ 55px
+     * ```
+     *
+     * Time complexity: `O(log2(itemCount))`.
      */
     getIndex(offset: number) {
         assert(
@@ -611,13 +719,16 @@ class VirtualScroller {
     }
 
     /**
-     * Get pixel offset by item index;
-     * @param index - Item index. Must be \<= {@link VirtualScrollerRuntimeParams.itemCount | itemCount}
-     * @returns Pixel offset
+     * Return the leading item-space coordinate of an item boundary.
+     * @param index - Boundary index in `0 <= index <= itemCount`.
+     * @returns Offset from item `0`, in CSS pixels.
      *
      * @remarks
-     * Possible offset range: 0 \<= N \<= {@link VirtualScroller.scrollSize | scrollSize}.
-     * Time complexity: `O(log2(itemCount))`
+     * `getOffset(0)` is always `0`; `getOffset(itemCount)` equals the current
+     * internal total extent. With item sizes `[40px, 60px]`, `getOffset(1)` is
+     * `40px` and `getOffset(2)` is `100px`.
+     *
+     * Time complexity: `O(log2(itemCount))`.
      */
     getOffset(index: number) {
         assert(
@@ -633,12 +744,12 @@ class VirtualScroller {
     }
 
     /**
-     * Get last cached item size by item index
-     * @param itemIndex - item index;
-     * @returns last cached item size
+     * Return the current measured or estimated extent of one item.
+     * @param itemIndex - Item index in `0 <= itemIndex < itemCount`.
+     * @returns Cached item extent in CSS pixels.
      *
-     * @remarks
-     * Time complexity: `O(1)`
+     * @remarks Unmeasured and invalidated items return the current estimate.
+     * Time complexity: `O(1)`.
      */
     getSize(itemIndex: number) {
         assert(
@@ -653,10 +764,13 @@ class VirtualScroller {
     }
 
     /**
-     * Returns snapshot of current scroll position.
+     * Return the current scroll position as a fractional item index.
      *
      * @remarks
-     * {@link VirtualScrollerExactPosition}
+     * The integer part identifies the first visible item and the fractional
+     * part describes progress through it. For example, `12.25` means that item
+     * `12` is first and `25%` of its CSS-pixel extent is above the visible edge.
+     * See {@link VirtualScrollerExactPosition}.
      *
      * @privateRemarks
      * "returns" tag is missed by api-extractor for getters (for now).
@@ -677,7 +791,16 @@ class VirtualScroller {
     }
 
     /**
-     * Synchronize current scroll position with visible range
+     * Translate the native offset into item space and synchronize the range.
+     *
+     * @remarks All offsets use CSS pixels:
+     *
+     * ```plaintext
+     * native scroll offset - items-container offset = aligned item position
+     * ```
+     *
+     * Forward motion grows the range from its end; backward motion grows it
+     * from its start so overscan is placed in the direction of travel.
      */
     private _syncScrollPosition() {
         /*
@@ -821,7 +944,14 @@ class VirtualScroller {
      *
      * - {@link VirtualScroller.setScroller | scroller element} was resized.
      *
-     * Normally this is enough, needed only if something else would trigger this offset change.
+     * The stored value is measured in CSS pixels along the configured axis:
+     *
+     * ```plaintext
+     * native origin |---- items-container offset ----| item 0
+     * ```
+     *
+     * Normally the automatic calls are enough. Call this method when external
+     * DOM changes move the items container relative to the scroller.
      */
     updateScrollerOffset() {
         this._assertMutable();
@@ -836,7 +966,7 @@ class VirtualScroller {
                 const diff = newScrollElementOffset - this._scrollElementOffset;
 
                 if (diff) {
-                    const wasAtEnd = this._isAtPublishedEnd(adapter);
+                    const wasAtEnd = this._isAtPublishedEnd();
 
                     this._scrollElementOffset = newScrollElementOffset;
                     if (wasAtEnd) {
@@ -925,16 +1055,17 @@ class VirtualScroller {
     }
 
     /**
-     * Get first visible item index (without overscan)
-     * @returns first visible item index
+     * Return the first visible item index, excluding overscan.
+     * @returns Index containing the visible-start CSS-pixel coordinate.
      */
     private _getExactFrom() {
         return this._itemCount && this.getIndex(this._getVisibleStart());
     }
 
     /**
-     * Get last visible item index (without overscan)
-     * @returns last visible item index
+     * Return the exclusive visible-end item boundary, excluding overscan.
+     * @returns One plus the index containing the visible-end coordinate, or
+     * `itemCount` while the rendered end is anchored to frozen geometry.
      */
     private _getExactTo() {
         if (this._shouldAnchorRangeEnd()) {
@@ -985,10 +1116,17 @@ class VirtualScroller {
     }
 
     /**
-     * Scroll to pixel offset
+     * Scroll to an item-space CSS-pixel coordinate.
      *
-     * @param offset - offset to scroll to
-     * @param smooth - should smooth scroll be used
+     * @param offset - Distance from the start of item `0`, in CSS pixels.
+     * @param smooth - Whether to request native smooth scrolling.
+     *
+     * @remarks The items-container offset is added before dispatching the
+     * native scroll, and the result is clamped to the current scrollable range:
+     *
+     * ```plaintext
+     * native target = items-container offset + requested item-space offset
+     * ```
      */
     scrollToOffset(offset: number, smooth?: boolean) {
         this._assertMutable();
@@ -1019,14 +1157,18 @@ class VirtualScroller {
     }
 
     /**
-     * Scroll to item index
+     * Scroll to an integer or fractional item position.
      *
-     * @param index - item index to scroll to
-     * @param smooth - should smooth scroll be used
-     * @param attempts - quantity of scroll attempts to be done to ensure scroll offset is correct. Defaults to `5`
+     * @param index - Exact item position; `12.5` targets the midpoint of item
+     * `12` at the visible edge after accounting for the sticky header.
+     * @param smooth - Whether to request native smooth scrolling.
+     * @param attempts - Maximum corrections while measured sizes converge;
+     * defaults to `5`.
      *
      * @remarks
-     * Calls {@link VirtualScroller.scrollToOffset | scrollToOffset} with calcuated offset until desired scroll position is reached.
+     * Repeatedly calls {@link VirtualScroller.scrollToOffset | scrollToOffset}
+     * because rendering the target can replace estimated CSS-pixel sizes with
+     * measurements and move its exact offset.
      */
     scrollToIndex(
         index: VirtualScrollerExactPosition,
@@ -1119,21 +1261,13 @@ class VirtualScroller {
         estimatedItemSize?: number
     ) {
         const adapter = this._scrollerAdapter;
-        const canCorrectAnchor =
-            adapter !== null && this._scrollActivity._anchorCorrectionAllowed;
+        const canCorrectAnchor = this._canCorrectAnchor;
         const exactFrom = canCorrectAnchor ? this._getExactFrom() : 0;
         const oldAnchorOffset = canCorrectAnchor
             ? this._sizeIndex._getOffset(exactFrom)
             : 0.0;
-        const deferScrollSize =
-            this._pointerActive ||
-            this._scrollActivity._nativeScrollActive ||
-            this._hasDeferredScrollSize;
-        const wasAtEnd =
-            !deferScrollSize &&
-            adapter !== null &&
-            !this._scrollActivity._programmaticScrollActive &&
-            this._isAtPublishedEnd(adapter);
+        const deferScrollSize = this._scrollSizePublicationDeferred;
+        const wasAtEnd = this._shouldPreservePublishedEnd;
         const { changed, totalDelta } =
             estimatedItemSize === undefined
                 ? this._sizeIndex._invalidateSizes(from, to)
