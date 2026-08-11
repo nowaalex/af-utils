@@ -42,44 +42,6 @@ describe("scroller adapters", () => {
         expect(adapter._distanceTo(scroller)).toBe(0);
     });
 
-    test("observes pointer drags only in the native scrollbar gutter", () => {
-        const scroller = document.createElement("div");
-        Object.defineProperties(scroller, {
-            clientLeft: { value: 0 },
-            clientWidth: { value: 80 }
-        });
-        vi.spyOn(scroller, "getBoundingClientRect").mockReturnValue({
-            left: 0,
-            right: 100
-        } as DOMRect);
-        const adapter = new ElementScrollerAdapter(
-            scroller,
-            verticalAxisAdapter
-        );
-        const states: boolean[] = [];
-        const unobserve = adapter._observePointerDrag(active =>
-            states.push(active)
-        );
-        const pointerEvent = (type: string, clientX: number) => {
-            const event = new Event(type);
-            Object.defineProperties(event, {
-                clientX: { value: clientX },
-                isPrimary: { value: true }
-            });
-            return event;
-        };
-
-        scroller.dispatchEvent(pointerEvent("pointerdown", 40));
-        window.dispatchEvent(pointerEvent("pointerup", 40));
-        expect(states).toEqual([]);
-
-        scroller.dispatchEvent(pointerEvent("pointerdown", 90));
-        window.dispatchEvent(pointerEvent("pointerup", 90));
-        expect(states).toEqual([true, false]);
-
-        unobserve();
-    });
-
     test("window adapter calculates container distance", () => {
         const container = document.createElement("div");
         Object.defineProperty(window, "scrollY", {

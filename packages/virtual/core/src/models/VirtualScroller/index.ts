@@ -132,15 +132,8 @@ class VirtualScroller {
     /** DOM adapter for the currently attached scroll container. */
     private _scrollerAdapter: ScrollerAdapter | null = null;
 
-    /** Native, pointer, and programmatic scroll lifecycle state. */
+    /** Native and programmatic scroll lifecycle state. */
     private _scrollActivity: ScrollActivity;
-
-    /**
-     * Whether `_sizeIndex._totalSizeValue` differs from published `scrollSize`.
-     * Publication is deferred while a native scrollbar interaction settles so
-     * changing the track length cannot move the held thumb or blank the range.
-     */
-    private _hasDeferredScrollSize = false;
 
     /** Scroll correction to apply after the current event batch is published. */
     private _pendingScrollOffset = 0.0;
@@ -212,20 +205,6 @@ class VirtualScroller {
         );
     }
 
-    /**
-     * Whether layout must use the frozen public scroll size as its end anchor.
-     * @internal Used only by framework-neutral layout adapters in this package.
-     */
-    _shouldAnchorRangeEnd() {
-        const adapter = this._scrollerAdapter;
-        return (
-            this._hasDeferredScrollSize &&
-            adapter !== null &&
-            this._getNativeEndOffset(this.scrollSize) - adapter._readOffset() <=
-                END_OFFSET_TOLERANCE
-        );
-    }
-
     /** Whether the native offset is at the end of the currently published size. */
     private _isAtPublishedEnd(adapter: ScrollerAdapter) {
         return (
@@ -236,12 +215,7 @@ class VirtualScroller {
 
     /** Item-space offset of the viewport edge after a sticky header. */
     private _getVisibleStart() {
-        return this._shouldAnchorRangeEnd()
-            ? Math.max(
-                  0.0,
-                  this._sizeIndex._totalSizeValue - this._availableWidgetSize
-              )
-            : this._alignedScrollPos + this._sticky._headerSize;
+        return this._alignedScrollPos + this._sticky._headerSize;
     }
 
     /**
@@ -324,9 +298,7 @@ class VirtualScroller {
         if (relativeOffset) {
             const adapter = this._scrollerAdapter;
             const wasAtEnd =
-                !this._scrollActivity._pointerDragging &&
-                adapter !== null &&
-                this._isAtPublishedEnd(adapter);
+                adapter !== null && this._isAtPublishedEnd(adapter);
 
             this._availableWidgetSize -= relativeOffset;
 
@@ -339,11 +311,6 @@ class VirtualScroller {
 
     /** Disposer for the current scroller resize subscription. */
     private _unobserveResize = () => {
-        // do nothing.
-    };
-
-    /** Disposer for the current native-scrollbar pointer subscription. */
-    private _unobservePointerDrag = () => {
         // do nothing.
     };
 
@@ -366,9 +333,7 @@ class VirtualScroller {
         this._sticky = new StickyElements(this._axisAdapter, relativeOffset =>
             this._updateStickyOffset(relativeOffset)
         );
-        this._scrollActivity = new ScrollActivity(() =>
-            this._publishDeferredScrollSize()
-        );
+        this._scrollActivity = new ScrollActivity(() => {});
         this._events = new VirtualScrollerEvents(() =>
             this._applyScrollCorrection()
         );
@@ -410,19 +375,6 @@ class VirtualScroller {
 
         this.scrollSize = nextScrollSize;
         this._events._emit(VirtualScrollerEvent.SCROLL_SIZE);
-    }
-
-    /** Keep the native scroll range stable until an active drag has settled. */
-    private _publishOrDeferScrollSize() {
-        if (
-            this._scrollActivity._pointerDragging ||
-            this._hasDeferredScrollSize
-        ) {
-            this._hasDeferredScrollSize =
-                this._sizeIndex._totalSizeValue !== this.scrollSize;
-        } else {
-            this._publishScrollSize();
-        }
     }
 
     /** Apply and clear the pending native-scroll correction, if any. */
@@ -513,11 +465,7 @@ class VirtualScroller {
         const adapter = this._scrollerAdapter;
         const canCorrectAnchor =
             adapter !== null && this._scrollActivity._anchorCorrectionAllowed;
-        const deferScrollSize =
-            this._scrollActivity._pointerDragging ||
-            this._hasDeferredScrollSize;
         const wasAtEnd =
-            !deferScrollSize &&
             adapter !== null &&
             !this._scrollActivity._programmaticScrollActive &&
             this._isAtPublishedEnd(adapter);
@@ -525,25 +473,17 @@ class VirtualScroller {
         this._events._beginBatch();
         try {
             if (totalDiff !== 0.0) {
-                if (deferScrollSize) {
-                    this._publishOrDeferScrollSize();
-                } else {
-                    this._publishScrollSize();
+                this._publishScrollSize();
 
-                    if (wasAtEnd) {
-                        this._scheduleEndCorrection();
-                    } else if (
-                        anchorDiff !== 0.0 &&
-                        canCorrectAnchor &&
-                        adapter
-                    ) {
-                        this._scheduleScrollCorrection(
-                            adapter._readOffset() + anchorDiff
-                        );
-                    }
+                if (wasAtEnd) {
+                    this._scheduleEndCorrection();
+                } else if (anchorDiff !== 0.0 && canCorrectAnchor && adapter) {
+                    this._scheduleScrollCorrection(
+                        adapter._readOffset() + anchorDiff
+                    );
                 }
 
-                if (deferScrollSize || totalDiff < 0.0) {
+                if (totalDiff < 0.0) {
                     this._updateRangeFromEnd();
                 }
             }
@@ -552,53 +492,6 @@ class VirtualScroller {
         } finally {
             this._events._endBatch();
         }
-    }
-
-    /** Publish measurements accumulated while the native scrollbar was held. */
-    private _publishDeferredScrollSize() {
-        if (
-            this._scrollActivity._pointerDragging ||
-            !this._hasDeferredScrollSize
-        )
-            return;
-
-        const adapter = this._scrollerAdapter;
-        const wasAtEnd = adapter !== null && this._isAtPublishedEnd(adapter);
-
-        this._hasDeferredScrollSize = false;
-        this._events._beginBatch();
-        try {
-            this._publishScrollSize();
-            if (wasAtEnd) {
-                this._scheduleEndCorrection();
-            }
-            this._updateRangeFromEnd();
-        } finally {
-            this._events._endBatch();
-        }
-    }
-
-    /**
-     * Read the items-container offset before releasing a frozen scrollbar.
-     * The normal update is debounced, but a fast thumb drag can finish before
-     * that timer and end correction must include the offset synchronously.
-     */
-    private _flushScrollerOffset() {
-        clearTimeout(this._scrollerOffsetTimer);
-        this._scrollerOffsetTimer = 0;
-
-        const adapter = this._scrollerAdapter;
-        if (!adapter) return false;
-
-        const nextOffset = adapter._distanceTo(this._initialElement);
-        if (
-            !Number.isFinite(nextOffset) ||
-            nextOffset === this._scrollElementOffset
-        )
-            return false;
-
-        this._scrollElementOffset = nextOffset;
-        return true;
     }
 
     /**
@@ -732,7 +625,6 @@ class VirtualScroller {
             this._scrollActivity._setIndexConverging(false);
             clearTimeout(this._scrollerOffsetTimer);
             this._unobserveResize();
-            this._unobservePointerDrag();
             this._scrollActivity._reset();
             this._scrollerAdapter._removeScrollListener(
                 this._handleScrollEvent
@@ -754,19 +646,6 @@ class VirtualScroller {
             this._unobserveResize = adapter._observeResize(size =>
                 this._setScrollElementSize(size)
             );
-            this._unobservePointerDrag = adapter._observePointerDrag(active => {
-                this._scrollActivity._setPointerDragging(active);
-
-                if (!active) {
-                    const offsetChanged = this._flushScrollerOffset();
-
-                    if (this._hasDeferredScrollSize) {
-                        this._publishDeferredScrollSize();
-                    } else if (offsetChanged) {
-                        this._syncScrollPosition();
-                    }
-                }
-            });
             adapter._addScrollListener(this._handleScrollEvent);
             adapter._addScrollEndListener(this._handleScrollEnd);
             this.updateScrollerOffset();
@@ -835,13 +714,10 @@ class VirtualScroller {
                 const newScrollElementOffset = adapter._distanceTo(
                     this._initialElement
                 );
-
                 const diff = newScrollElementOffset - this._scrollElementOffset;
 
                 if (diff) {
-                    const wasAtEnd =
-                        !this._scrollActivity._pointerDragging &&
-                        this._isAtPublishedEnd(adapter);
+                    const wasAtEnd = this._isAtPublishedEnd(adapter);
 
                     this._scrollElementOffset = newScrollElementOffset;
                     if (wasAtEnd) {
@@ -942,10 +818,6 @@ class VirtualScroller {
      * @returns last visible item index
      */
     private _getExactTo() {
-        if (this._shouldAnchorRangeEnd()) {
-            return this._itemCount;
-        }
-
         return (
             this._itemCount &&
             1 +
@@ -1100,7 +972,7 @@ class VirtualScroller {
 
             try {
                 this._itemCount = itemCount;
-                this._publishOrDeferScrollSize();
+                this._publishScrollSize();
 
                 if (this.to > itemCount) {
                     // after this range would be 100% updated
@@ -1130,11 +1002,7 @@ class VirtualScroller {
         const oldAnchorOffset = canCorrectAnchor
             ? this._sizeIndex._getOffset(exactFrom)
             : 0.0;
-        const deferScrollSize =
-            this._scrollActivity._pointerDragging ||
-            this._hasDeferredScrollSize;
         const wasAtEnd =
-            !deferScrollSize &&
             adapter !== null &&
             !this._scrollActivity._programmaticScrollActive &&
             this._isAtPublishedEnd(adapter);
@@ -1156,10 +1024,10 @@ class VirtualScroller {
 
         try {
             if (totalDelta !== 0.0) {
-                this._publishOrDeferScrollSize();
+                this._publishScrollSize();
             }
 
-            if (!deferScrollSize && adapter) {
+            if (adapter) {
                 if (wasAtEnd && totalDelta !== 0.0) {
                     this._scheduleEndCorrection();
                 } else if (anchorDiff !== 0.0) {
@@ -1234,7 +1102,7 @@ class VirtualScroller {
 
         try {
             this._itemCount = nextItemCount;
-            this._publishOrDeferScrollSize();
+            this._publishScrollSize();
             this.to = -1;
             this._updateRangeFromEnd();
             if (sizesChanged) {

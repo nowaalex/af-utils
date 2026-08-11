@@ -12,16 +12,6 @@ export interface AxisAdapter {
     _readEntrySize(entry: ResizeObserverEntry): number;
     /** Read a DOM rectangle's starting coordinate on this axis. */
     _readRectStart(rect: DOMRect): number;
-    /** Return whether a pointer targets an element scrollbar on this axis. */
-    _isElementScrollbarPointer(
-        element: HTMLElement,
-        event: PointerEvent
-    ): boolean;
-    /** Return whether a pointer targets a window scrollbar on this axis. */
-    _isWindowScrollbarPointer(
-        windowObject: Window,
-        event: PointerEvent
-    ): boolean;
     /** Scroll an element to an offset on this axis. */
     _scrollElement(
         element: HTMLElement,
@@ -43,16 +33,6 @@ export const verticalAxisAdapter: AxisAdapter = {
     _readWindowSize: windowObject => windowObject.innerHeight,
     _readEntrySize: entry => entry.borderBoxSize[0].blockSize,
     _readRectStart: rect => rect.top,
-    _isElementScrollbarPointer: (element, event) => {
-        const rect = element.getBoundingClientRect();
-        const contentStart = rect.left + element.clientLeft;
-        return (
-            event.clientX < contentStart ||
-            event.clientX >= contentStart + element.clientWidth
-        );
-    },
-    _isWindowScrollbarPointer: (windowObject, event) =>
-        event.clientX >= windowObject.document.documentElement.clientWidth,
     _scrollElement: (element, offset, behavior) =>
         element.scroll({ top: offset, behavior }),
     _scrollWindow: (windowObject, offset, behavior) =>
@@ -66,16 +46,6 @@ export const horizontalAxisAdapter: AxisAdapter = {
     _readWindowSize: windowObject => windowObject.innerWidth,
     _readEntrySize: entry => entry.borderBoxSize[0].inlineSize,
     _readRectStart: rect => rect.left,
-    _isElementScrollbarPointer: (element, event) => {
-        const rect = element.getBoundingClientRect();
-        const contentStart = rect.top + element.clientTop;
-        return (
-            event.clientY < contentStart ||
-            event.clientY >= contentStart + element.clientHeight
-        );
-    },
-    _isWindowScrollbarPointer: (windowObject, event) =>
-        event.clientY >= windowObject.document.documentElement.clientHeight,
     _scrollElement: (element, offset, behavior) =>
         element.scroll({ left: offset, behavior }),
     _scrollWindow: (windowObject, offset, behavior) =>

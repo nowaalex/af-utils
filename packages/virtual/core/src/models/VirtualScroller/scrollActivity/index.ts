@@ -4,13 +4,10 @@ export const SCROLL_ENDED_IDLE_TIMEOUT_MS = 128;
 type Timer = ReturnType<typeof setTimeout>;
 
 const NATIVE_SCROLL_END_FLAG = 1;
-const POINTER_DRAGGING_FLAG = 2;
-const PROGRAMMATIC_PENDING_FLAG = 4;
-const INDEX_CONVERGING_FLAG = 8;
+const PROGRAMMATIC_PENDING_FLAG = 2;
+const INDEX_CONVERGING_FLAG = 4;
 const PROGRAMMATIC_SCROLL_FLAGS =
     PROGRAMMATIC_PENDING_FLAG | INDEX_CONVERGING_FLAG;
-const ANCHOR_CORRECTION_BLOCKING_FLAGS =
-    POINTER_DRAGGING_FLAG | PROGRAMMATIC_SCROLL_FLAGS;
 
 export interface ScrollActivityScheduler {
     /** Return the scheduler's current monotonic timestamp. */
@@ -27,7 +24,7 @@ const browserScheduler: ScrollActivityScheduler = {
     _clearTimeout: timer => clearTimeout(timer)
 };
 
-/** Owns native, pointer, and programmatic scroll lifecycle state. */
+/** Owns native and programmatic scroll lifecycle state. */
 class ScrollActivity {
     private _onIdle: () => void;
     private _scheduler: ScrollActivityScheduler;
@@ -64,11 +61,6 @@ class ScrollActivity {
         this._scheduler = scheduler;
     }
 
-    /** Whether a pointer currently owns the native scrollbar thumb. */
-    get _pointerDragging() {
-        return (this._flags & POINTER_DRAGGING_FLAG) !== 0;
-    }
-
     /** Whether native scrolling has started without reaching an idle boundary. */
     get _nativeScrollActive() {
         return this._lastScrollTimestampMs !== Number.NEGATIVE_INFINITY;
@@ -83,7 +75,7 @@ class ScrollActivity {
     get _anchorCorrectionAllowed() {
         return (
             this._lastScrollTimestampMs === Number.NEGATIVE_INFINITY &&
-            (this._flags & ANCHOR_CORRECTION_BLOCKING_FLAGS) === 0
+            (this._flags & PROGRAMMATIC_SCROLL_FLAGS) === 0
         );
     }
 
@@ -110,12 +102,6 @@ class ScrollActivity {
         }
 
         this._finish();
-    }
-
-    /** Set native scrollbar-thumb ownership. */
-    _setPointerDragging(active: boolean) {
-        if (active) this._flags |= POINTER_DRAGGING_FLAG;
-        else this._flags &= ~POINTER_DRAGGING_FLAG;
     }
 
     /** Start programmatic activity with a failsafe release timeout. */

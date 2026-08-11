@@ -101,27 +101,10 @@ describe("ScrollActivity", () => {
         const activity = new ScrollActivity(() => {}, scheduler);
 
         activity._startProgrammaticScroll(1_000);
-        activity._setPointerDragging(true);
         activity._setNativeScrollEndSupported(true);
         activity._setNativeScrollEndSupported(false);
 
-        expect(activity._pointerDragging).toBe(true);
         expect(activity._programmaticScrollActive).toBe(true);
-    });
-
-    test("tracks pointer ownership without scheduling idle work", () => {
-        const scheduler = new TestScheduler();
-        const onIdle = vi.fn();
-        const activity = new ScrollActivity(onIdle, scheduler);
-
-        activity._setPointerDragging(true);
-        scheduler.advanceBy(500);
-        activity._setPointerDragging(false);
-
-        expect(activity._pointerDragging).toBe(false);
-        expect(scheduler.pendingTimers).toBe(0);
-        expect(activity._nativeScrollActive).toBe(false);
-        expect(onIdle).not.toHaveBeenCalled();
     });
 
     test("treats native scrollend as the definitive idle boundary", () => {
@@ -193,10 +176,6 @@ describe("ScrollActivity", () => {
 
         expect(activity._anchorCorrectionAllowed).toBe(true);
 
-        activity._setPointerDragging(true);
-        expect(activity._anchorCorrectionAllowed).toBe(false);
-        activity._setPointerDragging(false);
-
         activity._setNativeScrollEndSupported(true);
         activity._onNativeScroll();
         expect(activity._anchorCorrectionAllowed).toBe(false);
@@ -236,12 +215,10 @@ describe("ScrollActivity", () => {
 
         activity._onNativeScroll();
         activity._startProgrammaticScroll(1_000);
-        activity._setPointerDragging(true);
         activity._setIndexConverging(true);
         activity._reset();
 
         expect(scheduler.pendingTimers).toBe(0);
-        expect(activity._pointerDragging).toBe(false);
         expect(activity._nativeScrollActive).toBe(false);
         expect(activity._programmaticScrollActive).toBe(false);
         expect(onIdle).toHaveBeenCalledOnce();

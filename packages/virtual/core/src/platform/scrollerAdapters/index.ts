@@ -22,66 +22,9 @@ export interface ScrollerAdapter {
     _addScrollEndListener(listener: EventListener): void;
     /** Detach a native `scrollend` listener. */
     _removeScrollEndListener(listener: EventListener): void;
-    /** Observe native scrollbar pointer ownership. */
-    _observePointerDrag(callback: (active: boolean) => void): () => void;
     /** Observe viewport size changes. */
     _observeResize(callback: (size: number) => void): () => void;
 }
-
-/** Observe pointer ownership of a native scrollbar and return its disposer. */
-const observePointerDrag = (
-    target: HTMLElement | Window,
-    windowTarget: Window | null,
-    isScrollbarPointer: (event: PointerEvent) => boolean,
-    callback: (active: boolean) => void
-) => {
-    if (!windowTarget) {
-        return () => {};
-    }
-
-    let active = false;
-    const handlePointerDown = (event: PointerEvent) => {
-        if (event.isPrimary && isScrollbarPointer(event)) {
-            active = true;
-            callback(true);
-        }
-    };
-    const handlePointerEnd = (event: PointerEvent) => {
-        if (event.isPrimary && active) {
-            active = false;
-            callback(false);
-        }
-    };
-
-    target.addEventListener("pointerdown", handlePointerDown as EventListener, {
-        passive: true
-    });
-    windowTarget.addEventListener(
-        "pointerup",
-        handlePointerEnd as EventListener,
-        { passive: true }
-    );
-    windowTarget.addEventListener(
-        "pointercancel",
-        handlePointerEnd as EventListener,
-        { passive: true }
-    );
-
-    return () => {
-        target.removeEventListener(
-            "pointerdown",
-            handlePointerDown as EventListener
-        );
-        windowTarget.removeEventListener(
-            "pointerup",
-            handlePointerEnd as EventListener
-        );
-        windowTarget.removeEventListener(
-            "pointercancel",
-            handlePointerEnd as EventListener
-        );
-    };
-};
 
 /** Narrow a supported scroll target to `Window`. */
 const isWindowScroller = (target: HTMLElement | Window): target is Window =>
@@ -170,16 +113,6 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
         this._target.removeEventListener("scrollend", listener);
     }
 
-    /** Observe element-scrollbar pointer ownership. */
-    _observePointerDrag(callback: (active: boolean) => void) {
-        return observePointerDrag(
-            this._target,
-            this._target.ownerDocument?.defaultView ?? null,
-            event => this._axis._isElementScrollbarPointer(this._target, event),
-            callback
-        );
-    }
-
     /** Observe changes to the element's border-box size. */
     _observeResize(callback: (size: number) => void) {
         const observer = new ResizeObserver(entries => {
@@ -262,16 +195,6 @@ export class WindowScrollerAdapter implements ScrollerAdapter {
     /** Detach a window `scrollend` listener. */
     _removeScrollEndListener(listener: EventListener) {
         this._target.removeEventListener("scrollend", listener);
-    }
-
-    /** Observe window-scrollbar pointer ownership. */
-    _observePointerDrag(callback: (active: boolean) => void) {
-        return observePointerDrag(
-            this._target,
-            this._target,
-            event => this._axis._isWindowScrollbarPointer(this._target, event),
-            callback
-        );
     }
 
     /** Observe changes to the window viewport size. */
