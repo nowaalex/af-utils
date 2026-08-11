@@ -5,6 +5,10 @@ globalThis.ResizeObserver = class {
     unobserve() {}
     disconnect() {}
 };
+globalThis.window = {
+    addEventListener() {},
+    removeEventListener() {}
+};
 
 const { default: VirtualScroller } = await import(
     "../.jit/VirtualScroller.mjs"

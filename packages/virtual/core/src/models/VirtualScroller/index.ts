@@ -129,14 +129,18 @@ class VirtualScroller {
     /** Monomorphic DOM accessors selected once for the configured axis. */
     private _axisAdapter: AxisAdapter = verticalAxisAdapter;
 
-    /** DOM adapter for the currently attached scroll container. */
+    /**
+     * DOM adapter for the currently attached scroll container.
+     *
+     * @remarks The model exists before a React ref or another framework DOM
+     * lifecycle attaches, and it remains usable for geometry and SSR after
+     * detachment. Consequently absence is real lifecycle state rather than a
+     * placeholder adapter behavior.
+     */
     private _scrollerAdapter: ScrollerAdapter | null = null;
 
     /** Native and programmatic scroll lifecycle state. */
     private _scrollActivity: ScrollActivity;
-
-    /** Whether the internal total differs from the frozen public scroll size. */
-    private _hasDeferredScrollSize = false;
 
     /** Whether a primary pointer remains pressed inside the current scroller. */
     private _pointerActive = false;
@@ -198,6 +202,24 @@ class VirtualScroller {
     /** @readonly Current number of items in the model. */
     get itemCount() {
         return this._itemCount;
+    }
+
+    /**
+     * Whether measured item geometry differs from the size currently exposed
+     * to the browser and subscribers.
+     *
+     * @remarks
+     * This is derived rather than stored: `_sizeIndex` is the internal source
+     * of truth, while {@link VirtualScroller.scrollSize | scrollSize} is the
+     * last published extent. For example, if the published track is `4000px`
+     * and a measurement grows the internal total to `4040px`, this getter is
+     * `true` until `_publishScrollSize` exposes `4040px`.
+     *
+     * Derivation also handles a later measurement returning the total to
+     * `4000px`; no separate flag has to be cleared or synchronized.
+     */
+    private get _hasDeferredScrollSize() {
+        return this._sizeIndex._totalSizeValue !== this.scrollSize;
     }
 
     /**
@@ -274,27 +296,39 @@ class VirtualScroller {
      *
      * @remarks
      * During normal scrolling this is the aligned native offset plus the sticky
-     * header. At a frozen end it is derived from internal geometry instead:
+     * header. A deferred measurement creates two temporary coordinate systems:
      *
      * ```plaintext
-     * normal: visible start = aligned scroll position + sticky header
-     * frozen: visible start = internal item extent - usable viewport
+     * published track: [----------------|] 4000px  (browser sees this)
+     * internal items:  [------------------|] 4040px  (range uses this)
      * ```
+     *
+     * Away from the published end, the native offset remains the only stable
+     * anchor, so the normal formula is preserved. At the published end, the
+     * user's intent is unambiguous: keep showing the list end. The equivalent
+     * internal coordinate is `internal extent - usable viewport`.
+     *
+     * With a `200px` usable viewport, the normal published-end coordinate is
+     * `3800px`; after the internal total grows to `4040px`, the anchored
+     * visible start is `3840px` even though the scrollbar is still frozen.
      */
     private _getVisibleStart() {
-        return this._shouldAnchorRangeEnd()
-            ? Math.max(
-                  0.0,
-                  this._sizeIndex._totalSizeValue - this._availableWidgetSize
-              )
-            : this._alignedScrollPos + this._sticky._headerSize;
+        if (this._shouldAnchorRangeEnd()) {
+            return Math.max(
+                0.0,
+                this._sizeIndex._totalSizeValue - this._availableWidgetSize
+            );
+        }
+
+        return this._alignedScrollPos + this._sticky._headerSize;
     }
 
     /**
      * Whether publishing the internal item extent must wait for interaction.
      *
-     * @remarks Publication remains deferred while a primary pointer is held,
-     * native scrolling is active, or an earlier size change is already queued:
+     * @remarks Publication is deferred only while a primary pointer is held or
+     * native scrolling is active. Whether unpublished geometry already exists
+     * is derived independently by `_hasDeferredScrollSize`:
      *
      * ```plaintext
      * public scrollbar track [----------------|] 1000px  (frozen)
@@ -303,11 +337,7 @@ class VirtualScroller {
      * ```
      */
     private get _scrollSizePublicationDeferred() {
-        return (
-            this._pointerActive ||
-            this._scrollActivity._nativeScrollActive ||
-            this._hasDeferredScrollSize
-        );
+        return this._pointerActive || this._scrollActivity._nativeScrollActive;
     }
 
     /**
@@ -504,10 +534,7 @@ class VirtualScroller {
 
     /** Keep native geometry stable until the current scroll transaction ends. */
     private _publishOrDeferScrollSize() {
-        if (this._scrollSizePublicationDeferred) {
-            this._hasDeferredScrollSize =
-                this._sizeIndex._totalSizeValue !== this.scrollSize;
-        } else {
+        if (!this._scrollSizePublicationDeferred) {
             this._publishScrollSize();
         }
     }
@@ -530,15 +557,54 @@ class VirtualScroller {
         }
     }
 
-    /** Queue an explicit native-scroll offset for the end of the event batch. */
-    private _scheduleScrollCorrection(offset: number) {
+    /**
+     * Queue a fixed native offset correction after the current event batch.
+     *
+     * @param offset - Native scroll coordinate in CSS pixels. Negative input
+     * is clamped to `0px`.
+     *
+     * @remarks
+     * The numeric target is captured immediately. This preserves a visible
+     * item when measurements before it move by a known delta. For example, if
+     * the browser is at `400px` and preceding items grow by `20px`, this queues
+     * the fixed target `420px`:
+     *
+     * ```plaintext
+     * before: 400px [ visible anchor ]
+     * growth: +20px before the anchor
+     * after:  420px [ same visible anchor ]
+     * ```
+     *
+     * A later queued correction replaces the earlier one. Application waits
+     * until the outer event batch has let subscribers update DOM geometry.
+     */
+    private _scheduleOffsetCorrection(offset: number) {
         this._pendingScrollToEnd = false;
         this._hasPendingScrollOffset = true;
         this._pendingScrollOffset = Math.max(0.0, offset);
         if (!this._events._batching) this._applyScrollCorrection();
     }
 
-    /** Resolve an end correction against final geometry when the batch ends. */
+    /**
+     * Queue an end-preserving correction after the current event batch.
+     *
+     * @remarks
+     * Unlike `_scheduleOffsetCorrection`, this stores the symbolic intent
+     * “scroll to the published end”, not a CSS-pixel coordinate. The final
+     * offset is resolved by `_applyScrollCorrection` only after subscribers
+     * have applied the new {@link VirtualScroller.scrollSize | scrollSize}.
+     *
+     * For a `200px` viewport, growing the published extent from `4000px` to
+     * `4040px` moves the end from `3800px` to `3840px`:
+     *
+     * ```plaintext
+     * event batch: publish 4040px -> subscribers resize DOM -> scroll 3840px
+     * ```
+     *
+     * Resolving the coordinate when scheduling would use stale geometry if a
+     * later mutation in the same batch changed the total again. A later fixed
+     * offset correction can replace this pending end intent.
+     */
     private _scheduleEndCorrection() {
         this._pendingScrollToEnd = true;
         this._hasPendingScrollOffset = false;
@@ -618,7 +684,7 @@ class VirtualScroller {
                         canCorrectAnchor &&
                         adapter
                     ) {
-                        this._scheduleScrollCorrection(
+                        this._scheduleOffsetCorrection(
                             adapter._readOffset() + anchorDiff
                         );
                     }
@@ -651,7 +717,6 @@ class VirtualScroller {
         this._flushScrollerOffset();
         const wasAtEnd = this._isAtPublishedEnd();
 
-        this._hasDeferredScrollSize = false;
         this._events._beginBatch();
         try {
             this._publishScrollSize();
@@ -1293,7 +1358,7 @@ class VirtualScroller {
                 if (wasAtEnd && totalDelta !== 0.0) {
                     this._scheduleEndCorrection();
                 } else if (anchorDiff !== 0.0) {
-                    this._scheduleScrollCorrection(
+                    this._scheduleOffsetCorrection(
                         adapter._readOffset() + anchorDiff
                     );
                 }
@@ -1430,7 +1495,6 @@ class VirtualScroller {
         this._scrollerOffsetTimer = 0;
         this._itemObservationFrame = null;
         this._pendingItemObservations.clear();
-        this._hasDeferredScrollSize = false;
         this._pointerActive = false;
         this._pointerElement = null;
         this._pendingScrollOffset = 0.0;

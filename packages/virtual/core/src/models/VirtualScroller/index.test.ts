@@ -728,6 +728,7 @@ describe("VirtualScroller creation works", () => {
         expect(model.itemCount).toBe(110);
         expect(model.scrollSize).toBe(4_000);
         expect(model.to).toBe(110);
+        expect(model.visibleFrom).toBe(105);
         expect(scroller.scrollTop).toBe(3_800);
 
         window.dispatchEvent(pointerUp);

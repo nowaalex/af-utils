@@ -5,6 +5,10 @@ globalThis.ResizeObserver = class {
     unobserve() {}
     disconnect() {}
 };
+globalThis.window = {
+    addEventListener() {},
+    removeEventListener() {}
+};
 globalThis.requestAnimationFrame = () => 1;
 globalThis.cancelAnimationFrame = () => {};
 
@@ -128,17 +132,49 @@ const createScroller = () => ({
     getBoundingClientRect: () => ({ top: 0, left: 0 }),
     scroll() {}
 });
+const createWindowScroller = () => {
+    const target = {
+        window: null,
+        scrollY: 0,
+        scrollX: 0,
+        innerHeight: 600,
+        innerWidth: 600,
+        document: {
+            documentElement: { clientHeight: 600, clientWidth: 600 }
+        },
+        addEventListener() {},
+        removeEventListener() {},
+        scroll() {}
+    };
+    target.window = target;
+    return target;
+};
 const verticalScroller = createScroller();
 const horizontalScroller = createScroller();
+const windowScroller = createWindowScroller();
+const windowModel = new VirtualScroller({
+    estimatedItemSize: 40,
+    estimatedWidgetSize: 600,
+    itemCount: 100_000
+});
 
 verticalModel.setScroller(verticalScroller);
 horizontalModel.setScroller(horizontalScroller);
+windowModel.setScroller(windowScroller);
 
-if (!%HaveSameMap(verticalModel, horizontalModel)) {
+if (
+    !%HaveSameMap(defaultModel, verticalModel) ||
+    !%HaveSameMap(verticalModel, horizontalModel) ||
+    !%HaveSameMap(verticalModel, windowModel)
+) {
     throw new Error(
-        "Attaching different scroller modes changed the VirtualScroller hidden class"
+        "Attaching element or window scrollers changed the VirtualScroller hidden class"
     );
 }
+
+console.log(
+    "VirtualScroller hidden class is stable across detached, element and window scrollers"
+);
 
 const virtualGetOffset = VirtualScroller.prototype.getOffset;
 const virtualGetIndex = VirtualScroller.prototype.getIndex;
@@ -212,13 +248,20 @@ const warmEventsAndMeasurements = () => {
 
 const warmVirtualScroller = () => {
     for (let iteration = 0; iteration < 20_000; iteration++) {
-        const model = iteration & 1 ? verticalModel : horizontalModel;
+        const mode = iteration % 3;
+        const model =
+            mode === 0
+                ? verticalModel
+                : mode === 1
+                  ? horizontalModel
+                  : windowModel;
 
         virtualGetOffset.call(model, iteration % 99_999);
         virtualGetIndex.call(model, (iteration * 97) % model.scrollSize);
 
         verticalScroller.scrollTop = (iteration * 193) % 3_999_400;
         horizontalScroller.scrollLeft = (iteration * 389) % 3_999_400;
+        windowScroller.scrollY = (iteration * 587) % 3_999_400;
         syncScrollPosition.call(model);
 
         if ((iteration & 31) === 0) {
@@ -267,6 +310,8 @@ verticalScroller.scrollTop = 1_000_000;
 syncScrollPosition.call(verticalModel);
 horizontalScroller.scrollLeft = 1_000_000;
 syncScrollPosition.call(horizontalModel);
+windowScroller.scrollY = 1_000_000;
+syncScrollPosition.call(windowModel);
 const unsubscribe = subscribe.call(measurementModel, eventCallback, 1 | 2 | 4);
 beginEventBatch.call(eventDispatcher);
 emitEvent.call(eventDispatcher, 1);
