@@ -20,7 +20,7 @@ interface Props {
 }
 ---
 
-<input aria-hidden="true" type="checkbox" class="ds-menu-checkbox hidden" />
+<input aria-hidden="true" type="checkbox" class="ds-menu-checkbox hidden">
 <div
     class:list={[
         "flex flex-col lg:overflow-y-auto lg:border-r lg:drop-shadow-sm",
@@ -82,31 +82,31 @@ interface Props {
 </div>
 <menu-events-appender hidden></menu-events-appender>
 <script>
-    class MenuEventsAppender extends HTMLElement {
-        constructor() {
-            super();
+class MenuEventsAppender extends HTMLElement {
+    constructor() {
+        super();
 
-            const menu =
-                document.querySelector<HTMLInputElement>(".ds-menu-checkbox")!;
+        const menu =
+            document.querySelector<HTMLInputElement>(".ds-menu-checkbox")!;
 
-            const toggleMenu = () => menu.toggleAttribute("checked");
+        const toggleMenu = () => menu.toggleAttribute("checked");
 
-            document
-                .querySelectorAll(".ds-menu-opener, .ds-menu-closer")
-                .forEach(btn => btn.addEventListener("click", toggleMenu));
+        document
+            .querySelectorAll(".ds-menu-opener, .ds-menu-closer")
+            .forEach(btn => btn.addEventListener("click", toggleMenu));
 
-            document
-                .querySelector(".ds-menu-items")!
-                .addEventListener("click", e => {
-                    if (
-                        e.target instanceof HTMLAnchorElement &&
-                        e.target.getAttribute("href")?.startsWith("/")
-                    ) {
-                        toggleMenu();
-                    }
-                });
-        }
+        document
+            .querySelector(".ds-menu-items")!
+            .addEventListener("click", e => {
+                if (
+                    e.target instanceof HTMLAnchorElement &&
+                    e.target.getAttribute("href")?.startsWith("/")
+                ) {
+                    toggleMenu();
+                }
+            });
     }
+}
 
-    customElements.define("menu-events-appender", MenuEventsAppender);
+customElements.define("menu-events-appender", MenuEventsAppender);
 </script>

@@ -3,16 +3,16 @@ import {
     useVirtual,
     List,
     ListItemProps,
-    createListItemRef
+    useVirtualItemRef
 } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
-const Item = memo<ListItemProps>(({ model, i }) => (
+const Item = memo<ListItemProps>(({ model, index }) => (
     <div
-        ref={createListItemRef(model, i)}
-        className={i % 2 ? css.oddItem : css.evenItem}
+        ref={useVirtualItemRef(model, index)}
+        className={index % 2 ? css.oddItem : css.evenItem}
     >
-        col&nbsp;{i}
+        col&nbsp;{index}
     </div>
 ));
 

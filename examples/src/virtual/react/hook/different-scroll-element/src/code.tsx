@@ -1,46 +1,47 @@
 import { memo } from "react";
 import {
     useVirtual,
-    Subscription,
-    mapVisibleRange,
-    useSyncedStyles,
-    createListItemRef
+    useVirtualSnapshot,
+    useVirtualLayout,
+    useVirtualItemRef
 } from "@af-utils/virtual-react";
-import { VirtualScrollerEvent } from "@af-utils/virtual-core";
+import {
+    mapVirtualRange,
+    VirtualScrollerEvent,
+    type VirtualScroller
+} from "@af-utils/virtual-core";
 import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
-const Item = memo<ListItemProps>(({ model, i }) => (
-    <div ref={createListItemRef(model, i)} className={css.item}>
-        row {i}
+const Item = memo<ListItemProps>(({ model, index }) => (
+    <div ref={useVirtualItemRef(model, index)} className={css.item}>
+        row {index}
     </div>
 ));
+
+const Items = ({ model }: { model: VirtualScroller }) => {
+    useVirtualSnapshot(model, VirtualScrollerEvent.RANGE);
+    return mapVirtualRange(model, index => (
+        <Item key={index} model={model} index={index} />
+    ));
+};
 
 const DifferentScrollElementHook = () => {
     const model = useVirtual({
         itemCount: 5000
     });
 
-    const [outerRef, innerRef] = useSyncedStyles(model);
+    const { sizeRef, itemsRef } = useVirtualLayout(model);
 
     return (
         <div className={css.list} ref={el => model.setScroller(el)}>
             <div className={css.offset1}>Some offset</div>
             <div>
                 <div className={css.offset2}>Some offset 2</div>
-                <div ref={el => model.setContainer(el)}>
-                    <div ref={outerRef}>
-                        <div ref={innerRef}>
-                            <Subscription
-                                model={model}
-                                events={[VirtualScrollerEvent.RANGE]}
-                            >
-                                {() =>
-                                    mapVisibleRange(model, i => (
-                                        <Item key={i} model={model} i={i} />
-                                    ))
-                                }
-                            </Subscription>
+                <div>
+                    <div ref={sizeRef}>
+                        <div ref={itemsRef}>
+                            <Items model={model} />
                         </div>
                     </div>
                 </div>

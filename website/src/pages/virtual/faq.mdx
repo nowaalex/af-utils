@@ -5,8 +5,6 @@ description: "Something is not working as expected? Or just curious? Here is the
 ---
 
 import DocLink from "components/DocLink.astro";
-import { Image } from "astro:assets";
-import scrollbarMisalign from "assets/scrollbar_misalign.gif";
 
 # Frequently asked questions
 
@@ -24,11 +22,11 @@ Awesome libraries, which inspired me to create my own:
 
 Features I was missing there and implemented/improved here:
 
--   flexible <DocLink slug="virtual-core">core api</DocLink>,
-    which exposes <DocLink slug="virtual-core.virtualscroller.getindex">getIndex</DocLink> and <DocLink slug="virtual-core.virtualscroller.getoffset">
+-   flexible <DocLink slug="virtual-core/index">core api</DocLink>,
+    which exposes <DocLink slug="virtual-core/classes/VirtualScroller#getindex">getIndex</DocLink> and <DocLink slug="virtual-core/classes/VirtualScroller#getoffset">
     getOffset
     </DocLink> methods;
--   built-in event emitter, supporting different <DocLink slug="virtual-core.virtualscrollerevent">events</DocLink>;
+-   built-in event emitter, supporting different <DocLink slug="virtual-core/variables/VirtualScrollerEvent">events</DocLink>;
 -   scroll position persistence after [prepending items](/virtual/examples/react/list/prepend-items);
 -   isolated rerendering with separate [subscriptions](/virtual/examples/react/list/extra-events);
 -   support of both [react hook](/virtual/examples/react/hook/simple) and [react component](/virtual/examples/react/list/simple) api, which allows to
@@ -36,7 +34,7 @@ Features I was missing there and implemented/improved here:
 
 ## Why do I need to use ref?
 
-In order to work smoothly, library must know scrolled item sizes. Initially they equal <DocLink slug="virtual-core.virtualscrollerruntimeparams.estimateditemsize">estimatedItemSize</DocLink>. But this is usually not
+In order to work smoothly, library must know scrolled item sizes. Initially they equal <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#estimateditemsize">estimatedItemSize</DocLink>. But this is usually not
 enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
 for more accurate measurements, but you must provide mounted items explicitly in
 conjunction with their indexes.
@@ -48,27 +46,22 @@ but you may use your styling approach.
 
 ## How many items virtual scroller can handle?
 
-Maximum quantity library can handle is `2_147_483_647` (int32 max), but it is better not to use such huge values. <DocLink slug="virtual-core.virtualscrollerruntimeparams.itemcount">Read more</DocLink>
+Maximum quantity library can handle is `1_073_741_823` (`2^30 - 1`), but it is better not to use such huge values. <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#itemcount">Read more</DocLink>
 
 ## Is Server-side rendering supported?
 
-Yes, you can adjust quantity of server-rendered items. <DocLink slug="virtual-core.virtualscrollerinitialparams.estimatedwidgetsize">Read more</DocLink>
+Yes, you can adjust quantity of server-rendered items. <DocLink slug="virtual-core/interfaces/VirtualScrollerInitialParams#estimatedwidgetsize">Read more</DocLink>
 
-## Why cursor and scrollbar become unaligned after manual scrolling?
+## How are dynamic measurements synchronized with a dragged scrollbar?
 
-<Image
-    src={scrollbarMisalign}
-    alt="scrollbar unaligned"
-    class="border sm:float-left sm:mr-3"
-    quality={60}
-/>
+Items are remeasured on the fly. If <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#estimateditemsize">estimated item size</DocLink>
+differs from the real one, <DocLink slug="virtual-core/classes/VirtualScroller#scrollsize">scrollSize</DocLink> changes. Changing the native scroll range
+while its thumb is being dragged would move the thumb away from the pointer.
 
-Items are remeasured on the fly. If <DocLink slug="virtual-core.virtualscrollerruntimeparams.estimateditemsize">estimated item size</DocLink>
-is different from the real one, <DocLink slug="virtual-core.virtualscroller.scrollsize">scrollSize</DocLink> would jump, which causes scrollbar
-unalignment. No size discrepancies leads to no jumps, so <DocLink slug="virtual-core.virtualscrollerruntimeparams.estimateditemsize">estimated item size</DocLink>
-must be as accurate as possible.
-
-<p class="clear-both" />
+The model therefore queues measurements during a native pointer drag and commits them as one batch after pointer release. The scroll range and
+rendered offsets always change together. Outside a drag, reaching the end anchors the list to its new end, while ordinary and programmatic scrolling
+is never rescaled by an unrelated size ratio. An accurate <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#estimateditemsize">estimated item size</DocLink>
+still reduces the amount of correction needed after release.
 
 ## Why do all items disappear after scrolling to bottom?
 

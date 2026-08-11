@@ -16,8 +16,7 @@ const prev = idx > 0 ? items[idx - 1] : null;
 const next = idx < items.length - 1 ? items[idx + 1] : null;
 ---
 
-{
-    prev ? (
+{prev ? (
         <a
             href={prev.path}
             aria-label={`Previous: ${prev.name}`}
@@ -28,10 +27,8 @@ const next = idx < items.length - 1 ? items[idx + 1] : null;
         </a>
     ) : (
         <div />
-    )
-}
-{
-    next ? (
+    )}
+{next ? (
         <a
             href={next.path}
             aria-label={`Next: ${next.name}`}
@@ -42,5 +39,4 @@ const next = idx < items.length - 1 ? items[idx + 1] : null;
         </a>
     ) : (
         <div />
-    )
-}
+    )}

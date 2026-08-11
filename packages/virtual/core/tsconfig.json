@@ -1,13 +1,19 @@
 {
     "include": ["src/**/*.ts"],
+    "exclude": [
+        "src/**/*.test.ts",
+        "src/**/*.bench.ts",
+        "src/**/__mocks__/**",
+        "src/benchmarks/**"
+    ],
     "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": "src",
-        "baseUrl": "src",
         "outDir": "dist",
         "declaration": true,
         "declarationDir": "dist/types",
         "emitDeclarationOnly": true,
-        "types": ["node", "vitest/globals"]
+        "stripInternal": true,
+        "types": ["node"]
     }
 }

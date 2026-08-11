@@ -1,18 +1,18 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import VirtualDocumentation from "layouts/virtual/VirtualDocumentation.astro";
 
 export async function getStaticPaths() {
     const entries = await getCollection("reference");
 
     return entries.map(entry => ({
-        params: { page: entry.slug },
+        params: { page: entry.id },
         props: { entry }
     }));
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await entry.render();
+const { Content, headings } = await render(entry);
 
 if (!headings.length) {
     throw new Error("Reference must contain at least one header");
@@ -23,7 +23,7 @@ const firstHeaderText = headings[0]!.text;
 /* Extracting description from first plaintext paragraph after <h1 /> if it exists */
 let desctiption = "";
 
-const trimmedStrings = entry.body
+const trimmedStrings = (entry.body ?? "")
     .split(/[\r\n]+/)
     .map(str => str.trim())
     .filter(str => !!str.length);

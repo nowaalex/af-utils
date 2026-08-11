@@ -1,20 +1,30 @@
 import { memo, useState, useEffect, useLayoutEffect } from "react";
 import {
     useVirtual,
-    Subscription,
-    mapVisibleRange,
-    createListItemRef
+    useVirtualSnapshot,
+    useVirtualItemRef
 } from "@af-utils/virtual-react";
-import { VirtualScrollerEvent } from "@af-utils/virtual-core";
+import {
+    mapVirtualRange,
+    VirtualScrollerEvent,
+    type VirtualScroller
+} from "@af-utils/virtual-core";
 import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
-const Item = memo<ListItemProps>(({ model, i }) => (
-    <tr ref={createListItemRef(model, i)}>
-        <td>Cell one - {i}</td>
-        <td>Cell two - {i}</td>
+const Item = memo<ListItemProps>(({ model, index }) => (
+    <tr ref={useVirtualItemRef(model, index)}>
+        <td>Cell one - {index}</td>
+        <td>Cell two - {index}</td>
     </tr>
 ));
+
+const Items = ({ model }: { model: VirtualScroller }) => {
+    useVirtualSnapshot(model, VirtualScrollerEvent.RANGE);
+    return mapVirtualRange(model, index => (
+        <Item key={index} index={index} model={model} />
+    ));
+};
 
 // Needed for server side rendering. Otherwise useLayoutEffect could be used
 const useIsomorphicLayoutEffect =
@@ -39,15 +49,17 @@ const CustomRender = () => {
                     model.scrollSize - model.getOffset(model.to) + "px";
             };
 
-            const unsubBefore = model.on(updateBeforeStyle, [
+            const unsubBefore = model.subscribe(
+                updateBeforeStyle,
                 VirtualScrollerEvent.RANGE
-            ]);
+            );
 
-            const unsubAfter = model.on(updateAfterStyle, [
-                VirtualScrollerEvent.RANGE,
-                VirtualScrollerEvent.SCROLL_SIZE,
-                VirtualScrollerEvent.SIZES
-            ]);
+            const unsubAfter = model.subscribe(
+                updateAfterStyle,
+                VirtualScrollerEvent.RANGE |
+                    VirtualScrollerEvent.SCROLL_SIZE |
+                    VirtualScrollerEvent.SIZES
+            );
 
             updateBeforeStyle();
             updateAfterStyle();
@@ -76,16 +88,7 @@ const CustomRender = () => {
                         <td />
                         <td />
                     </tr>
-                    <Subscription
-                        model={model}
-                        events={[VirtualScrollerEvent.RANGE]}
-                    >
-                        {() =>
-                            mapVisibleRange(model, i => (
-                                <Item key={i} i={i} model={model} />
-                            ))
-                        }
-                    </Subscription>
+                    <Items model={model} />
                     <tr className={css.spaceTr} ref={afterRef}>
                         <td />
                         <td />

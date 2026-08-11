@@ -2,3 +2,9 @@ packages:
     - "packages/**"
     - "examples/**"
     - "website"
+linkWorkspacePackages: true
+saveWorkspaceProtocol: true
+allowBuilds:
+    "@swc/core": true
+    esbuild: true
+    sharp: true

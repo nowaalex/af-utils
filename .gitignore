@@ -5,3 +5,8 @@ logs
 **/node_modules/
 **/dist
 **/api-extractor-schema
+**/.jit/
+**/.stryker-tmp/
+**/reports/mutation/
+playwright-report/
+test-results/

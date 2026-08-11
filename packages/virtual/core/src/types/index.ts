@@ -40,8 +40,9 @@ export interface VirtualScrollerRuntimeParams {
      * Total items quantity
      *
      * @remarks
-     * Maximum suported value is `2_147_483_647` (int32 max).
+     * Maximum supported value is `1_073_741_823` (`2^30 - 1`).
      * This limit exists, because item sizes cache implementation has bitwise operations, which work only with int32.
+     * The implementation uses a fixed upper capacity so Fenwick tree bitwise traversal stays inside the positive signed 32-bit range.
      * But there is one more limit. W3C does not provide maximum allowed values for height, width, margin, etc.
      *
      * CSS theoretically supports infinite precision and infinite ranges for all value types;
@@ -50,7 +51,7 @@ export interface VirtualScrollerRuntimeParams {
      *
      * This quote was found {@link https://www.w3.org/TR/css3-values/#numeric-ranges | here}.
      * Chrome's experimentally found maximum value is `33_554_428`.
-     * So some problems may happen if {@link @af-utils/virtual-core#VirtualScroller.scrollSize} is bigger.
+     * So some problems may happen if {@link VirtualScroller.scrollSize} is bigger.
      *
      * @privateRemarks
      * TODO: format remarks with blockquote when api-extractor starts supporting it
@@ -110,7 +111,7 @@ export interface VirtualScrollerInitialParams
      *
      * @remarks
      * Does not equal `0` only when scrollable container and items container are different elements.
-     * {@link @af-utils/virtual-core#VirtualScroller.setContainer} has more explanation.
+     * {@link VirtualScroller.setContainer} has more explanation.
      */
     estimatedScrollElementOffset?: number;
 }

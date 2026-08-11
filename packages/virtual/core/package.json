@@ -5,7 +5,7 @@
     "description": "Model for rendering large scrollable data",
     "repository": {
         "type": "git",
-        "url": "https://github.com/nowaalex/af-utils.git",
+        "url": "git+https://github.com/nowaalex/af-utils.git",
         "directory": "packages/virtual/core"
     },
     "homepage": "https://af-utils.com/virtual",
@@ -16,17 +16,21 @@
         "url": "https://github.com/nowaalex/"
     },
     "license": "MIT",
-    "sideEffects": [
-        "./src/polyfill.ts"
-    ],
     "scripts": {
         "dev": "tsc -p tsconfig.dev.json && pnpm esbuild:dev",
-        "build": "tsc && tsc-alias && pnpm esbuild:build && pnpm api-extractor",
+        "build": "tsc && pnpm esbuild:build && pnpm api-extractor",
         "esbuild:base": "esbuild src/index*.ts --bundle --format=esm --outdir=dist --platform=neutral",
         "esbuild:build": "pnpm esbuild:base --mangle-props=^_",
         "esbuild:dev": "pnpm esbuild:base --watch",
         "api-extractor": "api-extractor run && rm -r dist/types",
-        "test": "vitest run"
+        "test": "vitest run",
+        "test:mutation": "stryker run stryker.config.mjs",
+        "bench": "vitest bench --run",
+        "bench:private": "pnpm jit:build && node --expose-gc scripts/benchmark-private-fields.mjs",
+        "bench:private:browser": "node scripts/benchmark-private-fields-browser.mjs",
+        "jit:build": "esbuild src/models/SizeIndex/index.ts --bundle --format=esm --platform=node --outfile=.jit/SizeIndex.mjs && esbuild src/models/VirtualScroller/index.ts --bundle --format=esm --platform=node --outfile=.jit/VirtualScroller.mjs && esbuild src/models/VirtualScrollerLayout/index.ts --bundle --format=esm --platform=node --outfile=.jit/VirtualScrollerLayout.mjs && esbuild src/benchmarks/privateFieldFixture.ts --bundle --format=esm --platform=node --outfile=.jit/PrivateFieldFixture.mjs",
+        "jit:check": "pnpm jit:build && node --allow-natives-syntax scripts/check-representations.mjs && node --allow-natives-syntax --trace-deopt scripts/check-monomorphism.mjs && node --allow-natives-syntax --trace-deopt scripts/check-private-fields.mjs",
+        "jit:inspect": "pnpm jit:build && node --allow-natives-syntax scripts/check-representations.mjs --debug-print"
     },
     "files": [
         "dist/*"
@@ -40,7 +44,7 @@
         "default": "./dist/index.js"
     },
     "engines": {
-        "node": ">20.0.0"
+        "node": ">=20.0.0"
     },
     "keywords": [
         "virtual",
@@ -58,12 +62,11 @@
         "windowing"
     ],
     "devDependencies": {
-        "@types/node": "^22.8.6",
-        "esbuild": "^0.24.0",
-        "jsdom": "^25.0.1",
-        "typescript": "^5.6.3",
-        "vite-tsconfig-paths": "^5.0.1",
-        "vitest": "^2.1.4"
+        "@types/node": "^26.2.0",
+        "esbuild": "^0.28.2",
+        "jsdom": "^30.0.1",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.10"
     },
     "publishConfig": {
         "access": "public"

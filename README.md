@@ -8,6 +8,8 @@ Simple open-source tools that just work _(usually fast)_
 
 ### Features
 
+The React adapter targets React 19.2+. Older React versions are not supported.
+
 -   [vertical](https://af-utils.com/virtual/examples/react/list/simple) / [horizontal](https://af-utils.com/virtual/examples/react/list/horizontal) / [grid](https://af-utils.com/virtual/examples/react/hook/grid) / [custom](https://af-utils.com/virtual/examples/react/hook/custom-render) modes
 -   [dynamic item sizes](https://af-utils.com/virtual/examples/react/list/variable-size-list)
 -   [sticky header and footer](https://af-utils.com/virtual/examples/react/list/sticky-header-and-footer)

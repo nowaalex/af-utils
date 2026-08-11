@@ -1,9 +1,9 @@
 import { useState, useRef, useCallback, memo } from "react";
 import {
     useVirtual,
-    useSubscription,
+    useVirtualEffect,
     List,
-    createListItemRef
+    useVirtualItemRef
 } from "@af-utils/virtual-react";
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 import { randNumber, randParagraph } from "@ngneat/falso";
@@ -21,14 +21,12 @@ const fetchRandomDescriptions = () =>
         )
     );
 
-const Item = memo<ListItemProps>(({ model, i, data: posts }) => (
-    <div ref={createListItemRef(model, i)} className={css.item}>
+const Item = memo<ListItemProps<string[]>>(({ model, index, data: posts }) => (
+    <div ref={useVirtualItemRef(model, index)} className={css.item}>
         <div className={css.itemHeader}>some picture</div>
-        <p>{posts[i]}</p>
+        <p>{posts![index]}</p>
     </div>
 ));
-
-const EVENTS = [VirtualScrollerEvent.RANGE] as const;
 
 const Posts = () => {
     const [posts, setPosts] = useState(() =>
@@ -42,9 +40,8 @@ const Posts = () => {
         estimatedItemSize: 500
     });
 
-    useSubscription(
+    useVirtualEffect(
         model,
-        EVENTS,
         useCallback(async () => {
             if (isLoadingRef.current === false && posts.length === model.to) {
                 isLoadingRef.current = true;
@@ -52,7 +49,8 @@ const Posts = () => {
                 isLoadingRef.current = false;
                 setPosts(p => [...p, ...paragraphs]);
             }
-        }, [model, posts])
+        }, [model, posts]),
+        VirtualScrollerEvent.RANGE
     );
 
     return (

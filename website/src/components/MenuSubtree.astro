@@ -11,8 +11,7 @@ interface Props {
 const { node, depth } = Astro.props;
 ---
 
-{
-    node.children?.length ? (
+{node.children?.length ? (
         <>
             <MenuSubtreeHeader depth={depth}>{node.name}</MenuSubtreeHeader>
             <ul>
@@ -31,5 +30,4 @@ const { node, depth } = Astro.props;
         >
             {node.name}
         </NavLink>
-    )
-}
+    )}

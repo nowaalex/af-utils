@@ -5,7 +5,7 @@ import defaultsDeep from "lodash/defaultsDeep";
 import { getImage } from "astro:assets";
 import ogVirtual from "assets/og/virtual.png";
 export type { Props } from "layouts/Base.astro";
-import type { ValidContentEntrySlug } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 const items = [
     {
@@ -23,7 +23,7 @@ const items = [
             },
             {
                 name: "Reference",
-                path: `/virtual/reference/${"index" satisfies ValidContentEntrySlug<"reference">}`,
+                path: `/virtual/reference/${"index" satisfies CollectionEntry<"reference">["id"]}`,
                 comparePath: "/virtual/reference"
             },
             {
@@ -35,7 +35,7 @@ const items = [
     ...getMenuMapForProjectExamples("virtual")
 ];
 
-const img = await getImage({ src: ogVirtual, quality: 20, format: "png"});
+const img = await getImage({ src: ogVirtual, quality: 20, format: "png" });
 
 const props = defaultsDeep(Astro.props, {
     openGraph: {

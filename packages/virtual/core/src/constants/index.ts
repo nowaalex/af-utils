@@ -1,64 +1,67 @@
-/** @internal */
-export const enum InternalEvent {
-    RANGE = 0,
-    SCROLL_SIZE = 1,
-    SIZES = 2
-}
-
 /**
  * @public
- * Possible events, supported by {@link VirtualScroller.on} method
+ * Bit flags accepted by {@link VirtualScroller.subscribe} and
+ * {@link VirtualScroller.getRevision}.
  *
  * @remarks
- * Events Description:
- *
  * - `RANGE`: {@link VirtualScroller.from} or {@link VirtualScroller.to} was changed;
  *
  * - `SCROLL_SIZE`: {@link VirtualScroller.scrollSize} was changed;
  *
- * - `SIZES`: at least one item size was changed. {@link VirtualScroller.sizesHash}.
+ * - `SIZES`: at least one measured item size was changed.
  *
- * @privateRemarks
- * Did not export enum because I don't like reverse-mapped result in code.
- * Did not refer to InternalEvent because in this case api-extractor wants it to be exported.
- * Did not use enum modifier because api-extractor doesn't support it.
- * Used `Events Desctipton` just because list without header is rendered badly by api-documenter.
+ * Flags can be combined without allocating an array:
+ * `VirtualScrollerEvent.RANGE | VirtualScrollerEvent.SIZES`.
  */
 export const VirtualScrollerEvent = {
-    RANGE: 0,
-    SCROLL_SIZE: 1,
-    SIZES: 2
-} as const satisfies Record<string, InternalEvent>;
+    RANGE: 1,
+    SCROLL_SIZE: 2,
+    SIZES: 4,
+    ALL: 7
+} as const;
 
 /**
  * @public
- * {@link (VirtualScrollerEvent:variable)} is exported as constant, so separate type is needed to emulate enum behavior
+ * `VirtualScrollerEvent` is exported as a constant, so a separate type is
+ * needed to emulate enum behavior.
  */
 export type VirtualScrollerEvent =
-    (typeof VirtualScrollerEvent)[keyof typeof VirtualScrollerEvent];
+    | typeof VirtualScrollerEvent.RANGE
+    | typeof VirtualScrollerEvent.SCROLL_SIZE
+    | typeof VirtualScrollerEvent.SIZES;
 
-/** @internal */
-export const enum WindowScrollElementSizeKey {
-    WINDOW_HORIZONTAL = "innerWidth",
-    WINDOW_VERTICAL = "innerHeight"
-}
+/** @public */
+export type VirtualScrollerEventMask = number;
 
-/** @internal */
-export const enum ResizeObserverSizeKey {
-    HORIZONTAL = "inlineSize",
-    VERTICAL = "blockSize"
-}
+/**
+ * First allocation size for `SizeIndex` typed arrays.
+ *
+ * @remarks Small lists avoid repeated early reallocations while an empty model
+ * still allocates nothing.
+ * @internal
+ */
+export const MIN_SIZE_INDEX_CAPACITY = 64;
 
-/** @internal */
-export const enum ScrollKey {
-    WINDOW_HORIZONTAL = "scrollX",
-    WINDOW_VERTICAL = "scrollY",
-    ELEMENT_HORIZONTAL = "scrollLeft",
-    ELEMENT_VERTICAL = "scrollTop"
-}
+/**
+ * Numerator of the `SizeIndex` geometric growth factor (`3 / 2`).
+ * @internal
+ */
+export const SIZE_INDEX_GROWTH_NUMERATOR = 3;
 
-/** @internal */
-export const enum ScrollToKey {
-    HORIZONTAL = "left",
-    VERTICAL = "top"
-}
+/**
+ * Denominator of the `SizeIndex` geometric growth factor (`3 / 2`).
+ * @internal
+ */
+export const SIZE_INDEX_GROWTH_DENOMINATOR = 2;
+
+/**
+ * Largest logical item count supported by `SizeIndex`.
+ *
+ * @remarks
+ * Fenwick tree indexes use signed 32-bit bitwise operations. Keeping the
+ * capacity below 2^30 guarantees that index + lowestSetBit(index) stays
+ * positive during tree traversal.
+ *
+ * @internal
+ */
+export const MAX_SIZE_INDEX_CAPACITY = 0x3fffffff;

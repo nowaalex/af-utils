@@ -1,0 +1,147 @@
+---
+generated: true
+---
+
+[**Documentation**](../../index)
+
+***
+
+[Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScrollerInitialParams
+
+# Interface: VirtualScrollerInitialParams
+
+All [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller) parameters (that may / may not change over time).
+
+## Remarks
+
+Implemented as interface for better documentation output (api-extractor)
+
+## Extends
+
+- [`VirtualScrollerRuntimeParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams)
+
+## Properties
+
+### estimatedItemSize?
+
+```ts
+optional estimatedItemSize?: number;
+```
+
+Estimated height/width of scrollable item. Orientation is determined by [VirtualScrollerInitialParams.horizontal](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#horizontal).
+
+#### Remarks
+
+Actual size is always reported by internal `ResizeObserver` when [VirtualScroller.attachItem](/virtual/reference/virtual-core/classes/VirtualScroller#attachitem) is called.
+Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.
+
+#### Inherited from
+
+[`VirtualScrollerRuntimeParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams).[`estimatedItemSize`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams#estimateditemsize)
+
+***
+
+### estimatedScrollElementOffset?
+
+```ts
+optional estimatedScrollElementOffset?: number;
+```
+
+Estimated distance between top/left edges of scrollable container and first scrollable item.
+
+#### Remarks
+
+Does not equal `0` only when scrollable container and items container are different elements.
+[VirtualScroller.setContainer](/virtual/reference/virtual-core/classes/VirtualScroller#setcontainer) has more explanation.
+
+***
+
+### estimatedWidgetSize?
+
+```ts
+optional estimatedWidgetSize?: number;
+```
+
+Estimated size of scroll element.
+
+#### Remarks
+
+Actual size is always reported by `ResizeObserver`,
+but this property together with [VirtualScrollerRuntimeParams.estimatedItemSize](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#estimateditemsize) and [VirtualScrollerRuntimeParams.overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#overscancount) can be used in server-side rendering.
+
+Quantity of SSR-rendered elements can be calculated this way:
+
+```typescript
+Math.min( itemCount, Math.ceil( estimatedWidgetSize / estimatedItemSize ) + overscanCount )
+```
+
+***
+
+### horizontal?
+
+```ts
+optional horizontal?: boolean;
+```
+
+Scroll container orientation.
+
+#### Remarks
+
+Determines properties used for dimension/scroll calculations, for example:
+
+- `scrollTop` / `scrollLeft`;
+
+- `height` / `width`;
+
+- `innerHeight` / `innerWidth`.
+
+***
+
+### itemCount?
+
+```ts
+optional itemCount?: number;
+```
+
+Total items quantity
+
+#### Remarks
+
+Maximum supported value is `1_073_741_823` (`2^30 - 1`).
+This limit exists, because item sizes cache implementation has bitwise operations, which work only with int32.
+The implementation uses a fixed upper capacity so Fenwick tree bitwise traversal stays inside the positive signed 32-bit range.
+But there is one more limit. W3C does not provide maximum allowed values for height, width, margin, etc.
+
+CSS theoretically supports infinite precision and infinite ranges for all value types;
+however in reality implementations have finite capacity.
+UAs should support reasonably useful ranges and precisions
+
+This quote was found [here](https://www.w3.org/TR/css3-values/#numeric-ranges).
+Chrome's experimentally found maximum value is `33_554_428`.
+So some problems may happen if [VirtualScroller.scrollSize](/virtual/reference/virtual-core/classes/VirtualScroller#scrollsize) is bigger.
+
+#### Inherited from
+
+[`VirtualScrollerRuntimeParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams).[`itemCount`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams#itemcount)
+
+***
+
+### overscanCount?
+
+```ts
+optional overscanCount?: number;
+```
+
+Amount of items rendered before or after visible ones.
+
+#### Remarks
+
+Render place depends on scroll direction:
+
+- if scrolling is done forward - these items are rendered after visible ones;
+
+- If backward - before.
+
+#### Inherited from
+
+[`VirtualScrollerRuntimeParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams).[`overscanCount`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams#overscancount)

@@ -1,0 +1,56 @@
+name: CI
+
+on:
+    pull_request:
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+env:
+    CI: true
+
+jobs:
+    check:
+        name: Check
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v7
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v6
+
+            - name: Setup Node.js 24
+              uses: actions/setup-node@v7
+              with:
+                  node-version: "24.x"
+                  cache: "pnpm"
+
+            - name: Install Dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Check standalone example dependencies
+              run: pnpm examples:versions:check
+
+            - name: Check formatting
+              run: pnpm format:check
+
+            - name: Test packages
+              run: pnpm test
+
+            - name: Build packages
+              run: pnpm packages build
+
+            - name: Validate package tarballs
+              run: pnpm publint
+
+            - name: Install Playwright browser
+              run: pnpm exec playwright install --with-deps chromium
+
+            - name: Test examples in browser
+              run: pnpm test:e2e

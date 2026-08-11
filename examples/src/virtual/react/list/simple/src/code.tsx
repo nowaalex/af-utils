@@ -1,13 +1,13 @@
 import { memo } from "react";
-import { useVirtual, List, createListItemRef } from "@af-utils/virtual-react";
+import { useVirtual, List, useVirtualItemRef } from "@af-utils/virtual-react";
 import type { ListItemProps } from "@af-utils/virtual-react";
 
-const Item = memo<ListItemProps>(({ model, i }) => (
+const Item = memo<ListItemProps>(({ model, index }) => (
     <div
-        ref={createListItemRef(model, i)}
+        ref={useVirtualItemRef(model, index)}
         style={{ borderTop: "2px solid #ccc", padding: "0.6em" }}
     >
-        row {i}
+        row {index}
     </div>
 ));
 

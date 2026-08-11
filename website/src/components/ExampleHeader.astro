@@ -43,8 +43,7 @@ const gitPiece = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env
 <div class:list={["flex flex-wrap items-center gap-x-10 gap-y-4", className]}>
     <h1 class="mb-0">{getHeader(path.split("/").map(startCase))}</h1>
     <div class="flex items-center gap-6 font-medium">
-        {
-            Links.map(link => (
+        {Links.map(link => (
                 <a
                     href={`${link.url}${gitPiece}`}
                     target="_blank"
@@ -54,7 +53,6 @@ const gitPiece = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env
                     <Icon name={link.icon} />
                     {link.name}
                 </a>
-            ))
-        }
+            ))}
     </div>
 </div>

@@ -1,8 +1,9 @@
+#!/usr/bin/env node
+
 import { writeFile, readFile, mkdir } from "node:fs/promises";
 import { parseArgs } from "node:util";
 import { existsSync } from "node:fs";
 import { parse, join, normalize } from "node:path";
-import fastGlob from "fast-glob";
 import getFileSizes from "./getFileSizes";
 import exportsToGlobPatterns from "./parseExports";
 import chalk from "chalk";

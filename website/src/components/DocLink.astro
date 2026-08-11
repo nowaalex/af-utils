@@ -1,10 +1,10 @@
 ---
-import type { ValidContentEntrySlug } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 const { slug } = Astro.props;
 
 interface Props {
-    slug: ValidContentEntrySlug<"reference">;
+    slug: CollectionEntry<"reference">["id"];
 }
 ---
 

@@ -2,6 +2,7 @@
     "files": ["index.ts"],
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
+        "declaration": true,
         "outDir": "dist",
         "types": ["node"]
     }

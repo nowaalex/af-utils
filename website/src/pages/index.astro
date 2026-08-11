@@ -8,18 +8,18 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
 ---
 
 <style define:vars={{ bg: `url(${sizif.src})` }}>
-    @media only screen and (min-width: 1024px) {
-        main {
-            background: var(--bg) no-repeat right bottom / 37%;
-            padding-right: 0;
-        }
+@media only screen and (min-width: 1024px) {
+    main {
+        background: var(--bg) no-repeat right bottom / 37%;
+        padding-right: 0;
     }
+}
 
-    @media only screen and (min-width: 1660px) {
-        main {
-            background-size: contain;
-        }
+@media only screen and (min-width: 1660px) {
+    main {
+        background-size: contain;
     }
+}
 </style>
 <Layout
     titleTemplate="af-utils | %s"
@@ -32,7 +32,7 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
         href={sizif.src}
         as="image"
         media="only screen and (min-width: 1024px)"
-    />
+    >
     <div class="prose flex h-screen w-screen flex-col bg-[#fafafa]">
         <header
             class="prose-lg prose-a:no-underline mx-[5vmin] flex justify-center gap-8 border-b p-6"
@@ -59,13 +59,13 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
             <p>Simple open-source tools that just work <i>(usually fast)</i></p>
             <ul>
                 <li>
-                    <a href="/virtual">Virtual scroll</a> for rendering only visible
-                    part of huge lists or grids
+                    <a href="/virtual">Virtual scroll</a>
+                    for rendering only visible part of huge lists or grids
                     <i>(currently available for React)</i>
                 </li>
                 <li>
-                    <a href="/scrollend-polyfill">Scrollend polyfill</a> for cross-browser
-                    scrollend event support
+                    <a href="/scrollend-polyfill">Scrollend polyfill</a>
+                    for cross-browser scrollend event support
                 </li>
                 <li>To be continued...</li>
             </ul>

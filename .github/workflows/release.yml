@@ -5,7 +5,14 @@ on:
         branches:
             - master
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: false
+
+permissions:
+    contents: write
+    pull-requests: write
+    id-token: write
 
 env:
     CI: true
@@ -16,29 +23,45 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repo
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
 
             - name: Install pnpm
-              uses: pnpm/action-setup@v3
-              with:
-                  version: 9
+              uses: pnpm/action-setup@v6
 
-            - name: Setup Node.js 20
-              uses: actions/setup-node@v4
+            - name: Setup Node.js 24
+              uses: actions/setup-node@v7
               with:
-                  node-version: "20.x"
-                  cache: "pnpm"
+                  node-version: "24.x"
+                  package-manager-cache: false
 
             - name: Install Dependencies
-              run: pnpm i
+              run: pnpm i --frozen-lockfile
+
+            - name: Check standalone example dependencies
+              run: pnpm examples:versions:check
+
+            - name: Check formatting
+              run: pnpm format:check
+
+            - name: Test packages
+              run: pnpm test
 
             - name: Build packages
               run: pnpm packages build
 
-            - name: Create Release Pull Request
+            - name: Validate package tarballs
+              run: pnpm publint
+
+            - name: Install Playwright browser
+              run: pnpm exec playwright install --with-deps chromium
+
+            - name: Test examples in browser
+              run: pnpm test:e2e
+
+            - name: Create Release Pull Request or Publish
               uses: changesets/action@v1
               with:
-                  publish: pnpm packages publish
+                  version: pnpm changeset:version
+                  publish: pnpm release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,22 +1,27 @@
 import { useState, memo } from "react";
-import { useVirtual, List, createListItemRef } from "@af-utils/virtual-react";
+import { useVirtual, List, useVirtualItemRef } from "@af-utils/virtual-react";
 import type { ListItemProps } from "@af-utils/virtual-react";
 import css from "./style.module.css";
 
 const DEFAULT_ROW_COUNT = 50000;
 
-const Item = memo<ListItemProps>(({ model, i, data: pseudoRandomSizes }) => (
-    <div
-        ref={createListItemRef(model, i)}
-        className={css.item}
-        style={{
-            padding: `${pseudoRandomSizes[i]}px 0`,
-            background: `hsl(${(i * 11) % 360},60%,60%)`
-        }}
-    >
-        row {i}:&nbsp;{pseudoRandomSizes[i]}px
-    </div>
-));
+const Item = memo<ListItemProps<number[]>>(
+    ({ model, index, data: pseudoRandomSizes }) => (
+        <div
+            ref={useVirtualItemRef(model, index)}
+            className={css.item}
+            role="listitem"
+            aria-posinset={index + 1}
+            aria-setsize={pseudoRandomSizes!.length}
+            style={{
+                padding: `${pseudoRandomSizes![index]}px 0`,
+                background: `hsl(${(index * 11) % 360},60%,60%)`
+            }}
+        >
+            row {index}:&nbsp;{pseudoRandomSizes![index]}px
+        </div>
+    )
+);
 
 const VariableSizeList = () => {
     const [pseudoRandomSizes] = useState(() =>
@@ -32,7 +37,7 @@ const VariableSizeList = () => {
     });
 
     return (
-        <List model={model} itemData={pseudoRandomSizes}>
+        <List model={model} itemData={pseudoRandomSizes} role="list">
             {Item}
         </List>
     );

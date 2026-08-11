@@ -2,20 +2,19 @@ import { Fragment, memo } from "react";
 
 import {
     useVirtual,
-    useComponentSubscription,
-    mapVisibleRangeWithOffset,
-    createGridItemRef
+    useVirtualSnapshot,
+    useVirtualGridItemRef
 } from "@af-utils/virtual-react";
 
-import { VirtualScroller, VirtualScrollerEvent } from "@af-utils/virtual-core";
+import {
+    mapVirtualRangeWithOffset,
+    VirtualScroller,
+    VirtualScrollerEvent
+} from "@af-utils/virtual-core";
 
 import css from "./style.module.css";
 
-const events = [
-    VirtualScrollerEvent.RANGE,
-    VirtualScrollerEvent.SCROLL_SIZE,
-    VirtualScrollerEvent.SIZES
-] as const;
+const events = VirtualScrollerEvent.ALL;
 
 const Cell = memo<{
     rows: VirtualScroller;
@@ -26,7 +25,7 @@ const Cell = memo<{
     colOffset: number;
 }>(({ rows, cols, rowI, colI, rowOffset, colOffset }) => (
     <div
-        ref={createGridItemRef(rows, rowI, cols, colI)}
+        ref={useVirtualGridItemRef(rows, rowI, cols, colI)}
         className={css.cell}
         style={{
             width: Math.max(colI ** 2 % 256, 190),
@@ -50,8 +49,8 @@ const GridItems = ({
     rows: VirtualScroller;
     cols: VirtualScroller;
 }) => {
-    useComponentSubscription(rows, events);
-    useComponentSubscription(cols, events);
+    useVirtualSnapshot(rows, events);
+    useVirtualSnapshot(cols, events);
 
     return (
         <div
@@ -61,9 +60,9 @@ const GridItems = ({
                 width: cols.scrollSize
             }}
         >
-            {mapVisibleRangeWithOffset(rows, (rowI, rowOffset) => (
+            {mapVirtualRangeWithOffset(rows, (rowI, rowOffset) => (
                 <Fragment key={rowI}>
-                    {mapVisibleRangeWithOffset(cols, (colI, colOffset) => (
+                    {mapVirtualRangeWithOffset(cols, (colI, colOffset) => (
                         <Cell
                             key={colI}
                             rows={rows}
@@ -127,7 +126,7 @@ const GridHook = () => {
                     type="number"
                     name="index"
                     min={0}
-                    max={SIZE}
+                    max={SIZE - 1}
                     className="w-28"
                 />
                 <button type="submit" className={css.btn}>

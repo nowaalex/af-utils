@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
+import { unified } from "@astrojs/markdown-remark";
 import { visit } from "unist-util-visit";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
@@ -23,21 +24,29 @@ const rehypeLinks: RehypePlugins[number] = () => tree =>
 
             if (href.startsWith("https://")) {
                 node.properties.target = "_blank";
-                node.properties.rel = "noopener";
+                node.properties.rel = ["noopener"];
             }
         }
     });
 
 export default defineConfig({
     site: env.PUBLIC_ORIGIN,
+    vite: {
+        plugins: [tailwindcss()]
+    },
     markdown: {
-        rehypePlugins: [
-            rehypeLinks,
-            rehypeSlug,
-            [rehypePrettyCode, { theme: "light-plus", keepBackground: false }]
-        ],
-        remarkPlugins: [remarkToc, remarkGfm],
-        gfm: true,
+        processor: unified({
+            rehypePlugins: [
+                rehypeLinks,
+                rehypeSlug,
+                [
+                    rehypePrettyCode,
+                    { theme: "light-plus", keepBackground: false }
+                ]
+            ],
+            remarkPlugins: [remarkToc, remarkGfm],
+            gfm: true
+        }),
         syntaxHighlight: false
     },
     devToolbar: {
@@ -47,7 +56,6 @@ export default defineConfig({
         prefetchAll: true
     },
     integrations: [
-        tailwind({ nesting: true, applyBaseStyles: false }),
         mdx(),
         react(),
         icon({

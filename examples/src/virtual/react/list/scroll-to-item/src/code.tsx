@@ -1,5 +1,5 @@
 import { useState, memo, useEffect } from "react";
-import { useVirtual, List, createListItemRef } from "@af-utils/virtual-react";
+import { useVirtual, List, useVirtualItemRef } from "@af-utils/virtual-react";
 import { VirtualScroller } from "@af-utils/virtual-core";
 import type { ListItemProps } from "@af-utils/virtual-react";
 import type { FormEvent } from "react";
@@ -7,15 +7,18 @@ import css from "./style.module.css";
 
 const DEFAULT_ROW_COUNT = 50000;
 
-const Item = memo<ListItemProps>(({ model, i, data: pseudoRandomSizes }) => (
+const Item = memo<ListItemProps<number[]>>(({ model, index, data }) => (
     <div
-        ref={createListItemRef(model, i)}
+        ref={useVirtualItemRef(model, index)}
         className={css.item}
+        role="listitem"
+        aria-posinset={index + 1}
+        aria-setsize={data!.length}
         style={{
-            padding: `${pseudoRandomSizes[i]}px 0.7em`
+            padding: `${data![index]}px 0.7em`
         }}
     >
-        row {i}:&nbsp;{pseudoRandomSizes[i]}px
+        row {index}:&nbsp;{data![index]}px
     </div>
 ));
 
@@ -70,6 +73,7 @@ const ScrollToItem = () => {
         <List
             model={model}
             itemData={pseudoRandomSizes}
+            role="list"
             header={
                 <form
                     className={`${css.form} ${css.top0}`}

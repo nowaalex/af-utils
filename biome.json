@@ -1,0 +1,60 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "files": {
+        "includes": [
+            "**",
+            "!pnpm-lock.yaml",
+            "!website/public/examples",
+            "!website/src/content/reference",
+            "!**/.claude/settings.local.json",
+            "!packages/virtual/core/scripts/check-monomorphism.mjs",
+            "!packages/virtual/core/scripts/check-private-fields.mjs",
+            "!packages/virtual/core/scripts/check-representations.mjs",
+            "!**/dist",
+            "!**/.astro",
+            "!**/.jit",
+            "!**/.stryker-tmp",
+            "!**/reports/mutation"
+        ]
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineEnding": "lf",
+        "lineWidth": 80
+    },
+    "linter": {
+        "enabled": false
+    },
+    "javascript": {
+        "formatter": {
+            "arrowParentheses": "asNeeded",
+            "jsxQuoteStyle": "double",
+            "quoteStyle": "double",
+            "semicolons": "always",
+            "trailingCommas": "none"
+        }
+    },
+    "json": {
+        "formatter": {
+            "trailingCommas": "none"
+        }
+    },
+    "css": {
+        "parser": {
+            "tailwindDirectives": true
+        }
+    },
+    "html": {
+        "experimentalFullSupportEnabled": true,
+        "formatter": {
+            "enabled": true
+        }
+    }
+}

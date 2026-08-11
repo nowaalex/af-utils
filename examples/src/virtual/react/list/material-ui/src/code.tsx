@@ -1,15 +1,15 @@
 import { memo } from "react";
-import { useVirtual, List, createListItemRef } from "@af-utils/virtual-react";
+import { useVirtual, List, useVirtualItemRef } from "@af-utils/virtual-react";
 import MuiListNative from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import type { ListItemProps } from "@af-utils/virtual-react";
 
-const Item = memo<ListItemProps>(({ model, i }) => (
-    <ListItem ref={createListItemRef(model, i)} disablePadding>
+const Item = memo<ListItemProps>(({ model, index }) => (
+    <ListItem ref={useVirtualItemRef(model, index)} disablePadding>
         <ListItemButton>
-            <ListItemText primary={`row ${i}`} />
+            <ListItemText primary={`row ${index}`} />
         </ListItemButton>
     </ListItem>
 ));

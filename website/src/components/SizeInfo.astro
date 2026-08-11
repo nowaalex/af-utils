@@ -13,8 +13,7 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-{
-    items.length === 0 ? null : items.length === 1 ? (
+{items.length === 0 ? null : items.length === 1 ? (
         <table>
             <thead>
                 <tr>
@@ -52,5 +51,4 @@ const { items } = Astro.props;
                 ))}
             </tbody>
         </table>
-    )
-}
+    )}

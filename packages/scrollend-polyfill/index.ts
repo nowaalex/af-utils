@@ -1,35 +1,51 @@
 const SCROLL_DEBOUNCE_INTERVAL = 100;
 
 type PolyfilledTarget = HTMLElement | Window | Document;
-
-type ListenerMethod = "addEventListener" | "removeEventListener";
-
-type PossibleListenerType = Parameters<PolyfilledTarget[ListenerMethod]>[1];
+type PossibleListener = EventListenerOrEventListenerObject | null;
+type ActiveListener = Exclude<PossibleListener, null>;
 
 const SCROLLEND_EVENT = "scrollend";
 
-let set = false;
+const debounce = (fn: () => void, delay: number) => {
+    let timer: ReturnType<typeof setTimeout> | 0 = 0;
 
-if (
-    !set &&
-    typeof window !== "undefined" &&
-    !("on" + SCROLLEND_EVENT in window)
-) {
-    set = true;
+    const cancel = () => clearTimeout(timer);
 
-    const dispatchedEvent = new Event(SCROLLEND_EVENT);
+    const result = () => {
+        cancel();
+        timer = setTimeout(fn, delay);
+    };
 
+    result._cancel = cancel;
+
+    return result;
+};
+
+type DebouncedHandler = ReturnType<typeof debounce>;
+
+interface ListenerRegistration {
+    readonly wrapper: EventListener;
+    readonly signal: AbortSignal | null;
+    readonly abortHandler: (() => void) | null;
+}
+
+interface TargetState {
+    readonly listeners: Map<
+        ActiveListener,
+        [ListenerRegistration | null, ListenerRegistration | null]
+    >;
+    readonly scrollHandler: DebouncedHandler;
+    readonly removeEventListener: typeof EventTarget.prototype.removeEventListener;
+    listenerCount: number;
+}
+
+if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
     const pointers = new Set<number>();
-
-    const handlersMap = new WeakMap<
-        PossibleListenerType,
-        ReturnType<typeof debounce>
-    >();
-
+    const targetStates = new WeakMap<PolyfilledTarget, TargetState>();
     let lastTarget: PolyfilledTarget | null = null;
 
-    const dispatchScrollEvent = (target: PolyfilledTarget) =>
-        target.dispatchEvent(dispatchedEvent);
+    const dispatchScrollEnd = (target: PolyfilledTarget) =>
+        target.dispatchEvent(new Event(SCROLLEND_EVENT));
 
     addEventListener(
         "touchstart",
@@ -50,7 +66,7 @@ if (
                     lastTarget &&
                     !pointers.size
                 ) {
-                    dispatchScrollEvent(lastTarget);
+                    dispatchScrollEnd(lastTarget);
                     lastTarget = null;
                 }
             }
@@ -58,77 +74,157 @@ if (
         { passive: true }
     );
 
-    const debounce = (fn: () => void, delay: number) => {
-        let timer: ReturnType<typeof setTimeout> | 0 = 0;
+    const getCapture = (
+        options?: boolean | AddEventListenerOptions | EventListenerOptions
+    ) =>
+        Number(typeof options === "boolean" ? options : !!options?.capture) as
+            | 0
+            | 1;
 
-        const cancel = () => clearTimeout(timer);
+    const deleteRegistration = (
+        target: PolyfilledTarget,
+        listener: ActiveListener,
+        capture: 0 | 1
+    ) => {
+        const state = targetStates.get(target);
+        const registrations = state?.listeners.get(listener);
+        const registration = registrations?.[capture];
+        if (!state || !registrations || !registration) return null;
 
-        const result = () => {
-            cancel();
-            timer = setTimeout(fn, delay);
-        };
+        registrations[capture] = null;
+        registration.signal?.removeEventListener(
+            "abort",
+            registration.abortHandler!
+        );
+        if (!registrations[0] && !registrations[1]) {
+            state.listeners.delete(listener);
+        }
 
-        result._cancel = cancel;
+        if (--state.listenerCount === 0) {
+            state.scrollHandler._cancel();
+            state.removeEventListener.call(
+                target,
+                "scroll",
+                state.scrollHandler
+            );
+            targetStates.delete(target);
+            if (lastTarget === target) lastTarget = null;
+        }
 
-        return result;
+        return registration;
     };
 
-    const patchScrollEnd = <T extends ListenerMethod>(
-        objects: readonly PolyfilledTarget[],
-        method: T,
-        fn: (
-            this: PolyfilledTarget,
-            type: string,
-            listener: PossibleListenerType,
-            options?: AddEventListenerOptions
-        ) => void
-    ) =>
-        objects.forEach(object => {
-            const originalMethod = object[method];
+    const ensureTargetState = (
+        target: PolyfilledTarget,
+        originalAdd: typeof EventTarget.prototype.addEventListener,
+        originalRemove: typeof EventTarget.prototype.removeEventListener
+    ) => {
+        let state = targetStates.get(target);
+        if (state) return state;
 
-            object[method] = function () {
-                originalMethod.apply(this, arguments as any);
-                if (arguments[0] === SCROLLEND_EVENT) {
-                    fn.apply(this, arguments as any);
+        const scrollHandler = debounce(() => {
+            if (pointers.size === 0) {
+                dispatchScrollEnd(target);
+            } else {
+                lastTarget = target;
+            }
+        }, SCROLL_DEBOUNCE_INTERVAL);
+
+        state = {
+            listeners: new Map(),
+            scrollHandler,
+            removeEventListener: originalRemove,
+            listenerCount: 0
+        };
+        targetStates.set(target, state);
+        originalAdd.call(target, "scroll", scrollHandler, { passive: true });
+        return state;
+    };
+
+    const patchTarget = (object: PolyfilledTarget) => {
+        const originalAdd = object.addEventListener;
+        const originalRemove = object.removeEventListener;
+
+        object.addEventListener = function (
+            type: string,
+            listener: PossibleListener,
+            options?: boolean | AddEventListenerOptions
+        ) {
+            if (listener === null) return;
+            if (type !== SCROLLEND_EVENT) {
+                originalAdd.call(this, type, listener, options);
+                return;
+            }
+
+            const capture = getCapture(options);
+            const state = targetStates.get(this);
+            if (state?.listeners.get(listener)?.[capture]) return;
+
+            const signal =
+                typeof options === "object" ? (options.signal ?? null) : null;
+            if (signal?.aborted) return;
+
+            const once = typeof options === "object" && !!options.once;
+            const wrapper: EventListener = event => {
+                if (once) deleteRegistration(this, listener, capture);
+
+                if (typeof listener === "function") {
+                    listener.call(this, event);
+                } else {
+                    listener.handleEvent(event);
                 }
             };
-        });
+            const abortHandler = signal
+                ? () => deleteRegistration(this, listener, capture)
+                : null;
+            const registration: ListenerRegistration = {
+                wrapper,
+                signal,
+                abortHandler
+            };
 
-    const targets = [
-        HTMLElement.prototype,
-        window,
-        document
-    ] as const satisfies readonly PolyfilledTarget[];
+            originalAdd.call(this, type, wrapper, options);
+            const nextState = ensureTargetState(
+                this,
+                originalAdd,
+                originalRemove
+            );
+            const registrations = nextState.listeners.get(listener) ?? [
+                null,
+                null
+            ];
+            registrations[capture] = registration;
+            nextState.listeners.set(listener, registrations);
+            nextState.listenerCount++;
+            signal?.addEventListener("abort", abortHandler!, { once: true });
+        };
 
-    patchScrollEnd(
-        targets,
-        "addEventListener",
-        function (type, listener, options) {
-            const fn = debounce(() => {
-                if (pointers.size === 0) {
-                    dispatchScrollEvent(this);
-                } else {
-                    lastTarget = this;
-                }
-            }, SCROLL_DEBOUNCE_INTERVAL);
-
-            handlersMap.set(listener, fn);
-            this.addEventListener("scroll", fn, options);
-        }
-    );
-    patchScrollEnd(
-        targets,
-        "removeEventListener",
-        function (type, listener, options) {
-            const fn = handlersMap.get(listener);
-            if (fn) {
-                fn._cancel();
-                handlersMap.delete(listener);
-                if (lastTarget === this) {
-                    lastTarget = null;
-                }
-                this.removeEventListener("scroll", fn, options);
+        object.removeEventListener = function (
+            type: string,
+            listener: PossibleListener,
+            options?: boolean | EventListenerOptions
+        ) {
+            if (listener === null) return;
+            if (type !== SCROLLEND_EVENT) {
+                originalRemove.call(this, type, listener, options);
+                return;
             }
-        }
-    );
+
+            const registration = deleteRegistration(
+                this,
+                listener,
+                getCapture(options)
+            );
+            originalRemove.call(
+                this,
+                type,
+                registration?.wrapper ?? listener,
+                options
+            );
+        };
+    };
+
+    patchTarget(HTMLElement.prototype);
+    patchTarget(window);
+    patchTarget(document);
 }

@@ -3,12 +3,6 @@
     "mainEntryPointFilePath": "<projectFolder>/dist/types/index.d.ts",
     "bundledPackages": [],
     "enumMemberOrder": "preserve",
-    "compiler": {
-        "overrideTsconfig": {
-            "$schema": "http://json.schemastore.org/tsconfig",
-            "include": ["**/*.ts"]
-        }
-    },
     "newlineKind": "lf",
 
     "apiReport": {
@@ -16,9 +10,7 @@
     },
 
     "docModel": {
-        "enabled": true,
-        "apiJsonFilePath": "<projectFolder>/api-extractor-schema/<unscopedPackageName>.api.json",
-        "projectFolderUrl": "https://github.com/nowaalex/af-utils"
+        "enabled": false
     },
     "dtsRollup": {
         "enabled": true,

@@ -1,19 +1,43 @@
-import { memo } from "react";
 import {
-    useVirtual,
-    List,
-    Subscription,
-    createListItemRef
-} from "@af-utils/virtual-react";
-import { VirtualScrollerEvent } from "@af-utils/virtual-core";
+    type VirtualScroller,
+    VirtualScrollerEvent
+} from "@af-utils/virtual-core";
 import type { ListItemProps } from "@af-utils/virtual-react";
+import {
+    List,
+    useVirtual,
+    useVirtualItemRef,
+    useVirtualSnapshot
+} from "@af-utils/virtual-react";
+import { memo } from "react";
 import css from "./style.module.css";
 
-const Item = memo<ListItemProps>(({ model, i }) => (
-    <div ref={createListItemRef(model, i)} className={css.item}>
-        row {i}
+const Item = memo<ListItemProps>(({ model, index }) => (
+    <div
+        ref={useVirtualItemRef(model, index)}
+        className={css.item}
+        role="listitem"
+        aria-posinset={index + 1}
+        aria-setsize={model.itemCount}
+    >
+        row {index}
     </div>
 ));
+
+const RangeInfo = ({ model }: { model: VirtualScroller }) => {
+    useVirtualSnapshot(model, VirtualScrollerEvent.RANGE);
+    return (
+        <>
+            Rendered {model.to - model.from} items. Range: {model.from} -
+            {model.to}
+        </>
+    );
+};
+
+const ScrollSize = ({ model }: { model: VirtualScroller }) => {
+    useVirtualSnapshot(model, VirtualScrollerEvent.SCROLL_SIZE);
+    return model.scrollSize;
+};
 
 const ExtraEvents = () => {
     const rows = useVirtual({
@@ -24,22 +48,14 @@ const ExtraEvents = () => {
     return (
         <List
             model={rows}
+            role="list"
+            aria-label="Extra events list"
             header={
                 <div
                     className={`${css.row} ${css.top0}`}
                     ref={el => rows.setStickyHeader(el)}
                 >
-                    <Subscription
-                        model={rows}
-                        events={[VirtualScrollerEvent.RANGE]}
-                    >
-                        {() => (
-                            <>
-                                Rendered {rows.to - rows.from} items. Range:{" "}
-                                {rows.from} - {rows.to}
-                            </>
-                        )}
-                    </Subscription>
+                    <RangeInfo model={rows} />
                 </div>
             }
             footer={
@@ -47,13 +63,7 @@ const ExtraEvents = () => {
                     className={`${css.row} ${css.bottom0}`}
                     ref={el => rows.setStickyFooter(el)}
                 >
-                    Scroll size:{" "}
-                    <Subscription
-                        model={rows}
-                        events={[VirtualScrollerEvent.SCROLL_SIZE]}
-                    >
-                        {() => rows.scrollSize}
-                    </Subscription>
+                    Scroll size: <ScrollSize model={rows} />
                     px
                 </div>
             }

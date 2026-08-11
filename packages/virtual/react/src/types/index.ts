@@ -1,43 +1,29 @@
-import type { ReactNode, ElementType } from "react";
-import type {
-    VirtualScroller,
-    VirtualScrollerEvent
-} from "@af-utils/virtual-core";
+import type { ReactElement, ElementType, ComponentType } from "react";
+import type { VirtualScroller } from "@af-utils/virtual-core";
 
 /**
  * @public
  * Props passed to List item
  */
-export interface ListItemProps {
+export interface ListItemProps<Data = unknown> {
     model: VirtualScroller;
     /** item index */
-    i: number;
+    index: number;
     /** links to {@link ListProps.itemData} */
-    data?: any;
-    offset?: number;
+    data?: Data;
 }
 
 /**
  * @public
  * {@link List} component props
  */
-export interface ListProps<C extends ElementType = "div"> {
+export interface ListProps<C extends ElementType = "div", Data = unknown> {
     model: VirtualScroller;
-    children: ElementType<ListItemProps>;
+    children: ComponentType<ListItemProps<Data>>;
     /** could be accessed in {@link ListItemProps.data} */
-    itemData?: any;
-    getKey?: (index: number, itemData: any) => string | number;
+    itemData?: Data;
+    getKey?: (index: number, itemData: Data) => string | number;
     component?: C;
-    header?: JSX.Element | null;
-    footer?: JSX.Element | null;
-}
-
-/**
- * @public
- * {@link Subscription} component props
- */
-export interface SubscriptionProps {
-    model: VirtualScroller;
-    children: () => ReactNode;
-    events: readonly VirtualScrollerEvent[] | VirtualScrollerEvent[];
+    header?: ReactElement | null;
+    footer?: ReactElement | null;
 }

@@ -1,37 +1,48 @@
 {
     "name": "@af-utils/weigh-exports",
     "version": "0.0.7",
+    "description": "CLI for measuring minified, gzip, and Brotli sizes of package exports",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nowaalex/af-utils.git",
+        "directory": "packages/weigh-exports"
+    },
+    "homepage": "https://github.com/nowaalex/af-utils/tree/master/packages/weigh-exports",
+    "bugs": "https://github.com/nowaalex/af-utils/issues",
     "author": {
         "name": "Alex Fomin",
         "email": "nowaalex@gmail.com",
         "url": "https://github.com/nowaalex/"
     },
     "license": "MIT",
-    "sideEffects": false,
     "type": "module",
+    "files": [
+        "dist/*"
+    ],
     "main": "./dist/index.js",
     "exports": "./dist/index.js",
     "bin": {
         "weigh-exports": "./dist/index.js"
     },
     "scripts": {
-        "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=dist --external:@swc/* --external:chalk",
-        "postinstall": "pnpm build",
-        "esbuild:build": "pnpm esbuild:base --mangle-props=^_"
+        "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=dist --external:@swc/* --external:chalk"
     },
     "engines": {
         "node": ">=20.0.0"
     },
-    "keywords": [],
+    "keywords": [
+        "bundle-size",
+        "brotli",
+        "gzip",
+        "minify"
+    ],
     "devDependencies": {
-        "@types/node": "^22.8.6",
-        "esbuild": "^0.24.0"
+        "@types/node": "^26.2.0",
+        "esbuild": "^0.28.2"
     },
     "dependencies": {
-        "@swc/core": "^1.7.42",
-        "chalk": "^5.3.0",
-        "fast-glob": "^3.3.2",
-        "typescript": "^5.6.3"
+        "@swc/core": "^1.15.47",
+        "chalk": "^6.0.0"
     },
     "publishConfig": {
         "access": "public"

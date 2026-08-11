@@ -1,7 +1,7 @@
 const metadata = {
     description:
-        "Subscription component can be used to subscribe to VirtualScroller events. \
-    This helps to optimize performance, as only needed components are rerendered."
+        "useVirtualSnapshot subscribes a small component to selected VirtualScroller events. \
+    This keeps unrelated components out of the render path."
 } as const;
 
 export default metadata;

@@ -3,10 +3,10 @@
     "type": "module",
     "name": "af-utils-monorepo",
     "engines": {
-        "pnpm": "^9.0.0",
-        "node": ">20.0.0"
+        "pnpm": ">=11.21.0",
+        "node": ">=22.12.0"
     },
-    "packageManager": "pnpm@9.1.1",
+    "packageManager": "pnpm@11.21.0",
     "author": {
         "name": "Alex Fomin",
         "email": "nowaalex@gmail.com",
@@ -19,24 +19,34 @@
     "homepage": "https://af-utils.com",
     "license": "MIT",
     "scripts": {
+        "format": "biome format --write .",
+        "format:check": "biome format .",
         "test": "pnpm -r test",
+        "test:e2e": "playwright test",
+        "test:mutation": "pnpm --filter @af-utils/virtual-core test:mutation",
+        "bench": "pnpm --filter @af-utils/virtual-core bench && pnpm --filter @af-utils/virtual-react bench",
+        "jit:check": "pnpm --filter @af-utils/virtual-core jit:check",
         "packages": "pnpm -F './packages/**'",
         "build": "pnpm packages -F website build",
-        "publint": "pnpm packages exec publint"
+        "publint": "pnpm packages exec publint",
+        "examples:versions": "node scripts/sync-example-package-versions.mjs",
+        "examples:versions:check": "node scripts/sync-example-package-versions.mjs --check",
+        "changeset:version": "changeset version && pnpm examples:versions && pnpm install --lockfile-only --no-frozen-lockfile",
+        "release": "changeset publish"
     },
     "browserslist": ">0.6%, not op_mini all",
     "devDependencies": {
-        "@changesets/cli": "^2.27.9",
-        "@microsoft/api-documenter": "^7.25.21",
-        "@microsoft/api-extractor": "^7.47.11",
-        "prettier": "^3.3.3",
-        "publint": "^0.2.12",
-        "tsc-alias": "^1.8.10",
-        "typescript": "^5.6.3"
-    },
-    "pnpm": {
-        "patchedDependencies": {
-            "@microsoft/api-documenter@7.25.21": "patches/@microsoft__api-documenter@7.24.1.patch"
-        }
+        "@biomejs/biome": "2.5.7",
+        "@changesets/cli": "^2.31.1",
+        "@microsoft/api-extractor": "^7.58.12",
+        "@playwright/test": "1.62.1",
+        "@stryker-mutator/core": "^9.6.1",
+        "@stryker-mutator/vitest-runner": "^9.6.1",
+        "@types/node": "^26.2.0",
+        "publint": "^0.3.23",
+        "typedoc": "0.28.20",
+        "typedoc-plugin-frontmatter": "1.3.1",
+        "typedoc-plugin-markdown": "4.12.0",
+        "typescript": "^6.0.3"
     }
 }

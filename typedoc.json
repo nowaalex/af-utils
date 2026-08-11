@@ -1,0 +1,40 @@
+{
+    "$schema": "./node_modules/typedoc-plugin-markdown/typedoc-plugin-markdown.schema.json",
+    "entryPoints": ["packages/virtual/core", "packages/virtual/react"],
+    "entryPointStrategy": "packages",
+    "packageOptions": {
+        "entryPoints": ["src/index.ts"]
+    },
+    "plugin": ["typedoc-plugin-markdown", "typedoc-plugin-frontmatter"],
+    "theme": "markdown",
+    "router": "member",
+    "out": "website/src/content/reference",
+    "cleanOutputDir": true,
+    "entryFileName": "index",
+    "publicPath": "/virtual/reference/",
+    "readme": "none",
+    "excludeInternal": true,
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "excludeScopesInPaths": true,
+    "disableSources": true,
+    "externalSymbolLinkMappings": {
+        "@af-utils/virtual-core": {
+            "VirtualScroller": "/virtual/reference/virtual-core/classes/VirtualScroller",
+            "VirtualScroller.set": "/virtual/reference/virtual-core/classes/VirtualScroller#set",
+            "VirtualScrollerEventMask": "/virtual/reference/virtual-core/type-aliases/VirtualScrollerEventMask",
+            "VirtualScrollerInitialParams": "/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams",
+            "VirtualScrollerScrollElement": "/virtual/reference/virtual-core/type-aliases/VirtualScrollerScrollElement"
+        }
+    },
+    "githubPages": false,
+    "includeVersion": false,
+    "useCodeBlocks": true,
+    "indexFormat": "table",
+    "interfacePropertiesFormat": "list",
+    "classPropertiesFormat": "list",
+    "parametersFormat": "table",
+    "frontmatterGlobals": {
+        "generated": true
+    }
+}

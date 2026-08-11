@@ -12,7 +12,7 @@ export async function GET() {
 
     const icoBuffer = ico.encode([buffer]);
 
-    return new Response(icoBuffer, {
+    return new Response(Uint8Array.from(icoBuffer), {
         headers: { "Content-Type": "image/x-icon" }
     });
 }

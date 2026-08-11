@@ -1,18 +1,39 @@
-import { mapVisibleRange } from "utils/rangeMappers";
-import useSyncedStyles from "hooks/useSyncedStyles";
-import Subscription from "components/Subscription";
-import { VirtualScrollerEvent } from "@af-utils/virtual-core";
-import { useCallback, ElementType } from "react";
-import type { ListProps } from "types";
+import { mapVirtualRange, VirtualScrollerEvent } from "@af-utils/virtual-core";
+import useVirtualLayout from "../../hooks/useVirtualLayout";
+import useVirtualSnapshot from "../../hooks/useVirtualSnapshot";
+import { ElementType, type ComponentType } from "react";
+import type { ListItemProps, ListProps } from "../../types";
 import type { ComponentProps } from "react";
+
+const VirtualItems = <Data,>({
+    model,
+    Item,
+    data,
+    getKey
+}: {
+    model: ListItemProps<Data>["model"];
+    Item: ComponentType<ListItemProps<Data>>;
+    data: Data | undefined;
+    getKey: (index: number, data: Data) => string | number;
+}) => {
+    useVirtualSnapshot(model, VirtualScrollerEvent.RANGE);
+    return mapVirtualRange(model, index => (
+        <Item
+            key={getKey(index, data as Data)}
+            model={model}
+            index={index}
+            data={data}
+        />
+    ));
+};
 
 /**
  * @public
  * React component.
  * Small abstraction, which in 90% cases allows to avoid hook boilerplate.
  */
-const List = <C extends ElementType = "div">(
-    props: ListProps<C> & Omit<ComponentProps<C>, "children" | "ref">
+const List = <Data = unknown, C extends ElementType = "div">(
+    props: ListProps<C, Data> & Omit<ComponentProps<C>, "children" | "ref">
 ) => {
     const {
         model,
@@ -27,40 +48,31 @@ const List = <C extends ElementType = "div">(
         ...rest
     } = props;
 
-    const [outerRef, innerRef] = useSyncedStyles(model);
+    const {
+        scrollerRef,
+        sizeRef,
+        itemsRef,
+        scrollerStyle,
+        sizeStyle,
+        itemsStyle
+    } = useVirtualLayout(model, style);
 
     return (
         <C
             {...rest}
-            style={{
-                overflow: "auto",
-                contain: "strict",
-                ...style
-            }}
-            ref={useCallback(
-                (el: HTMLElement | null) => model.setScroller(el),
-                [model]
-            )}
+            style={scrollerStyle}
+            ref={scrollerRef}
             tabIndex={tabIndex}
         >
             {header}
-            <div ref={outerRef}>
-                <div ref={innerRef}>
-                    <Subscription
+            <div ref={sizeRef} style={sizeStyle}>
+                <div ref={itemsRef} style={itemsStyle}>
+                    <VirtualItems
                         model={model}
-                        events={[VirtualScrollerEvent.RANGE]}
-                    >
-                        {() =>
-                            mapVisibleRange(model, i => (
-                                <Item
-                                    key={getKey(i, itemData)}
-                                    model={model}
-                                    i={i}
-                                    data={itemData}
-                                />
-                            ))
-                        }
-                    </Subscription>
+                        Item={Item}
+                        data={itemData}
+                        getKey={getKey}
+                    />
                 </div>
             </div>
             {footer}
