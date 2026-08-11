@@ -9,6 +9,7 @@ const IgnoredConditions = [
     "deno",
     "electron",
     "development",
+    "production",
     "react-native",
     "electron",
     "types"

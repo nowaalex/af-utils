@@ -33,6 +33,9 @@ export interface VirtualScrollerRuntimeParams {
      * - if scrolling is done forward - these items are rendered after visible ones;
      *
      * - If backward - before.
+     *
+     * Changing only `overscanCount` does not invalidate the currently published
+     * range. The new value is applied by the next natural range recalculation.
      */
     overscanCount?: number;
 
@@ -55,6 +58,8 @@ export interface VirtualScrollerRuntimeParams {
      *
      * @privateRemarks
      * TODO: format remarks with blockquote when api-extractor starts supporting it
+     * TODO: document the practical memory ceiling of the dense Float64/Fenwick
+     * stores and the precision tradeoff of Float64 accumulated scroll sizes.
      */
     itemCount?: number;
 
@@ -64,6 +69,14 @@ export interface VirtualScrollerRuntimeParams {
      * @remarks
      * Actual size is always reported by internal `ResizeObserver` when {@link VirtualScroller.attachItem} is called.
      * Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.
+     *
+     * Assigning a different `estimatedItemSize` through {@link VirtualScroller.set}
+     * preserves cached sizes in the currently rendered `[from, to)` range and
+     * resets cached sizes outside it to the new estimate. Consequently, an item
+     * in that range which is still awaiting its first `ResizeObserver` delivery
+     * can temporarily retain the previous estimate. When scrolling is idle,
+     * the model corrects the native offset to preserve the current visible
+     * anchor; an end-aligned viewport remains at the end.
      */
     estimatedItemSize?: number;
 }

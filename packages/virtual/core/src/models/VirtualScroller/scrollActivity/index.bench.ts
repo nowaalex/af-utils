@@ -7,9 +7,9 @@ let currentTime = 0;
 let benchmarkSink = 0;
 
 const scheduler: ScrollActivityScheduler = {
-    now: () => ++currentTime,
-    setTimeout: () => 1 as unknown as ReturnType<typeof setTimeout>,
-    clearTimeout: () => {}
+    _now: () => ++currentTime,
+    _setTimeout: () => 1 as unknown as ReturnType<typeof setTimeout>,
+    _clearTimeout: () => {}
 };
 const activity = new ScrollActivity(() => benchmarkSink++, scheduler);
 
@@ -79,27 +79,27 @@ const bitmaskFlags = new BitmaskScrollFlags();
 
 describe("scroll activity transitions", () => {
     bench("10k native-scroll transitions", () => {
-        activity.setNativeScrollEndSupported(true);
+        activity._setNativeScrollEndSupported(true);
 
         for (
             let transition = 0;
             transition < TRANSITIONS_PER_SAMPLE;
             transition++
         ) {
-            activity.onNativeScroll();
-            activity.onNativeScrollEnd();
+            activity._onNativeScroll();
+            activity._onNativeScrollEnd();
         }
     });
 
     bench("10k fallback-scroll transitions", () => {
-        activity.setNativeScrollEndSupported(false);
+        activity._setNativeScrollEndSupported(false);
 
         for (
             let transition = 0;
             transition < TRANSITIONS_PER_SAMPLE;
             transition++
         ) {
-            activity.onNativeScroll();
+            activity._onNativeScroll();
         }
     });
 });
@@ -112,12 +112,12 @@ describe("scroll activity flag representation", () => {
             transition < FLAG_TRANSITIONS_PER_SAMPLE;
             transition++
         ) {
-            booleanFlags.setPointerDragging((transition & 1) !== 0);
+            booleanFlags._setPointerDragging((transition & 1) !== 0);
             booleanFlags.setProgrammaticPending((transition & 2) !== 0);
-            booleanFlags.setIndexConverging((transition & 4) !== 0);
+            booleanFlags._setIndexConverging((transition & 4) !== 0);
             result +=
-                Number(booleanFlags.pointerDragging) +
-                Number(booleanFlags.programmaticScrollActive);
+                Number(booleanFlags._pointerDragging) +
+                Number(booleanFlags._programmaticScrollActive);
         }
         benchmarkSink = result;
     });
@@ -129,12 +129,12 @@ describe("scroll activity flag representation", () => {
             transition < FLAG_TRANSITIONS_PER_SAMPLE;
             transition++
         ) {
-            bitmaskFlags.setPointerDragging((transition & 1) !== 0);
+            bitmaskFlags._setPointerDragging((transition & 1) !== 0);
             bitmaskFlags.setProgrammaticPending((transition & 2) !== 0);
-            bitmaskFlags.setIndexConverging((transition & 4) !== 0);
+            bitmaskFlags._setIndexConverging((transition & 4) !== 0);
             result +=
-                Number(bitmaskFlags.pointerDragging) +
-                Number(bitmaskFlags.programmaticScrollActive);
+                Number(bitmaskFlags._pointerDragging) +
+                Number(bitmaskFlags._programmaticScrollActive);
         }
         benchmarkSink = result;
     });

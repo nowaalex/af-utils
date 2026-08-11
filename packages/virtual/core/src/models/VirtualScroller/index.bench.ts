@@ -1,4 +1,3 @@
-import "../../polyfill";
 import { bench, describe } from "vitest";
 import VirtualScroller from ".";
 

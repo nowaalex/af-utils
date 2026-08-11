@@ -9,11 +9,17 @@ const SCROLLEND_EVENT = "scrollend";
 const debounce = (fn: () => void, delay: number) => {
     let timer: ReturnType<typeof setTimeout> | 0 = 0;
 
-    const cancel = () => clearTimeout(timer);
+    const cancel = () => {
+        clearTimeout(timer);
+        timer = 0;
+    };
 
     const result = () => {
         cancel();
-        timer = setTimeout(fn, delay);
+        timer = setTimeout(() => {
+            timer = 0;
+            fn();
+        }, delay);
     };
 
     result._cancel = cancel;
@@ -37,15 +43,33 @@ interface TargetState {
     readonly scrollHandler: DebouncedHandler;
     readonly removeEventListener: typeof EventTarget.prototype.removeEventListener;
     listenerCount: number;
+    scrollPending: boolean;
 }
 
-if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
+const PATCH_MARK = Symbol.for("@af-utils/scrollend-polyfill/patched");
+
+if (
+    typeof window !== "undefined" &&
+    !("on" + SCROLLEND_EVENT in window) &&
+    !(window as unknown as { [key: symbol]: unknown })[PATCH_MARK]
+) {
+    Object.defineProperty(window, PATCH_MARK, { value: true });
     const pointers = new Set<number>();
     const targetStates = new WeakMap<PolyfilledTarget, TargetState>();
-    let lastTarget: PolyfilledTarget | null = null;
+    const touchPendingTargets = new Set<PolyfilledTarget>();
 
     const dispatchScrollEnd = (target: PolyfilledTarget) =>
         target.dispatchEvent(new Event(SCROLLEND_EVENT));
+
+    const finishScroll = (target: PolyfilledTarget) => {
+        const state = targetStates.get(target);
+        touchPendingTargets.delete(target);
+        if (!state?.scrollPending) return;
+
+        state.scrollHandler._cancel();
+        state.scrollPending = false;
+        dispatchScrollEnd(target);
+    };
 
     addEventListener(
         "touchstart",
@@ -57,22 +81,21 @@ if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
         { passive: true }
     );
 
-    addEventListener(
-        "touchend",
-        e => {
-            for (const touch of e.changedTouches) {
-                if (
-                    pointers.delete(touch.identifier) &&
-                    lastTarget &&
-                    !pointers.size
-                ) {
-                    dispatchScrollEnd(lastTarget);
-                    lastTarget = null;
-                }
+    const handleTouchEnd = (e: TouchEvent) => {
+        let changed = false;
+        for (const touch of e.changedTouches) {
+            changed = pointers.delete(touch.identifier) || changed;
+        }
+
+        if (changed && pointers.size === 0) {
+            for (const target of [...touchPendingTargets]) {
+                finishScroll(target);
             }
-        },
-        { passive: true }
-    );
+        }
+    };
+
+    addEventListener("touchend", handleTouchEnd, { passive: true });
+    addEventListener("touchcancel", handleTouchEnd, { passive: true });
 
     const getCapture = (
         options?: boolean | AddEventListenerOptions | EventListenerOptions
@@ -92,23 +115,26 @@ if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
         if (!state || !registrations || !registration) return null;
 
         registrations[capture] = null;
-        registration.signal?.removeEventListener(
-            "abort",
-            registration.abortHandler!
-        );
+        if (registration.signal && registration.abortHandler) {
+            registration.signal.removeEventListener(
+                "abort",
+                registration.abortHandler
+            );
+        }
         if (!registrations[0] && !registrations[1]) {
             state.listeners.delete(listener);
         }
 
         if (--state.listenerCount === 0) {
             state.scrollHandler._cancel();
+            state.scrollPending = false;
+            touchPendingTargets.delete(target);
             state.removeEventListener.call(
                 target,
                 "scroll",
                 state.scrollHandler
             );
             targetStates.delete(target);
-            if (lastTarget === target) lastTarget = null;
         }
 
         return registration;
@@ -122,22 +148,32 @@ if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
         let state = targetStates.get(target);
         if (state) return state;
 
-        const scrollHandler = debounce(() => {
-            if (pointers.size === 0) {
-                dispatchScrollEnd(target);
-            } else {
-                lastTarget = target;
-            }
+        let nextState: TargetState;
+        const finishHandler = debounce(() => {
+            if (!nextState.scrollPending) return;
+            if (pointers.size === 0) finishScroll(target);
+            else touchPendingTargets.add(target);
         }, SCROLL_DEBOUNCE_INTERVAL);
+        const scrollHandler = Object.assign(
+            () => {
+                touchPendingTargets.delete(target);
+                nextState.scrollPending = true;
+                finishHandler();
+            },
+            { _cancel: finishHandler._cancel }
+        );
 
-        state = {
+        nextState = state = {
             listeners: new Map(),
             scrollHandler,
             removeEventListener: originalRemove,
-            listenerCount: 0
+            listenerCount: 0,
+            scrollPending: false
         };
         targetStates.set(target, state);
-        originalAdd.call(target, "scroll", scrollHandler, { passive: true });
+        originalAdd.call(target, "scroll", scrollHandler, {
+            passive: true
+        });
         return state;
     };
 
@@ -196,7 +232,9 @@ if (typeof window !== "undefined" && !("on" + SCROLLEND_EVENT in window)) {
             registrations[capture] = registration;
             nextState.listeners.set(listener, registrations);
             nextState.listenerCount++;
-            signal?.addEventListener("abort", abortHandler!, { once: true });
+            if (signal && abortHandler) {
+                signal.addEventListener("abort", abortHandler, { once: true });
+            }
         };
 
         object.removeEventListener = function (

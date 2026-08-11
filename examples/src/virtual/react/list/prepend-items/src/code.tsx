@@ -86,7 +86,8 @@ const PrependButton = ({
             createItem(store.nextPrependedId--)
         );
         const desiredScrollPos = newItems.length + model.visibleFrom;
-        model.setItemCount(store.items.unshift(...newItems));
+        store.items.unshift(...newItems);
+        model.spliceItems(0, 0, newItems.length);
         model.scrollToIndex(desiredScrollPos);
         setLoading(false);
     };
@@ -105,8 +106,9 @@ const PrependButton = ({
 };
 
 const PrependItems = () => {
-    const store = (useRef<ItemStore | null>(null).current ||=
-        createInitialStore());
+    const storeRef = useRef<ItemStore | null>(null);
+    storeRef.current ??= createInitialStore();
+    const store = storeRef.current;
 
     const model = useVirtualModel({
         estimatedItemSize: ESTIMATED_ITEM_SIZE_PX,

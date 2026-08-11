@@ -36,6 +36,14 @@ Estimated height/width of scrollable item. Orientation is determined by [Virtual
 Actual size is always reported by internal `ResizeObserver` when [VirtualScroller.attachItem](/virtual/reference/virtual-core/classes/VirtualScroller#attachitem) is called.
 Bad item size assumptions can turn into shaky scrolling experience. Accuracy here is rewarded.
 
+Assigning a different `estimatedItemSize` through [VirtualScroller.set](/virtual/reference/virtual-core/classes/VirtualScroller#set)
+preserves cached sizes in the currently rendered `[from, to)` range and
+resets cached sizes outside it to the new estimate. Consequently, an item
+in that range which is still awaiting its first `ResizeObserver` delivery
+can temporarily retain the previous estimate. When scrolling is idle,
+the model corrects the native offset to preserve the current visible
+anchor; an end-aligned viewport remains at the end.
+
 ***
 
 ### itemCount?
@@ -78,3 +86,6 @@ Render place depends on scroll direction:
 - if scrolling is done forward - these items are rendered after visible ones;
 
 - If backward - before.
+
+Changing only `overscanCount` does not invalidate the currently published
+range. The new value is applied by the next natural range recalculation.

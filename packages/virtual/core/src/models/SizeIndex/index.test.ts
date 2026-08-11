@@ -1,4 +1,9 @@
 import { describe, expect, test } from "vitest";
+import {
+    VirtualScrollerErrorCode,
+    VirtualScrollerErrorIndex
+} from "../../errors/codes";
+import { VirtualScrollerError } from "#virtual-errors";
 import { MAX_SIZE_INDEX_CAPACITY } from "../../constants";
 import SizeIndex, {
     assertEstimatedSize,
@@ -9,23 +14,22 @@ import SizeIndex, {
 type SizeIndexInternals = {
     _mostSignificantBit: number;
     _sizes: Float64Array;
-    _measured: Uint8Array;
     _tree: Float64Array;
 };
 
 const applySizes = (index: SizeIndex, sizes: readonly number[]) => {
-    const updateLimit = index.getUpdateLimit(0, sizes.length);
+    const updateLimit = index._getUpdateLimit(0, sizes.length);
     let totalDelta = 0.0;
 
     for (let itemIndex = 0; itemIndex < sizes.length; itemIndex++) {
-        totalDelta += index.updateSize(
+        totalDelta += index._updateSize(
             itemIndex,
             sizes[itemIndex],
             updateLimit
         );
     }
 
-    index.completeUpdateBatch(updateLimit, totalDelta);
+    index._completeUpdateBatch(updateLimit, totalDelta);
 };
 
 describe("SizeIndex capacity", () => {
@@ -46,21 +50,19 @@ describe("SizeIndex capacity", () => {
     test("does not reallocate while count stays within capacity", () => {
         const index = new SizeIndex(40);
 
-        index.setCount(1);
-        expect(index.capacity).toBe(64);
+        index._setCount(1);
+        expect(index._capacityValue).toBe(64);
         const internals = index as unknown as SizeIndexInternals;
         const sizes = internals._sizes;
-        const measured = internals._measured;
         const tree = internals._tree;
 
-        index.setCount(64);
-        expect(index.capacity).toBe(64);
+        index._setCount(64);
+        expect(index._capacityValue).toBe(64);
         expect(internals._sizes).toBe(sizes);
-        expect(internals._measured).toBe(measured);
         expect(internals._tree).toBe(tree);
 
-        index.setCount(65);
-        expect(index.capacity).toBe(96);
+        index._setCount(65);
+        expect(index._capacityValue).toBe(96);
         expect(internals._mostSignificantBit).toBe(64);
     });
 
@@ -68,161 +70,279 @@ describe("SizeIndex capacity", () => {
         "rejects invalid item count %s",
         count => {
             const index = new SizeIndex(40);
-            expect(() => index.setCount(count)).toThrow(RangeError);
+            expect(() => index._setCount(count)).toThrow(VirtualScrollerError);
         }
     );
 
     test("rejects counts beyond the fixed capacity before allocating", () => {
         const index = new SizeIndex(40);
 
-        expect(() => index.setCount(MAX_SIZE_INDEX_CAPACITY + 1)).toThrow(
-            RangeError
+        expect(() => index._setCount(MAX_SIZE_INDEX_CAPACITY + 1)).toThrow(
+            VirtualScrollerError
         );
-        expect(index.capacity).toBe(0);
+        expect(index._capacityValue).toBe(0);
     });
 
     test("accepts the maximum count and reports invalid input precisely", () => {
         expect(() =>
             assertSizeIndexCount(MAX_SIZE_INDEX_CAPACITY)
         ).not.toThrow();
-        expect(() => assertSizeIndexCount(-1)).toThrow(
-            `itemCount must be an integer between 0 and ${MAX_SIZE_INDEX_CAPACITY}. Got: -1`
+        expect(() => assertSizeIndexCount(-1)).toThrowError(
+            expect.objectContaining({
+                code: VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_ITEM_COUNT
+                ]
+            })
         );
     });
 
     test("reports whether count actually changed", () => {
         const index = new SizeIndex(40);
 
-        expect(index.count).toBe(0);
-        expect(index.setCount(0)).toBe(false);
-        expect(index.setCount(1)).toBe(true);
-        expect(index.setCount(1)).toBe(false);
-        expect(index.count).toBe(1);
-        expect(index.totalSize).toBe(40);
-        expect(index.setCount(0)).toBe(true);
-        expect(index.totalSize).toBe(0);
+        expect(index._countValue).toBe(0);
+        expect(index._setCount(0)).toBe(false);
+        expect(index._setCount(1)).toBe(true);
+        expect(index._setCount(1)).toBe(false);
+        expect(index._countValue).toBe(1);
+        expect(index._totalSizeValue).toBe(40);
+        expect(index._setCount(0)).toBe(true);
+        expect(index._totalSizeValue).toBe(0);
         expect(
             (index as unknown as SizeIndexInternals)._mostSignificantBit
         ).toBe(0);
     });
 });
 
-describe("SizeIndex measurements", () => {
-    test("keeps measured sizes and updates unmeasured estimates", () => {
+describe("SizeIndex cached sizes", () => {
+    test("resets every cached size when the estimate changes", () => {
         const index = new SizeIndex(40);
-        index.setCount(4);
+        index._setCount(4);
 
-        const updateLimit = index.getUpdateLimit(0, 4);
-        const delta = index.updateSize(1, 75, updateLimit);
-        index.completeUpdateBatch(updateLimit, delta);
+        const updateLimit = index._getUpdateLimit(0, 4);
+        const delta = index._updateSize(1, 75, updateLimit);
+        index._completeUpdateBatch(updateLimit, delta);
 
-        expect(index.totalSize).toBe(195);
+        expect(index._totalSizeValue).toBe(195);
 
-        index.setEstimatedSize(100);
+        expect(index._setEstimatedSize(100)).toEqual({
+            changed: true,
+            totalDelta: 205
+        });
 
-        expect(index.getSize(0)).toBe(100);
-        expect(index.getSize(1)).toBe(75);
-        expect(index.getSize(2)).toBe(100);
-        expect(index.totalSize).toBe(375);
+        expect(index._getSize(0)).toBe(100);
+        expect(index._getSize(1)).toBe(100);
+        expect(index._getSize(2)).toBe(100);
+        expect(index._totalSizeValue).toBe(400);
+    });
+
+    test("preserves the requested cached range when the estimate changes", () => {
+        const index = new SizeIndex(40);
+        index._setCount(4);
+        applySizes(index, [10, 20, 30, 50]);
+
+        expect(index._setEstimatedSize(100, 1, 3)).toEqual({
+            changed: true,
+            totalDelta: 140
+        });
+        expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
+            100, 20, 30, 100
+        ]);
+        expect(index._totalSizeValue).toBe(250);
+    });
+
+    test("does not report a change when only the preserved range differs", () => {
+        const index = new SizeIndex(40);
+        index._setCount(4);
+        applySizes(index, [100, 20, 30, 100]);
+
+        expect(index._setEstimatedSize(100, 1, 3)).toEqual({
+            changed: false,
+            totalDelta: 0
+        });
+        expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
+            100, 20, 30, 100
+        ]);
     });
 
     test("validates estimates and reports no-op estimate updates", () => {
         expect(() => assertEstimatedSize(1)).not.toThrow();
-        expect(() => assertEstimatedSize(0)).toThrow(RangeError);
-        expect(() => new SizeIndex(0)).toThrow(
-            "estimatedItemSize must be a finite positive number. Got: 0"
+        expect(() => assertEstimatedSize(0)).toThrow(VirtualScrollerError);
+        expect(() => new SizeIndex(0)).toThrowError(
+            expect.objectContaining({
+                code: VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_ITEM_SIZE
+                ],
+                message: expect.stringContaining("Received: 0")
+            })
         );
 
         const index = new SizeIndex(40);
-        index.setCount(2);
+        index._setCount(2);
 
-        expect(index.estimatedSize).toBe(40);
-        expect(index.setEstimatedSize(40)).toBe(false);
-        expect(index.setEstimatedSize(50)).toBe(true);
-        expect(index.estimatedSize).toBe(50);
-        expect(index.totalSize).toBe(100);
+        expect(index._estimatedSizeValue).toBe(40);
+        expect(index._setEstimatedSize(40)).toEqual({
+            changed: false,
+            totalDelta: 0
+        });
+        expect(index._setEstimatedSize(50)).toEqual({
+            changed: true,
+            totalDelta: 20
+        });
+        expect(index._estimatedSizeValue).toBe(50);
+        expect(index._totalSizeValue).toBe(100);
 
         for (const estimate of [0, -1, Number.NaN, Number.POSITIVE_INFINITY]) {
-            expect(() => index.setEstimatedSize(estimate)).toThrow(RangeError);
+            expect(() => index._setEstimatedSize(estimate)).toThrow(
+                VirtualScrollerError
+            );
         }
     });
 
-    test("preserves measurements across shrink, regrow and reallocation", () => {
+    test("clears removed sizes across shrink and regrow", () => {
         const index = new SizeIndex(40);
-        index.setCount(64);
+        index._setCount(64);
         applySizes(
             index,
             Array.from({ length: 64 }, (_, i) => i + 10)
         );
 
-        index.setCount(8);
-        index.setCount(65);
+        index._setCount(8);
+        index._setCount(65);
 
-        expect(index.capacity).toBe(96);
-        expect(index.getSize(7)).toBe(17);
-        expect(index.getSize(63)).toBe(73);
-        expect(index.getSize(64)).toBe(40);
+        expect(index._capacityValue).toBe(96);
+        expect(index._getSize(7)).toBe(17);
+        expect(index._getSize(63)).toBe(40);
+        expect(index._getSize(64)).toBe(40);
+    });
+
+    test("invalidates only the requested cached-size range", () => {
+        const index = new SizeIndex(40);
+        index._setCount(4);
+        applySizes(index, [10, 20, 30, 50]);
+
+        expect(index._invalidateSizes(1, 3)).toEqual({
+            changed: true,
+            totalDelta: 30
+        });
+        expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
+            10, 40, 40, 50
+        ]);
+        expect(index._totalSizeValue).toBe(140);
+        expect(index._invalidateSizes(1, 3)).toEqual({
+            changed: false,
+            totalDelta: 0
+        });
+    });
+
+    test("moves retained cached sizes with a collection splice", () => {
+        const index = new SizeIndex(40);
+        index._setCount(5);
+        applySizes(index, [10, 20, 30, 40, 50]);
+
+        expect(index._splice(1, 2, 1)).toEqual({
+            sizesChanged: true,
+            totalDelta: -10
+        });
+        expect(index._countValue).toBe(4);
+        expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
+            10, 40, 40, 50
+        ]);
+
+        index._setEstimatedSize(100);
+        expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
+            100, 100, 100, 100
+        ]);
+        expect(index._totalSizeValue).toBe(400);
     });
 
     test("ignores stale and invalid measurement updates", () => {
         const index = new SizeIndex(40);
-        index.setCount(2);
-        const updateLimit = index.getUpdateLimit(0, 2);
+        index._setCount(2);
+        const updateLimit = index._getUpdateLimit(0, 2);
 
-        expect(index.updateSize(-1, 10, updateLimit)).toBe(0);
-        expect(index.updateSize(2, 10, updateLimit)).toBe(0);
-        expect(index.updateSize(0, -1, updateLimit)).toBe(0);
-        expect(index.updateSize(0, Number.NaN, updateLimit)).toBe(0);
-        expect(index.totalSize).toBe(80);
+        expect(index._updateSize(-1, 10, updateLimit)).toBe(0);
+        expect(index._updateSize(2, 10, updateLimit)).toBe(0);
+        expect(index._updateSize(0, -1, updateLimit)).toBe(0);
+        expect(index._updateSize(0, Number.NaN, updateLimit)).toBe(0);
+        expect(index._totalSizeValue).toBe(80);
     });
 
-    test("accepts zero-sized items and keeps them measured", () => {
+    test("accepts zero-sized items and resets them with a new estimate", () => {
         const index = new SizeIndex(40);
-        index.setCount(2);
-        const updateLimit = index.getUpdateLimit(0, 2);
+        index._setCount(2);
+        const updateLimit = index._getUpdateLimit(0, 2);
 
-        expect(index.updateSize(0, 0, updateLimit)).toBe(-40);
-        index.completeUpdateBatch(updateLimit, -40);
-        expect(index.totalSize).toBe(40);
+        expect(index._updateSize(0, 0, updateLimit)).toBe(-40);
+        index._completeUpdateBatch(updateLimit, -40);
+        expect(index._totalSizeValue).toBe(40);
 
-        index.setEstimatedSize(100);
-        expect(index.getSize(0)).toBe(0);
-        expect(index.getSize(1)).toBe(100);
-        expect(index.totalSize).toBe(100);
+        index._setEstimatedSize(100);
+        expect(index._getSize(0)).toBe(100);
+        expect(index._getSize(1)).toBe(100);
+        expect(index._totalSizeValue).toBe(200);
     });
 
-    test("keeps an equal measured size when the estimate changes", () => {
+    test("resets cached values equal to the previous estimate", () => {
         const index = new SizeIndex(40);
-        index.setCount(2);
-        const updateLimit = index.getUpdateLimit(0, 1);
+        index._setCount(2);
+        const updateLimit = index._getUpdateLimit(0, 1);
 
-        expect(index.updateSize(0, 40, updateLimit)).toBe(0);
-        index.setEstimatedSize(100);
+        expect(index._updateSize(0, 40, updateLimit)).toBe(0);
+        index._setEstimatedSize(100);
 
-        expect(index.getSize(0)).toBe(40);
-        expect(index.getSize(1)).toBe(100);
-        expect(index.totalSize).toBe(140);
+        expect(index._getSize(0)).toBe(100);
+        expect(index._getSize(1)).toBe(100);
+        expect(index._totalSizeValue).toBe(200);
+    });
+
+    test("updates the estimate without publishing unchanged effective sizes", () => {
+        const index = new SizeIndex(40);
+        index._setCount(2);
+        applySizes(index, [100, 100]);
+
+        expect(index._setEstimatedSize(100)).toEqual({
+            changed: false,
+            totalDelta: 0
+        });
+        index._setCount(3);
+
+        expect(Array.from({ length: 3 }, (_, i) => index._getSize(i))).toEqual([
+            100, 100, 100
+        ]);
+    });
+
+    test("splices estimate-only slots without reporting a size change", () => {
+        const index = new SizeIndex(40);
+        index._setCount(3);
+
+        expect(index._splice(1, 1, 2)).toEqual({
+            sizesChanged: false,
+            totalDelta: 40
+        });
+        expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
+            40, 40, 40, 40
+        ]);
     });
 
     test("respects the exclusive batch update limit", () => {
         const index = new SizeIndex(40);
-        index.setCount(8);
+        index._setCount(8);
 
-        expect(index.updateSize(3, 50, 4)).toBe(10);
-        expect(index.updateSize(4, 50, 4)).toBe(0);
-        index.completeUpdateBatch(4, 10);
+        expect(index._updateSize(3, 50, 4)).toBe(10);
+        expect(index._updateSize(4, 50, 4)).toBe(0);
+        index._completeUpdateBatch(4, 10);
 
-        expect(index.getSize(3)).toBe(50);
-        expect(index.getSize(4)).toBe(40);
-        expect(index.totalSize).toBe(330);
+        expect(index._getSize(3)).toBe(50);
+        expect(index._getSize(4)).toBe(40);
+        expect(index._totalSizeValue).toBe(330);
     });
 
     test("rejects an index equal to count independently of update limit", () => {
         const index = new SizeIndex(40);
-        index.setCount(2);
+        index._setCount(2);
 
-        expect(index.updateSize(2, 100, 3)).toBe(0);
-        expect(index.totalSize).toBe(80);
+        expect(index._updateSize(2, 100, 3)).toBe(0);
+        expect(index._totalSizeValue).toBe(80);
     });
 });
 
@@ -230,21 +350,21 @@ describe("SizeIndex prefix sums", () => {
     test("handles exact offset and batch boundaries", () => {
         const index = new SizeIndex(10);
 
-        expect(index.getUpdateLimit(0, 1)).toBe(0);
-        index.setCount(65);
-        expect(index.getUpdateLimit(2, 2)).toBe(0);
-        expect(index.getUpdateLimit(3, 3)).toBe(0);
-        expect(index.getUpdateLimit(3, 2)).toBe(0);
-        expect(index.getUpdateLimit(2, 3)).toBe(3);
-        expect(index.getUpdateLimit(0, 65)).toBe(66);
+        expect(index._getUpdateLimit(0, 1)).toBe(0);
+        index._setCount(65);
+        expect(index._getUpdateLimit(2, 2)).toBe(0);
+        expect(index._getUpdateLimit(3, 3)).toBe(0);
+        expect(index._getUpdateLimit(3, 2)).toBe(0);
+        expect(index._getUpdateLimit(2, 3)).toBe(3);
+        expect(index._getUpdateLimit(0, 65)).toBe(66);
 
-        expect(index.getIndex(-1)).toBe(0);
-        expect(index.getIndex(0)).toBe(0);
-        expect(index.getIndex(10)).toBe(0);
-        expect(index.getIndex(11)).toBe(1);
-        expect(index.getIndex(645)).toBe(64);
-        expect(index.getIndex(index.totalSize)).toBe(64);
-        expect(index.getIndex(index.totalSize + 1)).toBe(64);
+        expect(index._getIndex(-1)).toBe(0);
+        expect(index._getIndex(0)).toBe(0);
+        expect(index._getIndex(10)).toBe(0);
+        expect(index._getIndex(11)).toBe(1);
+        expect(index._getIndex(645)).toBe(64);
+        expect(index._getIndex(index._totalSizeValue)).toBe(64);
+        expect(index._getIndex(index._totalSizeValue + 1)).toBe(64);
     });
 
     test("matches a naive implementation for deterministic random data", () => {
@@ -261,28 +381,28 @@ describe("SizeIndex prefix sums", () => {
         const offsets = new Float64Array(count + 1);
         const index = new SizeIndex(40);
 
-        index.setCount(count);
+        index._setCount(count);
         applySizes(index, sizes);
 
         for (let itemIndex = 0; itemIndex < count; itemIndex++) {
             offsets[itemIndex + 1] = offsets[itemIndex] + sizes[itemIndex];
         }
 
-        expect(index.totalSize).toBe(offsets[count]);
+        expect(index._totalSizeValue).toBe(offsets[count]);
 
         for (let itemIndex = 0; itemIndex <= count; itemIndex++) {
-            expect(index.getOffset(itemIndex)).toBe(offsets[itemIndex]);
+            expect(index._getOffset(itemIndex)).toBe(offsets[itemIndex]);
         }
 
         for (let attempt = 0; attempt < 10_000; attempt++) {
-            const offset = random() * index.totalSize;
+            const offset = random() * index._totalSizeValue;
             let naiveIndex = 0;
 
             while (naiveIndex < count - 1 && offset > offsets[naiveIndex + 1]) {
                 naiveIndex++;
             }
 
-            expect(index.getIndex(offset)).toBe(naiveIndex);
+            expect(index._getIndex(offset)).toBe(naiveIndex);
         }
     });
 });

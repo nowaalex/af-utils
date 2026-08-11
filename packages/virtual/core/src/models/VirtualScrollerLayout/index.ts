@@ -1,10 +1,11 @@
 import { VirtualScrollerEvent } from "../../constants";
-import VirtualScroller from "../VirtualScroller";
+import type VirtualScroller from "../VirtualScroller";
 
 /** Inert layout styles for the element that contributes the native scroll size. */
 const SIZE_ELEMENT_STYLE = {
     position: "relative",
     overflow: "hidden",
+    overflowAnchor: "none",
     contain: "size layout style"
 } as const;
 
@@ -58,37 +59,7 @@ class VirtualScrollerLayout {
     /** Disposer for range position and extent style updates. */
     private _unsubscribeItems: (() => void) | null = null;
 
-    /** Stable subscriber that writes the native scroll extent. */
-    private readonly _updateSize = () => {
-        const element = this._sizeElement;
-        if (element) {
-            element.style[this._model.horizontal ? "width" : "height"] =
-                `${this._model.scrollSize}px`;
-        }
-    };
-
-    /** Stable subscriber that positions and sizes the rendered range. */
-    private readonly _updateItems = () => {
-        const element = this._itemsElement;
-        if (element) {
-            const fromOffset = this._model.getOffset(this._model.from);
-            const toOffset = this._model.getOffset(this._model.to);
-            const rangeSize = toOffset - fromOffset;
-            const layoutOffset =
-                this._model._shouldAnchorRangeEnd() &&
-                this._model.to === this._model.itemCount
-                    ? Math.max(0.0, this._model.scrollSize - rangeSize)
-                    : fromOffset;
-            const horizontal = this._model.horizontal;
-
-            element.style.transform = getItemsTransform(
-                horizontal,
-                layoutOffset
-            );
-            element.style[horizontal ? "width" : "height"] = `${rangeSize}px`;
-        }
-    };
-
+    /** Create a DOM layout adapter for one model. */
     constructor(model: VirtualScroller) {
         this._model = model;
     }
@@ -206,19 +177,44 @@ class VirtualScrollerLayout {
         }
     }
 
+    /** Subscribe attached layout elements to model geometry changes. */
     private _connect() {
-        this._unsubscribeSize ??= this._model.subscribe(
-            this._updateSize,
-            VirtualScrollerEvent.SCROLL_SIZE
-        );
+        this._unsubscribeSize ??= this._model.subscribe(() => {
+            const element = this._sizeElement;
+            if (element) {
+                element.style[this._model.horizontal ? "width" : "height"] =
+                    `${this._model.scrollSize}px`;
+            }
+        }, VirtualScrollerEvent.SCROLL_SIZE);
         this._unsubscribeItems ??= this._model.subscribe(
-            this._updateItems,
+            () => {
+                const element = this._itemsElement;
+                if (element) {
+                    const fromOffset = this._model.getOffset(this._model.from);
+                    const toOffset = this._model.getOffset(this._model.to);
+                    const rangeSize = toOffset - fromOffset;
+                    const layoutOffset =
+                        this._model._shouldAnchorRangeEnd() &&
+                        this._model.to === this._model.itemCount
+                            ? Math.max(0.0, this._model.scrollSize - rangeSize)
+                            : fromOffset;
+                    const horizontal = this._model.horizontal;
+
+                    element.style.transform = getItemsTransform(
+                        horizontal,
+                        layoutOffset
+                    );
+                    element.style[horizontal ? "width" : "height"] =
+                        `${rangeSize}px`;
+                }
+            },
             VirtualScrollerEvent.RANGE |
                 VirtualScrollerEvent.SCROLL_SIZE |
                 VirtualScrollerEvent.SIZES
         );
     }
 
+    /** Unsubscribe once no managed layout element remains attached. */
     private _disconnectIfUnused() {
         if (!this._sizeElement && !this._itemsElement) {
             this._unsubscribeSize?.();

@@ -5,6 +5,8 @@ globalThis.ResizeObserver = class {
     unobserve() {}
     disconnect() {}
 };
+globalThis.requestAnimationFrame = () => 1;
+globalThis.cancelAnimationFrame = () => {};
 
 const { default: VirtualScroller } = await import(
     "../.jit/VirtualScroller.mjs"
@@ -25,11 +27,11 @@ for (let iteration = 0; iteration < 8; iteration++) {
 }
 
 const index = new SizeIndex(40);
-index.setCount(100_000);
+index._setCount(100_000);
 
 const emptyIndex = new SizeIndex(20);
 const smallIndex = new SizeIndex(30);
-smallIndex.setCount(10);
+smallIndex._setCount(10);
 
 if (!%HaveSameMap(index, emptyIndex) || !%HaveSameMap(index, smallIndex)) {
     throw new Error(
@@ -41,17 +43,17 @@ console.log(
     "SizeIndex hidden class is stable across empty and grown instances"
 );
 
-const getOffset = SizeIndex.prototype.getOffset;
-const getIndex = SizeIndex.prototype.getIndex;
-const updateSize = SizeIndex.prototype.updateSize;
+const getOffset = SizeIndex.prototype._getOffset;
+const getIndex = SizeIndex.prototype._getIndex;
+const updateSize = SizeIndex.prototype._updateSize;
 
 const warm = () => {
-    const updateLimit = index.getUpdateLimit(100, 164);
+    const updateLimit = index._getUpdateLimit(100, 164);
     let totalDelta = 0.0;
 
     for (let iteration = 0; iteration < 20_000; iteration++) {
         getOffset.call(index, iteration % 100_000);
-        getIndex.call(index, (iteration * 97) % index.totalSize);
+        getIndex.call(index, (iteration * 97) % index._totalSizeValue);
         totalDelta += updateSize.call(
             index,
             100 + (iteration % 64),
@@ -60,7 +62,7 @@ const warm = () => {
         );
     }
 
-    index.completeUpdateBatch(updateLimit, totalDelta);
+    index._completeUpdateBatch(updateLimit, totalDelta);
 };
 
 %PrepareFunctionForOptimization(getOffset);
@@ -74,8 +76,8 @@ warm();
 %OptimizeFunctionOnNextCall(updateSize);
 
 getOffset.call(index, 50_000);
-getIndex.call(index, index.totalSize / 2);
-updateSize.call(index, 100, 42, index.getUpdateLimit(100, 164));
+getIndex.call(index, index._totalSizeValue / 2);
+updateSize.call(index, 100, 42, index._getUpdateLimit(100, 164));
 
 // V8 intentionally changes the initial map while construction slack tracking
 // is active. Finish that phase before comparing representative instances.
@@ -161,17 +163,17 @@ const measurementEntries = [
 measurementModel._elementIndexes.set(measurementTarget, 0);
 const eventDispatcher = measurementModel._events;
 const eventPrototype = eventDispatcher.constructor.prototype;
-const beginEventBatch = eventPrototype.beginBatch;
-const emitEvent = eventPrototype.emit;
-const endEventBatch = eventPrototype.endBatch;
+const beginEventBatch = eventPrototype._beginBatch;
+const emitEvent = eventPrototype._emit;
+const endEventBatch = eventPrototype._endBatch;
 const notifyEvent = eventPrototype._notify;
 const scrollActivity = measurementModel._scrollActivity;
 const scrollActivityPrototype = scrollActivity.constructor.prototype;
-const onNativeScroll = scrollActivityPrototype.onNativeScroll;
-const onNativeScrollEnd = scrollActivityPrototype.onNativeScrollEnd;
-scrollActivity.setNativeScrollEndSupported(true);
+const onNativeScroll = scrollActivityPrototype._onNativeScroll;
+const onNativeScrollEnd = scrollActivityPrototype._onNativeScrollEnd;
+scrollActivity._setNativeScrollEndSupported(true);
 const sticky = measurementModel._sticky;
-const stickyResize = sticky._handleResize;
+const stickyResize = sticky.constructor.prototype._applyResizeEntries;
 const stickyTarget = {};
 const stickySize = { blockSize: 10, inlineSize: 10 };
 const stickyEntries = [
@@ -201,7 +203,7 @@ const warmEventsAndMeasurements = () => {
         onNativeScrollEnd.call(scrollActivity, false);
 
         stickySize.blockSize = 10 + (iteration & 1);
-        stickyResize(stickyEntries);
+        stickyResize.call(sticky, stickyEntries);
 
         measurementSize.blockSize = 35 + (iteration % 11);
         applyMeasurements.call(measurementModel, measurementEntries);
@@ -275,7 +277,7 @@ unsubscribe();
 onNativeScroll.call(scrollActivity);
 onNativeScrollEnd.call(scrollActivity, false);
 stickySize.blockSize = 12;
-stickyResize(stickyEntries);
+stickyResize.call(sticky, stickyEntries);
 measurementSize.blockSize = 42;
 applyMeasurements.call(measurementModel, measurementEntries);
 
@@ -288,28 +290,10 @@ if (!%HaveSameMap(verticalLayout, horizontalLayout)) {
     );
 }
 
-verticalLayout._sizeElement = { style: {} };
-verticalLayout._itemsElement = { style: {} };
-const updateLayoutSize = verticalLayout._updateSize;
-const updateLayoutItems = verticalLayout._updateItems;
-
-%PrepareFunctionForOptimization(updateLayoutSize);
-%PrepareFunctionForOptimization(updateLayoutItems);
-
-for (let iteration = 0; iteration < 20_000; iteration++) {
-    updateLayoutSize();
-    updateLayoutItems();
-}
-
-%OptimizeFunctionOnNextCall(updateLayoutSize);
-%OptimizeFunctionOnNextCall(updateLayoutItems);
-updateLayoutSize();
-updateLayoutItems();
-
 const statuses = new Map([
-    ["getOffset", %GetOptimizationStatus(getOffset)],
-    ["getIndex", %GetOptimizationStatus(getIndex)],
-    ["updateSize", %GetOptimizationStatus(updateSize)],
+    ["SizeIndex._getOffset", %GetOptimizationStatus(getOffset)],
+    ["SizeIndex._getIndex", %GetOptimizationStatus(getIndex)],
+    ["SizeIndex._updateSize", %GetOptimizationStatus(updateSize)],
     [
         "VirtualScroller.getOffset",
         %GetOptimizationStatus(virtualGetOffset)
@@ -325,27 +309,22 @@ const statuses = new Map([
     ],
     ["VirtualScroller.subscribe", %GetOptimizationStatus(subscribe)],
     ["VirtualScroller.getRevision", %GetOptimizationStatus(getRevision)],
-    ["VirtualScrollerEvents.beginBatch", %GetOptimizationStatus(beginEventBatch)],
-    ["VirtualScrollerEvents.emit", %GetOptimizationStatus(emitEvent)],
-    ["VirtualScrollerEvents.endBatch", %GetOptimizationStatus(endEventBatch)],
+    ["VirtualScrollerEvents._beginBatch", %GetOptimizationStatus(beginEventBatch)],
+    ["VirtualScrollerEvents._emit", %GetOptimizationStatus(emitEvent)],
+    ["VirtualScrollerEvents._endBatch", %GetOptimizationStatus(endEventBatch)],
     ["VirtualScrollerEvents._notify", %GetOptimizationStatus(notifyEvent)],
-    ["ScrollActivity.onNativeScroll", %GetOptimizationStatus(onNativeScroll)],
+    ["ScrollActivity._onNativeScroll", %GetOptimizationStatus(onNativeScroll)],
     [
-        "ScrollActivity.onNativeScrollEnd",
+        "ScrollActivity._onNativeScrollEnd",
         %GetOptimizationStatus(onNativeScrollEnd)
     ],
-    ["StickyElements._handleResize", %GetOptimizationStatus(stickyResize)],
+    [
+        "StickyElements._applyResizeEntries",
+        %GetOptimizationStatus(stickyResize)
+    ],
     [
         "VirtualScroller._applyMeasurements",
         %GetOptimizationStatus(applyMeasurements)
-    ],
-    [
-        "VirtualScrollerLayout._updateSize",
-        %GetOptimizationStatus(updateLayoutSize)
-    ],
-    [
-        "VirtualScrollerLayout._updateItems",
-        %GetOptimizationStatus(updateLayoutItems)
     ]
 ]);
 

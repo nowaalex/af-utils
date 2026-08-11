@@ -59,21 +59,21 @@ describe("StickyElements", () => {
         const header = createElement("header");
         const footer = createElement("footer");
 
-        sticky.setHeader(header);
-        sticky.setFooter(footer);
+        sticky._setHeader(header);
+        sticky._setFooter(footer);
         expect(observer.unobserve).not.toHaveBeenCalled();
         observer.deliver([createEntry(header, 30), createEntry(footer, 20)]);
 
-        expect(sticky.headerSize).toBe(30);
-        expect(sticky.footerSize).toBe(20);
-        expect(sticky.totalSize).toBe(50);
+        expect(sticky._headerSize).toBe(30);
+        expect(sticky._footerSize).toBe(20);
+        expect(sticky._totalSize).toBe(50);
         expect(onSizeChange).toHaveBeenCalledOnce();
         expect(onSizeChange).toHaveBeenCalledWith(50);
 
         onSizeChange.mockClear();
         observer.deliver([createEntry(header, 50)]);
-        expect(sticky.headerSize).toBe(50);
-        expect(sticky.totalSize).toBe(70);
+        expect(sticky._headerSize).toBe(50);
+        expect(sticky._totalSize).toBe(70);
         expect(onSizeChange).toHaveBeenCalledWith(20);
     });
 
@@ -87,10 +87,10 @@ describe("StickyElements", () => {
         );
         const header = createElement("header");
 
-        sticky.setHeader(header);
+        sticky._setHeader(header);
         observer.deliver([createEntry(header, 30, 70)]);
 
-        expect(sticky.headerSize).toBe(70);
+        expect(sticky._headerSize).toBe(70);
         expect(onSizeChange).toHaveBeenCalledWith(70);
     });
 
@@ -104,15 +104,15 @@ describe("StickyElements", () => {
         );
         const header = createElement("header");
 
-        sticky.setHeader(header);
+        sticky._setHeader(header);
         observer.deliver([createEntry(header, 40)]);
         onSizeChange.mockClear();
 
-        sticky.setHeader(null);
+        sticky._setHeader(null);
         observer.deliver([createEntry(header, 80)]);
 
         expect(observer.unobserve).toHaveBeenCalledWith(header);
-        expect(sticky.headerSize).toBe(0);
+        expect(sticky._headerSize).toBe(0);
         expect(onSizeChange).toHaveBeenCalledOnce();
         expect(onSizeChange).toHaveBeenCalledWith(-40);
     });
@@ -128,15 +128,15 @@ describe("StickyElements", () => {
         const first = createElement("first");
         const second = createElement("second");
 
-        sticky.setFooter(first);
+        sticky._setFooter(first);
         observer.deliver([createEntry(first, 25)]);
         onSizeChange.mockClear();
 
-        sticky.setFooter(second);
+        sticky._setFooter(second);
         observer.deliver([createEntry(second, 15)]);
 
         expect(onSizeChange.mock.calls).toEqual([[-25], [15]]);
-        expect(sticky.footerSize).toBe(15);
+        expect(sticky._footerSize).toBe(15);
     });
 
     test("does not publish or observe while clearing an unmeasured element", () => {
@@ -149,8 +149,8 @@ describe("StickyElements", () => {
         );
         const header = createElement("header");
 
-        sticky.setHeader(header);
-        sticky.setHeader(null);
+        sticky._setHeader(header);
+        sticky._setHeader(null);
 
         expect(onSizeChange).not.toHaveBeenCalled();
         expect(observer.observe).toHaveBeenCalledTimes(1);
@@ -168,13 +168,13 @@ describe("StickyElements", () => {
         const header = createElement("header");
         const footer = createElement("footer");
 
-        sticky.setHeader(header);
-        sticky.setFooter(footer);
+        sticky._setHeader(header);
+        sticky._setFooter(footer);
         observer.deliver([createEntry(header, 10), createEntry(footer, 20)]);
         onSizeChange.mockClear();
-        sticky.dispose();
+        sticky._dispose();
 
-        expect(sticky.totalSize).toBe(0);
+        expect(sticky._totalSize).toBe(0);
         expect(onSizeChange.mock.calls).toEqual([[-10], [-20]]);
         expect(observer.disconnect).toHaveBeenCalledOnce();
     });
@@ -194,8 +194,8 @@ describe("StickyElements", () => {
         footer.style.bottom = "6px";
         footer.style.zIndex = "3";
 
-        sticky.setHeader(header);
-        sticky.setFooter(footer);
+        sticky._setHeader(header);
+        sticky._setFooter(footer);
 
         expect(header.style.position).toBe("sticky");
         expect(header.style.top).toBe("4px");
@@ -204,8 +204,8 @@ describe("StickyElements", () => {
         expect(footer.style.bottom).toBe("6px");
         expect(footer.style.zIndex).toBe("3");
 
-        sticky.setHeader(null);
-        sticky.setFooter(null);
+        sticky._setHeader(null);
+        sticky._setFooter(null);
 
         expect(header.style.position).toBe("sticky");
         expect(header.style.top).toBe("4px");

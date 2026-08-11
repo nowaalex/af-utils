@@ -9,7 +9,9 @@ export default defineConfig({
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
     retries: process.env.CI ? 2 : 0,
-    reporter: process.env.CI ? "github" : "list",
+    reporter: process.env.CI
+        ? [["github"], ["html", { open: "never" }]]
+        : "list",
     use: {
         baseURL,
         launchOptions: {
@@ -60,6 +62,18 @@ export default defineConfig({
             command:
                 "pnpm --dir examples/src/virtual/react/list/prepend-items dev --host 127.0.0.1 --port 4178",
             url: "http://127.0.0.1:4178",
+            reuseExistingServer: !process.env.CI
+        },
+        {
+            command:
+                "pnpm --dir examples/src/virtual/react/hook/different-scroll-element dev --host 127.0.0.1 --port 4180",
+            url: "http://127.0.0.1:4180",
+            reuseExistingServer: !process.env.CI
+        },
+        {
+            command:
+                "pnpm --dir examples/src/virtual/react/hook/simple build && pnpm --dir examples/src/virtual/react/hook/simple serve --host 127.0.0.1 --port 4181",
+            url: "http://127.0.0.1:4181",
             reuseExistingServer: !process.env.CI
         },
         {

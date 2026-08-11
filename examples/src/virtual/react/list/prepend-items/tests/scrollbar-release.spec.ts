@@ -1,4 +1,4 @@
-import { expect, type Locator, test } from "@playwright/test";
+import { expect, type Locator, test } from "../../../../../e2e";
 
 const EXAMPLE_URL = "http://127.0.0.1:4178";
 

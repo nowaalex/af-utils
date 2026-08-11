@@ -1,14 +1,16 @@
 import {
     useCallback,
-    useMemo,
     useRef,
+    useState,
     type CSSProperties,
     type RefCallback
 } from "react";
 import {
+    assert,
     VirtualScrollerLayout,
     type VirtualScroller
 } from "@af-utils/virtual-core";
+import useIsomorphicLayoutEffect from "../useIsomorphicLayoutEffect";
 
 /**
  * @public
@@ -21,7 +23,13 @@ const useVirtualLayout = (
     model: VirtualScroller,
     scrollerStyle: CSSProperties = {}
 ) => {
-    const layout = useMemo(() => new VirtualScrollerLayout(model), [model]);
+    const [resource] = useState(() => ({
+        layout: new VirtualScrollerLayout(model),
+        model
+    }));
+    assert(resource.model === model, 13);
+    const layout = resource.layout;
+    useIsomorphicLayoutEffect(() => () => layout.dispose(), [layout]);
     const interactiveScrollerStyle = {
         overflow: "auto",
         contain: "strict",

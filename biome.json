@@ -30,7 +30,21 @@
         "lineWidth": 80
     },
     "linter": {
-        "enabled": false
+        "enabled": true,
+        "rules": {
+            "preset": "recommended",
+            "a11y": {
+                "noAriaHiddenOnFocusable": "off",
+                "noSvgWithoutTitle": "off",
+                "useAnchorContent": "off",
+                "useButtonType": "off",
+                "useSemanticElements": "off"
+            },
+            "correctness": {
+                "noInvalidPositionAtImportRule": "off",
+                "useJsxKeyInIterable": "off"
+            }
+        }
     },
     "javascript": {
         "formatter": {

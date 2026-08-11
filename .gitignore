@@ -8,5 +8,7 @@ logs
 **/.jit/
 **/.stryker-tmp/
 **/reports/mutation/
+**/temp/
 playwright-report/
 test-results/
+/git-worktrees/

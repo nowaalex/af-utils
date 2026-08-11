@@ -33,7 +33,7 @@
         "react-dom": "^19.2.8",
         "sharp": "^0.35.3",
         "sharp-ico": "^0.1.5",
-        "shiki": "4.4.2",
+        "shiki": "4.4.3",
         "vite": "^8.2.1"
     },
     "devDependencies": {
@@ -55,7 +55,7 @@
         "remark-gfm": "4.0.1",
         "remark-toc": "^9.0.0",
         "tailwindcss": "^4.3.3",
-        "tsx": "^4.23.11",
+        "tsx": "^4.23.12",
         "unist-util-visit": "^5.1.0"
     }
 }

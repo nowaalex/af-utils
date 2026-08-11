@@ -6,7 +6,9 @@
     "newlineKind": "lf",
 
     "apiReport": {
-        "enabled": false
+        "enabled": true,
+        "reportFolder": "<projectFolder>/etc",
+        "reportTempFolder": "<projectFolder>/temp"
     },
 
     "docModel": {

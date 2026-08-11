@@ -1,6 +1,7 @@
 ---
 "@af-utils/virtual-core": major
 "@af-utils/virtual-react": major
+"@af-utils/scrollend-polyfill": patch
 ---
 
 Replace array-based events with bitmask subscriptions and stable revisions,
@@ -19,3 +20,24 @@ top/left range-movement flicker or main-thread sticky jitter.
 Refactor the React adapter around `useVirtualSnapshot`, `useVirtualEffect`,
 `useVirtualLayout`, and stable item-ref hooks. Move range mapping to core and
 rename list item `i` to `index`.
+
+Add stable coded `VirtualScrollerError` failures with condition-selected
+development messages, make runtime updates validate atomically, and add
+explicit item-size invalidation, collection splice, and terminal disposal
+APIs. Reuse long-lived ResizeObserver and Set instances, keep removed
+measurements from being reused for new records, and fix scrollend touch
+cancellation and exactly-once dispatch across multiple targets. The React
+layout resource now has component lifetime identity instead of relying on a
+disposable memo cache. Browser and Node entrypoints are split so only Node
+installs the server-side ResizeObserver fallback.
+
+Changing `estimatedItemSize` now resets every cached item size to the new
+estimate outside the current rendered range, preserves cached sizes inside the
+range, and preserves the idle viewport anchor or end position. Size storage
+therefore no longer needs a parallel measured-item bitmap.
+
+Flush a pending items-container offset before native scrollbar release and
+disable browser scroll anchoring inside the virtual size element, preventing a
+fast thumb release from moving away from the final item. Full cache invalidation
+uses `invalidateItemSizes()` directly; the redundant `resetMeasurements` alias
+was removed.

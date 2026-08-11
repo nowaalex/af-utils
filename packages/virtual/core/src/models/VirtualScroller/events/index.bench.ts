@@ -11,9 +11,9 @@ const REVISION_OPERATIONS_PER_SAMPLE = 100_000;
 const events = new VirtualScrollerEvents();
 let benchmarkSink = 0;
 
-events.subscribe(() => benchmarkSink++, VirtualScrollerEvent.RANGE);
-events.subscribe(() => benchmarkSink++, VirtualScrollerEvent.RANGE);
-events.subscribe(() => benchmarkSink++, VirtualScrollerEvent.RANGE);
+events._subscribe(() => benchmarkSink++, VirtualScrollerEvent.RANGE);
+events._subscribe(() => benchmarkSink++, VirtualScrollerEvent.RANGE);
+events._subscribe(() => benchmarkSink++, VirtualScrollerEvent.RANGE);
 
 const eventTarget = new EventTarget();
 const rangeEvent = new Event("range");
@@ -65,7 +65,7 @@ eventTarget.addEventListener("range", () => benchmarkSink++);
 describe("event dispatch", () => {
     bench("10k bit-flag dispatches", () => {
         for (let emit = 0; emit < EMITS_PER_SAMPLE; emit++) {
-            events.emit(VirtualScrollerEvent.RANGE);
+            events._emit(VirtualScrollerEvent.RANGE);
         }
     });
 
@@ -78,13 +78,13 @@ describe("event dispatch", () => {
 
 describe("event batching", () => {
     bench("coalesce 10k numeric events by subscription", () => {
-        events.beginBatch();
+        events._beginBatch();
 
         for (let emit = 0; emit < EMITS_PER_SAMPLE; emit++) {
-            events.emit(VirtualScrollerEvent.RANGE);
+            events._emit(VirtualScrollerEvent.RANGE);
         }
 
-        events.endBatch();
+        events._endBatch();
     });
 });
 
@@ -96,7 +96,7 @@ describe("event revision strategy", () => {
             operation < REVISION_OPERATIONS_PER_SAMPLE;
             operation++
         ) {
-            perEventRevisions.emit(1 << (operation % 3));
+            perEventRevisions._emit(1 << (operation % 3));
             result += perEventRevisions.get(1 + (operation % 7));
         }
         benchmarkSink = result;
@@ -109,7 +109,7 @@ describe("event revision strategy", () => {
             operation < REVISION_OPERATIONS_PER_SAMPLE;
             operation++
         ) {
-            perMaskRevisions.emit(1 << (operation % 3));
+            perMaskRevisions._emit(1 << (operation % 3));
             result += perMaskRevisions.get(1 + (operation % 7));
         }
         benchmarkSink = result;

@@ -37,8 +37,8 @@ const entries = [
     }
 ] as unknown as ResizeObserverEntry[];
 
-sticky.setHeader(header);
-sticky.setFooter(footer);
+sticky._setHeader(header);
+sticky._setFooter(footer);
 
 describe("sticky element measurements", () => {
     bench("10k two-element resize deliveries", () => {

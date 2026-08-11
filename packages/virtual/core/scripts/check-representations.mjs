@@ -136,8 +136,8 @@ for (let iteration = 0; iteration < 8; iteration++) {
 }
 
 const sizeIndex = new SizeIndex(40.25);
-sizeIndex.setCount(100_001);
-sizeIndex.updateSize(50_000, 41.5, sizeIndex.getUpdateLimit(0, 100_001));
+sizeIndex._setCount(100_001);
+sizeIndex._updateSize(50_000, 41.5, sizeIndex._getUpdateLimit(0, 100_001));
 
 assertFastObject("SizeIndex", sizeIndex);
 assertSmi("SizeIndex._count", sizeIndex._count);
@@ -145,25 +145,19 @@ assertSmi("SizeIndex._capacity", sizeIndex._capacity);
 assertSmi("SizeIndex._mostSignificantBit", sizeIndex._mostSignificantBit);
 assertFiniteDouble("SizeIndex._estimatedSize", sizeIndex._estimatedSize);
 assertFiniteDouble("SizeIndex._totalSize", sizeIndex._totalSize);
-assertFiniteDouble("SizeIndex.getOffset()", sizeIndex.getOffset(50_001));
-assertSmi("SizeIndex.getIndex()", sizeIndex.getIndex(sizeIndex.totalSize / 2));
+assertFiniteDouble("SizeIndex._getOffset()", sizeIndex._getOffset(50_001));
+assertSmi("SizeIndex._getIndex()", sizeIndex._getIndex(sizeIndex._totalSizeValue / 2));
 assertTypedArray(
     "SizeIndex._sizes",
     sizeIndex._sizes,
     Float64Array,
-    sizeIndex.capacity
-);
-assertTypedArray(
-    "SizeIndex._measured",
-    sizeIndex._measured,
-    Uint8Array,
-    sizeIndex.capacity
+    sizeIndex._capacityValue
 );
 assertTypedArray(
     "SizeIndex._tree",
     sizeIndex._tree,
     Float64Array,
-    sizeIndex.capacity + 1
+    sizeIndex._capacityValue + 1
 );
 assert(
     sizeIndex._sizes.buffer !== sizeIndex._tree.buffer,
@@ -247,7 +241,7 @@ assert(
 const unsubscribe = verticalModel.subscribe(() => {}, 1 | 2 | 4);
 const subscription = verticalModel._events._subscriptions[0];
 assertFastObject("VirtualScrollerEvents subscription", subscription);
-verticalModel._events.emit(1);
+verticalModel._events._emit(1);
 unsubscribe();
 verticalModel._sticky._sizes[0] = 0.5;
 
@@ -339,9 +333,8 @@ if (process.argv.includes("--debug-print")) {
     %DebugPrint(verticalModel._sticky._sizes);
     console.log("\nV8 DebugPrint: SizeIndex typed arrays");
     const inspectionIndex = new SizeIndex(40.25);
-    inspectionIndex.setCount(4);
+    inspectionIndex._setCount(4);
     %DebugPrint(inspectionIndex._sizes);
-    %DebugPrint(inspectionIndex._measured);
     %DebugPrint(inspectionIndex._tree);
 }
 

@@ -4,7 +4,11 @@ import { act, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { VirtualScroller } from "@af-utils/virtual-core";
+import {
+    VirtualScroller,
+    VirtualScrollerError,
+    VirtualScrollerErrorCode
+} from "@af-utils/virtual-core";
 import useVirtualLayout from ".";
 
 class NoopResizeObserver implements ResizeObserver {
@@ -118,6 +122,30 @@ describe("useVirtualLayout", () => {
         const size = container.firstElementChild as HTMLElement;
         act(() => model.setItemCount(20));
         expect(size.style.height).toBe("800px");
+        act(() => root.unmount());
+    });
+
+    test("rejects replacing the model without remounting", () => {
+        const first = new VirtualScroller({ itemCount: 10 });
+        const second = new VirtualScroller({ itemCount: 20 });
+        const root = createRoot(container);
+
+        const Harness = ({ model }: { model: VirtualScroller }) => {
+            useVirtualLayout(model);
+            return null;
+        };
+
+        act(() => root.render(<Harness model={first} />));
+        expect(() =>
+            act(() => root.render(<Harness model={second} />))
+        ).toThrow(
+            expect.objectContaining<Partial<VirtualScrollerError>>({
+                code: VirtualScrollerErrorCode[13],
+                message: expect.stringContaining(
+                    "useVirtualLayout requires a stable VirtualScroller"
+                )
+            })
+        );
         act(() => root.unmount());
     });
 });

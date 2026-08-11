@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "../../../../../e2e";
 
 const WEBSITE_EXAMPLE_URL =
     "http://127.0.0.1:4179/virtual/examples/react/list/prepend-items";

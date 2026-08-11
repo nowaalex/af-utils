@@ -13,15 +13,18 @@ const ANCHOR_CORRECTION_BLOCKING_FLAGS =
     POINTER_DRAGGING_FLAG | PROGRAMMATIC_SCROLL_FLAGS;
 
 export interface ScrollActivityScheduler {
-    now(): number;
-    setTimeout(callback: () => void, delayMs: number): Timer;
-    clearTimeout(timer: Timer): void;
+    /** Return the scheduler's current monotonic timestamp. */
+    _now(): number;
+    /** Schedule a callback after the requested delay. */
+    _setTimeout(callback: () => void, delayMs: number): Timer;
+    /** Cancel a previously scheduled callback. */
+    _clearTimeout(timer: Timer): void;
 }
 
 const browserScheduler: ScrollActivityScheduler = {
-    now: () => performance.now(),
-    setTimeout: (callback, delayMs) => setTimeout(callback, delayMs),
-    clearTimeout: timer => clearTimeout(timer)
+    _now: () => performance.now(),
+    _setTimeout: (callback, delayMs) => setTimeout(callback, delayMs),
+    _clearTimeout: timer => clearTimeout(timer)
 };
 
 /** Owns native, pointer, and programmatic scroll lifecycle state. */
@@ -34,15 +37,16 @@ class ScrollActivity {
     private _scrollIdleTimer: Timer | 0 = 0;
     private _programmaticReleaseTimer: Timer | 0 = 0;
 
+    /** Clear activity timers and publish the idle transition. */
     private _finish = () => {
         // Stryker disable next-line ConditionalExpression: clearTimeout(0) is observably equivalent; the guard avoids a needless host call.
         if (this._scrollIdleTimer) {
-            this._scheduler.clearTimeout(this._scrollIdleTimer);
+            this._scheduler._clearTimeout(this._scrollIdleTimer);
             this._scrollIdleTimer = 0;
         }
         // Stryker disable next-line ConditionalExpression: clearTimeout(0) is observably equivalent; the guard avoids a needless host call.
         if (this._programmaticReleaseTimer) {
-            this._scheduler.clearTimeout(this._programmaticReleaseTimer);
+            this._scheduler._clearTimeout(this._programmaticReleaseTimer);
             this._programmaticReleaseTimer = 0;
         }
 
@@ -51,6 +55,7 @@ class ScrollActivity {
         this._onIdle();
     };
 
+    /** Create scroll-activity state with an idle callback and scheduler. */
     constructor(
         onIdle: () => void,
         scheduler: ScrollActivityScheduler = browserScheduler
@@ -59,89 +64,103 @@ class ScrollActivity {
         this._scheduler = scheduler;
     }
 
-    get pointerDragging() {
+    /** Whether a pointer currently owns the native scrollbar thumb. */
+    get _pointerDragging() {
         return (this._flags & POINTER_DRAGGING_FLAG) !== 0;
     }
 
-    get nativeScrollActive() {
+    /** Whether native scrolling has started without reaching an idle boundary. */
+    get _nativeScrollActive() {
         return this._lastScrollTimestampMs !== Number.NEGATIVE_INFINITY;
     }
 
-    get programmaticScrollActive() {
+    /** Whether a programmatic scroll or index convergence is active. */
+    get _programmaticScrollActive() {
         return (this._flags & PROGRAMMATIC_SCROLL_FLAGS) !== 0;
     }
 
     /** Whether item measurements may safely correct the current anchor. */
-    get anchorCorrectionAllowed() {
+    get _anchorCorrectionAllowed() {
         return (
             this._lastScrollTimestampMs === Number.NEGATIVE_INFINITY &&
             (this._flags & ANCHOR_CORRECTION_BLOCKING_FLAGS) === 0
         );
     }
 
-    setNativeScrollEndSupported(supported: boolean) {
+    /** Record whether the attached platform provides native `scrollend`. */
+    _setNativeScrollEndSupported(supported: boolean) {
         if (supported) this._flags |= NATIVE_SCROLL_END_FLAG;
         else this._flags &= ~NATIVE_SCROLL_END_FLAG;
     }
 
-    onNativeScroll() {
-        this._lastScrollTimestampMs = this._scheduler.now();
+    /** Record one native scroll event and schedule fallback idle detection. */
+    _onNativeScroll() {
+        this._lastScrollTimestampMs = this._scheduler._now();
         if ((this._flags & NATIVE_SCROLL_END_FLAG) === 0) {
             this._scheduleFinish();
         }
     }
 
-    onNativeScrollEnd() {
+    /** Finish activity at a definitive native `scrollend` boundary. */
+    _onNativeScrollEnd() {
         // Stryker disable next-line ConditionalExpression: clearTimeout(0) is observably equivalent; the guard avoids a needless host call.
         if (this._programmaticReleaseTimer) {
-            this._scheduler.clearTimeout(this._programmaticReleaseTimer);
+            this._scheduler._clearTimeout(this._programmaticReleaseTimer);
             this._programmaticReleaseTimer = 0;
         }
 
         this._finish();
     }
 
-    setPointerDragging(active: boolean) {
+    /** Set native scrollbar-thumb ownership. */
+    _setPointerDragging(active: boolean) {
         if (active) this._flags |= POINTER_DRAGGING_FLAG;
         else this._flags &= ~POINTER_DRAGGING_FLAG;
     }
 
-    startProgrammaticScroll(releaseAfterMs: number) {
+    /** Start programmatic activity with a failsafe release timeout. */
+    _startProgrammaticScroll(releaseAfterMs: number) {
         this._flags |= PROGRAMMATIC_PENDING_FLAG;
         // Stryker disable next-line ConditionalExpression: clearTimeout(0) is observably equivalent; the guard avoids a needless host call.
         if (this._programmaticReleaseTimer) {
-            this._scheduler.clearTimeout(this._programmaticReleaseTimer);
+            this._scheduler._clearTimeout(this._programmaticReleaseTimer);
         }
-        this._programmaticReleaseTimer = this._scheduler.setTimeout(
+        this._programmaticReleaseTimer = this._scheduler._setTimeout(
             this._finish,
             releaseAfterMs
         );
     }
 
-    setIndexConverging(active: boolean) {
+    /** Set whether repeated `scrollToIndex` corrections are active. */
+    _setIndexConverging(active: boolean) {
         if (active) this._flags |= INDEX_CONVERGING_FLAG;
         else this._flags &= ~INDEX_CONVERGING_FLAG;
     }
 
-    hasBeenIdleFor(durationMs: number) {
-        return this._scheduler.now() - this._lastScrollTimestampMs > durationMs;
+    /** Return whether the last native scroll is older than a duration. */
+    _hasBeenIdleFor(durationMs: number) {
+        return (
+            this._scheduler._now() - this._lastScrollTimestampMs > durationMs
+        );
     }
 
-    reset() {
+    /** Clear all activity and synchronously publish the idle state. */
+    _reset() {
         this._flags = 0;
         this._finish();
     }
 
+    /** Schedule fallback idle detection relative to the latest scroll event. */
     private _scheduleFinish() {
         const idleTime = Math.max(
             0.0,
-            this._scheduler.now() - this._lastScrollTimestampMs
+            this._scheduler._now() - this._lastScrollTimestampMs
         );
         // Stryker disable next-line ConditionalExpression: clearTimeout(0) is observably equivalent; the guard avoids a needless host call.
         if (this._scrollIdleTimer) {
-            this._scheduler.clearTimeout(this._scrollIdleTimer);
+            this._scheduler._clearTimeout(this._scrollIdleTimer);
         }
-        this._scrollIdleTimer = this._scheduler.setTimeout(
+        this._scrollIdleTimer = this._scheduler._setTimeout(
             this._finish,
             Math.max(0.0, SCROLL_ENDED_IDLE_TIMEOUT_MS - idleTime)
         );

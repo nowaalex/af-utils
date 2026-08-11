@@ -21,6 +21,7 @@ export type ResizeObserverFactory = (
     callback: ResizeObserverCallback
 ) => ResizeObserver;
 
+/** Create a native resize observer for sticky elements. */
 const createResizeObserver: ResizeObserverFactory = callback =>
     new ResizeObserver(callback);
 
@@ -35,30 +36,14 @@ class StickyElements {
     // Stryker disable next-line ArrayDeclaration: the fixed tuple shape is checked by jit:check rather than behavioral tests.
     private _elements: [Element | null, Element | null] = [null, null];
     private _sizes: [number, number] = [0.0, 0.0];
-    private _resizeObserver: ResizeObserver;
+    private readonly _resizeObserver: ResizeObserver;
     private _ownsZIndex: [boolean, boolean] = [false, false];
     private _inlineZIndexes: [
         InlineStyleValue | null,
         InlineStyleValue | null
     ] = [null, null];
 
-    private _handleResize = (entries: readonly ResizeObserverEntry[]) => {
-        let relativeOffset = 0.0;
-
-        for (const entry of entries) {
-            const index = this._elements.indexOf(entry.target);
-            if (index !== -1) {
-                const nextSize = this._axisAdapter._readEntrySize(entry);
-                relativeOffset += nextSize - this._sizes[index];
-                this._sizes[index] = nextSize;
-            }
-        }
-
-        if (relativeOffset !== 0.0) {
-            this._onSizeChange(relativeOffset);
-        }
-    };
-
+    /** Create sticky-element state for one scroll axis. */
     constructor(
         axisAdapter: AxisAdapter,
         onSizeChange: (relativeOffset: number) => void,
@@ -66,35 +51,44 @@ class StickyElements {
     ) {
         this._axisAdapter = axisAdapter;
         this._onSizeChange = onSizeChange;
-        this._resizeObserver = resizeObserverFactory(this._handleResize);
+        this._resizeObserver = resizeObserverFactory(entries => {
+            this._applyResizeEntries(entries);
+        });
     }
 
-    get headerSize() {
+    /** Current sticky-header size on the scrolling axis. */
+    get _headerSize() {
         return this._sizes[STICKY_HEADER_INDEX];
     }
 
-    get footerSize() {
+    /** Current sticky-footer size on the scrolling axis. */
+    get _footerSize() {
         return this._sizes[STICKY_FOOTER_INDEX];
     }
 
-    get totalSize() {
-        return this.headerSize + this.footerSize;
+    /** Aggregate sticky size reserved from the viewport. */
+    get _totalSize() {
+        return this._headerSize + this._footerSize;
     }
 
-    setHeader(element: HTMLElement | null) {
+    /** Attach or detach the sticky header. */
+    _setHeader(element: HTMLElement | null) {
         this._set(STICKY_HEADER_INDEX, element);
     }
 
-    setFooter(element: HTMLElement | null) {
+    /** Attach or detach the sticky footer. */
+    _setFooter(element: HTMLElement | null) {
         this._set(STICKY_FOOTER_INDEX, element);
     }
 
-    dispose() {
+    /** Disconnect every sticky element and observer resource. */
+    _dispose() {
         this._set(STICKY_HEADER_INDEX, null);
         this._set(STICKY_FOOTER_INDEX, null);
         this._resizeObserver.disconnect();
     }
 
+    /** Replace one sticky slot while preserving observer and style ownership. */
     private _set(index: StickyElementIndex, element: HTMLElement | null) {
         const oldElement = this._elements[index];
 
@@ -116,6 +110,25 @@ class StickyElements {
         }
     }
 
+    /** Apply sticky resize entries and publish their aggregate size delta. */
+    private _applyResizeEntries(entries: readonly ResizeObserverEntry[]) {
+        let relativeOffset = 0.0;
+
+        for (const entry of entries) {
+            const index = this._elements.indexOf(entry.target);
+            if (index !== -1) {
+                const nextSize = this._axisAdapter._readEntrySize(entry);
+                relativeOffset += nextSize - this._sizes[index];
+                this._sizes[index] = nextSize;
+            }
+        }
+
+        if (relativeOffset !== 0.0) {
+            this._onSizeChange(relativeOffset);
+        }
+    }
+
+    /** Snapshot one inline CSS declaration for later restoration. */
     private _readInlineStyle(
         style: CSSStyleDeclaration,
         property: string
@@ -126,6 +139,7 @@ class StickyElements {
         };
     }
 
+    /** Restore one previously snapshotted inline CSS declaration. */
     private _restoreInlineStyle(
         style: CSSStyleDeclaration,
         property: string,
@@ -138,6 +152,7 @@ class StickyElements {
         }
     }
 
+    /** Add a fallback stacking level when native sticky styles need one. */
     private _prepareElement(index: StickyElementIndex, element: HTMLElement) {
         const view = element.ownerDocument?.defaultView;
         if (!view || !element.style) return;
@@ -158,6 +173,7 @@ class StickyElements {
         element.style.setProperty("z-index", "1");
     }
 
+    /** Restore inline styles owned while an element was attached. */
     private _restoreElement(index: StickyElementIndex, element: HTMLElement) {
         const original = this._inlineZIndexes[index];
         if (this._ownsZIndex[index] && original && element.style) {

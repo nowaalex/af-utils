@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../../../../../e2e";
 
 test("fully renders the final item without resizing a held scrollbar", async ({
     page

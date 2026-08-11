@@ -41,6 +41,17 @@ const finishScroll = (target: EventTarget) => {
     vi.advanceTimersByTime(100);
 };
 
+const dispatchTouches = (
+    type: "touchstart" | "touchend" | "touchcancel",
+    ...identifiers: number[]
+) => {
+    const event = new Event(type) as TouchEvent;
+    Object.defineProperty(event, "changedTouches", {
+        value: identifiers.map(identifier => ({ identifier }))
+    });
+    testWindow.dispatchEvent(event);
+};
+
 describe("scrollend listener lifecycle", () => {
     test("keeps the same listener independent across targets", () => {
         const first = new TestElement();
@@ -102,5 +113,69 @@ describe("scrollend listener lifecycle", () => {
         finishScroll(abortedTarget);
 
         expect(abortedListener).not.toHaveBeenCalled();
+    });
+});
+
+describe("scrollend touch lifecycle", () => {
+    test("dispatches exactly once after the final touch ends", () => {
+        const target = new TestElement();
+        const listener = vi.fn();
+        target.addEventListener("scrollend", listener);
+
+        dispatchTouches("touchstart", 1);
+        finishScroll(target);
+        expect(listener).not.toHaveBeenCalled();
+
+        dispatchTouches("touchend", 1);
+        vi.advanceTimersByTime(1_000);
+        expect(listener).toHaveBeenCalledOnce();
+    });
+
+    test("releases a pending scroll after touchcancel", () => {
+        const target = new TestElement();
+        const listener = vi.fn();
+        target.addEventListener("scrollend", listener);
+
+        dispatchTouches("touchstart", 2);
+        finishScroll(target);
+        dispatchTouches("touchcancel", 2);
+
+        expect(listener).toHaveBeenCalledOnce();
+    });
+
+    test("waits for debounce again after another touch scroll", () => {
+        const target = new TestElement();
+        const listener = vi.fn();
+        target.addEventListener("scrollend", listener);
+
+        dispatchTouches("touchstart", 5);
+        finishScroll(target);
+        target.dispatchEvent(new Event("scroll"));
+        vi.advanceTimersByTime(50);
+        dispatchTouches("touchend", 5);
+        expect(listener).not.toHaveBeenCalled();
+
+        vi.advanceTimersByTime(50);
+        expect(listener).toHaveBeenCalledOnce();
+    });
+
+    test("waits for every active touch and flushes every pending target", () => {
+        const first = new TestElement();
+        const second = new TestElement();
+        const firstListener = vi.fn();
+        const secondListener = vi.fn();
+        first.addEventListener("scrollend", firstListener);
+        second.addEventListener("scrollend", secondListener);
+
+        dispatchTouches("touchstart", 3, 4);
+        finishScroll(first);
+        finishScroll(second);
+        dispatchTouches("touchend", 3);
+        expect(firstListener).not.toHaveBeenCalled();
+        expect(secondListener).not.toHaveBeenCalled();
+
+        dispatchTouches("touchcancel", 4);
+        expect(firstListener).toHaveBeenCalledOnce();
+        expect(secondListener).toHaveBeenCalledOnce();
     });
 });

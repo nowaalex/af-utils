@@ -2,27 +2,27 @@
 
 export default {
     "@af-utils/virtual-core": {
-        "./dist/index.js": {
-            raw: 50290,
-            min: 14745,
-            minGz: 4945,
-            minBrotli: 4454
+        "./dist/index.production.js": {
+            raw: 37690,
+            min: 17351,
+            minGz: 5937,
+            minBrotli: 5333
         }
     },
     "@af-utils/virtual-react": {
         "./dist/index.js": {
-            raw: 6198,
-            min: 2213,
-            minGz: 977,
-            minBrotli: 884
+            raw: 6486,
+            min: 2306,
+            minGz: 1022,
+            minBrotli: 932
         }
     },
     "@af-utils/scrollend-polyfill": {
         "./dist/index.js": {
-            raw: 5348,
-            min: 1827,
-            minGz: 857,
-            minBrotli: 774
+            raw: 6598,
+            min: 2301,
+            minGz: 1029,
+            minBrotli: 926
         }
     }
 } as const;

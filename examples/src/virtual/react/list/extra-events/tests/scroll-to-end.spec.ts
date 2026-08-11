@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../../../../../e2e";
 
 test("keeps the final item visible after scrolling to the end", async ({
     page

@@ -1,4 +1,3 @@
-import "../../polyfill";
 import { bench } from "vitest";
 import VirtualScroller from "../../models/VirtualScroller";
 import { mapVirtualRange, mapVirtualRangeWithOffset } from ".";

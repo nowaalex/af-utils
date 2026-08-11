@@ -93,7 +93,9 @@ class MenuEventsAppender extends HTMLElement {
 
         document
             .querySelectorAll(".ds-menu-opener, .ds-menu-closer")
-            .forEach(btn => btn.addEventListener("click", toggleMenu));
+            .forEach(btn => {
+                btn.addEventListener("click", toggleMenu);
+            });
 
         document
             .querySelector(".ds-menu-items")!

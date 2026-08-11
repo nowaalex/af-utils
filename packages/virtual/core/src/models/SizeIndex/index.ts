@@ -4,47 +4,46 @@ import {
     SIZE_INDEX_GROWTH_DENOMINATOR,
     SIZE_INDEX_GROWTH_NUMERATOR
 } from "../../constants";
+import { assert } from "#virtual-errors";
+import { VirtualScrollerErrorIndex } from "../../errors/codes";
 import { getLiftingLimit, syncWithArray, update } from "../../utils/fTree";
 
 /** Shared zero-allocation backing store used before the first capacity growth. */
 const EMPTY_SIZES = new Float64Array(0);
 
-/** Shared zero-allocation measurement bitmap used by an empty index. */
-const EMPTY_MEASUREMENTS = new Uint8Array(0);
-
 /**
  * Validate an item count before it is used to allocate typed arrays.
  *
  * @param count - Requested logical item count.
- * @throws {@link RangeError} if `count` is not a non-negative safe integer or
- * exceeds the Fenwick-tree capacity limit.
+ * @throws {@link VirtualScrollerError} with `AFV_INVALID_ITEM_COUNT` if
+ * `count` is not a non-negative safe integer or exceeds the capacity limit.
  * @internal
  */
 export const assertSizeIndexCount = (count: number) => {
-    if (
-        !Number.isSafeInteger(count) ||
-        count < 0 ||
-        count > MAX_SIZE_INDEX_CAPACITY
-    ) {
-        throw new RangeError(
-            `itemCount must be an integer between 0 and ${MAX_SIZE_INDEX_CAPACITY}. Got: ${count}`
-        );
-    }
+    assert(
+        Number.isSafeInteger(count) &&
+            count >= 0 &&
+            count <= MAX_SIZE_INDEX_CAPACITY,
+        VirtualScrollerErrorIndex.INVALID_ITEM_COUNT,
+        count,
+        MAX_SIZE_INDEX_CAPACITY
+    );
 };
 
 /**
  * Validate an estimated item size independently of `SizeIndex` instance state.
  *
  * @param size - Candidate estimated item size.
- * @throws {@link RangeError} if `size` is not finite and strictly positive.
+ * @throws {@link VirtualScrollerError} with `AFV_INVALID_ITEM_SIZE` if `size`
+ * is not finite and strictly positive.
  * @internal
  */
 export const assertEstimatedSize = (size: number) => {
-    if (!Number.isFinite(size) || size <= 0) {
-        throw new RangeError(
-            `estimatedItemSize must be a finite positive number. Got: ${size}`
-        );
-    }
+    assert(
+        Number.isFinite(size) && size > 0,
+        VirtualScrollerErrorIndex.INVALID_ITEM_SIZE,
+        size
+    );
 };
 
 /**
@@ -89,17 +88,17 @@ export const getNextSizeIndexCapacity = (
  * @remarks
  * The dense `Float64Array` keeps `getSize` at `O(1)`. A Fenwick tree over the
  * same values provides `getOffset`, `getIndex` and individual size updates in
- * `O(log n)`. A parallel byte array distinguishes measured items from values
- * that still use the estimate.
+ * `O(log n)`. Unmeasured and invalidated slots store the current estimate
+ * directly, so no parallel measurement-state allocation is required.
  *
  * Capacity only grows, while `count` is the logical boundary. Keeping all
  * numeric storage in typed arrays and keeping this class free of DOM and event
  * dependencies gives its hot paths stable, monomorphic inputs.
  *
  * Multiple measurements should be applied as one batch: obtain an exclusive
- * lifting boundary with {@link SizeIndex.getUpdateLimit}, call
- * {@link SizeIndex.updateSize} for every item, sum the returned deltas, and
- * finish with {@link SizeIndex.completeUpdateBatch}. This updates the common
+ * lifting boundary with {@link SizeIndex._getUpdateLimit}, call
+ * {@link SizeIndex._updateSize} for every item, sum the returned deltas, and
+ * finish with {@link SizeIndex._completeUpdateBatch}. This updates the common
  * Fenwick ancestors once rather than once per item.
  *
  * @internal
@@ -114,17 +113,20 @@ class SizeIndex {
     /** Highest power-of-two bit used to lift Fenwick-tree index searches. */
     private _mostSignificantBit = 0;
 
-    /** Size assigned to every item that has not been measured. */
+    /** Size assigned to new or explicitly invalidated item slots. */
     private _estimatedSize: number;
 
     /** Cached prefix sum for the complete logical range `[0, count)`. */
     private _totalSize = 0.0;
 
-    /** Dense effective sizes, including estimates for unmeasured items. */
+    /**
+     * Dense effective sizes, including estimates for invalidated item slots.
+     *
+     * TODO: Benchmark and document the practical memory limit of the two dense
+     * Float64 stores, and re-evaluate precision against a chunked or sparse
+     * representation before changing the documented numeric limit.
+     */
     private _sizes = EMPTY_SIZES;
-
-    /** Byte bitmap whose nonzero entries mark explicitly measured items. */
-    private _measured = EMPTY_MEASUREMENTS;
 
     /** Fenwick tree over `_sizes`, stored with a one-based root convention. */
     private _tree = EMPTY_SIZES;
@@ -132,8 +134,7 @@ class SizeIndex {
     /**
      * Create an empty size index.
      *
-     * @param estimatedSize - Initial positive finite size for every unmeasured
-     * item.
+     * @param estimatedSize - Initial positive finite size for every item slot.
      */
     constructor(estimatedSize: number) {
         assertEstimatedSize(estimatedSize);
@@ -141,53 +142,67 @@ class SizeIndex {
     }
 
     /** Logical number of addressable items. */
-    get count() {
+    get _countValue() {
         return this._count;
     }
 
     /** Number of allocated item slots; always greater than or equal to `count`. */
-    get capacity() {
+    get _capacityValue() {
         return this._capacity;
     }
 
     /** Prefix sum for the complete logical range `[0, count)`. */
-    get totalSize() {
+    get _totalSizeValue() {
         return this._totalSize;
     }
 
-    /** Size currently assigned to items that have not been measured. */
-    get estimatedSize() {
+    /** Size currently assigned to new or invalidated item slots. */
+    get _estimatedSizeValue() {
         return this._estimatedSize;
     }
 
     /**
-     * Replace the size of every unmeasured item.
+     * Replace the estimate while preserving a half-open cached-size range.
      *
      * @param estimatedSize - New positive finite estimate.
-     * @returns `true` when the estimate changed, otherwise `false`.
-     * @remarks Measured sizes are preserved, including measured zero sizes.
+     * @param preserveFrom - First cached-size index to retain.
+     * @param preserveTo - Exclusive cached-size boundary to retain.
+     * @returns The observable size-state change and total-size delta.
      */
-    setEstimatedSize(estimatedSize: number) {
+    _setEstimatedSize(estimatedSize: number, preserveFrom = 0, preserveTo = 0) {
         assertEstimatedSize(estimatedSize);
 
         if (estimatedSize === this._estimatedSize) {
-            return false;
+            return { changed: false, totalDelta: 0.0 } as const;
+        }
+
+        const oldTotalSize = this._totalSize;
+        let changed = false;
+        for (let index = 0; index < preserveFrom; index++) {
+            if (this._sizes[index] !== estimatedSize) {
+                changed = true;
+                break;
+            }
+        }
+        for (let index = preserveTo; !changed && index < this._count; index++) {
+            if (this._sizes[index] !== estimatedSize) {
+                changed = true;
+                break;
+            }
         }
 
         this._estimatedSize = estimatedSize;
-
-        // Stryker disable next-line EqualityOperator: Writing once past a typed array is an unobservable no-op, while `< capacity` documents the intended bound.
-        for (let index = 0; index < this._capacity; index++) {
-            if (this._measured[index] === 0) {
-                this._sizes[index] = estimatedSize;
-            }
-        }
+        this._sizes.fill(estimatedSize, 0, preserveFrom);
+        this._sizes.fill(estimatedSize, preserveTo);
 
         if (this._capacity > 0) {
             syncWithArray(this._tree, this._sizes);
         }
-        this._totalSize = this.getOffset(this._count);
-        return true;
+        this._totalSize = this._getOffset(this._count);
+        return {
+            changed,
+            totalDelta: this._totalSize - oldTotalSize
+        } as const;
     }
 
     /**
@@ -195,9 +210,10 @@ class SizeIndex {
      *
      * @param count - New logical item count.
      * @returns `true` when the logical count changed, otherwise `false`.
-     * @remarks Sizes within retained capacity survive shrink-and-regrow cycles.
+     * @remarks Allocated capacity is retained, but cached sizes removed by a
+     * shrink are reset so a later grow cannot reuse values for different data.
      */
-    setCount(count: number) {
+    _setCount(count: number) {
         assertSizeIndexCount(count);
 
         if (count === this._count) {
@@ -205,11 +221,85 @@ class SizeIndex {
         }
 
         this._ensureCapacity(count);
+        if (count < this._count) {
+            this._sizes.fill(this._estimatedSize, count, this._count);
+            syncWithArray(this._tree, this._sizes);
+        }
         this._count = count;
         this._mostSignificantBit =
             count === 0 ? 0 : 1 << (31 - Math.clz32(count));
-        this._totalSize = this.getOffset(count);
+        this._totalSize = this._getOffset(count);
         return true;
+    }
+
+    /**
+     * Reset cached sizes in a logical half-open range to the current estimate.
+     *
+     * @returns Whether any effective size changed and the total-size delta.
+     */
+    _invalidateSizes(from: number, to: number) {
+        let changed = false;
+        let totalDelta = 0.0;
+        const updateLimit = this._getUpdateLimit(from, to);
+
+        for (let index = from; index < to; index++) {
+            if (this._sizes[index] !== this._estimatedSize) {
+                changed = true;
+                const delta = this._estimatedSize - this._sizes[index];
+                this._sizes[index] = this._estimatedSize;
+                if (delta !== 0.0) {
+                    totalDelta += delta;
+                    update(this._tree, index + 1, delta, updateLimit);
+                }
+            }
+        }
+
+        if (totalDelta !== 0.0) {
+            update(this._tree, updateLimit, totalDelta, this._tree.length);
+            this._totalSize += totalDelta;
+        }
+
+        return { changed, totalDelta } as const;
+    }
+
+    /**
+     * Apply an index-based collection splice while preserving retained sizes.
+     *
+     * @remarks This is deliberately `O(capacity)`: data mutations are cold,
+     * while prefix queries and item measurements remain the optimized paths.
+     */
+    _splice(start: number, deleteCount: number, insertCount: number) {
+        const oldCount = this._count;
+        const nextCount = oldCount - deleteCount + insertCount;
+        const oldTotalSize = this._totalSize;
+        let sizesChanged = false;
+        for (let index = start; index < oldCount; index++) {
+            if (this._sizes[index] !== this._estimatedSize) {
+                sizesChanged = true;
+                break;
+            }
+        }
+        this._ensureCapacity(nextCount);
+
+        const tailStart = start + deleteCount;
+        const tailTarget = start + insertCount;
+        this._sizes.copyWithin(tailTarget, tailStart, oldCount);
+        this._sizes.fill(this._estimatedSize, start, tailTarget);
+
+        if (nextCount < oldCount) {
+            this._sizes.fill(this._estimatedSize, nextCount, oldCount);
+        }
+
+        this._count = nextCount;
+        this._mostSignificantBit =
+            nextCount === 0 ? 0 : 1 << (31 - Math.clz32(nextCount));
+        syncWithArray(this._tree, this._sizes);
+        this._totalSize = this._getOffset(nextCount);
+
+        return {
+            sizesChanged,
+            totalDelta: this._totalSize - oldTotalSize
+        } as const;
     }
 
     /**
@@ -217,7 +307,7 @@ class SizeIndex {
      *
      * @param index - Item index in the logical range `[0, count)`.
      */
-    getSize(index: number) {
+    _getSize(index: number) {
         return this._sizes[index];
     }
 
@@ -227,7 +317,7 @@ class SizeIndex {
      * @param index - Exclusive item boundary in `[0, count]`.
      * @returns Pixel offset of that boundary.
      */
-    getOffset(index: number) {
+    _getOffset(index: number) {
         let result = 0.0;
 
         for (; index > 0; index -= index & -index) {
@@ -247,7 +337,7 @@ class SizeIndex {
      * belong to the preceding item, matching the model's existing scroll
      * position semantics.
      */
-    getIndex(offset: number) {
+    _getIndex(offset: number) {
         // Stryker disable next-line all: The Fenwick search also returns zero here; this is a performance fast path.
         if (offset <= 0.0) {
             return 0;
@@ -293,10 +383,10 @@ class SizeIndex {
      * @returns An exclusive Fenwick-tree update boundary, or zero for an empty
      * range.
      * @remarks Pass the returned value unchanged to every
-     * {@link SizeIndex.updateSize} call and then to
-     * {@link SizeIndex.completeUpdateBatch}.
+     * {@link SizeIndex._updateSize} call and then to
+     * {@link SizeIndex._completeUpdateBatch}.
      */
-    getUpdateLimit(from: number, to: number) {
+    _getUpdateLimit(from: number, to: number) {
         if (from >= to) {
             return 0;
         }
@@ -310,13 +400,11 @@ class SizeIndex {
      * @param index - Logical item index to update.
      * @param size - Measured finite, non-negative item size.
      * @param updateLimit - Exclusive boundary returned by
-     * {@link SizeIndex.getUpdateLimit} for the complete batch.
+     * {@link SizeIndex._getUpdateLimit} for the complete batch.
      * @returns Difference between the measured and previously cached size, or
      * zero for an invalid/no-op update.
-     * @remarks A valid item is marked as measured even when its numeric size is
-     * unchanged, so later estimate changes do not overwrite it.
      */
-    updateSize(index: number, size: number, updateLimit: number) {
+    _updateSize(index: number, size: number, updateLimit: number) {
         if (
             index < 0 ||
             index >= this._count ||
@@ -328,7 +416,6 @@ class SizeIndex {
         }
 
         const delta = size - this._sizes[index];
-        this._measured[index] = 1;
 
         // Stryker disable next-line all: Updating a Fenwick tree by zero is equivalent but needlessly walks the tree.
         if (delta !== 0.0) {
@@ -341,13 +428,13 @@ class SizeIndex {
 
     /**
      * Propagate one measurement batch's combined delta through shared
-     * Fenwick-tree ancestors and update {@link SizeIndex.totalSize}.
+     * Fenwick-tree ancestors and update `SizeIndex`'s cached total.
      *
      * @param updateLimit - Boundary used for every preceding
-     * {@link SizeIndex.updateSize} call.
+     * {@link SizeIndex._updateSize} call.
      * @param totalDelta - Sum of the deltas returned by those calls.
      */
-    completeUpdateBatch(updateLimit: number, totalDelta: number) {
+    _completeUpdateBatch(updateLimit: number, totalDelta: number) {
         // Stryker disable next-line all: Applying a zero batch is equivalent but needlessly walks the tree.
         if (totalDelta !== 0.0) {
             update(this._tree, updateLimit, totalDelta, this._tree.length);
@@ -355,7 +442,7 @@ class SizeIndex {
         }
     }
 
-    /** Grow dense storage while preserving cached values and measurement state. */
+    /** Grow dense storage while preserving cached effective sizes. */
     private _ensureCapacity(requiredCapacity: number) {
         if (requiredCapacity <= this._capacity) {
             return;
@@ -366,18 +453,15 @@ class SizeIndex {
             requiredCapacity
         );
         const sizes = new Float64Array(capacity);
-        const measured = new Uint8Array(capacity);
 
         sizes.fill(this._estimatedSize);
         sizes.set(this._sizes);
-        measured.set(this._measured);
 
         const tree = new Float64Array(capacity + 1);
         syncWithArray(tree, sizes);
 
         this._capacity = capacity;
         this._sizes = sizes;
-        this._measured = measured;
         this._tree = tree;
     }
 }

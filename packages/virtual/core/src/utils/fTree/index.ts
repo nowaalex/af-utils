@@ -15,6 +15,7 @@ export const syncWithArray = (
     }
 };
 
+/** Add a delta to every Fenwick ancestor below an exclusive boundary. */
 export const update = (
     fTree: Float64Array,
     i: number,

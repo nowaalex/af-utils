@@ -8,7 +8,7 @@
  *
  * - `SCROLL_SIZE`: {@link VirtualScroller.scrollSize} was changed;
  *
- * - `SIZES`: at least one measured item size was changed.
+ * - `SIZES`: at least one cached effective item size was changed.
  *
  * Flags can be combined without allocating an array:
  * `VirtualScrollerEvent.RANGE | VirtualScrollerEvent.SIZES`.

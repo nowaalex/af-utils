@@ -2,20 +2,33 @@ import type { AxisAdapter } from "../axisAdapters";
 
 export interface ScrollerAdapter {
     readonly _target: HTMLElement | Window;
+    /** Read the native scroll offset on the configured axis. */
     _readOffset(): number;
+    /** Read the viewport size on the configured axis. */
     _readViewportSize(): number;
+    /** Read an observed border-box size on the configured axis. */
     _readEntrySize(entry: ResizeObserverEntry): number;
+    /** Measure a container's offset from the native scroll origin. */
     _distanceTo(container: HTMLElement | null): number;
+    /** Scroll to a native axis offset. */
     _scrollTo(offset: number, behavior: ScrollBehavior): void;
+    /** Attach a native scroll listener. */
     _addScrollListener(listener: EventListener): void;
+    /** Detach a native scroll listener. */
     _removeScrollListener(listener: EventListener): void;
+    /** Return whether native `scrollend` is supported. */
     _supportsScrollEnd(): boolean;
+    /** Attach a native `scrollend` listener. */
     _addScrollEndListener(listener: EventListener): void;
+    /** Detach a native `scrollend` listener. */
     _removeScrollEndListener(listener: EventListener): void;
+    /** Observe native scrollbar pointer ownership. */
     _observePointerDrag(callback: (active: boolean) => void): () => void;
+    /** Observe viewport size changes. */
     _observeResize(callback: (size: number) => void): () => void;
 }
 
+/** Observe pointer ownership of a native scrollbar and return its disposer. */
 const observePointerDrag = (
     target: HTMLElement | Window,
     windowTarget: Window | null,
@@ -70,9 +83,11 @@ const observePointerDrag = (
     };
 };
 
+/** Narrow a supported scroll target to `Window`. */
 const isWindowScroller = (target: HTMLElement | Window): target is Window =>
     (target as Window).window === target;
 
+/** Create the monomorphic adapter matching a native scroll target. */
 export const createScrollerAdapter = (
     target: HTMLElement | Window,
     axis: AxisAdapter
@@ -88,23 +103,28 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
     /** Monomorphic axis-specific DOM accessors. */
     private readonly _axis: AxisAdapter;
 
+    /** Create an adapter for an element scroll container. */
     constructor(target: HTMLElement, axis: AxisAdapter) {
         this._target = target;
         this._axis = axis;
     }
 
+    /** Read the element's native axis offset. */
     _readOffset() {
         return this._axis._readElementOffset(this._target);
     }
 
+    /** Read the element's client size on the scrolling axis. */
     _readViewportSize() {
         return this._axis._readElementSize(this._target);
     }
 
+    /** Read an observed border-box size on the scrolling axis. */
     _readEntrySize(entry: ResizeObserverEntry) {
         return this._axis._readEntrySize(entry);
     }
 
+    /** Measure an items container from the element's scroll origin. */
     _distanceTo(container: HTMLElement | null) {
         // `null` means that items start at the scroll origin. The same-target
         // case must also be zero: the general formula would leave scrollTop or
@@ -120,30 +140,37 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
         );
     }
 
+    /** Scroll the element to an axis offset. */
     _scrollTo(offset: number, behavior: ScrollBehavior) {
         this._axis._scrollElement(this._target, offset, behavior);
     }
 
+    /** Attach a passive element scroll listener. */
     _addScrollListener(listener: EventListener) {
         this._target.addEventListener("scroll", listener, { passive: true });
     }
 
+    /** Detach an element scroll listener. */
     _removeScrollListener(listener: EventListener) {
         this._target.removeEventListener("scroll", listener);
     }
 
+    /** Return whether the element exposes native `scrollend`. */
     _supportsScrollEnd() {
         return "onscrollend" in this._target;
     }
 
+    /** Attach an element `scrollend` listener. */
     _addScrollEndListener(listener: EventListener) {
         this._target.addEventListener("scrollend", listener);
     }
 
+    /** Detach an element `scrollend` listener. */
     _removeScrollEndListener(listener: EventListener) {
         this._target.removeEventListener("scrollend", listener);
     }
 
+    /** Observe element-scrollbar pointer ownership. */
     _observePointerDrag(callback: (active: boolean) => void) {
         return observePointerDrag(
             this._target,
@@ -153,6 +180,7 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
         );
     }
 
+    /** Observe changes to the element's border-box size. */
     _observeResize(callback: (size: number) => void) {
         const observer = new ResizeObserver(entries => {
             if (entries.length > 0) {
@@ -172,23 +200,28 @@ export class WindowScrollerAdapter implements ScrollerAdapter {
     /** Monomorphic axis-specific DOM accessors. */
     private readonly _axis: AxisAdapter;
 
+    /** Create an adapter for a window scroll container. */
     constructor(target: Window, axis: AxisAdapter) {
         this._target = target;
         this._axis = axis;
     }
 
+    /** Read the window's native axis offset. */
     _readOffset() {
         return this._axis._readWindowOffset(this._target);
     }
 
+    /** Read the window viewport size on the scrolling axis. */
     _readViewportSize() {
         return this._axis._readWindowSize(this._target);
     }
 
+    /** Read an observed border-box size on the scrolling axis. */
     _readEntrySize(entry: ResizeObserverEntry) {
         return this._axis._readEntrySize(entry);
     }
 
+    /** Measure an items container from the document scroll origin. */
     _distanceTo(container: HTMLElement | null) {
         // A missing items container has no document-space offset to measure.
         if (!container) {
@@ -201,30 +234,37 @@ export class WindowScrollerAdapter implements ScrollerAdapter {
         );
     }
 
+    /** Scroll the window to an axis offset. */
     _scrollTo(offset: number, behavior: ScrollBehavior) {
         this._axis._scrollWindow(this._target, offset, behavior);
     }
 
+    /** Attach a passive window scroll listener. */
     _addScrollListener(listener: EventListener) {
         this._target.addEventListener("scroll", listener, { passive: true });
     }
 
+    /** Detach a window scroll listener. */
     _removeScrollListener(listener: EventListener) {
         this._target.removeEventListener("scroll", listener);
     }
 
+    /** Return whether the window exposes native `scrollend`. */
     _supportsScrollEnd() {
         return "onscrollend" in this._target;
     }
 
+    /** Attach a window `scrollend` listener. */
     _addScrollEndListener(listener: EventListener) {
         this._target.addEventListener("scrollend", listener);
     }
 
+    /** Detach a window `scrollend` listener. */
     _removeScrollEndListener(listener: EventListener) {
         this._target.removeEventListener("scrollend", listener);
     }
 
+    /** Observe window-scrollbar pointer ownership. */
     _observePointerDrag(callback: (active: boolean) => void) {
         return observePointerDrag(
             this._target,
@@ -234,7 +274,14 @@ export class WindowScrollerAdapter implements ScrollerAdapter {
         );
     }
 
+    /** Observe changes to the window viewport size. */
     _observeResize(callback: (size: number) => void) {
+        // TODO: Replace the window resize listener with ResizeObserver only if
+        // observing documentElement proves equivalent for visual-viewport,
+        // mobile browser chrome, zoom, and scrollbar-driven viewport changes.
+        // ResizeObserver cannot observe Window directly, so changing this
+        // without that cross-browser proof would trade correctness for a
+        // speculative performance improvement.
         const listener = () => callback(this._readViewportSize());
 
         listener();

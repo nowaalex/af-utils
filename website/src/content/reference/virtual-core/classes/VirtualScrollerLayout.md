@@ -26,6 +26,8 @@ this class through their native ref primitives.
 new VirtualScrollerLayout(model): VirtualScrollerLayout;
 ```
 
+Create a DOM layout adapter for one model.
+
 #### Parameters
 
 | Parameter | Type |

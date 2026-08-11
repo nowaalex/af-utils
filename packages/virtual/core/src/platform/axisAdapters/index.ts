@@ -1,24 +1,34 @@
 /** Monomorphic access to axis-specific DOM properties. */
 export interface AxisAdapter {
+    /** Read an element's native scroll offset on this axis. */
     _readElementOffset(element: HTMLElement): number;
+    /** Read an element's client size on this axis. */
     _readElementSize(element: HTMLElement): number;
+    /** Read a window's native scroll offset on this axis. */
     _readWindowOffset(windowObject: Window): number;
+    /** Read a window's viewport size on this axis. */
     _readWindowSize(windowObject: Window): number;
+    /** Read a resize entry's border-box size on this axis. */
     _readEntrySize(entry: ResizeObserverEntry): number;
+    /** Read a DOM rectangle's starting coordinate on this axis. */
     _readRectStart(rect: DOMRect): number;
+    /** Return whether a pointer targets an element scrollbar on this axis. */
     _isElementScrollbarPointer(
         element: HTMLElement,
         event: PointerEvent
     ): boolean;
+    /** Return whether a pointer targets a window scrollbar on this axis. */
     _isWindowScrollbarPointer(
         windowObject: Window,
         event: PointerEvent
     ): boolean;
+    /** Scroll an element to an offset on this axis. */
     _scrollElement(
         element: HTMLElement,
         offset: number,
         behavior: ScrollBehavior
     ): void;
+    /** Scroll a window to an offset on this axis. */
     _scrollWindow(
         windowObject: Window,
         offset: number,

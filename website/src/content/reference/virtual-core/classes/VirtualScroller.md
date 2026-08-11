@@ -42,6 +42,8 @@ What it doesn't do:
 new VirtualScroller(params?): VirtualScroller;
 ```
 
+Create a virtual-scroller model from optional initial geometry.
+
 #### Parameters
 
 | Parameter | Type |
@@ -197,6 +199,20 @@ Should be called when element is about to unmount or already unmounted. Works in
 
 ***
 
+### dispose()
+
+```ts
+dispose(): void;
+```
+
+Release every DOM resource and subscription owned by this model.
+
+#### Returns
+
+`void`
+
+***
+
 ### getIndex()
 
 ```ts
@@ -295,6 +311,27 @@ last cached item size
 #### Remarks
 
 Time complexity: `O(1)`
+
+***
+
+### invalidateItemSizes()
+
+```ts
+invalidateItemSizes(from?, to?): void;
+```
+
+Reset cached sizes in a half-open item range to the current estimate.
+
+#### Parameters
+
+| Parameter | Type | Default value |
+| ------ | ------ | ------ |
+| `from` | `number` | `0` |
+| `to` | `number` | `...` |
+
+#### Returns
+
+`void`
 
 ***
 
@@ -407,7 +444,7 @@ That extra element is represented as `ItemsContainer` on this schema:
 </ScrollContainer>               |.|
 ```
 
-Must be called with `null` before killing the instance.
+[dispose](/virtual/reference/virtual-core/classes/VirtualScroller#dispose) disconnects it automatically.
 
 ***
 
@@ -451,7 +488,7 @@ Informs model about scrollable element.
 
 #### Remarks
 
-Must be called with `null` before killing the instance.
+[dispose](/virtual/reference/virtual-core/classes/VirtualScroller#dispose) disconnects it automatically.
 
 ***
 
@@ -475,7 +512,12 @@ Start observing size of sticky footer `element`. Observing is finished if elemen
 
 #### Remarks
 
-Must be called with `null` before killing the instance.
+Positioning remains native CSS `sticky`, keeping motion synchronized with
+compositor scrolling. If its computed `z-index` is `auto`, the model adds
+a default stacking level and restores the original inline value when the
+element is replaced or cleared.
+
+[dispose](/virtual/reference/virtual-core/classes/VirtualScroller#dispose) disconnects it automatically.
 
 ***
 
@@ -499,7 +541,43 @@ Start observing size of sticky header `element`. Observing is finished if elemen
 
 #### Remarks
 
-Must be called with `null` before killing the instance.
+Positioning remains native CSS `sticky`, keeping motion synchronized with
+compositor scrolling. If its computed `z-index` is `auto`, the model adds
+a default stacking level and restores the original inline value when the
+element is replaced or cleared.
+
+[dispose](/virtual/reference/virtual-core/classes/VirtualScroller#dispose) disconnects it automatically.
+
+***
+
+### spliceItems()
+
+```ts
+spliceItems(
+   start,
+   deleteCount,
+   insertCount): void;
+```
+
+Apply an index-based data splice to the size cache.
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `start` | `number` |
+| `deleteCount` | `number` |
+| `insertCount` | `number` |
+
+#### Returns
+
+`void`
+
+#### Remarks
+
+Retained cached sizes are shifted with their items, inserted
+items use the current estimate, and scroll preservation remains explicit.
+The operation has `O(allocated capacity)` complexity.
 
 ***
 

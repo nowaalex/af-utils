@@ -14,11 +14,11 @@ class TestScheduler implements ScrollActivityScheduler {
         { callback: () => void; deadline: number }
     >();
 
-    now() {
+    _now() {
         return this.currentTime;
     }
 
-    setTimeout(callback: () => void, delayMs: number) {
+    _setTimeout(callback: () => void, delayMs: number) {
         const timer = this.nextTimer++;
         this.timers.set(timer, {
             callback,
@@ -27,7 +27,7 @@ class TestScheduler implements ScrollActivityScheduler {
         return timer as unknown as Timer;
     }
 
-    clearTimeout(timer: Timer) {
+    _clearTimeout(timer: Timer) {
         this.timers.delete(timer as unknown as number);
     }
 
@@ -67,15 +67,15 @@ describe("ScrollActivity", () => {
         const onIdle = vi.fn();
         const activity = new ScrollActivity(onIdle, scheduler);
 
-        activity.onNativeScroll();
-        expect(activity.nativeScrollActive).toBe(true);
+        activity._onNativeScroll();
+        expect(activity._nativeScrollActive).toBe(true);
 
         scheduler.advanceBy(SCROLL_ENDED_IDLE_TIMEOUT_MS - 1);
-        expect(activity.nativeScrollActive).toBe(true);
+        expect(activity._nativeScrollActive).toBe(true);
         expect(onIdle).not.toHaveBeenCalled();
 
         scheduler.advanceBy(1);
-        expect(activity.nativeScrollActive).toBe(false);
+        expect(activity._nativeScrollActive).toBe(false);
         expect(onIdle).toHaveBeenCalledOnce();
     });
 
@@ -84,15 +84,15 @@ describe("ScrollActivity", () => {
         const onIdle = vi.fn();
         const activity = new ScrollActivity(onIdle, scheduler);
 
-        activity.setNativeScrollEndSupported(true);
-        activity.onNativeScroll();
+        activity._setNativeScrollEndSupported(true);
+        activity._onNativeScroll();
         scheduler.advanceBy(SCROLL_ENDED_IDLE_TIMEOUT_MS);
 
-        expect(activity.nativeScrollActive).toBe(true);
+        expect(activity._nativeScrollActive).toBe(true);
         expect(onIdle).not.toHaveBeenCalled();
 
-        activity.onNativeScrollEnd();
-        expect(activity.nativeScrollActive).toBe(false);
+        activity._onNativeScrollEnd();
+        expect(activity._nativeScrollActive).toBe(false);
         expect(onIdle).toHaveBeenCalledOnce();
     });
 
@@ -100,13 +100,13 @@ describe("ScrollActivity", () => {
         const scheduler = new TestScheduler();
         const activity = new ScrollActivity(() => {}, scheduler);
 
-        activity.startProgrammaticScroll(1_000);
-        activity.setPointerDragging(true);
-        activity.setNativeScrollEndSupported(true);
-        activity.setNativeScrollEndSupported(false);
+        activity._startProgrammaticScroll(1_000);
+        activity._setPointerDragging(true);
+        activity._setNativeScrollEndSupported(true);
+        activity._setNativeScrollEndSupported(false);
 
-        expect(activity.pointerDragging).toBe(true);
-        expect(activity.programmaticScrollActive).toBe(true);
+        expect(activity._pointerDragging).toBe(true);
+        expect(activity._programmaticScrollActive).toBe(true);
     });
 
     test("tracks pointer ownership without scheduling idle work", () => {
@@ -114,13 +114,13 @@ describe("ScrollActivity", () => {
         const onIdle = vi.fn();
         const activity = new ScrollActivity(onIdle, scheduler);
 
-        activity.setPointerDragging(true);
+        activity._setPointerDragging(true);
         scheduler.advanceBy(500);
-        activity.setPointerDragging(false);
+        activity._setPointerDragging(false);
 
-        expect(activity.pointerDragging).toBe(false);
+        expect(activity._pointerDragging).toBe(false);
         expect(scheduler.pendingTimers).toBe(0);
-        expect(activity.nativeScrollActive).toBe(false);
+        expect(activity._nativeScrollActive).toBe(false);
         expect(onIdle).not.toHaveBeenCalled();
     });
 
@@ -129,12 +129,12 @@ describe("ScrollActivity", () => {
         const onIdle = vi.fn();
         const activity = new ScrollActivity(onIdle, scheduler);
 
-        activity.setNativeScrollEndSupported(true);
-        activity.onNativeScroll();
+        activity._setNativeScrollEndSupported(true);
+        activity._onNativeScroll();
         scheduler.advanceBy(SCROLL_ENDED_IDLE_TIMEOUT_MS / 2);
-        activity.onNativeScrollEnd();
+        activity._onNativeScrollEnd();
 
-        expect(activity.nativeScrollActive).toBe(false);
+        expect(activity._nativeScrollActive).toBe(false);
         expect(onIdle).toHaveBeenCalledOnce();
         expect(scheduler.pendingTimers).toBe(0);
     });
@@ -144,15 +144,15 @@ describe("ScrollActivity", () => {
         const onIdle = vi.fn();
         const activity = new ScrollActivity(onIdle, scheduler);
 
-        activity.setIndexConverging(true);
-        activity.startProgrammaticScroll(SCROLL_ENDED_IDLE_TIMEOUT_MS);
+        activity._setIndexConverging(true);
+        activity._startProgrammaticScroll(SCROLL_ENDED_IDLE_TIMEOUT_MS);
         scheduler.advanceBy(SCROLL_ENDED_IDLE_TIMEOUT_MS);
 
-        expect(activity.programmaticScrollActive).toBe(true);
+        expect(activity._programmaticScrollActive).toBe(true);
         expect(onIdle).toHaveBeenCalledOnce();
 
-        activity.setIndexConverging(false);
-        expect(activity.programmaticScrollActive).toBe(false);
+        activity._setIndexConverging(false);
+        expect(activity._programmaticScrollActive).toBe(false);
     });
 
     test("restarts the programmatic release timeout", () => {
@@ -160,16 +160,16 @@ describe("ScrollActivity", () => {
         const onIdle = vi.fn();
         const activity = new ScrollActivity(onIdle, scheduler);
 
-        activity.startProgrammaticScroll(100);
+        activity._startProgrammaticScroll(100);
         scheduler.advanceBy(75);
-        activity.startProgrammaticScroll(100);
+        activity._startProgrammaticScroll(100);
         scheduler.advanceBy(99);
 
-        expect(activity.programmaticScrollActive).toBe(true);
+        expect(activity._programmaticScrollActive).toBe(true);
         expect(onIdle).not.toHaveBeenCalled();
 
         scheduler.advanceBy(1);
-        expect(activity.programmaticScrollActive).toBe(false);
+        expect(activity._programmaticScrollActive).toBe(false);
         expect(onIdle).toHaveBeenCalledOnce();
     });
 
@@ -177,40 +177,40 @@ describe("ScrollActivity", () => {
         const scheduler = new TestScheduler();
         const activity = new ScrollActivity(() => {}, scheduler);
 
-        expect(activity.hasBeenIdleFor(10_000)).toBe(true);
-        activity.setNativeScrollEndSupported(true);
-        activity.onNativeScroll();
-        expect(activity.hasBeenIdleFor(0)).toBe(false);
+        expect(activity._hasBeenIdleFor(10_000)).toBe(true);
+        activity._setNativeScrollEndSupported(true);
+        activity._onNativeScroll();
+        expect(activity._hasBeenIdleFor(0)).toBe(false);
 
         scheduler.advanceBy(1);
-        expect(activity.hasBeenIdleFor(0)).toBe(true);
-        expect(activity.hasBeenIdleFor(1)).toBe(false);
+        expect(activity._hasBeenIdleFor(0)).toBe(true);
+        expect(activity._hasBeenIdleFor(1)).toBe(false);
     });
 
     test("allows anchor correction only while every scroll state is idle", () => {
         const scheduler = new TestScheduler();
         const activity = new ScrollActivity(() => {}, scheduler);
 
-        expect(activity.anchorCorrectionAllowed).toBe(true);
+        expect(activity._anchorCorrectionAllowed).toBe(true);
 
-        activity.setPointerDragging(true);
-        expect(activity.anchorCorrectionAllowed).toBe(false);
-        activity.setPointerDragging(false);
+        activity._setPointerDragging(true);
+        expect(activity._anchorCorrectionAllowed).toBe(false);
+        activity._setPointerDragging(false);
 
-        activity.setNativeScrollEndSupported(true);
-        activity.onNativeScroll();
-        expect(activity.anchorCorrectionAllowed).toBe(false);
-        activity.onNativeScrollEnd();
+        activity._setNativeScrollEndSupported(true);
+        activity._onNativeScroll();
+        expect(activity._anchorCorrectionAllowed).toBe(false);
+        activity._onNativeScrollEnd();
 
-        activity.startProgrammaticScroll(1_000);
-        expect(activity.anchorCorrectionAllowed).toBe(false);
+        activity._startProgrammaticScroll(1_000);
+        expect(activity._anchorCorrectionAllowed).toBe(false);
         scheduler.advanceBy(1_000);
 
-        activity.setIndexConverging(true);
-        expect(activity.anchorCorrectionAllowed).toBe(false);
-        activity.setIndexConverging(false);
+        activity._setIndexConverging(true);
+        expect(activity._anchorCorrectionAllowed).toBe(false);
+        activity._setIndexConverging(false);
 
-        expect(activity.anchorCorrectionAllowed).toBe(true);
+        expect(activity._anchorCorrectionAllowed).toBe(true);
     });
 
     test("native scrollend supersedes an imminent programmatic timeout", () => {
@@ -218,14 +218,14 @@ describe("ScrollActivity", () => {
         const onIdle = vi.fn();
         const activity = new ScrollActivity(onIdle, scheduler);
 
-        activity.setNativeScrollEndSupported(true);
-        activity.startProgrammaticScroll(10);
-        activity.onNativeScroll();
-        activity.onNativeScrollEnd();
+        activity._setNativeScrollEndSupported(true);
+        activity._startProgrammaticScroll(10);
+        activity._onNativeScroll();
+        activity._onNativeScrollEnd();
         scheduler.advanceBy(10);
 
         expect(onIdle).toHaveBeenCalledOnce();
-        expect(activity.programmaticScrollActive).toBe(false);
+        expect(activity._programmaticScrollActive).toBe(false);
         expect(scheduler.pendingTimers).toBe(0);
     });
 
@@ -234,20 +234,20 @@ describe("ScrollActivity", () => {
         const onIdle = vi.fn();
         const activity = new ScrollActivity(onIdle, scheduler);
 
-        activity.onNativeScroll();
-        activity.startProgrammaticScroll(1_000);
-        activity.setPointerDragging(true);
-        activity.setIndexConverging(true);
-        activity.reset();
+        activity._onNativeScroll();
+        activity._startProgrammaticScroll(1_000);
+        activity._setPointerDragging(true);
+        activity._setIndexConverging(true);
+        activity._reset();
 
         expect(scheduler.pendingTimers).toBe(0);
-        expect(activity.pointerDragging).toBe(false);
-        expect(activity.nativeScrollActive).toBe(false);
-        expect(activity.programmaticScrollActive).toBe(false);
+        expect(activity._pointerDragging).toBe(false);
+        expect(activity._nativeScrollActive).toBe(false);
+        expect(activity._programmaticScrollActive).toBe(false);
         expect(onIdle).toHaveBeenCalledOnce();
 
         onIdle.mockClear();
-        activity.onNativeScroll();
+        activity._onNativeScroll();
         scheduler.advanceBy(SCROLL_ENDED_IDLE_TIMEOUT_MS);
         expect(onIdle).toHaveBeenCalledOnce();
     });

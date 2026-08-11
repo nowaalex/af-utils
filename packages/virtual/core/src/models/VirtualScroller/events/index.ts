@@ -2,6 +2,8 @@ import {
     VirtualScrollerEvent,
     type VirtualScrollerEventMask
 } from "../../../constants";
+import { assert } from "#virtual-errors";
+import { VirtualScrollerErrorIndex } from "../../../errors/codes";
 
 /** Tuple position used for the `RANGE` event revision. */
 const RANGE_EVENT_INDEX = 0;
@@ -55,15 +57,18 @@ class VirtualScrollerEvents {
     /** Stable facade hook run after outer-batch subscribers have updated DOM. */
     private _onBatchEnd: Listener;
 
+    /** Create a dispatcher with an optional outer-batch completion hook. */
     constructor(onBatchEnd: Listener = NOOP_EVENT_LISTENER) {
         this._onBatchEnd = onBatchEnd;
     }
 
-    get batching() {
+    /** Whether at least one event batch is currently open. */
+    get _batching() {
         return this._batchLevel > 0;
     }
 
-    subscribe(
+    /** Subscribe one callback to the selected public event flags. */
+    _subscribe(
         callback: Listener,
         events: VirtualScrollerEventMask = VirtualScrollerEvent.ALL
     ) {
@@ -82,7 +87,8 @@ class VirtualScrollerEvents {
         };
     }
 
-    getRevision(events: VirtualScrollerEventMask = VirtualScrollerEvent.ALL) {
+    /** Return the newest revision among the selected event flags. */
+    _getRevision(events: VirtualScrollerEventMask = VirtualScrollerEvent.ALL) {
         let revision = 0;
         if (events & VirtualScrollerEvent.RANGE) {
             revision = this._eventRevisions[RANGE_EVENT_INDEX];
@@ -104,7 +110,8 @@ class VirtualScrollerEvents {
         return revision;
     }
 
-    emit(event: VirtualScrollerEvent) {
+    /** Queue or immediately publish one event flag. */
+    _emit(event: VirtualScrollerEvent) {
         if (this._batchLevel > 0) {
             this._batchedEvents |= event;
         } else {
@@ -119,14 +126,19 @@ class VirtualScrollerEvents {
         }
     }
 
-    beginBatch() {
+    /** Open a nestable synchronous event batch. */
+    _beginBatch() {
         this._batchLevel++;
     }
 
-    endBatch() {
-        if (this._batchLevel === 0) {
-            throw new Error("Cannot end an event batch that was not started");
-        }
+    /** Close one event batch and publish at the outermost boundary. */
+    _endBatch() {
+        assert(
+            this._batchLevel > 0,
+            VirtualScrollerErrorIndex.BATCH_INVARIANT,
+            1,
+            this._batchLevel
+        );
 
         this._batchLevel--;
         if (this._batchLevel > 0) return;
@@ -154,6 +166,13 @@ class VirtualScrollerEvents {
         }
     }
 
+    /** Release callbacks retained by the dispatcher. */
+    _dispose() {
+        this._subscriptions = createSubscriptionList();
+        this._batchedEvents = 0;
+    }
+
+    /** Synchronously notify subscriptions selected by an event mask. */
     private _notify(events: VirtualScrollerEventMask) {
         const subscriptions = this._subscriptions;
         for (let i = 0, length = subscriptions.length; i < length; i++) {

@@ -20,6 +20,7 @@ test("keeps paint containment on the viewport instead of virtual layers", () => 
     expect(sizeStyle).toMatchObject({
         contain: "size layout style",
         overflow: "hidden",
+        overflowAnchor: "none",
         height: "4000000px"
     });
     expect(sizeStyle).not.toHaveProperty("zIndex");

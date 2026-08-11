@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "../../../../../e2e";
 
 const TARGET_INDEX = 25_000;
 

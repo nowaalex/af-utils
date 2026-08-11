@@ -25,10 +25,10 @@ jobs:
             - name: Install pnpm
               uses: pnpm/action-setup@v6
 
-            - name: Setup Node.js 24
+            - name: Setup Node.js 24.19.0
               uses: actions/setup-node@v7
               with:
-                  node-version: "24.x"
+                  node-version: "24.19.0"
                   cache: "pnpm"
 
             - name: Install Dependencies
@@ -40,8 +40,17 @@ jobs:
             - name: Check formatting
               run: pnpm format:check
 
+            - name: Lint
+              run: pnpm lint
+
+            - name: Typecheck
+              run: pnpm typecheck
+
             - name: Test packages
               run: pnpm test
+
+            - name: Check V8 optimization invariants
+              run: pnpm jit:check
 
             - name: Build packages
               run: pnpm packages build
@@ -54,3 +63,14 @@ jobs:
 
             - name: Test examples in browser
               run: pnpm test:e2e
+
+            - name: Upload Playwright artifacts
+              if: ${{ failure() }}
+              uses: actions/upload-artifact@v7
+              with:
+                  name: playwright-report
+                  path: |
+                      playwright-report/
+                      test-results/
+                  if-no-files-found: ignore
+                  retention-days: 7

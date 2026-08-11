@@ -18,12 +18,14 @@
     "license": "MIT",
     "scripts": {
         "dev": "tsc -p tsconfig.dev.json && pnpm esbuild:dev",
-        "build": "tsc && pnpm esbuild:build && pnpm api-extractor",
-        "esbuild:base": "esbuild src/index*.ts --bundle --format=esm --outdir=dist --platform=neutral",
-        "esbuild:build": "pnpm esbuild:base --mangle-props=^_",
-        "esbuild:dev": "pnpm esbuild:base --watch",
+        "build": "tsc && pnpm esbuild:build && pnpm api-extractor && pnpm test:artifacts",
+        "esbuild:base": "esbuild --bundle --format=esm --platform=neutral --mangle-props=^_ --minify --legal-comments=none",
+        "esbuild:format": "biome format --config-path=biome.dist.json --write dist/index.production.js dist/index.development.js dist/index.node.production.js dist/index.node.development.js",
+        "esbuild:build": "rm -f dist/index.js dist/index.node.js dist/index.production.js dist/index.development.js dist/index.node.production.js dist/index.node.development.js && pnpm esbuild:base src/index.ts src/index.node.ts --outdir=dist --entry-names=[name].production && pnpm esbuild:base src/index.ts src/index.node.ts --conditions=development --outdir=dist --entry-names=[name].development && pnpm esbuild:format",
+        "esbuild:dev": "rm -f dist/index.js dist/index.node.js dist/index.production.js dist/index.development.js dist/index.node.production.js dist/index.node.development.js && pnpm esbuild:base src/index.ts src/index.node.ts --conditions=development --outdir=dist --entry-names=[name].development --watch",
         "api-extractor": "api-extractor run && rm -r dist/types",
         "test": "vitest run",
+        "test:artifacts": "node scripts/check-error-build.mjs",
         "test:mutation": "stryker run stryker.config.mjs",
         "bench": "vitest bench --run",
         "bench:private": "pnpm jit:build && node --expose-gc scripts/benchmark-private-fields.mjs",
@@ -36,12 +38,25 @@
         "dist/*"
     ],
     "type": "module",
-    "main": "dist/index.js",
+    "sideEffects": false,
+    "imports": {
+        "#virtual-errors": {
+            "development": "./src/errors/development.ts",
+            "default": "./src/errors/production.ts"
+        }
+    },
+    "main": "dist/index.node.production.js",
     "types": "dist/index.d.ts",
     "exports": {
         "types": "./dist/index.d.ts",
-        "node": "./dist/index.node.js",
-        "default": "./dist/index.js"
+        "node": {
+            "development": "./dist/index.node.development.js",
+            "production": "./dist/index.node.production.js",
+            "default": "./dist/index.node.production.js"
+        },
+        "development": "./dist/index.development.js",
+        "production": "./dist/index.production.js",
+        "default": "./dist/index.production.js"
     },
     "engines": {
         "node": ">=20.0.0"

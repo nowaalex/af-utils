@@ -39,6 +39,7 @@ What it doesn't do:
 | Class | Description |
 | ------ | ------ |
 | [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller) | Core framework-agnostic model. |
+| [VirtualScrollerError](/virtual/reference/virtual-core/classes/VirtualScrollerError) | Error thrown for an invalid virtual-scroller operation. |
 | [VirtualScrollerLayout](/virtual/reference/virtual-core/classes/VirtualScrollerLayout) | Framework-neutral DOM layout adapter for [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller). |
 
 ## Interfaces
@@ -52,6 +53,7 @@ What it doesn't do:
 
 | Type Alias | Description |
 | ------ | ------ |
+| [VirtualScrollerErrorCode](/virtual/reference/virtual-core/type-aliases/VirtualScrollerErrorCode) | Type of a stable machine-readable virtual-scroller error code. |
 | [VirtualScrollerEvent](/virtual/reference/virtual-core/type-aliases/VirtualScrollerEvent) | `VirtualScrollerEvent` is exported as a constant, so a separate type is needed to emulate enum behavior. |
 | [VirtualScrollerEventMask](/virtual/reference/virtual-core/type-aliases/VirtualScrollerEventMask) | - |
 | [VirtualScrollerExactPosition](/virtual/reference/virtual-core/type-aliases/VirtualScrollerExactPosition) | Numeric snapshot of scroll position |
@@ -62,6 +64,8 @@ What it doesn't do:
 
 | Variable | Description |
 | ------ | ------ |
+| [assert](/virtual/reference/virtual-core/variables/assert) | Assert a condition using the active development or production error build. |
+| [VirtualScrollerErrorCode](/virtual/reference/virtual-core/variables/VirtualScrollerErrorCode) | Stable machine-readable error codes emitted by the virtual-scroller packages. |
 | [VirtualScrollerEvent](/virtual/reference/virtual-core/variables/VirtualScrollerEvent) | Bit flags accepted by [VirtualScroller.subscribe](/virtual/reference/virtual-core/classes/VirtualScroller#subscribe) and [VirtualScroller.getRevision](/virtual/reference/virtual-core/classes/VirtualScroller#getrevision). |
 
 ## Functions

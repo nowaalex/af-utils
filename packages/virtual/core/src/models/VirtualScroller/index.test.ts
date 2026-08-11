@@ -1,8 +1,13 @@
 // @vitest-environment jsdom
 
 import { describe, expect, test, vi } from "vitest";
+import { VirtualScrollerError } from "#virtual-errors";
 import TestResizeObserver from "../../__mocks__/ResizeObserver";
 import { VirtualScrollerEvent } from "../../constants";
+import {
+    VirtualScrollerErrorCode,
+    VirtualScrollerErrorIndex
+} from "../../errors/codes";
 import VirtualScroller from ".";
 
 vi.useFakeTimers();
@@ -15,10 +20,353 @@ const SCROLL_IDLE_TIMEOUT_MS = 128;
 describe("VirtualScroller creation works", () => {
     test("constructor without params works", () => {
         const model = new VirtualScroller();
+        const explicitEmptyModel = new VirtualScroller({});
 
         expect(model.scrollSize).toBe(0);
         expect(model.from).toBe(0);
         expect(model.to).toBe(0);
+        expect(model.visibleFrom).toBe(0);
+        expect({
+            from: model.from,
+            scrollSize: model.scrollSize,
+            to: model.to,
+            visibleFrom: model.visibleFrom
+        }).toEqual({
+            from: explicitEmptyModel.from,
+            scrollSize: explicitEmptyModel.scrollSize,
+            to: explicitEmptyModel.to,
+            visibleFrom: explicitEmptyModel.visibleFrom
+        });
+    });
+
+    test("uses stable coded errors with detailed development messages", () => {
+        let error: unknown;
+
+        try {
+            new VirtualScroller({ itemCount: -1 });
+        } catch (caught) {
+            error = caught;
+        }
+
+        expect(error).toBeInstanceOf(VirtualScrollerError);
+        expect(error).toMatchObject({
+            code: VirtualScrollerErrorCode[
+                VirtualScrollerErrorIndex.INVALID_ITEM_COUNT
+            ],
+            name: "VirtualScrollerError"
+        });
+        expect((error as Error).message).toContain(
+            "itemCount must be a safe integer"
+        );
+        expect((error as Error).message).toContain("Received: -1");
+    });
+
+    test("rejects fractional offset indexes synchronously", () => {
+        const model = new VirtualScroller({ itemCount: 10 });
+
+        expect(() => model.getOffset(0.5)).toThrowError(
+            expect.objectContaining({
+                code: VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_INDEX
+                ]
+            })
+        );
+    });
+
+    test("validates a runtime update before mutating any field", () => {
+        const model = new VirtualScroller({
+            estimatedItemSize: 40,
+            itemCount: 10,
+            overscanCount: 1
+        });
+        const revision = model.getRevision();
+        const snapshot = {
+            from: model.from,
+            itemCount: model.itemCount,
+            scrollSize: model.scrollSize,
+            size: model.getSize(0),
+            to: model.to
+        };
+
+        expect(() =>
+            model.set({ estimatedItemSize: 80, itemCount: -1 })
+        ).toThrowError(
+            expect.objectContaining({
+                code: VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_ITEM_COUNT
+                ]
+            })
+        );
+        expect(() =>
+            model.set({
+                estimatedItemSize: 80,
+                itemCount: 20,
+                overscanCount: -1
+            })
+        ).toThrowError(
+            expect.objectContaining({
+                code: VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_OVERSCAN
+                ]
+            })
+        );
+
+        expect(model.getRevision()).toBe(revision);
+        expect({
+            from: model.from,
+            itemCount: model.itemCount,
+            scrollSize: model.scrollSize,
+            size: model.getSize(0),
+            to: model.to
+        }).toEqual(snapshot);
+    });
+
+    test("validates public numeric boundaries with stable error codes", () => {
+        const model = new VirtualScroller({ itemCount: 10 });
+        const element = document.createElement("div");
+        const cases: Array<[operation: () => unknown, code: string]> = [
+            [
+                () => new VirtualScroller({ estimatedWidgetSize: -1 }),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_WIDGET_SIZE
+                ]
+            ],
+            [
+                () =>
+                    new VirtualScroller({
+                        estimatedScrollElementOffset: Number.NaN
+                    }),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_SCROLLER_OFFSET
+                ]
+            ],
+            [
+                () => model.set({ estimatedItemSize: 0 }),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_ITEM_SIZE
+                ]
+            ],
+            [
+                () => model.setItemCount(1.5),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_ITEM_COUNT
+                ]
+            ],
+            [
+                () => model.getIndex(Number.POSITIVE_INFINITY),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_OFFSET
+                ]
+            ],
+            [
+                () => new VirtualScroller().getIndex(0),
+                VirtualScrollerErrorCode[VirtualScrollerErrorIndex.EMPTY_MODEL]
+            ],
+            [
+                () => model.getSize(10),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_INDEX
+                ]
+            ],
+            [
+                () => model.scrollToOffset(Number.NaN),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_OFFSET
+                ]
+            ],
+            [
+                () => model.attachItem(element, 10),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_INDEX
+                ]
+            ],
+            [
+                () => model.invalidateItemSizes(-1, 1),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_RANGE
+                ]
+            ],
+            [
+                () => model.spliceItems(9, 2, 0),
+                VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.INVALID_SPLICE
+                ]
+            ]
+        ];
+
+        for (const [operation, code] of cases) {
+            expect(operation).toThrowError(expect.objectContaining({ code }));
+        }
+        expect(model.itemCount).toBe(10);
+        expect(model.scrollSize).toBe(400);
+    });
+
+    test("defers an isolated overscan update until a natural range update", () => {
+        const model = new VirtualScroller({
+            estimatedItemSize: 40,
+            estimatedWidgetSize: 200,
+            itemCount: 100,
+            overscanCount: 0
+        });
+        const range = [model.from, model.to];
+        const revision = model.getRevision(VirtualScrollerEvent.RANGE);
+
+        model.set({ overscanCount: 20 });
+
+        expect([model.from, model.to]).toEqual(range);
+        expect(model.getRevision(VirtualScrollerEvent.RANGE)).toBe(revision);
+    });
+
+    test("invalidates and splices cached sizes with retained items", () => {
+        const model = new VirtualScroller({ itemCount: 5 });
+        const elements = [10, 20, 30, 40, 50].map((size, index) => {
+            const element = document.createElement("div");
+            element.dataset.testSize = String(size);
+            model.attachItem(element, index);
+            return element;
+        });
+        vi.advanceTimersByTime(0);
+        for (const element of elements) model.detachItem(element);
+
+        let notifications = 0;
+        model.subscribe(() => notifications++);
+        model.invalidateItemSizes(1, 3);
+        expect(Array.from({ length: 5 }, (_, i) => model.getSize(i))).toEqual([
+            10, 40, 40, 40, 50
+        ]);
+        expect(model.scrollSize).toBe(180);
+        expect(notifications).toBe(1);
+
+        notifications = 0;
+        model.spliceItems(1, 2, 1);
+        expect(model.itemCount).toBe(4);
+        expect(Array.from({ length: 4 }, (_, i) => model.getSize(i))).toEqual([
+            10, 40, 40, 50
+        ]);
+        expect(model.scrollSize).toBe(140);
+        expect(notifications).toBe(1);
+
+        model.set({ estimatedItemSize: 100 });
+        expect(Array.from({ length: 4 }, (_, i) => model.getSize(i))).toEqual([
+            10, 40, 40, 50
+        ]);
+        expect(model.scrollSize).toBe(140);
+
+        model.spliceItems(4, 0, 1);
+        expect(model.getSize(4)).toBe(100);
+        expect(model.scrollSize).toBe(240);
+    });
+
+    test("preserves rendered sizes when the estimate changes", () => {
+        const observe = vi.spyOn(TestResizeObserver.prototype, "observe");
+        const model = new VirtualScroller({
+            estimatedItemSize: 40,
+            estimatedWidgetSize: 80,
+            itemCount: 5,
+            overscanCount: 0
+        });
+        const elements = [60, 70].map((size, index) => {
+            const element = document.createElement("div");
+            element.dataset.testSize = String(size);
+            model.attachItem(element, index);
+            return element;
+        });
+        vi.advanceTimersByTime(0);
+
+        model.set({ estimatedItemSize: 100 });
+        expect(Array.from({ length: 5 }, (_, i) => model.getSize(i))).toEqual([
+            60, 70, 100, 100, 100
+        ]);
+        expect(observe).toHaveBeenCalledTimes(2);
+
+        for (const element of elements) model.detachItem(element);
+        observe.mockRestore();
+    });
+
+    test("defers item observations mounted after resize publication", () => {
+        const observe = vi.spyOn(TestResizeObserver.prototype, "observe");
+
+        const model = new VirtualScroller({ itemCount: 3 });
+        const first = document.createElement("div");
+        const second = document.createElement("div");
+        const detached = document.createElement("div");
+        first.dataset.testSize = "60";
+        second.dataset.testSize = "70";
+        detached.dataset.testSize = "80";
+
+        try {
+            model.attachItem(first, 0);
+            vi.advanceTimersByTime(0);
+            model.attachItem(second, 1);
+            model.attachItem(detached, 2);
+            model.detachItem(detached);
+
+            expect(observe).toHaveBeenCalledTimes(1);
+            expect(model.getSize(1)).toBe(40);
+
+            vi.advanceTimersByTime(20);
+
+            expect(observe).toHaveBeenCalledTimes(2);
+            vi.advanceTimersByTime(0);
+            expect(model.getSize(1)).toBe(70);
+            expect(model.getSize(2)).toBe(40);
+        } finally {
+            model.dispose();
+            observe.mockRestore();
+        }
+    });
+
+    test("cancels deferred item observation when disposed", () => {
+        const observe = vi.spyOn(TestResizeObserver.prototype, "observe");
+
+        const model = new VirtualScroller({ itemCount: 2 });
+        const first = document.createElement("div");
+        const second = document.createElement("div");
+        first.dataset.testSize = "60";
+        second.dataset.testSize = "70";
+        const internals = model as unknown as {
+            _itemObservationFrame: number | null;
+        };
+
+        try {
+            model.attachItem(first, 0);
+            vi.advanceTimersByTime(0);
+            model.attachItem(second, 1);
+            expect(internals._itemObservationFrame).not.toBeNull();
+            model.dispose();
+
+            expect(internals._itemObservationFrame).toBeNull();
+            vi.advanceTimersByTime(20);
+            expect(observe).toHaveBeenCalledTimes(1);
+        } finally {
+            model.dispose();
+            observe.mockRestore();
+        }
+    });
+
+    test("dispose is idempotent and releases observers and subscribers", () => {
+        const disconnect = vi.spyOn(TestResizeObserver.prototype, "disconnect");
+        const model = new VirtualScroller({ itemCount: 1 });
+        const item = document.createElement("div");
+        item.dataset.testSize = "50";
+        const listener = vi.fn();
+        model.subscribe(listener);
+        model.attachItem(item, 0);
+
+        model.dispose();
+        model.dispose();
+        vi.advanceTimersByTime(0);
+
+        expect(disconnect).toHaveBeenCalledTimes(2);
+        expect(() => model.setItemCount(2)).toThrowError(
+            expect.objectContaining({
+                code: VirtualScrollerErrorCode[
+                    VirtualScrollerErrorIndex.DISPOSED
+                ]
+            })
+        );
+        expect(listener).not.toHaveBeenCalled();
+        disconnect.mockRestore();
     });
 
     test("keeps item indexes isolated per model without DOM attributes", () => {
@@ -98,6 +446,7 @@ describe("VirtualScroller creation works", () => {
         model.setContainer(container);
         model.setStickyHeader(header);
         vi.advanceTimersByTime(0);
+        scroller.dispatchEvent(new Event("scroll"));
         model.set({ estimatedItemSize: 20 });
 
         expect(model.from).toBeGreaterThan(0);
@@ -269,6 +618,67 @@ describe("VirtualScroller creation works", () => {
         model.setScroller(null);
     });
 
+    test("measures a pending container offset before scrollbar release", () => {
+        const model = new VirtualScroller({
+            estimatedItemSize: 40,
+            estimatedWidgetSize: 200,
+            itemCount: 100
+        });
+        const scroller = document.createElement("div");
+        Object.defineProperties(scroller, {
+            clientHeight: { value: 200 },
+            clientLeft: { value: 0 },
+            clientWidth: { value: 80 },
+            scrollTop: { value: 3_850, writable: true },
+            scroll: {
+                value: ({ top }: ScrollToOptions) => {
+                    scroller.scrollTop = top ?? scroller.scrollTop;
+                }
+            }
+        });
+        vi.spyOn(scroller, "getBoundingClientRect").mockImplementation(
+            () =>
+                ({
+                    left: 0,
+                    right: 100,
+                    top: 0
+                }) as DOMRect
+        );
+        const container = document.createElement("div");
+        vi.spyOn(container, "getBoundingClientRect").mockImplementation(
+            () => ({ top: 50 - scroller.scrollTop }) as DOMRect
+        );
+        const pointerDown = new Event("pointerdown");
+        const pointerUp = new Event("pointerup");
+        Object.defineProperties(pointerDown, {
+            clientX: { value: 90 },
+            isPrimary: { value: true }
+        });
+        Object.defineProperty(pointerUp, "isPrimary", { value: true });
+
+        model.setScroller(scroller);
+        model.setContainer(container);
+        scroller.dispatchEvent(new Event("scroll"));
+        scroller.dispatchEvent(pointerDown);
+
+        const item = document.createElement("div");
+        item.dataset.testSize = "80";
+        model.attachItem(item, model.from);
+        vi.advanceTimersByTime(0);
+
+        expect(model.scrollSize).toBe(4_000);
+        window.dispatchEvent(pointerUp);
+
+        expect(model.scrollSize).toBe(4_040);
+        expect(scroller.scrollTop).toBe(3_890);
+        vi.advanceTimersByTime(256);
+        expect(scroller.scrollTop).toBe(3_890);
+
+        model.detachItem(item);
+        model.setContainer(null);
+        model.setScroller(null);
+    });
+
     test("defers item-count scroll-size changes while the native scrollbar is dragged", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
@@ -361,6 +771,7 @@ describe("VirtualScroller creation works", () => {
         };
         expect(internals._shouldAnchorRangeEnd()).toBe(true);
 
+        vi.advanceTimersByTime(20);
         item.dataset.testSize = "40";
         model.attachItem(item, model.from);
         vi.advanceTimersByTime(0);
@@ -459,10 +870,10 @@ describe("VirtualScroller creation works", () => {
             (
                 model as unknown as {
                     _scrollActivity: {
-                        nativeScrollActive: boolean;
+                        _nativeScrollActive: boolean;
                     };
                 }
-            )._scrollActivity.nativeScrollActive;
+            )._scrollActivity._nativeScrollActive;
 
         const fallbackModel = new VirtualScroller({ itemCount: 100 });
         const fallbackScroller = createScroller(false);
@@ -499,19 +910,19 @@ describe("VirtualScroller creation works", () => {
 
         const internals = model as unknown as {
             _scrollActivity: {
-                programmaticScrollActive: boolean;
-                onNativeScrollEnd(): void;
+                _programmaticScrollActive: boolean;
+                _onNativeScrollEnd(): void;
             };
         };
         model.scrollToOffset(40);
-        expect(internals._scrollActivity.programmaticScrollActive).toBe(true);
-        internals._scrollActivity.onNativeScrollEnd();
-        expect(internals._scrollActivity.programmaticScrollActive).toBe(false);
+        expect(internals._scrollActivity._programmaticScrollActive).toBe(true);
+        internals._scrollActivity._onNativeScrollEnd();
+        expect(internals._scrollActivity._programmaticScrollActive).toBe(false);
 
         model.scrollToIndex(10, true, 2);
-        expect(internals._scrollActivity.programmaticScrollActive).toBe(true);
-        internals._scrollActivity.onNativeScrollEnd();
-        expect(internals._scrollActivity.programmaticScrollActive).toBe(true);
+        expect(internals._scrollActivity._programmaticScrollActive).toBe(true);
+        internals._scrollActivity._onNativeScrollEnd();
+        expect(internals._scrollActivity._programmaticScrollActive).toBe(true);
 
         model.setScroller(null);
     });
@@ -606,6 +1017,7 @@ describe("VirtualScroller creation works", () => {
         expect(scroller.scrollTop).toBe(1_900);
 
         scroller.dispatchEvent(new Event("scrollend"));
+        vi.advanceTimersByTime(20);
 
         const secondItem = document.createElement("div");
         secondItem.dataset.testSize = "80";
@@ -643,12 +1055,75 @@ describe("VirtualScroller creation works", () => {
         );
         model.setScroller(scroller);
         scroller.dispatchEvent(new Event("scroll"));
+        const preservedCount = model.to - model.from;
 
         model.set({ estimatedItemSize: 80, itemCount: 200 });
 
-        expect(model.scrollSize).toBe(16_000);
+        expect(model.scrollSize).toBe(200 * 80 - preservedCount * (80 - 40));
         expect(scrollSizeEvents).toBe(1);
         expect(scroller.scrollTop).toBe(1_900);
+
+        model.setScroller(null);
+    });
+
+    test("preserves the idle item anchor when a new estimate resets sizes", () => {
+        const model = new VirtualScroller({
+            estimatedItemSize: 40,
+            estimatedWidgetSize: 200,
+            itemCount: 100
+        });
+        const scroller = document.createElement("div");
+        Object.defineProperties(scroller, {
+            clientHeight: { value: 200 },
+            scrollTop: { value: 1_900, writable: true },
+            scroll: {
+                value: ({ top }: ScrollToOptions) => {
+                    scroller.scrollTop = top ?? scroller.scrollTop;
+                }
+            }
+        });
+
+        model.setScroller(scroller);
+        const anchorIndex = model.getIndex(scroller.scrollTop);
+        const anchorViewportOffset =
+            model.getOffset(anchorIndex) - scroller.scrollTop;
+        const preservedCount = model.to - model.from;
+
+        model.set({ estimatedItemSize: 80 });
+
+        expect(model.scrollSize).toBe(100 * 80 - preservedCount * (80 - 40));
+        expect(model.getIndex(scroller.scrollTop)).toBe(anchorIndex);
+        expect(model.getOffset(anchorIndex) - scroller.scrollTop).toBe(
+            anchorViewportOffset
+        );
+
+        model.setScroller(null);
+    });
+
+    test("keeps an idle end-aligned viewport at the end after an estimate reset", () => {
+        const model = new VirtualScroller({
+            estimatedItemSize: 40,
+            estimatedWidgetSize: 200,
+            itemCount: 100
+        });
+        const scroller = document.createElement("div");
+        Object.defineProperties(scroller, {
+            clientHeight: { value: 200 },
+            scrollTop: { value: 3_800, writable: true },
+            scroll: {
+                value: ({ top }: ScrollToOptions) => {
+                    scroller.scrollTop = top ?? scroller.scrollTop;
+                }
+            }
+        });
+
+        model.setScroller(scroller);
+        const preservedCount = model.to - model.from;
+        model.set({ estimatedItemSize: 80, itemCount: 200 });
+
+        const expectedScrollSize = 200 * 80 - preservedCount * (80 - 40);
+        expect(model.scrollSize).toBe(expectedScrollSize);
+        expect(scroller.scrollTop).toBe(expectedScrollSize - 200);
 
         model.setScroller(null);
     });
@@ -708,9 +1183,11 @@ describe("VirtualScroller creation works", () => {
     test("validates scrollToIndex arguments synchronously", () => {
         const model = new VirtualScroller({ itemCount: 10 });
 
-        expect(() => model.scrollToIndex(-1)).toThrow(RangeError);
-        expect(() => model.scrollToIndex(10)).toThrow(RangeError);
-        expect(() => model.scrollToIndex(1, false, 0)).toThrow(RangeError);
+        expect(() => model.scrollToIndex(-1)).toThrow(VirtualScrollerError);
+        expect(() => model.scrollToIndex(10)).toThrow(VirtualScrollerError);
+        expect(() => model.scrollToIndex(1, false, 0)).toThrow(
+            VirtualScrollerError
+        );
     });
 
     test("positions scrollToIndex targets below a sticky header", () => {

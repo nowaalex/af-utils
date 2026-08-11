@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../../../../../e2e";
 
 test("fills the viewport and preserves the final item across scrollbar release", async ({
     page
