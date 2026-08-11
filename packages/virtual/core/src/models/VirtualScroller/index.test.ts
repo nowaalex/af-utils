@@ -489,7 +489,7 @@ describe("VirtualScroller creation works", () => {
         model.detachItem(second);
     });
 
-    test("publishes growing scroll size and keeps the scrollbar at the end", () => {
+    test("publishes growing scroll size after the scroll transaction", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
             estimatedWidgetSize: 200,
@@ -517,6 +517,10 @@ describe("VirtualScroller creation works", () => {
         model.attachItem(item, model.from);
         vi.advanceTimersByTime(0);
 
+        expect(model.scrollSize).toBe(2_000_000);
+        expect(scrollSizeEvents).toBe(0);
+        vi.advanceTimersByTime(SCROLL_IDLE_TIMEOUT_MS);
+
         expect(model.scrollSize).toBe(2_000_040);
         expect(scrollSizeEvents).toBe(1);
         expect(scroller.scrollTop).toBe(1_999_840);
@@ -528,7 +532,7 @@ describe("VirtualScroller creation works", () => {
         model.setScroller(null);
     });
 
-    test("publishes shrinking scroll size without leaving a white end gap", () => {
+    test("publishes shrinking scroll size after the scroll transaction", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 80,
             estimatedWidgetSize: 200,
@@ -558,6 +562,10 @@ describe("VirtualScroller creation works", () => {
         model.attachItem(item, model.from);
         vi.advanceTimersByTime(0);
 
+        expect(model.scrollSize).toBe(8_000);
+        expect(scrollSizeEvents).toBe(0);
+        scroller.dispatchEvent(new Event("scrollend"));
+
         expect(model.scrollSize).toBe(7_960);
         expect(scrollSizeEvents).toBe(1);
         expect(scroller.scrollTop).toBe(7_760);
@@ -565,7 +573,7 @@ describe("VirtualScroller creation works", () => {
         model.setScroller(null);
     });
 
-    test("publishes measurements without tracking scrollbar pointers", () => {
+    test("keeps geometry frozen while a primary pointer is held", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
             estimatedWidgetSize: 200,
@@ -602,21 +610,23 @@ describe("VirtualScroller creation works", () => {
         model.attachItem(item, model.from);
         vi.advanceTimersByTime(0);
 
-        expect(model.scrollSize).toBe(4_040);
+        expect(model.scrollSize).toBe(4_000);
         expect(model.getSize(model.from)).toBe(80);
-        expect(scroller.scrollTop).toBe(3_840);
+        expect(scroller.scrollTop).toBe(3_800);
 
         vi.advanceTimersByTime(SCROLL_IDLE_TIMEOUT_MS);
-        expect(model.scrollSize).toBe(4_040);
+        expect(model.scrollSize).toBe(4_000);
 
         window.dispatchEvent(pointerUp);
         expect(model.scrollSize).toBe(4_040);
         expect(scroller.scrollTop).toBe(3_840);
+        scroller.dispatchEvent(new Event("scrollend"));
+        expect(model.scrollSize).toBe(4_040);
 
         model.setScroller(null);
     });
 
-    test("updates the items-container offset without pointer state", () => {
+    test("updates the items-container offset when the transaction ends", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
             estimatedWidgetSize: 200,
@@ -664,13 +674,14 @@ describe("VirtualScroller creation works", () => {
         model.attachItem(item, model.from);
         vi.advanceTimersByTime(0);
 
-        expect(model.scrollSize).toBe(4_040);
-        expect(scroller.scrollTop).toBe(3_840);
+        expect(model.scrollSize).toBe(4_000);
+        expect(scroller.scrollTop).toBe(3_850);
         window.dispatchEvent(pointerUp);
 
         expect(model.scrollSize).toBe(4_040);
-        expect(scroller.scrollTop).toBe(3_840);
-        vi.advanceTimersByTime(256);
+        expect(scroller.scrollTop).toBe(3_890);
+        scroller.dispatchEvent(new Event("scrollend"));
+        expect(model.scrollSize).toBe(4_040);
         expect(scroller.scrollTop).toBe(3_890);
 
         model.detachItem(item);
@@ -678,7 +689,7 @@ describe("VirtualScroller creation works", () => {
         model.setScroller(null);
     });
 
-    test("publishes item-count geometry without tracking scrollbar pointers", () => {
+    test("publishes item-count geometry when the transaction ends", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
             estimatedWidgetSize: 200,
@@ -715,13 +726,15 @@ describe("VirtualScroller creation works", () => {
         model.setItemCount(110);
 
         expect(model.itemCount).toBe(110);
-        expect(model.scrollSize).toBe(4_400);
-        expect(model.to).toBe(100);
+        expect(model.scrollSize).toBe(4_000);
+        expect(model.to).toBe(110);
         expect(scroller.scrollTop).toBe(3_800);
 
         window.dispatchEvent(pointerUp);
         expect(model.scrollSize).toBe(4_400);
-        expect(scroller.scrollTop).toBe(3_800);
+        expect(scroller.scrollTop).toBe(4_200);
+        scroller.dispatchEvent(new Event("scrollend"));
+        expect(model.scrollSize).toBe(4_400);
 
         model.setScroller(null);
     });
@@ -765,8 +778,8 @@ describe("VirtualScroller creation works", () => {
         model.attachItem(item, model.from);
         vi.advanceTimersByTime(0);
 
-        expect(model.scrollSize).toBe(4_040);
-        expect(scroller.scrollTop).toBe(3_840);
+        expect(model.scrollSize).toBe(4_000);
+        expect(scroller.scrollTop).toBe(3_800);
 
         vi.advanceTimersByTime(20);
         item.dataset.testSize = "40";
@@ -924,7 +937,7 @@ describe("VirtualScroller creation works", () => {
         model.setScroller(null);
     });
 
-    test("publishes deferred geometry before native scrollend", () => {
+    test("publishes deferred geometry on pointerup before native scrollend", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
             estimatedWidgetSize: 200,
@@ -969,7 +982,6 @@ describe("VirtualScroller creation works", () => {
         expect(model.scrollSize).toBe(4_040);
         expect(scroller.scrollTop).toBe(3_840);
 
-        scroller.dispatchEvent(new Event("scroll"));
         scroller.dispatchEvent(new Event("scrollend"));
         expect(model.scrollSize).toBe(4_040);
         expect(scroller.scrollTop).toBe(3_840);
@@ -1009,11 +1021,13 @@ describe("VirtualScroller creation works", () => {
         model.attachItem(item, model.from);
         vi.advanceTimersByTime(0);
 
-        expect(model.scrollSize).toBe(4_040);
-        expect(scrollSizeEvents).toBe(1);
+        expect(model.scrollSize).toBe(4_000);
+        expect(scrollSizeEvents).toBe(0);
         expect(scroller.scrollTop).toBe(1_900);
 
         scroller.dispatchEvent(new Event("scrollend"));
+        expect(model.scrollSize).toBe(4_040);
+        expect(scrollSizeEvents).toBe(1);
         vi.advanceTimersByTime(20);
 
         const secondItem = document.createElement("div");
@@ -1055,6 +1069,10 @@ describe("VirtualScroller creation works", () => {
         const preservedCount = model.to - model.from;
 
         model.set({ estimatedItemSize: 80, itemCount: 200 });
+
+        expect(model.scrollSize).toBe(4_000);
+        expect(scrollSizeEvents).toBe(0);
+        scroller.dispatchEvent(new Event("scrollend"));
 
         expect(model.scrollSize).toBe(200 * 80 - preservedCount * (80 - 40));
         expect(scrollSizeEvents).toBe(1);

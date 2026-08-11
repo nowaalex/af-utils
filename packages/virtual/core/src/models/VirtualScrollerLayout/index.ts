@@ -121,7 +121,11 @@ class VirtualScrollerLayout {
         const fromOffset = this._model.getOffset(this._model.from);
         const toOffset = this._model.getOffset(this._model.to);
         const rangeSize = toOffset - fromOffset;
-        const layoutOffset = fromOffset;
+        const layoutOffset =
+            this._model._shouldAnchorRangeEnd() &&
+            this._model.to === this._model.itemCount
+                ? Math.max(0.0, this._model.scrollSize - rangeSize)
+                : fromOffset;
 
         return this._model.horizontal
             ? {
@@ -189,7 +193,11 @@ class VirtualScrollerLayout {
                     const fromOffset = this._model.getOffset(this._model.from);
                     const toOffset = this._model.getOffset(this._model.to);
                     const rangeSize = toOffset - fromOffset;
-                    const layoutOffset = fromOffset;
+                    const layoutOffset =
+                        this._model._shouldAnchorRangeEnd() &&
+                        this._model.to === this._model.itemCount
+                            ? Math.max(0.0, this._model.scrollSize - rangeSize)
+                            : fromOffset;
                     const horizontal = this._model.horizontal;
 
                     element.style.transform = getItemsTransform(

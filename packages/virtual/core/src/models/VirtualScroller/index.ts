@@ -135,6 +135,15 @@ class VirtualScroller {
     /** Native and programmatic scroll lifecycle state. */
     private _scrollActivity: ScrollActivity;
 
+    /** Whether the internal total differs from the frozen public scroll size. */
+    private _hasDeferredScrollSize = false;
+
+    /** Whether a primary pointer remains pressed inside the current scroller. */
+    private _pointerActive = false;
+
+    /** Event target that owns the current pointer-start listener. */
+    private _pointerElement: VirtualScrollerScrollElement | null = null;
+
     /** Scroll correction to apply after the current event batch is published. */
     private _pendingScrollOffset = 0.0;
 
@@ -205,6 +214,20 @@ class VirtualScroller {
         );
     }
 
+    /**
+     * Whether layout must use the frozen public scroll size as its end anchor.
+     * @internal Used only by framework-neutral layout adapters in this package.
+     */
+    _shouldAnchorRangeEnd() {
+        const adapter = this._scrollerAdapter;
+        return (
+            this._hasDeferredScrollSize &&
+            adapter !== null &&
+            this._getNativeEndOffset(this.scrollSize) - adapter._readOffset() <=
+                END_OFFSET_TOLERANCE
+        );
+    }
+
     /** Whether the native offset is at the end of the currently published size. */
     private _isAtPublishedEnd(adapter: ScrollerAdapter) {
         return (
@@ -215,7 +238,12 @@ class VirtualScroller {
 
     /** Item-space offset of the viewport edge after a sticky header. */
     private _getVisibleStart() {
-        return this._alignedScrollPos + this._sticky._headerSize;
+        return this._shouldAnchorRangeEnd()
+            ? Math.max(
+                  0.0,
+                  this._sizeIndex._totalSizeValue - this._availableWidgetSize
+              )
+            : this._alignedScrollPos + this._sticky._headerSize;
     }
 
     /**
@@ -333,7 +361,9 @@ class VirtualScroller {
         this._sticky = new StickyElements(this._axisAdapter, relativeOffset =>
             this._updateStickyOffset(relativeOffset)
         );
-        this._scrollActivity = new ScrollActivity(() => {});
+        this._scrollActivity = new ScrollActivity(() =>
+            this._publishDeferredScrollSize()
+        );
         this._events = new VirtualScrollerEvents(() =>
             this._applyScrollCorrection()
         );
@@ -375,6 +405,20 @@ class VirtualScroller {
 
         this.scrollSize = nextScrollSize;
         this._events._emit(VirtualScrollerEvent.SCROLL_SIZE);
+    }
+
+    /** Keep native geometry stable until the current scroll transaction ends. */
+    private _publishOrDeferScrollSize() {
+        if (
+            this._pointerActive ||
+            this._scrollActivity._nativeScrollActive ||
+            this._hasDeferredScrollSize
+        ) {
+            this._hasDeferredScrollSize =
+                this._sizeIndex._totalSizeValue !== this.scrollSize;
+        } else {
+            this._publishScrollSize();
+        }
     }
 
     /** Apply and clear the pending native-scroll correction, if any. */
@@ -465,7 +509,12 @@ class VirtualScroller {
         const adapter = this._scrollerAdapter;
         const canCorrectAnchor =
             adapter !== null && this._scrollActivity._anchorCorrectionAllowed;
+        const deferScrollSize =
+            this._pointerActive ||
+            this._scrollActivity._nativeScrollActive ||
+            this._hasDeferredScrollSize;
         const wasAtEnd =
+            !deferScrollSize &&
             adapter !== null &&
             !this._scrollActivity._programmaticScrollActive &&
             this._isAtPublishedEnd(adapter);
@@ -473,17 +522,25 @@ class VirtualScroller {
         this._events._beginBatch();
         try {
             if (totalDiff !== 0.0) {
-                this._publishScrollSize();
+                if (deferScrollSize) {
+                    this._publishOrDeferScrollSize();
+                } else {
+                    this._publishScrollSize();
 
-                if (wasAtEnd) {
-                    this._scheduleEndCorrection();
-                } else if (anchorDiff !== 0.0 && canCorrectAnchor && adapter) {
-                    this._scheduleScrollCorrection(
-                        adapter._readOffset() + anchorDiff
-                    );
+                    if (wasAtEnd) {
+                        this._scheduleEndCorrection();
+                    } else if (
+                        anchorDiff !== 0.0 &&
+                        canCorrectAnchor &&
+                        adapter
+                    ) {
+                        this._scheduleScrollCorrection(
+                            adapter._readOffset() + anchorDiff
+                        );
+                    }
                 }
 
-                if (totalDiff < 0.0) {
+                if (deferScrollSize || totalDiff < 0.0) {
                     this._updateRangeFromEnd();
                 }
             }
@@ -492,6 +549,55 @@ class VirtualScroller {
         } finally {
             this._events._endBatch();
         }
+    }
+
+    /**
+     * Publish geometry accumulated during one native scroll transaction.
+     * @param pointerEnded - Whether an explicit pointer boundary makes a later
+     * `scrollend` unnecessary for publication.
+     */
+    private _publishDeferredScrollSize(pointerEnded = false) {
+        if (
+            this._pointerActive ||
+            (!pointerEnded && this._scrollActivity._nativeScrollActive) ||
+            !this._hasDeferredScrollSize
+        )
+            return;
+
+        this._flushScrollerOffset();
+        const adapter = this._scrollerAdapter;
+        const wasAtEnd = adapter !== null && this._isAtPublishedEnd(adapter);
+
+        this._hasDeferredScrollSize = false;
+        this._events._beginBatch();
+        try {
+            this._publishScrollSize();
+            if (wasAtEnd) {
+                this._scheduleEndCorrection();
+            }
+            this._updateRangeFromEnd();
+        } finally {
+            this._events._endBatch();
+        }
+    }
+
+    /** Read the items-container offset before publishing frozen geometry. */
+    private _flushScrollerOffset() {
+        clearTimeout(this._scrollerOffsetTimer);
+        this._scrollerOffsetTimer = 0;
+
+        const adapter = this._scrollerAdapter;
+        if (!adapter) return false;
+
+        const nextOffset = adapter._distanceTo(this._initialElement);
+        if (
+            !Number.isFinite(nextOffset) ||
+            nextOffset === this._scrollElementOffset
+        )
+            return false;
+
+        this._scrollElementOffset = nextOffset;
+        return true;
     }
 
     /**
@@ -609,6 +715,18 @@ class VirtualScroller {
     /** Finish native scroll activity at the platform's definitive boundary. */
     private _handleScrollEnd = () => this._scrollActivity._onNativeScrollEnd();
 
+    /** Mark primary-pointer interaction without classifying its exact target. */
+    private _handlePointerStart = (event: Event) => {
+        if ((event as PointerEvent).isPrimary) this._pointerActive = true;
+    };
+
+    /** Release pointer-held geometry once both pointer and scroll are idle. */
+    private _handlePointerEnd = (event: Event) => {
+        if (!(event as PointerEvent).isPrimary) return;
+        this._pointerActive = false;
+        this._publishDeferredScrollSize(true);
+    };
+
     /**
      * Informs model about scrollable element.
      * @param element - scroller element
@@ -625,6 +743,14 @@ class VirtualScroller {
             this._scrollActivity._setIndexConverging(false);
             clearTimeout(this._scrollerOffsetTimer);
             this._unobserveResize();
+            this._pointerElement?.removeEventListener(
+                "pointerdown",
+                this._handlePointerStart
+            );
+            window.removeEventListener("pointerup", this._handlePointerEnd);
+            window.removeEventListener("pointercancel", this._handlePointerEnd);
+            this._pointerElement = null;
+            this._pointerActive = false;
             this._scrollActivity._reset();
             this._scrollerAdapter._removeScrollListener(
                 this._handleScrollEvent
@@ -646,6 +772,10 @@ class VirtualScroller {
             this._unobserveResize = adapter._observeResize(size =>
                 this._setScrollElementSize(size)
             );
+            this._pointerElement = element;
+            element.addEventListener("pointerdown", this._handlePointerStart);
+            window.addEventListener("pointerup", this._handlePointerEnd);
+            window.addEventListener("pointercancel", this._handlePointerEnd);
             adapter._addScrollListener(this._handleScrollEvent);
             adapter._addScrollEndListener(this._handleScrollEnd);
             this.updateScrollerOffset();
@@ -818,6 +948,10 @@ class VirtualScroller {
      * @returns last visible item index
      */
     private _getExactTo() {
+        if (this._shouldAnchorRangeEnd()) {
+            return this._itemCount;
+        }
+
         return (
             this._itemCount &&
             1 +
@@ -972,7 +1106,7 @@ class VirtualScroller {
 
             try {
                 this._itemCount = itemCount;
-                this._publishScrollSize();
+                this._publishOrDeferScrollSize();
 
                 if (this.to > itemCount) {
                     // after this range would be 100% updated
@@ -1002,7 +1136,12 @@ class VirtualScroller {
         const oldAnchorOffset = canCorrectAnchor
             ? this._sizeIndex._getOffset(exactFrom)
             : 0.0;
+        const deferScrollSize =
+            this._pointerActive ||
+            this._scrollActivity._nativeScrollActive ||
+            this._hasDeferredScrollSize;
         const wasAtEnd =
+            !deferScrollSize &&
             adapter !== null &&
             !this._scrollActivity._programmaticScrollActive &&
             this._isAtPublishedEnd(adapter);
@@ -1024,10 +1163,10 @@ class VirtualScroller {
 
         try {
             if (totalDelta !== 0.0) {
-                this._publishScrollSize();
+                this._publishOrDeferScrollSize();
             }
 
-            if (adapter) {
+            if (!deferScrollSize && adapter) {
                 if (wasAtEnd && totalDelta !== 0.0) {
                     this._scheduleEndCorrection();
                 } else if (anchorDiff !== 0.0) {
@@ -1102,7 +1241,7 @@ class VirtualScroller {
 
         try {
             this._itemCount = nextItemCount;
-            this._publishScrollSize();
+            this._publishOrDeferScrollSize();
             this.to = -1;
             this._updateRangeFromEnd();
             if (sizesChanged) {
@@ -1169,6 +1308,9 @@ class VirtualScroller {
         this._itemObservationFrame = null;
         this._deferItemObservations = false;
         this._pendingItemObservations.clear();
+        this._hasDeferredScrollSize = false;
+        this._pointerActive = false;
+        this._pointerElement = null;
         this._pendingScrollOffset = 0.0;
         this._hasPendingScrollOffset = false;
         this._pendingScrollToEnd = false;

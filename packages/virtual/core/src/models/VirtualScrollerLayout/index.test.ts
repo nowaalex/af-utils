@@ -82,7 +82,7 @@ test("enables a hydration-safe scroller only after model attachment", () => {
     layout.dispose();
 });
 
-test("publishes measured end geometry immediately", () => {
+test("publishes measured end geometry after the scroll transaction", () => {
     vi.useFakeTimers();
     const model = new VirtualScroller({
         estimatedItemSize: 40,
@@ -110,9 +110,13 @@ test("publishes measured end geometry immediately", () => {
     model.attachItem(item, model.from);
     vi.advanceTimersByTime(0);
 
+    expect(model.scrollSize).toBe(400);
+    expect(sizeElement.style.height).toBe("400px");
+    scroller.dispatchEvent(new Event("scrollend"));
+
     const rangeSize = model.getOffset(model.to) - model.getOffset(model.from);
     expect(model.scrollSize).toBe(440);
-    expect(scroller.scrollTop).toBe(240);
+    expect(scroller.scrollTop).toBe(199);
     expect(sizeElement.style.height).toBe("440px");
     expect(itemsElement.style.height).toBe(`${rangeSize}px`);
     expect(itemsElement.style.transform).toBe(
