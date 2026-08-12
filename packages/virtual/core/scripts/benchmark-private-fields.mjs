@@ -16,7 +16,7 @@ let numericSink = 0.0;
 let objectSink = [];
 
 const median = values => {
-    const sorted = [...values].sort((a, b) => a - b);
+    const sorted = values.toSorted((a, b) => a - b);
     return sorted[sorted.length >> 1];
 };
 
@@ -93,9 +93,11 @@ const runNativeMultipleInstances = () => {
 };
 
 const runOrdinaryConstruction = () => {
+    // oxlint-disable-next-line unicorn/no-new-array -- Sparse preallocation is intentional in this allocation benchmark; Array.from would add fill work to the measurement.
     const batches = new Array(CONSTRUCTION_BATCHES_PER_ROUND);
 
     for (let batch = 0; batch < CONSTRUCTION_BATCHES_PER_ROUND; batch++) {
+        // oxlint-disable-next-line unicorn/no-new-array -- Sparse preallocation is intentional in this allocation benchmark; Array.from would add fill work to the measurement.
         const instances = new Array(CONSTRUCTIONS_PER_BATCH);
 
         for (let index = 0; index < CONSTRUCTIONS_PER_BATCH; index++) {
@@ -109,9 +111,11 @@ const runOrdinaryConstruction = () => {
 };
 
 const runNativeConstruction = () => {
+    // oxlint-disable-next-line unicorn/no-new-array -- Sparse preallocation is intentional in this allocation benchmark; Array.from would add fill work to the measurement.
     const batches = new Array(CONSTRUCTION_BATCHES_PER_ROUND);
 
     for (let batch = 0; batch < CONSTRUCTION_BATCHES_PER_ROUND; batch++) {
+        // oxlint-disable-next-line unicorn/no-new-array -- Sparse preallocation is intentional in this allocation benchmark; Array.from would add fill work to the measurement.
         const instances = new Array(CONSTRUCTIONS_PER_BATCH);
 
         for (let index = 0; index < CONSTRUCTIONS_PER_BATCH; index++) {

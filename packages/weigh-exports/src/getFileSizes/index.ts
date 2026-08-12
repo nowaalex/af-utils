@@ -1,5 +1,5 @@
 import { promisify } from "node:util";
-import { gzip as gzipCallback, brotliCompress } from "node:zlib";
+import { brotliCompress, gzip as gzipCallback } from "node:zlib";
 import { minify } from "@swc/core";
 
 const MINIFIER_OPTIONS = {

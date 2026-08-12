@@ -1,0 +1,47 @@
+.cell {
+    position: absolute;
+    border: 1px solid #ccc;
+    left: 0;
+    top: 0;
+    text-align: center;
+}
+
+.cellContent {
+    display: flex;
+    justify-content: center;
+    gap: 0.3em;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.gridItems {
+    position: relative;
+    overflow: hidden;
+    contain: strict;
+}
+
+.root {
+    display: flex;
+    flex-flow: column;
+}
+
+.form {
+    flex: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    padding: 0.3em;
+    background-color: lightcoral;
+}
+
+.btn {
+    padding: 0 1em;
+    border: 1px solid #ccc;
+    background-color: white;
+}
+
+.grid {
+    overflow: auto;
+    contain: strict;
+    flex-grow: 1;
+}

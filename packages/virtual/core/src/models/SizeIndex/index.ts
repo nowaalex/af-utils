@@ -1,10 +1,10 @@
+import { assert } from "#virtual-errors";
 import {
     MAX_SIZE_INDEX_CAPACITY,
     MIN_SIZE_INDEX_CAPACITY,
     SIZE_INDEX_GROWTH_DENOMINATOR,
     SIZE_INDEX_GROWTH_NUMERATOR
 } from "../../constants";
-import { assert } from "#virtual-errors";
 import { VirtualScrollerErrorIndex } from "../../errors/codes";
 import { getLiftingLimit, syncWithArray, update } from "../../utils/fTree";
 
@@ -351,11 +351,11 @@ class SizeIndex {
         let index = 0;
 
         for (
-            let bitMask = this._mostSignificantBit, candidate = 0;
+            let bitMask = this._mostSignificantBit;
             bitMask > 0;
             bitMask >>= 1
         ) {
-            candidate = index + bitMask;
+            const candidate = index + bitMask;
 
             /*
              * A non-power-of-two count can make binary lifting probe beyond

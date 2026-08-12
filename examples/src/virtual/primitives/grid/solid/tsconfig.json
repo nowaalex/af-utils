@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "noEmit": true,
+        "jsx": "preserve",
+        "jsxImportSource": "solid-js",
+        "lib": ["DOM", "DOM.Iterable", "ES2023"],
+        "moduleResolution": "Bundler",
+        "module": "ESNext",
+        "target": "ESNext",
+        "strict": true,
+        "types": ["vite/client"]
+    }
+}

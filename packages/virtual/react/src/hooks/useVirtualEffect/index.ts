@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import {
-    VirtualScrollerEvent,
     type VirtualScroller,
+    VirtualScrollerEvent,
     type VirtualScrollerEventMask
 } from "@af-utils/virtual-core";
+import { useEffect } from "react";
 
 /** @public Subscribe to model changes without scheduling a React render. */
 const useVirtualEffect = (

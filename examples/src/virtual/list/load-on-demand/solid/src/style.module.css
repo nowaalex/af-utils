@@ -1,0 +1,10 @@
+.item {
+    padding: 0.7em;
+}
+
+.itemHeader {
+    border: 4px solid #ccc;
+    text-align: center;
+    padding: 15vh 1em;
+    background-color: lightgreen;
+}

@@ -1,11 +1,11 @@
 ---
-import defaultsDeep from "lodash/defaultsDeep";
-import { SEO } from "astro-seo";
-import type { Props as SeoProps } from "astro-seo";
 import { getImage } from "astro:assets";
 import faviconPngSrc from "assets/favicon.png";
 import faviconSvgSrc from "assets/favicon.svg";
 import indexOgImageSrc from "assets/og/index.png";
+import type { Props as SeoProps } from "astro-seo";
+import { SEO } from "astro-seo";
+import defaultsDeep from "lodash/defaultsDeep";
 import stripTrailingSlash from "utils/stripTrailingSlash";
 
 const appleTouchIcon = await getImage({

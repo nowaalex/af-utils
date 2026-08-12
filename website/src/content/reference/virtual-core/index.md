@@ -1,4 +1,10 @@
 ---
+title: "Module: @af-utils/virtual-core"
+description: Core framework-agnostic model.
+package: "@af-utils/virtual-core"
+symbol: ""
+kind: module
+referencePath: /virtual/reference/virtual-core/index
 generated: true
 ---
 
@@ -36,23 +42,23 @@ What it doesn't do:
 
 ## Classes
 
-| Class                                                                                     | Description                                                                                                             |
-| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller)             | Core framework-agnostic model.                                                                                          |
-| [VirtualScrollerError](/virtual/reference/virtual-core/classes/VirtualScrollerError)   | Error thrown for an invalid virtual-scroller operation.                                                                 |
+| Class                                                                                  | Description                                                                                                          |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller)             | Core framework-agnostic model.                                                                                       |
+| [VirtualScrollerError](/virtual/reference/virtual-core/classes/VirtualScrollerError)   | Error thrown for an invalid virtual-scroller operation.                                                              |
 | [VirtualScrollerLayout](/virtual/reference/virtual-core/classes/VirtualScrollerLayout) | Framework-neutral DOM layout adapter for [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller). |
 
 ## Interfaces
 
-| Interface                                                                                                  | Description                                                                                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [VirtualScrollerInitialParams](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) | All [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller) parameters (that may / may not change over time).                                                                                              |
+| Interface                                                                                               | Description                                                                                                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [VirtualScrollerInitialParams](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) | All [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller) parameters (that may / may not change over time).                                                                                           |
 | [VirtualScrollerRuntimeParams](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams) | [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller) parameters that may change over time. Used as [VirtualScroller.set](/virtual/reference/virtual-core/classes/VirtualScroller#set) argument type. |
 
 ## Type Aliases
 
-| Type Alias                                                                                                   | Description                                                                                              |
-| ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| Type Alias                                                                                                | Description                                                                                              |
+| --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | [VirtualScrollerErrorCode](/virtual/reference/virtual-core/type-aliases/VirtualScrollerErrorCode)         | Type of a stable machine-readable virtual-scroller error code.                                           |
 | [VirtualScrollerEvent](/virtual/reference/virtual-core/type-aliases/VirtualScrollerEvent)                 | `VirtualScrollerEvent` is exported as a constant, so a separate type is needed to emulate enum behavior. |
 | [VirtualScrollerEventMask](/virtual/reference/virtual-core/type-aliases/VirtualScrollerEventMask)         | -                                                                                                        |
@@ -62,15 +68,15 @@ What it doesn't do:
 
 ## Variables
 
-| Variable                                                                                          | Description                                                                                                                                                                                                                        |
-| ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [assert](/virtual/reference/virtual-core/variables/assert)                                     | Assert a condition using the active development or production error build.                                                                                                                                                         |
-| [VirtualScrollerErrorCode](/virtual/reference/virtual-core/variables/VirtualScrollerErrorCode) | Stable machine-readable error codes emitted by the virtual-scroller packages.                                                                                                                                                      |
+| Variable                                                                                       | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [assert](/virtual/reference/virtual-core/variables/assert)                                     | Assert a condition using the active development or production error build.                                                                                                                                                   |
+| [VirtualScrollerErrorCode](/virtual/reference/virtual-core/variables/VirtualScrollerErrorCode) | Stable machine-readable error codes emitted by the virtual-scroller packages.                                                                                                                                                |
 | [VirtualScrollerEvent](/virtual/reference/virtual-core/variables/VirtualScrollerEvent)         | Bit flags accepted by [VirtualScroller.subscribe](/virtual/reference/virtual-core/classes/VirtualScroller#subscribe) and [VirtualScroller.getRevision](/virtual/reference/virtual-core/classes/VirtualScroller#getrevision). |
 
 ## Functions
 
-| Function                                                                                            | Description                                                                |
-| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Function                                                                                         | Description                                                                |
+| ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
 | [mapVirtualRange](/virtual/reference/virtual-core/functions/mapVirtualRange)                     | Map the current rendered range without first allocating an indexes array.  |
 | [mapVirtualRangeWithOffset](/virtual/reference/virtual-core/functions/mapVirtualRangeWithOffset) | Map the current rendered range and provide the pixel offset of every item. |

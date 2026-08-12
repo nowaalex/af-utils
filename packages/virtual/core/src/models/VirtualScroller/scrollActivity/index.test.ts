@@ -48,7 +48,8 @@ class TestScheduler implements ScrollActivityScheduler {
             if (nextDeadline > targetTime) break;
 
             this.currentTime = nextDeadline;
-            const task = this.timers.get(nextTimer)!;
+            const task = this.timers.get(nextTimer);
+            if (!task) throw new Error("Missing scheduled test task");
             this.timers.delete(nextTimer);
             task.callback();
         }

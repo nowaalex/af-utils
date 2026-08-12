@@ -1,4 +1,10 @@
 ---
+title: "Interface: ListItemProps"
+description: Props passed to one Solid virtual-list item component.
+package: "@af-utils/virtual-solid"
+symbol: ListItemProps
+kind: interface
+referencePath: /virtual/reference/virtual-solid/interfaces/ListItemProps
 generated: true
 ---
 
@@ -20,8 +26,8 @@ Props passed to one Solid virtual-list item component.
 
 ## Properties
 
-| Property                            | Type                                                                         | Description                                                                                           |
-| ----------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Property                            | Type                                                                         | Description                                                                                        |
+| ----------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | <a id="property-data"></a> `data?`  | `Data`                                                                       | Data forwarded from [ListProps.itemData](/virtual/reference/virtual-solid/type-aliases/ListProps). |
-| <a id="property-index"></a> `index` | `number`                                                                     | Current item index.                                                                                   |
-| <a id="property-model"></a> `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | Model owning the rendered item range.                                                                 |
+| <a id="property-index"></a> `index` | `number`                                                                     | Current item index.                                                                                |
+| <a id="property-model"></a> `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | Model owning the rendered item range.                                                              |

@@ -1,6 +1,9 @@
 {
     "css.lint.unknownAtRules": "ignore",
-    "editor.defaultFormatter": "biomejs.biome",
+    "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": true,
-    "files.associations": { "*.json": "jsonc" }
+    "files.associations": { "*.json": "jsonc" },
+    "[astro]": {
+        "editor.defaultFormatter": "astro-build.astro-vscode"
+    }
 }

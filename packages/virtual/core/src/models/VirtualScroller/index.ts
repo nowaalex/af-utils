@@ -67,11 +67,11 @@ const INSTANT_SCROLL_RETRY_INTERVAL_MS = 16;
 /** Mutually exclusive native-scroll correction waiting for publication. */
 const enum ScrollCorrection {
     /** No native-scroll correction is pending. */
-    NONE,
+    NONE = 0,
     /** Apply a captured native CSS-pixel offset. */
-    OFFSET,
+    OFFSET = 1,
     /** Resolve and apply the final published native end offset. */
-    END
+    END = 2
 }
 
 /** Validate the initial viewport-size estimate. */

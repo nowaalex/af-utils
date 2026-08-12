@@ -1,68 +1,28 @@
 ---
 import { getCollection, render } from "astro:content";
+import ReferenceExamples from "components/ReferenceExamples.astro";
 import VirtualDocumentation from "layouts/virtual/VirtualDocumentation.astro";
+import { getRelatedExamples } from "utils/examples";
 
 export async function getStaticPaths() {
     const entries = await getCollection("reference");
 
-    return entries.map(entry => ({
+    return entries.map((entry) => ({
         params: { page: entry.id },
         props: { entry }
     }));
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
-
-if (!headings.length) {
-    throw new Error("Reference must contain at least one header");
-}
-
-const firstHeaderText = headings[0]!.text;
-
-/* Extracting description from first plaintext paragraph after <h1 /> if it exists */
-let desctiption = "";
-
-const trimmedStrings = (entry.body ?? "")
-    .split(/[\r\n]+/)
-    .map(str => str.trim())
-    .filter(str => !!str.length);
-
-const firstHeaderIndex = trimmedStrings.indexOf(`# ${firstHeaderText}`);
-
-if (firstHeaderIndex !== -1) {
-    const descriptionStrings = [];
-
-    for (let j = firstHeaderIndex + 1; j < trimmedStrings.length; j++) {
-        const str = trimmedStrings[j]!;
-        if (/^[^<*#_]/.test(str)) {
-            descriptionStrings.push(str);
-        } else {
-            break;
-        }
-    }
-
-    desctiption = descriptionStrings
-        .join(" ")
-        // remove images
-        .replace(/!\[(.*?)\][[(].*?[\])]/g, "")
-        // remove html tags
-        .replace(/<[^>]*>/g, "")
-        // remove inline code
-        .replace(/`(.+?)`/g, "$1")
-        // remove strike through
-        .replace(/~(.*?)~/g, "$1")
-        // remove links
-        .replace(/\[([^\]]*?)\][[(].*?[\])]/g, "$1");
-}
-
-const title = firstHeaderText + " reference";
+const { Content } = await render(entry);
+const relatedExamples = await getRelatedExamples(entry.data);
 ---
 
 <VirtualDocumentation
-    title={title}
-    description={desctiption}
+    title={`${entry.data.title} reference`}
+    description={entry.data.description}
     mainClass="reference-doc"
 >
     <Content />
+    <ReferenceExamples examples={relatedExamples} />
 </VirtualDocumentation>

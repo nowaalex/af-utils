@@ -1,4 +1,10 @@
 ---
+title: "Function: createVirtualSnapshot()"
+description: Create a Solid accessor updated by selected model events.
+package: "@af-utils/virtual-solid"
+symbol: createVirtualSnapshot
+kind: function
+referencePath: /virtual/reference/virtual-solid/functions/createVirtualSnapshot
 generated: true
 ---
 

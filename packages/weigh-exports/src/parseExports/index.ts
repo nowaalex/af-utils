@@ -4,7 +4,7 @@ type ExportConditions = {
     [condition: string]: Exports;
 };
 
-const IgnoredConditions = [
+const ignoredConditions = new Set([
     "node",
     "deno",
     "electron",
@@ -13,7 +13,7 @@ const IgnoredConditions = [
     "react-native",
     "electron",
     "types"
-];
+]);
 
 const exportsToGlobPatterns = (map: Exports): string[] => {
     switch (typeof map) {
@@ -27,9 +27,9 @@ const exportsToGlobPatterns = (map: Exports): string[] => {
                 return [];
             }
             return Array.isArray(map)
-                ? map.flatMap(exportsToGlobPatterns)
+                ? map.flatMap(entry => exportsToGlobPatterns(entry))
                 : Object.keys(map).flatMap(k =>
-                      IgnoredConditions.includes(k)
+                      ignoredConditions.has(k)
                           ? []
                           : exportsToGlobPatterns(map[k])
                   );

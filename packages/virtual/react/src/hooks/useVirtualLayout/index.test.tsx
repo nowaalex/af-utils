@@ -1,14 +1,14 @@
 // @vitest-environment jsdom
 
-import { act, StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { renderToStaticMarkup } from "react-dom/server";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import {
     VirtualScroller,
     type VirtualScrollerError,
     VirtualScrollerErrorCode
 } from "@af-utils/virtual-core";
+import { act, StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { renderToStaticMarkup } from "react-dom/server";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import useVirtualLayout from ".";
 
 class NoopResizeObserver implements ResizeObserver {
@@ -21,6 +21,11 @@ globalThis.ResizeObserver = NoopResizeObserver;
 (
     globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }
 ).IS_REACT_ACT_ENVIRONMENT = true;
+
+const StableModelHarness = ({ model }: { model: VirtualScroller }) => {
+    useVirtualLayout(model);
+    return null;
+};
 
 describe("useVirtualLayout", () => {
     let container: HTMLDivElement;
@@ -130,14 +135,9 @@ describe("useVirtualLayout", () => {
         const second = new VirtualScroller({ itemCount: 20 });
         const root = createRoot(container);
 
-        const Harness = ({ model }: { model: VirtualScroller }) => {
-            useVirtualLayout(model);
-            return null;
-        };
-
-        act(() => root.render(<Harness model={first} />));
+        act(() => root.render(<StableModelHarness model={first} />));
         expect(() =>
-            act(() => root.render(<Harness model={second} />))
+            act(() => root.render(<StableModelHarness model={second} />))
         ).toThrow(
             expect.objectContaining<Partial<VirtualScrollerError>>({
                 code: VirtualScrollerErrorCode[13],

@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 
+import { VirtualScroller, VirtualScrollerEvent } from "@af-utils/virtual-core";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { VirtualScroller, VirtualScrollerEvent } from "@af-utils/virtual-core";
 import useVirtualSnapshot from ".";
 
 (

@@ -1,0 +1,10 @@
+{
+    "sourceDirectory": "src",
+    "entryFile": "src/code.tsx",
+    "frameworks": ["react", "solid"],
+    "routeCategoryAliases": {
+        "react": {
+            "primitives": "hook"
+        }
+    }
+}

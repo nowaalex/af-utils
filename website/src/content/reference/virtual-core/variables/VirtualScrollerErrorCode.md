@@ -1,4 +1,10 @@
 ---
+title: "Variable: VirtualScrollerErrorCode"
+description: Stable machine-readable error codes emitted by the virtual-scroller packages.
+package: "@af-utils/virtual-core"
+symbol: VirtualScrollerErrorCode
+kind: variable
+referencePath: /virtual/reference/virtual-core/variables/VirtualScrollerErrorCode
 generated: true
 ---
 
@@ -12,20 +18,20 @@ generated: true
 
 ```ts
 const VirtualScrollerErrorCode: readonly [
-  "AFV_INVALID_INDEX",
-  "AFV_INVALID_OFFSET",
-  "AFV_INVALID_ITEM_COUNT",
-  "AFV_INVALID_ITEM_SIZE",
-  "AFV_INVALID_WIDGET_SIZE",
-  "AFV_INVALID_SCROLLER_OFFSET",
-  "AFV_INVALID_OVERSCAN",
-  "AFV_INVALID_ATTEMPTS",
-  "AFV_INVALID_SPLICE",
-  "AFV_INVALID_RANGE",
-  "AFV_EMPTY_MODEL",
-  "AFV_DISPOSED",
-  "AFV_BATCH_INVARIANT",
-  "AFV_MODEL_CHANGED",
+    "AFV_INVALID_INDEX",
+    "AFV_INVALID_OFFSET",
+    "AFV_INVALID_ITEM_COUNT",
+    "AFV_INVALID_ITEM_SIZE",
+    "AFV_INVALID_WIDGET_SIZE",
+    "AFV_INVALID_SCROLLER_OFFSET",
+    "AFV_INVALID_OVERSCAN",
+    "AFV_INVALID_ATTEMPTS",
+    "AFV_INVALID_SPLICE",
+    "AFV_INVALID_RANGE",
+    "AFV_EMPTY_MODEL",
+    "AFV_DISPOSED",
+    "AFV_BATCH_INVARIANT",
+    "AFV_MODEL_CHANGED"
 ];
 ```
 

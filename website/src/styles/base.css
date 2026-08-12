@@ -3,7 +3,7 @@
 
 @layer base {
     .bg-menu {
-        @apply bg-gradient-to-b from-violet-50 via-white to-cyan-50;
+        @apply bg-gradient-to-b from-slate-50 via-white to-teal-50/60;
     }
 }
 
@@ -14,8 +14,39 @@
 }
 
 @layer components {
+    .example-tabs:fullscreen {
+        @apply h-screen min-h-0 w-screen border-0 bg-white;
+    }
+
+    .example-tabs:fullscreen [data-example-panel]:not([hidden]) {
+        @apply min-h-0 flex-auto;
+    }
+
+    .example-tabs:fullscreen iframe {
+        @apply h-full min-h-0 w-full;
+    }
+
     pre[data-theme] {
-        @apply border border-violet-200 drop-shadow-sm;
+        @apply overflow-auto border border-slate-300 text-[0.8125rem] leading-6 shadow-sm;
+        font-family:
+            ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+            "Liberation Mono", "Courier New", monospace;
+        scrollbar-gutter: stable;
+        tab-size: 4;
+    }
+
+    pre[data-theme]:focus-visible {
+        @apply outline-2 outline-offset-[-3px] outline-blue-600;
+    }
+
+    pre[data-theme] > code {
+        display: block;
+        min-width: 100%;
+        width: max-content;
+    }
+
+    pre[data-example-source] {
+        @apply m-0 h-full border-0 p-4 shadow-none;
     }
 
     .reference-doc :is(h4, h5, h6) {

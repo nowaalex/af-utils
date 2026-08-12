@@ -1,4 +1,10 @@
 ---
+title: "Class: VirtualScrollerError"
+description: Error thrown for an invalid virtual-scroller operation.
+package: "@af-utils/virtual-core"
+symbol: VirtualScrollerError
+kind: class
+referencePath: /virtual/reference/virtual-core/classes/VirtualScrollerError
 generated: true
 ---
 
@@ -89,23 +95,23 @@ details of error generation from the user. For instance:
 
 ```js
 function a() {
-  b();
+    b();
 }
 
 function b() {
-  c();
+    c();
 }
 
 function c() {
-  // Create an error without stack trace to avoid calculating the stack trace twice.
-  const { stackTraceLimit } = Error;
-  Error.stackTraceLimit = 0;
-  const error = new Error();
-  Error.stackTraceLimit = stackTraceLimit;
+    // Create an error without stack trace to avoid calculating the stack trace twice.
+    const { stackTraceLimit } = Error;
+    Error.stackTraceLimit = 0;
+    const error = new Error();
+    Error.stackTraceLimit = stackTraceLimit;
 
-  // Capture the stack trace above function b
-  Error.captureStackTrace(error, b); // Neither function c, nor b is included in the stack trace
-  throw error;
+    // Capture the stack trace above function b
+    Error.captureStackTrace(error, b); // Neither function c, nor b is included in the stack trace
+    throw error;
 }
 
 a();

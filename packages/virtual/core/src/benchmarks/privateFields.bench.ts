@@ -1,8 +1,8 @@
 import { bench, describe } from "vitest";
 import {
     NativePrivateState,
-    TypeScriptPrivateState,
-    type PrivateFieldState
+    type PrivateFieldState,
+    TypeScriptPrivateState
 } from "./privateFieldFixture";
 
 const OPERATIONS_PER_SAMPLE = 100_000;
@@ -92,6 +92,7 @@ describe("private fields: eight instances at one call site", () => {
 
 describe("private fields: construction", () => {
     bench("1k TypeScript-private instances", () => {
+        // oxlint-disable-next-line unicorn/no-new-array -- Sparse preallocation is intentional in this allocation benchmark; Array.from would add fill work to the measurement.
         const instances = new Array<PrivateFieldState>(
             CONSTRUCTIONS_PER_SAMPLE
         );
@@ -105,6 +106,7 @@ describe("private fields: construction", () => {
     });
 
     bench("1k native-#private instances", () => {
+        // oxlint-disable-next-line unicorn/no-new-array -- Sparse preallocation is intentional in this allocation benchmark; Array.from would add fill work to the measurement.
         const instances = new Array<PrivateFieldState>(
             CONSTRUCTIONS_PER_SAMPLE
         );

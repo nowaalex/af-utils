@@ -1,0 +1,118 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "categories": {
+        "correctness": "error",
+        "perf": "error",
+        "suspicious": "error"
+    },
+    "ignorePatterns": [
+        "**/*.astro",
+        "**/.astro/**",
+        "packages/virtual/core/scripts/v8/**"
+    ],
+    "options": {
+        "denyWarnings": true,
+        "reportUnusedDisableDirectives": "deny"
+    },
+    "plugins": [
+        "eslint",
+        "import",
+        "node",
+        "oxc",
+        "promise",
+        "typescript",
+        "unicorn"
+    ],
+    "rules": {
+        "eslint/no-loop-func": "error",
+        "eslint/no-promise-executor-return": "error",
+        "eslint/no-restricted-imports": [
+            "error",
+            {
+                "patterns": [
+                    {
+                        "message": "Import published packages through their declared public entrypoints.",
+                        "regex": "^@af-utils/(?:scrollend-polyfill|weigh-exports|virtual-core|virtual-react|virtual-solid)/.+"
+                    }
+                ]
+            }
+        ],
+        "eslint/no-underscore-dangle": "off",
+        "eslint/no-useless-assignment": "error",
+        "eslint/require-unicode-regexp": "error",
+        "eslint/require-await": "error",
+        "import/no-cycle": "error",
+        "typescript/prefer-enum-initializers": "error",
+        "unicorn/explicit-length-check": "error",
+        "unicorn/new-for-builtins": "error",
+        "unicorn/no-array-callback-reference": "error",
+        "unicorn/no-useless-undefined": "error",
+        "unicorn/prefer-import-meta-properties": "error"
+    },
+    "settings": {
+        "react": {
+            "version": "19.2"
+        }
+    },
+    "overrides": [
+        {
+            "files": ["website/src/env.d.ts"],
+            "rules": {
+                "typescript/triple-slash-reference": "off"
+            }
+        },
+        {
+            "files": [
+                "examples/src/**/react/**/*.{js,jsx,ts,tsx}",
+                "packages/virtual/react/**/*.{js,jsx,ts,tsx}"
+            ],
+            "plugins": [
+                "eslint",
+                "import",
+                "jsx-a11y",
+                "node",
+                "oxc",
+                "promise",
+                "react",
+                "typescript",
+                "unicorn"
+            ],
+            "rules": {
+                "react/react-in-jsx-scope": "off"
+            }
+        },
+        {
+            "files": ["packages/**/*.{test,bench}.{js,jsx,ts,tsx}"],
+            "plugins": [
+                "eslint",
+                "import",
+                "node",
+                "oxc",
+                "promise",
+                "typescript",
+                "unicorn",
+                "vitest"
+            ]
+        },
+        {
+            "files": [
+                "packages/virtual/react/**/*.{test,bench}.{js,jsx,ts,tsx}"
+            ],
+            "plugins": [
+                "eslint",
+                "import",
+                "jsx-a11y",
+                "node",
+                "oxc",
+                "promise",
+                "react",
+                "typescript",
+                "unicorn",
+                "vitest"
+            ],
+            "rules": {
+                "react/react-in-jsx-scope": "off"
+            }
+        }
+    ]
+}

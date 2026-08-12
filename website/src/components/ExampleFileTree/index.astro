@@ -1,0 +1,149 @@
+---
+import { Icon } from "astro-icon/components";
+import type { ExampleFile } from "utils/examples";
+import Node from "./Node.astro";
+import { buildExampleFileTree } from "./tree";
+
+interface Props {
+    files: readonly ExampleFile[];
+    selectedUrl: string;
+}
+
+const { files, selectedUrl } = Astro.props;
+const tree = buildExampleFileTree(files);
+---
+
+<example-file-tree
+    class="example-file-tree flex w-40 flex-none flex-col overflow-hidden border-r border-slate-300 bg-slate-100/80 text-xs sm:w-48"
+>
+    <div
+        class="flex h-9 flex-none items-center border-b border-slate-300 bg-slate-100"
+    >
+        <span
+            data-file-tree-title
+            class="min-w-0 flex-auto truncate px-2 font-medium text-slate-700"
+        >
+            Explorer
+        </span>
+        <button
+            type="button"
+            data-file-tree-toggle
+            aria-expanded="true"
+            aria-label="Collapse file explorer"
+            title="Collapse file explorer"
+            class="grid size-9 flex-none cursor-pointer place-items-center text-slate-600 transition-colors hover:bg-slate-200 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-blue-600"
+        >
+            <span data-file-tree-collapse>
+                <Icon
+                    aria-hidden="true"
+                    name="material-symbols:left-panel-close"
+                    size={20}
+                />
+            </span>
+            <span hidden data-file-tree-expand>
+                <Icon
+                    aria-hidden="true"
+                    name="material-symbols:left-panel-open"
+                    size={20}
+                />
+            </span>
+        </button>
+    </div>
+    <ul
+        data-file-tree-content
+        aria-label="Project files"
+        class="m-0 min-h-0 flex-auto list-none overflow-auto py-1"
+    >
+        {tree.map((node) => <Node node={node} selectedUrl={selectedUrl} />)}
+    </ul>
+</example-file-tree>
+
+<script>
+    class ExampleFileTree extends HTMLElement {
+        /** Connects file selection and explorer disclosure controls. */
+        connectedCallback() {
+            if (this.dataset.ready) return;
+            this.dataset.ready = "true";
+
+            const title = this.querySelector<HTMLElement>(
+                "[data-file-tree-title]"
+            );
+            const content = this.querySelector<HTMLElement>(
+                "[data-file-tree-content]"
+            );
+            const toggle = this.querySelector<HTMLButtonElement>(
+                "[data-file-tree-toggle]"
+            );
+            const collapseIcon = this.querySelector<HTMLElement>(
+                "[data-file-tree-collapse]"
+            );
+            const expandIcon = this.querySelector<HTMLElement>(
+                "[data-file-tree-expand]"
+            );
+            const files = Array.from(
+                this.querySelectorAll<HTMLButtonElement>(
+                    "[data-file-tree-item]"
+                )
+            );
+
+            const setCollapsed = (collapsed: boolean) => {
+                this.toggleAttribute("data-collapsed", collapsed);
+                if (title) title.hidden = collapsed;
+                if (content) content.hidden = collapsed;
+                if (collapseIcon) collapseIcon.hidden = collapsed;
+                if (expandIcon) expandIcon.hidden = !collapsed;
+                if (toggle) {
+                    const label = collapsed
+                        ? "Expand file explorer"
+                        : "Collapse file explorer";
+                    toggle.setAttribute("aria-expanded", String(!collapsed));
+                    toggle.setAttribute("aria-label", label);
+                    toggle.title = label;
+                }
+            };
+
+            toggle?.addEventListener("click", () => {
+                setCollapsed(!this.hasAttribute("data-collapsed"));
+            });
+
+            for (const file of files) {
+                file.addEventListener("click", () => {
+                    for (const item of files) {
+                        item.setAttribute(
+                            "aria-pressed",
+                            String(item === file)
+                        );
+                    }
+                    this.dispatchEvent(
+                        new CustomEvent("example-file-select", {
+                            bubbles: true,
+                            detail: { url: file.dataset.fileUrl }
+                        })
+                    );
+                });
+            }
+
+            setCollapsed(matchMedia("(max-width: 639px)").matches);
+        }
+    }
+
+    if (!customElements.get("example-file-tree")) {
+        customElements.define("example-file-tree", ExampleFileTree);
+    }
+</script>
+
+<style>
+    .example-file-tree {
+        transition: width 160ms ease;
+    }
+
+    .example-file-tree[data-collapsed] {
+        width: 2.25rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .example-file-tree {
+            transition: none;
+        }
+    }
+</style>

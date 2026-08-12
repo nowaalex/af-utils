@@ -1,4 +1,10 @@
 ---
+title: "Function: useVirtualEffect()"
+description: Subscribe to model changes without scheduling a React render.
+package: "@af-utils/virtual-react"
+symbol: useVirtualEffect
+kind: function
+referencePath: /virtual/reference/virtual-react/functions/useVirtualEffect
 generated: true
 ---
 

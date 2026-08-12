@@ -39,7 +39,7 @@ class TestResizeObserver implements ResizeObserver {
             return [];
         });
 
-        if (entries.length) {
+        if (entries.length > 0) {
             this.callback(entries, this);
         }
 

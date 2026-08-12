@@ -48,6 +48,13 @@ interface TargetState {
 
 const PATCH_MARK = Symbol.for("@af-utils/scrollend-polyfill/patched");
 
+const getCapture = (
+    options?: boolean | AddEventListenerOptions | EventListenerOptions
+) =>
+    Number(typeof options === "boolean" ? options : !!options?.capture) as
+        | 0
+        | 1;
+
 if (
     typeof window !== "undefined" &&
     !("on" + SCROLLEND_EVENT in window) &&
@@ -88,7 +95,7 @@ if (
         }
 
         if (changed && pointers.size === 0) {
-            for (const target of [...touchPendingTargets]) {
+            for (const target of touchPendingTargets) {
                 finishScroll(target);
             }
         }
@@ -96,13 +103,6 @@ if (
 
     addEventListener("touchend", handleTouchEnd, { passive: true });
     addEventListener("touchcancel", handleTouchEnd, { passive: true });
-
-    const getCapture = (
-        options?: boolean | AddEventListenerOptions | EventListenerOptions
-    ) =>
-        Number(typeof options === "boolean" ? options : !!options?.capture) as
-            | 0
-            | 1;
 
     const deleteRegistration = (
         target: PolyfilledTarget,

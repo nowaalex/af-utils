@@ -33,15 +33,15 @@
 }
 
 /* ===== Hover Info ===== */
-.twoslash:hover .twoslash-hover {
-    border-color: var(--twoslash-underline-color);
-}
-
 .twoslash .twoslash-hover {
     border-bottom: 1px dotted transparent;
     transition: border-color 0.3s;
     transition-timing-function: ease;
     /*  position: relative;*/
+}
+
+.twoslash:hover .twoslash-hover {
+    border-color: var(--twoslash-underline-color);
 }
 
 .twoslash .twoslash-popup-container {

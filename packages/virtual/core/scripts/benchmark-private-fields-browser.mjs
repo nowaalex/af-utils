@@ -25,8 +25,9 @@ const benchmark = () => {
     const MEASURED_ROUNDS = 15;
     let numericSink = 0.0;
 
+    // oxlint-disable unicorn/consistent-function-scoping -- page.evaluate serializes this function, so browser-realm helpers must remain inside it.
     const median = values => {
-        const sorted = [...values].sort((a, b) => a - b);
+        const sorted = values.toSorted((a, b) => a - b);
         return sorted[sorted.length >> 1];
     };
 
@@ -35,6 +36,7 @@ const benchmark = () => {
         work();
         return ((performance.now() - start) * 1_000_000) / operationCount;
     };
+    // oxlint-enable unicorn/consistent-function-scoping
 
     const ordinaryState = new TypeScriptPrivateState(1);
     const nativeState = new NativePrivateState(1);
@@ -126,6 +128,7 @@ const selectedEngines = new Set(
     (process.env.PRIVATE_BENCH_ENGINES ?? "chromium,firefox,webkit").split(",")
 );
 
+// oxlint-disable eslint/no-await-in-loop -- Engines must run one at a time to avoid cross-browser CPU contention distorting the benchmark.
 for (const [engineName, engine, executablePath] of [
     ["chromium", chromium, process.env.PRIVATE_BENCH_CHROMIUM_EXECUTABLE_PATH],
     ["firefox", firefox, process.env.PRIVATE_BENCH_FIREFOX_EXECUTABLE_PATH],
@@ -158,5 +161,6 @@ for (const [engineName, engine, executablePath] of [
         await browser.close();
     }
 }
+// oxlint-enable eslint/no-await-in-loop
 
 void rows;

@@ -2,6 +2,8 @@ import { describe, expect, test, vi } from "vitest";
 import { VirtualScrollerEvent } from "../../../constants";
 import VirtualScrollerEvents from ".";
 
+const noop = () => {};
+
 describe("VirtualScrollerEvents", () => {
     test("publishes revisions for the selected event masks", () => {
         const events = new VirtualScrollerEvents();
@@ -115,7 +117,9 @@ describe("VirtualScrollerEvents", () => {
                 events._subscribe(listener, mask)
             );
 
-            unsubscribes[masks.indexOf(removedMask)]!();
+            const unsubscribe = unsubscribes[masks.indexOf(removedMask)];
+            if (!unsubscribe) throw new Error("Missing test subscription");
+            unsubscribe();
             for (const emittedMask of masks) events._emit(emittedMask);
 
             expect(listener).toHaveBeenCalledTimes(2);
@@ -244,7 +248,7 @@ describe("VirtualScrollerEvents", () => {
     test("keeps an active dispatch stable during reentrant unsubscription", () => {
         const events = new VirtualScrollerEvents();
         const calls: string[] = [];
-        let unsubscribeSecond = () => {};
+        let unsubscribeSecond = noop;
 
         events._subscribe(
             () => calls.push("first"),

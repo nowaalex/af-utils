@@ -15,30 +15,29 @@ const currentPath = stripTrailingSlash(Astro.url.pathname);
 const isCurrentSubtree = currentPath.startsWith(stripTrailingSlash(node.path));
 ---
 
-{node.children?.length ? (
+{
+    node.children?.length ? (
         node.collapsible ? (
             <details
                 open={isCurrentSubtree}
                 name="examples-framework"
                 class="ds-framework-accordion group"
             >
-                <summary
-                    class="m-0 flex cursor-pointer list-none items-center gap-2 px-1 py-1 [&::-webkit-details-marker]:hidden"
-                >
+                <summary class="m-0 flex cursor-pointer list-none items-center gap-2 px-1 py-1 [&::-webkit-details-marker]:hidden">
                     <span
                         aria-hidden="true"
-                        class="grid size-4 shrink-0 place-items-center text-violet-600"
+                        class="grid size-4 shrink-0 place-items-center text-slate-500"
                     >
-                        <span
-                            class="size-1.5 -rotate-45 border-b border-r border-current transition-transform group-open:rotate-45"
-                        ></span>
+                        <span class="size-1.5 -rotate-45 border-b border-r border-current transition-transform group-open:rotate-45" />
                     </span>
                     <Icon
                         aria-hidden="true"
                         size={18}
-                        name={node.name === "React"
-                            ? "logos:react"
-                            : "logos:solidjs-icon"}
+                        name={
+                            node.name === "React"
+                                ? "logos:react"
+                                : "logos:solidjs-icon"
+                        }
                         class="shrink-0"
                     />
                     <MenuSubtreeHeader depth={depth} class="!m-0 leading-tight">
@@ -46,7 +45,7 @@ const isCurrentSubtree = currentPath.startsWith(stripTrailingSlash(node.path));
                     </MenuSubtreeHeader>
                 </summary>
                 <ul class="m-0 list-none space-y-0.5 pl-3">
-                    {node.children.map(child => (
+                    {node.children.map((child) => (
                         <li>
                             <Astro.self node={child} depth={depth + 1} />
                         </li>
@@ -57,7 +56,7 @@ const isCurrentSubtree = currentPath.startsWith(stripTrailingSlash(node.path));
             <>
                 <MenuSubtreeHeader depth={depth}>{node.name}</MenuSubtreeHeader>
                 <ul class="m-0 list-none space-y-0.5 pl-3">
-                    {node.children.map(child => (
+                    {node.children.map((child) => (
                         <li>
                             <Astro.self node={child} depth={depth + 1} />
                         </li>
@@ -73,4 +72,5 @@ const isCurrentSubtree = currentPath.startsWith(stripTrailingSlash(node.path));
         >
             {node.name}
         </NavLink>
-    )}
+    )
+}

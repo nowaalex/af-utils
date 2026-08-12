@@ -1,4 +1,10 @@
 ---
+title: "Type Alias: MaybeAccessor"
+description: A static value or a reactive Solid accessor returning that value.
+package: "@af-utils/virtual-solid"
+symbol: MaybeAccessor
+kind: typealias
+referencePath: /virtual/reference/virtual-solid/type-aliases/MaybeAccessor
 generated: true
 ---
 

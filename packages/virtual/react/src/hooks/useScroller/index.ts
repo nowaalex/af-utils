@@ -1,8 +1,8 @@
-import useIsomorphicLayoutEffect from "../useIsomorphicLayoutEffect";
 import type {
-    VirtualScrollerScrollElement,
-    VirtualScroller
+    VirtualScroller,
+    VirtualScrollerScrollElement
 } from "@af-utils/virtual-core";
+import useIsomorphicLayoutEffect from "../useIsomorphicLayoutEffect";
 
 /**
  * @public

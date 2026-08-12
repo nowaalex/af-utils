@@ -69,7 +69,7 @@ const [browserDevelopment, browserProduction, nodeDevelopment] =
 
 const captureInvalidCount = module => {
     try {
-        new module.VirtualScroller({ itemCount: -1 });
+        void new module.VirtualScroller({ itemCount: -1 });
     } catch (error) {
         return error;
     }
@@ -102,20 +102,24 @@ assert(!browserProductionSource.includes("process.env"));
 assert(!browserProductionSource.includes("globalThis.ResizeObserver"));
 assert(!browserProductionSource.includes("/**"));
 assert(nodeProductionSource.includes("globalThis.ResizeObserver"));
-assert.equal(browserProductionSource.match(/AFV_/g)?.length, 14);
-assert.equal(nodeProductionSource.match(/AFV_/g)?.length, 14);
+assert.equal(browserProductionSource.match(/AFV_/gu)?.length, 14);
+assert.equal(nodeProductionSource.match(/AFV_/gu)?.length, 14);
 assert.deepEqual(
-    Object.getOwnPropertyNames(browserProduction.VirtualScrollerError).sort(),
+    Object.getOwnPropertyNames(
+        browserProduction.VirtualScrollerError
+    ).toSorted(),
     builtInClassProperties
 );
 
 assert(developmentError instanceof browserDevelopment.VirtualScrollerError);
 assert.equal(developmentError.code, code);
-assert.match(developmentError.message, /itemCount must be a safe integer/);
+assert.match(developmentError.message, /itemCount must be a safe integer/u);
 assert(browserDevelopmentSource.includes("itemCount must be a safe integer"));
 assert(nodeDevelopmentSource.includes("itemCount must be a safe integer"));
 assert.deepEqual(
-    Object.getOwnPropertyNames(browserDevelopment.VirtualScrollerError).sort(),
+    Object.getOwnPropertyNames(
+        browserDevelopment.VirtualScrollerError
+    ).toSorted(),
     builtInClassProperties
 );
 
@@ -126,6 +130,6 @@ assert.equal(
 );
 assert.match(
     captureInvalidCount(nodeDevelopment).message,
-    /itemCount must be a safe integer/,
+    /itemCount must be a safe integer/u,
     "The Node development entrypoint must select detailed errors"
 );

@@ -1,5 +1,5 @@
-import { bench, describe } from "vitest";
 import { VirtualScroller, VirtualScrollerEvent } from "@af-utils/virtual-core";
+import { bench, describe } from "vitest";
 
 const model = new VirtualScroller({ itemCount: 100_000 });
 let benchmarkSink: number | string = 0;

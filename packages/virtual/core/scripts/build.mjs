@@ -37,6 +37,7 @@ const developmentOptions = {
 const productionOptions = {
     ...commonOptions,
     entryNames: "[name].production",
+    // oxlint-disable-next-line eslint/require-unicode-regexp -- esbuild converts this pattern to Go syntax, which rejects the `u` flag.
     mangleProps: /^_/,
     minify: true
 };

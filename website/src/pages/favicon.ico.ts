@@ -1,6 +1,6 @@
+import path from "node:path";
 import sharp from "sharp";
 import ico from "sharp-ico";
-import path from "node:path";
 
 const faviconSrc = path.resolve("src/assets/favicon.png");
 

@@ -1,4 +1,10 @@
 ---
+title: "Function: useScroller()"
+description: React hook. Synchronizes scroller with model.
+package: "@af-utils/virtual-react"
+symbol: useScroller
+kind: function
+referencePath: /virtual/reference/virtual-react/functions/useScroller
 generated: true
 ---
 

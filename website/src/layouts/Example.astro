@@ -1,8 +1,14 @@
 ---
-import { codeToHtml } from "shiki";
-import startCase from "lodash/startCase";
 import ExampleHeader from "components/ExampleHeader.astro";
-import { getExampleDescription, readmes, codes } from "utils/examples";
+import ExampleTabs from "components/ExampleTabs/index.astro";
+import startCase from "lodash/startCase";
+import {
+    getAlternativeExamples,
+    getExampleDescription,
+    getExampleFiles,
+    getExamplePagePath,
+    readmes
+} from "utils/examples";
 
 interface Props {
     path: string;
@@ -10,42 +16,12 @@ interface Props {
 }
 
 const { path, wrapper: W } = Astro.props;
-
-const Description = await readmes[path]!();
-const codeString = await codes[path]!();
+const loadDescription = readmes[path];
+if (!loadDescription) throw new Error(`Missing example README: ${path}`);
+const Description = await loadDescription();
 const description = await getExampleDescription(path);
-
-const htmlCodeString = await codeToHtml(codeString, {
-    lang: "tsx",
-    theme: "light-plus",
-    transformers: [
-        {
-            pre({ properties: p }) {
-                p.class =
-                    "m-0 h-full overflow-auto p-4 text-sm xl:overflow-y-auto";
-                p.style = undefined;
-                p["data-theme"] = true;
-            }
-        }
-    ]
-});
-
 const titleBase = startCase(path.split("/").reverse().join(" "));
-const gitPath = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env.PUBLIC_GITHUB_BRANCH}/examples/src/${path}`;
-const tabId = path.replaceAll("/", "-");
-const codeSandboxUrl = new URL(
-    `https://codesandbox.io/embed/github/${gitPath}`
-);
-codeSandboxUrl.searchParams.set("view", "editor+preview");
-codeSandboxUrl.searchParams.set("module", "/src/code.tsx");
-codeSandboxUrl.searchParams.set("hidenavigation", "1");
-codeSandboxUrl.searchParams.set("theme", "light");
-
-const stackBlitzUrl = new URL(`https://stackblitz.com/github/${gitPath}`);
-stackBlitzUrl.searchParams.set("embed", "1");
-stackBlitzUrl.searchParams.set("file", "src/code.tsx");
-stackBlitzUrl.searchParams.set("hideNavigation", "1");
-stackBlitzUrl.searchParams.set("view", "editor");
+const alternatives = getAlternativeExamples(path);
 ---
 
 <W
@@ -55,172 +31,21 @@ stackBlitzUrl.searchParams.set("view", "editor");
 >
     <ExampleHeader path={path} class="mb-6" />
     <Description />
-    <example-tabs
-        class="not-prose mt-1 flex min-h-[35rem] flex-auto flex-col overflow-hidden border border-violet-200 bg-white shadow-sm"
-    >
-        <div
-            role="tablist"
-            aria-label="Example view"
-            class="flex flex-wrap gap-1 border-b border-violet-200 bg-gradient-to-r from-violet-100 to-cyan-100 p-1.5"
-        >
-            <button
-                type="button"
-                role="tab"
-                id={`${tabId}-preview-tab`}
-                aria-controls={`${tabId}-preview-panel`}
-                aria-selected="true"
-                data-example-tab="preview"
-                class="cursor-pointer px-3 py-1.5 font-medium text-violet-950 transition-colors hover:bg-white/70 aria-selected:bg-violet-700 aria-selected:text-white"
-            >
-                Preview
-            </button>
-            <button
-                type="button"
-                role="tab"
-                id={`${tabId}-codesandbox-tab`}
-                aria-controls={`${tabId}-codesandbox-panel`}
-                aria-selected="false"
-                tabindex="-1"
-                data-example-tab="codesandbox"
-                class="cursor-pointer px-3 py-1.5 font-medium text-violet-950 transition-colors hover:bg-white/70 aria-selected:bg-violet-700 aria-selected:text-white"
-            >
-                CodeSandbox
-            </button>
-            <button
-                type="button"
-                role="tab"
-                id={`${tabId}-stackblitz-tab`}
-                aria-controls={`${tabId}-stackblitz-panel`}
-                aria-selected="false"
-                tabindex="-1"
-                data-example-tab="stackblitz"
-                class="cursor-pointer px-3 py-1.5 font-medium text-violet-950 transition-colors hover:bg-white/70 aria-selected:bg-violet-700 aria-selected:text-white"
-            >
-                StackBlitz
-            </button>
-        </div>
-
-        <section
-            role="tabpanel"
-            id={`${tabId}-preview-panel`}
-            aria-labelledby={`${tabId}-preview-tab`}
-            data-example-panel="preview"
-            class="grid flex-auto place-items-stretch gap-4 bg-slate-50 p-3 xl:contain-strict xl:grid-cols-2"
-        >
-            <iframe
-                title={`${titleBase} Preview`}
-                class="h-[35vh] border border-violet-200 bg-white xl:h-auto"
-                src={`/examples/${path}`}
-            ></iframe>
-            <div class="min-h-0 overflow-auto border border-cyan-200 bg-white">
-                <Fragment set:html={htmlCodeString} />
-            </div>
-        </section>
-
-        <section
-            hidden
-            role="tabpanel"
-            id={`${tabId}-codesandbox-panel`}
-            aria-labelledby={`${tabId}-codesandbox-tab`}
-            data-example-panel="codesandbox"
-            class="flex-auto bg-slate-50 p-3"
-        >
-            <iframe
-                title={`${titleBase} in CodeSandbox`}
-                class="h-[70vh] w-full border border-violet-200 bg-white xl:h-full"
-                data-src={codeSandboxUrl.toString()}
-                allow="
-                    accelerometer;
-                    camera;
-                    encrypted-media;
-                    geolocation;
-                    gyroscope;
-                    microphone;
-                    midi;
-                    clipboard-read;
-                    clipboard-write;
-                "
-            ></iframe>
-        </section>
-
-        <section
-            hidden
-            role="tabpanel"
-            id={`${tabId}-stackblitz-panel`}
-            aria-labelledby={`${tabId}-stackblitz-tab`}
-            data-example-panel="stackblitz"
-            class="flex-auto bg-slate-50 p-3"
-        >
-            <iframe
-                title={`${titleBase} in StackBlitz`}
-                class="h-[70vh] w-full border border-cyan-200 bg-white xl:h-full"
-                data-src={stackBlitzUrl.toString()}
-                allow="cross-origin-isolated; clipboard-read; clipboard-write"
-            ></iframe>
-        </section>
-    </example-tabs>
-</W>
-
-<script>
-class ExampleTabs extends HTMLElement {
-    /** Connects tab interaction and lazy external editor loading. */
-    connectedCallback() {
-        if (this.dataset.ready) return;
-        this.dataset.ready = "true";
-
-        const tabs = Array.from(
-            this.querySelectorAll<HTMLButtonElement>("[data-example-tab]")
-        );
-        const panels = Array.from(
-            this.querySelectorAll<HTMLElement>("[data-example-panel]")
-        );
-
-        const select = (tab: HTMLButtonElement) => {
-            const selectedName = tab.dataset.exampleTab;
-
-            for (const item of tabs) {
-                const selected = item === tab;
-                item.setAttribute("aria-selected", String(selected));
-                item.tabIndex = selected ? 0 : -1;
-            }
-
-            for (const panel of panels) {
-                panel.hidden = panel.dataset.examplePanel !== selectedName;
-
-                if (!panel.hidden) {
-                    const iframe =
-                        panel.querySelector<HTMLIFrameElement>(
-                            "iframe[data-src]"
-                        );
-                    if (iframe?.dataset.src && !iframe.hasAttribute("src")) {
-                        iframe.src = iframe.dataset.src;
-                    }
-                }
-            }
-        };
-
-        for (const tab of tabs) {
-            tab.addEventListener("click", () => select(tab));
-            tab.addEventListener("keydown", event => {
-                if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
-                    return;
-                }
-
-                event.preventDefault();
-                const direction = event.key === "ArrowRight" ? 1 : -1;
-                const next =
-                    tabs[
-                        (tabs.indexOf(tab) + direction + tabs.length) %
-                            tabs.length
-                    ]!;
-                select(next);
-                next.focus();
-            });
-        }
+    {
+        alternatives.length > 0 && (
+            <p class="text-sm text-slate-600">
+                Available also for{" "}
+                {alternatives.map((example, index) => (
+                    <>
+                        {index > 0 && ", "}
+                        <a href={getExamplePagePath(example.route)}>
+                            {startCase(example.framework)}
+                        </a>
+                    </>
+                ))}
+                .
+            </p>
+        )
     }
-}
-
-if (!customElements.get("example-tabs")) {
-    customElements.define("example-tabs", ExampleTabs);
-}
-</script>
+    <ExampleTabs path={path} title={titleBase} files={getExampleFiles(path)} />
+</W>

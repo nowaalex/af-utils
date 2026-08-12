@@ -1,8 +1,7 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, join, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join, relative, resolve } from "node:path";
 
-const rootDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const rootDirectory = resolve(import.meta.dirname, "..");
 const checkOnly = process.argv.includes("--check");
 const unknownArguments = process.argv
     .slice(2)
@@ -28,24 +27,27 @@ if (unknownArguments.length > 0) {
 }
 
 const findPackageManifests = async directory => {
-    const entries = await readdir(directory, { withFileTypes: true });
-    const manifests = [];
+    const entries = (
+        await readdir(directory, { withFileTypes: true })
+    ).toSorted((left, right) => left.name.localeCompare(right.name));
 
-    entries.sort((left, right) => left.name.localeCompare(right.name));
+    return (
+        await Promise.all(
+            entries.map(entry => {
+                const entryPath = join(directory, entry.name);
 
-    for (const entry of entries) {
-        const entryPath = join(directory, entry.name);
-
-        if (entry.isDirectory()) {
-            if (!ignoredDirectories.has(entry.name)) {
-                manifests.push(...(await findPackageManifests(entryPath)));
-            }
-        } else if (entry.isFile() && entry.name === "package.json") {
-            manifests.push(entryPath);
-        }
-    }
-
-    return manifests;
+                if (
+                    entry.isDirectory() &&
+                    !ignoredDirectories.has(entry.name)
+                ) {
+                    return findPackageManifests(entryPath);
+                }
+                return entry.isFile() && entry.name === "package.json"
+                    ? [entryPath]
+                    : [];
+            })
+        )
+    ).flat();
 };
 
 const readManifest = async manifestPath =>
@@ -53,11 +55,16 @@ const readManifest = async manifestPath =>
 
 const publicPackages = new Map();
 
-for (const manifestPath of await findPackageManifests(
-    join(rootDirectory, "packages")
-)) {
-    const manifest = await readManifest(manifestPath);
+const packageManifests = await Promise.all(
+    (await findPackageManifests(join(rootDirectory, "packages"))).map(
+        async manifestPath => ({
+            manifest: await readManifest(manifestPath),
+            manifestPath
+        })
+    )
+);
 
+for (const { manifest } of packageManifests) {
     if (manifest.private === true || !manifest.name || !manifest.version) {
         continue;
     }
@@ -72,10 +79,16 @@ for (const manifestPath of await findPackageManifests(
 const problems = [];
 const updatedManifests = [];
 
-for (const manifestPath of await findPackageManifests(
-    join(rootDirectory, "examples", "src")
-)) {
-    const manifest = await readManifest(manifestPath);
+const exampleManifests = await Promise.all(
+    (await findPackageManifests(join(rootDirectory, "examples", "src"))).map(
+        async manifestPath => ({
+            manifest: await readManifest(manifestPath),
+            manifestPath
+        })
+    )
+);
+
+for (const { manifest, manifestPath } of exampleManifests) {
     const displayPath = relative(rootDirectory, manifestPath);
     let changed = false;
 
@@ -106,7 +119,7 @@ for (const manifestPath of await findPackageManifests(
                     dependencies[packageName] = expectedVersion;
                     changed = true;
                 }
-            } else if (/^(?:file|link|workspace):/.test(currentVersion)) {
+            } else if (/^(?:file|link|workspace):/u.test(currentVersion)) {
                 problems.push(
                     `${displayPath}: ${field}.${packageName} uses ${currentVersion}, which is not portable outside the monorepo`
                 );
@@ -131,9 +144,11 @@ if (problems.length > 0) {
     process.exit(1);
 }
 
-for (const { manifest, manifestPath } of updatedManifests) {
-    await writeFile(manifestPath, `${JSON.stringify(manifest, null, 4)}\n`);
-}
+await Promise.all(
+    updatedManifests.map(({ manifest, manifestPath }) =>
+        writeFile(manifestPath, `${JSON.stringify(manifest, null, 4)}\n`)
+    )
+);
 
 if (updatedManifests.length > 0) {
     console.log(

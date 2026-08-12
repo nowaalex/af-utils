@@ -1,4 +1,10 @@
 ---
+title: "Function: List()"
+description: React component. Small abstraction, which in 90% cases allows to avoid hook boilerplate.
+package: "@af-utils/virtual-react"
+symbol: List
+kind: function
+referencePath: /virtual/reference/virtual-react/functions/List
 generated: true
 ---
 
@@ -26,8 +32,8 @@ Small abstraction, which in 90% cases allows to avoid hook boilerplate.
 
 ## Parameters
 
-| Parameter | Type                                                                                                                                                |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Parameter | Type                                                                                                                                             |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `props`   | [`ListProps`](/virtual/reference/virtual-react/interfaces/ListProps)\<`C`, `Data`\> & `Omit`\<`ComponentProps`\<`C`\>, `"children"` \| `"ref"`\> |
 
 ## Returns

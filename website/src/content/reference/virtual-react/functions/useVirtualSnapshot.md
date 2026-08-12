@@ -1,4 +1,10 @@
 ---
+title: "Function: useVirtualSnapshot()"
+description: Re-render the current component when selected model events are published.
+package: "@af-utils/virtual-react"
+symbol: useVirtualSnapshot
+kind: function
+referencePath: /virtual/reference/virtual-react/functions/useVirtualSnapshot
 generated: true
 ---
 

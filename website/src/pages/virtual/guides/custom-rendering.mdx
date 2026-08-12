@@ -1,0 +1,84 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+title: "Custom rendering"
+description: "Choose between the high-level List, framework layout primitives, and direct model subscriptions without giving up measurement or scroll anchoring."
+---
+
+import DocLink from "components/DocLink.astro";
+
+# Custom rendering
+
+Use the highest API level that can express the required markup. All levels use
+the same `VirtualScroller`, item measurement cache, and scroll anchoring.
+
+## High-level list
+
+Choose framework `List` when a scroll element can contain one size element and
+one rendered-items block. It owns the required layout refs and subscribes only
+to range changes.
+
+- [React list examples](/virtual/examples/react/list/simple)
+- [Solid list examples](/virtual/examples/solid/list/simple)
+
+## Framework layout primitives
+
+Use
+
+<DocLink slug="virtual-react/functions/useVirtualLayout">
+    useVirtualLayout
+</DocLink>
+or
+<DocLink slug="virtual-solid/functions/createVirtualLayout">
+    createVirtualLayout
+</DocLink>
+when the DOM needs extra wrappers or the scroller and items container are not
+the same element.
+
+The binding returns three refs and their hydration-safe initial styles:
+
+```text
+scrollerRef
+└── sizeRef             contributes the native scroll extent
+    └── itemsRef        contains only [from, to)
+```
+
+After attachment, the framework-neutral layout adapter updates size and
+transform directly. The framework still owns child reconciliation and all
+non-geometry styles.
+
+- [React nested scroller example](/virtual/examples/react/hook/different-scroll-element)
+- [Solid nested scroller example](/virtual/examples/solid/primitives/different-scroll-element)
+- [Window scrolling with React](/virtual/examples/react/hook/window-scroll)
+- [Window scrolling with Solid](/virtual/examples/solid/primitives/window-scroll)
+
+## Fully custom layout
+
+Tables, canvas renderers, and grids may not accept the default block layout.
+Subscribe to the necessary event flags and read geometry from the model:
+
+```ts
+const unsubscribe = model.subscribe(updateLayout, VirtualScrollerEvent.ALL);
+
+function updateLayout() {
+    const before = model.renderedRangeOffset;
+    const rendered = model.renderedRangeSize;
+    const after = Math.max(0, model.scrollSize - before - rendered);
+
+    beforeElement.style.height = `${before}px`;
+    afterElement.style.height = `${after}px`;
+}
+```
+
+This callback changes DOM geometry without asking React or Solid to render.
+Only the view responsible for `[model.from, model.to)` needs a range
+subscription.
+
+- [React table renderer](/virtual/examples/react/hook/custom-render)
+- [Solid table renderer](/virtual/examples/solid/primitives/custom-render)
+- [Two-axis React grid](/virtual/examples/react/hook/grid)
+- [Two-axis Solid grid](/virtual/examples/solid/primitives/grid)
+
+Always attach each mounted item using its real index. The core observer then
+measures its border box and updates the shared size index; custom layout code
+does not need to read `clientWidth`, `clientHeight`, or
+`getBoundingClientRect()`.

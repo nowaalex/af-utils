@@ -6,8 +6,8 @@ export const syncWithArray = (
     fTree.set(sourceArray, 1);
 
     // Stryker disable next-line EqualityOperator: The `<=` mutant only performs one equivalent out-of-bounds typed-array iteration.
-    for (let i = 1, fTreeLength = fTree.length, j = 0; i < fTreeLength; i++) {
-        j = i + (i & -i);
+    for (let i = 1, fTreeLength = fTree.length; i < fTreeLength; i++) {
+        const j = i + (i & -i);
         // Stryker disable next-line all: An out-of-bounds typed-array write is an equivalent no-op; this branch avoids attempting it.
         if (j < fTreeLength) {
             fTree[j] += fTree[i];

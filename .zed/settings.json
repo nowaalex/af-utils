@@ -1,0 +1,160 @@
+{
+    "auto_install_extensions": {
+        "astro": true,
+        "biome": false,
+        "oxc": true
+    },
+    "lsp": {
+        "oxfmt": {
+            "initialization_options": {
+                "settings": {
+                    "fmt.configPath": null,
+                    "run": "onSave"
+                }
+            }
+        },
+        "oxlint": {
+            "initialization_options": {
+                "settings": {
+                    "configPath": null,
+                    "disableNestedConfig": false,
+                    "fixKind": "safe_fix",
+                    "run": "onType",
+                    "unusedDisableDirectives": "deny"
+                }
+            }
+        }
+    },
+    "languages": {
+        "Astro": {
+            "format_on_save": "on",
+            "formatter": {
+                "language_server": {
+                    "name": "astro-language-server"
+                }
+            },
+            "language_servers": [
+                "astro-language-server",
+                "!biome",
+                "!oxlint",
+                "..."
+            ]
+        },
+        "CSS": {
+            "format_on_save": "on",
+            "formatter": {
+                "language_server": {
+                    "name": "oxfmt"
+                }
+            },
+            "language_servers": ["!biome", "..."]
+        },
+        "HTML": {
+            "format_on_save": "on",
+            "formatter": {
+                "language_server": {
+                    "name": "oxfmt"
+                }
+            },
+            "language_servers": ["!biome", "..."]
+        },
+        "JavaScript": {
+            "format_on_save": "on",
+            "formatter": [
+                {
+                    "language_server": {
+                        "name": "oxfmt"
+                    }
+                },
+                {
+                    "code_action": "source.fixAll.oxc"
+                }
+            ],
+            "language_servers": ["oxlint", "!biome", "..."]
+        },
+        "JSON": {
+            "format_on_save": "on",
+            "formatter": {
+                "language_server": {
+                    "name": "oxfmt"
+                }
+            },
+            "language_servers": ["!biome", "..."]
+        },
+        "JSONC": {
+            "format_on_save": "on",
+            "formatter": {
+                "language_server": {
+                    "name": "oxfmt"
+                }
+            },
+            "language_servers": ["!biome", "..."]
+        },
+        "JSX": {
+            "format_on_save": "on",
+            "formatter": [
+                {
+                    "language_server": {
+                        "name": "oxfmt"
+                    }
+                },
+                {
+                    "code_action": "source.fixAll.oxc"
+                }
+            ],
+            "language_servers": ["oxlint", "!biome", "..."]
+        },
+        "Markdown": {
+            "format_on_save": "on",
+            "formatter": {
+                "language_server": {
+                    "name": "oxfmt"
+                }
+            }
+        },
+        "MDX": {
+            "format_on_save": "on",
+            "formatter": {
+                "language_server": {
+                    "name": "oxfmt"
+                }
+            }
+        },
+        "TSX": {
+            "format_on_save": "on",
+            "formatter": [
+                {
+                    "language_server": {
+                        "name": "oxfmt"
+                    }
+                },
+                {
+                    "code_action": "source.fixAll.oxc"
+                }
+            ],
+            "language_servers": ["oxlint", "!biome", "..."]
+        },
+        "TypeScript": {
+            "format_on_save": "on",
+            "formatter": [
+                {
+                    "language_server": {
+                        "name": "oxfmt"
+                    }
+                },
+                {
+                    "code_action": "source.fixAll.oxc"
+                }
+            ],
+            "language_servers": ["oxlint", "!biome", "..."]
+        },
+        "YAML": {
+            "format_on_save": "on",
+            "formatter": {
+                "language_server": {
+                    "name": "oxfmt"
+                }
+            }
+        }
+    }
+}

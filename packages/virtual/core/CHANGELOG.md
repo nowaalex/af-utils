@@ -101,7 +101,7 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @af-utils/scrollend-polyfill@0.0.9
+    - @af-utils/scrollend-polyfill@0.0.9
 
 ## 0.0.11
 
@@ -109,7 +109,7 @@
 
 - reduced number of dependencies + upgraded website
 - Updated dependencies
-  - @af-utils/scrollend-polyfill@0.0.8
+    - @af-utils/scrollend-polyfill@0.0.8
 
 ## 0.0.10
 
@@ -117,7 +117,7 @@
 
 - upgraded scroll algo & types
 - Updated dependencies
-  - @af-utils/scrollend-polyfill@0.0.7
+    - @af-utils/scrollend-polyfill@0.0.7
 
 ## 0.0.9
 
@@ -133,7 +133,7 @@
 - 900f29c: imroved VirtualScroller.scrollToIndex
 - Updated dependencies
 - Updated dependencies [900f29c]
-  - @af-utils/scrollend-polyfill@0.0.6
+    - @af-utils/scrollend-polyfill@0.0.6
 
 ## 0.0.7
 
@@ -141,7 +141,7 @@
 
 - mjs > ts conversion, pruned unused deps
 - Updated dependencies
-  - @af-utils/scrollend-polyfill@0.0.5
+    - @af-utils/scrollend-polyfill@0.0.5
 
 ## 0.0.6
 
@@ -149,7 +149,7 @@
 
 - shrinked build size
 - Updated dependencies
-  - @af-utils/scrollend-polyfill@0.0.4
+    - @af-utils/scrollend-polyfill@0.0.4
 
 ## 0.0.5
 
@@ -157,7 +157,7 @@
 
 - upgraded scrollend-polyfill
 - Updated dependencies
-  - @af-utils/scrollend-polyfill@0.0.3
+    - @af-utils/scrollend-polyfill@0.0.3
 
 ## 0.0.4
 
@@ -165,7 +165,7 @@
 
 - upgraded scrollToIndex, improved docs, added scrollend polyfill
 - Updated dependencies
-  - @af-utils/scrollend-polyfill@0.0.2
+    - @af-utils/scrollend-polyfill@0.0.2
 
 ## 0.0.3
 

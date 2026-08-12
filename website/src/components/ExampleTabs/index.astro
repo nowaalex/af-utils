@@ -1,0 +1,312 @@
+---
+import { getExampleRepositoryPath } from "@af-utils/examples/config";
+import { Icon } from "astro-icon/components";
+import ExampleFileTree from "components/ExampleFileTree/index.astro";
+import TabButton from "components/ExampleTabs/TabButton.astro";
+import type { ExampleFile } from "utils/examples";
+
+interface Props {
+    files: readonly ExampleFile[];
+    path: string;
+    title: string;
+}
+
+const { files, path, title } = Astro.props;
+const tabId = path.replaceAll("/", "-");
+const gitPath = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env.PUBLIC_GITHUB_BRANCH}/${getExampleRepositoryPath(path)}`;
+const codeSandboxUrl = new URL(
+    `https://codesandbox.io/embed/github/${gitPath}`
+);
+codeSandboxUrl.searchParams.set("view", "editor+preview");
+codeSandboxUrl.searchParams.set("module", "/src/code.tsx");
+codeSandboxUrl.searchParams.set("hidenavigation", "1");
+codeSandboxUrl.searchParams.set("theme", "light");
+
+const stackBlitzUrl = new URL(`https://stackblitz.com/github/${gitPath}`);
+stackBlitzUrl.searchParams.set("embed", "1");
+stackBlitzUrl.searchParams.set("file", "src/code.tsx");
+stackBlitzUrl.searchParams.set("hideNavigation", "1");
+stackBlitzUrl.searchParams.set("view", "editor");
+
+const views = [
+    { label: "Preview", name: "preview" },
+    { label: "CodeSandbox", name: "codesandbox" },
+    { label: "StackBlitz", name: "stackblitz" }
+] as const;
+const externalViews = [
+    {
+        allow: "accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write",
+        label: "CodeSandbox",
+        name: "codesandbox",
+        url: codeSandboxUrl.toString()
+    },
+    {
+        allow: "cross-origin-isolated; clipboard-read; clipboard-write",
+        label: "StackBlitz",
+        name: "stackblitz",
+        url: stackBlitzUrl.toString()
+    }
+] as const;
+---
+
+<example-tabs
+    class="example-tabs not-prose mt-1 flex min-h-[35rem] flex-auto flex-col overflow-hidden border border-slate-300 bg-white shadow-sm"
+>
+    <div
+        class="flex flex-none items-center border-b border-slate-300 bg-slate-100"
+    >
+        <div
+            role="tablist"
+            aria-label="Example view"
+            class="flex min-w-0 flex-auto overflow-x-auto"
+        >
+            {
+                views.map((view, index) => (
+                    <TabButton
+                        label={view.label}
+                        name={view.name}
+                        selected={index === 0}
+                        tabId={tabId}
+                    />
+                ))
+            }
+        </div>
+        <button
+            type="button"
+            data-fullscreen-toggle
+            aria-label="Open example in full screen"
+            aria-pressed="false"
+            title="Open example in full screen"
+            class="grid size-10 flex-none cursor-pointer place-items-center border-l border-slate-300 text-slate-600 transition-colors hover:bg-slate-200 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-blue-600"
+        >
+            <span data-fullscreen-enter>
+                <Icon name="material-symbols:fullscreen" size={22} />
+            </span>
+            <span hidden data-fullscreen-exit>
+                <Icon name="material-symbols:fullscreen-exit" size={22} />
+            </span>
+        </button>
+    </div>
+
+    <section
+        role="tabpanel"
+        id={`${tabId}-preview-panel`}
+        aria-labelledby={`${tabId}-preview-tab`}
+        data-example-panel="preview"
+        class="grid flex-auto place-items-stretch gap-3 bg-slate-100/70 p-3 xl:contain-strict xl:grid-cols-2"
+    >
+        <iframe
+            title={`${title} Preview`}
+            class="h-[35vh] w-full border border-slate-300 bg-white xl:h-auto"
+            src={`/examples/${path}`}
+            loading="lazy"></iframe>
+        <div
+            class="flex min-h-[35vh] overflow-hidden border border-slate-300 bg-white xl:min-h-0"
+        >
+            <ExampleFileTree files={files} selectedUrl={files[0]?.url ?? ""} />
+            <div
+                role="region"
+                data-code-output
+                data-initial-source={files[0]?.url}
+                aria-label="Example source code"
+                class="relative min-w-0 flex-auto overflow-hidden bg-[#fbfbfc]"
+            >
+                <p data-code-placeholder class="m-0 p-4 text-sm text-slate-500">
+                    Loading source…
+                </p>
+            </div>
+        </div>
+    </section>
+
+    {
+        externalViews.map((view) => (
+            <section
+                hidden
+                role="tabpanel"
+                id={`${tabId}-${view.name}-panel`}
+                aria-labelledby={`${tabId}-${view.name}-tab`}
+                data-example-panel={view.name}
+                class="flex-auto bg-slate-100/70 p-3"
+            >
+                <iframe
+                    title={`${title} in ${view.label}`}
+                    class="h-[70vh] w-full border border-slate-300 bg-white xl:h-full"
+                    data-src={view.url}
+                    loading="lazy"
+                    allow={view.allow}
+                />
+            </section>
+        ))
+    }
+</example-tabs>
+
+<script>
+    class ExampleTabs extends HTMLElement {
+        /** Connects tabs, lazy source loading, and full-screen interaction. */
+        connectedCallback() {
+            if (this.dataset.ready) return;
+            this.dataset.ready = "true";
+
+            const tabs = Array.from(
+                this.querySelectorAll<HTMLButtonElement>("[data-example-tab]")
+            );
+            const panels = Array.from(
+                this.querySelectorAll<HTMLElement>("[data-example-panel]")
+            );
+            const codeOutput =
+                this.querySelector<HTMLElement>("[data-code-output]");
+            const fullscreenToggle = this.querySelector<HTMLButtonElement>(
+                "[data-fullscreen-toggle]"
+            );
+            const sourceCache = new Map<string, Promise<string>>();
+            let selectedSource = "";
+            let initialObserver: IntersectionObserver | undefined;
+
+            const loadSource = async (url: string) => {
+                selectedSource = url;
+                codeOutput?.setAttribute("aria-busy", "true");
+                let request = sourceCache.get(url);
+                if (!request) {
+                    request = fetch(url).then((response) => {
+                        if (!response.ok) {
+                            throw new Error(
+                                `Source request failed: ${response.status}`
+                            );
+                        }
+                        return response.text();
+                    });
+                    sourceCache.set(url, request);
+                }
+
+                try {
+                    const html = await request;
+                    if (codeOutput && selectedSource === url) {
+                        codeOutput.innerHTML = html;
+                        codeOutput.setAttribute("aria-busy", "false");
+                    }
+                } catch {
+                    sourceCache.delete(url);
+                    if (codeOutput && selectedSource === url) {
+                        codeOutput.textContent = "Unable to load source.";
+                        codeOutput.setAttribute("aria-busy", "false");
+                    }
+                }
+            };
+
+            const selectTab = (tab: HTMLButtonElement) => {
+                const selectedName = tab.dataset.exampleTab;
+
+                for (const item of tabs) {
+                    const selected = item === tab;
+                    item.setAttribute("aria-selected", String(selected));
+                    item.tabIndex = selected ? 0 : -1;
+                }
+
+                for (const panel of panels) {
+                    panel.hidden = panel.dataset.examplePanel !== selectedName;
+                    if (!panel.hidden) {
+                        const iframe =
+                            panel.querySelector<HTMLIFrameElement>(
+                                "iframe[data-src]"
+                            );
+                        if (
+                            iframe?.dataset.src &&
+                            !iframe.hasAttribute("src")
+                        ) {
+                            iframe.src = iframe.dataset.src;
+                        }
+                    }
+                }
+            };
+
+            for (const tab of tabs) {
+                tab.addEventListener("click", () => selectTab(tab));
+                tab.addEventListener("keydown", (event) => {
+                    if (
+                        event.key !== "ArrowLeft" &&
+                        event.key !== "ArrowRight"
+                    ) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    const direction = event.key === "ArrowRight" ? 1 : -1;
+                    const next =
+                        tabs[
+                            (tabs.indexOf(tab) + direction + tabs.length) %
+                                tabs.length
+                        ];
+                    if (!next) return;
+                    selectTab(next);
+                    next.focus();
+                });
+            }
+
+            this.addEventListener("example-file-select", (event) => {
+                const url = (event as CustomEvent<{ url?: string }>).detail.url;
+                if (url) {
+                    initialObserver?.disconnect();
+                    void loadSource(url);
+                }
+            });
+
+            const initialSource = codeOutput?.dataset.initialSource;
+            if (
+                codeOutput &&
+                initialSource &&
+                "IntersectionObserver" in window
+            ) {
+                initialObserver = new IntersectionObserver((entries) => {
+                    if (entries.some((entry) => entry.isIntersecting)) {
+                        initialObserver?.disconnect();
+                        void loadSource(initialSource);
+                    }
+                });
+                initialObserver.observe(codeOutput);
+            } else if (initialSource) {
+                void loadSource(initialSource);
+            }
+
+            if (fullscreenToggle) {
+                const enterIcon = fullscreenToggle.querySelector<HTMLElement>(
+                    "[data-fullscreen-enter]"
+                );
+                const exitIcon = fullscreenToggle.querySelector<HTMLElement>(
+                    "[data-fullscreen-exit]"
+                );
+                const updateFullscreenToggle = () => {
+                    const expanded = document.fullscreenElement === this;
+                    const label = expanded
+                        ? "Exit full screen example"
+                        : "Open example in full screen";
+
+                    fullscreenToggle.setAttribute(
+                        "aria-pressed",
+                        String(expanded)
+                    );
+                    fullscreenToggle.setAttribute("aria-label", label);
+                    fullscreenToggle.title = label;
+                    if (enterIcon) enterIcon.hidden = expanded;
+                    if (exitIcon) exitIcon.hidden = !expanded;
+                };
+
+                fullscreenToggle.addEventListener("click", async () => {
+                    if (document.fullscreenElement === this) {
+                        await document.exitFullscreen();
+                    } else {
+                        await this.requestFullscreen();
+                    }
+                });
+                document.addEventListener(
+                    "fullscreenchange",
+                    updateFullscreenToggle
+                );
+                updateFullscreenToggle();
+            }
+        }
+    }
+
+    if (!customElements.get("example-tabs")) {
+        customElements.define("example-tabs", ExampleTabs);
+    }
+</script>

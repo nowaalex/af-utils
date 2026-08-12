@@ -53,7 +53,7 @@ class PerMaskRevisions {
     }
 
     get(mask: number) {
-        return this._revisions[mask & VirtualScrollerEvent.ALL]!;
+        return this._revisions[mask & VirtualScrollerEvent.ALL] as number;
     }
 }
 
@@ -117,13 +117,14 @@ describe("event revision strategy", () => {
 });
 
 const comparisonCallbacks = Array.from(
-    { length: DEDUPE_LISTENER_COUNTS.at(-1)! },
+    { length: DEDUPE_LISTENER_COUNTS.at(-1) ?? 0 },
     () => () => {
         benchmarkSink++;
     }
 );
 
 for (const listenerCount of DEDUPE_LISTENER_COUNTS) {
+    // oxlint-disable-next-line eslint/no-loop-func -- A for-of const has a fresh binding per iteration; this callback intentionally registers one benchmark group per value.
     describe(`batch callback deduplication: ${listenerCount} unique`, () => {
         const callbacks = comparisonCallbacks.slice(0, listenerCount);
         const setQueue = new Set<() => void>();
@@ -158,6 +159,7 @@ for (const listenerCount of DEDUPE_LISTENER_COUNTS) {
 const typicalCallbacks = comparisonCallbacks.slice(0, 3);
 
 for (const eventCount of DEDUPE_EVENT_COUNTS) {
+    // oxlint-disable-next-line eslint/no-loop-func -- A for-of const has a fresh binding per iteration; this callback intentionally registers one benchmark group per value.
     describe(`batch callback deduplication: ${eventCount} events, 3 unique`, () => {
         const setQueue = new Set<() => void>();
         const arrayQueue: (() => void)[] = [];

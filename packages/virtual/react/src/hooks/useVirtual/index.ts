@@ -1,10 +1,10 @@
-import useVirtualModel from "../useVirtualModel";
-import useIsomorphicLayoutEffect from "../useIsomorphicLayoutEffect";
 import {
-    // this unused import is needed for normal api-extractor output
+    // oxlint-disable-next-line no-unused-vars -- The value import keeps api-extractor output stable even though TypeScript uses only the linked declaration.
     VirtualScroller,
     type VirtualScrollerInitialParams
 } from "@af-utils/virtual-core";
+import useIsomorphicLayoutEffect from "../useIsomorphicLayoutEffect";
+import useVirtualModel from "../useVirtualModel";
 
 /**
  * @public

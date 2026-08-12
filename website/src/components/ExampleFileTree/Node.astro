@@ -1,0 +1,96 @@
+---
+import { Icon } from "astro-icon/components";
+import type { ExampleFileTreeNode } from "./tree";
+
+interface Props {
+    node: ExampleFileTreeNode;
+    selectedUrl: string;
+}
+
+const { node, selectedUrl } = Astro.props;
+const fileIcon = (() => {
+    if (node.kind === "folder") return undefined;
+    if (node.name === "package.json") return "logos:nodejs-icon";
+    if (node.name.startsWith("vite.config.")) return "logos:vitejs";
+    if (node.name === "tsconfig.json") return "material-symbols:settings";
+    if (node.name.endsWith(".tsx") || node.name.endsWith(".ts")) {
+        return "logos:typescript-icon";
+    }
+    if (node.name.endsWith(".jsx") || node.name.endsWith(".js")) {
+        return "logos:javascript";
+    }
+    if (node.name.endsWith(".css")) return "logos:css-3";
+    if (node.name.endsWith(".html")) return "logos:html-5";
+    if (node.name.endsWith(".json")) return "material-symbols:data-object";
+    return "material-symbols:description";
+})();
+const fileIconClass =
+    node.kind === "file" && node.name === "tsconfig.json"
+        ? "text-violet-500"
+        : node.kind === "file" && node.name.endsWith(".json")
+          ? "text-amber-600"
+          : node.kind === "file" && fileIcon === "material-symbols:description"
+            ? "text-slate-500"
+            : undefined;
+---
+
+{
+    node.kind === "folder" ? (
+        <li>
+            <details open class="group/folder">
+                <summary
+                    class="flex cursor-pointer list-none items-center gap-1 py-0.5 pr-1 text-slate-700 transition-colors hover:bg-slate-200 [&::-webkit-details-marker]:hidden"
+                    title={node.path}
+                >
+                    <Icon
+                        aria-hidden="true"
+                        name="material-symbols:chevron-right"
+                        size={16}
+                        class="shrink-0 text-slate-500 transition-transform group-open/folder:rotate-90"
+                    />
+                    <span class="grid size-4 shrink-0 place-items-center">
+                        <Icon
+                            aria-hidden="true"
+                            name="material-symbols:folder"
+                            size={17}
+                            class="text-amber-500 group-open/folder:hidden"
+                        />
+                        <Icon
+                            aria-hidden="true"
+                            name="material-symbols:folder-open"
+                            size={17}
+                            class="hidden text-amber-500 group-open/folder:block"
+                        />
+                    </span>
+                    <span class="truncate">{node.name}</span>
+                </summary>
+                <ul class="m-0 list-none pl-3.5">
+                    {node.children.map((child) => (
+                        <Astro.self node={child} selectedUrl={selectedUrl} />
+                    ))}
+                </ul>
+            </details>
+        </li>
+    ) : (
+        <li>
+            <button
+                type="button"
+                aria-pressed={node.url === selectedUrl}
+                data-file-tree-item
+                data-file-url={node.url}
+                class="flex w-full cursor-pointer items-center gap-1.5 py-0.5 pl-5 pr-1 text-left text-slate-700 transition-colors hover:bg-slate-200 aria-pressed:bg-slate-700 aria-pressed:text-white"
+                title={node.path}
+            >
+                {fileIcon && (
+                    <Icon
+                        aria-hidden="true"
+                        name={fileIcon}
+                        size={15}
+                        class:list={["shrink-0", fileIconClass]}
+                    />
+                )}
+                <span class="truncate">{node.name}</span>
+            </button>
+        </li>
+    )
+}

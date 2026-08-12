@@ -1,4 +1,5 @@
 // This should be imported only once in the project root
+// oxlint-disable-next-line import/no-unassigned-import -- Importing installs the scrollend polyfill globally.
 import "@af-utils/scrollend-polyfill";
 
 import { useEffect, useRef } from "react";

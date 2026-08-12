@@ -1,11 +1,48 @@
 ---
-import Documentation from "layouts/Documentation.astro";
-import { getMenuMapForProjectExamples } from "utils/examples";
-import defaultsDeep from "lodash/defaultsDeep";
 import { getImage } from "astro:assets";
 import ogVirtual from "assets/og/virtual.png";
+import type { MenuItem } from "components/Menu.astro";
+import Documentation from "layouts/Documentation.astro";
+import defaultsDeep from "lodash/defaultsDeep";
+import { getMenuMapForProjectExamples } from "utils/examples";
+
 export type { Props } from "layouts/Base.astro";
+
 import type { CollectionEntry } from "astro:content";
+import referenceNavigation from "../../content/reference/navigation.json";
+
+const getReferencePath = (path: string | null | undefined) =>
+    path ? `/virtual/reference/${path}` : "/virtual/reference";
+
+interface ReferenceNavigationItem {
+    title: string;
+    path?: string | null;
+    children?: ReferenceNavigationItem[];
+}
+
+const mapReferenceNavigation = (item: ReferenceNavigationItem): MenuItem => {
+    const children = item.children?.map(mapReferenceNavigation);
+    return {
+        name: item.title,
+        path: getReferencePath(item.path),
+        ...(children ? { children } : {})
+    };
+};
+
+const referenceItems = referenceNavigation.map((item) => {
+    const mapped = mapReferenceNavigation(item);
+    return {
+        ...mapped,
+        children: [
+            {
+                name: "Overview",
+                path: mapped.path,
+                exact: true
+            },
+            ...(mapped.children ?? [])
+        ]
+    };
+});
 
 const items = [
     {
@@ -22,14 +59,35 @@ const items = [
                 path: "/virtual/faq"
             },
             {
-                name: "Reference",
-                path: `/virtual/reference/${"index" satisfies CollectionEntry<"reference">["id"]}`,
-                comparePath: "/virtual/reference"
-            },
-            {
                 name: "Bundle size impact",
                 path: "/virtual/size"
             }
+        ]
+    },
+    {
+        name: "Guides",
+        path: "/virtual/guides",
+        children: [
+            {
+                name: "Render ownership",
+                path: "/virtual/guides/render-ownership"
+            },
+            {
+                name: "Custom rendering",
+                path: "/virtual/guides/custom-rendering"
+            }
+        ]
+    },
+    {
+        name: "Reference",
+        path: "/virtual/reference",
+        children: [
+            {
+                name: "Overview",
+                path: `/virtual/reference/${"index" satisfies CollectionEntry<"reference">["id"]}`,
+                exact: true
+            },
+            ...referenceItems
         ]
     },
     ...getMenuMapForProjectExamples("virtual")

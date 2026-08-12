@@ -1,0 +1,92 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+title: "Render ownership and subscriptions"
+description: "Keep virtual geometry outside framework renders and subscribe only the smallest React or Solid owner that needs a changed value."
+---
+
+import DocLink from "components/DocLink.astro";
+
+# Render ownership and subscriptions
+
+The virtual model publishes different kinds of changes independently. A range
+change affects which children exist, while a measurement can change only their
+pixel geometry. Treating both as the same reactive update produces avoidable
+framework work.
+
+| Change                    | Framework responsibility        | Core responsibility            |
+| ------------------------- | ------------------------------- | ------------------------------ |
+| `from` or `to` changed    | Reconcile the rendered children | Publish `RANGE`                |
+| An item was measured      | None if the range stayed stable | Update cached sizes and layout |
+| Total scroll size changed | None                            | Resize the native size element |
+| Rendered block moved      | None                            | Update the block transform     |
+
+## Prefer `List` for ordinary lists
+
+React and Solid `List` subscribe only the internal range owner. Header, footer,
+and surrounding application state do not need to update when the rendered
+range moves.
+
+- [React List example](/virtual/examples/react/list/simple)
+- [Solid List example](/virtual/examples/solid/list/simple)
+
+Items still need a measurement ref. Use
+
+<DocLink slug="virtual-react/functions/useVirtualItemRef">
+    useVirtualItemRef
+</DocLink>
+in React or
+<DocLink slug="virtual-solid/functions/createVirtualItemRef">
+    createVirtualItemRef
+</DocLink>
+in Solid.
+
+## Subscribe at the smallest boundary
+
+Use
+
+<DocLink slug="virtual-react/functions/useVirtualSnapshot">
+    useVirtualSnapshot
+</DocLink>
+or
+<DocLink slug="virtual-solid/functions/createVirtualSnapshot">
+    createVirtualSnapshot
+</DocLink>
+only in the component or memo that reads the selected model state. For rendering
+children, select `VirtualScrollerEvent.RANGE`; item measurements and scroll-size
+publication should not invalidate that view unless they also move the range.
+
+The [event subscription example](/virtual/examples/react/list/extra-events)
+shows two independent consumers. The equivalent
+[Solid example](/virtual/examples/solid/list/extra-events) uses a fine-grained
+signal rather than invalidating the complete component tree.
+
+## Use effects for imperative consumers
+
+If a canvas, CSS variable, spacer, or external widget only needs the latest
+number, it does not need a framework render. React exposes
+
+<DocLink slug="virtual-react/functions/useVirtualEffect">
+    useVirtualEffect
+</DocLink>
+; both adapters can also use the framework-neutral
+<DocLink slug="virtual-core/classes/VirtualScroller#subscribe">
+    subscribe()
+</DocLink>
+method directly.
+
+Keep the callback stable when the framework uses callback identity as an effect
+dependency. Subscribe to the narrowest event mask and perform cleanup at the
+same lifecycle boundary where the consumer is created.
+
+## Let one layer own each style
+
+<DocLink slug="virtual-core/classes/VirtualScrollerLayout">
+    VirtualScrollerLayout
+</DocLink>
+owns scroll size, rendered range extent, and range transform after DOM
+attachment. Framework styles provide the initial SSR/hydration values and
+non-virtual presentation, but should not continuously reapply those geometry
+properties.
+
+This boundary is what allows measurements to update the browser without a
+React render or a Solid computation.

@@ -6,7 +6,7 @@ description: "Virtualize large lists with variable or fixed item sizes. TypeScri
 
 import { Image } from "astro:assets";
 import messyImg from "assets/messy.jpg";
-import List from "@af-utils/examples/src/virtual/solid/list/simple/src/code";
+import List from "@af-utils/examples/src/virtual/list/simple/solid/src/code";
 
 # Getting started
 
@@ -33,7 +33,7 @@ Variable item sizes with <span className="whitespace-nowrap">on-the-fly</span> r
 
 Install desired adapter using your package manager
 
--   ### React
+- ### React
 
     The React adapter supports React 19.2 or newer within the React 19 major release. Older React versions are not supported.
 
@@ -41,7 +41,7 @@ Install desired adapter using your package manager
     npm install @af-utils/virtual-react react@^19.2.8
     ```
 
--   ### Solid
+- ### Solid
 
     The Solid adapter uses fine-grained range updates and requires Solid 1.9 or newer.
 
@@ -49,7 +49,7 @@ Install desired adapter using your package manager
     npm install @af-utils/virtual-solid solid-js@^1.9.14
     ```
 
--   ### Core (no framework)
+- ### Core (no framework)
 
     Library core is just housing sizes and offsets, so rendering falls on your shoulders.
 

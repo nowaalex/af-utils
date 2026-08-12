@@ -1,9 +1,9 @@
-import { useCallback, useSyncExternalStore } from "react";
 import {
-    VirtualScrollerEvent,
     type VirtualScroller,
+    VirtualScrollerEvent,
     type VirtualScrollerEventMask
 } from "@af-utils/virtual-core";
+import { useCallback, useSyncExternalStore } from "react";
 
 /**
  * @public

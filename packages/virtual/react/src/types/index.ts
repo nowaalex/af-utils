@@ -1,5 +1,5 @@
-import type { ReactElement, ElementType, ComponentType } from "react";
 import type { VirtualScroller } from "@af-utils/virtual-core";
+import type { ComponentType, ElementType, ReactElement } from "react";
 
 /**
  * @public

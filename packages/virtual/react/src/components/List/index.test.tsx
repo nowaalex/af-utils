@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 
+import { VirtualScroller } from "@af-utils/virtual-core";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { VirtualScroller } from "@af-utils/virtual-core";
 import type { ListItemProps } from "../../types";
 import List from ".";
 

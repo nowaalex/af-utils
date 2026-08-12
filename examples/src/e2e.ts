@@ -1,9 +1,24 @@
-import { expect, test as base } from "@playwright/test";
+import {
+    test as base,
+    expect,
+    type Locator,
+    type Page
+} from "@playwright/test";
+import type { ExampleFramework } from "../config";
+import { discoverExamples } from "../discovery";
 
+export type { Page } from "@playwright/test";
+export type { Locator };
 export { expect };
-export type { Locator, Page } from "@playwright/test";
 
-export const test = base.extend<{ unexpectedPageErrors: void }>({
+export interface ExampleTestTarget {
+    documentationPath: string;
+    framework: ExampleFramework;
+    previewPath: string;
+    route: string;
+}
+
+export const test = base.extend<{ unexpectedPageErrors: undefined }>({
     unexpectedPageErrors: [
         async ({ page }, use) => {
             const unexpectedErrors = new Set<string>();
@@ -44,3 +59,67 @@ export const test = base.extend<{ unexpectedPageErrors: void }>({
         { auto: true }
     ]
 });
+
+const discoveredExamples = discoverExamples();
+
+export const describeExample = async (
+    groupPath: string,
+    defineTests: (target: ExampleTestTarget) => void
+) => {
+    const examples = (await discoveredExamples).filter(
+        example => example.groupPath === groupPath
+    );
+    if (examples.length === 0) {
+        throw new Error(`No implementations found for example: ${groupPath}`);
+    }
+
+    for (const example of examples) {
+        const [project, ...route] = example.route.split("/");
+        test.describe(example.framework, () =>
+            defineTests({
+                documentationPath: `/${project}/examples/${route.join("/")}`,
+                framework: example.framework,
+                previewPath: `/examples/${example.route}`,
+                route: example.route
+            })
+        );
+    }
+};
+
+export function expectDefined<T>(
+    value: T | null | undefined,
+    message = "Expected value to be defined"
+): T {
+    expect(value, message).not.toBeNull();
+    expect(value, message).not.toBeUndefined();
+    if (value === null || value === undefined) throw new Error(message);
+    return value;
+}
+
+export const getVerticalScrollbarX = (element: Locator) =>
+    element.evaluate(node => {
+        const bounds = node.getBoundingClientRect();
+        const style = getComputedStyle(node);
+        const borderLeft = Number.parseFloat(style.borderLeftWidth) || 0;
+        const borderRight = Number.parseFloat(style.borderRightWidth) || 0;
+        const scrollbarWidth =
+            node.offsetWidth - node.clientWidth - borderLeft - borderRight;
+
+        if (scrollbarWidth <= 0) {
+            throw new Error("Expected a visible vertical scrollbar");
+        }
+
+        return bounds.right - borderRight - scrollbarWidth / 2;
+    });
+
+export const waitForExampleHydration = async (page: Page) => {
+    await expect(page.locator("astro-island").first()).toBeAttached();
+    await expect.poll(() => page.locator("astro-island[ssr]").count()).toBe(0);
+};
+
+export const requireNativeScrollbarPointer = (browserName: string) => {
+    test.skip(
+        browserName !== "chromium",
+        "Playwright exposes pointer-draggable classic scrollbars only in Chromium"
+    );
+};

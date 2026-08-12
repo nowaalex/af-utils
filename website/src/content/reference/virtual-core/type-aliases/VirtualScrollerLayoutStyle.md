@@ -1,4 +1,10 @@
 ---
+title: "Type Alias: VirtualScrollerLayoutStyle"
+description: Serializable inline styles shared by server and client layout adapters.
+package: "@af-utils/virtual-core"
+symbol: VirtualScrollerLayoutStyle
+kind: typealias
+referencePath: /virtual/reference/virtual-core/type-aliases/VirtualScrollerLayoutStyle
 generated: true
 ---
 

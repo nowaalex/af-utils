@@ -1,0 +1,40 @@
+---
+import HeadFont from "components/head/Font.astro";
+
+const canonicalPath = Astro.url.pathname.replace(
+    /^\/examples\/([^/]+)/,
+    "/$1/examples"
+);
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <HeadFont />
+        <link
+            rel="canonical"
+            href={new URL(canonicalPath, import.meta.env.PUBLIC_ORIGIN)}
+        />
+        <style>
+            html,
+            body {
+                padding: 0;
+                margin: 0;
+            }
+
+            body {
+                color: #374151;
+            }
+
+            #root {
+                display: grid;
+                height: 100vh;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"><slot /></div>
+    </body>
+</html>

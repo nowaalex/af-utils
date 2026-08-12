@@ -1,4 +1,10 @@
 ---
+title: "Function: useVirtualModel()"
+description: React hook. Creates and stores exactly one VirtualScroller instance. It is not recreated during component lifecycle.
+package: "@af-utils/virtual-react"
+symbol: useVirtualModel
+kind: function
+referencePath: /virtual/reference/virtual-react/functions/useVirtualModel
 generated: true
 ---
 

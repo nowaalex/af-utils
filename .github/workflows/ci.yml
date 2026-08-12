@@ -37,11 +37,11 @@ jobs:
             - name: Check standalone example dependencies
               run: pnpm examples:versions:check
 
-            - name: Check formatting
-              run: pnpm format:check
+            - name: Check generated example files
+              run: pnpm examples:sync:check
 
-            - name: Lint
-              run: pnpm lint
+            - name: Check formatting and lint warnings
+              run: pnpm check:style
 
             - name: Typecheck
               run: pnpm typecheck
@@ -55,8 +55,8 @@ jobs:
             - name: Validate package tarballs
               run: pnpm publint
 
-            - name: Install Playwright browser
-              run: pnpm exec playwright install --with-deps chromium
+            - name: Install Playwright browsers
+              run: pnpm exec playwright install --with-deps chromium firefox
 
             - name: Test examples in browser
               run: pnpm test:e2e

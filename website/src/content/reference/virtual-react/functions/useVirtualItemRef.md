@@ -1,4 +1,10 @@
 ---
+title: "Function: useVirtualItemRef()"
+description: Observe one rendered item using a stable React callback ref.
+package: "@af-utils/virtual-react"
+symbol: useVirtualItemRef
+kind: function
+referencePath: /virtual/reference/virtual-react/functions/useVirtualItemRef
 generated: true
 ---
 

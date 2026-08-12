@@ -1,4 +1,10 @@
 ---
+title: "Type Alias: VirtualScrollerExactPosition"
+description: Numeric snapshot of scroll position
+package: "@af-utils/virtual-core"
+symbol: VirtualScrollerExactPosition
+kind: typealias
+referencePath: /virtual/reference/virtual-core/type-aliases/VirtualScrollerExactPosition
 generated: true
 ---
 

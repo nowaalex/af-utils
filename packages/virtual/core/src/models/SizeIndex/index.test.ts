@@ -1,10 +1,10 @@
 import { describe, expect, test } from "vitest";
+import { VirtualScrollerError } from "#virtual-errors";
+import { MAX_SIZE_INDEX_CAPACITY } from "../../constants";
 import {
     VirtualScrollerErrorCode,
     VirtualScrollerErrorIndex
 } from "../../errors/codes";
-import { VirtualScrollerError } from "#virtual-errors";
-import { MAX_SIZE_INDEX_CAPACITY } from "../../constants";
 import SizeIndex, {
     assertEstimatedSize,
     assertSizeIndexCount,

@@ -4,6 +4,7 @@ logs
 
 **/node_modules/
 **/dist
+.astro/
 **/api-extractor-schema
 **/.jit/
 **/.stryker-tmp/

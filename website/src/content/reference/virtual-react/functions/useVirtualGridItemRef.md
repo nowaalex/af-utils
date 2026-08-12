@@ -1,4 +1,10 @@
 ---
+title: "Function: useVirtualGridItemRef()"
+description: Observe row and column sizes for one rendered grid cell.
+package: "@af-utils/virtual-react"
+symbol: useVirtualGridItemRef
+kind: function
+referencePath: /virtual/reference/virtual-react/functions/useVirtualGridItemRef
 generated: true
 ---
 
@@ -12,10 +18,10 @@ generated: true
 
 ```ts
 function useVirtualGridItemRef(
-  rows,
-  rowIndex,
-  columns,
-  columnIndex,
+    rows,
+    rowIndex,
+    columns,
+    columnIndex
 ): RefCallback<HTMLElement>;
 ```
 

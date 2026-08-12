@@ -9,7 +9,7 @@ import type { ListItemProps, ListProps } from "../../types";
  *
  * @public
  */
-const List = <Data = unknown>(props: ListProps<Data>) => {
+const List = <Data = unknown,>(props: ListProps<Data>) => {
     const [local, rest] = splitProps(props, [
         "model",
         "children",

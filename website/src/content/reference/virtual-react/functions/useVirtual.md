@@ -1,4 +1,10 @@
 ---
+title: "Function: useVirtual()"
+description: React hook. Calls useVirtualModel and synchronizes it with props
+package: "@af-utils/virtual-react"
+symbol: useVirtual
+kind: function
+referencePath: /virtual/reference/virtual-react/functions/useVirtual
 generated: true
 ---
 
@@ -35,8 +41,8 @@ Calls [useVirtualModel](/virtual/reference/virtual-react/functions/useVirtualMod
 
 ```tsx
 useVirtual({
-  itemCount: 1000,
-  estimatedItemSize: 100,
-  overscanCount: 1,
+    itemCount: 1000,
+    estimatedItemSize: 100,
+    overscanCount: 1
 });
 ```

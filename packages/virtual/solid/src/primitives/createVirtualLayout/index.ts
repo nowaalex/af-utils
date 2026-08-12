@@ -10,7 +10,7 @@ import type { VirtualLayoutBinding, VirtualSolidStyle } from "../../types";
 const toDOMProperty = (property: string) =>
     property.startsWith("--")
         ? property
-        : property.replace(/-([a-z])/g, (_, letter: string) =>
+        : property.replace(/-([a-z])/gu, (_, letter: string) =>
               letter.toUpperCase()
           );
 
@@ -18,7 +18,7 @@ const toDOMProperty = (property: string) =>
 const toCSSProperty = (property: string) =>
     property.startsWith("--")
         ? property
-        : property.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+        : property.replace(/[A-Z]/gu, letter => `-${letter.toLowerCase()}`);
 
 /** Remove undefined declarations and normalize names for DOM style access. */
 const normalizeStyle = (style: VirtualSolidStyle): VirtualScrollerLayoutStyle =>

@@ -27,18 +27,18 @@ export type VirtualScrollerErrorCode =
 
 /** Compact indexes into {@link VirtualScrollerErrorCode}. @internal */
 export enum VirtualScrollerErrorIndex {
-    INVALID_INDEX,
-    INVALID_OFFSET,
-    INVALID_ITEM_COUNT,
-    INVALID_ITEM_SIZE,
-    INVALID_WIDGET_SIZE,
-    INVALID_SCROLLER_OFFSET,
-    INVALID_OVERSCAN,
-    INVALID_ATTEMPTS,
-    INVALID_SPLICE,
-    INVALID_RANGE,
-    EMPTY_MODEL,
-    DISPOSED,
-    BATCH_INVARIANT,
-    MODEL_CHANGED
+    INVALID_INDEX = 0,
+    INVALID_OFFSET = 1,
+    INVALID_ITEM_COUNT = 2,
+    INVALID_ITEM_SIZE = 3,
+    INVALID_WIDGET_SIZE = 4,
+    INVALID_SCROLLER_OFFSET = 5,
+    INVALID_OVERSCAN = 6,
+    INVALID_ATTEMPTS = 7,
+    INVALID_SPLICE = 8,
+    INVALID_RANGE = 9,
+    EMPTY_MODEL = 10,
+    DISPOSED = 11,
+    BATCH_INVARIANT = 12,
+    MODEL_CHANGED = 13
 }

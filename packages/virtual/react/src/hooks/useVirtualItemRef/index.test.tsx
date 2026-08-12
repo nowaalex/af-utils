@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 
+import { VirtualScroller } from "@af-utils/virtual-core";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { VirtualScroller } from "@af-utils/virtual-core";
 import { useVirtualItemRef } from ".";
 
 class NoopResizeObserver implements ResizeObserver {

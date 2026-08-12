@@ -1,0 +1,307 @@
+[
+    {
+        "title": "@af-utils/virtual-core",
+        "kind": 2,
+        "children": [
+            {
+                "title": "Classes",
+                "children": [
+                    {
+                        "title": "VirtualScroller",
+                        "kind": 128,
+                        "path": "virtual-core/classes/VirtualScroller",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerError",
+                        "kind": 128,
+                        "path": "virtual-core/classes/VirtualScrollerError",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerLayout",
+                        "kind": 128,
+                        "path": "virtual-core/classes/VirtualScrollerLayout",
+                        "isDeprecated": false
+                    }
+                ]
+            },
+            {
+                "title": "Interfaces",
+                "children": [
+                    {
+                        "title": "VirtualScrollerInitialParams",
+                        "kind": 256,
+                        "path": "virtual-core/interfaces/VirtualScrollerInitialParams",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerRuntimeParams",
+                        "kind": 256,
+                        "path": "virtual-core/interfaces/VirtualScrollerRuntimeParams",
+                        "isDeprecated": false
+                    }
+                ]
+            },
+            {
+                "title": "Type Aliases",
+                "children": [
+                    {
+                        "title": "VirtualScrollerErrorCode",
+                        "kind": 2097152,
+                        "path": "virtual-core/type-aliases/VirtualScrollerErrorCode",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerEvent",
+                        "kind": 2097152,
+                        "path": "virtual-core/type-aliases/VirtualScrollerEvent",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerEventMask",
+                        "kind": 2097152,
+                        "path": "virtual-core/type-aliases/VirtualScrollerEventMask",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerExactPosition",
+                        "kind": 2097152,
+                        "path": "virtual-core/type-aliases/VirtualScrollerExactPosition",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerLayoutStyle",
+                        "kind": 2097152,
+                        "path": "virtual-core/type-aliases/VirtualScrollerLayoutStyle",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerScrollElement",
+                        "kind": 2097152,
+                        "path": "virtual-core/type-aliases/VirtualScrollerScrollElement",
+                        "isDeprecated": false
+                    }
+                ]
+            },
+            {
+                "title": "Variables",
+                "children": [
+                    {
+                        "title": "assert",
+                        "kind": 32,
+                        "path": "virtual-core/variables/assert",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerErrorCode",
+                        "kind": 32,
+                        "path": "virtual-core/variables/VirtualScrollerErrorCode",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualScrollerEvent",
+                        "kind": 32,
+                        "path": "virtual-core/variables/VirtualScrollerEvent",
+                        "isDeprecated": false
+                    }
+                ]
+            },
+            {
+                "title": "Functions",
+                "children": [
+                    {
+                        "title": "mapVirtualRange",
+                        "kind": 64,
+                        "path": "virtual-core/functions/mapVirtualRange",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "mapVirtualRangeWithOffset",
+                        "kind": 64,
+                        "path": "virtual-core/functions/mapVirtualRangeWithOffset",
+                        "isDeprecated": false
+                    }
+                ]
+            }
+        ],
+        "path": "virtual-core/index"
+    },
+    {
+        "title": "@af-utils/virtual-react",
+        "kind": 2,
+        "children": [
+            {
+                "title": "Interfaces",
+                "children": [
+                    {
+                        "title": "ListItemProps",
+                        "kind": 256,
+                        "path": "virtual-react/interfaces/ListItemProps",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "ListProps",
+                        "kind": 256,
+                        "path": "virtual-react/interfaces/ListProps",
+                        "isDeprecated": false
+                    }
+                ]
+            },
+            {
+                "title": "Functions",
+                "children": [
+                    {
+                        "title": "List",
+                        "kind": 64,
+                        "path": "virtual-react/functions/List",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "useScroller",
+                        "kind": 64,
+                        "path": "virtual-react/functions/useScroller",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "useVirtual",
+                        "kind": 64,
+                        "path": "virtual-react/functions/useVirtual",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "useVirtualEffect",
+                        "kind": 64,
+                        "path": "virtual-react/functions/useVirtualEffect",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "useVirtualGridItemRef",
+                        "kind": 64,
+                        "path": "virtual-react/functions/useVirtualGridItemRef",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "useVirtualItemRef",
+                        "kind": 64,
+                        "path": "virtual-react/functions/useVirtualItemRef",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "useVirtualLayout",
+                        "kind": 64,
+                        "path": "virtual-react/functions/useVirtualLayout",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "useVirtualModel",
+                        "kind": 64,
+                        "path": "virtual-react/functions/useVirtualModel",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "useVirtualSnapshot",
+                        "kind": 64,
+                        "path": "virtual-react/functions/useVirtualSnapshot",
+                        "isDeprecated": false
+                    }
+                ]
+            }
+        ],
+        "path": "virtual-react/index"
+    },
+    {
+        "title": "@af-utils/virtual-solid",
+        "kind": 2,
+        "children": [
+            {
+                "title": "Interfaces",
+                "children": [
+                    {
+                        "title": "ListItemProps",
+                        "kind": 256,
+                        "path": "virtual-solid/interfaces/ListItemProps",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualLayoutBinding",
+                        "kind": 256,
+                        "path": "virtual-solid/interfaces/VirtualLayoutBinding",
+                        "isDeprecated": false
+                    }
+                ]
+            },
+            {
+                "title": "Type Aliases",
+                "children": [
+                    {
+                        "title": "ListProps",
+                        "kind": 2097152,
+                        "path": "virtual-solid/type-aliases/ListProps",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "MaybeAccessor",
+                        "kind": 2097152,
+                        "path": "virtual-solid/type-aliases/MaybeAccessor",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualElementRef",
+                        "kind": 2097152,
+                        "path": "virtual-solid/type-aliases/VirtualElementRef",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualSolidStyle",
+                        "kind": 2097152,
+                        "path": "virtual-solid/type-aliases/VirtualSolidStyle",
+                        "isDeprecated": false
+                    }
+                ]
+            },
+            {
+                "title": "Functions",
+                "children": [
+                    {
+                        "title": "createVirtual",
+                        "kind": 64,
+                        "path": "virtual-solid/functions/createVirtual",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "createVirtualGridItemRef",
+                        "kind": 64,
+                        "path": "virtual-solid/functions/createVirtualGridItemRef",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "createVirtualItemRef",
+                        "kind": 64,
+                        "path": "virtual-solid/functions/createVirtualItemRef",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "createVirtualLayout",
+                        "kind": 64,
+                        "path": "virtual-solid/functions/createVirtualLayout",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "createVirtualSnapshot",
+                        "kind": 64,
+                        "path": "virtual-solid/functions/createVirtualSnapshot",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "List",
+                        "kind": 64,
+                        "path": "virtual-solid/functions/List",
+                        "isDeprecated": false
+                    }
+                ]
+            }
+        ],
+        "path": "virtual-solid/index"
+    }
+]

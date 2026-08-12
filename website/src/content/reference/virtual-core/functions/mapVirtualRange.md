@@ -1,4 +1,10 @@
 ---
+title: "Function: mapVirtualRange()"
+description: Map the current rendered range without first allocating an indexes array.
+package: "@af-utils/virtual-core"
+symbol: mapVirtualRange
+kind: function
+referencePath: /virtual/reference/virtual-core/functions/mapVirtualRange
 generated: true
 ---
 
@@ -24,10 +30,10 @@ Map the current rendered range without first allocating an indexes array.
 
 ## Parameters
 
-| Parameter  | Type                                                                            |
-| ---------- | ------------------------------------------------------------------------------- |
+| Parameter  | Type                                                                         |
+| ---------- | ---------------------------------------------------------------------------- |
 | `model`    | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `callback` | (`index`) => `T`                                                                |
+| `callback` | (`index`) => `T`                                                             |
 
 ## Returns
 

@@ -1,4 +1,10 @@
 ---
+title: "Function: createVirtualLayout()"
+description: Connect Solid refs to the framework-neutral virtual DOM layout adapter.
+package: "@af-utils/virtual-solid"
+symbol: createVirtualLayout
+kind: function
+referencePath: /virtual/reference/virtual-solid/functions/createVirtualLayout
 generated: true
 ---
 
@@ -18,9 +24,9 @@ Connect Solid refs to the framework-neutral virtual DOM layout adapter.
 
 ## Parameters
 
-| Parameter       | Type                                                                                      |
-| --------------- | ----------------------------------------------------------------------------------------- |
-| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)              |
+| Parameter       | Type                                                                                   |
+| --------------- | -------------------------------------------------------------------------------------- |
+| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)           |
 | `scrollerStyle` | [`VirtualSolidStyle`](/virtual/reference/virtual-solid/type-aliases/VirtualSolidStyle) |
 
 ## Returns

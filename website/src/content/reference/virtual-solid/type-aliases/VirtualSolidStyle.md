@@ -1,4 +1,10 @@
 ---
+title: "Type Alias: VirtualSolidStyle"
+description: Style declarations accepted by the Solid virtual layout adapter.
+package: "@af-utils/virtual-solid"
+symbol: VirtualSolidStyle
+kind: typealias
+referencePath: /virtual/reference/virtual-solid/type-aliases/VirtualSolidStyle
 generated: true
 ---
 

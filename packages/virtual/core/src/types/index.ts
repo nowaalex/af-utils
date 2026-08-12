@@ -88,8 +88,7 @@ export interface VirtualScrollerRuntimeParams {
  * @remarks
  * Implemented as interface for better documentation output (api-extractor)
  */
-export interface VirtualScrollerInitialParams
-    extends VirtualScrollerRuntimeParams {
+export interface VirtualScrollerInitialParams extends VirtualScrollerRuntimeParams {
     /**
      * Scroll container orientation.
      *

@@ -9,17 +9,31 @@
     "packageOptions": {
         "entryPoints": ["src/index.ts"]
     },
-    "plugin": ["typedoc-plugin-markdown", "typedoc-plugin-frontmatter"],
+    "plugin": [
+        "typedoc-plugin-markdown",
+        "./website/plugins/typedoc.mjs",
+        "typedoc-plugin-frontmatter"
+    ],
     "theme": "markdown",
     "router": "member",
     "out": "website/src/content/reference",
     "cleanOutputDir": true,
     "entryFileName": "index",
     "publicPath": "/virtual/reference/",
+    "navigationJson": "website/src/content/reference/navigation.json",
     "readme": "none",
     "excludeInternal": true,
     "excludePrivate": true,
     "excludeProtected": true,
+    "validation": {
+        "invalidLink": true,
+        "invalidPath": true,
+        "notDocumented": true,
+        "notExported": true,
+        "rewrittenLink": true,
+        "unusedMergeModuleWith": true
+    },
+    "treatValidationWarningsAsErrors": true,
     "excludeScopesInPaths": true,
     "disableSources": true,
     "externalSymbolLinkMappings": {
@@ -34,7 +48,7 @@
     "githubPages": false,
     "includeVersion": false,
     "useCodeBlocks": true,
-    "formatWithPrettier": true,
+    "formatWithPrettier": false,
     "indexFormat": "table",
     "interfacePropertiesFormat": "table",
     "classPropertiesFormat": "table",

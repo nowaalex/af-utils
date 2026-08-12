@@ -1,4 +1,10 @@
 ---
+title: "Function: mapVirtualRangeWithOffset()"
+description: Map the current rendered range and provide the pixel offset of every item.
+package: "@af-utils/virtual-core"
+symbol: mapVirtualRangeWithOffset
+kind: function
+referencePath: /virtual/reference/virtual-core/functions/mapVirtualRangeWithOffset
 generated: true
 ---
 
@@ -24,10 +30,10 @@ Map the current rendered range and provide the pixel offset of every item.
 
 ## Parameters
 
-| Parameter  | Type                                                                            |
-| ---------- | ------------------------------------------------------------------------------- |
+| Parameter  | Type                                                                         |
+| ---------- | ---------------------------------------------------------------------------- |
 | `model`    | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `callback` | (`index`, `offset`) => `T`                                                      |
+| `callback` | (`index`, `offset`) => `T`                                                   |
 
 ## Returns
 

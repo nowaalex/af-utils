@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import { writeFile, readFile, mkdir } from "node:fs/promises";
-import { parseArgs } from "node:util";
 import { existsSync } from "node:fs";
-import { parse, join, normalize } from "node:path";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { join, normalize, parse } from "node:path";
+import { parseArgs } from "node:util";
+import chalk from "chalk";
 import getFileSizes from "./getFileSizes";
 import exportsToGlobPatterns from "./parseExports";
-import chalk from "chalk";
 
 const tStart = performance.now();
 
@@ -35,11 +35,14 @@ let parsedOutput: ReturnType<typeof parse> | null = null,
     packagePaths: string[] = [];
 
 if (values.input) {
-    packagePaths = values.input.trim().split(/\s+/).map(normalize);
+    packagePaths = values.input
+        .trim()
+        .split(/\s+/u)
+        .map(path => normalize(path));
 }
 
-if (!packagePaths.length) {
-    throw Error("input must be provided");
+if (packagePaths.length === 0) {
+    throw new Error("input must be provided");
 }
 
 if (values.output) {
@@ -47,41 +50,42 @@ if (values.output) {
     outputTsFile = join(parsedOutput.dir, parsedOutput.name + ".ts");
 }
 
-const packageExports: Package[] = [];
+const packageExports = (
+    await Promise.all(
+        packagePaths.map(async path => {
+            const pkgJsonPath = join(path, "package.json");
+            if (!existsSync(pkgJsonPath)) return null;
 
-for (const path of packagePaths) {
-    const pkgJsonPath = join(path, "package.json");
-    if (existsSync(pkgJsonPath)) {
-        const pkgJsonStr = await readFile(pkgJsonPath, { encoding: "utf-8" });
-        const pkgJson = JSON.parse(pkgJsonStr);
-
-        if (pkgJson.exports) {
+            const pkgJsonStr = await readFile(pkgJsonPath, {
+                encoding: "utf-8"
+            });
+            const pkgJson = JSON.parse(pkgJsonStr);
+            if (!pkgJson.exports) return null;
             if (!pkgJson.name) {
-                throw Error(
+                throw new Error(
                     `'name' field is missing for package json file: ${pkgJsonPath}`
                 );
             }
-            const globPatterns = exportsToGlobPatterns(pkgJson.exports);
-            const filteredExports = globPatterns.filter(f =>
-                /\.[cm]?js/.test(f)
-            );
 
-            const exports = await Promise.all(
-                filteredExports.map(async (name: string) => {
-                    const fileContent = await readFile(join(path, name), {
-                        encoding: "utf-8"
-                    });
-                    const sizes = await getFileSizes(fileContent);
-                    return [name, sizes] as const;
-                })
-            );
+            const filteredExports = exportsToGlobPatterns(
+                pkgJson.exports
+            ).filter(pattern => /\.[cm]?js/u.test(pattern));
+            const exports = (
+                await Promise.all(
+                    filteredExports.map(async (name: string) => {
+                        const fileContent = await readFile(join(path, name), {
+                            encoding: "utf-8"
+                        });
+                        const sizes = await getFileSizes(fileContent);
+                        return [name, sizes] as const;
+                    })
+                )
+            ).toSorted((a, b) => a[1].minBrotli - b[1].minBrotli);
 
-            exports.sort((a, b) => a[1].minBrotli - b[1].minBrotli);
-
-            packageExports.push([pkgJson.name, exports]);
-        }
-    }
-}
+            return [pkgJson.name, exports] as Package;
+        })
+    )
+).filter((entry): entry is Package => entry !== null);
 
 if (!values.quiet) {
     for (const entry of packageExports) {
@@ -89,7 +93,10 @@ if (!values.quiet) {
         console.table(
             entry[1].map(([file, sizes]) => ({
                 file,
-                ...sizes
+                raw: sizes.raw,
+                min: sizes.min,
+                minGz: sizes.minGz,
+                minBrotli: sizes.minBrotli
             }))
         );
     }

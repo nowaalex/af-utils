@@ -7,14 +7,15 @@ import tailwindcss from "@tailwindcss/vite";
 import type { RehypePlugins } from "astro";
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
-import rehypePrettyCode from "rehype-pretty-code";
+import { rehypePrettyCode } from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
 import { visit } from "unist-util-visit";
 import { loadEnv } from "vite";
-import stripTrailingSlash from "./src/utils/stripTrailingSlash";
 import examples from "./integrations/examples";
+import { codeTheme } from "./src/utils/codeTheme";
+import stripTrailingSlash from "./src/utils/stripTrailingSlash";
 
 const env = loadEnv("", process.cwd(), "") as ImportMetaEnv;
 const rehypeLinks: RehypePlugins[number] = () => tree =>
@@ -41,10 +42,7 @@ export default defineConfig({
             rehypePlugins: [
                 rehypeLinks,
                 rehypeSlug,
-                [
-                    rehypePrettyCode,
-                    { theme: "light-plus", keepBackground: false }
-                ]
+                [rehypePrettyCode, { theme: codeTheme, keepBackground: true }]
             ],
             remarkPlugins: [remarkToc, remarkGfm],
             gfm: true
@@ -62,31 +60,54 @@ export default defineConfig({
         mdx(),
         react({
             include: [
-                "**/virtual/react/**/src/code",
-                "**/virtual/react/**/*.{js,jsx,ts,tsx}",
+                "**/virtual/**/react/src/code",
+                "**/virtual/**/react/**/*.{js,jsx,ts,tsx}",
                 "**/scrollend-polyfill/react/**/src/code",
                 "**/scrollend-polyfill/react/**/*.{js,jsx,ts,tsx}"
             ]
         }),
         solid({
             include: [
-                "**/virtual/solid/**/src/code",
-                "**/virtual/solid/**/*.{js,jsx,ts,tsx}"
+                "**/virtual/**/solid/src/code",
+                "**/virtual/**/solid/**/*.{js,jsx,ts,tsx}"
             ]
         }),
         icon({
             include: {
-                logos: ["react", "solidjs-icon", "github-icon", "discord-icon"],
+                logos: [
+                    "react",
+                    "solidjs-icon",
+                    "github-icon",
+                    "discord-icon",
+                    "typescript-icon",
+                    "javascript",
+                    "css-3",
+                    "html-5",
+                    "nodejs-icon",
+                    "vitejs"
+                ],
                 "material-symbols": [
                     "arrow-forward",
                     "arrow-back",
+                    "chevron-right",
+                    "data-object",
+                    "description",
+                    "folder",
+                    "folder-open",
+                    "fullscreen",
+                    "fullscreen-exit",
+                    "left-panel-close",
+                    "left-panel-open",
                     "menu",
-                    "close"
+                    "close",
+                    "settings"
                 ]
             }
         }),
         sitemap({
-            filter: page => !page.startsWith(env.PUBLIC_ORIGIN + "/examples"),
+            filter: page =>
+                !page.startsWith(`${env.PUBLIC_ORIGIN}/examples`) &&
+                !page.startsWith(`${env.PUBLIC_ORIGIN}/example-source`),
             serialize(item) {
                 // trailing slashes must be the same as canonical links
                 item.url = stripTrailingSlash(item.url);

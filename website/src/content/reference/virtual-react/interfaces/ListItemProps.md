@@ -1,4 +1,10 @@
 ---
+title: "Interface: ListItemProps"
+description: Props passed to List item
+package: "@af-utils/virtual-react"
+symbol: ListItemProps
+kind: interface
+referencePath: /virtual/reference/virtual-react/interfaces/ListItemProps
 generated: true
 ---
 
@@ -20,8 +26,8 @@ Props passed to List item
 
 ## Properties
 
-| Property                            | Type                                                                         | Description                                                                                               |
-| ----------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Property                            | Type                                                                         | Description                                                                                            |
+| ----------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | <a id="property-data"></a> `data?`  | `Data`                                                                       | links to [ListProps.itemData](/virtual/reference/virtual-react/interfaces/ListProps#property-itemdata) |
-| <a id="property-index"></a> `index` | `number`                                                                     | item index                                                                                                |
-| <a id="property-model"></a> `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | -                                                                                                         |
+| <a id="property-index"></a> `index` | `number`                                                                     | item index                                                                                             |
+| <a id="property-model"></a> `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | -                                                                                                      |

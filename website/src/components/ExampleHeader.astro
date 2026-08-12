@@ -1,6 +1,7 @@
 ---
-import startCase from "lodash/startCase";
+import { getExampleRepositoryPath } from "@af-utils/examples/config";
 import { Icon } from "astro-icon/components";
+import startCase from "lodash/startCase";
 
 export interface Props {
     path: string;
@@ -31,26 +32,28 @@ const getHeader = (segments: string[]) => {
             return `${segments[0]} Example: ${segments[1]}`;
         default:
             console.warn("Should not have such segments");
-            return "Example: " + segments.join(" ");
+            return `Example: ${segments.join(" ")}`;
     }
 };
 
-const gitPiece = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env.PUBLIC_GITHUB_BRANCH}/examples/src/${path}`;
+const gitPiece = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env.PUBLIC_GITHUB_BRANCH}/${getExampleRepositoryPath(path)}`;
 ---
 
 <div class:list={["flex flex-wrap items-center gap-x-10 gap-y-4", className]}>
     <h1 class="mb-0">{getHeader(path.split("/").map(startCase))}</h1>
     <div class="flex items-center gap-6 font-medium">
-        {Links.map(link => (
+        {
+            Links.map((link) => (
                 <a
                     href={`${link.url}${gitPiece}`}
                     target="_blank"
                     rel="noreferrer"
-                    class="flex items-center gap-1.5 px-2 py-1 no-underline transition-colors hover:bg-violet-50 hover:text-violet-800"
+                    class="flex items-center gap-1.5 px-2 py-1 no-underline transition-colors hover:bg-slate-100 hover:text-blue-800"
                 >
                     {link.icon && <Icon name={link.icon} size={20} />}
                     {link.name}
                 </a>
-            ))}
+            ))
+        }
     </div>
 </div>

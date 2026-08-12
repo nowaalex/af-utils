@@ -1,15 +1,15 @@
 import {
+    assert,
+    type VirtualScroller,
+    VirtualScrollerLayout
+} from "@af-utils/virtual-core";
+import {
+    type CSSProperties,
+    type RefCallback,
     useCallback,
     useRef,
-    useState,
-    type CSSProperties,
-    type RefCallback
+    useState
 } from "react";
-import {
-    assert,
-    VirtualScrollerLayout,
-    type VirtualScroller
-} from "@af-utils/virtual-core";
 import useIsomorphicLayoutEffect from "../useIsomorphicLayoutEffect";
 
 /**

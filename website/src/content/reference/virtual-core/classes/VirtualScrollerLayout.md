@@ -1,4 +1,10 @@
 ---
+title: "Class: VirtualScrollerLayout"
+description: Framework-neutral DOM layout adapter for VirtualScroller.
+package: "@af-utils/virtual-core"
+symbol: VirtualScrollerLayout
+kind: class
+referencePath: /virtual/reference/virtual-core/classes/VirtualScrollerLayout
 generated: true
 ---
 
@@ -30,8 +36,8 @@ Create a DOM layout adapter for one model.
 
 #### Parameters
 
-| Parameter | Type                                                                            |
-| --------- | ------------------------------------------------------------------------------- |
+| Parameter | Type                                                                         |
+| --------- | ---------------------------------------------------------------------------- |
 | `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
 
 #### Returns
@@ -84,8 +90,8 @@ Return a hydration-safe style for the scroll container.
 
 #### Parameters
 
-| Parameter          | Type                                                                                                       | Description                                                                                                                                |
-| ------------------ | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Parameter          | Type                                                                                                    | Description                                                                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `interactiveStyle` | [`VirtualScrollerLayoutStyle`](/virtual/reference/virtual-core/type-aliases/VirtualScrollerLayoutStyle) | Style to expose after the model owns the DOM element. Before attachment, scrolling is disabled while every other declaration is preserved. |
 
 #### Returns
@@ -146,9 +152,9 @@ after the model listeners are installed.
 
 #### Parameters
 
-| Parameter          | Type                                                                                                       |
-| ------------------ | ---------------------------------------------------------------------------------------------------------- |
-| `element`          | `HTMLElement` \| `null`                                                                                    |
+| Parameter          | Type                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------- |
+| `element`          | `HTMLElement` \| `null`                                                                                 |
 | `interactiveStyle` | [`VirtualScrollerLayoutStyle`](/virtual/reference/virtual-core/type-aliases/VirtualScrollerLayoutStyle) |
 
 #### Returns

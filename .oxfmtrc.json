@@ -1,0 +1,20 @@
+{
+    "$schema": "./node_modules/oxfmt/configuration_schema.json",
+    "arrowParens": "avoid",
+    "endOfLine": "lf",
+    "ignorePatterns": [
+        "**/.claude/settings.local.json",
+        "**/*.astro",
+        "**/.astro/**",
+        "**/etc/*.api.md",
+        "packages/virtual/core/scripts/v8/**"
+    ],
+    "jsxSingleQuote": false,
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": false,
+    "sortPackageJson": false,
+    "tabWidth": 4,
+    "trailingComma": "none",
+    "useTabs": false
+}

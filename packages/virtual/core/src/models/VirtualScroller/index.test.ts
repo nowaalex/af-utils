@@ -16,6 +16,33 @@ globalThis.ResizeObserver = TestResizeObserver;
 
 /** Scroll quiet period asserted at the native scrollbar release boundary. */
 const SCROLL_IDLE_TIMEOUT_MS = 128;
+const noop = () => {};
+
+const createScroller = (nativeScrollEnd: boolean) => {
+    const target = nativeScrollEnd
+        ? document.createElement("div")
+        : new EventTarget();
+    const scroller = Object.assign(target, {
+        scrollTop: 0,
+        scroll({ top }: ScrollToOptions) {
+            this.scrollTop = top ?? this.scrollTop;
+        }
+    }) as HTMLElement;
+    Object.defineProperty(scroller, "clientHeight", { value: 200 });
+    if (nativeScrollEnd) {
+        Object.defineProperty(scroller, "onscrollend", { value: null });
+    }
+    return scroller;
+};
+
+const isScrollActive = (model: VirtualScroller) =>
+    (
+        model as unknown as {
+            _scrollActivity: {
+                _nativeScrollActive: boolean;
+            };
+        }
+    )._scrollActivity._nativeScrollActive;
 
 describe("VirtualScroller creation works", () => {
     test("constructor without params works", () => {
@@ -52,7 +79,7 @@ describe("VirtualScroller creation works", () => {
         let error: unknown;
 
         try {
-            new VirtualScroller({ itemCount: -1 });
+            void new VirtualScroller({ itemCount: -1 });
         } catch (caught) {
             error = caught;
         }
@@ -848,7 +875,7 @@ describe("VirtualScroller creation works", () => {
         model.setScroller(scroller);
 
         const calls: string[] = [];
-        let unsubscribeSecond = () => {};
+        let unsubscribeSecond = noop;
 
         model.subscribe(() => calls.push("first"), VirtualScrollerEvent.RANGE);
         unsubscribeSecond = model.subscribe(() => {
@@ -877,31 +904,6 @@ describe("VirtualScroller creation works", () => {
     });
 
     test("tracks fallback and native scroll completion separately", () => {
-        const createScroller = (nativeScrollEnd: boolean) => {
-            const target = nativeScrollEnd
-                ? document.createElement("div")
-                : new EventTarget();
-            const scroller = Object.assign(target, {
-                scrollTop: 0,
-                scroll({ top }: ScrollToOptions) {
-                    this.scrollTop = top ?? this.scrollTop;
-                }
-            }) as HTMLElement;
-            Object.defineProperty(scroller, "clientHeight", { value: 200 });
-            if (nativeScrollEnd) {
-                Object.defineProperty(scroller, "onscrollend", { value: null });
-            }
-            return scroller;
-        };
-        const isScrollActive = (model: VirtualScroller) =>
-            (
-                model as unknown as {
-                    _scrollActivity: {
-                        _nativeScrollActive: boolean;
-                    };
-                }
-            )._scrollActivity._nativeScrollActive;
-
         const fallbackModel = new VirtualScroller({ itemCount: 100 });
         const fallbackScroller = createScroller(false);
         fallbackModel.setScroller(fallbackScroller);

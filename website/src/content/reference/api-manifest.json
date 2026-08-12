@@ -1,0 +1,348 @@
+{
+    "pages": [
+        {
+            "description": "Documentation API reference.",
+            "kind": "project",
+            "package": "",
+            "path": "/virtual/reference/index",
+            "symbol": "",
+            "title": "Documentation"
+        },
+        {
+            "description": "Core framework-agnostic model.",
+            "kind": "module",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/index",
+            "symbol": "",
+            "title": "Module: @af-utils/virtual-core"
+        },
+        {
+            "description": "Core framework-agnostic model.",
+            "kind": "class",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/classes/VirtualScroller",
+            "symbol": "VirtualScroller",
+            "title": "Class: VirtualScroller"
+        },
+        {
+            "description": "Error thrown for an invalid virtual-scroller operation.",
+            "kind": "class",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/classes/VirtualScrollerError",
+            "symbol": "VirtualScrollerError",
+            "title": "Class: VirtualScrollerError"
+        },
+        {
+            "description": "Framework-neutral DOM layout adapter for VirtualScroller.",
+            "kind": "class",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/classes/VirtualScrollerLayout",
+            "symbol": "VirtualScrollerLayout",
+            "title": "Class: VirtualScrollerLayout"
+        },
+        {
+            "description": "All VirtualScroller parameters (that may / may not change over time).",
+            "kind": "interface",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams",
+            "symbol": "VirtualScrollerInitialParams",
+            "title": "Interface: VirtualScrollerInitialParams"
+        },
+        {
+            "description": "VirtualScroller parameters that may change over time. Used as VirtualScroller.set argument type.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams",
+            "symbol": "VirtualScrollerRuntimeParams",
+            "title": "Interface: VirtualScrollerRuntimeParams"
+        },
+        {
+            "description": "Type of a stable machine-readable virtual-scroller error code.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/type-aliases/VirtualScrollerErrorCode",
+            "symbol": "VirtualScrollerErrorCode",
+            "title": "Type Alias: VirtualScrollerErrorCode"
+        },
+        {
+            "description": "VirtualScrollerEvent is exported as a constant, so a separate type is needed to emulate enum behavior.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/type-aliases/VirtualScrollerEvent",
+            "symbol": "VirtualScrollerEvent",
+            "title": "Type Alias: VirtualScrollerEvent"
+        },
+        {
+            "description": "Type Alias: VirtualScrollerEventMask API reference.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/type-aliases/VirtualScrollerEventMask",
+            "symbol": "VirtualScrollerEventMask",
+            "title": "Type Alias: VirtualScrollerEventMask"
+        },
+        {
+            "description": "Numeric snapshot of scroll position",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/type-aliases/VirtualScrollerExactPosition",
+            "symbol": "VirtualScrollerExactPosition",
+            "title": "Type Alias: VirtualScrollerExactPosition"
+        },
+        {
+            "description": "Serializable inline styles shared by server and client layout adapters.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/type-aliases/VirtualScrollerLayoutStyle",
+            "symbol": "VirtualScrollerLayoutStyle",
+            "title": "Type Alias: VirtualScrollerLayoutStyle"
+        },
+        {
+            "description": "Scrollable container type",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/type-aliases/VirtualScrollerScrollElement",
+            "symbol": "VirtualScrollerScrollElement",
+            "title": "Type Alias: VirtualScrollerScrollElement"
+        },
+        {
+            "description": "Assert a condition using the active development or production error build.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/variables/assert",
+            "symbol": "assert",
+            "title": "Variable: assert"
+        },
+        {
+            "description": "Stable machine-readable error codes emitted by the virtual-scroller packages.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/variables/VirtualScrollerErrorCode",
+            "symbol": "VirtualScrollerErrorCode",
+            "title": "Variable: VirtualScrollerErrorCode"
+        },
+        {
+            "description": "Bit flags accepted by VirtualScroller.subscribe and VirtualScroller.getRevision.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/variables/VirtualScrollerEvent",
+            "symbol": "VirtualScrollerEvent",
+            "title": "Variable: VirtualScrollerEvent"
+        },
+        {
+            "description": "Map the current rendered range without first allocating an indexes array.",
+            "kind": "function",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/functions/mapVirtualRange",
+            "symbol": "mapVirtualRange",
+            "title": "Function: mapVirtualRange()"
+        },
+        {
+            "description": "Map the current rendered range and provide the pixel offset of every item.",
+            "kind": "function",
+            "package": "@af-utils/virtual-core",
+            "path": "/virtual/reference/virtual-core/functions/mapVirtualRangeWithOffset",
+            "symbol": "mapVirtualRangeWithOffset",
+            "title": "Function: mapVirtualRangeWithOffset()"
+        },
+        {
+            "description": "React components and hooks used to connect to VirtualScroller.",
+            "kind": "module",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/index",
+            "symbol": "",
+            "title": "Module: @af-utils/virtual-react"
+        },
+        {
+            "description": "Props passed to List item",
+            "kind": "interface",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/interfaces/ListItemProps",
+            "symbol": "ListItemProps",
+            "title": "Interface: ListItemProps"
+        },
+        {
+            "description": "List component props",
+            "kind": "interface",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/interfaces/ListProps",
+            "symbol": "ListProps",
+            "title": "Interface: ListProps"
+        },
+        {
+            "description": "React component. Small abstraction, which in 90% cases allows to avoid hook boilerplate.",
+            "kind": "function",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/functions/List",
+            "symbol": "List",
+            "title": "Function: List()"
+        },
+        {
+            "description": "React hook. Synchronizes scroller with model.",
+            "kind": "function",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/functions/useScroller",
+            "symbol": "useScroller",
+            "title": "Function: useScroller()"
+        },
+        {
+            "description": "React hook. Calls useVirtualModel and synchronizes it with props",
+            "kind": "function",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/functions/useVirtual",
+            "symbol": "useVirtual",
+            "title": "Function: useVirtual()"
+        },
+        {
+            "description": "Subscribe to model changes without scheduling a React render.",
+            "kind": "function",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/functions/useVirtualEffect",
+            "symbol": "useVirtualEffect",
+            "title": "Function: useVirtualEffect()"
+        },
+        {
+            "description": "Observe row and column sizes for one rendered grid cell.",
+            "kind": "function",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/functions/useVirtualGridItemRef",
+            "symbol": "useVirtualGridItemRef",
+            "title": "Function: useVirtualGridItemRef()"
+        },
+        {
+            "description": "Observe one rendered item using a stable React callback ref.",
+            "kind": "function",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/functions/useVirtualItemRef",
+            "symbol": "useVirtualItemRef",
+            "title": "Function: useVirtualItemRef()"
+        },
+        {
+            "description": "Connect stable React refs to the framework-neutral virtual layout adapter.",
+            "kind": "function",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/functions/useVirtualLayout",
+            "symbol": "useVirtualLayout",
+            "title": "Function: useVirtualLayout()"
+        },
+        {
+            "description": "React hook. Creates and stores exactly one VirtualScroller instance. It is not recreated during component lifecycle.",
+            "kind": "function",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/functions/useVirtualModel",
+            "symbol": "useVirtualModel",
+            "title": "Function: useVirtualModel()"
+        },
+        {
+            "description": "Re-render the current component when selected model events are published.",
+            "kind": "function",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/functions/useVirtualSnapshot",
+            "symbol": "useVirtualSnapshot",
+            "title": "Function: useVirtualSnapshot()"
+        },
+        {
+            "description": "Solid components and primitives used to connect to VirtualScroller.",
+            "kind": "module",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/index",
+            "symbol": "",
+            "title": "Module: @af-utils/virtual-solid"
+        },
+        {
+            "description": "Props passed to one Solid virtual-list item component.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/interfaces/ListItemProps",
+            "symbol": "ListItemProps",
+            "title": "Interface: ListItemProps"
+        },
+        {
+            "description": "DOM refs and hydration-safe styles produced by createVirtualLayout.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/interfaces/VirtualLayoutBinding",
+            "symbol": "VirtualLayoutBinding",
+            "title": "Interface: VirtualLayoutBinding"
+        },
+        {
+            "description": "Props accepted by the Solid List component.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/type-aliases/ListProps",
+            "symbol": "ListProps",
+            "title": "Type Alias: ListProps"
+        },
+        {
+            "description": "A static value or a reactive Solid accessor returning that value.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/type-aliases/MaybeAccessor",
+            "symbol": "MaybeAccessor",
+            "title": "Type Alias: MaybeAccessor"
+        },
+        {
+            "description": "Callback suitable for a Solid HTMLElement ref attribute.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/type-aliases/VirtualElementRef",
+            "symbol": "VirtualElementRef",
+            "title": "Type Alias: VirtualElementRef"
+        },
+        {
+            "description": "Style declarations accepted by the Solid virtual layout adapter.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/type-aliases/VirtualSolidStyle",
+            "symbol": "VirtualSolidStyle",
+            "title": "Type Alias: VirtualSolidStyle"
+        },
+        {
+            "description": "Create a Solid-owned VirtualScroller and synchronize reactive parameters.",
+            "kind": "function",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/functions/createVirtual",
+            "symbol": "createVirtual",
+            "title": "Function: createVirtual()"
+        },
+        {
+            "description": "Create a Solid ref that observes row and column sizes for one grid cell.",
+            "kind": "function",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/functions/createVirtualGridItemRef",
+            "symbol": "createVirtualGridItemRef",
+            "title": "Function: createVirtualGridItemRef()"
+        },
+        {
+            "description": "Create a Solid ref that observes one rendered virtual item.",
+            "kind": "function",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/functions/createVirtualItemRef",
+            "symbol": "createVirtualItemRef",
+            "title": "Function: createVirtualItemRef()"
+        },
+        {
+            "description": "Connect Solid refs to the framework-neutral virtual DOM layout adapter.",
+            "kind": "function",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/functions/createVirtualLayout",
+            "symbol": "createVirtualLayout",
+            "title": "Function: createVirtualLayout()"
+        },
+        {
+            "description": "Create a Solid accessor updated by selected model events.",
+            "kind": "function",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/functions/createVirtualSnapshot",
+            "symbol": "createVirtualSnapshot",
+            "title": "Function: createVirtualSnapshot()"
+        },
+        {
+            "description": "Render a virtual Solid list with model-owned DOM geometry.",
+            "kind": "function",
+            "package": "@af-utils/virtual-solid",
+            "path": "/virtual/reference/virtual-solid/functions/List",
+            "symbol": "List",
+            "title": "Function: List()"
+        }
+    ]
+}

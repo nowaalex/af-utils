@@ -21,5 +21,5 @@ Just import once at the top level. Does nothing when used in `node` environment.
 
 Scroll is considered ended when:
 
--   touch events are not active ( user released touch );
--   `scroll` event was not fired within `100ms` since last invocation.
+- touch events are not active ( user released touch );
+- `scroll` event was not fired within `100ms` since last invocation.

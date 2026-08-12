@@ -21,8 +21,10 @@ const createEntry = (
         borderBoxSize: [{ blockSize, inlineSize }]
     }) as unknown as ResizeObserverEntry;
 
+const noopResizeObserverCallback: ResizeObserverCallback = () => {};
+
 const createObserverHarness = () => {
-    let callback: ResizeObserverCallback = () => {};
+    let callback = noopResizeObserverCallback;
     const observe = vi.fn();
     const unobserve = vi.fn();
     const disconnect = vi.fn();

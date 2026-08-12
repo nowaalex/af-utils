@@ -1,4 +1,10 @@
 ---
+title: "Variable: VirtualScrollerEvent"
+description: Bit flags accepted by VirtualScroller.subscribe and VirtualScroller.getRevision.
+package: "@af-utils/virtual-core"
+symbol: VirtualScrollerEvent
+kind: variable
+referencePath: /virtual/reference/virtual-core/variables/VirtualScrollerEvent
 generated: true
 ---
 

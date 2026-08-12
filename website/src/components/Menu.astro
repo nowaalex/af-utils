@@ -21,7 +21,7 @@ interface Props {
 }
 ---
 
-<input aria-hidden="true" type="checkbox" class="ds-menu-checkbox hidden">
+<input aria-hidden="true" type="checkbox" class="ds-menu-checkbox hidden" />
 <div
     class:list={[
         "flex flex-col lg:overflow-y-auto lg:border-r lg:drop-shadow-sm",
@@ -29,14 +29,14 @@ interface Props {
     ]}
 >
     <div
-        class="flex-none sticky top-0 flex items-center h-[62px] gap-4 border-violet-200 border-b bg-menu px-4 z-[20] drop-shadow-sm lg:drop-shadow-none"
+        class="flex-none sticky top-0 flex items-center h-[62px] gap-4 border-slate-200 border-b bg-menu px-4 z-[20] drop-shadow-sm lg:drop-shadow-none"
     >
         <button class="ds-menu-opener hidden">
             <Icon
                 size={24}
                 name="material-symbols:menu"
                 aria-label="open menu"
-                class="text-violet-700"
+                class="text-blue-700"
             />
         </button>
         <button class="ds-menu-closer hidden">
@@ -55,7 +55,7 @@ interface Props {
         aria-label="Main navigation"
         class="ds-menu-items z-10 flex-auto bg-menu p-4 text-sm"
     >
-        {items.map(node => <MenuSubtree node={node} depth={0} />)}
+        {items.map((node) => <MenuSubtree node={node} depth={0} />)}
 
         <h2 class="mb-2 mt-5 text-base font-semibold">Links</h2>
 
@@ -65,7 +65,7 @@ interface Props {
                     href={`https://github.com/${import.meta.env.PUBLIC_GITHUB_SUFFIX}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex items-center gap-2 px-2 py-1 font-normal no-underline transition-colors hover:bg-violet-100 hover:text-violet-800"
+                    class="flex items-center gap-2 px-2 py-1 font-normal no-underline transition-colors hover:bg-slate-200 hover:text-slate-950"
                 >
                     <Icon name="logos:github-icon" size={20} />Github
                 </a>
@@ -75,7 +75,7 @@ interface Props {
                     href={import.meta.env.PUBLIC_DISCORD_LINK}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex items-center gap-2 px-2 py-1 font-normal no-underline transition-colors hover:bg-cyan-100 hover:text-cyan-900"
+                    class="flex items-center gap-2 px-2 py-1 font-normal no-underline transition-colors hover:bg-indigo-100 hover:text-indigo-900"
                 >
                     <Icon name="logos:discord-icon" size={20} />Discord
                 </a>
@@ -85,33 +85,35 @@ interface Props {
 </div>
 <menu-events-appender hidden></menu-events-appender>
 <script>
-class MenuEventsAppender extends HTMLElement {
-    constructor() {
-        super();
+    class MenuEventsAppender extends HTMLElement {
+        /** Connects the mobile menu disclosure and navigation handlers. */
+        constructor() {
+            super();
 
-        const menu =
-            document.querySelector<HTMLInputElement>(".ds-menu-checkbox")!;
+            const menu =
+                document.querySelector<HTMLInputElement>(".ds-menu-checkbox");
+            if (!menu) return;
 
-        const toggleMenu = () => menu.toggleAttribute("checked");
+            const toggleMenu = () => menu.toggleAttribute("checked");
 
-        document
-            .querySelectorAll(".ds-menu-opener, .ds-menu-closer")
-            .forEach(btn => {
-                btn.addEventListener("click", toggleMenu);
-            });
+            document
+                .querySelectorAll(".ds-menu-opener, .ds-menu-closer")
+                .forEach((btn) => {
+                    btn.addEventListener("click", toggleMenu);
+                });
 
-        document
-            .querySelector(".ds-menu-items")!
-            .addEventListener("click", e => {
-                if (
-                    e.target instanceof HTMLAnchorElement &&
-                    e.target.getAttribute("href")?.startsWith("/")
-                ) {
-                    toggleMenu();
-                }
-            });
+            document
+                .querySelector(".ds-menu-items")
+                ?.addEventListener("click", (e) => {
+                    if (
+                        e.target instanceof HTMLAnchorElement &&
+                        e.target.getAttribute("href")?.startsWith("/")
+                    ) {
+                        toggleMenu();
+                    }
+                });
+        }
     }
-}
 
-customElements.define("menu-events-appender", MenuEventsAppender);
+    customElements.define("menu-events-appender", MenuEventsAppender);
 </script>

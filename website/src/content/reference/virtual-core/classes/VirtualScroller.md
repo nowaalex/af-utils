@@ -1,4 +1,10 @@
 ---
+title: "Class: VirtualScroller"
+description: Core framework-agnostic model.
+package: "@af-utils/virtual-core"
+symbol: VirtualScroller
+kind: class
+referencePath: /virtual/reference/virtual-core/classes/VirtualScroller
 generated: true
 ---
 
@@ -46,8 +52,8 @@ Create a virtual-scroller model from optional initial geometry.
 
 #### Parameters
 
-| Parameter | Type                                                                                                         |
-| --------- | ------------------------------------------------------------------------------------------------------------ |
+| Parameter | Type                                                                                                      |
+| --------- | --------------------------------------------------------------------------------------------------------- |
 | `params?` | [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) |
 
 #### Returns
@@ -56,11 +62,11 @@ Create a virtual-scroller model from optional initial geometry.
 
 ## Properties
 
-| Property                                      | Modifier   | Type      | Default value | Description                                                                                                                                                                                                                                                                                                                           |
-| --------------------------------------------- | ---------- | --------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Property                                      | Modifier   | Type      | Default value | Description                                                                                                                                                                                                                                                                                                                  |
+| --------------------------------------------- | ---------- | --------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | <a id="property-from"></a> `from`             | `readonly` | `number`  | `0`           | Items range start with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-overscancount) included **Remarks** [from](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#property-to) |
-| <a id="property-horizontal"></a> `horizontal` | `readonly` | `boolean` | `false`       | Scroll container orientation. **Remarks** Determines properties used for dimension/scroll calculations, for example: - `scrollTop` / `scrollLeft`; - `height` / `width`; - `innerHeight` / `innerWidth`.                                                                                                                              |
-| <a id="property-scrollsize"></a> `scrollSize` | `readonly` | `number`  | `0.0`         | Sum of all published item sizes, in CSS pixels.                                                                                                                                                                                                                                                                                       |
+| <a id="property-horizontal"></a> `horizontal` | `readonly` | `boolean` | `false`       | Scroll container orientation. **Remarks** Determines properties used for dimension/scroll calculations, for example: - `scrollTop` / `scrollLeft`; - `height` / `width`; - `innerHeight` / `innerWidth`.                                                                                                                     |
+| <a id="property-scrollsize"></a> `scrollSize` | `readonly` | `number`  | `0.0`         | Sum of all published item sizes, in CSS pixels.                                                                                                                                                                                                                                                                              |
 | <a id="property-to"></a> `to`                 | `readonly` | `number`  | `0`           | Items range end with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-overscancount) included **Remarks** [from](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#property-to)   |
 
 ## Accessors
@@ -421,8 +427,8 @@ Synchronize runtime parameters
 
 #### Parameters
 
-| Parameter       | Type                                                                                                         | Description        |
-| --------------- | ------------------------------------------------------------------------------------------------------------ | ------------------ |
+| Parameter       | Type                                                                                                      | Description        |
+| --------------- | --------------------------------------------------------------------------------------------------------- | ------------------ |
 | `runtimeParams` | [`VirtualScrollerRuntimeParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams) | runtime parameters |
 
 #### Returns
@@ -484,8 +490,8 @@ Notify model about items quantity change
 
 #### Parameters
 
-| Parameter   | Type     | Description                                                                                                                                                 |
-| ----------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Parameter   | Type     | Description                                                                                                                                              |
+| ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `itemCount` | `number` | new items quantity. [VirtualScrollerRuntimeParams.itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-itemcount) |
 
 #### Returns
@@ -504,8 +510,8 @@ Informs model about scrollable element.
 
 #### Parameters
 
-| Parameter | Type                                                                                                                        | Description      |
-| --------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| Parameter | Type                                                                                                                     | Description      |
+| --------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------- |
 | `element` | \| [`VirtualScrollerScrollElement`](/virtual/reference/virtual-core/type-aliases/VirtualScrollerScrollElement) \| `null` | scroller element |
 
 #### Returns

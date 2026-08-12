@@ -1,3 +1,4 @@
+// oxlint-disable-next-line import/no-unassigned-import -- Importing installs the deterministic ResizeObserver benchmark fixture.
 import "../../benchmarks/resizeObserver";
 import { bench } from "vitest";
 import VirtualScroller from "../../models/VirtualScroller";

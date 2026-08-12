@@ -1,4 +1,10 @@
 ---
+title: "Function: useVirtualLayout()"
+description: Connect stable React refs to the framework-neutral virtual layout adapter.
+package: "@af-utils/virtual-react"
+symbol: useVirtualLayout
+kind: function
+referencePath: /virtual/reference/virtual-react/functions/useVirtualLayout
 generated: true
 ---
 

@@ -1,9 +1,10 @@
 ---
-import Documentation from "layouts/Documentation.astro";
-import { getMenuMapForProjectExamples } from "utils/examples";
-import defaultsDeep from "lodash/defaultsDeep";
 import { getImage } from "astro:assets";
 import ogScrollend from "assets/og/scrollend-polyfill.png";
+import Documentation from "layouts/Documentation.astro";
+import defaultsDeep from "lodash/defaultsDeep";
+import { getMenuMapForProjectExamples } from "utils/examples";
+
 export type { Props } from "layouts/Base.astro";
 
 const items = [

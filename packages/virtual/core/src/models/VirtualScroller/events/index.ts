@@ -1,19 +1,19 @@
+import { assert } from "#virtual-errors";
 import {
     type VirtualScrollerEvent,
     VirtualScrollerEventFlag,
     type VirtualScrollerEventMask
 } from "../../../constants";
-import { assert } from "#virtual-errors";
 import { VirtualScrollerErrorIndex } from "../../../errors/codes";
 
 /** Tuple positions used for event revisions. */
 const enum EventRevisionIndex {
     /** Tuple position used for the `RANGE` event revision. */
-    RANGE,
+    RANGE = 0,
     /** Tuple position used for the `SCROLL_SIZE` event revision. */
-    SCROLL_SIZE,
+    SCROLL_SIZE = 1,
     /** Tuple position used for the `SIZES` event revision. */
-    SIZES
+    SIZES = 2
 }
 
 type Listener = () => void;
@@ -181,7 +181,7 @@ class VirtualScrollerEvents {
     private _notify(events: VirtualScrollerEventMask) {
         const subscriptions = this._subscriptions;
         for (let i = 0, length = subscriptions.length; i < length; i++) {
-            const subscription = subscriptions[i]!;
+            const subscription = subscriptions[i];
             if (subscription.events & events) subscription.callback();
         }
     }

@@ -11,21 +11,21 @@ import { assert as assertInternal } from "#virtual-errors";
  */
 export const assert: (condition: boolean, code: number) => asserts condition =
     assertInternal;
+export type { VirtualScrollerEventMask } from "./constants";
 export { VirtualScrollerEvent } from "./constants";
-export { VirtualScrollerError } from "./errors/VirtualScrollerError";
 export { VirtualScrollerErrorCode } from "./errors/codes";
+export { VirtualScrollerError } from "./errors/VirtualScrollerError";
 export { default as VirtualScroller } from "./models/VirtualScroller";
-export { default as VirtualScrollerLayout } from "./models/VirtualScrollerLayout";
 export type { VirtualScrollerLayoutStyle } from "./models/VirtualScrollerLayout";
+export { default as VirtualScrollerLayout } from "./models/VirtualScrollerLayout";
+
+export type {
+    VirtualScrollerExactPosition,
+    VirtualScrollerInitialParams,
+    VirtualScrollerRuntimeParams,
+    VirtualScrollerScrollElement
+} from "./types";
 export {
     mapVirtualRange,
     mapVirtualRangeWithOffset
 } from "./utils/rangeMappers";
-
-export type {
-    VirtualScrollerExactPosition,
-    VirtualScrollerScrollElement,
-    VirtualScrollerInitialParams,
-    VirtualScrollerRuntimeParams
-} from "./types";
-export type { VirtualScrollerEventMask } from "./constants";

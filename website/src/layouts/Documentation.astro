@@ -1,12 +1,14 @@
 ---
-import BaseLayout from "./Base.astro";
+import type { MenuItem } from "components/Menu.astro";
 import Menu from "components/Menu.astro";
 import NextPrevBlock from "components/NextPrevBlock.astro";
 import type { Props as BaseLayoutProps } from "layouts/Base.astro";
-import type { MenuItem } from "components/Menu.astro";
+import BaseLayout from "./Base.astro";
 
 function flattenMenu(arr: MenuItem[] | readonly MenuItem[]): MenuItem[] {
-    return arr.flatMap(k => (k.children?.length ? flattenMenu(k.children) : k));
+    return arr.flatMap((k) =>
+        k.children?.length ? flattenMenu(k.children) : k
+    );
 }
 
 export interface Props extends BaseLayoutProps {
@@ -24,7 +26,7 @@ const flattenedItems = flattenMenu(items);
     <div class="h-screen flex flex-col lg:flex-row">
         <Menu items={items} productName={productName} class="min-w-[20em]" />
         <div
-            class="flex flex-col flex-auto gap-8 overflow-auto bg-gradient-to-br from-white via-white to-violet-50/70 p-4"
+            class="flex flex-col flex-auto gap-8 overflow-auto bg-gradient-to-br from-white via-white to-slate-50 p-4"
         >
             <main class:list={["prose flex-auto", mainClass]}>
                 <slot />

@@ -11,9 +11,11 @@ interface Props {
 }
 
 const { items } = Astro.props;
+const singleItemSizes = items[0]?.[0];
 ---
 
-{items.length === 0 ? null : items.length === 1 ? (
+{
+    items.length === 0 ? null : items.length === 1 ? (
         <table>
             <thead>
                 <tr>
@@ -22,10 +24,12 @@ const { items } = Astro.props;
                 </tr>
             </thead>
             <tbody>
-                {sizeColumns.map(s => (
+                {sizeColumns.map((s) => (
                     <tr>
                         <td>{s}</td>
-                        <td>{prettyBytes(items[0]![0][s])}</td>
+                        <td>
+                            {singleItemSizes && prettyBytes(singleItemSizes[s])}
+                        </td>
                     </tr>
                 ))}
             </tbody>
@@ -35,7 +39,7 @@ const { items } = Astro.props;
             <thead>
                 <tr>
                     <th>Package</th>
-                    {sizeColumns.map(col => (
+                    {sizeColumns.map((col) => (
                         <th>{col}</th>
                     ))}
                 </tr>
@@ -44,11 +48,12 @@ const { items } = Astro.props;
                 {items.map(([sizes, name]) => (
                     <tr>
                         <td>{name}</td>
-                        {sizeColumns.map(col => (
+                        {sizeColumns.map((col) => (
                             <td>{prettyBytes(sizes[col])}</td>
                         ))}
                     </tr>
                 ))}
             </tbody>
         </table>
-    )}
+    )
+}

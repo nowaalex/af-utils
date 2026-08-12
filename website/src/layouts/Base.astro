@@ -4,6 +4,7 @@ import "styles/base.css";
 import { ClientRouter } from "astro:transitions";
 import HeadFont from "components/head/Font.astro";
 import SEO from "components/head/Seo.astro";
+
 export type { Props } from "components/head/Seo.astro";
 ---
 
@@ -13,8 +14,8 @@ export type { Props } from "components/head/Seo.astro";
         <SEO {...Astro.props} />
         <HeadFont />
         <slot name="head" />
-        <meta name="viewport" content="width=device-width">
-        <meta name="generator" content={Astro.generator}>
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
         <ClientRouter />
     </head>
     <body>

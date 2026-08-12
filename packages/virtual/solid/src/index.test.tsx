@@ -27,6 +27,9 @@ const Item = (props: ListItemProps): JSX.Element => (
     </div>
 );
 
+const noopDispose = () => {};
+const noopSetItemCount = (_value: number) => {};
+
 describe("Solid virtual adapter", () => {
     let container: HTMLDivElement;
 
@@ -42,8 +45,8 @@ describe("Solid virtual adapter", () => {
 
     test("updates model parameters from a Solid accessor", () => {
         const setSpy = vi.spyOn(VirtualScroller.prototype, "set");
-        let disposeRoot = () => {};
-        let setItemCount = (_value: number) => {};
+        let disposeRoot = noopDispose;
+        let setItemCount = noopSetItemCount;
         let model: VirtualScroller | undefined;
 
         createRoot(dispose => {

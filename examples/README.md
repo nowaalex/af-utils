@@ -11,11 +11,25 @@ Every project under `examples/src/**` is a standalone npm project. It must be po
 
 Run `pnpm examples:versions` after changing a public package version. `pnpm examples:versions:check` enforces the contract in CI, and the Changesets release PR updates these versions automatically.
 
+Virtual examples are grouped by behavior rather than framework:
+`virtual/<category>/<example>/<framework>`. For example,
+`virtual/list/simple/react` and `virtual/list/simple/solid` are standalone
+implementations of the same example. Framework-specific integrations may have
+only one implementation, such as `virtual/list/bootstrap/react`.
+
+Shared behavioral tests live at `virtual/<category>/<example>/tests`. A
+group-level `style.module.css` is the visual source of truth when an example
+has multiple implementations; `pnpm examples:sync` copies it into each
+standalone project and generates Solid entrypoints and package metadata. CI
+runs `pnpm examples:sync:check`.
+
 The standalone guarantee applies to the documentation branch after its corresponding npm release. A development or release branch that intentionally uses an unreleased API can only run inside the monorepo until that package version has been published; a registry-only sandbox cannot install code that does not exist in the registry yet.
 
 ## Adding an example
 
-1. Create a private package under `examples/src/<project>/...` that can install and run on its own.
+1. Create a private package under
+   `examples/src/<project>/<category>/<example>/<framework>` that can install
+   and run on its own.
 2. Add `src/code.tsx` and describe the example in `README.md`.
 3. Run `pnpm examples:versions` and `pnpm install` from the repository root.
 
@@ -23,6 +37,39 @@ The website discovers `src/code.tsx` and `README.md` automatically. The first
 README paragraph is used as the page description, so no separate metadata or
 website route needs to be added.
 
+`examples/structure.json` is the declarative source of truth for the examples
+directory, entry file, frameworks, and public route aliases. `examples/config.ts`
+derives paths and route mappings from it. Website integrations, components,
+and tests must consume this configuration instead of assembling physical paths
+themselves. Vite file discovery stays in the colocated
+`examples/src/catalog.ts`, so its glob patterns are relative to the files they
+describe.
+
+The Astro integration injects one prerendered preview route per discovered
+implementation. This gives Astro a static framework import for SSR and a
+separate lazy hydration chunk for each example without maintaining a manual
+component registry.
+
+Example source is highlighted by Shiki while Astro prerenders the site. The
+generated HTML fragments share the same theme as Markdown code blocks and are
+fetched only when the code pane becomes visible or a file is selected. Shiki
+is never shipped to the browser; sandbox iframes are not assigned a `src` until
+their tab is opened. Keep syntax-highlighting configuration in
+`website/src/utils/codeTheme.ts` rather than configuring individual views.
+
+`pnpm test:examples` builds the production documentation site, discovers every
+standalone example, and runs the integration suite in Chromium and Firefox.
+Every route gets a hydration/error smoke test. Groups with multiple frameworks
+additionally get an exact screenshot comparison; keep generated data
+deterministic so pixel differences represent real rendering differences.
+
+Tests that exercise behavior shared by all implementations belong in the
+group-level `tests` directory and use `describeExample` to run once per
+framework. Native scrollbar pointer tests run in Chromium because headless
+Firefox exposes overlay scrollbars that Playwright cannot drag; route,
+hydration, error, programmatic scrolling, and pixel-parity checks still run in
+both browsers.
+
 If an example cannot be server-rendered, set
 `"af-utils": { "astroClientOnly": "react" }` (or another Astro renderer name)
-in its `package.json`. Omit this field for the normal `client:idle` preview.
+in its `package.json`. Omit this field for the normal `client:visible` preview.

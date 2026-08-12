@@ -1,5 +1,5 @@
-import { useCallback, type RefCallback } from "react";
 import type { VirtualScroller } from "@af-utils/virtual-core";
+import { type RefCallback, useCallback } from "react";
 
 /** @public Observe one rendered item using a stable React callback ref. */
 export const useVirtualItemRef = (
