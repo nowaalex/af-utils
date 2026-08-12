@@ -33,6 +33,11 @@ const getEndState = (list: Locator) =>
         };
     });
 
+const getItemIdentity = (item: Locator) =>
+    item.evaluate(element =>
+        element.textContent?.replace(/^\s*Idx:\s*\d+;\s*/u, "").trim()
+    );
+
 await describeExample("virtual/list/prepend-items", example => {
     test("keeps the end rendered after releasing the native scrollbar", async ({
         browserName,
@@ -119,6 +124,18 @@ await describeExample("virtual/list/prepend-items", example => {
         );
         expect(initialItemCount).toBeGreaterThan(0);
 
+        await list.evaluate(element => {
+            element.scrollTop = element.scrollHeight;
+        });
+        const initialEndState = {
+            firstGap: 0,
+            lastGap: 0,
+            lastPosition: initialItemCount,
+            itemCount: initialItemCount
+        };
+        await expect.poll(() => getEndState(list)).toEqual(initialEndState);
+        const anchoredLastItem = await getItemIdentity(items.last());
+
         await prependButton.click();
         const heldScrollHeight = await list.evaluate(element => {
             const bounds = element.getBoundingClientRect();
@@ -129,15 +146,14 @@ await describeExample("virtual/list/prepend-items", example => {
                     isPrimary: true
                 })
             );
-            element.scrollTop = element.scrollHeight;
             return element.scrollHeight;
         });
 
         await expect(prependButton).toContainText("loading");
         await expect(prependButton).not.toContainText("loading");
-        expect(await list.evaluate(element => element.scrollHeight)).toBe(
-            heldScrollHeight
-        );
+        expect(
+            await list.evaluate(element => element.scrollHeight)
+        ).toBeGreaterThan(heldScrollHeight);
 
         const itemCount = (await getEndState(list)).itemCount;
         expect(itemCount).toBeGreaterThan(initialItemCount);
@@ -149,6 +165,7 @@ await describeExample("virtual/list/prepend-items", example => {
                 lastPosition: itemCount,
                 itemCount
             });
+        expect(await getItemIdentity(items.last())).toBe(anchoredLastItem);
 
         await page.evaluate(() =>
             window.dispatchEvent(

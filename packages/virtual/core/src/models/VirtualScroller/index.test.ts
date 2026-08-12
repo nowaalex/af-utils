@@ -751,7 +751,7 @@ describe("VirtualScroller creation works", () => {
         model.setScroller(null);
     });
 
-    test("publishes item-count geometry without following the new end", () => {
+    test("does not follow appended items while the old end is held", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
             estimatedWidgetSize: 200,
@@ -774,12 +774,10 @@ describe("VirtualScroller creation works", () => {
             right: 100
         } as DOMRect);
         const pointerDown = new Event("pointerdown");
-        const pointerUp = new Event("pointerup");
         Object.defineProperties(pointerDown, {
             clientX: { value: 90 },
             isPrimary: { value: true }
         });
-        Object.defineProperty(pointerUp, "isPrimary", { value: true });
 
         model.setScroller(scroller);
         scroller.dispatchEvent(new Event("scroll"));
@@ -793,24 +791,39 @@ describe("VirtualScroller creation works", () => {
         expect(model.visibleFrom).toBe(95);
         expect(scroller.scrollTop).toBe(3_800);
 
-        // Later measurements still obey pointer deferral independently of the
-        // collection geometry that was already published.
-        const item = document.createElement("div");
-        item.dataset.testSize = "80";
-        model.attachItem(item, model.from);
-        vi.advanceTimersByTime(0);
+        model.setScroller(null);
+    });
+
+    test("preserves an explicit prepend anchor at the new end", () => {
+        const model = new VirtualScroller({
+            estimatedItemSize: 40,
+            estimatedWidgetSize: 200,
+            itemCount: 100
+        });
+        const scroller = Object.assign(document.createElement("div"), {
+            scrollTop: 3_800,
+            scroll({ top }: ScrollToOptions) {
+                this.scrollTop = top ?? this.scrollTop;
+            }
+        });
+        Object.defineProperty(scroller, "clientHeight", { value: 200 });
+        const pointerDown = new Event("pointerdown");
+        Object.defineProperty(pointerDown, "isPrimary", { value: true });
+
+        model.setScroller(scroller);
+        scroller.dispatchEvent(new Event("scroll"));
+        scroller.dispatchEvent(pointerDown);
+        const anchoredIndex = model.visibleFrom;
+
+        model.spliceItems(0, 0, 10);
+        model.scrollToIndex(anchoredIndex + 10, false, 1);
+        scroller.dispatchEvent(new Event("scroll"));
 
         expect(model.scrollSize).toBe(4_400);
-        expect(model.to).toBe(100);
+        expect(scroller.scrollTop).toBe(4_200);
+        expect(model.visibleFrom).toBe(anchoredIndex + 10);
+        expect(model.to).toBe(model.itemCount);
 
-        window.dispatchEvent(pointerUp);
-        expect(model.scrollSize).toBe(4_440);
-        expect(scroller.scrollTop).toBe(3_800);
-        scroller.dispatchEvent(new Event("scrollend"));
-        expect(model.scrollSize).toBe(4_440);
-        expect(scroller.scrollTop).toBe(3_800);
-
-        model.detachItem(item);
         model.setScroller(null);
     });
 

@@ -57,9 +57,15 @@ onUnmounted(() => unsubscribe());
 </script>
 
 <template>
-    <VirtualList :model="model">
+    <VirtualList :model="model" role="list" aria-label="Load on demand list">
         <template #default="{ model: itemModel, index }">
-            <div v-virtual-item="[itemModel, index]" :class="css.item">
+            <div
+                v-virtual-item="[itemModel, index]"
+                :class="css.item"
+                role="listitem"
+                :aria-posinset="index + 1"
+                :aria-setsize="itemModel.itemCount"
+            >
                 <div :class="css.itemHeader">some picture</div>
                 <p>{{ posts[index] }}</p>
             </div>

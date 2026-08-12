@@ -35,7 +35,13 @@ const Item = memo<ListItemProps<string[]>>(({ model, index, data }) => {
     const posts = data as string[];
 
     return (
-        <div ref={useVirtualItemRef(model, index)} className={css.item}>
+        <div
+            ref={useVirtualItemRef(model, index)}
+            className={css.item}
+            role="listitem"
+            aria-posinset={index + 1}
+            aria-setsize={model.itemCount}
+        >
             <div className={css.itemHeader}>some picture</div>
             <p>{posts[index]}</p>
         </div>
@@ -66,7 +72,12 @@ const Posts = () => {
     );
 
     return (
-        <List model={model} itemData={posts}>
+        <List
+            model={model}
+            itemData={posts}
+            role="list"
+            aria-label="Load on demand list"
+        >
             {Item}
         </List>
     );

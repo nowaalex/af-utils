@@ -90,6 +90,8 @@ export default class Posts extends LitElement {
         return html`<div
             ${this._layout.scrollerRef}
             data-layout
+            role="list"
+            aria-label="Load on demand list"
             style=${virtualStyle(this._layout.scrollerStyle)}
         >
             <div
@@ -107,6 +109,9 @@ export default class Posts extends LitElement {
                         index => html`<div
                             ${virtualItem(model, index)}
                             class=${css.item}
+                            role="listitem"
+                            aria-posinset=${index + 1}
+                            aria-setsize=${model.itemCount}
                         >
                             <div class=${css.itemHeader}>some picture</div>
                             <p>${this._posts[index]}</p>

@@ -67,11 +67,22 @@
     });
 </script>
 
-<div use:scroller style={scrollerStyle}>
+<div
+    use:scroller
+    style={scrollerStyle}
+    role="list"
+    aria-label="Load on demand list"
+>
     <div use:size style={sizeStyle}>
         <div use:items style={itemsStyle}>
             {#each $range as index (index)}
-                <div use:virtualItem={{ model, index }} class={css.item}>
+                <div
+                    use:virtualItem={{ model, index }}
+                    class={css.item}
+                    role="listitem"
+                    aria-posinset={index + 1}
+                    aria-setsize={model.itemCount}
+                >
                     <div class={css.itemHeader}>some picture</div>
                     <p>{posts[index]}</p>
                 </div>

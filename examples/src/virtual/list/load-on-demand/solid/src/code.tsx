@@ -31,7 +31,13 @@ const fetchDescriptions = (start: number) =>
     });
 
 const Item = (props: ListItemProps<string[]>) => (
-    <div ref={createVirtualItemRef(props.model, props.index)} class={css.item}>
+    <div
+        ref={createVirtualItemRef(props.model, props.index)}
+        class={css.item}
+        role="listitem"
+        aria-posinset={props.index + 1}
+        aria-setsize={props.model.itemCount}
+    >
         <div class={css.itemHeader}>some picture</div>
         <p>{props.data?.[props.index]}</p>
     </div>
@@ -62,7 +68,12 @@ const Posts = () => {
     });
 
     return (
-        <List model={model} itemData={posts()}>
+        <List
+            model={model}
+            itemData={posts()}
+            role="list"
+            aria-label="Load on demand list"
+        >
             {Item}
         </List>
     );
