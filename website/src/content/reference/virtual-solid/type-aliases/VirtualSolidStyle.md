@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-solid](/virtual/reference/virtual-solid/index) / VirtualSolidStyle
 

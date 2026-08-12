@@ -1,17 +1,25 @@
 ---
 interface Props {
     depth: number;
+    class?: string;
 }
 
-const { depth } = Astro.props;
+const { depth, class: className } = Astro.props;
 
 const H = ["h2", "h3", "h4", "h4"] as const;
+const classes = [
+    "mb-2 mt-5 text-base font-semibold",
+    "mb-1 mt-3 text-base font-semibold",
+    "mb-1 mt-3 text-xs font-semibold",
+    "mb-1 mt-3 text-xs font-semibold"
+] as const;
 
 const C = H[depth];
+const defaultClass = classes[depth];
 
-if (!C) {
+if (!C || !defaultClass) {
     throw new Error("Too deep");
 }
 ---
 
-<C><slot /></C>
+<C class:list={[defaultClass, className]}><slot /></C>

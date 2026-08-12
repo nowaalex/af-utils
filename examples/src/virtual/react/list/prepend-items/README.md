@@ -1,5 +1,5 @@
 Visible elements range must be persisted after new ones are prepended?
-VirtualScroller exposes [visibleFrom](https://af-utils.com/virtual/reference/virtual-core/classes/VirtualScroller#visiblefrom),
+VirtualScroller exposes [visibleFrom](https://af-utils.com/virtual/reference/virtual-core/classes/VirtualScroller#property-visiblefrom),
 which allows to get the position of the first visible item
 and [scroll to it](https://af-utils.com/virtual/reference/virtual-core/classes/VirtualScroller#scrolltoindex).
 

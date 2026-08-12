@@ -34,9 +34,14 @@
     "githubPages": false,
     "includeVersion": false,
     "useCodeBlocks": true,
+    "formatWithPrettier": true,
     "indexFormat": "table",
-    "interfacePropertiesFormat": "list",
-    "classPropertiesFormat": "list",
+    "interfacePropertiesFormat": "table",
+    "classPropertiesFormat": "table",
+    "typeAliasPropertiesFormat": "table",
+    "enumMembersFormat": "table",
+    "propertyMembersFormat": "table",
+    "typeDeclarationFormat": "table",
     "parametersFormat": "table",
     "frontmatterGlobals": {
         "generated": true

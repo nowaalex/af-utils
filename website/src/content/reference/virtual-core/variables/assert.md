@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / assert
 
@@ -18,10 +18,10 @@ Assert a condition using the active development or production error build.
 
 ## Parameters
 
-| Parameter | Type |
-| ------ | ------ |
+| Parameter   | Type      |
+| ----------- | --------- |
 | `condition` | `boolean` |
-| `code` | `number` |
+| `code`      | `number`  |
 
 ## Returns
 

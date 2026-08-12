@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / ListItemProps
 
@@ -15,33 +15,13 @@ Props passed to List item
 ## Type Parameters
 
 | Type Parameter | Default type |
-| ------ | ------ |
-| `Data` | `unknown` |
+| -------------- | ------------ |
+| `Data`         | `unknown`    |
 
 ## Properties
 
-### data?
-
-```ts
-optional data?: Data;
-```
-
-links to [ListProps.itemData](/virtual/reference/virtual-react/interfaces/ListProps#itemdata)
-
-***
-
-### index
-
-```ts
-index: number;
-```
-
-item index
-
-***
-
-### model
-
-```ts
-model: VirtualScroller;
-```
+| Property                            | Type                                                                         | Description                                                                                               |
+| ----------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| <a id="property-data"></a> `data?`  | `Data`                                                                       | links to [ListProps.itemData](/virtual/reference/virtual-react/interfaces/ListProps#property-itemdata) |
+| <a id="property-index"></a> `index` | `number`                                                                     | item index                                                                                                |
+| <a id="property-model"></a> `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | -                                                                                                         |

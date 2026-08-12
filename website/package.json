@@ -4,12 +4,11 @@
     "private": true,
     "version": "0.0.7",
     "scripts": {
-        "dev": "pnpm build:examples && pnpm format:generated && astro dev",
-        "build": "pnpm weigh-exports && pnpm build:examples && pnpm format:generated && pnpm build:docs && astro check && astro build",
+        "dev": "astro dev",
+        "build": "pnpm weigh-exports && pnpm format:generated && pnpm build:docs && astro check && astro build",
         "weigh-exports": "node ../packages/weigh-exports/dist/index.js -i '../packages/virtual/core ../packages/virtual/react ../packages/virtual/solid ../packages/scrollend-polyfill' -o ./src/bundleSizes.ts",
         "start": "astro dev",
-        "build:examples": "tsx ./build-examples.ts",
-        "format:generated": "biome format --write ./src/bundleSizes.ts ./src/pages/examples",
+        "format:generated": "biome format --write ./src/bundleSizes.ts",
         "build:docs": "./build-docs.sh",
         "preview": "astro preview",
         "astro": "astro"
@@ -25,8 +24,8 @@
         "@astrojs/react": "^6.0.2",
         "@astrojs/sitemap": "^3.7.3",
         "@astrojs/solid-js": "^7.0.2",
+        "@iconify-json/logos": "^1.2.12",
         "@iconify-json/material-symbols": "^1.2.88",
-        "@iconify-json/simple-icons": "^1.2.93",
         "astro": "^7.2.0",
         "astro-icon": "^1.1.5",
         "astro-seo": "^1.1.0",
@@ -50,15 +49,12 @@
         "@types/node": "^26.2.0",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.4",
-        "fast-glob": "^3.3.3",
         "lodash": "^4.18.1",
-        "node-html-parser": "^9.0.1",
         "rehype-pretty-code": "^0.14.5",
         "rehype-slug": "^6.0.0",
         "remark-gfm": "4.0.1",
         "remark-toc": "^9.0.0",
         "tailwindcss": "^4.3.3",
-        "tsx": "^4.23.12",
         "unist-util-visit": "^5.1.0"
     }
 }

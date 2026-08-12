@@ -34,7 +34,7 @@ Features I was missing there and implemented/improved here:
 
 ## Why do I need to use ref?
 
-In order to work smoothly, library must know scrolled item sizes. Initially they equal <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#estimateditemsize">estimatedItemSize</DocLink>. But this is usually not
+In order to work smoothly, library must know scrolled item sizes. Initially they equal <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#property-estimateditemsize">estimatedItemSize</DocLink>. But this is usually not
 enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
 for more accurate measurements, but you must provide mounted items explicitly in
 conjunction with their indexes.
@@ -46,25 +46,19 @@ but you may use your styling approach.
 
 ## How many items virtual scroller can handle?
 
-Maximum quantity library can handle is `1_073_741_823` (`2^30 - 1`), but it is better not to use such huge values. <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#itemcount">Read more</DocLink>
+Maximum quantity library can handle is `1_073_741_823` (`2^30 - 1`), but it is better not to use such huge values. <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#property-itemcount">Read more</DocLink>
 
 ## Is Server-side rendering supported?
 
-Yes, you can adjust quantity of server-rendered items. <DocLink slug="virtual-core/interfaces/VirtualScrollerInitialParams#estimatedwidgetsize">Read more</DocLink>
+Yes, you can adjust quantity of server-rendered items. <DocLink slug="virtual-core/interfaces/VirtualScrollerInitialParams#property-estimatedwidgetsize">Read more</DocLink>
 
 ## How are dynamic measurements synchronized with a dragged scrollbar?
 
-Items are remeasured on the fly. If <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#estimateditemsize">estimated item size</DocLink>
-differs from the real one, <DocLink slug="virtual-core/classes/VirtualScroller#scrollsize">scrollSize</DocLink> changes. Changing the native scroll range
+Items are remeasured on the fly. If <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#property-estimateditemsize">estimated item size</DocLink>
+differs from the real one, <DocLink slug="virtual-core/classes/VirtualScroller#property-scrollsize">scrollSize</DocLink> changes. Changing the native scroll range
 while its thumb is being dragged would move the thumb away from the pointer.
 
 The model therefore queues measurements during a native pointer drag and commits them as one batch after pointer release. The scroll range and
 rendered offsets always change together. Outside a drag, reaching the end anchors the list to its new end, while ordinary and programmatic scrolling
-is never rescaled by an unrelated size ratio. An accurate <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#estimateditemsize">estimated item size</DocLink>
+is never rescaled by an unrelated size ratio. An accurate <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#property-estimateditemsize">estimated item size</DocLink>
 still reduces the amount of correction needed after release.
-
-## Why do all items disappear after scrolling to bottom?
-
-Most likely it is related to [this Firefox 122 issue](https://github.com/webcompat/web-bugs/issues/133349), which is already fixed in version 124.
-If it happens in different browser &ndash; feel free to open new issue [here](https://github.com/nowaalex/af-utils/issues).
-If it happens in Firefox 124 or newer &ndash; feel free to reopen [existing issue](https://github.com/webcompat/web-bugs/issues/133349).

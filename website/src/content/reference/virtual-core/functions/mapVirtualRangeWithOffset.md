@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / mapVirtualRangeWithOffset
 
@@ -19,15 +19,15 @@ Map the current rendered range and provide the pixel offset of every item.
 ## Type Parameters
 
 | Type Parameter |
-| ------ |
-| `T` |
+| -------------- |
+| `T`            |
 
 ## Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `callback` | (`index`, `offset`) => `T` |
+| Parameter  | Type                                                                            |
+| ---------- | ------------------------------------------------------------------------------- |
+| `model`    | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+| `callback` | (`index`, `offset`) => `T`                                                      |
 
 ## Returns
 

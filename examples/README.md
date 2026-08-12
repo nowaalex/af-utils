@@ -16,5 +16,13 @@ The standalone guarantee applies to the documentation branch after its correspon
 ## Adding an example
 
 1. Create a private package under `examples/src/<project>/...` that can install and run on its own.
-2. Add any dependencies required to build the example to `website/package.json` as well.
+2. Add `src/code.tsx` and describe the example in `README.md`.
 3. Run `pnpm examples:versions` and `pnpm install` from the repository root.
+
+The website discovers `src/code.tsx` and `README.md` automatically. The first
+README paragraph is used as the page description, so no separate metadata or
+website route needs to be added.
+
+If an example cannot be server-rendered, set
+`"af-utils": { "astroClientOnly": "react" }` (or another Astro renderer name)
+in its `package.json`. Omit this field for the normal `client:idle` preview.

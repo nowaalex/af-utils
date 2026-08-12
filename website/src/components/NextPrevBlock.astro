@@ -20,9 +20,9 @@ const next = idx < items.length - 1 ? items[idx + 1] : null;
         <a
             href={prev.path}
             aria-label={`Previous: ${prev.name}`}
-            class="flex items-center gap-1 text-ellipsis break-words text-left"
+            class="flex items-center gap-1 px-2 py-1 text-ellipsis break-words text-left transition-colors hover:bg-violet-100"
         >
-            <Icon name="material-symbols:arrow-back" />
+            <Icon name="material-symbols:arrow-back" class="text-violet-600" />
             {prev.name}
         </a>
     ) : (
@@ -32,10 +32,10 @@ const next = idx < items.length - 1 ? items[idx + 1] : null;
         <a
             href={next.path}
             aria-label={`Next: ${next.name}`}
-            class="flex items-center gap-1 text-ellipsis break-words text-right"
+            class="flex items-center gap-1 px-2 py-1 text-ellipsis break-words text-right transition-colors hover:bg-orange-100"
         >
             {next.name}
-            <Icon name="material-symbols:arrow-forward" />
+            <Icon name="material-symbols:arrow-forward" class="text-orange-600" />
         </a>
     ) : (
         <div />

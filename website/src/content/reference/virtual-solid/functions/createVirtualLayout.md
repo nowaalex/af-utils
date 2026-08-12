@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-solid](/virtual/reference/virtual-solid/index) / createVirtualLayout
 
@@ -18,9 +18,9 @@ Connect Solid refs to the framework-neutral virtual DOM layout adapter.
 
 ## Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+| Parameter       | Type                                                                                      |
+| --------------- | ----------------------------------------------------------------------------------------- |
+| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)              |
 | `scrollerStyle` | [`VirtualSolidStyle`](/virtual/reference/virtual-solid/type-aliases/VirtualSolidStyle) |
 
 ## Returns

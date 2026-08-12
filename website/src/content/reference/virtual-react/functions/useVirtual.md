@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / useVirtual
 
@@ -19,9 +19,9 @@ Calls [useVirtualModel](/virtual/reference/virtual-react/functions/useVirtualMod
 
 ## Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `params` | [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) |
+| Parameter | Type                                                                                                      |
+| --------- | --------------------------------------------------------------------------------------------------------- |
+| `params`  | [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) |
 
 ## Returns
 
@@ -35,8 +35,8 @@ Calls [useVirtualModel](/virtual/reference/virtual-react/functions/useVirtualMod
 
 ```tsx
 useVirtual({
-    itemCount: 1000,
-    estimatedItemSize: 100,
-    overscanCount: 1
+  itemCount: 1000,
+  estimatedItemSize: 100,
+  overscanCount: 1,
 });
 ```

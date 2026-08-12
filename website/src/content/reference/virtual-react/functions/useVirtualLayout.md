@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / useVirtualLayout
 
@@ -18,10 +18,10 @@ Connect stable React refs to the framework-neutral virtual layout adapter.
 
 ## Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `scrollerStyle` | `CSSProperties` |
+| Parameter       | Type                                                                         |
+| --------------- | ---------------------------------------------------------------------------- |
+| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+| `scrollerStyle` | `CSSProperties`                                                              |
 
 ## Returns
 
@@ -30,38 +30,11 @@ Connect stable React refs to the framework-neutral virtual layout adapter.
 Hydration-safe styles and refs for the scroller, scroll-size, and
 rendered-items elements.
 
-### itemsRef
-
-```ts
-itemsRef: RefCallback<HTMLElement>;
-```
-
-### itemsStyle
-
-```ts
-itemsStyle: CSSProperties;
-```
-
-### scrollerRef
-
-```ts
-scrollerRef: RefCallback<HTMLElement>;
-```
-
-### scrollerStyle
-
-```ts
-scrollerStyle: CSSProperties;
-```
-
-### sizeRef
-
-```ts
-sizeRef: RefCallback<HTMLElement>;
-```
-
-### sizeStyle
-
-```ts
-sizeStyle: CSSProperties;
-```
+| Name            | Type                           |
+| --------------- | ------------------------------ |
+| `itemsRef`      | `RefCallback`\<`HTMLElement`\> |
+| `itemsStyle`    | `CSSProperties`                |
+| `scrollerRef`   | `RefCallback`\<`HTMLElement`\> |
+| `scrollerStyle` | `CSSProperties`                |
+| `sizeRef`       | `RefCallback`\<`HTMLElement`\> |
+| `sizeStyle`     | `CSSProperties`                |

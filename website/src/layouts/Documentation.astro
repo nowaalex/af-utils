@@ -23,7 +23,9 @@ const flattenedItems = flattenMenu(items);
 <BaseLayout {...rest}>
     <div class="h-screen flex flex-col lg:flex-row">
         <Menu items={items} productName={productName} class="min-w-[20em]" />
-        <div class="flex flex-col flex-auto gap-8 p-4 overflow-auto">
+        <div
+            class="flex flex-col flex-auto gap-8 overflow-auto bg-gradient-to-br from-white via-white to-violet-50/70 p-4"
+        >
             <main class:list={["prose flex-auto", mainClass]}>
                 <slot />
             </main>

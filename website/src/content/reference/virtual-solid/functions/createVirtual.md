@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-solid](/virtual/reference/virtual-solid/index) / createVirtual
 
@@ -18,9 +18,9 @@ Create a Solid-owned `VirtualScroller` and synchronize reactive parameters.
 
 ## Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `params` | [`MaybeAccessor`](/virtual/reference/virtual-solid/type-aliases/MaybeAccessor)\<[`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams)\> |
+| Parameter | Type                                                                                                                                                                                           |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `params`  | [`MaybeAccessor`](/virtual/reference/virtual-solid/type-aliases/MaybeAccessor)\<[`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams)\> |
 
 ## Returns
 
@@ -30,7 +30,7 @@ Create a Solid-owned `VirtualScroller` and synchronize reactive parameters.
 
 ```tsx
 const model = createVirtual(() => ({
-    itemCount: count(),
-    estimatedItemSize: 40
+  itemCount: count(),
+  estimatedItemSize: 40,
 }));
 ```

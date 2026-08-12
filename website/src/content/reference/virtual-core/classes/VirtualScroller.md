@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScroller
 
@@ -46,8 +46,8 @@ Create a virtual-scroller model from optional initial geometry.
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
+| Parameter | Type                                                                                                         |
+| --------- | ------------------------------------------------------------------------------------------------------------ |
 | `params?` | [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) |
 
 #### Returns
@@ -56,61 +56,12 @@ Create a virtual-scroller model from optional initial geometry.
 
 ## Properties
 
-### from
-
-```ts
-readonly from: number = 0;
-```
-
-Items range start with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#overscancount) included
-
-#### Remarks
-
-[from](/virtual/reference/virtual-core/classes/VirtualScroller#from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#to)
-
-***
-
-### horizontal
-
-```ts
-readonly horizontal: boolean = false;
-```
-
-Scroll container orientation.
-
-#### Remarks
-
-Determines properties used for dimension/scroll calculations, for example:
-
-- `scrollTop` / `scrollLeft`;
-
-- `height` / `width`;
-
-- `innerHeight` / `innerWidth`.
-
-***
-
-### scrollSize
-
-```ts
-readonly scrollSize: number = 0.0;
-```
-
-Sum of all published item sizes, in CSS pixels.
-
-***
-
-### to
-
-```ts
-readonly to: number = 0;
-```
-
-Items range end with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#overscancount) included
-
-#### Remarks
-
-[from](/virtual/reference/virtual-core/classes/VirtualScroller#from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#to)
+| Property                                      | Modifier   | Type      | Default value | Description                                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------------- | ---------- | --------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <a id="property-from"></a> `from`             | `readonly` | `number`  | `0`           | Items range start with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-overscancount) included **Remarks** [from](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#property-to) |
+| <a id="property-horizontal"></a> `horizontal` | `readonly` | `boolean` | `false`       | Scroll container orientation. **Remarks** Determines properties used for dimension/scroll calculations, for example: - `scrollTop` / `scrollLeft`; - `height` / `width`; - `innerHeight` / `innerWidth`.                                                                                                                              |
+| <a id="property-scrollsize"></a> `scrollSize` | `readonly` | `number`  | `0.0`         | Sum of all published item sizes, in CSS pixels.                                                                                                                                                                                                                                                                                       |
+| <a id="property-to"></a> `to`                 | `readonly` | `number`  | `0`           | Items range end with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-overscancount) included **Remarks** [from](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#property-to)   |
 
 ## Accessors
 
@@ -128,7 +79,7 @@ Current number of items in the model.
 
 `number`
 
-***
+---
 
 ### renderedRangeOffset
 
@@ -144,7 +95,7 @@ Return the item-space layout offset of the current rendered range.
 
 Normally this equals `getOffset(from)`. While size publication is
 deferred at the native scroll end, the range is aligned with the frozen
-public [scrollSize](/virtual/reference/virtual-core/classes/VirtualScroller#scrollsize) so newly measured
+public [scrollSize](/virtual/reference/virtual-core/classes/VirtualScroller#property-scrollsize) so newly measured
 geometry cannot leave a temporary blank area.
 
 Time complexity: `O(log2(itemCount))`.
@@ -155,7 +106,7 @@ Time complexity: `O(log2(itemCount))`.
 
 Offset for positioning the range, in CSS pixels.
 
-***
+---
 
 ### renderedRangeSize
 
@@ -175,10 +126,10 @@ Time complexity: `O(log2(itemCount))`.
 
 `number`
 
-Size from [from](/virtual/reference/virtual-core/classes/VirtualScroller#from) through the
-exclusive [to](/virtual/reference/virtual-core/classes/VirtualScroller#to) boundary, in CSS pixels.
+Size from [from](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) through the
+exclusive [to](/virtual/reference/virtual-core/classes/VirtualScroller#property-to) boundary, in CSS pixels.
 
-***
+---
 
 ### visibleFrom
 
@@ -213,10 +164,10 @@ Start observing size of `element` at `index`
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type          | Description      |
+| --------- | ------------- | ---------------- |
 | `element` | `HTMLElement` | element for item |
-| `index` | `number` | item index |
+| `index`   | `number`      | item index       |
 
 #### Returns
 
@@ -226,7 +177,7 @@ Start observing size of `element` at `index`
 
 Should be called when element gets mounted. Works in pair with [VirtualScroller.detachItem](/virtual/reference/virtual-core/classes/VirtualScroller#detachitem).
 
-***
+---
 
 ### detachItem()
 
@@ -238,8 +189,8 @@ End observing size of `element`
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type          | Description      |
+| --------- | ------------- | ---------------- |
 | `element` | `HTMLElement` | element for item |
 
 #### Returns
@@ -250,7 +201,7 @@ End observing size of `element`
 
 Should be called when element is about to unmount or already unmounted. Works in pair with [VirtualScroller.attachItem](/virtual/reference/virtual-core/classes/VirtualScroller#attachitem).
 
-***
+---
 
 ### dispose()
 
@@ -264,7 +215,7 @@ Release every DOM resource and subscription owned by this model.
 
 `void`
 
-***
+---
 
 ### getIndex()
 
@@ -276,9 +227,9 @@ Return the item containing an item-space coordinate.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `offset` | `number` | Coordinate from the start of item `0`, in CSS pixels. |
+| Parameter | Type     | Description                                           |
+| --------- | -------- | ----------------------------------------------------- |
+| `offset`  | `number` | Coordinate from the start of item `0`, in CSS pixels. |
 
 #### Returns
 
@@ -288,7 +239,7 @@ Item index in the range `0 <= index < itemCount`.
 
 #### Remarks
 
-[itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#itemcount) must be \> 0.
+[itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-itemcount) must be \> 0.
 With item sizes `[40px, 60px]`, `getIndex(55)` returns `1`:
 
 ```plaintext
@@ -299,7 +250,7 @@ With item sizes `[40px, 60px]`, `getIndex(55)` returns `1`:
 
 Time complexity: `O(log2(itemCount))`.
 
-***
+---
 
 ### getOffset()
 
@@ -311,9 +262,9 @@ Return the leading item-space coordinate of an item boundary.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `index` | `number` | Boundary index in `0 <= index <= itemCount`. |
+| Parameter | Type     | Description                                  |
+| --------- | -------- | -------------------------------------------- |
+| `index`   | `number` | Boundary index in `0 <= index <= itemCount`. |
 
 #### Returns
 
@@ -329,7 +280,7 @@ internal total extent. With item sizes `[40px, 60px]`, `getOffset(1)` is
 
 Time complexity: `O(log2(itemCount))`.
 
-***
+---
 
 ### getRevision()
 
@@ -341,15 +292,15 @@ Return a stable external-store snapshot for the selected events.
 
 #### Parameters
 
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `events` | `number` | `VirtualScrollerEventFlag.ALL` |
+| Parameter | Type     | Default value                  |
+| --------- | -------- | ------------------------------ |
+| `events`  | `number` | `VirtualScrollerEventFlag.ALL` |
 
 #### Returns
 
 `number`
 
-***
+---
 
 ### getSize()
 
@@ -361,8 +312,8 @@ Return the current measured or estimated extent of one item.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter   | Type     | Description                                 |
+| ----------- | -------- | ------------------------------------------- |
 | `itemIndex` | `number` | Item index in `0 <= itemIndex < itemCount`. |
 
 #### Returns
@@ -376,7 +327,7 @@ Cached item extent in CSS pixels.
 Unmeasured and invalidated items return the current estimate.
 Time complexity: `O(1)`.
 
-***
+---
 
 ### invalidateItemSizes()
 
@@ -388,23 +339,23 @@ Reset cached sizes in a half-open item range to the current estimate.
 
 #### Parameters
 
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `from` | `number` | `0` |
-| `to` | `number` | `...` |
+| Parameter | Type     | Default value |
+| --------- | -------- | ------------- |
+| `from`    | `number` | `0`           |
+| `to`      | `number` | `...`         |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### scrollToIndex()
 
 ```ts
 scrollToIndex(
-   index, 
-   smooth?, 
+   index,
+   smooth?,
    attempts?): void;
 ```
 
@@ -412,11 +363,11 @@ Scroll to an integer or fractional item position.
 
 #### Parameters
 
-| Parameter | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| `index` | `number` | `undefined` | Exact item position; `12.5` targets the midpoint of item `12` at the visible edge after accounting for the sticky header. |
-| `smooth?` | `boolean` | `undefined` | Whether to request native smooth scrolling. |
-| `attempts?` | `number` | `DEFAULT_SCROLL_TO_INDEX_ATTEMPTS` | Maximum corrections while measured sizes converge; defaults to `5`. |
+| Parameter   | Type      | Default value                      | Description                                                                                                               |
+| ----------- | --------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `index`     | `number`  | `undefined`                        | Exact item position; `12.5` targets the midpoint of item `12` at the visible edge after accounting for the sticky header. |
+| `smooth?`   | `boolean` | `undefined`                        | Whether to request native smooth scrolling.                                                                               |
+| `attempts?` | `number`  | `DEFAULT_SCROLL_TO_INDEX_ATTEMPTS` | Maximum corrections while measured sizes converge; defaults to `5`.                                                       |
 
 #### Returns
 
@@ -428,7 +379,7 @@ Checks the target immediately and then while measurements converge,
 calling [scrollToOffset](/virtual/reference/virtual-core/classes/VirtualScroller#scrolltooffset) only when
 rendering replaces estimated CSS-pixel sizes and moves the native target.
 
-***
+---
 
 ### scrollToOffset()
 
@@ -440,10 +391,10 @@ Scroll to an item-space CSS-pixel coordinate.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `offset` | `number` | Distance from the start of item `0`, in CSS pixels. |
-| `smooth?` | `boolean` | Whether to request native smooth scrolling. |
+| Parameter | Type      | Description                                         |
+| --------- | --------- | --------------------------------------------------- |
+| `offset`  | `number`  | Distance from the start of item `0`, in CSS pixels. |
+| `smooth?` | `boolean` | Whether to request native smooth scrolling.         |
 
 #### Returns
 
@@ -458,7 +409,7 @@ native scroll, and the result is clamped to the current scrollable range:
 native target = items-container offset + requested item-space offset
 ```
 
-***
+---
 
 ### set()
 
@@ -470,15 +421,15 @@ Synchronize runtime parameters
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter       | Type                                                                                                         | Description        |
+| --------------- | ------------------------------------------------------------------------------------------------------------ | ------------------ |
 | `runtimeParams` | [`VirtualScrollerRuntimeParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams) | runtime parameters |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### setContainer()
 
@@ -490,8 +441,8 @@ Informs model about items container element. Usually not needed.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type                    | Description       |
+| --------- | ----------------------- | ----------------- |
 | `element` | `HTMLElement` \| `null` | container element |
 
 #### Returns
@@ -521,7 +472,7 @@ That extra element is represented as `ItemsContainer` on this schema:
 
 [dispose](/virtual/reference/virtual-core/classes/VirtualScroller#dispose) disconnects it automatically.
 
-***
+---
 
 ### setItemCount()
 
@@ -533,15 +484,15 @@ Notify model about items quantity change
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `itemCount` | `number` | new items quantity. [VirtualScrollerRuntimeParams.itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#itemcount) |
+| Parameter   | Type     | Description                                                                                                                                                 |
+| ----------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `itemCount` | `number` | new items quantity. [VirtualScrollerRuntimeParams.itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-itemcount) |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### setScroller()
 
@@ -553,8 +504,8 @@ Informs model about scrollable element.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type                                                                                                                        | Description      |
+| --------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | `element` | \| [`VirtualScrollerScrollElement`](/virtual/reference/virtual-core/type-aliases/VirtualScrollerScrollElement) \| `null` | scroller element |
 
 #### Returns
@@ -565,7 +516,7 @@ Informs model about scrollable element.
 
 [dispose](/virtual/reference/virtual-core/classes/VirtualScroller#dispose) disconnects it automatically.
 
-***
+---
 
 ### setStickyFooter()
 
@@ -577,8 +528,8 @@ Start observing size of sticky footer `element`. Observing is finished if elemen
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type                    | Description    |
+| --------- | ----------------------- | -------------- |
 | `element` | `HTMLElement` \| `null` | footer element |
 
 #### Returns
@@ -594,7 +545,7 @@ element is replaced or cleared.
 
 [dispose](/virtual/reference/virtual-core/classes/VirtualScroller#dispose) disconnects it automatically.
 
-***
+---
 
 ### setStickyHeader()
 
@@ -606,8 +557,8 @@ Start observing size of sticky header `element`. Observing is finished if elemen
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type                    | Description    |
+| --------- | ----------------------- | -------------- |
 | `element` | `HTMLElement` \| `null` | header element |
 
 #### Returns
@@ -623,7 +574,7 @@ element is replaced or cleared.
 
 [dispose](/virtual/reference/virtual-core/classes/VirtualScroller#dispose) disconnects it automatically.
 
-***
+---
 
 ### spliceItems()
 
@@ -638,9 +589,9 @@ Apply an index-based data splice to the size cache.
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `start` | `number` |
+| Parameter     | Type     |
+| ------------- | -------- |
+| `start`       | `number` |
 | `deleteCount` | `number` |
 | `insertCount` | `number` |
 
@@ -654,7 +605,7 @@ Retained cached sizes are shifted with their items, inserted
 items use the current estimate, and scroll preservation remains explicit.
 The operation has `O(allocated capacity)` complexity.
 
-***
+---
 
 ### subscribe()
 
@@ -666,10 +617,10 @@ Subscribe to model events
 
 #### Parameters
 
-| Parameter | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| `callBack` | () => `void` | `undefined` | event to be triggered |
-| `events` | `number` | `VirtualScrollerEventFlag.ALL` | events to subscribe |
+| Parameter  | Type         | Default value                  | Description           |
+| ---------- | ------------ | ------------------------------ | --------------------- |
+| `callBack` | () => `void` | `undefined`                    | event to be triggered |
+| `events`   | `number`     | `VirtualScrollerEventFlag.ALL` | events to subscribe   |
 
 #### Returns
 
@@ -677,7 +628,7 @@ unsubscribe function
 
 () => `void`
 
-***
+---
 
 ### updateScrollerOffset()
 

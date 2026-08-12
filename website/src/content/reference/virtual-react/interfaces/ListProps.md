@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / ListProps
 
@@ -14,80 +14,19 @@ generated: true
 
 ## Type Parameters
 
-| Type Parameter | Default type |
-| ------ | ------ |
-| `C` *extends* `ElementType` | `"div"` |
-| `Data` | `unknown` |
+| Type Parameter              | Default type |
+| --------------------------- | ------------ |
+| `C` _extends_ `ElementType` | `"div"`      |
+| `Data`                      | `unknown`    |
 
 ## Properties
 
-### children
-
-```ts
-children: ComponentType<ListItemProps<Data>>;
-```
-
-***
-
-### component?
-
-```ts
-optional component?: C;
-```
-
-***
-
-### footer?
-
-```ts
-optional footer?: 
-  | ReactElement<unknown, string | JSXElementConstructor<any>>
-  | null;
-```
-
-***
-
-### getKey?
-
-```ts
-optional getKey?: (index, itemData) => string | number;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `index` | `number` |
-| `itemData` | `Data` |
-
-#### Returns
-
-`string` \| `number`
-
-***
-
-### header?
-
-```ts
-optional header?: 
-  | ReactElement<unknown, string | JSXElementConstructor<any>>
-  | null;
-```
-
-***
-
-### itemData?
-
-```ts
-optional itemData?: Data;
-```
-
-could be accessed in [ListItemProps.data](/virtual/reference/virtual-react/interfaces/ListItemProps#data-1)
-
-***
-
-### model
-
-```ts
-model: VirtualScroller;
-```
+| Property                                     | Type                                                                                                         | Description                                                                                                           |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| <a id="property-children"></a> `children`    | `ComponentType`\<[`ListItemProps`](/virtual/reference/virtual-react/interfaces/ListItemProps)\<`Data`\>\> | -                                                                                                                     |
+| <a id="property-component"></a> `component?` | `C`                                                                                                          | -                                                                                                                     |
+| <a id="property-footer"></a> `footer?`       | \| `ReactElement`\<`unknown`, `string` \| `JSXElementConstructor`\<`any`\>\> \| `null`                       | -                                                                                                                     |
+| <a id="property-getkey"></a> `getKey?`       | (`index`, `itemData`) => `string` \| `number`                                                                | -                                                                                                                     |
+| <a id="property-header"></a> `header?`       | \| `ReactElement`\<`unknown`, `string` \| `JSXElementConstructor`\<`any`\>\> \| `null`                       | -                                                                                                                     |
+| <a id="property-itemdata"></a> `itemData?`   | `Data`                                                                                                       | could be accessed in [ListItemProps.data](/virtual/reference/virtual-react/interfaces/ListItemProps#property-data) |
+| <a id="property-model"></a> `model`          | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)                                 | -                                                                                                                     |

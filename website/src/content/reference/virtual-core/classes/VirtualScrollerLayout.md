@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScrollerLayout
 
@@ -30,9 +30,9 @@ Create a DOM layout adapter for one model.
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+| Parameter | Type                                                                            |
+| --------- | ------------------------------------------------------------------------------- |
+| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
 
 #### Returns
 
@@ -52,7 +52,7 @@ Disconnect every element and event listener owned by this adapter.
 
 `void`
 
-***
+---
 
 ### getItemsElementStyle()
 
@@ -72,7 +72,7 @@ The snapshot is DOM-independent, so it is safe to use for both
 server markup and the first client render. Later model events are still
 synchronized directly by this adapter without framework rerenders.
 
-***
+---
 
 ### getScrollerElementStyle()
 
@@ -84,15 +84,15 @@ Return a hydration-safe style for the scroll container.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter          | Type                                                                                                       | Description                                                                                                                                |
+| ------------------ | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `interactiveStyle` | [`VirtualScrollerLayoutStyle`](/virtual/reference/virtual-core/type-aliases/VirtualScrollerLayoutStyle) | Style to expose after the model owns the DOM element. Before attachment, scrolling is disabled while every other declaration is preserved. |
 
 #### Returns
 
 [`VirtualScrollerLayoutStyle`](/virtual/reference/virtual-core/type-aliases/VirtualScrollerLayoutStyle)
 
-***
+---
 
 ### getSizeElementStyle()
 
@@ -113,7 +113,7 @@ rendering. Applying the scroll geometry only from a client ref changes
 the native scrollbar track during hydration and can invalidate a thumb
 drag that started against the server-rendered page.
 
-***
+---
 
 ### setItemsElement()
 
@@ -125,15 +125,15 @@ Connect or disconnect the element containing currently rendered items.
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
+| Parameter | Type                    |
+| --------- | ----------------------- |
 | `element` | `HTMLElement` \| `null` |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### setScrollerElement()
 
@@ -146,16 +146,16 @@ after the model listeners are installed.
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `element` | `HTMLElement` \| `null` |
+| Parameter          | Type                                                                                                       |
+| ------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `element`          | `HTMLElement` \| `null`                                                                                    |
 | `interactiveStyle` | [`VirtualScrollerLayoutStyle`](/virtual/reference/virtual-core/type-aliases/VirtualScrollerLayoutStyle) |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### setSizeElement()
 
@@ -167,8 +167,8 @@ Connect or disconnect the element that provides native scroll size.
 
 #### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
+| Parameter | Type                    |
+| --------- | ----------------------- |
 | `element` | `HTMLElement` \| `null` |
 
 #### Returns

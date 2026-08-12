@@ -33,28 +33,32 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
         as="image"
         media="only screen and (min-width: 1024px)"
     >
-    <div class="prose flex h-screen w-screen flex-col bg-[#fafafa]">
+    <div
+        class="prose flex h-screen w-screen flex-col bg-gradient-to-br from-violet-50 via-white to-cyan-50"
+    >
         <header
-            class="prose-lg prose-a:no-underline mx-[5vmin] flex justify-center gap-8 border-b p-6"
+            class="prose-lg prose-a:no-underline mx-[5vmin] flex justify-center gap-8 border-b border-violet-200 p-6"
         >
             <a
                 href={`https://github.com/${import.meta.env.PUBLIC_GITHUB_SUFFIX}`}
                 target="_blank"
                 rel="noopener"
-                class="flex items-center gap-2 hover:underline"
+                class="flex items-center gap-2 px-3 py-1 transition-colors hover:bg-white/80 hover:text-violet-800"
             >
-                <Icon name="simple-icons:github" />Github
+                <Icon name="logos:github-icon" size={22} />Github
             </a>
             <a
                 href={import.meta.env.PUBLIC_DISCORD_LINK}
                 target="_blank"
                 rel="noopener"
-                class="flex items-center gap-2 hover:underline"
+                class="flex items-center gap-2 px-3 py-1 transition-colors hover:bg-white/80 hover:text-violet-800"
             >
-                <Icon name="simple-icons:discord" />Discord
+                <Icon name="logos:discord-icon" size={22} />Discord
             </a>
         </header>
-        <main class="prose-xl prose-a:text-blue-700 flex-auto px-[5vmin] py-12">
+        <main
+            class="prose-xl prose-a:text-violet-700 prose-a:decoration-orange-400 flex-auto px-[5vmin] py-12"
+        >
             <h1>af-utils/*</h1>
             <p>Simple open-source tools that just work <i>(usually fast)</i></p>
             <ul>
@@ -70,7 +74,7 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
                 <li>To be continued...</li>
             </ul>
         </main>
-        <footer class="mx-[5vmin] border-t p-6 text-center">
+        <footer class="mx-[5vmin] border-t border-cyan-200 p-6 text-center">
             © {new Date().getFullYear()} Alex Fomin
         </footer>
     </div>

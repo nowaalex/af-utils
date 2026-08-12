@@ -8,6 +8,9 @@
         "serve": "vite preview"
     },
     "type": "module",
+    "af-utils": {
+        "astroClientOnly": "react"
+    },
     "dependencies": {
         "@af-utils/virtual-react": "1.0.2",
         "@emotion/react": "^11.14.0",

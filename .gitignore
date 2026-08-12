@@ -12,3 +12,4 @@ logs
 playwright-report/
 test-results/
 /git-worktrees/
+website/src/generated/

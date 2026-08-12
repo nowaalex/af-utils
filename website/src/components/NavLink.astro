@@ -3,7 +3,13 @@ import stripTrailingSlash from "utils/stripTrailingSlash";
 
 const currentPath = stripTrailingSlash(Astro.url.pathname);
 
-const { href, compareHref = href, exact, ...rest } = Astro.props;
+const {
+    href,
+    compareHref = href,
+    exact,
+    class: className,
+    ...rest
+} = Astro.props;
 
 const isActive = exact
     ? currentPath === compareHref
@@ -14,7 +20,11 @@ const isActive = exact
     {...rest}
     href={href}
     aria-current={isActive ? "page" : undefined}
-    class:list={isActive ? "text-orange-700 !font-semibold" : ""}
+    class:list={[
+        "block px-2 py-1 font-normal no-underline transition-colors hover:bg-violet-100 hover:text-violet-800",
+        isActive && "bg-orange-100 text-orange-800 !font-semibold",
+        className
+    ]}
 >
     <slot />
 </a>

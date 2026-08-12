@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-solid](/virtual/reference/virtual-solid/index) / List
 
@@ -19,14 +19,14 @@ Render a virtual Solid list with model-owned DOM geometry.
 ## Type Parameters
 
 | Type Parameter | Default type |
-| ------ | ------ |
-| `Data` | `unknown` |
+| -------------- | ------------ |
+| `Data`         | `unknown`    |
 
 ## Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `props` | [`ListProps`](/virtual/reference/virtual-solid/type-aliases/ListProps)\<`Data`\> |
+| Parameter | Type                                                                                |
+| --------- | ----------------------------------------------------------------------------------- |
+| `props`   | [`ListProps`](/virtual/reference/virtual-solid/type-aliases/ListProps)\<`Data`\> |
 
 ## Returns
 

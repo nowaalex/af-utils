@@ -3,7 +3,7 @@
 
 @layer base {
     .bg-menu {
-        @apply bg-zinc-100;
+        @apply bg-gradient-to-b from-violet-50 via-white to-cyan-50;
     }
 }
 
@@ -15,11 +15,115 @@
 
 @layer components {
     pre[data-theme] {
-        @apply drop-shadow-sm border;
+        @apply border border-violet-200 drop-shadow-sm;
+    }
+
+    .reference-doc :is(h4, h5, h6) {
+        @apply mb-3 mt-6 border-l-4 border-violet-400 bg-violet-50 px-3 py-1.5 text-sm font-medium text-violet-900;
+    }
+
+    .reference-doc :is(h4, h5, h6)[id^="returns"] {
+        @apply border-cyan-500 bg-cyan-50 text-cyan-900;
+    }
+
+    .reference-doc :is(h4, h5, h6)[id^="remarks"] {
+        @apply border-orange-400 bg-orange-50 text-orange-900;
+    }
+
+    .reference-doc table {
+        @apply border border-violet-200 bg-white text-sm;
+    }
+
+    .reference-doc table th {
+        @apply bg-violet-50 font-medium text-violet-900;
+    }
+
+    .reference-doc table td {
+        @apply border-violet-100;
+    }
+
+    .reference-doc table a {
+        @apply font-normal decoration-violet-300;
+    }
+
+    .reference-doc table strong {
+        @apply font-medium text-orange-800;
+    }
+
+    .reference-doc :is(h4, h5, h6) + table {
+        @apply mt-0;
+    }
+
+    .reference-doc :is(h4, h5, h6) + p {
+        @apply mt-2 text-gray-700;
+    }
+
+    .reference-doc :not(pre) > code {
+        @apply font-normal text-violet-700;
+    }
+
+    .reference-doc :is(h4, h5, h6)[id^="returns"] + p > code {
+        @apply text-cyan-700;
+    }
+
+    .reference-doc table code {
+        @apply font-normal text-violet-700;
+    }
+
+    .reference-doc table code::before,
+    .reference-doc table code::after {
+        content: none;
+    }
+
+    .reference-doc table:has(th:nth-child(2):last-child) td:nth-child(2) code {
+        @apply text-cyan-700;
+    }
+
+    .reference-doc table:has(th:nth-child(3):last-child) td:nth-child(2) code {
+        @apply text-cyan-700;
+    }
+
+    .reference-doc table:has(th:nth-child(4):last-child) td:nth-child(2) code,
+    .reference-doc table:has(th:nth-child(5):last-child) td:nth-child(3) code {
+        @apply text-cyan-700;
+    }
+
+    .reference-doc table:has(th:nth-child(4):last-child) td:nth-child(3) code,
+    .reference-doc table:has(th:nth-child(5):last-child) td:nth-child(4) code {
+        @apply text-orange-700;
+    }
+
+    .reference-doc table:has(th:nth-child(5):last-child) td:nth-child(2) code {
+        @apply text-gray-600;
     }
 }
 
 @layer components {
+    .ds-framework-accordion {
+        interpolate-size: allow-keywords;
+    }
+
+    .ds-framework-accordion::details-content {
+        block-size: 0;
+        opacity: 0;
+        overflow-y: clip;
+        transition:
+            block-size 220ms ease,
+            opacity 160ms ease,
+            content-visibility 220ms allow-discrete;
+    }
+
+    .ds-framework-accordion[open]::details-content {
+        block-size: auto;
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ds-framework-accordion::details-content {
+            transition: none;
+        }
+    }
+
     .ds-menu-items {
         @apply transition-transform translate-y-full fixed inset-[62px_0_0_0] overflow-auto lg:transition-none lg:translate-y-0 lg:static lg:overflow-visible;
     }

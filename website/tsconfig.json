@@ -1,6 +1,6 @@
 {
     "extends": "astro/tsconfigs/strictest",
-    "include": ["src", "build-examples.ts", "astro.config.ts"],
+    "include": ["src", "astro.config.ts"],
     "exclude": ["src/assets", "src/styles"],
     "compilerOptions": {
         "paths": {

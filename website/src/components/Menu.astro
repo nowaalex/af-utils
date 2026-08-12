@@ -29,13 +29,14 @@ interface Props {
     ]}
 >
     <div
-        class="flex-none sticky top-0 flex items-center h-[62px] gap-4 border-gray-300 border-b bg-menu px-4 z-[20] drop-shadow-sm lg:drop-shadow-none"
+        class="flex-none sticky top-0 flex items-center h-[62px] gap-4 border-violet-200 border-b bg-menu px-4 z-[20] drop-shadow-sm lg:drop-shadow-none"
     >
         <button class="ds-menu-opener hidden">
             <Icon
                 size={24}
                 name="material-symbols:menu"
                 aria-label="open menu"
+                class="text-violet-700"
             />
         </button>
         <button class="ds-menu-closer hidden">
@@ -43,6 +44,7 @@ interface Props {
                 size={24}
                 name="material-symbols:close"
                 aria-label="close menu"
+                class="text-rose-600"
             />
         </button>
         <Breadcrumb>
@@ -51,21 +53,21 @@ interface Props {
     </div>
     <nav
         aria-label="Main navigation"
-        class="ds-menu-items z-10 flex-auto p-4 bg-menu prose prose-sm prose-ul:pl-3 prose-ul:list-none prose-a:no-underline prose-a:font-normal"
+        class="ds-menu-items z-10 flex-auto bg-menu p-4 text-sm"
     >
         {items.map(node => <MenuSubtree node={node} depth={0} />)}
 
-        <h2>Links</h2>
+        <h2 class="mb-2 mt-5 text-base font-semibold">Links</h2>
 
-        <ul>
+        <ul class="m-0 list-none space-y-1 pl-3">
             <li>
                 <a
                     href={`https://github.com/${import.meta.env.PUBLIC_GITHUB_SUFFIX}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex items-center gap-2"
+                    class="flex items-center gap-2 px-2 py-1 font-normal no-underline transition-colors hover:bg-violet-100 hover:text-violet-800"
                 >
-                    <Icon name="simple-icons:github" />Github
+                    <Icon name="logos:github-icon" size={20} />Github
                 </a>
             </li>
             <li>
@@ -73,9 +75,9 @@ interface Props {
                     href={import.meta.env.PUBLIC_DISCORD_LINK}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex items-center gap-2"
+                    class="flex items-center gap-2 px-2 py-1 font-normal no-underline transition-colors hover:bg-cyan-100 hover:text-cyan-900"
                 >
-                    <Icon name="simple-icons:discord" />Discord
+                    <Icon name="logos:discord-icon" size={20} />Discord
                 </a>
             </li>
         </ul>

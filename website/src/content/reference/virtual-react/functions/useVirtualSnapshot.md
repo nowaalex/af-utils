@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / useVirtualSnapshot
 
@@ -18,10 +18,10 @@ Re-render the current component when selected model events are published.
 
 ## Parameters
 
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | `undefined` |
-| `events` | `number` | `VirtualScrollerEvent.RANGE` |
+| Parameter | Type                                                                         | Default value                |
+| --------- | ---------------------------------------------------------------------------- | ---------------------------- |
+| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | `undefined`                  |
+| `events`  | `number`                                                                     | `VirtualScrollerEvent.RANGE` |
 
 ## Returns
 

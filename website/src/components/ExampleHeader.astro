@@ -10,16 +10,14 @@ export interface Props {
 const { path, class: className } = Astro.props;
 
 const Links = [
-    { name: "Github", url: "https://github.com/", icon: "simple-icons:github" },
+    { name: "Github", url: "https://github.com/", icon: "logos:github-icon" },
     {
         name: "Codesandbox",
-        url: "https://codesandbox.io/s/github/",
-        icon: "simple-icons:codesandbox"
+        url: "https://codesandbox.io/s/github/"
     },
     {
         name: "Stackblitz",
-        url: "https://stackblitz.com/github/",
-        icon: "simple-icons:stackblitz"
+        url: "https://stackblitz.com/github/"
     }
 ];
 
@@ -48,9 +46,9 @@ const gitPiece = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env
                     href={`${link.url}${gitPiece}`}
                     target="_blank"
                     rel="noreferrer"
-                    class="flex items-center gap-1"
+                    class="flex items-center gap-1.5 px-2 py-1 no-underline transition-colors hover:bg-violet-50 hover:text-violet-800"
                 >
-                    <Icon name={link.icon} />
+                    {link.icon && <Icon name={link.icon} size={20} />}
                     {link.name}
                 </a>
             ))}

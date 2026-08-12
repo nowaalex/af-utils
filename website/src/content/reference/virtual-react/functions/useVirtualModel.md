@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / useVirtualModel
 
@@ -20,9 +20,9 @@ It is not recreated during component lifecycle.
 
 ## Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `params` | [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) |
+| Parameter | Type                                                                                                      |
+| --------- | --------------------------------------------------------------------------------------------------------- |
+| `params`  | [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) |
 
 ## Returns
 

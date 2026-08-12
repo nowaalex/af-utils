@@ -1,4 +1,3 @@
-import type { SEOProps } from "astro-seo";
 import type { MenuItem } from "components/Menu.astro";
 import _ from "lodash";
 
@@ -8,7 +7,11 @@ export interface Params {
 
 type MenuMap = { [key: string]: MenuMap };
 
-function walkMenu(obj: MenuMap | undefined, path: string): MenuItem[] {
+function walkMenu(
+    obj: MenuMap | undefined,
+    path: string,
+    depth = 0
+): MenuItem[] {
     return obj
         ? Object.keys(obj)
               .sort((a, b) => a.localeCompare(b))
@@ -17,8 +20,8 @@ function walkMenu(obj: MenuMap | undefined, path: string): MenuItem[] {
                   return {
                       name: _.startCase(k),
                       path: newPath,
-                      collapsible: true,
-                      children: walkMenu(obj[k], newPath)
+                      collapsible: depth === 1,
+                      children: walkMenu(obj[k], newPath, depth + 1)
                   } as const satisfies MenuItem;
               })
         : [];
@@ -52,15 +55,28 @@ export const readmes = /* @__PURE__ */ cutObjectKeys(
     -"/README.md".length
 );
 
-export const metas = /* @__PURE__ */ cutObjectKeys(
-    import.meta.glob<SEOProps>(
-        ["../../../examples/src/**/meta.ts", "!**/dist/**"],
-        {
-            import: "default"
-        }
+export const readmeSources = /* @__PURE__ */ cutObjectKeys(
+    import.meta.glob<string>(
+        ["../../../examples/src/**/README.md", "!**/dist/**"],
+        { import: "default", query: "?raw" }
     ),
-    -"/meta.ts".length
+    -"/README.md".length
 );
+
+export async function getExampleDescription(path: string) {
+    const source = await readmeSources[path]!();
+    const paragraph = source
+        .replace(/^---[\s\S]*?---\s*/, "")
+        .split(/\n\s*\n/)
+        .find(value => value.trim());
+
+    return (paragraph ?? "")
+        .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
+        .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+        .replace(/[`*_~]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
 
 const list = Object.keys(codes);
 

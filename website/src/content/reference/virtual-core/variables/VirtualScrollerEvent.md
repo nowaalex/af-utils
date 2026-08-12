@@ -4,7 +4,7 @@ generated: true
 
 [**Documentation**](../../index)
 
-***
+---
 
 [Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScrollerEvent
 
@@ -19,35 +19,18 @@ Bit flags accepted by [VirtualScroller.subscribe](/virtual/reference/virtual-cor
 
 ## Type Declaration
 
-### ALL
-
-```ts
-readonly ALL: 7;
-```
-
-### RANGE
-
-```ts
-readonly RANGE: 1;
-```
-
-### SCROLL\_SIZE
-
-```ts
-readonly SCROLL_SIZE: 2;
-```
-
-### SIZES
-
-```ts
-readonly SIZES: 4;
-```
+| Name                                            | Type |
+| ----------------------------------------------- | ---- |
+| <a id="property-all"></a> `ALL`                 | `7`  |
+| <a id="property-range"></a> `RANGE`             | `1`  |
+| <a id="property-scroll_size"></a> `SCROLL_SIZE` | `2`  |
+| <a id="property-sizes"></a> `SIZES`             | `4`  |
 
 ## Remarks
 
-- `RANGE`: [VirtualScroller.from](/virtual/reference/virtual-core/classes/VirtualScroller#from) or [VirtualScroller.to](/virtual/reference/virtual-core/classes/VirtualScroller#to) was changed;
+- `RANGE`: [VirtualScroller.from](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) or [VirtualScroller.to](/virtual/reference/virtual-core/classes/VirtualScroller#property-to) was changed;
 
-- `SCROLL_SIZE`: [VirtualScroller.scrollSize](/virtual/reference/virtual-core/classes/VirtualScroller#scrollsize) was changed;
+- `SCROLL_SIZE`: [VirtualScroller.scrollSize](/virtual/reference/virtual-core/classes/VirtualScroller#property-scrollsize) was changed;
 
 - `SIZES`: at least one cached effective item size was changed.
 

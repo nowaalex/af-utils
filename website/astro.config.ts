@@ -14,6 +14,7 @@ import remarkToc from "remark-toc";
 import { visit } from "unist-util-visit";
 import { loadEnv } from "vite";
 import stripTrailingSlash from "./src/utils/stripTrailingSlash";
+import examples from "./integrations/examples";
 
 const env = loadEnv("", process.cwd(), "") as ImportMetaEnv;
 const rehypeLinks: RehypePlugins[number] = () => tree =>
@@ -57,6 +58,7 @@ export default defineConfig({
         prefetchAll: true
     },
     integrations: [
+        examples(),
         mdx(),
         react({
             include: [
@@ -74,17 +76,12 @@ export default defineConfig({
         }),
         icon({
             include: {
+                logos: ["react", "solidjs-icon", "github-icon", "discord-icon"],
                 "material-symbols": [
                     "arrow-forward",
                     "arrow-back",
                     "menu",
                     "close"
-                ],
-                "simple-icons": [
-                    "github",
-                    "discord",
-                    "codesandbox",
-                    "stackblitz"
                 ]
             }
         }),
