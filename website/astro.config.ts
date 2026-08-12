@@ -59,9 +59,19 @@ export default defineConfig({
     integrations: [
         mdx(),
         react({
-            include: ["**/virtual/react/**", "**/scrollend-polyfill/react/**"]
+            include: [
+                "**/virtual/react/**/src/code",
+                "**/virtual/react/**/*.{js,jsx,ts,tsx}",
+                "**/scrollend-polyfill/react/**/src/code",
+                "**/scrollend-polyfill/react/**/*.{js,jsx,ts,tsx}"
+            ]
         }),
-        solid({ include: ["**/virtual/solid/**"] }),
+        solid({
+            include: [
+                "**/virtual/solid/**/src/code",
+                "**/virtual/solid/**/*.{js,jsx,ts,tsx}"
+            ]
+        }),
         icon({
             include: {
                 "material-symbols": [
