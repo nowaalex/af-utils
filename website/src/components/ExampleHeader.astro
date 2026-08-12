@@ -1,14 +1,15 @@
 ---
 import { getExampleRepositoryPath } from "@af-utils/examples/config";
 import { Icon } from "astro-icon/components";
-import startCase from "lodash/startCase";
+import ExampleFrameworkNav from "components/ExampleFrameworkNav.astro";
 
 export interface Props {
     path: string;
+    title: string;
     class?: string;
 }
 
-const { path, class: className } = Astro.props;
+const { path, title, class: className } = Astro.props;
 
 const Links = [
     { name: "Github", url: "https://github.com/", icon: "logos:github-icon" },
@@ -22,38 +23,27 @@ const Links = [
     }
 ];
 
-const getHeader = (segments: string[]) => {
-    switch (segments.length) {
-        case 4:
-            return `${segments[0]} ${segments[1]} Example: ${segments[3]} (${segments[2]})`;
-        case 3:
-            return `${segments[0]} Example: ${segments[1]} ${segments[2]}`;
-        case 2:
-            return `${segments[0]} Example: ${segments[1]}`;
-        default:
-            console.warn("Should not have such segments");
-            return `Example: ${segments.join(" ")}`;
-    }
-};
-
 const gitPiece = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env.PUBLIC_GITHUB_BRANCH}/${getExampleRepositoryPath(path)}`;
 ---
 
-<div class:list={["flex flex-wrap items-center gap-x-10 gap-y-4", className]}>
-    <h1 class="mb-0">{getHeader(path.split("/").map(startCase))}</h1>
-    <div class="flex items-center gap-6 font-medium">
-        {
-            Links.map((link) => (
-                <a
-                    href={`${link.url}${gitPiece}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    class="flex items-center gap-1.5 px-2 py-1 no-underline transition-colors hover:bg-slate-100 hover:text-blue-800"
-                >
-                    {link.icon && <Icon name={link.icon} size={20} />}
-                    {link.name}
-                </a>
-            ))
-        }
+<header class:list={["flex flex-col gap-3", className]}>
+    <div class="flex flex-wrap items-center justify-between gap-x-10 gap-y-3">
+        <h1 class="m-0">{title}</h1>
+        <div class="flex flex-wrap items-center gap-2 font-medium">
+            {
+                Links.map((link) => (
+                    <a
+                        href={`${link.url}${gitPiece}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="flex items-center gap-1.5 px-2 py-1 no-underline transition-colors hover:bg-slate-100 hover:text-blue-800"
+                    >
+                        {link.icon && <Icon name={link.icon} size={20} />}
+                        {link.name}
+                    </a>
+                ))
+            }
+        </div>
     </div>
-</div>
+    <ExampleFrameworkNav path={path} />
+</header>

@@ -154,14 +154,31 @@ export const getMenuMapForProjectExamples = (projectName: string) =>
         `/${projectName}`
     );
 
-export const getAlternativeExamples = (path: string) => {
+export const getExampleDefinition = (path: string) => {
     const current = exampleDefinitions.find(example => example.route === path);
     if (!current) throw new Error(`Unknown example path: ${path}`);
 
+    return current;
+};
+
+export const getEquivalentExamples = (path: string) => {
+    const current = getExampleDefinition(path);
+
     return exampleDefinitions.filter(
-        example =>
-            example.groupPath === current.groupPath && example.route !== path
+        example => example.groupPath === current.groupPath
     );
+};
+
+export const getExampleTitle = (path: string) => {
+    const segments = getExampleDefinition(path)
+        .groupPath.split("/")
+        .map(segment => _.startCase(segment));
+    const exampleName = segments.pop();
+    if (!exampleName) throw new Error(`Missing example title: ${path}`);
+
+    return segments.length > 0
+        ? `${segments.join(" ")} Example: ${exampleName}`
+        : `${exampleName} Example`;
 };
 
 export const getExamplePagePath = (path: string) => {

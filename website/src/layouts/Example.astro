@@ -1,13 +1,12 @@
 ---
 import ExampleHeader from "components/ExampleHeader.astro";
 import ExampleTabs from "components/ExampleTabs/index.astro";
-import FrameworkIcon from "components/FrameworkIcon.astro";
 import startCase from "lodash/startCase";
 import {
-    getAlternativeExamples,
     getExampleDescription,
+    getExampleDefinition,
     getExampleFiles,
-    getExamplePagePath,
+    getExampleTitle,
     readmes
 } from "utils/examples";
 
@@ -21,39 +20,16 @@ const loadDescription = readmes[path];
 if (!loadDescription) throw new Error(`Missing example README: ${path}`);
 const Description = await loadDescription();
 const description = await getExampleDescription(path);
-const titleBase = startCase(path.split("/").reverse().join(" "));
-const alternatives = getAlternativeExamples(path);
+const title = getExampleTitle(path);
+const framework = startCase(getExampleDefinition(path).framework);
 ---
 
 <W
-    title={`${titleBase} Example`}
+    title={`${title} (${framework})`}
     description={description}
     mainClass="flex flex-col prose-p:m-0 gap-2"
 >
-    <ExampleHeader path={path} class="mb-6" />
+    <ExampleHeader path={path} title={title} class="mb-2" />
     <Description />
-    {
-        alternatives.length > 0 && (
-            <p class="text-sm text-slate-600">
-                Available also for{" "}
-                {alternatives.map((example, index) => (
-                    <>
-                        {index > 0 && ", "}
-                        <a
-                            href={getExamplePagePath(example.route)}
-                            class="inline-flex items-center gap-1"
-                        >
-                            <FrameworkIcon
-                                framework={example.framework}
-                                size={15}
-                            />
-                            {startCase(example.framework)}
-                        </a>
-                    </>
-                ))}
-                .
-            </p>
-        )
-    }
-    <ExampleTabs path={path} title={titleBase} files={getExampleFiles(path)} />
+    <ExampleTabs path={path} title={title} files={getExampleFiles(path)} />
 </W>

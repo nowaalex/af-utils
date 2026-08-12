@@ -5,6 +5,7 @@ import {
     test,
     waitForExampleHydration
 } from "../../../../e2e";
+import { exampleFrameworks } from "../../../../../config";
 
 const expectVirtualList = async (page: Page, path: string) => {
     await page.goto(path);
@@ -29,8 +30,19 @@ await describeExample("virtual/list/simple", example => {
         await expectVirtualList(page, example.previewPath);
     });
 
-    test("links to the other framework implementation", async ({ page }) => {
+    test("shows the framework implementation navigation", async ({ page }) => {
         await page.goto(example.documentationPath);
-        await expect(page.getByText("Available also for")).toBeVisible();
+        const navigation = page.getByRole("navigation", {
+            name: "Framework implementation"
+        });
+        await expect(navigation).toBeVisible();
+        await expect(navigation.getByRole("link")).toHaveCount(
+            exampleFrameworks.length
+        );
+        await expect(
+            navigation.getByRole("link", {
+                name: new RegExp(`^${example.framework}$`, "iu")
+            })
+        ).toHaveAttribute("aria-current", "page");
     });
 });
