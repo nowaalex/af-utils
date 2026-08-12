@@ -50,18 +50,10 @@ export const useVirtualSnapshot = (
     events: VirtualScrollerEventMask = VirtualScrollerEvent.RANGE
 ): ShallowRef<number> => {
     const revision = shallowRef(model.getRevision(events));
-    let frame = 0;
     const unsubscribe = model.subscribe(() => {
-        if (frame) return;
-        frame = requestAnimationFrame(() => {
-            frame = 0;
-            revision.value = model.getRevision(events);
-        });
+        revision.value = model.getRevision(events);
     }, events);
-    onScopeDispose(() => {
-        unsubscribe();
-        cancelAnimationFrame(frame);
-    });
+    onScopeDispose(unsubscribe);
     return revision;
 };
 

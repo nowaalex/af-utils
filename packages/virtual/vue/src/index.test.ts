@@ -61,15 +61,17 @@ describe("Vue virtual adapter", () => {
         expect(disposeSpy).toHaveBeenCalledOnce();
     });
 
-    test("bridges revisions and item directive lifecycle", async () => {
+    test("bridges revisions synchronously and item directive lifecycle", async () => {
         const model = new VirtualScroller({ itemCount: 1 });
         const attachSpy = vi.spyOn(model, "attachItem");
         const detachSpy = vi.spyOn(model, "detachItem");
+        let snapshotRef: ReturnType<typeof useVirtualSnapshot> | undefined;
         let revision = 0;
         const app = createApp(
             defineComponent({
                 setup() {
                     const snapshot = useVirtualSnapshot(model);
+                    snapshotRef = snapshot;
                     return () => {
                         revision = snapshot.value;
                         return withDirectives(h("div"), [
@@ -81,13 +83,9 @@ describe("Vue virtual adapter", () => {
         );
         app.mount(container);
         expect(attachSpy).toHaveBeenCalledOnce();
+        const revisionBefore = snapshotRef?.value ?? 0;
         model.setItemCount(2);
-        await nextTick();
-        await new Promise<void>(resolve => {
-            requestAnimationFrame(() => {
-                resolve();
-            });
-        });
+        expect(snapshotRef?.value).toBeGreaterThan(revisionBefore);
         await nextTick();
         expect(revision).toBeGreaterThan(0);
         app.unmount();
@@ -172,17 +170,10 @@ describe("Vue virtual adapter", () => {
 
         app.mount(container);
         await nextTick();
-        await new Promise<void>(resolve => {
-            requestAnimationFrame(() => resolve());
-        });
-        await nextTick();
         const initialHeaderRenders = headerRenders;
         const initialFooterRenders = footerRenders;
 
         model.setItemCount(1);
-        await new Promise<void>(resolve => {
-            requestAnimationFrame(() => resolve());
-        });
         await nextTick();
 
         expect(headerRenders).toBe(initialHeaderRenders);

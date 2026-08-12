@@ -90,6 +90,7 @@ class StickyElements {
     /** Replace one sticky slot while preserving observer and style ownership. */
     private _set(index: StickyElementIndex, element: HTMLElement | null) {
         const oldElement = this._elements[index];
+        if (oldElement === element) return;
 
         if (oldElement) {
             this._restoreElement(index, oldElement as HTMLElement);

@@ -1,7 +1,8 @@
 import type { AxisAdapter } from "../axisAdapters";
 
 export interface ScrollerAdapter {
-    readonly _target: HTMLElement | Window;
+    /** Return whether this adapter already owns the supplied scroll target. */
+    _matchesTarget(target: HTMLElement | Window): boolean;
     /** Read the native scroll offset on the configured axis. */
     _readOffset(): number;
     /** Read the viewport size on the configured axis. */
@@ -43,7 +44,7 @@ export const createScrollerAdapter = (
 
 export class ElementScrollerAdapter implements ScrollerAdapter {
     /** Element whose native scrolling primitives this adapter exposes. */
-    readonly _target: HTMLElement;
+    private readonly _target: HTMLElement;
 
     /** Monomorphic axis-specific DOM accessors. */
     private readonly _axis: AxisAdapter;
@@ -52,6 +53,11 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
     constructor(target: HTMLElement, axis: AxisAdapter) {
         this._target = target;
         this._axis = axis;
+    }
+
+    /** Return whether this adapter owns the supplied scroll target. */
+    _matchesTarget(target: HTMLElement | Window) {
+        return target === this._target;
     }
 
     /** Read the element's native axis offset. */
@@ -145,7 +151,7 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
 
 export class WindowScrollerAdapter implements ScrollerAdapter {
     /** Window whose document scrolling primitives this adapter exposes. */
-    readonly _target: Window;
+    private readonly _target: Window;
 
     /** Monomorphic axis-specific DOM accessors. */
     private readonly _axis: AxisAdapter;
@@ -154,6 +160,11 @@ export class WindowScrollerAdapter implements ScrollerAdapter {
     constructor(target: Window, axis: AxisAdapter) {
         this._target = target;
         this._axis = axis;
+    }
+
+    /** Return whether this adapter owns the supplied scroll target. */
+    _matchesTarget(target: HTMLElement | Window) {
+        return target === this._target;
     }
 
     /** Read the window's native axis offset. */

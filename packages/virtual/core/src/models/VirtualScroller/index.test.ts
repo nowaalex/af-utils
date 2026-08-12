@@ -405,6 +405,25 @@ describe("VirtualScroller creation works", () => {
         disconnect.mockRestore();
     });
 
+    test("does not reconnect an unchanged scroller element", () => {
+        const observe = vi.spyOn(TestResizeObserver.prototype, "observe");
+        const disconnect = vi.spyOn(TestResizeObserver.prototype, "disconnect");
+        const model = new VirtualScroller({ itemCount: 1 });
+        const scroller = createScroller(true);
+
+        try {
+            model.setScroller(scroller);
+            model.setScroller(scroller);
+
+            expect(observe).toHaveBeenCalledOnce();
+            expect(disconnect).not.toHaveBeenCalled();
+        } finally {
+            model.dispose();
+            observe.mockRestore();
+            disconnect.mockRestore();
+        }
+    });
+
     test("keeps item indexes isolated per model without DOM attributes", () => {
         const first = new VirtualScroller({ itemCount: 2 });
         const second = new VirtualScroller({ itemCount: 2 });

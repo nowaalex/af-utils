@@ -21,6 +21,25 @@ describe("scroller adapters", () => {
         ).toBeInstanceOf(ElementScrollerAdapter);
     });
 
+    test("matches only the target owned by each adapter", () => {
+        const element = document.createElement("div");
+        const otherElement = document.createElement("div");
+        const elementAdapter = new ElementScrollerAdapter(
+            element,
+            verticalAxisAdapter
+        );
+        const windowAdapter = new WindowScrollerAdapter(
+            window,
+            verticalAxisAdapter
+        );
+
+        expect(elementAdapter._matchesTarget(element)).toBe(true);
+        expect(elementAdapter._matchesTarget(otherElement)).toBe(false);
+        expect(elementAdapter._matchesTarget(window)).toBe(false);
+        expect(windowAdapter._matchesTarget(window)).toBe(true);
+        expect(windowAdapter._matchesTarget(element)).toBe(false);
+    });
+
     test("element adapter calculates container distance", () => {
         const scroller = document.createElement("div");
         const container = document.createElement("div");

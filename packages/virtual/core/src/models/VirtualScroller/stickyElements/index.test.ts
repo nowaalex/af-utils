@@ -141,6 +141,30 @@ describe("StickyElements", () => {
         expect(sticky._footerSize).toBe(15);
     });
 
+    test("does not restart observation for the same element", () => {
+        const observer = createObserverHarness();
+        const onSizeChange = vi.fn();
+        const sticky = new StickyElements(
+            verticalAxisAdapter,
+            onSizeChange,
+            observer.factory
+        );
+        const header = createElement("header");
+
+        sticky._setHeader(header);
+        observer.deliver([createEntry(header, 40)]);
+        observer.observe.mockClear();
+        observer.unobserve.mockClear();
+        onSizeChange.mockClear();
+
+        sticky._setHeader(header);
+
+        expect(observer.observe).not.toHaveBeenCalled();
+        expect(observer.unobserve).not.toHaveBeenCalled();
+        expect(onSizeChange).not.toHaveBeenCalled();
+        expect(sticky._headerSize).toBe(40);
+    });
+
     test("does not publish or observe while clearing an unmeasured element", () => {
         const observer = createObserverHarness();
         const onSizeChange = vi.fn();

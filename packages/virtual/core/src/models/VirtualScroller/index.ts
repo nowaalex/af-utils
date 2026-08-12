@@ -950,6 +950,7 @@ class VirtualScroller {
      */
     setScroller(element: VirtualScrollerScrollElement | null) {
         if (element) this._assertMutable();
+        if (element && this._scrollerAdapter?._matchesTarget(element)) return;
 
         if (this._scrollerAdapter) {
             clearInterval(this._scrollToIndexTimer);
