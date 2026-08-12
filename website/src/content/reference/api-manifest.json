@@ -145,6 +145,166 @@
             "title": "Function: mapVirtualRangeWithOffset()"
         },
         {
+            "description": "Lit controllers and directives used to connect to VirtualScroller.",
+            "kind": "module",
+            "package": "@af-utils/virtual-lit",
+            "path": "/virtual/reference/virtual-lit/index",
+            "symbol": "",
+            "title": "Module: @af-utils/virtual-lit"
+        },
+        {
+            "description": "Lit reactive controller owning one virtual-scroller model.",
+            "kind": "class",
+            "package": "@af-utils/virtual-lit",
+            "path": "/virtual/reference/virtual-lit/classes/VirtualController",
+            "symbol": "VirtualController",
+            "title": "Class: VirtualController"
+        },
+        {
+            "description": "Lit refs and styles backed by the framework-neutral layout adapter.",
+            "kind": "class",
+            "package": "@af-utils/virtual-lit",
+            "path": "/virtual/reference/virtual-lit/classes/VirtualLayoutController",
+            "symbol": "VirtualLayoutController",
+            "title": "Class: VirtualLayoutController"
+        },
+        {
+            "description": "Lit controller that requests host updates for selected model events.",
+            "kind": "class",
+            "package": "@af-utils/virtual-lit",
+            "path": "/virtual/reference/virtual-lit/classes/VirtualSnapshotController",
+            "symbol": "VirtualSnapshotController",
+            "title": "Class: VirtualSnapshotController"
+        },
+        {
+            "description": "Lit element directive observed as both a virtual row and column.",
+            "kind": "function",
+            "package": "@af-utils/virtual-lit",
+            "path": "/virtual/reference/virtual-lit/functions/virtualGridItem",
+            "symbol": "virtualGridItem",
+            "title": "Function: virtualGridItem()"
+        },
+        {
+            "description": "Lit element directive that observes one rendered virtual item.",
+            "kind": "function",
+            "package": "@af-utils/virtual-lit",
+            "path": "/virtual/reference/virtual-lit/functions/virtualItem",
+            "symbol": "virtualItem",
+            "title": "Function: virtualItem()"
+        },
+        {
+            "description": "Serialize a core style snapshot for Lit's style attribute.",
+            "kind": "function",
+            "package": "@af-utils/virtual-lit",
+            "path": "/virtual/reference/virtual-lit/functions/virtualStyle",
+            "symbol": "virtualStyle",
+            "title": "Function: virtualStyle()"
+        },
+        {
+            "description": "Preact components and hooks used to connect to VirtualScroller.",
+            "kind": "module",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/index",
+            "symbol": "",
+            "title": "Module: @af-utils/virtual-preact"
+        },
+        {
+            "description": "Props passed to one Preact virtual-list item component.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/interfaces/ListItemProps",
+            "symbol": "ListItemProps",
+            "title": "Interface: ListItemProps"
+        },
+        {
+            "description": "DOM refs and hydration-safe styles produced by useVirtualLayout.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/interfaces/VirtualPreactLayoutBinding",
+            "symbol": "VirtualPreactLayoutBinding",
+            "title": "Interface: VirtualPreactLayoutBinding"
+        },
+        {
+            "description": "Props accepted by the Preact List component.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/type-aliases/ListProps",
+            "symbol": "ListProps",
+            "title": "Type Alias: ListProps"
+        },
+        {
+            "description": "Render a virtual Preact list with model-owned DOM geometry.",
+            "kind": "function",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/functions/List",
+            "symbol": "List",
+            "title": "Function: List()"
+        },
+        {
+            "description": "Synchronize a window or external scroller with a Preact-owned model.",
+            "kind": "function",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/functions/useScroller",
+            "symbol": "useScroller",
+            "title": "Function: useScroller()"
+        },
+        {
+            "description": "Create a Preact-owned virtual-scroller model and synchronize its parameters.",
+            "kind": "function",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/functions/useVirtual",
+            "symbol": "useVirtual",
+            "title": "Function: useVirtual()"
+        },
+        {
+            "description": "Subscribe to model changes without scheduling a Preact render.",
+            "kind": "function",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/functions/useVirtualEffect",
+            "symbol": "useVirtualEffect",
+            "title": "Function: useVirtualEffect()"
+        },
+        {
+            "description": "Observe row and column sizes for one rendered grid cell.",
+            "kind": "function",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/functions/useVirtualGridItemRef",
+            "symbol": "useVirtualGridItemRef",
+            "title": "Function: useVirtualGridItemRef()"
+        },
+        {
+            "description": "Observe one rendered item using a stable Preact callback ref.",
+            "kind": "function",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/functions/useVirtualItemRef",
+            "symbol": "useVirtualItemRef",
+            "title": "Function: useVirtualItemRef()"
+        },
+        {
+            "description": "Connect stable Preact refs to the framework-neutral virtual layout adapter.",
+            "kind": "function",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/functions/useVirtualLayout",
+            "symbol": "useVirtualLayout",
+            "title": "Function: useVirtualLayout()"
+        },
+        {
+            "description": "Create and retain exactly one Preact-owned virtual-scroller model.",
+            "kind": "function",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/functions/useVirtualModel",
+            "symbol": "useVirtualModel",
+            "title": "Function: useVirtualModel()"
+        },
+        {
+            "description": "Re-render the current Preact component when selected model events publish.",
+            "kind": "function",
+            "package": "@af-utils/virtual-preact",
+            "path": "/virtual/reference/virtual-preact/functions/useVirtualSnapshot",
+            "symbol": "useVirtualSnapshot",
+            "title": "Function: useVirtualSnapshot()"
+        },
+        {
             "description": "React components and hooks used to connect to VirtualScroller.",
             "kind": "module",
             "package": "@af-utils/virtual-react",
@@ -343,6 +503,230 @@
             "path": "/virtual/reference/virtual-solid/functions/List",
             "symbol": "List",
             "title": "Function: List()"
+        },
+        {
+            "description": "Svelte stores and actions used to connect to VirtualScroller.",
+            "kind": "module",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/index",
+            "symbol": "",
+            "title": "Module: @af-utils/virtual-svelte"
+        },
+        {
+            "description": "Parameters accepted by the virtualGridItem action.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteGridItemBinding",
+            "symbol": "VirtualSvelteGridItemBinding",
+            "title": "Interface: VirtualSvelteGridItemBinding"
+        },
+        {
+            "description": "Parameters accepted by the virtualItem action.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteItemBinding",
+            "symbol": "VirtualSvelteItemBinding",
+            "title": "Interface: VirtualSvelteItemBinding"
+        },
+        {
+            "description": "Svelte actions and hydration-safe styles for virtual layout elements.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteLayoutBinding",
+            "symbol": "VirtualSvelteLayoutBinding",
+            "title": "Interface: VirtualSvelteLayoutBinding"
+        },
+        {
+            "description": "Range store and layout actions for the common virtual-list shape.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteListBinding",
+            "symbol": "VirtualSvelteListBinding",
+            "title": "Interface: VirtualSvelteListBinding"
+        },
+        {
+            "description": "A static value or a Svelte readable store containing that value.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/type-aliases/MaybeReadable",
+            "symbol": "MaybeReadable",
+            "title": "Type Alias: MaybeReadable"
+        },
+        {
+            "description": "Attach an arbitrary element as the model's rendered-item container.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/variables/virtualContainer",
+            "symbol": "virtualContainer",
+            "title": "Variable: virtualContainer"
+        },
+        {
+            "description": "Observe row and column sizes for one rendered grid cell.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/variables/virtualGridItem",
+            "symbol": "virtualGridItem",
+            "title": "Variable: virtualGridItem"
+        },
+        {
+            "description": "Observe one rendered virtual item through a Svelte action.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/variables/virtualItem",
+            "symbol": "virtualItem",
+            "title": "Variable: virtualItem"
+        },
+        {
+            "description": "Attach an arbitrary element as the model's scroller.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/variables/virtualScroller",
+            "symbol": "virtualScroller",
+            "title": "Variable: virtualScroller"
+        },
+        {
+            "description": "Attach an element as the model's sticky footer.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/variables/virtualStickyFooter",
+            "symbol": "virtualStickyFooter",
+            "title": "Variable: virtualStickyFooter"
+        },
+        {
+            "description": "Attach an element as the model's sticky header.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/variables/virtualStickyHeader",
+            "symbol": "virtualStickyHeader",
+            "title": "Variable: virtualStickyHeader"
+        },
+        {
+            "description": "Create a component-owned model and synchronize it with an optional store.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/createVirtual",
+            "symbol": "createVirtual",
+            "title": "Function: createVirtual()"
+        },
+        {
+            "description": "Connect Svelte actions to the framework-neutral virtual layout adapter.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/createVirtualLayout",
+            "symbol": "createVirtualLayout",
+            "title": "Function: createVirtualLayout()"
+        },
+        {
+            "description": "Create the range store and layout actions for a common virtual list.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/createVirtualList",
+            "symbol": "createVirtualList",
+            "title": "Function: createVirtualList()"
+        },
+        {
+            "description": "Create a readable array containing the currently rendered indexes.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/createVirtualRange",
+            "symbol": "createVirtualRange",
+            "title": "Function: createVirtualRange()"
+        },
+        {
+            "description": "Create a readable numeric revision for selected model events.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/createVirtualSnapshot",
+            "symbol": "createVirtualSnapshot",
+            "title": "Function: createVirtualSnapshot()"
+        },
+        {
+            "description": "Vue primitives used to connect to VirtualScroller.",
+            "kind": "module",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/index",
+            "symbol": "",
+            "title": "Module: @af-utils/virtual-vue"
+        },
+        {
+            "description": "Vue refs and hydration-safe styles for virtual layout elements.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/interfaces/VirtualVueLayoutBinding",
+            "symbol": "VirtualVueLayoutBinding",
+            "title": "Interface: VirtualVueLayoutBinding"
+        },
+        {
+            "description": "DOM template-ref callback accepted by Vue.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/type-aliases/VirtualVueElementRef",
+            "symbol": "VirtualVueElementRef",
+            "title": "Type Alias: VirtualVueElementRef"
+        },
+        {
+            "description": "Directive value accepted by virtualItemDirective.",
+            "kind": "typealias",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/type-aliases/VirtualVueItemBinding",
+            "symbol": "VirtualVueItemBinding",
+            "title": "Type Alias: VirtualVueItemBinding"
+        },
+        {
+            "description": "Vue directive that observes the size of one rendered virtual item.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/variables/virtualItemDirective",
+            "symbol": "virtualItemDirective",
+            "title": "Variable: virtualItemDirective"
+        },
+        {
+            "description": "Minimal Vue virtual-list component for the common block-list case.",
+            "kind": "variable",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/variables/VirtualList",
+            "symbol": "VirtualList",
+            "title": "Variable: VirtualList"
+        },
+        {
+            "description": "Vue-owned virtual-scroller model synchronized with reactive parameters.",
+            "kind": "function",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/functions/useVirtual",
+            "symbol": "useVirtual",
+            "title": "Function: useVirtual()"
+        },
+        {
+            "description": "Create a Vue template-ref callback that observes one virtual item.",
+            "kind": "function",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/functions/useVirtualItemRef",
+            "symbol": "useVirtualItemRef",
+            "title": "Function: useVirtualItemRef()"
+        },
+        {
+            "description": "Connect Vue template refs to the framework-neutral layout adapter.",
+            "kind": "function",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/functions/useVirtualLayout",
+            "symbol": "useVirtualLayout",
+            "title": "Function: useVirtualLayout()"
+        },
+        {
+            "description": "Reactive rendered indexes for a Vue render function or template.",
+            "kind": "function",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/functions/useVirtualRange",
+            "symbol": "useVirtualRange",
+            "title": "Function: useVirtualRange()"
+        },
+        {
+            "description": "Reactive revision for selected model events.",
+            "kind": "function",
+            "package": "@af-utils/virtual-vue",
+            "path": "/virtual/reference/virtual-vue/functions/useVirtualSnapshot",
+            "symbol": "useVirtualSnapshot",
+            "title": "Function: useVirtualSnapshot()"
         }
     ]
 }

@@ -19,6 +19,7 @@
     "scripts": {
         "dev": "tsc -p tsconfig.dev.json && node scripts/build.mjs --watch",
         "build": "tsc && node scripts/build.mjs && pnpm api-extractor && pnpm test:artifacts",
+        "typecheck": "tsc --noEmit",
         "api-extractor": "api-extractor run && rm -r dist/types",
         "test": "pnpm test:unit && pnpm test:v8",
         "test:unit": "vitest run",

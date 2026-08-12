@@ -20,6 +20,7 @@
     "scripts": {
         "dev": "pnpm build:types && pnpm esbuild:dev",
         "build": "pnpm build:types && pnpm esbuild:build && pnpm api-extractor",
+        "typecheck": "tsc --noEmit",
         "build:types": "tsc",
         "esbuild:base": "esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/*",
         "esbuild:build": "pnpm esbuild:base",

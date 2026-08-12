@@ -8,6 +8,7 @@
     border-collapse: separate;
     border-spacing: 0;
     line-height: 20px;
+    table-layout: fixed;
     width: 100%;
     text-align: center;
 }

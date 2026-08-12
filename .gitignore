@@ -10,6 +10,8 @@ logs
 **/.stryker-tmp/
 **/reports/mutation/
 **/temp/
+.nx/cache/
+.nx/workspace-data/
 playwright-report/
 test-results/
 /git-worktrees/

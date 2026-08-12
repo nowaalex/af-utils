@@ -1,0 +1,9 @@
+.list {
+    overflow: auto;
+    contain: strict;
+}
+
+.item {
+    border-top: 1px solid #ccc;
+    padding: 0.5em;
+}

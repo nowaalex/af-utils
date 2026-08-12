@@ -1,7 +1,7 @@
 ---
 layout: layouts/virtual/VirtualDocumentation.astro
 title: "Getting started"
-description: "Virtualize large lists with variable or fixed item sizes. TypeScript-friendly Solid, React, and core adapters are available."
+description: "Virtualize large lists with dynamic item sizes using React, Preact, Solid, Svelte, Lit, Vue, or the framework-neutral core."
 ---
 
 import { Image } from "astro:assets";
@@ -47,6 +47,38 @@ Install desired adapter using your package manager
 
     ```bash
     npm install @af-utils/virtual-solid solid-js@^1.9.14
+    ```
+
+- ### Preact
+
+    The Preact adapter exposes a compact component and hooks that follow the React adapter's model ownership.
+
+    ```bash
+    npm install @af-utils/virtual-preact preact@^10.29.8
+    ```
+
+- ### Svelte
+
+    The Svelte adapter uses readable stores and actions, so only the rendered range participates in updates.
+
+    ```bash
+    npm install @af-utils/virtual-svelte svelte@^5.56.9
+    ```
+
+- ### Lit
+
+    The Lit adapter provides reactive controllers and directives for web components.
+
+    ```bash
+    npm install @af-utils/virtual-lit lit@^3.3.0
+    ```
+
+- ### Vue
+
+    The Vue adapter provides composables, a list component, and a virtual-item directive.
+
+    ```bash
+    npm install @af-utils/virtual-vue vue@^3.5.0
     ```
 
 - ### Core (no framework)

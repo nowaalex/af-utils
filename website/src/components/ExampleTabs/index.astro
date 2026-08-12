@@ -1,5 +1,8 @@
 ---
-import { getExampleRepositoryPath } from "@af-utils/examples/config";
+import {
+    getExampleRepositoryPath,
+    getExampleRouteEntryFile
+} from "@af-utils/examples/config";
 import { Icon } from "astro-icon/components";
 import ExampleFileTree from "components/ExampleFileTree/index.astro";
 import TabButton from "components/ExampleTabs/TabButton.astro";
@@ -13,18 +16,19 @@ interface Props {
 
 const { files, path, title } = Astro.props;
 const tabId = path.replaceAll("/", "-");
+const entryFile = getExampleRouteEntryFile(path);
 const gitPath = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env.PUBLIC_GITHUB_BRANCH}/${getExampleRepositoryPath(path)}`;
 const codeSandboxUrl = new URL(
     `https://codesandbox.io/embed/github/${gitPath}`
 );
 codeSandboxUrl.searchParams.set("view", "editor+preview");
-codeSandboxUrl.searchParams.set("module", "/src/code.tsx");
+codeSandboxUrl.searchParams.set("module", `/${entryFile}`);
 codeSandboxUrl.searchParams.set("hidenavigation", "1");
 codeSandboxUrl.searchParams.set("theme", "light");
 
 const stackBlitzUrl = new URL(`https://stackblitz.com/github/${gitPath}`);
 stackBlitzUrl.searchParams.set("embed", "1");
-stackBlitzUrl.searchParams.set("file", "src/code.tsx");
+stackBlitzUrl.searchParams.set("file", entryFile);
 stackBlitzUrl.searchParams.set("hideNavigation", "1");
 stackBlitzUrl.searchParams.set("view", "editor");
 

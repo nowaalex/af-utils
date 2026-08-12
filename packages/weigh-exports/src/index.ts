@@ -5,6 +5,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join, normalize, parse } from "node:path";
 import { parseArgs } from "node:util";
 import chalk from "chalk";
+import { glob } from "tinyglobby";
 import getFileSizes from "./getFileSizes";
 import exportsToGlobPatterns from "./parseExports";
 
@@ -35,10 +36,14 @@ let parsedOutput: ReturnType<typeof parse> | null = null,
     packagePaths: string[] = [];
 
 if (values.input) {
-    packagePaths = values.input
-        .trim()
-        .split(/\s+/u)
-        .map(path => normalize(path));
+    const inputPatterns = values.input.trim().split(/\s+/u);
+    packagePaths = [
+        ...new Set(
+            (await glob(inputPatterns, { onlyDirectories: true })).map(path =>
+                normalize(path)
+            )
+        )
+    ].toSorted();
 }
 
 if (packagePaths.length === 0) {

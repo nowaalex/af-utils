@@ -15,7 +15,7 @@ const getExampleImportPath = (example: DiscoveredExample) => {
     const codePath = relative(examplesDirectory, example.entryFile)
         .split(sep)
         .join("/");
-    return `${examplesImportPrefix}${codePath.slice(0, codePath.lastIndexOf("."))}`;
+    return `${examplesImportPrefix}${codePath}`;
 };
 
 const renderExamplePage = (example: DiscoveredExample) => `---

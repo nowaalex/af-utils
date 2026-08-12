@@ -25,7 +25,8 @@
         "weigh-exports": "./dist/index.js"
     },
     "scripts": {
-        "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=dist --external:@swc/* --external:chalk"
+        "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=dist --external:@swc/* --external:chalk",
+        "typecheck": "tsc --noEmit"
     },
     "engines": {
         "node": ">=20.0.0"
@@ -42,7 +43,8 @@
     },
     "dependencies": {
         "@swc/core": "^1.15.47",
-        "chalk": "^6.0.0"
+        "chalk": "^6.0.0",
+        "tinyglobby": "^0.2.17"
     },
     "publishConfig": {
         "access": "public"

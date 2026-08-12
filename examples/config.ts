@@ -1,12 +1,12 @@
 import { fileURLToPath } from "node:url";
 import structure from "./structure.json" with { type: "json" };
 
-export type ExampleFramework = "react" | "solid";
+export type ExampleFramework = keyof typeof structure.frameworks;
 
-export const exampleFrameworks = structure.frameworks as ExampleFramework[];
-const routeCategoryAliases = structure.routeCategoryAliases as Partial<
-    Record<ExampleFramework, Record<string, string>>
->;
+export const exampleFrameworkDefinitions = structure.frameworks;
+export const exampleFrameworks = Object.keys(
+    exampleFrameworkDefinitions
+) as ExampleFramework[];
 
 export interface ExampleLocation {
     framework: ExampleFramework;
@@ -23,7 +23,18 @@ export const examplesImportPrefix = `@af-utils/examples/${structure.sourceDirect
 
 export const examplesRepositoryDirectory = `examples/${structure.sourceDirectory}`;
 
-export const exampleEntryFile = structure.entryFile;
+export const exampleEntryFiles = Object.fromEntries(
+    exampleFrameworks.map(framework => [
+        framework,
+        exampleFrameworkDefinitions[framework].entryFile
+    ])
+) as Record<ExampleFramework, string>;
+
+export const getExampleEntryFile = (framework: ExampleFramework) =>
+    exampleEntryFiles[framework];
+
+export const getExampleFrameworkDefinition = (framework: ExampleFramework) =>
+    exampleFrameworkDefinitions[framework];
 
 const isExampleFramework = (value: string): value is ExampleFramework =>
     exampleFrameworks.some(framework => framework === value);
@@ -54,8 +65,13 @@ export const getExampleLocation = (
     const category = groupSegments[1] ?? "";
     if (!category) throw new Error(`Missing example category: ${groupPath}`);
 
+    const definition = getExampleFrameworkDefinition(framework);
+    const aliases =
+        "routeCategoryAliases" in definition
+            ? definition.routeCategoryAliases
+            : undefined;
     const routeCategory =
-        routeCategoryAliases[framework]?.[category] ?? category;
+        aliases?.[category as keyof typeof aliases] ?? category;
     const route = [
         "virtual",
         framework,
@@ -76,13 +92,22 @@ export const getExampleImplementationPath = (route: string) => {
         throw new Error(`Unknown example framework in route: ${route}`);
     }
 
-    const aliases = routeCategoryAliases[framework] ?? {};
+    const definition = getExampleFrameworkDefinition(framework);
+    const aliases =
+        "routeCategoryAliases" in definition
+            ? definition.routeCategoryAliases
+            : {};
     const category =
         Object.entries(aliases).find(
             ([, alias]) => alias === routeCategory
         )?.[0] ?? routeCategory;
     return ["virtual", category, ...segments.slice(3), framework].join("/");
 };
+
+export const getExampleRouteEntryFile = (route: string) =>
+    getExampleEntryFile(
+        getExampleLocation(getExampleImplementationPath(route)).framework
+    );
 
 export const getExampleRepositoryPath = (route: string) =>
     `${examplesRepositoryDirectory}/${getExampleImplementationPath(route)}`;

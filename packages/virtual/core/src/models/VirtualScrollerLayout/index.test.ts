@@ -79,6 +79,17 @@ test("enables a hydration-safe scroller only after model attachment", () => {
         interactiveStyle
     );
 
+    scroller.style.overflow = "hidden";
+    layout.setScrollerElement(scroller, interactiveStyle);
+    expect(scroller.style.overflow).toBe("auto");
+    expect(scroller.style.overflowY).toBe("scroll");
+
+    const setContainerSpy = vi.spyOn(model, "setContainer");
+    const sizeElement = document.createElement("div");
+    layout.setSizeElement(sizeElement);
+    layout.setSizeElement(sizeElement);
+    expect(setContainerSpy).toHaveBeenCalledOnce();
+
     layout.dispose();
 });
 

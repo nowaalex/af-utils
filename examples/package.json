@@ -2,5 +2,26 @@
     "name": "@af-utils/examples",
     "version": "0.0.1",
     "private": true,
-    "type": "module"
+    "type": "module",
+    "nx": {
+        "targets": {
+            "versions": {
+                "dependsOn": [
+                    "sync"
+                ]
+            },
+            "versions:check": {
+                "dependsOn": [
+                    "sync:check"
+                ]
+            }
+        }
+    },
+    "scripts": {
+        "sync": "node ../scripts/sync-examples.mjs",
+        "sync:check": "node ../scripts/sync-examples.mjs --check",
+        "versions": "node ../scripts/sync-example-package-versions.mjs",
+        "versions:check": "node ../scripts/sync-example-package-versions.mjs --check",
+        "e2e": "playwright test --config ../playwright.config.ts"
+    }
 }

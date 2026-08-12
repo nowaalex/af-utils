@@ -1,0 +1,21 @@
+---
+import type { ExampleFramework } from "@af-utils/examples/config";
+import { Icon } from "astro-icon/components";
+import { frameworkPresentation } from "utils/frameworks";
+
+interface Props {
+    framework: ExampleFramework;
+    size?: number;
+    class?: string;
+}
+
+const { framework, size = 18, class: className } = Astro.props;
+const presentation = frameworkPresentation[framework];
+---
+
+<Icon
+    aria-hidden="true"
+    name={presentation.icon}
+    size={size}
+    class:list={["shrink-0", presentation.iconClass, className]}
+/>

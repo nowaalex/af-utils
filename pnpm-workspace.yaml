@@ -7,4 +7,7 @@ saveWorkspaceProtocol: true
 allowBuilds:
     "@swc/core": true
     esbuild: true
+    nx: true
     sharp: true
+minimumReleaseAgeExclude:
+    - svelte@5.56.9

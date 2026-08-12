@@ -1,4 +1,4 @@
-import { exampleEntryFile, getExampleLocation } from "../config";
+import { exampleEntryFiles, getExampleLocation } from "../config";
 
 const normalizeKeys = <Value>(
     source: Record<string, Value>,
@@ -12,14 +12,7 @@ const normalizeKeys = <Value>(
     ) as Record<string, Value>;
 
 const discoveredExampleFileSources = import.meta.glob<string>(
-    [
-        "./**/src/**/*.{css,html,js,jsx,json,ts,tsx}",
-        "./**/global.d.ts",
-        "./**/index.html",
-        "./**/package.json",
-        "./**/tsconfig.json",
-        "./**/vite.config.{js,ts}"
-    ],
+    ["./**/*", "!./**/node_modules/**", "!./**/dist/**", "!./**/CHANGELOG.md"],
     { import: "default", query: "?raw" }
 );
 
@@ -27,14 +20,18 @@ export const exampleFileSources = /* @__PURE__ */ normalizeKeys(
     discoveredExampleFileSources
 );
 
-const codeSourceSuffix = `/${exampleEntryFile}`;
 const codeSourcesByImplementation = /* @__PURE__ */ Object.fromEntries(
     Object.entries(exampleFileSources)
-        .filter(([filePath]) => filePath.endsWith(codeSourceSuffix))
-        .map(([filePath, load]) => [
-            filePath.slice(0, -codeSourceSuffix.length),
-            load
-        ])
+        .map(([filePath, load]) => {
+            const match = Object.entries(exampleEntryFiles).find(
+                ([framework, entryFile]) =>
+                    filePath.endsWith(`/${framework}/${entryFile}`)
+            );
+            if (!match) return null;
+            const entrySuffix = `/${match[1]}`;
+            return [filePath.slice(0, -entrySuffix.length), load] as const;
+        })
+        .filter(entry => entry !== null)
 );
 
 export const exampleDefinitions = Object.keys(codeSourcesByImplementation)

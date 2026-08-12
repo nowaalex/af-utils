@@ -191,13 +191,14 @@ class VirtualScrollerLayout {
         element: HTMLElement | null,
         interactiveStyle: VirtualScrollerLayoutStyle
     ) {
-        if (element === this._scrollerElement) return;
+        if (element !== this._scrollerElement) {
+            if (this._scrollerElement) this._model.setScroller(null);
+            this._scrollerElement = element;
 
-        if (this._scrollerElement) this._model.setScroller(null);
-        this._scrollerElement = element;
+            if (element) this._model.setScroller(element);
+        }
 
         if (element) {
-            this._model.setScroller(element);
             element.style.overflow = String(
                 interactiveStyle.overflow ?? "auto"
             );
@@ -243,16 +244,17 @@ class VirtualScrollerLayout {
     /** Connect or disconnect the element that provides native scroll size. */
     setSizeElement(element: HTMLElement | null) {
         const previous = this._sizeElement;
+        const changed = previous !== element;
         this._sizeElement = element;
 
-        if (previous && previous !== element) {
+        if (previous && changed) {
             this._model.setContainer(null);
         }
 
         if (element) {
             this._connect();
             Object.assign(element.style, this.getSizeElementStyle());
-            this._model.setContainer(element);
+            if (changed) this._model.setContainer(element);
         } else {
             this._disconnectIfUnused();
         }

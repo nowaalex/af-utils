@@ -1,0 +1,52 @@
+{
+    "name": "@af-utils/virtual-vue",
+    "private": false,
+    "version": "0.0.1",
+    "description": "Vue composables and components for rendering large scrollable data",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nowaalex/af-utils.git",
+        "directory": "packages/virtual/vue"
+    },
+    "homepage": "https://af-utils.com/virtual",
+    "bugs": "https://github.com/nowaalex/af-utils/issues",
+    "license": "MIT",
+    "sideEffects": false,
+    "scripts": {
+        "build": "vite build && vite build --ssr src/index.ts && tsc && pnpm api-extractor",
+        "typecheck": "tsc --noEmit",
+        "api-extractor": "api-extractor run && rm -r dist/types",
+        "test": "vitest run"
+    },
+    "files": [
+        "dist/*"
+    ],
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        "types": "./dist/index.d.ts",
+        "node": "./dist/index.node.js",
+        "default": "./dist/index.js"
+    },
+    "dependencies": {
+        "@af-utils/virtual-core": "workspace:*"
+    },
+    "peerDependencies": {
+        "vue": "^3.5.0",
+        "vue-tsc": "^3.2.0"
+    },
+    "devDependencies": {
+        "@types/node": "^26.2.0",
+        "@vitejs/plugin-vue": "^6.0.0",
+        "@vue/server-renderer": "^3.5.0",
+        "jsdom": "^30.0.1",
+        "typescript": "^6.0.3",
+        "vite": "^8.2.1",
+        "vitest": "^4.1.10",
+        "vue": "^3.5.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

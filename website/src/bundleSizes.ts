@@ -1,12 +1,36 @@
 // This file was generated automatically
 
 export default {
+    "@af-utils/scrollend-polyfill": {
+        "./dist/index.js": {
+            raw: 6589,
+            min: 2297,
+            minGz: 1025,
+            minBrotli: 919
+        }
+    },
     "@af-utils/virtual-core": {
         "./dist/index.production.js": {
-            raw: 17406,
-            min: 16942,
-            minGz: 5813,
-            minBrotli: 5238
+            raw: 17416,
+            min: 16952,
+            minGz: 5814,
+            minBrotli: 5256
+        }
+    },
+    "@af-utils/virtual-lit": {
+        "./dist/index.js": {
+            raw: 4079,
+            min: 3405,
+            minGz: 1091,
+            minBrotli: 967
+        }
+    },
+    "@af-utils/virtual-preact": {
+        "./dist/index.js": {
+            raw: 2981,
+            min: 2202,
+            minGz: 987,
+            minBrotli: 900
         }
     },
     "@af-utils/virtual-react": {
@@ -25,12 +49,20 @@ export default {
             minBrotli: 1127
         }
     },
-    "@af-utils/scrollend-polyfill": {
+    "@af-utils/virtual-svelte": {
         "./dist/index.js": {
-            raw: 6589,
-            min: 2297,
-            minGz: 1025,
-            minBrotli: 919
+            raw: 3066,
+            min: 2476,
+            minGz: 954,
+            minBrotli: 836
+        }
+    },
+    "@af-utils/virtual-vue": {
+        "./dist/index.js": {
+            raw: 3051,
+            min: 2305,
+            minGz: 1010,
+            minBrotli: 925
         }
     }
 } as const;

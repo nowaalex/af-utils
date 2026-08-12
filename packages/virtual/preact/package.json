@@ -1,0 +1,66 @@
+{
+    "name": "@af-utils/virtual-preact",
+    "private": false,
+    "version": "0.0.1",
+    "description": "Preact components and hooks for rendering large scrollable data",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nowaalex/af-utils.git",
+        "directory": "packages/virtual/preact"
+    },
+    "homepage": "https://af-utils.com/virtual",
+    "bugs": "https://github.com/nowaalex/af-utils/issues",
+    "author": {
+        "name": "Alex Fomin",
+        "email": "nowaalex@gmail.com",
+        "url": "https://github.com/nowaalex/"
+    },
+    "license": "MIT",
+    "sideEffects": false,
+    "scripts": {
+        "dev": "vite build --watch",
+        "build": "vite build && vite build --ssr src/index.ts && tsc && pnpm api-extractor",
+        "typecheck": "tsc --noEmit",
+        "api-extractor": "api-extractor run && rm -r dist/types",
+        "test": "vitest run"
+    },
+    "files": [
+        "dist/*"
+    ],
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        "types": "./dist/index.d.ts",
+        "node": "./dist/index.node.js",
+        "default": "./dist/index.js"
+    },
+    "keywords": [
+        "preact",
+        "virtual",
+        "list",
+        "dynamic-size",
+        "scroll",
+        "virtualized",
+        "virtualization",
+        "windowing"
+    ],
+    "dependencies": {
+        "@af-utils/virtual-core": "workspace:*"
+    },
+    "peerDependencies": {
+        "preact": "^10.29.8"
+    },
+    "devDependencies": {
+        "@types/node": "^26.2.0",
+        "jsdom": "^30.0.1",
+        "preact": "^10.29.8",
+        "typescript": "^6.0.3",
+        "vite": "^8.2.1",
+        "@preact/preset-vite": "^2.10.6",
+        "vitest": "^4.1.10"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

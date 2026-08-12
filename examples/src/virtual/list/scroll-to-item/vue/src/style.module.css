@@ -1,0 +1,57 @@
+.list {
+    scrollbar-gutter: stable;
+}
+
+.list:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+}
+
+.item {
+    border-top: 1px solid #ccc;
+    line-height: 18px;
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    padding: 0.5em;
+    flex-wrap: wrap;
+    gap: 1em;
+    background-color: lightgoldenrodyellow;
+    position: sticky;
+}
+
+.top0 {
+    top: 0;
+}
+
+.bottom0 {
+    bottom: 0;
+}
+
+.list:focus-visible > .top0 {
+    box-shadow:
+        inset 0 2px currentColor,
+        inset 2px 0 currentColor,
+        inset -2px 0 currentColor;
+}
+
+.list:focus-visible > .bottom0 {
+    box-shadow:
+        inset 0 -2px currentColor,
+        inset 2px 0 currentColor,
+        inset -2px 0 currentColor;
+}
+
+.btn {
+    padding: 0 1em;
+    border: 1px solid #ccc;
+    background-color: antiquewhite;
+}
+
+.inp {
+    width: 7em;
+    padding: 0.2em 0.5em;
+}

@@ -1,0 +1,49 @@
+{
+    "name": "@af-utils/virtual-lit",
+    "private": false,
+    "version": "0.0.1",
+    "description": "Lit controllers and directives for rendering large scrollable data",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nowaalex/af-utils.git",
+        "directory": "packages/virtual/lit"
+    },
+    "homepage": "https://af-utils.com/virtual",
+    "bugs": "https://github.com/nowaalex/af-utils/issues",
+    "license": "MIT",
+    "sideEffects": false,
+    "scripts": {
+        "build": "vite build && vite build --ssr src/index.ts && tsc && pnpm api-extractor",
+        "typecheck": "tsc --noEmit",
+        "api-extractor": "api-extractor run && rm -r dist/types",
+        "test": "vitest run"
+    },
+    "files": [
+        "dist/*"
+    ],
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        "types": "./dist/index.d.ts",
+        "node": "./dist/index.node.js",
+        "default": "./dist/index.js"
+    },
+    "dependencies": {
+        "@af-utils/virtual-core": "workspace:*"
+    },
+    "peerDependencies": {
+        "lit": "^3.3.0"
+    },
+    "devDependencies": {
+        "@types/node": "^26.2.0",
+        "jsdom": "^30.0.1",
+        "lit": "^3.3.0",
+        "typescript": "^6.0.3",
+        "vite": "^8.2.1",
+        "vitest": "^4.1.10"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

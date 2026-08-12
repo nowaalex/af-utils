@@ -1,6 +1,8 @@
 import {
     type ExampleFramework,
-    getExampleImplementationPath
+    exampleFrameworks,
+    getExampleImplementationPath,
+    getExampleRouteEntryFile
 } from "@af-utils/examples/config";
 import {
     exampleCodeSources,
@@ -13,6 +15,7 @@ import {
 import type { MenuItem } from "components/Menu.astro";
 import _ from "lodash";
 import type { BundledLanguage } from "shiki";
+import { frameworkPresentation } from "utils/frameworks";
 
 export { examplePaths };
 export const readmes = exampleReadmes;
@@ -33,12 +36,24 @@ function walkMenu(
               .toSorted((a, b) => a.localeCompare(b))
               .map(k => {
                   const newPath = `${path}/${_.kebabCase(k)}`;
-                  return {
+                  const framework =
+                      depth === 1
+                          ? exampleFrameworks.find(value => value === k)
+                          : undefined;
+                  const item: MenuItem = {
                       name: _.startCase(k),
                       path: newPath,
                       collapsible: depth === 1,
                       children: walkMenu(obj[k], newPath, depth + 1)
-                  } as const satisfies MenuItem;
+                  };
+                  if (framework) {
+                      const presentation = frameworkPresentation[framework];
+                      item.icon = presentation.icon;
+                      if ("iconClass" in presentation) {
+                          item.iconClass = presentation.iconClass;
+                      }
+                  }
+                  return item;
               })
         : [];
 }
@@ -59,8 +74,11 @@ const languageByExtension = {
     js: "js",
     jsx: "jsx",
     json: "json",
+    md: "markdown",
     ts: "ts",
-    tsx: "tsx"
+    tsx: "tsx",
+    svelte: "svelte",
+    vue: "vue"
 } as const satisfies Record<string, BundledLanguage>;
 
 export function getExampleFileLanguage(fileName: string): BundledLanguage {
@@ -73,12 +91,9 @@ export function getExampleFileLanguage(fileName: string): BundledLanguage {
 
 export function getExampleSourceFiles(path: string): ExampleSourceFile[] {
     const prefix = `${getExampleImplementationPath(path)}/`;
+    const entryFile = getExampleRouteEntryFile(path);
     return Object.entries(exampleFileSources)
-        .filter(
-            ([filePath]) =>
-                filePath.startsWith(prefix) &&
-                !filePath.slice(prefix.length).startsWith("dist/")
-        )
+        .filter(([filePath]) => filePath.startsWith(prefix))
         .map(([filePath, load]) => {
             const name = filePath.slice(prefix.length);
             return {
@@ -89,8 +104,8 @@ export function getExampleSourceFiles(path: string): ExampleSourceFile[] {
             };
         })
         .toSorted((a, b) => {
-            if (a.name === "src/code.tsx") return -1;
-            if (b.name === "src/code.tsx") return 1;
+            if (a.name === entryFile) return -1;
+            if (b.name === entryFile) return 1;
             if (a.name.startsWith("src/") !== b.name.startsWith("src/")) {
                 return a.name.startsWith("src/") ? -1 : 1;
             }

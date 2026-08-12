@@ -1,0 +1,90 @@
+{
+    "$schema": "./node_modules/nx/schemas/nx-schema.json",
+    "defaultBase": "master",
+    "tui": {
+        "enabled": true,
+        "autoExit": true
+    },
+    "pluginsConfig": {
+        "@nx/js": {
+            "projectsAffectedByDependencyUpdates": "auto"
+        }
+    },
+    "namedInputs": {
+        "default": ["{projectRoot}/**/*", "sharedGlobals"],
+        "production": [
+            "default",
+            "!{projectRoot}/**/*.bench.*",
+            "!{projectRoot}/**/*.spec.*",
+            "!{projectRoot}/**/*.test.*",
+            "!{projectRoot}/**/__mocks__/**",
+            "!{projectRoot}/CHANGELOG.md",
+            "!{projectRoot}/README.md"
+        ],
+        "sharedGlobals": [
+            "{workspaceRoot}/api-extractor.json",
+            "{workspaceRoot}/package.json",
+            "{workspaceRoot}/pnpm-lock.yaml",
+            "{workspaceRoot}/pnpm-workspace.yaml",
+            "{workspaceRoot}/tsconfig.base.json",
+            { "runtime": "node --version" }
+        ]
+    },
+    "targetDefaults": {
+        "build": {
+            "cache": true,
+            "dependsOn": ["^build"],
+            "inputs": ["production", "^production"],
+            "outputs": ["{projectRoot}/dist"]
+        },
+        "dev": {
+            "cache": false,
+            "continuous": true
+        },
+        "preview": {
+            "cache": false,
+            "continuous": true
+        },
+        "serve": {
+            "cache": false,
+            "continuous": true
+        },
+        "start": {
+            "cache": false,
+            "continuous": true
+        },
+        "test": [
+            {
+                "cache": true,
+                "dependsOn": ["^build"],
+                "inputs": ["default", "^production"]
+            },
+            {
+                "filter": {
+                    "projects": ["@af-utils/virtual-core"]
+                },
+                "cache": false
+            }
+        ],
+        "typecheck": {
+            "cache": true,
+            "dependsOn": ["^build"],
+            "inputs": ["default", "^default"]
+        },
+        "e2e": {
+            "cache": false,
+            "parallelism": false,
+            "dependsOn": [
+                {
+                    "target": "build",
+                    "projects": ["examples/**", "website"]
+                }
+            ]
+        },
+        "bench": {
+            "cache": false,
+            "parallelism": false
+        }
+    },
+    "analytics": false
+}

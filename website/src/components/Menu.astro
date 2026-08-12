@@ -6,6 +6,8 @@ import MenuSubtree from "./MenuSubtree.astro";
 export interface MenuItem {
     name: string;
     path: string;
+    icon?: string;
+    iconClass?: string;
     exact?: boolean;
     comparePath?: string;
     collapsible?: boolean;

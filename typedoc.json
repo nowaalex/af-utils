@@ -1,10 +1,6 @@
 {
     "$schema": "./node_modules/typedoc-plugin-markdown/typedoc-plugin-markdown.schema.json",
-    "entryPoints": [
-        "packages/virtual/core",
-        "packages/virtual/react",
-        "packages/virtual/solid"
-    ],
+    "entryPoints": ["packages/virtual/*"],
     "entryPointStrategy": "packages",
     "packageOptions": {
         "entryPoints": ["src/index.ts"]

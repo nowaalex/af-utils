@@ -30,16 +30,14 @@ const isCurrentSubtree = currentPath.startsWith(stripTrailingSlash(node.path));
                     >
                         <span class="size-1.5 -rotate-45 border-b border-r border-current transition-transform group-open:rotate-45" />
                     </span>
-                    <Icon
-                        aria-hidden="true"
-                        size={18}
-                        name={
-                            node.name === "React"
-                                ? "logos:react"
-                                : "logos:solidjs-icon"
-                        }
-                        class="shrink-0"
-                    />
+                    {node.icon && (
+                        <Icon
+                            aria-hidden="true"
+                            size={18}
+                            name={node.icon}
+                            class:list={["shrink-0", node.iconClass]}
+                        />
+                    )}
                     <MenuSubtreeHeader depth={depth} class="!m-0 leading-tight">
                         {node.name}
                     </MenuSubtreeHeader>

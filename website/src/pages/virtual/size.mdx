@@ -6,6 +6,7 @@ description: "All packages were carefully optimized to be as small as possible. 
 
 import SizeInfo from "components/SizeInfo.astro";
 import sizes from "bundleSizes";
+import { virtualAdapterPackages } from "utils/frameworks";
 
 # Virtual bundle size impact
 
@@ -17,14 +18,10 @@ All packages were carefully optimized to be as small as possible.
             sizes["@af-utils/virtual-core"]["./dist/index.production.js"],
             "@af-utils/virtual-core"
         ],
-        [
-            sizes["@af-utils/virtual-react"]["./dist/index.js"],
-            "@af-utils/virtual-react"
-        ],
-        [
-            sizes["@af-utils/virtual-solid"]["./dist/index.js"],
-            "@af-utils/virtual-solid"
-        ]
+        ...virtualAdapterPackages.map(name => [
+            sizes[name]["./dist/index.js"],
+            name
+        ])
     ]}
 />
 

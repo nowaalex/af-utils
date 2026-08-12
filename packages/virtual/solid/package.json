@@ -20,6 +20,7 @@
     "scripts": {
         "dev": "vite build --watch",
         "build": "vite build && vite build --ssr src/index.ts && tsc && pnpm api-extractor",
+        "typecheck": "tsc --noEmit",
         "api-extractor": "api-extractor run && rm -r dist/types",
         "test": "vitest run"
     },

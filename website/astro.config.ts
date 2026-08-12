@@ -1,8 +1,16 @@
 import { unified } from "@astrojs/markdown-remark";
+import {
+    exampleFrameworks,
+    getExampleFrameworkDefinition
+} from "@af-utils/examples/config";
 import mdx from "@astrojs/mdx";
+import lit from "@astrojs/lit";
+import preact from "@astrojs/preact";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import solid from "@astrojs/solid-js";
+import svelte from "@astrojs/svelte";
+import vue from "@astrojs/vue";
 import tailwindcss from "@tailwindcss/vite";
 import type { RehypePlugins } from "astro";
 import { defineConfig } from "astro/config";
@@ -18,6 +26,13 @@ import { codeTheme } from "./src/utils/codeTheme";
 import stripTrailingSlash from "./src/utils/stripTrailingSlash";
 
 const env = loadEnv("", process.cwd(), "") as ImportMetaEnv;
+const frameworkIcons = exampleFrameworks.map(framework =>
+    getExampleFrameworkDefinition(framework).icon.split(":")
+);
+const getFrameworkIcons = (collection: string) =>
+    frameworkIcons.flatMap(([prefix, iconName]) =>
+        prefix === collection && iconName ? [iconName] : []
+    );
 const rehypeLinks: RehypePlugins[number] = () => tree =>
     visit(tree, "element", node => {
         if (node.tagName === "a" && typeof node.properties.href === "string") {
@@ -58,6 +73,12 @@ export default defineConfig({
     integrations: [
         examples(),
         mdx(),
+        preact({
+            include: [
+                "**/virtual/**/preact/src/code",
+                "**/virtual/**/preact/**/*.{js,jsx,ts,tsx}"
+            ]
+        }),
         react({
             include: [
                 "**/virtual/**/react/src/code",
@@ -72,11 +93,23 @@ export default defineConfig({
                 "**/virtual/**/solid/**/*.{js,jsx,ts,tsx}"
             ]
         }),
+        svelte({
+            include: [
+                "**/examples/src/virtual/**/svelte/src/code",
+                "**/examples/src/virtual/**/svelte/**/*.{js,ts,svelte}"
+            ]
+        }),
+        vue({
+            include: [
+                "**/examples/src/virtual/**/vue/src/code",
+                "**/examples/src/virtual/**/vue/**/*.{js,ts,vue}"
+            ]
+        }),
+        lit(),
         icon({
             include: {
                 logos: [
-                    "react",
-                    "solidjs-icon",
+                    ...getFrameworkIcons("logos"),
                     "github-icon",
                     "discord-icon",
                     "typescript-icon",
@@ -86,6 +119,7 @@ export default defineConfig({
                     "nodejs-icon",
                     "vitejs"
                 ],
+                "simple-icons": getFrameworkIcons("simple-icons"),
                 "material-symbols": [
                     "arrow-forward",
                     "arrow-back",

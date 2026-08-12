@@ -8,7 +8,8 @@ Simple open-source tools that just work _(usually fast)_
 
 ### Features
 
-The React adapter targets React 19.2+. The Solid adapter targets Solid 1.9+.
+The framework adapters target React 19.2+, Preact 10.29+, Solid 1.9+, Svelte
+5.56+, Lit 3.3+, and Vue 3.5+.
 
 - [vertical](https://af-utils.com/virtual/examples/react/list/simple) / [horizontal](https://af-utils.com/virtual/examples/react/list/horizontal) / [grid](https://af-utils.com/virtual/examples/react/hook/grid) / [custom](https://af-utils.com/virtual/examples/react/hook/custom-render) modes
 - [dynamic item sizes](https://af-utils.com/virtual/examples/react/list/variable-size-list)
@@ -17,13 +18,40 @@ The React adapter targets React 19.2+. The Solid adapter targets Solid 1.9+.
 - [load on demand](https://af-utils.com/virtual/examples/react/list/load-on-demand)
 - [window scroll](https://af-utils.com/virtual/examples/react/hook/window-scroll)
 - [material-ui](https://af-utils.com/virtual/examples/react/list/material-ui) / [bootstrap](https://af-utils.com/virtual/examples/react/list/bootstrap) integration
-- [Solid list](https://af-utils.com/virtual/examples/solid/list/simple) / [Solid primitives](https://af-utils.com/virtual/examples/solid/primitives/simple)
+- [React](https://af-utils.com/virtual/examples/react/list/simple) / [Preact](https://af-utils.com/virtual/examples/preact/list/simple) / [Solid](https://af-utils.com/virtual/examples/solid/list/simple) / [Svelte](https://af-utils.com/virtual/examples/svelte/list/simple) / [Lit](https://af-utils.com/virtual/examples/lit/list/simple) / [Vue](https://af-utils.com/virtual/examples/vue/list/simple) adapters
 
 ## [Scrollend polyfill](https://af-utils.com/scrollend-polyfill)
 
 ![Scrollend polyfill opengraph image](website/src/assets/og/scrollend-polyfill.png)
 
 ## Repository conventions
+
+pnpm owns dependency installation, workspace linking, and publishing. Nx reads
+the projects from `pnpm-workspace.yaml` and owns workspace task scheduling,
+dependency ordering, and the local computation cache. Package manifests and the
+filesystem remain the project source of truth; do not duplicate the project list
+in `nx.json`.
+
+Use the root scripts for the complete repository workflows:
+
+- `pnpm packages:build` builds the publishable packages.
+- `pnpm build` builds the publishable packages and documentation website.
+- `pnpm examples:build` builds every standalone example.
+- `pnpm workspace:sync` updates generated standalone-example files and exact
+  local package versions through one Nx dependency pipeline;
+  `pnpm workspace:sync:check` validates them without writing.
+- `pnpm typecheck` type-checks every publishable package through its Nx target.
+- `pnpm test` runs every package test target.
+- `pnpm test:examples` builds all production artifacts and runs the shared
+  Playwright suite in Chromium and Firefox.
+
+Use `pnpm nx graph` to inspect project and task relationships, or
+`pnpm nx affected -t build test typecheck` for an affected-only local check.
+Repository CI intentionally runs the complete gates. Deterministic package,
+example, website, unit-test, and type-checking tasks are cached locally. The
+virtual-core aggregate test remains uncached because it includes V8 optimization
+invariants. Website reference and bundle-size generation is a separate cached Nx
+task; the browser-test workflow verifies that its tracked outputs are committed.
 
 - Every production TypeScript class method, constructor, getter, setter, interface method signature, and method-like callback field must have a TSDoc comment, including private and package-internal members.
 - Use `/** ... */`; ordinary implementation comments do not replace API documentation.
@@ -65,9 +93,10 @@ The React adapter targets React 19.2+. The Solid adapter targets Solid 1.9+.
 - API Extractor owns `packages/**/etc/*.api.md`; external formatting would make
   its byte-for-byte API report check fail, so these generated files are excluded
   from Oxfmt.
-- Oxfmt does not currently load the Astro Prettier plugin, so `.astro` files use
-  Prettier with `prettier-plugin-astro` as the only formatting exception.
-  `astro check` remains responsible for Astro template and semantic checks.
+- Oxfmt does not currently format Astro or Svelte templates, so `.astro` and
+  `.svelte` files use Prettier with their official plugins as the only
+  formatting exception. `astro check` and `svelte-check` remain responsible for
+  template and semantic checks.
 - If an Oxlint warning is a false positive, cannot be fixed, or the fix would
   measurably harm a hot path or invalidate a benchmark, add the narrowest
   `oxlint-disable-next-line <rule> -- <reason>` directive at the affected line,

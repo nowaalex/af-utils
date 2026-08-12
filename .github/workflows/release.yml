@@ -37,11 +37,8 @@ jobs:
             - name: Install Dependencies
               run: pnpm i --frozen-lockfile
 
-            - name: Check standalone example dependencies
-              run: pnpm examples:versions:check
-
-            - name: Check generated example files
-              run: pnpm examples:sync:check
+            - name: Check generated example files and dependencies
+              run: pnpm workspace:sync:check
 
             - name: Check formatting and lint warnings
               run: pnpm check:style
@@ -53,7 +50,7 @@ jobs:
               run: pnpm test
 
             - name: Build packages
-              run: pnpm packages build
+              run: pnpm packages:build
 
             - name: Validate package tarballs
               run: pnpm publint
@@ -63,6 +60,9 @@ jobs:
 
             - name: Test examples in browser
               run: pnpm test:e2e
+
+            - name: Check generated website files
+              run: pnpm website:generated:check
 
             - name: Upload Playwright artifacts
               if: ${{ failure() }}

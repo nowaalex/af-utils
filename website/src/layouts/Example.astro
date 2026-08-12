@@ -1,6 +1,7 @@
 ---
 import ExampleHeader from "components/ExampleHeader.astro";
 import ExampleTabs from "components/ExampleTabs/index.astro";
+import FrameworkIcon from "components/FrameworkIcon.astro";
 import startCase from "lodash/startCase";
 import {
     getAlternativeExamples,
@@ -38,7 +39,14 @@ const alternatives = getAlternativeExamples(path);
                 {alternatives.map((example, index) => (
                     <>
                         {index > 0 && ", "}
-                        <a href={getExamplePagePath(example.route)}>
+                        <a
+                            href={getExamplePagePath(example.route)}
+                            class="inline-flex items-center gap-1"
+                        >
+                            <FrameworkIcon
+                                framework={example.framework}
+                                size={15}
+                            />
                             {startCase(example.framework)}
                         </a>
                     </>

@@ -1,10 +1,90 @@
 {
     "sourceDirectory": "src",
-    "entryFile": "src/code.tsx",
-    "frameworks": ["react", "solid"],
-    "routeCategoryAliases": {
+    "frameworks": {
+        "lit": {
+            "entryFile": "src/code.ts",
+            "adapterPackage": "@af-utils/virtual-lit",
+            "adapterDirectory": "packages/virtual/lit",
+            "template": "lit",
+            "build": "tsc && vite build",
+            "icon": "logos:lit-icon",
+            "dependencies": {
+                "lit": "^3.3.0"
+            },
+            "devDependencies": {}
+        },
+        "preact": {
+            "entryFile": "src/code.tsx",
+            "adapterPackage": "@af-utils/virtual-preact",
+            "adapterDirectory": "packages/virtual/preact",
+            "template": "preact",
+            "build": "tsc && vite build",
+            "icon": "logos:preact",
+            "dependencies": {
+                "preact": "^10.29.8"
+            },
+            "devDependencies": {
+                "@preact/preset-vite": "^2.10.6"
+            },
+            "routeCategoryAliases": {
+                "primitives": "hook"
+            }
+        },
         "react": {
-            "primitives": "hook"
+            "entryFile": "src/code.tsx",
+            "adapterPackage": "@af-utils/virtual-react",
+            "adapterDirectory": "packages/virtual/react",
+            "icon": "logos:react",
+            "dependencies": {},
+            "devDependencies": {},
+            "routeCategoryAliases": {
+                "primitives": "hook"
+            }
+        },
+        "solid": {
+            "entryFile": "src/code.tsx",
+            "adapterPackage": "@af-utils/virtual-solid",
+            "adapterDirectory": "packages/virtual/solid",
+            "template": "solid",
+            "build": "tsc && vite build",
+            "icon": "simple-icons:solid",
+            "iconClass": "text-[#2c4f7c]",
+            "dependencies": {
+                "solid-js": "^1.9.14"
+            },
+            "devDependencies": {
+                "vite-plugin-solid": "^2.11.14"
+            }
+        },
+        "svelte": {
+            "entryFile": "src/code.svelte",
+            "adapterPackage": "@af-utils/virtual-svelte",
+            "adapterDirectory": "packages/virtual/svelte",
+            "template": "svelte",
+            "build": "svelte-check --tsconfig ./tsconfig.json && vite build",
+            "icon": "logos:svelte-icon",
+            "dependencies": {
+                "svelte": "^5.56.9"
+            },
+            "devDependencies": {
+                "@sveltejs/vite-plugin-svelte": "^7.3.0",
+                "svelte-check": "^4.7.5"
+            }
+        },
+        "vue": {
+            "entryFile": "src/code.vue",
+            "adapterPackage": "@af-utils/virtual-vue",
+            "adapterDirectory": "packages/virtual/vue",
+            "template": "vue",
+            "build": "vue-tsc && vite build",
+            "icon": "logos:vue",
+            "dependencies": {
+                "vue": "^3.5.0"
+            },
+            "devDependencies": {
+                "@vitejs/plugin-vue": "^6.0.0",
+                "vue-tsc": "^3.2.0"
+            }
         }
     }
 }

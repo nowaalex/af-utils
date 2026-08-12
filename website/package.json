@@ -3,10 +3,70 @@
     "type": "module",
     "private": true,
     "version": "0.0.7",
+    "nx": {
+        "namedInputs": {
+            "examples": [
+                "{workspaceRoot}/examples/src/**/*",
+                "!{workspaceRoot}/examples/src/**/node_modules/**",
+                "!{workspaceRoot}/examples/src/**/dist/**",
+                "!{workspaceRoot}/examples/src/**/CHANGELOG.md",
+                "{workspaceRoot}/examples/config.ts",
+                "{workspaceRoot}/examples/discovery.ts",
+                "{workspaceRoot}/examples/structure.json"
+            ],
+            "generation": [
+                "default",
+                "!{projectRoot}/src/bundleSizes.ts",
+                "!{projectRoot}/src/content/reference/**/*"
+            ]
+        },
+        "targets": {
+            "build": {
+                "dependsOn": [
+                    "^build",
+                    "generate"
+                ],
+                "inputs": [
+                    "production",
+                    "^production",
+                    "examples",
+                    {
+                        "dependentTasksOutputFiles": "website/src/bundleSizes.ts"
+                    },
+                    {
+                        "dependentTasksOutputFiles": "website/src/content/reference/**/*"
+                    }
+                ]
+            },
+            "generate": {
+                "cache": true,
+                "dependsOn": [
+                    "^build"
+                ],
+                "inputs": [
+                    "generation",
+                    {
+                        "projects": [
+                            "tag:npm:public"
+                        ],
+                        "input": "production"
+                    },
+                    "{workspaceRoot}/typedoc.json"
+                ],
+                "outputs": [
+                    "{projectRoot}/src/bundleSizes.ts",
+                    "{projectRoot}/src/content/reference"
+                ]
+            }
+        }
+    },
     "scripts": {
         "dev": "astro dev",
-        "build": "pnpm weigh-exports && pnpm format:generated && pnpm build:docs && astro check && astro build",
-        "weigh-exports": "node ../packages/weigh-exports/dist/index.js -i '../packages/virtual/core ../packages/virtual/react ../packages/virtual/solid ../packages/scrollend-polyfill' -o ./src/bundleSizes.ts",
+        "build": "astro check && astro build",
+        "generate": "pnpm generate:bundle-sizes && pnpm generate:reference",
+        "generate:bundle-sizes": "pnpm weigh-exports && pnpm format:generated",
+        "generate:reference": "./build-docs.sh",
+        "weigh-exports": "node ../packages/weigh-exports/dist/index.js -i '../packages/virtual/* ../packages/scrollend-polyfill' -o ./src/bundleSizes.ts",
         "start": "astro dev",
         "format:generated": "oxfmt ./src/bundleSizes.ts",
         "build:docs": "./build-docs.sh",
@@ -17,18 +77,30 @@
         "@af-utils/examples": "workspace:*",
         "@af-utils/scrollend-polyfill": "workspace:*",
         "@af-utils/virtual-core": "workspace:*",
+        "@af-utils/virtual-lit": "workspace:*",
+        "@af-utils/virtual-preact": "workspace:*",
         "@af-utils/virtual-react": "workspace:*",
         "@af-utils/virtual-solid": "workspace:*",
+        "@af-utils/virtual-svelte": "workspace:*",
+        "@af-utils/virtual-vue": "workspace:*",
         "@astrojs/check": "^0.9.10",
+        "@astrojs/lit": "^4.0.0",
         "@astrojs/markdown-remark": "^7.2.2",
+        "@astrojs/preact": "^6.0.2",
         "@astrojs/react": "^6.0.2",
         "@astrojs/sitemap": "^3.7.3",
         "@astrojs/solid-js": "^7.0.2",
+        "@astrojs/svelte": "^9.0.1",
         "@iconify-json/logos": "^1.2.12",
         "@iconify-json/material-symbols": "^1.2.88",
+        "@iconify-json/simple-icons": "^1.2.93",
+        "@lit-labs/ssr-client": "^1.1.7",
+        "@webcomponents/template-shadowroot": "^0.2.1",
         "astro": "^7.2.0",
         "astro-icon": "^1.1.5",
         "astro-seo": "^1.1.0",
+        "lit": "^3.3.0",
+        "preact": "^10.29.8",
         "pretty-bytes": "^7.1.1",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
@@ -36,11 +108,14 @@
         "sharp-ico": "^0.1.5",
         "shiki": "4.4.3",
         "solid-js": "^1.9.14",
-        "vite": "^8.2.1"
+        "svelte": "^5.56.9",
+        "vite": "^8.2.1",
+        "vue": "^3.5.0"
     },
     "devDependencies": {
         "@af-utils/weigh-exports": "workspace:*",
         "@astrojs/mdx": "^7.0.5",
+        "@astrojs/vue": "^7.0.2",
         "@tailwindcss/forms": "^0.5.11",
         "@tailwindcss/typography": "^0.5.20",
         "@tailwindcss/vite": "^4.3.3",

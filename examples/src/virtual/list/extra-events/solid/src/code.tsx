@@ -53,7 +53,7 @@ const ScrollSize = (props: { model: VirtualScroller }) => {
 const ExtraEvents = () => {
     const rows = createVirtual({
         itemCount: 150_000,
-        estimatedItemSize: 45
+        estimatedItemSize: 35
     });
 
     return (
