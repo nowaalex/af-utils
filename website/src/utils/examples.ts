@@ -1,6 +1,6 @@
-import _ from "lodash";
 import type { SEOProps } from "astro-seo";
 import type { MenuItem } from "components/Menu.astro";
+import _ from "lodash";
 
 export interface Params {
     params: { example: string[] };
@@ -17,6 +17,7 @@ function walkMenu(obj: MenuMap | undefined, path: string): MenuItem[] {
                   return {
                       name: _.startCase(k),
                       path: newPath,
+                      collapsible: true,
                       children: walkMenu(obj[k], newPath)
                   } as const satisfies MenuItem;
               })

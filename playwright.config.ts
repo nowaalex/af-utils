@@ -78,6 +78,12 @@ export default defineConfig({
         },
         {
             command:
+                "pnpm --dir examples/src/virtual/solid/list/simple dev --host 127.0.0.1 --port 4182",
+            url: "http://127.0.0.1:4182",
+            reuseExistingServer: !process.env.CI
+        },
+        {
+            command:
                 "ASTRO_DEV_BACKGROUND=1 pnpm --dir website exec astro dev --ignore-lock --host 127.0.0.1 --port 4179",
             url: "http://127.0.0.1:4179/virtual/examples/react/list/prepend-items",
             reuseExistingServer: !process.env.CI

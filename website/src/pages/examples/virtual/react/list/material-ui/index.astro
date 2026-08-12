@@ -1,5 +1,5 @@
 ---
-import ReactExample from "../../../../../../../../examples/src/virtual/react/list/material-ui/src/code";
+import ExampleComponent from "../../../../../../../../examples/src/virtual/react/list/material-ui/src/code";
 import HeadFont from "components/head/Font.astro";
 ---
 
@@ -31,6 +31,8 @@ import HeadFont from "components/head/Font.astro";
         </style>
     </head>
     <body>
-        <div id="root"><ReactExample client:only="react"></ReactExample></div>
+        <div id="root">
+            <ExampleComponent client:only="react"></ExampleComponent>
+        </div>
     </body>
 </html>

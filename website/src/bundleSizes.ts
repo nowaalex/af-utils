@@ -17,6 +17,14 @@ export default {
             minBrotli: 932
         }
     },
+    "@af-utils/virtual-solid": {
+        "./dist/index.js": {
+            raw: 3474,
+            min: 2623,
+            minGz: 1270,
+            minBrotli: 1127
+        }
+    },
     "@af-utils/scrollend-polyfill": {
         "./dist/index.js": {
             raw: 6598,

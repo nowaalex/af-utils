@@ -1,7 +1,7 @@
 ---
 layout: layouts/virtual/VirtualDocumentation.astro
 title: "Getting started"
-description: "Virtualize large lists with variable or fixed item sizes. Typescript-friendly, react and core adapters currently available"
+description: "Virtualize large lists with variable or fixed item sizes. TypeScript-friendly Solid, React, and core adapters are available."
 ---
 
 import { Image } from "astro:assets";
@@ -39,6 +39,14 @@ Install desired adapter using your package manager
 
     ```bash
     npm install @af-utils/virtual-react react@^19.2.8
+    ```
+
+-   ### Solid
+
+    The Solid adapter uses fine-grained range updates and requires Solid 1.9 or newer.
+
+    ```bash
+    npm install @af-utils/virtual-solid solid-js@^1.9.14
     ```
 
 -   ### Core (no framework)

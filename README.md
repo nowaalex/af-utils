@@ -8,7 +8,7 @@ Simple open-source tools that just work _(usually fast)_
 
 ### Features
 
-The React adapter targets React 19.2+. Older React versions are not supported.
+The React adapter targets React 19.2+. The Solid adapter targets Solid 1.9+.
 
 -   [vertical](https://af-utils.com/virtual/examples/react/list/simple) / [horizontal](https://af-utils.com/virtual/examples/react/list/horizontal) / [grid](https://af-utils.com/virtual/examples/react/hook/grid) / [custom](https://af-utils.com/virtual/examples/react/hook/custom-render) modes
 -   [dynamic item sizes](https://af-utils.com/virtual/examples/react/list/variable-size-list)
@@ -17,6 +17,7 @@ The React adapter targets React 19.2+. Older React versions are not supported.
 -   [load on demand](https://af-utils.com/virtual/examples/react/list/load-on-demand)
 -   [window scroll](https://af-utils.com/virtual/examples/react/hook/window-scroll)
 -   [material-ui](https://af-utils.com/virtual/examples/react/list/material-ui) / [bootstrap](https://af-utils.com/virtual/examples/react/list/bootstrap) integration
+-   [Solid list](https://af-utils.com/virtual/examples/solid/list/simple) / [Solid primitives](https://af-utils.com/virtual/examples/solid/primitives/simple)
 
 ## [Scrollend polyfill](https://af-utils.com/scrollend-polyfill)
 

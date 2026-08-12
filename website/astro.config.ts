@@ -1,18 +1,19 @@
-import { defineConfig } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
 import { unified } from "@astrojs/markdown-remark";
-import { visit } from "unist-util-visit";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import { loadEnv } from "vite";
-import remarkToc from "remark-toc";
-import remarkGfm from "remark-gfm";
-import rehypeSlug from "rehype-slug";
-import rehypePrettyCode from "rehype-pretty-code";
-import icon from "astro-icon";
-import stripTrailingSlash from "./src/utils/stripTrailingSlash";
+import solid from "@astrojs/solid-js";
+import tailwindcss from "@tailwindcss/vite";
 import type { RehypePlugins } from "astro";
+import { defineConfig } from "astro/config";
+import icon from "astro-icon";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
+import remarkToc from "remark-toc";
+import { visit } from "unist-util-visit";
+import { loadEnv } from "vite";
+import stripTrailingSlash from "./src/utils/stripTrailingSlash";
 
 const env = loadEnv("", process.cwd(), "") as ImportMetaEnv;
 const rehypeLinks: RehypePlugins[number] = () => tree =>
@@ -57,7 +58,10 @@ export default defineConfig({
     },
     integrations: [
         mdx(),
-        react(),
+        react({
+            include: ["**/virtual/react/**", "**/scrollend-polyfill/react/**"]
+        }),
+        solid({ include: ["**/virtual/solid/**"] }),
         icon({
             include: {
                 "material-symbols": [

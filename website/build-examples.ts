@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { chdir } from "node:process";
-import { dirname, relative, resolve, join } from "node:path";
-import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { dirname, join, relative, resolve } from "node:path";
+import { chdir } from "node:process";
 import glob from "fast-glob";
 import { parse } from "node-html-parser";
 import { loadEnv } from "vite";
@@ -59,11 +59,11 @@ for (const path of await glob(["**/index.html", "!**/dist/**"])) {
 
     /*
     scripts.length is 1 here;
-    need to remove default react entry script from example, because astro will add its own
+    remove the standalone framework entry because Astro adds its own island.
     */
     scripts[0]!.remove();
 
-    root.innerHTML = `<ReactExample ${ASTRO_HARDCODED_ATTRS[dir] || "client:idle"} />`;
+    root.innerHTML = `<ExampleComponent ${ASTRO_HARDCODED_ATTRS[dir] || "client:idle"} />`;
 
     if (!existsSync(routePath)) {
         await mkdir(routePath, { recursive: true });
@@ -72,7 +72,7 @@ for (const path of await glob(["**/index.html", "!**/dist/**"])) {
     await writeFile(
         join(routePath, "index.astro"),
         `---
-import ReactExample from "${codeImportPath}";
+import ExampleComponent from "${codeImportPath}";
 import HeadFont from "components/head/Font.astro";
 ---
             

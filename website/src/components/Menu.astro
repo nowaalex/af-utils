@@ -1,13 +1,14 @@
 ---
+import { Icon } from "astro-icon/components";
 import Breadcrumb from "./Breadcrumb.astro";
 import MenuSubtree from "./MenuSubtree.astro";
-import { Icon } from "astro-icon/components";
 
 export interface MenuItem {
     name: string;
     path: string;
     exact?: boolean;
     comparePath?: string;
+    collapsible?: boolean;
     children?: readonly MenuItem[] | MenuItem[];
 }
 

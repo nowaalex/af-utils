@@ -1,6 +1,7 @@
 ---
-import NavLink from "components/NavLink.astro";
 import MenuSubtreeHeader from "components/MenuSubtreeHeader.astro";
+import NavLink from "components/NavLink.astro";
+import stripTrailingSlash from "utils/stripTrailingSlash";
 import type { MenuItem } from "./Menu.astro";
 
 interface Props {
@@ -9,19 +10,38 @@ interface Props {
 }
 
 const { node, depth } = Astro.props;
+const currentPath = stripTrailingSlash(Astro.url.pathname);
+const isCurrentSubtree = currentPath.startsWith(stripTrailingSlash(node.path));
 ---
 
 {node.children?.length ? (
-        <>
-            <MenuSubtreeHeader depth={depth}>{node.name}</MenuSubtreeHeader>
-            <ul>
-                {node.children.map(child => (
-                    <li>
-                        <Astro.self node={child} depth={depth + 1} />
-                    </li>
-                ))}
-            </ul>
-        </>
+        node.collapsible ? (
+            <details open={isCurrentSubtree} class="group">
+                <summary class="cursor-pointer">
+                    <MenuSubtreeHeader depth={depth}>
+                        {node.name}
+                    </MenuSubtreeHeader>
+                </summary>
+                <ul>
+                    {node.children.map(child => (
+                        <li>
+                            <Astro.self node={child} depth={depth + 1} />
+                        </li>
+                    ))}
+                </ul>
+            </details>
+        ) : (
+            <>
+                <MenuSubtreeHeader depth={depth}>{node.name}</MenuSubtreeHeader>
+                <ul>
+                    {node.children.map(child => (
+                        <li>
+                            <Astro.self node={child} depth={depth + 1} />
+                        </li>
+                    ))}
+                </ul>
+            </>
+        )
     ) : (
         <NavLink
             exact={node.exact}
