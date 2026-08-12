@@ -1,18 +1,20 @@
 import {
-    VirtualScrollerEvent,
+    type VirtualScrollerEvent,
+    VirtualScrollerEventFlag,
     type VirtualScrollerEventMask
 } from "../../../constants";
 import { assert } from "#virtual-errors";
 import { VirtualScrollerErrorIndex } from "../../../errors/codes";
 
-/** Tuple position used for the `RANGE` event revision. */
-const RANGE_EVENT_INDEX = 0;
-
-/** Tuple position used for the `SCROLL_SIZE` event revision. */
-const SCROLL_SIZE_EVENT_INDEX = 1;
-
-/** Tuple position used for the `SIZES` event revision. */
-const SIZES_EVENT_INDEX = 2;
+/** Tuple positions used for event revisions. */
+const enum EventRevisionIndex {
+    /** Tuple position used for the `RANGE` event revision. */
+    RANGE,
+    /** Tuple position used for the `SCROLL_SIZE` event revision. */
+    SCROLL_SIZE,
+    /** Tuple position used for the `SIZES` event revision. */
+    SIZES
+}
 
 type Listener = () => void;
 
@@ -70,7 +72,7 @@ class VirtualScrollerEvents {
     /** Subscribe one callback to the selected public event flags. */
     _subscribe(
         callback: Listener,
-        events: VirtualScrollerEventMask = VirtualScrollerEvent.ALL
+        events: VirtualScrollerEventMask = VirtualScrollerEventFlag.ALL
     ) {
         const subscription = { callback, events };
         this._subscriptions.push(subscription);
@@ -88,24 +90,26 @@ class VirtualScrollerEvents {
     }
 
     /** Return the newest revision among the selected event flags. */
-    _getRevision(events: VirtualScrollerEventMask = VirtualScrollerEvent.ALL) {
+    _getRevision(
+        events: VirtualScrollerEventMask = VirtualScrollerEventFlag.ALL
+    ) {
         let revision = 0;
-        if (events & VirtualScrollerEvent.RANGE) {
-            revision = this._eventRevisions[RANGE_EVENT_INDEX];
+        if (events & VirtualScrollerEventFlag.RANGE) {
+            revision = this._eventRevisions[EventRevisionIndex.RANGE];
         }
         if (
-            events & VirtualScrollerEvent.SCROLL_SIZE &&
+            events & VirtualScrollerEventFlag.SCROLL_SIZE &&
             // Stryker disable next-line EqualityOperator: events from one batch can share a revision, which leaves the selected maximum unchanged.
-            this._eventRevisions[SCROLL_SIZE_EVENT_INDEX] > revision
+            this._eventRevisions[EventRevisionIndex.SCROLL_SIZE] > revision
         ) {
-            revision = this._eventRevisions[SCROLL_SIZE_EVENT_INDEX];
+            revision = this._eventRevisions[EventRevisionIndex.SCROLL_SIZE];
         }
         if (
-            events & VirtualScrollerEvent.SIZES &&
+            events & VirtualScrollerEventFlag.SIZES &&
             // Stryker disable next-line EqualityOperator: events from one batch can share a revision, which leaves the selected maximum unchanged.
-            this._eventRevisions[SIZES_EVENT_INDEX] > revision
+            this._eventRevisions[EventRevisionIndex.SIZES] > revision
         ) {
-            revision = this._eventRevisions[SIZES_EVENT_INDEX];
+            revision = this._eventRevisions[EventRevisionIndex.SIZES];
         }
         return revision;
     }
@@ -116,11 +120,11 @@ class VirtualScrollerEvents {
             this._batchedEvents |= event;
         } else {
             const index =
-                event === VirtualScrollerEvent.RANGE
-                    ? RANGE_EVENT_INDEX
-                    : event === VirtualScrollerEvent.SCROLL_SIZE
-                      ? SCROLL_SIZE_EVENT_INDEX
-                      : SIZES_EVENT_INDEX;
+                event === VirtualScrollerEventFlag.RANGE
+                    ? EventRevisionIndex.RANGE
+                    : event === VirtualScrollerEventFlag.SCROLL_SIZE
+                      ? EventRevisionIndex.SCROLL_SIZE
+                      : EventRevisionIndex.SIZES;
             this._eventRevisions[index] = ++this._revision;
             this._notify(event);
         }
@@ -150,14 +154,15 @@ class VirtualScrollerEvents {
             // Stryker disable next-line ConditionalExpression,EqualityOperator: publishing mask 0 only increments an internal counter and scans no matching subscriptions; the guard keeps empty batches lean.
             if (events !== 0) {
                 const revision = ++this._revision;
-                if (events & VirtualScrollerEvent.RANGE) {
-                    this._eventRevisions[RANGE_EVENT_INDEX] = revision;
+                if (events & VirtualScrollerEventFlag.RANGE) {
+                    this._eventRevisions[EventRevisionIndex.RANGE] = revision;
                 }
-                if (events & VirtualScrollerEvent.SCROLL_SIZE) {
-                    this._eventRevisions[SCROLL_SIZE_EVENT_INDEX] = revision;
+                if (events & VirtualScrollerEventFlag.SCROLL_SIZE) {
+                    this._eventRevisions[EventRevisionIndex.SCROLL_SIZE] =
+                        revision;
                 }
-                if (events & VirtualScrollerEvent.SIZES) {
-                    this._eventRevisions[SIZES_EVENT_INDEX] = revision;
+                if (events & VirtualScrollerEventFlag.SIZES) {
+                    this._eventRevisions[EventRevisionIndex.SIZES] = revision;
                 }
                 this._notify(events);
             }

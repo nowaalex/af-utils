@@ -7,7 +7,7 @@
 import type { ComponentProps } from 'react';
 import type { ComponentType } from 'react';
 import { CSSProperties } from 'react';
-import { ElementType } from 'react';
+import type { ElementType } from 'react';
 import { JSX } from 'react';
 import type { ReactElement } from 'react';
 import { RefCallback } from 'react';

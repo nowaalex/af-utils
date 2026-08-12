@@ -17,22 +17,20 @@
     },
     "license": "MIT",
     "scripts": {
-        "dev": "tsc -p tsconfig.dev.json && pnpm esbuild:dev",
-        "build": "tsc && pnpm esbuild:build && pnpm api-extractor && pnpm test:artifacts",
-        "esbuild:base": "esbuild --bundle --format=esm --platform=neutral --mangle-props=^_ --minify --legal-comments=none",
-        "esbuild:format": "biome format --config-path=biome.dist.json --write dist/index.production.js dist/index.development.js dist/index.node.production.js dist/index.node.development.js",
-        "esbuild:build": "rm -f dist/index.js dist/index.node.js dist/index.production.js dist/index.development.js dist/index.node.production.js dist/index.node.development.js && pnpm esbuild:base src/index.ts src/index.node.ts --outdir=dist --entry-names=[name].production && pnpm esbuild:base src/index.ts src/index.node.ts --conditions=development --outdir=dist --entry-names=[name].development && pnpm esbuild:format",
-        "esbuild:dev": "rm -f dist/index.js dist/index.node.js dist/index.production.js dist/index.development.js dist/index.node.production.js dist/index.node.development.js && pnpm esbuild:base src/index.ts src/index.node.ts --conditions=development --outdir=dist --entry-names=[name].development --watch",
+        "dev": "tsc -p tsconfig.dev.json && node scripts/build.mjs --watch",
+        "build": "tsc && node scripts/build.mjs && pnpm api-extractor && pnpm test:artifacts",
         "api-extractor": "api-extractor run && rm -r dist/types",
-        "test": "vitest run",
+        "test": "pnpm test:unit && pnpm test:v8",
+        "test:unit": "vitest run",
+        "test:v8": "node scripts/v8/run-checks.mjs",
         "test:artifacts": "node scripts/check-error-build.mjs",
         "test:mutation": "stryker run stryker.config.mjs",
         "bench": "vitest bench --run",
         "bench:private": "pnpm jit:build && node --expose-gc scripts/benchmark-private-fields.mjs",
         "bench:private:browser": "node scripts/benchmark-private-fields-browser.mjs",
-        "jit:build": "esbuild src/models/SizeIndex/index.ts --bundle --format=esm --platform=node --outfile=.jit/SizeIndex.mjs && esbuild src/models/VirtualScroller/index.ts --bundle --format=esm --platform=node --outfile=.jit/VirtualScroller.mjs && esbuild src/models/VirtualScrollerLayout/index.ts --bundle --format=esm --platform=node --outfile=.jit/VirtualScrollerLayout.mjs && esbuild src/benchmarks/privateFieldFixture.ts --bundle --format=esm --platform=node --outfile=.jit/PrivateFieldFixture.mjs",
-        "jit:check": "pnpm jit:build && node --allow-natives-syntax scripts/check-representations.mjs && node --allow-natives-syntax --trace-deopt scripts/check-monomorphism.mjs && node --allow-natives-syntax --trace-deopt scripts/check-private-fields.mjs",
-        "jit:inspect": "pnpm jit:build && node --allow-natives-syntax scripts/check-representations.mjs --debug-print"
+        "jit:build": "node scripts/v8/build.mjs",
+        "jit:check": "pnpm test:v8",
+        "jit:inspect": "node scripts/v8/run-checks.mjs --inspect"
     },
     "files": [
         "dist/*"

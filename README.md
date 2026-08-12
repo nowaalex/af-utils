@@ -28,4 +28,5 @@ The React adapter targets React 19.2+. Older React versions are not supported.
 - Use `/** ... */`; ordinary implementation comments do not replace API documentation.
 - Prefix class members and object properties with `_` when they are internal runtime implementation details so esbuild can mangle them.
 - Do not prefix ordinary functions with `_`; local identifiers are already shortened by identifier minification.
+- Use a getter for an argument-free, side-effect-free read or inexpensive derivation of current object state that does not allocate a new object or transfer ownership. Use a method for actions, parameterized work, and operations that create snapshots or resources; having no arguments alone does not make an operation a getter.
 - Create repository worktrees only inside the root `./git-worktrees/` directory.

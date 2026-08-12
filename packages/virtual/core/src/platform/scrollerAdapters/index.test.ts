@@ -57,4 +57,47 @@ describe("scroller adapters", () => {
         expect(adapter._distanceTo(container)).toBe(275);
         expect(adapter._distanceTo(null)).toBe(0);
     });
+
+    test("element adapter releases pointer state in the owning window", () => {
+        const pointerTarget = Object.assign(new EventTarget(), {
+            ownerDocument: { defaultView: new EventTarget() }
+        }) as unknown as HTMLElement;
+        const owningWindow = pointerTarget.ownerDocument
+            .defaultView as unknown as EventTarget;
+        const start = vi.fn();
+        const end = vi.fn();
+        const adapter = new ElementScrollerAdapter(
+            pointerTarget,
+            verticalAxisAdapter
+        );
+        const dispose = adapter._observePointer(start, end);
+
+        pointerTarget.dispatchEvent(new Event("pointerdown"));
+        owningWindow.dispatchEvent(new Event("pointerup"));
+        owningWindow.dispatchEvent(new Event("pointercancel"));
+
+        expect(start).toHaveBeenCalledOnce();
+        expect(end).toHaveBeenCalledTimes(2);
+
+        dispose();
+        pointerTarget.dispatchEvent(new Event("pointerdown"));
+        owningWindow.dispatchEvent(new Event("pointerup"));
+        expect(start).toHaveBeenCalledOnce();
+        expect(end).toHaveBeenCalledTimes(2);
+    });
+
+    test("window adapter owns the complete pointer interaction", () => {
+        const start = vi.fn();
+        const end = vi.fn();
+        const adapter = new WindowScrollerAdapter(window, verticalAxisAdapter);
+        const dispose = adapter._observePointer(start, end);
+
+        window.dispatchEvent(new Event("pointerdown"));
+        window.dispatchEvent(new Event("pointerup"));
+
+        expect(start).toHaveBeenCalledOnce();
+        expect(end).toHaveBeenCalledOnce();
+
+        dispose();
+    });
 });

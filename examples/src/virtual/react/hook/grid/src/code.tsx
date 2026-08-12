@@ -8,7 +8,7 @@ import {
 
 import {
     mapVirtualRangeWithOffset,
-    VirtualScroller,
+    type VirtualScroller,
     VirtualScrollerEvent
 } from "@af-utils/virtual-core";
 

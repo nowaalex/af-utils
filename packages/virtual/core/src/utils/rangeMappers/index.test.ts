@@ -3,7 +3,7 @@ import TestResizeObserver from "../../__mocks__/ResizeObserver";
 import VirtualScroller from "../../models/VirtualScroller";
 import { mapVirtualRange, mapVirtualRangeWithOffset } from ".";
 
-global.ResizeObserver = TestResizeObserver;
+globalThis.ResizeObserver = TestResizeObserver;
 
 test("maps the current range without an intermediate indexes array", () => {
     const model = new VirtualScroller({

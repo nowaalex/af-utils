@@ -1,21 +1,30 @@
-import { memo, useState, useEffect, useLayoutEffect } from "react";
-import {
-    useVirtual,
-    useVirtualSnapshot,
-    useVirtualItemRef
-} from "@af-utils/virtual-react";
 import {
     mapVirtualRange,
-    VirtualScrollerEvent,
-    type VirtualScroller
+    type VirtualScroller,
+    VirtualScrollerEvent
 } from "@af-utils/virtual-core";
 import type { ListItemProps } from "@af-utils/virtual-react";
+import {
+    useVirtual,
+    useVirtualItemRef,
+    useVirtualSnapshot
+} from "@af-utils/virtual-react";
+import { memo, useEffect, useLayoutEffect, useRef } from "react";
 import css from "./style.module.css";
 
 const Item = memo<ListItemProps>(({ model, index }) => (
     <tr ref={useVirtualItemRef(model, index)}>
         <td>Cell one - {index}</td>
-        <td>Cell two - {index}</td>
+        <td>
+            Cell two - {index}
+            {index % 3 === 1 && <span>Additional content</span>}
+            {index % 3 === 2 && (
+                <>
+                    <span>Additional content</span>
+                    <span>One more line</span>
+                </>
+            )}
+        </td>
     </tr>
 ));
 
@@ -34,64 +43,77 @@ const CustomRender = () => {
     const model = useVirtual({
         itemCount: 50000
     });
-
-    const [before, beforeRef] = useState<HTMLElement | null>(null);
-    const [after, afterRef] = useState<HTMLElement | null>(null);
+    const beforeRef = useRef<HTMLDivElement>(null);
+    const afterRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
-        if (model && before && after) {
-            const updateBeforeStyle = () => {
-                before.style.height = model.getOffset(model.from) + "px";
-            };
+        const before = beforeRef.current;
+        const after = afterRef.current;
 
-            const updateAfterStyle = () => {
-                after.style.height =
-                    model.scrollSize - model.getOffset(model.to) + "px";
-            };
+        if (!before || !after) return;
 
-            const unsubBefore = model.subscribe(
-                updateBeforeStyle,
-                VirtualScrollerEvent.RANGE
-            );
+        const updateSpacers = () => {
+            const beforeSize = model.renderedRangeOffset;
+            const rangeSize = model.renderedRangeSize;
 
-            const unsubAfter = model.subscribe(
-                updateAfterStyle,
-                VirtualScrollerEvent.RANGE |
-                    VirtualScrollerEvent.SCROLL_SIZE |
-                    VirtualScrollerEvent.SIZES
-            );
+            before.style.height = `${beforeSize}px`;
+            after.style.height = `${Math.max(
+                0,
+                model.scrollSize - beforeSize - rangeSize
+            )}px`;
+        };
 
-            updateBeforeStyle();
-            updateAfterStyle();
+        const unsubscribe = model.subscribe(
+            updateSpacers,
+            VirtualScrollerEvent.RANGE |
+                VirtualScrollerEvent.SCROLL_SIZE |
+                VirtualScrollerEvent.SIZES
+        );
 
-            return () => {
-                unsubBefore();
-                unsubAfter();
-            };
-        }
-    }, [model, before, after]);
+        updateSpacers();
+        return unsubscribe;
+    }, [model]);
+
+    const initialBeforeSize = model.renderedRangeOffset;
+    const initialAfterSize = Math.max(
+        0,
+        model.scrollSize - initialBeforeSize - model.renderedRangeSize
+    );
 
     return (
-        <div className={css.wrapper} ref={el => model.setScroller(el)}>
+        <div
+            className={css.wrapper}
+            ref={element => model.setScroller(element)}
+        >
             <table className={css.table}>
                 <thead
                     className={css.thead}
                     ref={el => model.setStickyHeader(el)}
                 >
                     <tr>
-                        <td>Row one</td>
-                        <td>Row two</td>
+                        <th scope="col">Column one</th>
+                        <th scope="col">Column two</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr className={css.spaceTr} ref={beforeRef}>
-                        <td />
-                        <td />
+                <tbody ref={element => model.setContainer(element)}>
+                    <tr aria-hidden="true">
+                        <td className={css.spacerCell} colSpan={2}>
+                            <div
+                                className={css.spacer}
+                                ref={beforeRef}
+                                style={{ height: initialBeforeSize }}
+                            />
+                        </td>
                     </tr>
                     <Items model={model} />
-                    <tr className={css.spaceTr} ref={afterRef}>
-                        <td />
-                        <td />
+                    <tr aria-hidden="true">
+                        <td className={css.spacerCell} colSpan={2}>
+                            <div
+                                className={css.spacer}
+                                ref={afterRef}
+                                style={{ height: initialAfterSize }}
+                            />
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot

@@ -1,35 +1,60 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 
-const paths = {
-    browserDevelopment: new URL(
-        "../dist/index.development.js",
-        import.meta.url
-    ),
-    browserProduction: new URL("../dist/index.production.js", import.meta.url),
-    nodeDevelopment: new URL(
-        "../dist/index.node.development.js",
-        import.meta.url
-    ),
-    nodeProduction: new URL("../dist/index.node.production.js", import.meta.url)
+const outputFileNames = {
+    browserDevelopment: "index.development.js",
+    browserProduction: "index.production.js",
+    nodeDevelopment: "index.node.development.js",
+    nodeProduction: "index.node.production.js"
 };
+const paths = Object.fromEntries(
+    Object.entries(outputFileNames).map(([name, fileName]) => [
+        name,
+        new URL(`../dist/${fileName}`, import.meta.url)
+    ])
+);
 
 await Promise.all([
     assert.rejects(access(new URL("../dist/index.js", import.meta.url))),
     assert.rejects(access(new URL("../dist/index.node.js", import.meta.url)))
 ]);
 
-const [
-    browserDevelopmentSource,
-    browserProductionSource,
-    nodeDevelopmentSource,
-    nodeProductionSource
-] = await Promise.all([
-    readFile(paths.browserDevelopment, "utf8"),
-    readFile(paths.browserProduction, "utf8"),
-    readFile(paths.nodeDevelopment, "utf8"),
-    readFile(paths.nodeProduction, "utf8")
-]);
+const buildSources = Object.fromEntries(
+    await Promise.all(
+        Object.entries(outputFileNames).map(async ([name, fileName]) => {
+            const source = await readFile(paths[name], "utf8");
+            const sourceMapFileName = `${fileName}.map`;
+            const sourceMap = JSON.parse(
+                await readFile(
+                    new URL(`../dist/${sourceMapFileName}`, import.meta.url),
+                    "utf8"
+                )
+            );
+
+            assert.equal(
+                source
+                    .trimEnd()
+                    .endsWith(`//# sourceMappingURL=${sourceMapFileName}`),
+                true,
+                `${fileName} must link its external source map`
+            );
+            assert.equal(sourceMap.version, 3);
+            assert(sourceMap.mappings.length > 0);
+            assert.equal(
+                sourceMap.sourcesContent?.length,
+                sourceMap.sources.length
+            );
+
+            return [name, source];
+        })
+    )
+);
+const {
+    browserDevelopment: browserDevelopmentSource,
+    browserProduction: browserProductionSource,
+    nodeDevelopment: nodeDevelopmentSource,
+    nodeProduction: nodeProductionSource
+} = buildSources;
 
 delete globalThis.ResizeObserver;
 const nodeProduction = await import(paths.nodeProduction.href);

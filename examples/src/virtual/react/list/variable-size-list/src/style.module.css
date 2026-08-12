@@ -1,3 +1,13 @@
+.list {
+    box-sizing: border-box;
+    border: 2px solid transparent;
+}
+
+.list:focus-visible {
+    border-color: currentColor;
+    outline: none;
+}
+
 .item {
     border-top: 1px solid #ccc;
     text-align: center;

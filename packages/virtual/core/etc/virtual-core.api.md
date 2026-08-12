@@ -27,6 +27,8 @@ export class VirtualScroller {
     horizontal: boolean;
     invalidateItemSizes(from?: number, to?: number): void;
     get itemCount(): number;
+    get renderedRangeOffset(): number;
+    get renderedRangeSize(): number;
     scrollSize: number;
     scrollToIndex(index: VirtualScrollerExactPosition, smooth?: boolean, attempts?: number): void;
     scrollToOffset(offset: number, smooth?: boolean): void;

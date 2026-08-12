@@ -22,25 +22,25 @@ Bit flags accepted by [VirtualScroller.subscribe](/virtual/reference/virtual-cor
 ### ALL
 
 ```ts
-readonly ALL: 7 = 7;
+readonly ALL: 7;
 ```
 
 ### RANGE
 
 ```ts
-readonly RANGE: 1 = 1;
+readonly RANGE: 1;
 ```
 
 ### SCROLL\_SIZE
 
 ```ts
-readonly SCROLL_SIZE: 2 = 2;
+readonly SCROLL_SIZE: 2;
 ```
 
 ### SIZES
 
 ```ts
-readonly SIZES: 4 = 4;
+readonly SIZES: 4;
 ```
 
 ## Remarks

@@ -3,7 +3,7 @@ import useIsomorphicLayoutEffect from "../useIsomorphicLayoutEffect";
 import {
     // this unused import is needed for normal api-extractor output
     VirtualScroller,
-    VirtualScrollerInitialParams
+    type VirtualScrollerInitialParams
 } from "@af-utils/virtual-core";
 
 /**

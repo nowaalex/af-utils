@@ -26,7 +26,7 @@ export type VirtualScrollerErrorCode =
     (typeof VirtualScrollerErrorCode)[number];
 
 /** Compact indexes into {@link VirtualScrollerErrorCode}. @internal */
-export const enum VirtualScrollerErrorIndex {
+export enum VirtualScrollerErrorIndex {
     INVALID_INDEX,
     INVALID_OFFSET,
     INVALID_ITEM_COUNT,

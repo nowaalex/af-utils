@@ -12,7 +12,7 @@ import VirtualScroller from ".";
 
 vi.useFakeTimers();
 
-global.ResizeObserver = TestResizeObserver;
+globalThis.ResizeObserver = TestResizeObserver;
 
 /** Scroll quiet period asserted at the native scrollbar release boundary. */
 const SCROLL_IDLE_TIMEOUT_MS = 128;
@@ -37,6 +37,15 @@ describe("VirtualScroller creation works", () => {
             to: explicitEmptyModel.to,
             visibleFrom: explicitEmptyModel.visibleFrom
         });
+    });
+
+    test("reads the common rendered offset without checking end anchoring", () => {
+        const model = new VirtualScroller({ itemCount: 100 });
+        const shouldAnchorSpy = vi.spyOn(model, "_shouldAnchorRangeEnd", "get");
+
+        expect(model.to).toBeLessThan(model.itemCount);
+        expect(model.renderedRangeOffset).toBe(model.getOffset(model.from));
+        expect(shouldAnchorSpy).not.toHaveBeenCalled();
     });
 
     test("uses stable coded errors with detailed development messages", () => {
@@ -325,17 +334,17 @@ describe("VirtualScroller creation works", () => {
         first.dataset.testSize = "60";
         second.dataset.testSize = "70";
         const internals = model as unknown as {
-            _itemObservationFrame: number | null;
+            _items: { _observationFrame: number | null };
         };
 
         try {
             model.attachItem(first, 0);
             vi.advanceTimersByTime(0);
             model.attachItem(second, 1);
-            expect(internals._itemObservationFrame).not.toBeNull();
+            expect(internals._items._observationFrame).not.toBeNull();
             model.dispose();
 
-            expect(internals._itemObservationFrame).toBeNull();
+            expect(internals._items._observationFrame).toBeNull();
             vi.advanceTimersByTime(20);
             expect(observe).toHaveBeenCalledTimes(1);
         } finally {
@@ -517,11 +526,18 @@ describe("VirtualScroller creation works", () => {
         model.attachItem(item, model.from);
         vi.advanceTimersByTime(0);
 
+        const deferredRangeSize =
+            model.getOffset(model.to) - model.getOffset(model.from);
         expect(model.scrollSize).toBe(2_000_000);
+        expect(model.renderedRangeSize).toBe(deferredRangeSize);
+        expect(model.renderedRangeOffset).toBe(
+            model.scrollSize - deferredRangeSize
+        );
         expect(scrollSizeEvents).toBe(0);
         vi.advanceTimersByTime(SCROLL_IDLE_TIMEOUT_MS);
 
         expect(model.scrollSize).toBe(2_000_040);
+        expect(model.renderedRangeOffset).toBe(model.getOffset(model.from));
         expect(scrollSizeEvents).toBe(1);
         expect(scroller.scrollTop).toBe(1_999_840);
         // DOM subscribers must publish the new scroll extent before the
@@ -1213,11 +1229,12 @@ describe("VirtualScroller creation works", () => {
             estimatedWidgetSize: 200,
             itemCount: 100
         });
-        let targetOffset = 0;
+        const targetOffsets: number[] = [];
         const scroller = Object.assign(document.createElement("div"), {
             scrollTop: 0,
             scroll({ top }: ScrollToOptions) {
-                targetOffset = top ?? targetOffset;
+                this.scrollTop = top ?? this.scrollTop;
+                targetOffsets.push(this.scrollTop);
             }
         });
         Object.defineProperty(scroller, "clientHeight", { value: 240 });
@@ -1228,11 +1245,36 @@ describe("VirtualScroller creation works", () => {
         model.setStickyHeader(header);
         vi.advanceTimersByTime(0);
         model.scrollToIndex(25, false, 1);
-        vi.advanceTimersByTime(16);
 
-        expect(targetOffset).toBe(1_060);
+        expect(targetOffsets).toEqual([1_060]);
 
         model.setStickyHeader(null);
+        model.setScroller(null);
+    });
+
+    test("does not repeat an unchanged scrollToIndex native target", () => {
+        const calls: ScrollToOptions[] = [];
+        const model = new VirtualScroller({
+            estimatedItemSize: 40,
+            estimatedWidgetSize: 200,
+            itemCount: 100
+        });
+        const scroller = Object.assign(document.createElement("div"), {
+            scrollTop: 0,
+            scroll(options: ScrollToOptions) {
+                calls.push(options);
+                this.scrollTop = options.top ?? this.scrollTop;
+            }
+        });
+        Object.defineProperty(scroller, "clientHeight", { value: 200 });
+
+        model.setScroller(scroller);
+        model.scrollToIndex(25);
+
+        expect(calls).toEqual([{ top: 1_000, behavior: "auto" }]);
+        vi.advanceTimersByTime(5 * 16);
+        expect(calls).toHaveLength(1);
+
         model.setScroller(null);
     });
 

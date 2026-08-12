@@ -5,7 +5,7 @@ import TestResizeObserver from "../../__mocks__/ResizeObserver";
 import VirtualScroller from "../VirtualScroller";
 import VirtualScrollerLayout from ".";
 
-global.ResizeObserver = TestResizeObserver;
+globalThis.ResizeObserver = TestResizeObserver;
 
 test("keeps paint containment on the viewport instead of virtual layers", () => {
     const vertical = new VirtualScroller({

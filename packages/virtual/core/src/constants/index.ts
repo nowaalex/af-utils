@@ -1,3 +1,15 @@
+/** Inlined event flags used within the core package. @internal */
+export const enum VirtualScrollerEventFlag {
+    /** The rendered item range changed. */
+    RANGE = 1 << 0,
+    /** The published total item size changed. */
+    SCROLL_SIZE = 1 << 1,
+    /** At least one cached effective item size changed. */
+    SIZES = 1 << 2,
+    /** Every public virtual-scroller event. */
+    ALL = RANGE | SCROLL_SIZE | SIZES
+}
+
 /**
  * @public
  * Bit flags accepted by {@link VirtualScroller.subscribe} and
@@ -13,12 +25,17 @@
  * Flags can be combined without allocating an array:
  * `VirtualScrollerEvent.RANGE | VirtualScrollerEvent.SIZES`.
  */
-export const VirtualScrollerEvent = {
-    RANGE: 1,
-    SCROLL_SIZE: 2,
-    SIZES: 4,
-    ALL: 7
-} as const;
+export const VirtualScrollerEvent: {
+    readonly RANGE: 1;
+    readonly SCROLL_SIZE: 2;
+    readonly SIZES: 4;
+    readonly ALL: 7;
+} = {
+    RANGE: VirtualScrollerEventFlag.RANGE,
+    SCROLL_SIZE: VirtualScrollerEventFlag.SCROLL_SIZE,
+    SIZES: VirtualScrollerEventFlag.SIZES,
+    ALL: VirtualScrollerEventFlag.ALL
+};
 
 /**
  * @public

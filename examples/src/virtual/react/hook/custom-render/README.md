@@ -1,5 +1,8 @@
-Normally [useVirtualLayout](https://af-utils.com/virtual/reference/virtual-react/functions/useVirtualLayout) should be used to synchronize layout elements.
-But in some cases (for example table) you may want to render things in different way.
-Use [VirtualScroller.subscribe](https://af-utils.com/virtual/reference/virtual-core/classes/VirtualScroller#subscribe)
-to subscribe to desired [events](https://af-utils.com/virtual/reference/virtual-core/variables/VirtualScrollerEvent).
-Do not forget to unsubscribe in the end.
+Native table layout does not allow a positioning wrapper between `tbody` and
+`tr`, so this example uses empty rows before and after the rendered range. A
+contained `div` inside each spacer cell provides the virtual scroll extent
+without assigning a huge, browser-dependent height directly to `tr`.
+
+Every rendered `tr` is still measured with `ResizeObserver`, so row heights are
+derived from their content and can change at any time. The browser's native
+table algorithm remains responsible for adaptive column widths.

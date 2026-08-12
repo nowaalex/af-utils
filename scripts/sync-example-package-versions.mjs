@@ -81,7 +81,7 @@ for (const manifestPath of await findPackageManifests(
 
     if (manifest.private !== true) {
         problems.push(
-            `${displayPath}: example packages must have \"private\": true`
+            `${displayPath}: example packages must have "private": true`
         );
     }
 

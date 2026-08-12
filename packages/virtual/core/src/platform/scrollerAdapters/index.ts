@@ -24,6 +24,8 @@ export interface ScrollerAdapter {
     _removeScrollEndListener(listener: EventListener): void;
     /** Observe viewport size changes. */
     _observeResize(callback: (size: number) => void): () => void;
+    /** Observe primary-pointer interaction associated with this scroll target. */
+    _observePointer(start: EventListener, end: EventListener): () => void;
 }
 
 /** Narrow a supported scroll target to `Window`. */
@@ -124,6 +126,21 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
         observer.observe(this._target);
         return () => observer.disconnect();
     }
+
+    /** Observe pointer start on the element and release in its owning window. */
+    _observePointer(start: EventListener, end: EventListener) {
+        const windowObject = this._target.ownerDocument?.defaultView;
+
+        this._target.addEventListener("pointerdown", start);
+        windowObject?.addEventListener("pointerup", end);
+        windowObject?.addEventListener("pointercancel", end);
+
+        return () => {
+            this._target.removeEventListener("pointerdown", start);
+            windowObject?.removeEventListener("pointerup", end);
+            windowObject?.removeEventListener("pointercancel", end);
+        };
+    }
 }
 
 export class WindowScrollerAdapter implements ScrollerAdapter {
@@ -211,5 +228,18 @@ export class WindowScrollerAdapter implements ScrollerAdapter {
         this._target.addEventListener("resize", listener);
 
         return () => this._target.removeEventListener("resize", listener);
+    }
+
+    /** Observe the complete pointer interaction on the target window. */
+    _observePointer(start: EventListener, end: EventListener) {
+        this._target.addEventListener("pointerdown", start);
+        this._target.addEventListener("pointerup", end);
+        this._target.addEventListener("pointercancel", end);
+
+        return () => {
+            this._target.removeEventListener("pointerdown", start);
+            this._target.removeEventListener("pointerup", end);
+            this._target.removeEventListener("pointercancel", end);
+        };
     }
 }

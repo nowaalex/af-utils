@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import {
     VirtualScroller,
-    VirtualScrollerError,
+    type VirtualScrollerError,
     VirtualScrollerErrorCode
 } from "@af-utils/virtual-core";
 import useVirtualLayout from ".";
@@ -17,7 +17,7 @@ class NoopResizeObserver implements ResizeObserver {
     disconnect() {}
 }
 
-global.ResizeObserver = NoopResizeObserver;
+globalThis.ResizeObserver = NoopResizeObserver;
 (
     globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }
 ).IS_REACT_ACT_ENVIRONMENT = true;

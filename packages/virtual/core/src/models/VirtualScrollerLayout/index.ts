@@ -1,4 +1,4 @@
-import { VirtualScrollerEvent } from "../../constants";
+import { VirtualScrollerEventFlag } from "../../constants";
 import type VirtualScroller from "../VirtualScroller";
 
 /** Inert layout styles for the element that contributes the native scroll size. */
@@ -31,6 +31,11 @@ export type VirtualScrollerLayoutStyle = Readonly<
     Record<string, string | number>
 >;
 
+interface ItemsGeometry {
+    _offset: number;
+    _size: number;
+}
+
 /**
  * @public
  * Framework-neutral DOM layout adapter for {@link VirtualScroller}.
@@ -59,10 +64,51 @@ class VirtualScrollerLayout {
     /** Disposer for range position and extent style updates. */
     private _unsubscribeItems: (() => void) | null = null;
 
+    /** Reusable rendered-range geometry snapshot. */
+    private readonly _itemsGeometry: ItemsGeometry = {
+        _offset: 0.0,
+        _size: 0.0
+    };
+
     /** Create a DOM layout adapter for one model. */
     constructor(model: VirtualScroller) {
         this._model = model;
     }
+
+    /** Read the current rendered-range size and layout offset without allocating. */
+    private _readItemsGeometry() {
+        const geometry = this._itemsGeometry;
+
+        geometry._size = this._model.renderedRangeSize;
+        geometry._offset = this._model.renderedRangeOffset;
+
+        return geometry;
+    }
+
+    /** Stable subscriber that publishes the current native scroll extent. */
+    private readonly _updateSize = () => {
+        const element = this._sizeElement;
+        if (element) {
+            element.style[this._model.horizontal ? "width" : "height"] =
+                `${this._model.scrollSize}px`;
+        }
+    };
+
+    /** Stable subscriber that positions and sizes the rendered item range. */
+    private readonly _updateItems = () => {
+        const element = this._itemsElement;
+        if (element) {
+            const geometry = this._readItemsGeometry();
+            const horizontal = this._model.horizontal;
+
+            element.style.transform = getItemsTransform(
+                horizontal,
+                geometry._offset
+            );
+            element.style[horizontal ? "width" : "height"] =
+                `${geometry._size}px`;
+        }
+    };
 
     /**
      * Return a hydration-safe style for the scroll container.
@@ -118,29 +164,22 @@ class VirtualScrollerLayout {
      * synchronized directly by this adapter without framework rerenders.
      */
     getItemsElementStyle(): VirtualScrollerLayoutStyle {
-        const fromOffset = this._model.getOffset(this._model.from);
-        const toOffset = this._model.getOffset(this._model.to);
-        const rangeSize = toOffset - fromOffset;
-        const layoutOffset =
-            this._model._shouldAnchorRangeEnd() &&
-            this._model.to === this._model.itemCount
-                ? Math.max(0.0, this._model.scrollSize - rangeSize)
-                : fromOffset;
+        const geometry = this._readItemsGeometry();
 
         return this._model.horizontal
             ? {
                   ...ITEMS_ELEMENT_STYLE,
                   display: "flex",
-                  width: `${rangeSize}px`,
+                  width: `${geometry._size}px`,
                   height: "100%",
-                  transform: getItemsTransform(true, layoutOffset)
+                  transform: getItemsTransform(true, geometry._offset)
               }
             : {
                   ...ITEMS_ELEMENT_STYLE,
                   display: "block",
                   width: "100%",
-                  height: `${rangeSize}px`,
-                  transform: getItemsTransform(false, layoutOffset)
+                  height: `${geometry._size}px`,
+                  transform: getItemsTransform(false, geometry._offset)
               };
     }
 
@@ -179,38 +218,15 @@ class VirtualScrollerLayout {
 
     /** Subscribe attached layout elements to model geometry changes. */
     private _connect() {
-        this._unsubscribeSize ??= this._model.subscribe(() => {
-            const element = this._sizeElement;
-            if (element) {
-                element.style[this._model.horizontal ? "width" : "height"] =
-                    `${this._model.scrollSize}px`;
-            }
-        }, VirtualScrollerEvent.SCROLL_SIZE);
+        this._unsubscribeSize ??= this._model.subscribe(
+            this._updateSize,
+            VirtualScrollerEventFlag.SCROLL_SIZE
+        );
         this._unsubscribeItems ??= this._model.subscribe(
-            () => {
-                const element = this._itemsElement;
-                if (element) {
-                    const fromOffset = this._model.getOffset(this._model.from);
-                    const toOffset = this._model.getOffset(this._model.to);
-                    const rangeSize = toOffset - fromOffset;
-                    const layoutOffset =
-                        this._model._shouldAnchorRangeEnd() &&
-                        this._model.to === this._model.itemCount
-                            ? Math.max(0.0, this._model.scrollSize - rangeSize)
-                            : fromOffset;
-                    const horizontal = this._model.horizontal;
-
-                    element.style.transform = getItemsTransform(
-                        horizontal,
-                        layoutOffset
-                    );
-                    element.style[horizontal ? "width" : "height"] =
-                        `${rangeSize}px`;
-                }
-            },
-            VirtualScrollerEvent.RANGE |
-                VirtualScrollerEvent.SCROLL_SIZE |
-                VirtualScrollerEvent.SIZES
+            this._updateItems,
+            VirtualScrollerEventFlag.RANGE |
+                VirtualScrollerEventFlag.SCROLL_SIZE |
+                VirtualScrollerEventFlag.SIZES
         );
     }
 

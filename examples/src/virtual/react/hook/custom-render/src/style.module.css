@@ -1,14 +1,14 @@
 .wrapper {
+    contain: strict;
     overflow: auto;
     position: relative;
-    contain: strict;
 }
 
 .table {
-    width: 100%;
-    text-align: center;
     border-collapse: separate;
     border-spacing: 0;
+    width: 100%;
+    text-align: center;
 }
 
 .table td,
@@ -17,10 +17,12 @@
     padding: 0.3em;
 }
 
-.table tfoot th,
+.table td span {
+    display: block;
+}
+
 .table tfoot td,
-.table thead th,
-.table thead td {
+.table thead th {
     background-color: #fff;
 }
 
@@ -36,11 +38,11 @@
     background-color: #fff;
 }
 
-.spaceTr {
-    contain: strict;
+.table td.spacerCell {
+    border: 0;
+    padding: 0;
 }
 
-.spaceTr td {
-    padding: 0 !important;
-    border: none !important;
+.spacer {
+    contain: strict;
 }

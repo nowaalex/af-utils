@@ -9,12 +9,7 @@
         "includes": [
             "**",
             "!pnpm-lock.yaml",
-            "!website/public/examples",
-            "!website/src/content/reference",
             "!**/.claude/settings.local.json",
-            "!packages/virtual/core/scripts/check-monomorphism.mjs",
-            "!packages/virtual/core/scripts/check-private-fields.mjs",
-            "!packages/virtual/core/scripts/check-representations.mjs",
             "!**/dist",
             "!**/.astro",
             "!**/.jit",

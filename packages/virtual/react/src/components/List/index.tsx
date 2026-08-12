@@ -1,7 +1,7 @@
 import { mapVirtualRange, VirtualScrollerEvent } from "@af-utils/virtual-core";
 import useVirtualLayout from "../../hooks/useVirtualLayout";
 import useVirtualSnapshot from "../../hooks/useVirtualSnapshot";
-import { ElementType, type ComponentType } from "react";
+import type { ElementType, ComponentType } from "react";
 import type { ListItemProps, ListProps } from "../../types";
 import type { ComponentProps } from "react";
 

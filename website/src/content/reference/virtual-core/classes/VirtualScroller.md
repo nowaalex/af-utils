@@ -96,7 +96,7 @@ Determines properties used for dimension/scroll calculations, for example:
 readonly scrollSize: number = 0.0;
 ```
 
-Sum of all item sizes
+Sum of all published item sizes, in CSS pixels.
 
 ***
 
@@ -130,6 +130,56 @@ Current number of items in the model.
 
 ***
 
+### renderedRangeOffset
+
+#### Get Signature
+
+```ts
+get renderedRangeOffset(): number;
+```
+
+Return the item-space layout offset of the current rendered range.
+
+##### Remarks
+
+Normally this equals `getOffset(from)`. While size publication is
+deferred at the native scroll end, the range is aligned with the frozen
+public [scrollSize](/virtual/reference/virtual-core/classes/VirtualScroller#scrollsize) so newly measured
+geometry cannot leave a temporary blank area.
+
+Time complexity: `O(log2(itemCount))`.
+
+##### Returns
+
+`number`
+
+Offset for positioning the range, in CSS pixels.
+
+***
+
+### renderedRangeSize
+
+#### Get Signature
+
+```ts
+get renderedRangeSize(): number;
+```
+
+Return the current rendered range extent, including overscan.
+
+##### Remarks
+
+Time complexity: `O(log2(itemCount))`.
+
+##### Returns
+
+`number`
+
+Size from [from](/virtual/reference/virtual-core/classes/VirtualScroller#from) through the
+exclusive [to](/virtual/reference/virtual-core/classes/VirtualScroller#to) boundary, in CSS pixels.
+
+***
+
 ### visibleFrom
 
 #### Get Signature
@@ -138,11 +188,14 @@ Current number of items in the model.
 get visibleFrom(): number;
 ```
 
-Returns snapshot of current scroll position.
+Return the current scroll position as a fractional item index.
 
 ##### Remarks
 
-[VirtualScrollerExactPosition](/virtual/reference/virtual-core/type-aliases/VirtualScrollerExactPosition)
+The integer part identifies the first visible item and the fractional
+part describes progress through it. For example, `12.25` means that item
+`12` is first and `25%` of its CSS-pixel extent is above the visible edge.
+See [VirtualScrollerExactPosition](/virtual/reference/virtual-core/type-aliases/VirtualScrollerExactPosition).
 
 ##### Returns
 
@@ -219,25 +272,32 @@ Release every DOM resource and subscription owned by this model.
 getIndex(offset): number;
 ```
 
-Get nearest item index for pixel offset;
+Return the item containing an item-space coordinate.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `offset` | `number` | Pixel offset. |
+| `offset` | `number` | Coordinate from the start of item `0`, in CSS pixels. |
 
 #### Returns
 
 `number`
 
-Nearest item index
+Item index in the range `0 <= index < itemCount`.
 
 #### Remarks
 
 [itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#itemcount) must be \> 0.
-Possible item index range: 0 \<= N \< [itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#itemcount).
-Time complexity: `O(log2(itemCount))`
+With item sizes `[40px, 60px]`, `getIndex(55)` returns `1`:
+
+```plaintext
+0px             40px                           100px
+|---- item 0 ----|---------- item 1 ------------|
+                              ^ 55px
+```
+
+Time complexity: `O(log2(itemCount))`.
 
 ***
 
@@ -247,24 +307,27 @@ Time complexity: `O(log2(itemCount))`
 getOffset(index): number;
 ```
 
-Get pixel offset by item index;
+Return the leading item-space coordinate of an item boundary.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `index` | `number` | Item index. Must be \<= [itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#itemcount) |
+| `index` | `number` | Boundary index in `0 <= index <= itemCount`. |
 
 #### Returns
 
 `number`
 
-Pixel offset
+Offset from item `0`, in CSS pixels.
 
 #### Remarks
 
-Possible offset range: 0 \<= N \<= [scrollSize](/virtual/reference/virtual-core/classes/VirtualScroller#scrollsize).
-Time complexity: `O(log2(itemCount))`
+`getOffset(0)` is always `0`; `getOffset(itemCount)` equals the current
+internal total extent. With item sizes `[40px, 60px]`, `getOffset(1)` is
+`40px` and `getOffset(2)` is `100px`.
+
+Time complexity: `O(log2(itemCount))`.
 
 ***
 
@@ -280,7 +343,7 @@ Return a stable external-store snapshot for the selected events.
 
 | Parameter | Type | Default value |
 | ------ | ------ | ------ |
-| `events` | `number` | `VirtualScrollerEvent.ALL` |
+| `events` | `number` | `VirtualScrollerEventFlag.ALL` |
 
 #### Returns
 
@@ -294,23 +357,24 @@ Return a stable external-store snapshot for the selected events.
 getSize(itemIndex): number;
 ```
 
-Get last cached item size by item index
+Return the current measured or estimated extent of one item.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `itemIndex` | `number` | item index; |
+| `itemIndex` | `number` | Item index in `0 <= itemIndex < itemCount`. |
 
 #### Returns
 
 `number`
 
-last cached item size
+Cached item extent in CSS pixels.
 
 #### Remarks
 
-Time complexity: `O(1)`
+Unmeasured and invalidated items return the current estimate.
+Time complexity: `O(1)`.
 
 ***
 
@@ -344,15 +408,15 @@ scrollToIndex(
    attempts?): void;
 ```
 
-Scroll to item index
+Scroll to an integer or fractional item position.
 
 #### Parameters
 
 | Parameter | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| `index` | `number` | `undefined` | item index to scroll to |
-| `smooth?` | `boolean` | `undefined` | should smooth scroll be used |
-| `attempts?` | `number` | `DEFAULT_SCROLL_TO_INDEX_ATTEMPTS` | quantity of scroll attempts to be done to ensure scroll offset is correct. Defaults to `5` |
+| `index` | `number` | `undefined` | Exact item position; `12.5` targets the midpoint of item `12` at the visible edge after accounting for the sticky header. |
+| `smooth?` | `boolean` | `undefined` | Whether to request native smooth scrolling. |
+| `attempts?` | `number` | `DEFAULT_SCROLL_TO_INDEX_ATTEMPTS` | Maximum corrections while measured sizes converge; defaults to `5`. |
 
 #### Returns
 
@@ -360,7 +424,9 @@ Scroll to item index
 
 #### Remarks
 
-Calls [scrollToOffset](/virtual/reference/virtual-core/classes/VirtualScroller#scrolltooffset) with calcuated offset until desired scroll position is reached.
+Checks the target immediately and then while measurements converge,
+calling [scrollToOffset](/virtual/reference/virtual-core/classes/VirtualScroller#scrolltooffset) only when
+rendering replaces estimated CSS-pixel sizes and moves the native target.
 
 ***
 
@@ -370,18 +436,27 @@ Calls [scrollToOffset](/virtual/reference/virtual-core/classes/VirtualScroller#s
 scrollToOffset(offset, smooth?): void;
 ```
 
-Scroll to pixel offset
+Scroll to an item-space CSS-pixel coordinate.
 
 #### Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `offset` | `number` | offset to scroll to |
-| `smooth?` | `boolean` | should smooth scroll be used |
+| `offset` | `number` | Distance from the start of item `0`, in CSS pixels. |
+| `smooth?` | `boolean` | Whether to request native smooth scrolling. |
 
 #### Returns
 
 `void`
+
+#### Remarks
+
+The items-container offset is added before dispatching the
+native scroll, and the result is clamped to the current scrollable range:
+
+```plaintext
+native target = items-container offset + requested item-space offset
+```
 
 ***
 
@@ -594,7 +669,7 @@ Subscribe to model events
 | Parameter | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
 | `callBack` | () => `void` | `undefined` | event to be triggered |
-| `events` | `number` | `VirtualScrollerEvent.ALL` | events to subscribe |
+| `events` | `number` | `VirtualScrollerEventFlag.ALL` | events to subscribe |
 
 #### Returns
 
@@ -628,4 +703,11 @@ milliseconds) and called automatically when:
 
 - [scroller element](/virtual/reference/virtual-core/classes/VirtualScroller#setscroller) was resized.
 
-Normally this is enough, needed only if something else would trigger this offset change.
+The stored value is measured in CSS pixels along the configured axis:
+
+```plaintext
+native origin |---- items-container offset ----| item 0
+```
+
+Normally the automatic calls are enough. Call this method when external
+DOM changes move the items container relative to the scroller.

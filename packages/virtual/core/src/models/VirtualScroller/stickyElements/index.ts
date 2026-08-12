@@ -37,7 +37,6 @@ class StickyElements {
     private _elements: [Element | null, Element | null] = [null, null];
     private _sizes: [number, number] = [0.0, 0.0];
     private readonly _resizeObserver: ResizeObserver;
-    private _ownsZIndex: [boolean, boolean] = [false, false];
     private _inlineZIndexes: [
         InlineStyleValue | null,
         InlineStyleValue | null
@@ -169,18 +168,16 @@ class StickyElements {
             element.style,
             "z-index"
         );
-        this._ownsZIndex[index] = true;
         element.style.setProperty("z-index", "1");
     }
 
     /** Restore inline styles owned while an element was attached. */
     private _restoreElement(index: StickyElementIndex, element: HTMLElement) {
         const original = this._inlineZIndexes[index];
-        if (this._ownsZIndex[index] && original && element.style) {
+        if (original && element.style) {
             this._restoreInlineStyle(element.style, "z-index", original);
         }
 
-        this._ownsZIndex[index] = false;
         this._inlineZIndexes[index] = null;
     }
 }

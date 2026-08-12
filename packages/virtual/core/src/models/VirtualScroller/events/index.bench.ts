@@ -23,7 +23,7 @@ class PerEventRevisions {
     private _revision = 0;
     private _revisions: [number, number, number] = [0, 0, 0];
 
-    emit(event: number) {
+    _emit(event: number) {
         const index = event === 1 ? 0 : event === 2 ? 1 : 2;
         this._revisions[index] = ++this._revision;
     }
@@ -45,7 +45,7 @@ class PerMaskRevisions {
     private _revision = 0;
     private _revisions = [0, 0, 0, 0, 0, 0, 0, 0];
 
-    emit(event: number) {
+    _emit(event: number) {
         const revision = ++this._revision;
         for (let mask = 1; mask < this._revisions.length; mask++) {
             if (mask & event) this._revisions[mask] = revision;

@@ -49,11 +49,8 @@ jobs:
             - name: Typecheck
               run: pnpm typecheck
 
-            - name: Test packages
+            - name: Test packages and V8 optimization invariants
               run: pnpm test
-
-            - name: Check V8 optimization invariants
-              run: pnpm jit:check
 
             - name: Build packages
               run: pnpm packages build

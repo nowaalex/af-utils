@@ -1,4 +1,4 @@
-import SizeIndex from "../.jit/SizeIndex.mjs";
+import SizeIndex from "../../.jit/SizeIndex.mjs";
 
 globalThis.ResizeObserver = class {
     observe() {}
@@ -11,10 +11,10 @@ globalThis.window = {
 };
 
 const { default: VirtualScroller } = await import(
-    "../.jit/VirtualScroller.mjs"
+    "../../.jit/VirtualScroller.mjs"
 );
 const { default: VirtualScrollerLayout } = await import(
-    "../.jit/VirtualScrollerLayout.mjs"
+    "../../.jit/VirtualScrollerLayout.mjs"
 );
 
 const assert = (condition, message) => {
@@ -198,12 +198,17 @@ for (const [label, model] of [
     assertFastObject(label, model);
     assertFastObject(`${label}._axisAdapter`, model._axisAdapter);
     assertFastObject(`${label}._events`, model._events);
+    assertFastObject(`${label}._items`, model._items);
     assertFastObject(`${label}._scrollActivity`, model._scrollActivity);
     assertFastObject(`${label}._sizeIndex`, model._sizeIndex);
     assertFastObject(`${label}._sticky`, model._sticky);
     assert(
-        model._elementIndexes instanceof WeakMap,
-        `${label}._elementIndexes is not a WeakMap`
+        model._items._elementIndexes instanceof WeakMap,
+        `${label}._items._elementIndexes is not a WeakMap`
+    );
+    assert(
+        model._items._pendingObservations instanceof Set,
+        `${label}._items._pendingObservations is not a Set`
     );
     assertPackedArray(
         `${label}._events._subscriptions`,
@@ -217,7 +222,16 @@ for (const [label, model] of [
     );
     assertSmi(`${label}._events._batchedEvents`, model._events._batchedEvents);
     assertSmi(`${label}._scrollActivity._flags`, model._scrollActivity._flags);
+    assertSmi(
+        `${label}._pendingScrollCorrection`,
+        model._pendingScrollCorrection
+    );
     assertPackedArray(`${label}._sticky._elements`, model._sticky._elements, "OBJECT");
+    assertPackedArray(
+        `${label}._sticky._inlineZIndexes`,
+        model._sticky._inlineZIndexes,
+        "OBJECT"
+    );
     assertPackedArray(
         `${label}._sticky._sizes`,
         model._sticky._sizes,
@@ -232,6 +246,10 @@ assert(
 assert(
     %HaveSameMap(verticalModel._events, horizontalModel._events),
     "VirtualScrollerEvents instances do not share a hidden class"
+);
+assert(
+    %HaveSameMap(verticalModel._items, horizontalModel._items),
+    "ItemElements instances do not share a hidden class"
 );
 assert(
     %HaveSameMap(verticalModel._scrollActivity, horizontalModel._scrollActivity),
@@ -320,7 +338,9 @@ assert(
 );
 
 const layout = new VirtualScrollerLayout(verticalModel);
+layout.getItemsElementStyle();
 assertFastObject("VirtualScrollerLayout", layout);
+assertFastObject("VirtualScrollerLayout._itemsGeometry", layout._itemsGeometry);
 
 if (process.argv.includes("--debug-print")) {
     console.log("\nV8 DebugPrint: SizeIndex");
@@ -332,6 +352,7 @@ if (process.argv.includes("--debug-print")) {
     %DebugPrint(verticalModel._events._subscriptions);
     %DebugPrint(subscription);
     %DebugPrint(verticalModel._events._eventRevisions);
+    %DebugPrint(verticalModel._items);
     %DebugPrint(verticalModel._scrollActivity);
     %DebugPrint(verticalModel._sticky);
     %DebugPrint(verticalModel._sticky._sizes);

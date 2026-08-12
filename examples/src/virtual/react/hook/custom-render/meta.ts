@@ -1,6 +1,6 @@
 const metadata = {
     description:
-        "Use your own rendering strategy by subscribing to VirtualScroller events and update element styles manually"
+        "Render a semantic table with virtualized, dynamically measured rows"
 } as const;
 
 export default metadata;

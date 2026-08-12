@@ -2,7 +2,7 @@ import { memo } from "react";
 import {
     useVirtual,
     List,
-    ListItemProps,
+    type ListItemProps,
     useVirtualItemRef
 } from "@af-utils/virtual-react";
 import css from "./style.module.css";

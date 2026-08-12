@@ -1,4 +1,7 @@
-import { VirtualScrollerErrorCode, VirtualScrollerErrorIndex } from "./codes";
+import {
+    VirtualScrollerErrorCode,
+    type VirtualScrollerErrorIndex
+} from "./codes";
 import { VirtualScrollerError } from "./VirtualScrollerError";
 
 export { VirtualScrollerError } from "./VirtualScrollerError";

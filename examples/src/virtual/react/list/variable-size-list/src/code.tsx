@@ -1,6 +1,6 @@
-import { useState, memo } from "react";
-import { useVirtual, List, useVirtualItemRef } from "@af-utils/virtual-react";
 import type { ListItemProps } from "@af-utils/virtual-react";
+import { List, useVirtual, useVirtualItemRef } from "@af-utils/virtual-react";
+import { memo, useState } from "react";
 import css from "./style.module.css";
 
 const DEFAULT_ROW_COUNT = 50000;
@@ -37,7 +37,12 @@ const VariableSizeList = () => {
     });
 
     return (
-        <List model={model} itemData={pseudoRandomSizes} role="list">
+        <List
+            className={css.list}
+            model={model}
+            itemData={pseudoRandomSizes}
+            role="list"
+        >
             {Item}
         </List>
     );

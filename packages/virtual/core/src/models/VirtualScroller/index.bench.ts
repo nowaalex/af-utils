@@ -78,7 +78,7 @@ describe("VirtualScroller measurements", () => {
     });
     const hotModel = measurementModel as unknown as {
         _applyMeasurements(entries: readonly ResizeObserverEntry[]): void;
-        _elementIndexes: WeakMap<object, number>;
+        _items: { _elementIndexes: WeakMap<object, number> };
     };
     const sizes = Array.from({ length: MEASUREMENT_COUNT }, () => ({
         blockSize: 40,
@@ -86,7 +86,7 @@ describe("VirtualScroller measurements", () => {
     }));
     const entries = sizes.map((size, index) => {
         const target = {};
-        hotModel._elementIndexes.set(target, index);
+        hotModel._items._elementIndexes.set(target, index);
         return {
             target,
             borderBoxSize: [size]

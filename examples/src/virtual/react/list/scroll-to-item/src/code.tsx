@@ -1,6 +1,6 @@
 import { useState, memo, useEffect } from "react";
 import { useVirtual, List, useVirtualItemRef } from "@af-utils/virtual-react";
-import { VirtualScroller } from "@af-utils/virtual-core";
+import type { VirtualScroller } from "@af-utils/virtual-core";
 import type { ListItemProps } from "@af-utils/virtual-react";
 import type { FormEvent } from "react";
 import css from "./style.module.css";

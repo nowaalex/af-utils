@@ -127,13 +127,58 @@ test("initially renders the final row immediately above the footer", async ({
 test("scrolls to the requested variable-size index", async ({ page }) => {
     await page.goto("http://127.0.0.1:4174");
 
+    const list = page.getByRole("list");
     const indexInput = page.getByRole("spinbutton", {
         name: "Smooth scroll to index:"
     });
+    const goButton = page.getByRole("button", { name: "Go" });
     await expect(indexInput).toBeVisible();
 
+    // Let the example's initial instant scroll finish before counting calls
+    // made by the interaction under test.
+    await page.waitForTimeout(150);
+    await list.evaluate(element => {
+        element.scrollTop = 0;
+    });
+    await expect
+        .poll(() => list.evaluate(element => element.scrollTop))
+        .toBe(0);
+    await list.evaluate(element => {
+        const scope = globalThis as typeof globalThis & {
+            __afScrollToIndexTest?: {
+                calls: number;
+                targets: number[];
+            };
+        };
+        const originalScroll = element.scroll.bind(element);
+        const state = { calls: 0, targets: [] as number[] };
+
+        scope.__afScrollToIndexTest = state;
+        element.scroll = ((...args: unknown[]) => {
+            state.calls++;
+            if (typeof args[0] === "number") {
+                state.targets.push(args[1] as number);
+                originalScroll(args[0], args[1] as number);
+            } else {
+                const options = args[0] as ScrollToOptions | undefined;
+                state.targets.push(options?.top ?? element.scrollTop);
+                originalScroll(options);
+            }
+        }) as HTMLElement["scroll"];
+    });
+
     await indexInput.fill(String(TARGET_INDEX));
-    await page.getByRole("button", { name: "Go" }).click();
+    await goButton.click();
+    await expect
+        .poll(() =>
+            page.evaluate(() => {
+                const scope = globalThis as typeof globalThis & {
+                    __afScrollToIndexTest?: { calls: number };
+                };
+                return scope.__afScrollToIndexTest?.calls ?? 0;
+            })
+        )
+        .toBeGreaterThan(0);
 
     const target = page.locator(
         `[role="listitem"][aria-posinset="${TARGET_INDEX + 1}"]`
@@ -189,6 +234,39 @@ test("scrolls to the requested variable-size index", async ({ page }) => {
             })
         )
         .toBe(true);
+
+    await expect
+        .poll(async () => {
+            const before = await page.evaluate(() => {
+                const scope = globalThis as typeof globalThis & {
+                    __afScrollToIndexTest?: { calls: number };
+                };
+                return scope.__afScrollToIndexTest?.calls;
+            });
+            await page.waitForTimeout(200);
+            const after = await page.evaluate(() => {
+                const scope = globalThis as typeof globalThis & {
+                    __afScrollToIndexTest?: { calls: number };
+                };
+                return scope.__afScrollToIndexTest?.calls;
+            });
+            return after === before;
+        })
+        .toBe(true);
+
+    const targets = await page.evaluate(() => {
+        const scope = globalThis as typeof globalThis & {
+            __afScrollToIndexTest: { targets: number[] };
+        };
+        return scope.__afScrollToIndexTest.targets;
+    });
+
+    expect(targets.length).toBeGreaterThan(0);
+    for (let index = 1; index < targets.length; index++) {
+        expect(Math.abs(targets[index] - targets[index - 1])).toBeGreaterThan(
+            1
+        );
+    }
 });
 
 test("keeps the end rendered after dragging the scrollbar away and back", async ({

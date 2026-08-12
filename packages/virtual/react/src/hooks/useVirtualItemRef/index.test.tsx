@@ -12,7 +12,7 @@ class NoopResizeObserver implements ResizeObserver {
     disconnect() {}
 }
 
-global.ResizeObserver = NoopResizeObserver;
+globalThis.ResizeObserver = NoopResizeObserver;
 (
     globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }
 ).IS_REACT_ACT_ENVIRONMENT = true;
