@@ -526,6 +526,23 @@ class VirtualScroller {
         }
     }
 
+    /**
+     * Publish structural collection geometry regardless of scroll activity.
+     *
+     * @remarks A collection change is real content growth rather than a
+     * measurement correction. It therefore ends any measurement deferral and
+     * keeps the current native offset instead of following the collection's
+     * new end. A fixed anchor correction remains valid when an independent
+     * estimate reset queued it earlier in the same outer batch.
+     */
+    private _publishCollectionScrollSize() {
+        if (this._pendingScrollCorrection === ScrollCorrection.END) {
+            this._pendingScrollCorrection = ScrollCorrection.NONE;
+            this._pendingScrollOffset = 0.0;
+        }
+        this._publishScrollSize();
+    }
+
     /** Apply and clear the pending native-scroll correction, if any. */
     private _applyScrollCorrection() {
         const correction = this._pendingScrollCorrection;
@@ -1318,7 +1335,7 @@ class VirtualScroller {
 
             try {
                 this._itemCount = itemCount;
-                this._publishOrDeferScrollSize();
+                this._publishCollectionScrollSize();
 
                 if (this.to > itemCount) {
                     // after this range would be 100% updated
@@ -1445,7 +1462,7 @@ class VirtualScroller {
 
         try {
             this._itemCount = nextItemCount;
-            this._publishOrDeferScrollSize();
+            this._publishCollectionScrollSize();
             this.to = -1;
             this._updateRangeFromEnd();
             if (sizesChanged) {

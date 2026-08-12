@@ -732,7 +732,7 @@ describe("VirtualScroller creation works", () => {
         model.setScroller(null);
     });
 
-    test("publishes item-count geometry when the transaction ends", () => {
+    test("publishes item-count geometry without following the new end", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
             estimatedWidgetSize: 200,
@@ -769,16 +769,77 @@ describe("VirtualScroller creation works", () => {
         model.setItemCount(110);
 
         expect(model.itemCount).toBe(110);
-        expect(model.scrollSize).toBe(4_000);
-        expect(model.to).toBe(110);
-        expect(model.visibleFrom).toBe(105);
+        expect(model.scrollSize).toBe(4_400);
+        expect(model.to).toBe(100);
+        expect(model.visibleFrom).toBe(95);
         expect(scroller.scrollTop).toBe(3_800);
 
+        // Later measurements still obey pointer deferral independently of the
+        // collection geometry that was already published.
+        const item = document.createElement("div");
+        item.dataset.testSize = "80";
+        model.attachItem(item, model.from);
+        vi.advanceTimersByTime(0);
+
+        expect(model.scrollSize).toBe(4_400);
+        expect(model.to).toBe(100);
+
         window.dispatchEvent(pointerUp);
-        expect(model.scrollSize).toBe(4_400);
-        expect(scroller.scrollTop).toBe(4_200);
+        expect(model.scrollSize).toBe(4_440);
+        expect(scroller.scrollTop).toBe(3_800);
         scroller.dispatchEvent(new Event("scrollend"));
-        expect(model.scrollSize).toBe(4_400);
+        expect(model.scrollSize).toBe(4_440);
+        expect(scroller.scrollTop).toBe(3_800);
+
+        model.detachItem(item);
+        model.setScroller(null);
+    });
+
+    test("stops load-on-demand growth while the end scrollbar is held", () => {
+        const model = new VirtualScroller({
+            estimatedItemSize: 500,
+            estimatedWidgetSize: 200,
+            itemCount: 5
+        });
+        const scroller = document.createElement("div");
+        Object.defineProperties(scroller, {
+            clientHeight: { value: 200 },
+            scrollTop: { value: 2_300, writable: true },
+            scroll: {
+                value: ({ top }: ScrollToOptions) => {
+                    scroller.scrollTop = top ?? scroller.scrollTop;
+                }
+            }
+        });
+        const pointerDown = new Event("pointerdown");
+        const pointerUp = new Event("pointerup");
+        Object.defineProperty(pointerDown, "isPrimary", { value: true });
+        Object.defineProperty(pointerUp, "isPrimary", { value: true });
+
+        model.setScroller(scroller);
+        scroller.dispatchEvent(new Event("scroll"));
+        scroller.dispatchEvent(pointerDown);
+
+        let loadCount = 0;
+        const loadIfAtEnd = () => {
+            if (model.to !== model.itemCount) return;
+            loadCount++;
+            model.setItemCount(model.itemCount + 5);
+        };
+
+        loadIfAtEnd();
+        expect(loadCount).toBe(1);
+        expect(model.itemCount).toBe(10);
+        expect(model.to).toBe(5);
+
+        loadIfAtEnd();
+        expect(loadCount).toBe(1);
+        expect(model.itemCount).toBe(10);
+        expect(model.scrollSize).toBe(5_000);
+
+        window.dispatchEvent(pointerUp);
+        expect(model.scrollSize).toBe(5_000);
+        expect(scroller.scrollTop).toBe(2_300);
 
         model.setScroller(null);
     });
@@ -1089,11 +1150,13 @@ describe("VirtualScroller creation works", () => {
 
         model.set({ estimatedItemSize: 80, itemCount: 200 });
 
-        expect(model.scrollSize).toBe(4_000);
-        expect(scrollSizeEvents).toBe(0);
+        const expectedScrollSize = 200 * 80 - preservedCount * (80 - 40);
+        expect(model.scrollSize).toBe(expectedScrollSize);
+        expect(scrollSizeEvents).toBe(1);
+        expect(scroller.scrollTop).toBe(1_900);
         scroller.dispatchEvent(new Event("scrollend"));
 
-        expect(model.scrollSize).toBe(200 * 80 - preservedCount * (80 - 40));
+        expect(model.scrollSize).toBe(expectedScrollSize);
         expect(scrollSizeEvents).toBe(1);
         expect(scroller.scrollTop).toBe(1_900);
 
@@ -1134,7 +1197,7 @@ describe("VirtualScroller creation works", () => {
         model.setScroller(null);
     });
 
-    test("keeps an idle end-aligned viewport at the end after an estimate reset", () => {
+    test("does not follow a new collection end after an estimate reset", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
             estimatedWidgetSize: 200,
@@ -1157,7 +1220,7 @@ describe("VirtualScroller creation works", () => {
 
         const expectedScrollSize = 200 * 80 - preservedCount * (80 - 40);
         expect(model.scrollSize).toBe(expectedScrollSize);
-        expect(scroller.scrollTop).toBe(expectedScrollSize - 200);
+        expect(scroller.scrollTop).toBe(3_800);
 
         model.setScroller(null);
     });

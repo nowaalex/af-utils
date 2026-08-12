@@ -11,10 +11,10 @@ export default {
     },
     "@af-utils/virtual-core": {
         "./dist/index.production.js": {
-            raw: 17416,
-            min: 16952,
-            minGz: 5814,
-            minBrotli: 5256
+            raw: 17574,
+            min: 17110,
+            minGz: 5863,
+            minBrotli: 5286
         }
     },
     "@af-utils/virtual-lit": {
