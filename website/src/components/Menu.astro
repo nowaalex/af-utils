@@ -26,34 +26,47 @@ interface Props {
 <input aria-hidden="true" type="checkbox" class="ds-menu-checkbox hidden" />
 <div
     class:list={[
-        "flex flex-col lg:overflow-y-auto lg:border-r lg:drop-shadow-sm",
+        "flex flex-col lg:overflow-y-auto lg:border-r lg:border-slate-200",
         className
     ]}
 >
     <div
         class="flex-none sticky top-0 flex items-center h-[62px] gap-4 border-slate-200 border-b bg-menu px-4 z-[20] drop-shadow-sm lg:drop-shadow-none"
     >
-        <button class="ds-menu-opener hidden">
+        <button
+            type="button"
+            class="ds-menu-opener items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            aria-controls="main-navigation"
+            aria-expanded="false"
+            aria-label="Open navigation menu"
+        >
             <Icon
-                size={24}
+                size={20}
                 name="material-symbols:menu"
-                aria-label="open menu"
                 class="text-blue-700"
-            />
+                aria-hidden="true"
+            />Menu
         </button>
-        <button class="ds-menu-closer hidden">
+        <button
+            type="button"
+            class="ds-menu-closer items-center gap-1.5 rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            aria-controls="main-navigation"
+            aria-expanded="true"
+            aria-label="Close navigation menu"
+        >
             <Icon
-                size={24}
+                size={20}
                 name="material-symbols:close"
-                aria-label="close menu"
-                class="text-rose-600"
-            />
+                class="text-slate-600"
+                aria-hidden="true"
+            />Close
         </button>
         <Breadcrumb>
             {productName}
         </Breadcrumb>
     </div>
     <nav
+        id="main-navigation"
         aria-label="Main navigation"
         class="ds-menu-items z-10 flex-auto bg-menu p-4 text-sm"
     >
@@ -96,7 +109,18 @@ interface Props {
                 document.querySelector<HTMLInputElement>(".ds-menu-checkbox");
             if (!menu) return;
 
-            const toggleMenu = () => menu.toggleAttribute("checked");
+            const opener =
+                document.querySelector<HTMLButtonElement>(".ds-menu-opener");
+            const closer =
+                document.querySelector<HTMLButtonElement>(".ds-menu-closer");
+
+            const setMenuOpen = (open: boolean) => {
+                menu.checked = open;
+                opener?.setAttribute("aria-expanded", String(open));
+                closer?.setAttribute("aria-expanded", String(open));
+            };
+
+            const toggleMenu = () => setMenuOpen(!menu.checked);
 
             document
                 .querySelectorAll(".ds-menu-opener, .ds-menu-closer")

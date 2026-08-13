@@ -964,6 +964,9 @@ class VirtualScroller {
      * @param element - scroller element
      *
      * @remarks
+     * See the [layout elements guide](/virtual/guides/layout-elements) for the
+     * scroller's position in the required DOM structure.
+     *
      * {@link VirtualScroller.dispose | dispose} disconnects it automatically.
      */
     setScroller(element: VirtualScrollerScrollElement | null) {
@@ -1016,6 +1019,9 @@ class VirtualScroller {
      * @param element - container element
      *
      * @remarks
+     * See the [layout elements guide](/virtual/guides/layout-elements) for how
+     * this measurement container relates to the scroller and rendered range.
+     *
      * By default top/left offset between scroll container and first scrollable item is `0`.
      * In this case just {@link VirtualScroller.setScroller} is needed.
      * But extra element is needed when something "foreign" stands between scroll container and first scrollable item to measure distance between them.
@@ -1050,6 +1056,9 @@ class VirtualScroller {
      * {@link VirtualScroller.setScroller | scroller element} and {@link VirtualScroller.setContainer | container element}.
      *
      * @remarks
+     * See the [layout elements guide](/virtual/guides/layout-elements) for the
+     * geometry whose origin this method refreshes.
+     *
      * By default debounced by `SCROLLER_OFFSET_UPDATE_DELAY_MS` (`256`
      * milliseconds) and called automatically when:
      *
@@ -1101,6 +1110,8 @@ class VirtualScroller {
      *
      * @remarks
      * Should be called when element gets mounted. Works in pair with {@link VirtualScroller.detachItem}.
+     * See the [layout elements guide](/virtual/guides/layout-elements) for where
+     * mounted items belong.
      */
     attachItem(element: HTMLElement, index: number) {
         this._assertMutable();
@@ -1121,6 +1132,8 @@ class VirtualScroller {
      *
      * @remarks
      * Should be called when element is about to unmount or already unmounted. Works in pair with {@link VirtualScroller.attachItem}.
+     * See the [layout elements guide](/virtual/guides/layout-elements) for where
+     * mounted items belong.
      */
     detachItem(element: HTMLElement) {
         this._items._detach(element);
@@ -1131,6 +1144,9 @@ class VirtualScroller {
      * @param element - header element
      *
      * @remarks
+     * See the [layout elements guide](/virtual/guides/layout-elements) for how
+     * sticky siblings reserve space around the size element.
+     *
      * Positioning remains native CSS `sticky`, keeping motion synchronized with
      * compositor scrolling. If its computed `z-index` is `auto`, the model adds
      * a default stacking level and restores the original inline value when the
@@ -1148,6 +1164,9 @@ class VirtualScroller {
      * @param element - footer element
      *
      * @remarks
+     * See the [layout elements guide](/virtual/guides/layout-elements) for how
+     * sticky siblings reserve space around the size element.
+     *
      * Positioning remains native CSS `sticky`, keeping motion synchronized with
      * compositor scrolling. If its computed `z-index` is `auto`, the model adds
      * a default stacking level and restores the original inline value when the

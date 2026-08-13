@@ -13,21 +13,23 @@ const implementations = getEquivalentExamples(path);
 
 <nav
     aria-label="Framework implementation"
-    class="not-prose max-w-full overflow-x-auto border border-slate-300 bg-slate-100"
+    class="not-prose max-w-full border border-slate-300 bg-slate-100"
 >
-    <ul class="m-0 flex w-max min-w-full list-none p-0">
+    <ul
+        class="framework-grid m-0 grid min-w-full grid-cols-3 list-none p-0 sm:flex"
+    >
         {
             implementations.map((example) => {
                 const current = example.route === path;
 
                 return (
-                    <li class="m-0 flex p-0">
+                    <li class="m-0 flex min-w-0 p-0 sm:flex-1">
                         <a
                             href={getExamplePagePath(example.route)}
                             aria-current={current ? "page" : undefined}
                             data-astro-prefetch="hover"
                             class:list={[
-                                "flex min-h-9 items-center gap-2 border-r border-slate-300 px-3 text-sm font-medium no-underline transition-colors focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-blue-600",
+                                "flex min-h-9 min-w-0 flex-1 items-center justify-center gap-2 px-2 text-sm font-medium no-underline transition-colors focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-blue-600 sm:px-3",
                                 current
                                     ? "bg-white text-slate-950 shadow-[inset_0_-2px_0_#2563eb]"
                                     : "text-slate-600 hover:bg-slate-200 hover:text-slate-950"
@@ -45,3 +47,33 @@ const implementations = getEquivalentExamples(path);
         }
     </ul>
 </nav>
+
+<style>
+    .framework-grid > li {
+        border-right: 1px solid var(--color-slate-300);
+        border-bottom: 1px solid var(--color-slate-300);
+    }
+
+    .framework-grid > li:nth-child(3n) {
+        border-right: 0;
+    }
+
+    .framework-grid > li:nth-last-child(-n + 3) {
+        border-bottom: 0;
+    }
+
+    @media (min-width: 40rem) {
+        .framework-grid > li {
+            border-right: 1px solid var(--color-slate-300);
+            border-bottom: 0;
+        }
+
+        .framework-grid > li:nth-child(3n) {
+            border-right: 1px solid var(--color-slate-300);
+        }
+
+        .framework-grid > li:last-child {
+            border-right: 0;
+        }
+    }
+</style>

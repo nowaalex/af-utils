@@ -1,11 +1,12 @@
 import {
     describeExample,
     expect,
-    expectDefined,
-    getVerticalScrollbarX,
+    getVerticalScrollbarGeometry,
+    movePointerVertically,
+    openExample,
     requireNativeScrollbarPointer,
     test,
-    waitForExampleHydration
+    withHeldPointer
 } from "../../../../e2e";
 
 await describeExample("virtual/primitives/custom-render", example => {
@@ -26,24 +27,115 @@ await describeExample("virtual/primitives/custom-render", example => {
     });
 
     if (example.framework === "lit") {
-        test("keeps the scrollbar thumb synchronized across repeated drags", async ({
-            browserName,
+        test("keeps the viewport covered during fast wheel scrolling", async ({
             page
-        }) => {
-            requireNativeScrollbarPointer(browserName);
-            await page.goto(example.previewPath);
-            await waitForExampleHydration(page);
+        }, testInfo) => {
+            await openExample(page, example.previewPath);
 
             const scroller = page.getByRole("table").locator("..");
-            const bounds = expectDefined(
-                await scroller.boundingBox(),
-                "Expected the table scroller to be visible"
+            await expect(page.getByRole("row").nth(3)).toBeVisible();
+
+            const coverage = scroller.evaluate(
+                element =>
+                    new Promise<{
+                        allowedGap: number;
+                        baselineGap: number;
+                        largestGap: number;
+                    }>(resolve => {
+                        let frames = 0;
+                        const measureGap = () => {
+                            const header = element.querySelector("thead");
+                            const footer = element.querySelector("tfoot");
+                            const rows = [
+                                ...element.querySelectorAll(
+                                    "tbody > tr:not([aria-hidden])"
+                                )
+                            ];
+                            if (!header || !footer || rows.length === 0) {
+                                return Number.POSITIVE_INFINITY;
+                            }
+
+                            const contentStart =
+                                header.getBoundingClientRect().bottom;
+                            const contentEnd =
+                                footer.getBoundingClientRect().top;
+                            let coveredUntil = contentStart;
+                            let gap = 0;
+                            for (const row of rows) {
+                                const rect = row.getBoundingClientRect();
+                                if (
+                                    rect.bottom <= contentStart ||
+                                    rect.top >= contentEnd
+                                )
+                                    continue;
+                                gap = Math.max(gap, rect.top - coveredUntil);
+                                coveredUntil = Math.max(
+                                    coveredUntil,
+                                    rect.bottom
+                                );
+                            }
+                            return Math.max(gap, contentEnd - coveredUntil);
+                        };
+                        const baselineGap = measureGap();
+                        const allowedGap = Math.max(
+                            1,
+                            ...[
+                                ...element.querySelectorAll(
+                                    "tbody > tr:not([aria-hidden])"
+                                )
+                            ].map(row => row.getBoundingClientRect().height)
+                        );
+                        let largestGap = baselineGap;
+                        const sample = () => {
+                            largestGap = Math.max(largestGap, measureGap());
+
+                            if (++frames === 60)
+                                resolve({
+                                    allowedGap,
+                                    baselineGap,
+                                    largestGap
+                                });
+                            else requestAnimationFrame(sample);
+                        };
+                        requestAnimationFrame(sample);
+                    })
             );
-            const scrollbarX = await getVerticalScrollbarX(scroller);
+
+            if (testInfo.project.name === "mobile-safari") {
+                // Playwright cannot synthesize mouse-wheel input in mobile
+                // WebKit. Exercise the same native scroll-event path directly.
+                await scroller.evaluate(async element => {
+                    for (let step = 0; step < 12; step++) {
+                        element.scrollTop += 4_000;
+                        // oxlint-disable-next-line eslint/no-await-in-loop -- Preserve the sequence of native scroll positions.
+                        await new Promise<void>(resolve => {
+                            requestAnimationFrame(() => resolve());
+                        });
+                    }
+                });
+            } else {
+                for (let step = 0; step < 12; step++) {
+                    // oxlint-disable-next-line eslint/no-await-in-loop -- Each wheel event advances the same native scrolling transaction.
+                    await page.mouse.wheel(0, 4_000);
+                }
+            }
+
+            const { allowedGap, baselineGap, largestGap } = await coverage;
+            // A partially visible boundary row can leave at most one row of
+            // uncovered space. The regression leaves several hundred pixels.
+            expect(largestGap).toBeLessThanOrEqual(baselineGap + allowedGap);
+        });
+
+        test("keeps the scrollbar thumb synchronized across repeated drags", async ({
+            page
+        }) => {
+            requireNativeScrollbarPointer();
+            await openExample(page, example.previewPath);
+
+            const scroller = page.getByRole("table").locator("..");
+            const scrollbar = await getVerticalScrollbarGeometry(scroller);
             // Stay below Chromium's scrollbar arrow/track area so the pointer
             // lands on the initial thumb, as a real drag would.
-            const top = bounds.y + 24;
-            const bottom = bounds.y + bounds.height - 2;
             const getScrollRatio = () =>
                 scroller.evaluate(
                     element =>
@@ -51,34 +143,36 @@ await describeExample("virtual/primitives/custom-render", example => {
                         (element.scrollHeight - element.clientHeight)
                 );
 
-            await page.mouse.move(scrollbarX, top);
-            await page.mouse.down();
-            try {
-                // oxlint-disable eslint/no-await-in-loop -- Sequential pointer frames reproduce one continuous physical thumb drag.
-                for (let iteration = 0; iteration < 4; iteration++) {
-                    for (let step = 1; step <= 24; step++) {
-                        await page.mouse.move(
-                            scrollbarX,
-                            top + ((bottom - top) * step) / 24
+            await withHeldPointer(
+                page,
+                scrollbar.x,
+                scrollbar.start,
+                async () => {
+                    // oxlint-disable eslint/no-await-in-loop -- Sequential pointer frames reproduce one continuous physical thumb drag.
+                    for (let iteration = 0; iteration < 4; iteration++) {
+                        await movePointerVertically(
+                            page,
+                            scrollbar.x,
+                            scrollbar.start,
+                            scrollbar.bottom,
+                            24,
+                            16
                         );
-                        await page.waitForTimeout(16);
-                    }
-                    await expect.poll(getScrollRatio).toBeGreaterThan(0.98);
+                        await expect.poll(getScrollRatio).toBeGreaterThan(0.98);
 
-                    for (let step = 1; step <= 24; step++) {
-                        await page.mouse.move(
-                            scrollbarX,
-                            bottom - ((bottom - top) * step) / 24
+                        await movePointerVertically(
+                            page,
+                            scrollbar.x,
+                            scrollbar.bottom,
+                            scrollbar.start,
+                            24,
+                            16
                         );
-                        await page.waitForTimeout(16);
+                        await expect.poll(getScrollRatio).toBeLessThan(0.02);
                     }
-                    await expect.poll(getScrollRatio).toBeLessThan(0.02);
+                    // oxlint-enable eslint/no-await-in-loop
                 }
-                // oxlint-enable eslint/no-await-in-loop
-                await page.mouse.up();
-            } finally {
-                await page.mouse.up();
-            }
+            );
         });
     }
 });

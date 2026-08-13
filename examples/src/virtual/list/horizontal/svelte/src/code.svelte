@@ -14,13 +14,16 @@
     const { range, scroller, size, items } = createVirtualList(columns);
 </script>
 
-<div use:scroller>
+<div use:scroller role="list" aria-label="Horizontal virtual list">
     <div use:size>
         <div use:items>
             {#each $range as index (index)}
                 <div
                     use:virtualItem={{ model: columns, index }}
                     class={index % 2 ? css.oddItem : css.evenItem}
+                    role="listitem"
+                    aria-posinset={index + 1}
+                    aria-setsize={columns.itemCount}
                 >
                     col&nbsp;{index}
                 </div>

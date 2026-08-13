@@ -200,8 +200,13 @@
         @apply translate-y-0;
     }
 
+    .ds-menu-opener,
+    .ds-menu-closer {
+        display: none;
+    }
+
     .ds-menu-checkbox:checked + div .ds-menu-closer,
     .ds-menu-checkbox:not(:checked) + div .ds-menu-opener {
-        @apply block lg:hidden;
+        @apply inline-flex lg:hidden;
     }
 }

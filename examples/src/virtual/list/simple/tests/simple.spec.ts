@@ -1,15 +1,14 @@
 import {
     describeExample,
     expect,
+    openExample,
     type Page,
-    test,
-    waitForExampleHydration
+    test
 } from "../../../../e2e";
 import { exampleFrameworks } from "../../../../../config";
 
 const expectVirtualList = async (page: Page, path: string) => {
-    await page.goto(path);
-    await waitForExampleHydration(page);
+    await openExample(page, path);
 
     const list = page.getByRole("list", { name: "Simple virtual list" });
     const items = page.getByRole("listitem");
@@ -30,15 +29,30 @@ await describeExample("virtual/list/simple", example => {
         await expectVirtualList(page, example.previewPath);
     });
 
-    test("shows the framework implementation navigation", async ({ page }) => {
+    test("shows and separates the framework implementation navigation", async ({
+        page
+    }) => {
         await page.goto(example.documentationPath);
         const navigation = page.getByRole("navigation", {
             name: "Framework implementation"
         });
+        const entries = navigation.locator(":scope > ul > li");
         await expect(navigation).toBeVisible();
         await expect(navigation.getByRole("link")).toHaveCount(
             exampleFrameworks.length
         );
+        await expect(entries).toHaveCount(exampleFrameworks.length);
+        await Promise.all(
+            exampleFrameworks
+                .slice(0, -1)
+                .map((_, index) =>
+                    expect(entries.nth(index)).toHaveCSS(
+                        "border-right-width",
+                        "1px"
+                    )
+                )
+        );
+        await expect(entries.last()).toHaveCSS("border-right-width", "0px");
         await expect(
             navigation.getByRole("link", {
                 name: new RegExp(`^${example.framework}$`, "iu")

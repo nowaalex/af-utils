@@ -28,13 +28,20 @@ const WindowScroll = () => {
             <div>
                 <div class={css.offset2}>Some offset 2</div>
                 <div>
-                    <div ref={layout.sizeRef}>
+                    <div
+                        ref={layout.sizeRef}
+                        role="list"
+                        aria-label="Window virtual list"
+                    >
                         <div ref={layout.itemsRef}>
                             <For each={indexes()}>
                                 {index => (
                                     <div
                                         ref={createVirtualItemRef(model, index)}
                                         class={css.item}
+                                        role="listitem"
+                                        aria-posinset={index + 1}
+                                        aria-setsize={model.itemCount}
                                     >
                                         row {index}
                                     </div>

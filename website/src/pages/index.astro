@@ -2,7 +2,9 @@
 import { getImage } from "astro:assets";
 import sizifImg from "assets/sizif.jpg";
 import { Icon } from "astro-icon/components";
+import FrameworkIcon from "components/FrameworkIcon.astro";
 import Layout from "layouts/Base.astro";
+import { exampleFrameworks } from "@af-utils/examples/config";
 
 const sizif = await getImage({ src: sizifImg, quality: 16 });
 ---
@@ -57,18 +59,30 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
             </a>
         </header>
         <main
-            class="prose-xl prose-a:text-violet-700 prose-a:decoration-orange-400 flex-auto px-[5vmin] py-12"
+            class="prose-xl prose-a:text-violet-700 prose-a:no-underline flex-auto px-[5vmin] py-12"
         >
             <h1>af-utils/*</h1>
             <p>Simple open-source tools that just work <i>(usually fast)</i></p>
             <ul>
                 <li>
-                    <a href="/virtual">Virtual scroll</a>
+                    <a href="/virtual">Virtual scroll</a>{" "}
                     for rendering only visible part of huge lists or grids
-                    <i>(currently available for React)</i>
+                    <span
+                        class="not-prose ml-2 inline-flex translate-y-0.5 items-center gap-1.5"
+                        aria-label={`Available for ${exampleFrameworks.join(", ")}`}
+                    >
+                        {
+                            exampleFrameworks.map((framework) => (
+                                <FrameworkIcon
+                                    framework={framework}
+                                    size={18}
+                                />
+                            ))
+                        }
+                    </span>
                 </li>
                 <li>
-                    <a href="/scrollend-polyfill">Scrollend polyfill</a>
+                    <a href="/scrollend-polyfill">Scrollend polyfill</a>{" "}
                     for cross-browser scrollend event support
                 </li>
                 <li>To be continued...</li>

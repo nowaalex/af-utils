@@ -13,12 +13,12 @@ change affects which children exist, while a measurement can change only their
 pixel geometry. Treating both as the same reactive update produces avoidable
 framework work.
 
-| Change                    | Framework responsibility        | Core responsibility            |
-| ------------------------- | ------------------------------- | ------------------------------ |
-| `from` or `to` changed    | Reconcile the rendered children | Publish `RANGE`                |
-| An item was measured      | None if the range stayed stable | Update cached sizes and layout |
-| Total scroll size changed | None                            | Resize the native size element |
-| Rendered block moved      | None                            | Update the block transform     |
+| Change                                                                                                                                                                             | Framework responsibility        | Core responsibility            |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------ |
+| [`model.from`](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) or [`model.to`](/virtual/reference/virtual-core/classes/VirtualScroller#property-to) changed | Reconcile the rendered children | Publish `RANGE`                |
+| An item was measured                                                                                                                                                               | None if the range stayed stable | Update cached sizes and layout |
+| Total scroll size changed                                                                                                                                                          | None                            | Resize the native size element |
+| Rendered block moved                                                                                                                                                               | None                            | Update the block transform     |
 
 ## Prefer `List` for ordinary lists
 

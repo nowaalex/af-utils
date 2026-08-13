@@ -237,6 +237,8 @@ item index
 #### Remarks
 
 Should be called when element gets mounted. Works in pair with [VirtualScroller.detachItem](/virtual/reference/virtual-core/classes/VirtualScroller#detachitem).
+See the [layout elements guide](/virtual/guides/layout-elements) for where
+mounted items belong.
 
 ---
 
@@ -263,6 +265,8 @@ element for item
 #### Remarks
 
 Should be called when element is about to unmount or already unmounted. Works in pair with [VirtualScroller.attachItem](/virtual/reference/virtual-core/classes/VirtualScroller#attachitem).
+See the [layout elements guide](/virtual/guides/layout-elements) for where
+mounted items belong.
 
 ---
 
@@ -548,6 +552,9 @@ container element
 
 #### Remarks
 
+See the [layout elements guide](/virtual/guides/layout-elements) for how
+this measurement container relates to the scroller and rendered range.
+
 By default top/left offset between scroll container and first scrollable item is `0`.
 In this case just [VirtualScroller.setScroller](/virtual/reference/virtual-core/classes/VirtualScroller#setscroller) is needed.
 But extra element is needed when something "foreign" stands between scroll container and first scrollable item to measure distance between them.
@@ -616,6 +623,9 @@ scroller element
 
 #### Remarks
 
+See the [layout elements guide](/virtual/guides/layout-elements) for the
+scroller's position in the required DOM structure.
+
 [dispose](/virtual/reference/virtual-core/classes/VirtualScroller#dispose) disconnects it automatically.
 
 ---
@@ -641,6 +651,9 @@ footer element
 `void`
 
 #### Remarks
+
+See the [layout elements guide](/virtual/guides/layout-elements) for how
+sticky siblings reserve space around the size element.
 
 Positioning remains native CSS `sticky`, keeping motion synchronized with
 compositor scrolling. If its computed `z-index` is `auto`, the model adds
@@ -672,6 +685,9 @@ header element
 `void`
 
 #### Remarks
+
+See the [layout elements guide](/virtual/guides/layout-elements) for how
+sticky siblings reserve space around the size element.
 
 Positioning remains native CSS `sticky`, keeping motion synchronized with
 compositor scrolling. If its computed `z-index` is `auto`, the model adds
@@ -763,6 +779,9 @@ Recalculates the offset between
 `void`
 
 #### Remarks
+
+See the [layout elements guide](/virtual/guides/layout-elements) for the
+geometry whose origin this method refreshes.
 
 By default debounced by `SCROLLER_OFFSET_UPDATE_DELAY_MS` (`256`
 milliseconds) and called automatically when:

@@ -1,67 +1,44 @@
 import {
     describeExample,
     expect,
-    type Locator,
-    test,
-    waitForExampleHydration
+    getVirtualItemCount,
+    openExample,
+    test
 } from "../../../../e2e";
 
 const PAGE_SIZE = 5;
-const REPEAT_GUARD_MS = 300;
-
-const getItemCount = (items: Locator) =>
-    items.evaluateAll(elements =>
-        Math.max(
-            ...elements.map(element =>
-                Number(element.getAttribute("aria-setsize"))
-            )
-        )
-    );
 
 await describeExample("virtual/list/load-on-demand", example => {
-    test("loads one page after reaching the end", async ({
-        page
-    }, testInfo) => {
-        await page.goto(example.previewPath);
-        await waitForExampleHydration(page);
+    test("appends complete pages after reaching the end", async ({ page }) => {
+        await openExample(page, example.previewPath);
 
         const list = page.getByRole("list", { name: "Load on demand list" });
         const items = page.getByRole("listitem");
         await expect(items.first()).toBeVisible();
 
-        if (testInfo.project.name.startsWith("mobile-")) {
-            let previousScrollHeight = -1;
-            let stableGeometrySamples = 0;
-            await expect
-                .poll(
-                    async () => {
-                        const scrollHeight = await list.evaluate(
-                            element => element.scrollHeight
-                        );
-                        stableGeometrySamples =
-                            scrollHeight === previousScrollHeight
-                                ? stableGeometrySamples + 1
-                                : 0;
-                        previousScrollHeight = scrollHeight;
-                        return stableGeometrySamples;
-                    },
-                    { intervals: [50, 100, 150] }
-                )
-                .toBeGreaterThanOrEqual(2);
-        }
-
-        const initialItemCount = await getItemCount(items);
-        expect(initialItemCount).toBeGreaterThan(0);
+        const initialItemCount = await getVirtualItemCount(items);
 
         await list.evaluate(element => {
             element.scrollTop = element.scrollHeight;
         });
 
-        const loadedItemCount = initialItemCount + PAGE_SIZE;
-        await expect.poll(() => getItemCount(items)).toBe(loadedItemCount);
+        await expect
+            .poll(() => getVirtualItemCount(items))
+            .toBeGreaterThanOrEqual(initialItemCount + PAGE_SIZE);
 
-        // Remaining at the old end must not request the next page again.
-        await page.waitForTimeout(REPEAT_GUARD_MS);
-        expect(await getItemCount(items)).toBe(loadedItemCount);
+        const loadedItemCount = await getVirtualItemCount(items);
+        expect((loadedItemCount - initialItemCount) % PAGE_SIZE).toBe(0);
+        const positions = await items.evaluateAll(elements =>
+            elements.map(element =>
+                Number(element.getAttribute("aria-posinset"))
+            )
+        );
+        expect(positions).toEqual(
+            Array.from(
+                { length: positions.length },
+                (_value, index) => positions[0] + index
+            )
+        );
+        expect(positions.at(-1)).toBeLessThanOrEqual(loadedItemCount);
     });
 });

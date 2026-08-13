@@ -25,17 +25,4 @@ All packages were carefully optimized to be as small as possible.
     ]}
 />
 
-## Minifier configuration
-
-During bundle size measurement `process.env.NODE_ENV` was set to `production`
-to cut away some extra checks and verbose errors.
-
-```ts
-const MINIFIER_CONFIG = {
-    compress: {
-        global_defs: {
-            "process.env.NODE_ENV": "production"
-        }
-    }
-};
-```
+The displayed minified sizes are produced with the SWC minifier.

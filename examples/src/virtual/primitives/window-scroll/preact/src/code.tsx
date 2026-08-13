@@ -15,7 +15,13 @@ import { memo } from "preact/compat";
 import css from "./style.module.css";
 
 const Item = memo<ListItemProps>(({ model, index }) => (
-    <div ref={useVirtualItemRef(model, index)} className={css.item}>
+    <div
+        ref={useVirtualItemRef(model, index)}
+        className={css.item}
+        role="listitem"
+        aria-posinset={index + 1}
+        aria-setsize={model.itemCount}
+    >
         row {index}
     </div>
 ));
@@ -42,7 +48,11 @@ const WindowScrollHook = () => {
             <div>
                 <div className={css.offset2}>Some offset 2</div>
                 <div>
-                    <div ref={sizeRef}>
+                    <div
+                        ref={sizeRef}
+                        role="list"
+                        aria-label="Window virtual list"
+                    >
                         <div ref={itemsRef}>
                             <Items model={model} />
                         </div>

@@ -22,30 +22,22 @@ to range changes.
 
 ## Framework layout primitives
 
-Use
+When the DOM needs extra wrappers or the scroller and items container are not
+the same element, use the framework's layout binding instead of `List`. The
+[layout elements guide](/virtual/guides/layout-elements) explains the required
+DOM, refs, ownership, and scrolling geometry once; this page only helps choose
+the appropriate rendering level.
+
+Relevant APIs include
 
 <DocLink slug="virtual-react/functions/useVirtualLayout">
     useVirtualLayout
 </DocLink>
-or
+and
 <DocLink slug="virtual-solid/functions/createVirtualLayout">
     createVirtualLayout
 </DocLink>
-when the DOM needs extra wrappers or the scroller and items container are not
-the same element.
-
-The binding returns the three
-[virtual layout elements](/virtual/guides/layout-elements):
-
-```text
-scrollerRef
-└── sizeRef             contributes the native scroll extent
-    └── itemsRef        contains only [from, to)
-```
-
-After attachment, the framework-neutral layout adapter updates size and
-transform directly. The framework still owns child reconciliation and all
-non-geometry styles.
+.
 
 - [React nested scroller example](/virtual/examples/react/hook/different-scroll-element)
 - [Solid nested scroller example](/virtual/examples/solid/primitives/different-scroll-element)
@@ -71,8 +63,16 @@ function updateLayout() {
 ```
 
 This callback changes DOM geometry without asking React or Solid to render.
-Only the view responsible for `[model.from, model.to)` needs a range
-subscription.
+Only the view responsible for
+
+<DocLink slug="virtual-core/classes/VirtualScroller#property-from">
+    model.from
+</DocLink>
+through
+<DocLink slug="virtual-core/classes/VirtualScroller#property-to">
+    model.to
+</DocLink>
+needs a range subscription.
 
 - [React table renderer](/virtual/examples/react/hook/custom-render)
 - [Solid table renderer](/virtual/examples/solid/primitives/custom-render)

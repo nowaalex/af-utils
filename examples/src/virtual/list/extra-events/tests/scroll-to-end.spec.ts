@@ -1,127 +1,84 @@
 import {
     describeExample,
     expect,
-    expectDefined,
-    getVerticalScrollbarX,
-    requireNativeScrollbarPointer,
-    test,
-    waitForExampleHydration
+    getVirtualItemCount,
+    getVirtualListState,
+    type Locator,
+    openExample,
+    test
 } from "../../../../e2e";
 
+const RANGE_PATTERN = /Range:\s*(\d+)\s*-\s*(\d+)/u;
+const SCROLL_SIZE_PATTERN = /Scroll size:\s*([\d.]+)\s*px/u;
+const getPublishedScrollSize = async (view: Locator) =>
+    Number((await view.textContent())?.match(SCROLL_SIZE_PATTERN)?.[1]);
+
 await describeExample("virtual/list/extra-events", example => {
-    test("keeps the final item visible after scrolling to the end", async ({
-        browserName,
+    test("publishes the selected range and scroll-size snapshots", async ({
         page
     }) => {
-        requireNativeScrollbarPointer(browserName);
-        await page.goto(example.previewPath);
-        await waitForExampleHydration(page);
+        await openExample(page, example.previewPath);
+
+        const list = page.getByRole("list", { name: "Extra events list" });
+        const items = page.getByRole("listitem");
+        const rangeView = list.locator(":scope > :first-child");
+        const scrollSizeView = list.locator(":scope > :last-child");
+        await expect(items.first()).toBeVisible();
+        await expect(rangeView).toContainText(RANGE_PATTERN);
+        await expect(scrollSizeView).toContainText(SCROLL_SIZE_PATTERN);
+
+        const initialRange = await rangeView.textContent();
+        const initialScrollSize = await getPublishedScrollSize(scrollSizeView);
+        expect(initialScrollSize).toBeGreaterThan(0);
+
+        await list.evaluate(element => {
+            element.scrollTop = 1_000_000;
+        });
+
+        await expect(rangeView).not.toHaveText(initialRange ?? "");
+        const range = (await rangeView.textContent())?.match(RANGE_PATTERN);
+        if (!range) throw new Error("Expected the rendered range snapshot");
+        const [, from, to] = range.map(Number);
+        const state = await getVirtualListState(list, {
+            headerSelector: ":scope > :first-child",
+            footerSelector: ":scope > :last-child"
+        });
+
+        expect(state.firstPosition).toBe(from + 1);
+        expect(state.lastPosition).toBe(to);
+        expect(Number(from)).toBeGreaterThan(1_000);
+        await expect
+            .poll(() => getPublishedScrollSize(scrollSizeView))
+            .not.toBe(initialScrollSize);
+        expect(await getPublishedScrollSize(scrollSizeView)).toBeGreaterThan(0);
+    });
+
+    test("keeps the final item immediately above the footer", async ({
+        page
+    }) => {
+        await openExample(page, example.previewPath);
 
         const list = page.getByRole("list", { name: "Extra events list" });
         const items = page.getByRole("listitem");
         await expect(items.first()).toBeVisible();
+        const itemCount = await getVirtualItemCount(items);
 
-        const itemCount = Number(
-            await items.first().getAttribute("aria-setsize")
-        );
-        expect(itemCount).toBeGreaterThan(0);
+        await list.evaluate(element => {
+            element.scrollTop = element.scrollHeight;
+        });
 
-        const viewport = expectDefined(
-            await list.boundingBox(),
-            "Expected the list viewport to be visible"
-        );
-
-        const scrollbarX = await getVerticalScrollbarX(list);
-        await page.mouse.move(scrollbarX, viewport.y + 24);
-        await page.mouse.down();
-
-        try {
-            await page.mouse.move(
-                scrollbarX,
-                viewport.y + viewport.height - 2,
-                {
-                    steps: 1
-                }
-            );
-
-            await expect
-                .poll(async () => {
-                    const lastItem = page.getByRole("listitem").last();
-                    if ((await lastItem.count()) === 0) return 0;
-
-                    return lastItem.evaluate(element => {
-                        const scroller =
-                            element.closest<HTMLElement>('[role="list"]');
-                        const footer = scroller?.lastElementChild;
-                        if (!scroller || !footer) {
-                            throw new Error("Expected the list and its footer");
-                        }
-                        const bounds = element.getBoundingClientRect();
-                        const listBounds = scroller.getBoundingClientRect();
-                        const footerBounds = footer.getBoundingClientRect();
-                        let visibleTop = Math.max(bounds.top, listBounds.top);
-                        let visibleBottom = Math.min(
-                            bounds.bottom,
-                            listBounds.bottom,
-                            footerBounds.top
-                        );
-
-                        for (
-                            let ancestor = element.parentElement;
-                            ancestor && ancestor !== scroller;
-                            ancestor = ancestor.parentElement
-                        ) {
-                            const { overflowY } = getComputedStyle(ancestor);
-                            if (
-                                overflowY === "hidden" ||
-                                overflowY === "clip" ||
-                                overflowY === "auto" ||
-                                overflowY === "scroll"
-                            ) {
-                                const clippingBounds =
-                                    ancestor.getBoundingClientRect();
-                                visibleTop = Math.max(
-                                    visibleTop,
-                                    clippingBounds.top
-                                );
-                                visibleBottom = Math.min(
-                                    visibleBottom,
-                                    clippingBounds.bottom
-                                );
-                            }
-                        }
-
-                        const fullyVisible =
-                            visibleTop <= bounds.top + 0.5 &&
-                            visibleBottom >= bounds.bottom - 0.5;
-
-                        return fullyVisible
-                            ? Number(element.getAttribute("aria-posinset"))
-                            : 0;
-                    });
-                })
-                .toBe(itemCount);
-
-            await expect
-                .poll(() => {
-                    const lastItem = page.getByRole("listitem").last();
-                    return lastItem.evaluate(element => {
-                        const scroller =
-                            element.closest<HTMLElement>('[role="list"]');
-                        const footer = scroller?.lastElementChild;
-                        if (!scroller || !footer) {
-                            throw new Error("Expected the list and its footer");
-                        }
-                        const itemBottom =
-                            element.getBoundingClientRect().bottom;
-                        const footerTop = footer.getBoundingClientRect().top;
-
-                        return Math.abs(footerTop - itemBottom);
-                    });
-                })
-                .toBeLessThanOrEqual(1);
-        } finally {
-            await page.mouse.up();
-        }
+        await expect
+            .poll(() =>
+                getVirtualListState(list, {
+                    headerSelector: ":scope > :first-child",
+                    footerSelector: ":scope > :last-child"
+                }).then(state => state.lastPosition)
+            )
+            .toBe(itemCount);
+        const state = await getVirtualListState(list, {
+            headerSelector: ":scope > :first-child",
+            footerSelector: ":scope > :last-child"
+        });
+        expect(state.lastGap).toBeLessThanOrEqual(0.5);
     });
 });

@@ -26,6 +26,8 @@ const Cell = memo<{
     <div
         ref={useVirtualGridItemRef(rows, rowI, cols, colI)}
         className={css.cell}
+        data-row-index={rowI}
+        data-column-index={colI}
         style={{
             width: Math.max(colI ** 2 % 256, 190),
             padding: `${Math.max(rowI ** 2 % 64, 30)}px 0`,
@@ -134,6 +136,7 @@ const GridHook = () => {
             </form>
             <div
                 className={css.grid}
+                data-testid="virtual-grid"
                 ref={el => {
                     rows.setScroller(el);
                     cols.setScroller(el);

@@ -11,6 +11,9 @@ const Item = memo<ListItemProps>(({ model, index }) => (
     <div
         ref={useVirtualItemRef(model, index)}
         className={index % 2 ? css.oddItem : css.evenItem}
+        role="listitem"
+        aria-posinset={index + 1}
+        aria-setsize={model.itemCount}
     >
         col&nbsp;{index}
     </div>
@@ -23,7 +26,11 @@ const HorizontalList = () => {
         horizontal: true
     });
 
-    return <List model={cols}>{Item}</List>;
+    return (
+        <List model={cols} role="list" aria-label="Horizontal virtual list">
+            {Item}
+        </List>
+    );
 };
 
 export default HorizontalList;

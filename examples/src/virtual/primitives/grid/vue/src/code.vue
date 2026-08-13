@@ -98,7 +98,7 @@ const scrollFromForm = (event: SubmitEvent) => {
             />
             <button type="submit" :class="css.btn">Scroll</button>
         </form>
-        <div :ref="scrollerRef" :class="css.grid">
+        <div :ref="scrollerRef" :class="css.grid" data-testid="virtual-grid">
             <div
                 :class="css.gridItems"
                 :style="{
@@ -111,6 +111,8 @@ const scrollFromForm = (event: SubmitEvent) => {
                     :key="`${cell.row}:${cell.column}`"
                     v-virtual-grid-item="[cell.row, cell.column]"
                     :class="css.cell"
+                    :data-row-index="cell.row"
+                    :data-column-index="cell.column"
                     :style="{
                         width: `${Math.max(cell.column ** 2 % 256, 190)}px`,
                         padding: `${Math.max(cell.row ** 2 % 64, 30)}px 0`,

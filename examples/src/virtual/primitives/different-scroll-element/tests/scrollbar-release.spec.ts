@@ -1,11 +1,11 @@
 import {
     describeExample,
     expect,
-    expectDefined,
-    getVerticalScrollbarX,
+    getVerticalScrollbarGeometry,
+    openExample,
     requireNativeScrollbarPointer,
     test,
-    waitForExampleHydration
+    withHeldPointer
 } from "../../../../e2e";
 
 const getEndState = (element: HTMLElement) => {
@@ -28,49 +28,39 @@ await describeExample(
     "virtual/primitives/different-scroll-element",
     example => {
         test("keeps the final item visible after a fast scrollbar release", async ({
-            browserName,
             page
         }) => {
-            requireNativeScrollbarPointer(browserName);
-            await page.goto(example.previewPath);
-            await waitForExampleHydration(page);
+            requireNativeScrollbarPointer();
+            await openExample(page, example.previewPath);
 
             const list = page.getByRole("list");
             await expect(
                 page.getByText("row 0", { exact: true })
             ).toBeVisible();
-            const viewport = expectDefined(
-                await list.boundingBox(),
-                "Expected the list viewport to be visible"
-            );
-            const scrollbarX = await getVerticalScrollbarX(list);
+            const scrollbar = await getVerticalScrollbarGeometry(list);
 
-            await page.mouse.move(scrollbarX, viewport.y + 24);
-            await page.mouse.down();
-            try {
-                await page.mouse.move(
-                    scrollbarX,
-                    viewport.y + viewport.height - 4,
-                    {
+            await withHeldPointer(
+                page,
+                scrollbar.x,
+                scrollbar.start,
+                async () => {
+                    await page.mouse.move(scrollbar.x, scrollbar.bottom - 2, {
                         steps: 1
-                    }
-                );
-                await page.mouse.up();
+                    });
+                }
+            );
 
-                await expect
-                    .poll(() => list.evaluate(getEndState))
-                    .toEqual({ fullyVisible: true, lastIndex: 4_999 });
+            await expect
+                .poll(() => list.evaluate(getEndState))
+                .toEqual({ fullyVisible: true, lastIndex: 4_999 });
 
-                // Let post-release ResizeObserver deliveries and the debounced offset
-                // window settle; native scroll anchoring must not move the list away.
-                await page.waitForTimeout(300);
-                expect(await list.evaluate(getEndState)).toEqual({
-                    fullyVisible: true,
-                    lastIndex: 4_999
-                });
-            } finally {
-                await page.mouse.up();
-            }
+            // Let post-release ResizeObserver deliveries and the debounced offset
+            // window settle; native scroll anchoring must not move the list away.
+            await page.waitForTimeout(300);
+            expect(await list.evaluate(getEndState)).toEqual({
+                fullyVisible: true,
+                lastIndex: 4_999
+            });
         });
     }
 );

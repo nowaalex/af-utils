@@ -1,15 +1,14 @@
 import {
     describeExample,
     expect,
-    test,
-    waitForExampleHydration
+    getVirtualItemCount,
+    openExample,
+    test
 } from "../../../../e2e";
 
 await describeExample("virtual/primitives/simple", example => {
     test("runs from the production Astro bundle", async ({ page }) => {
-        const response = await page.goto(example.previewPath);
-        expect(response?.ok()).toBe(true);
-        await waitForExampleHydration(page);
+        await openExample(page, example.previewPath);
 
         const list = page.getByRole("list", {
             name: "Simple primitives list"
@@ -17,10 +16,7 @@ await describeExample("virtual/primitives/simple", example => {
         const items = page.getByRole("listitem");
         await expect(items.first()).toBeVisible();
 
-        const itemCount = Number(
-            await items.first().getAttribute("aria-setsize")
-        );
-        expect(itemCount).toBeGreaterThan(0);
+        const itemCount = await getVirtualItemCount(items);
 
         await list.evaluate(element => {
             element.scrollTop = element.scrollHeight;

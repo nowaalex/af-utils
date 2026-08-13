@@ -14,11 +14,18 @@ const columns = useVirtual({
 </script>
 
 <template>
-    <VirtualList :model="columns">
+    <VirtualList
+        :model="columns"
+        role="list"
+        aria-label="Horizontal virtual list"
+    >
         <template #default="{ model, index }">
             <div
                 v-virtual-item="[model, index]"
                 :class="index % 2 ? css.oddItem : css.evenItem"
+                role="listitem"
+                :aria-posinset="index + 1"
+                :aria-setsize="model.itemCount"
             >
                 col&nbsp;{{ index }}
             </div>

@@ -79,6 +79,7 @@ const Grid = () => {
             </form>
             <div
                 class={css.grid}
+                data-testid="virtual-grid"
                 ref={element => {
                     rows.setScroller(element);
                     columns.setScroller(element);
@@ -105,6 +106,8 @@ const Grid = () => {
                                         column
                                     )}
                                     class={css.cell}
+                                    data-row-index={row()}
+                                    data-column-index={column()}
                                     style={{
                                         width: `${Math.max(
                                             column() ** 2 % 256,

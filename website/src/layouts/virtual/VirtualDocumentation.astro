@@ -17,7 +17,7 @@ import type { CollectionEntry } from "astro:content";
 import referenceNavigation from "../../content/reference/navigation.json";
 
 const getReferencePath = (path: string | null | undefined) =>
-    path ? `/virtual/reference/${path}` : "/virtual/reference";
+    path ? `/virtual/reference/${path}` : "/virtual/reference/index";
 
 interface ReferenceNavigationItem {
     title: string;
@@ -100,7 +100,7 @@ const items = [
     },
     {
         name: "Reference",
-        path: "/virtual/reference",
+        path: "/virtual/reference/index",
         children: [
             {
                 name: "Overview",

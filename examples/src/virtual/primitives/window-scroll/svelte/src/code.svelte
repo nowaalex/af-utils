@@ -22,10 +22,16 @@
 <div>
     <div class={css.offset2}>Some offset 2</div>
     <div>
-        <div use:size>
+        <div use:size role="list" aria-label="Window virtual list">
             <div use:items>
                 {#each $range as index (index)}
-                    <div use:virtualItem={{ model, index }} class={css.item}>
+                    <div
+                        use:virtualItem={{ model, index }}
+                        class={css.item}
+                        role="listitem"
+                        aria-posinset={index + 1}
+                        aria-setsize={model.itemCount}
+                    >
                         row {index}
                     </div>
                 {/each}

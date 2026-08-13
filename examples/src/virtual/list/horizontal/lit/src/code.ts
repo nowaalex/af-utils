@@ -44,6 +44,8 @@ export default class HorizontalList extends LitElement {
         return html`<div
             ${ref(this._layout.scrollerRef)}
             data-layout
+            role="list"
+            aria-label="Horizontal virtual list"
             style="width:100%;height:100%"
         >
             <div ${ref(this._layout.sizeRef)} data-layout>
@@ -53,6 +55,9 @@ export default class HorizontalList extends LitElement {
                         index => html`<div
                             ${virtualItem(model, index)}
                             class=${index % 2 ? css.oddItem : css.evenItem}
+                            role="listitem"
+                            aria-posinset=${index + 1}
+                            aria-setsize=${model.itemCount}
                         >
                             col&nbsp;${index}
                         </div>`

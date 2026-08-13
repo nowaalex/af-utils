@@ -46,13 +46,20 @@ export default class WindowScroll extends LitElement {
             <div>
                 <div class=${css.offset2}>Some offset 2</div>
                 <div>
-                    <div ${ref(this._layout.sizeRef)}>
+                    <div
+                        ${ref(this._layout.sizeRef)}
+                        role="list"
+                        aria-label="Window virtual list"
+                    >
                         <div ${ref(this._layout.itemsRef)}>
                             ${mapVirtualRange(
                                 model,
                                 index => html`<div
                                     ${virtualItem(model, index)}
                                     class=${css.item}
+                                    role="listitem"
+                                    aria-posinset=${index + 1}
+                                    aria-setsize=${model.itemCount}
                                 >
                                     row ${index}
                                 </div>`

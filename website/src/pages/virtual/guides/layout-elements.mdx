@@ -4,6 +4,8 @@ title: "Scroller, size, and items elements"
 description: "A visual guide to the three nested DOM elements that turn a small rendered range into a correctly sized virtual scroller."
 ---
 
+import DocLink from "components/DocLink.astro";
+
 # Three elements, one virtual list
 
 A virtual list renders only a small window of items, but the browser must still
@@ -20,27 +22,32 @@ jobs cleanly:
                 10,000 rows × 40 px
             </span>
         </div>
-        <div className="relative h-[26rem] overflow-hidden rounded-lg border-2 border-blue-500 bg-blue-50 p-3 pr-8">
-            <div className="absolute left-3 top-3 z-10 rounded bg-blue-700 px-2 py-1 text-xs font-semibold text-white shadow">
-                scrollerRef · viewport 400 px
-            </div>
-            <div className="relative h-full rounded border-2 border-dashed border-teal-500 bg-gradient-to-b from-teal-50 via-white to-teal-50">
-                <div className="absolute left-3 top-14 rounded bg-teal-700 px-2 py-1 text-xs font-semibold text-white shadow">
-                    sizeRef · scroll height 400,000 px
+        <div className="relative h-[34rem] overflow-hidden rounded-lg bg-slate-200/70 p-3">
+            <div className="absolute inset-x-8 -top-28 -bottom-28 rounded border-2 border-dashed border-teal-500 bg-gradient-to-b from-teal-50 via-white to-teal-50">
+                <div className="absolute left-3 top-3 rounded bg-teal-700 px-2 py-1 text-xs font-semibold text-white shadow">
+                    sizeRef · 400,000 px total
                 </div>
-                <div className="absolute inset-x-3 top-[43%] rounded-lg border-2 border-violet-500 bg-violet-100 p-3 shadow-md">
+                <div className="absolute inset-x-4 top-[43%] rounded-lg border-2 border-violet-500 bg-violet-100 p-3 shadow-md">
                     <div className="mb-2 text-xs font-semibold text-violet-900">
-                        itemsRef · translated to row 4,300
+                        itemsRef · translateY(172,000 px)
                     </div>
                     <div className="space-y-1">
                         <div className="rounded bg-white px-2 py-1 text-xs text-slate-700">row 4,300</div>
                         <div className="rounded bg-white px-2 py-1 text-xs text-slate-700">row 4,301</div>
-                        <div className="rounded bg-white px-2 py-1 text-xs text-slate-700">…only the nearby rows exist in DOM…</div>
+                        <div className="rounded bg-white px-2 py-1 text-xs text-slate-700">…nearby rows only…</div>
                     </div>
                 </div>
             </div>
-            <div aria-hidden="true" className="absolute bottom-2 right-2 top-2 w-3 rounded-full bg-slate-300">
-                <div className="absolute left-0 right-0 top-[42%] h-16 rounded-full bg-slate-600"></div>
+            <div className="pointer-events-none absolute inset-x-3 top-[8.5rem] h-64 rounded-lg border-4 border-blue-600 shadow-[0_0_0_999px_rgb(226_232_240_/_0.55)]">
+                <div className="absolute -top-9 left-0 rounded bg-blue-700 px-2 py-1 text-xs font-semibold text-white shadow">
+                    scrollerRef · visible 400 px viewport
+                </div>
+                <div aria-hidden="true" className="absolute bottom-1 right-1 top-1 w-3 rounded-full bg-slate-300">
+                    <div className="absolute left-0 right-0 top-[43%] h-2 rounded-full bg-slate-700"></div>
+                </div>
+            </div>
+            <div className="absolute bottom-3 left-3 rounded bg-white/95 px-2 py-1 text-xs text-slate-700 shadow">
+                scrollTop ≈ 172,000 px · 43% through the list
             </div>
         </div>
     </figure>
@@ -76,9 +83,9 @@ jobs cleanly:
                 <h2 className="m-0 border-0 p-0 text-lg text-violet-950">itemsRef</h2>
             </div>
             <p className="m-0 text-sm leading-6 text-violet-950">
-                The small rendered window. It contains only
-                <code>[model.from, model.to)</code> and core moves it to the right
-                location with a compositor-backed transform.
+                The small rendered window. It contains only the current model
+                range and core moves it to the right location with a
+                compositor-backed transform.
             </p>
         </section>
     </div>
@@ -109,6 +116,17 @@ scrollerRef                         visible viewport and scroll owner
 Svelte exposes the same roles as the `scroller`, `size`, and `items` actions.
 Lit exposes them on `VirtualLayoutController`; Vue, React, Preact, and Solid use
 framework-native refs.
+
+The half-open rendered range starts at
+
+<DocLink slug="virtual-core/classes/VirtualScroller#property-from">
+    model.from
+</DocLink>
+and ends before
+<DocLink slug="virtual-core/classes/VirtualScroller#property-to">
+    model.to
+</DocLink>
+.
 
 ## What changes while scrolling
 

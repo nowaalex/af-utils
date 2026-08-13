@@ -82,7 +82,7 @@
         />
         <button type="submit" class={css.btn}>Scroll</button>
     </form>
-    <div class={css.grid} use:gridScroller>
+    <div class={css.grid} use:gridScroller data-testid="virtual-grid">
         <div
             class={css.gridItems}
             style:height={`${rows.scrollSize}px`}
@@ -97,6 +97,8 @@
                         columnIndex: cell.column
                     }}
                     class={css.cell}
+                    data-row-index={cell.row}
+                    data-column-index={cell.column}
                     style:width={`${Math.max(cell.column ** 2 % 256, 190)}px`}
                     style:padding={`${Math.max(cell.row ** 2 % 64, 30)}px 0`}
                     style:transform={`translateX(${cell.columnOffset}px) translateY(${cell.rowOffset}px)`}
