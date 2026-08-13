@@ -33,16 +33,16 @@ export type ListProps<Data = unknown> = Omit<
     header?: ComponentChildren;
     /** Content rendered after the native scroll-size element. */
     footer?: ComponentChildren;
-    /** Inline style merged with the required scroller declarations. */
+    /** Inline presentation styles for the scroller. */
     style?: JSX.CSSProperties;
 };
 
 /** DOM refs produced by {@link useVirtualLayout}. @public */
 export interface VirtualPreactLayoutBinding {
-    /** Attach the native element scroller. */
+    /** Attach the [scroller element](/virtual/guides/layout-elements#scroller-ref). */
     scrollerRef: RefCallback<HTMLElement>;
-    /** Attach the element contributing native scroll extent. */
+    /** Attach the [native size element](/virtual/guides/layout-elements#size-ref). */
     sizeRef: RefCallback<HTMLElement>;
-    /** Attach the absolutely positioned rendered-range container. */
+    /** Attach the [rendered-items element](/virtual/guides/layout-elements#items-ref). */
     itemsRef: RefCallback<HTMLElement>;
 }

@@ -1,7 +1,13 @@
 import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 import { html, LitElement } from "lit";
+import { ref } from "lit/directives/ref.js";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { VirtualController, VirtualSnapshotController, virtualItem } from ".";
+import {
+    VirtualController,
+    VirtualLayoutController,
+    VirtualSnapshotController,
+    virtualItem
+} from ".";
 
 class NoopResizeObserver implements ResizeObserver {
     /** Ignore one observation in deterministic DOM tests. */
@@ -40,6 +46,21 @@ class ItemTestHost extends LitElement {
 }
 
 customElements.define("virtual-lit-item-test-host", ItemTestHost);
+
+class LayoutTestHost extends LitElement {
+    readonly virtual = new VirtualController(this, () => ({ itemCount: 10 }));
+    readonly layout = new VirtualLayoutController(this, this.virtual.model);
+
+    protected render() {
+        return html`<div ${ref(this.layout.scrollerRef)} data-scroller>
+            <div ${ref(this.layout.sizeRef)} data-size>
+                <div ${ref(this.layout.itemsRef)} data-items></div>
+            </div>
+        </div>`;
+    }
+}
+
+customElements.define("virtual-lit-layout-test-host", LayoutTestHost);
 
 describe("Lit virtual adapter", () => {
     afterEach(() => {
@@ -95,6 +116,23 @@ describe("Lit virtual adapter", () => {
         await host.updateComplete;
         expect(attachSpy).toHaveBeenCalledOnce();
         expect(detachSpy).not.toHaveBeenCalled();
+    });
+
+    test("connects layout refs used as Lit element directives", async () => {
+        const host = new LayoutTestHost();
+        document.body.append(host);
+        await host.updateComplete;
+
+        const scroller =
+            host.renderRoot.querySelector<HTMLElement>("[data-scroller]");
+        const size = host.renderRoot.querySelector<HTMLElement>("[data-size]");
+        const items =
+            host.renderRoot.querySelector<HTMLElement>("[data-items]");
+
+        expect(scroller?.style.overflow).toBe("auto");
+        expect(scroller?.style.contain).toBe("strict");
+        expect(size?.style.position).toBe("relative");
+        expect(items?.style.position).toBe("absolute");
     });
 
     test("disposes its model when the host disconnects", async () => {

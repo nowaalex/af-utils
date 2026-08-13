@@ -19,8 +19,36 @@ export default class CustomRender extends LitElement {
     private readonly _snapshot = new VirtualSnapshotController(
         this,
         this._virtual.model,
-        VirtualScrollerEvent.ALL
+        VirtualScrollerEvent.RANGE
     );
+    private _beforeElement: HTMLElement | null = null;
+    private _afterElement: HTMLElement | null = null;
+    private _unsubscribeSpacers: (() => void) | null = null;
+    /** Apply the latest model geometry without waiting for a host render. */
+    private readonly _updateSpacers = () => {
+        const beforeSize = this._virtual.model.renderedRangeOffset;
+        const rangeSize = this._virtual.model.renderedRangeSize;
+
+        if (this._beforeElement) {
+            this._beforeElement.style.height = `${beforeSize}px`;
+        }
+        if (this._afterElement) {
+            this._afterElement.style.height = `${Math.max(
+                0,
+                this._virtual.model.scrollSize - beforeSize - rangeSize
+            )}px`;
+        }
+    };
+    /** Track the spacer before the rendered range. */
+    private readonly _beforeRef = (element?: Element) => {
+        this._beforeElement = (element as HTMLElement | undefined) ?? null;
+        this._updateSpacers();
+    };
+    /** Track the spacer after the rendered range. */
+    private readonly _afterRef = (element?: Element) => {
+        this._afterElement = (element as HTMLElement | undefined) ?? null;
+        this._updateSpacers();
+    };
     private readonly _scrollerRef = (element?: Element) =>
         this._virtual.model.setScroller(
             (element as HTMLElement | undefined) ?? null
@@ -41,15 +69,23 @@ export default class CustomRender extends LitElement {
     connectedCallback() {
         super.connectedCallback();
         this.style.cssText = "display:grid;width:100%;height:100%";
+        this._unsubscribeSpacers ??= this._virtual.model.subscribe(
+            this._updateSpacers,
+            VirtualScrollerEvent.RANGE |
+                VirtualScrollerEvent.SCROLL_SIZE |
+                VirtualScrollerEvent.SIZES
+        );
+    }
+
+    /** Stop imperative geometry updates while the host is detached. */
+    disconnectedCallback() {
+        this._unsubscribeSpacers?.();
+        this._unsubscribeSpacers = null;
+        super.disconnectedCallback();
     }
 
     protected render() {
         const model = this._virtual.model;
-        const beforeSize = model.renderedRangeOffset;
-        const afterSize = Math.max(
-            0,
-            model.scrollSize - beforeSize - model.renderedRangeSize
-        );
         return html`<div ${ref(this._scrollerRef)} class=${css.wrapper}>
             <table class=${css.table}>
                 <thead ${ref(this._headerRef)} class=${css.thead}>
@@ -62,8 +98,8 @@ export default class CustomRender extends LitElement {
                     <tr aria-hidden="true">
                         <td class=${css.spacerCell} colspan="2">
                             <div
+                                ${ref(this._beforeRef)}
                                 class=${css.spacer}
-                                style=${`height:${beforeSize}px`}
                             ></div>
                         </td>
                     </tr>
@@ -90,8 +126,8 @@ export default class CustomRender extends LitElement {
                     <tr aria-hidden="true">
                         <td class=${css.spacerCell} colspan="2">
                             <div
+                                ${ref(this._afterRef)}
                                 class=${css.spacer}
-                                style=${`height:${afterSize}px`}
                             ></div>
                         </td>
                     </tr>

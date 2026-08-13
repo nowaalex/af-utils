@@ -1,14 +1,14 @@
 ---
-title: "Function: List()"
+title: "Component: List"
 description: Render a virtual Preact list with model-owned DOM geometry.
 package: "@af-utils/virtual-preact"
 symbol: List
-kind: function
+kind: component
 referencePath: /virtual/reference/virtual-preact/functions/List
 generated: true
 ---
 
-# List()
+# List
 
 ```ts
 function List<Data>(props): Element;

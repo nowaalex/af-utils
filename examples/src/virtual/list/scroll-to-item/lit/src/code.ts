@@ -100,11 +100,12 @@ export default class ScrollToItem extends LitElement {
     protected render() {
         const model = this._virtual.model;
         return html`<div
-            ${this._layout.scrollerRef}
+            ${ref(this._layout.scrollerRef)}
             data-layout
             style="width:100%;height:100%"
             class=${css.list}
             role="list"
+            tabindex="-1"
         >
             <form
                 ${ref(this._headerRef)}
@@ -121,8 +122,8 @@ export default class ScrollToItem extends LitElement {
                 /></label>
                 <button class=${css.btn} type="submit">Go</button>
             </form>
-            <div ${this._layout.sizeRef} data-layout>
-                <div ${this._layout.itemsRef} data-layout>
+            <div ${ref(this._layout.sizeRef)} data-layout>
+                <div ${ref(this._layout.itemsRef)} data-layout>
                     ${mapVirtualRange(
                         model,
                         index => html`<div

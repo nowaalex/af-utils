@@ -38,13 +38,18 @@ export interface VirtualSvelteGridItemBinding {
     columnIndex: number;
 }
 
-/** Svelte actions for virtual layout elements. @public */
+/**
+ * Svelte actions for the three elements explained in the
+ * [layout-elements guide](/virtual/guides/layout-elements).
+ *
+ * @public
+ */
 export interface VirtualSvelteLayoutBinding {
-    /** Action attaching the native element scroller. */
+    /** Action attaching the [scroller element](/virtual/guides/layout-elements#scroller-ref). */
     scroller: Action<HTMLElement>;
-    /** Action attaching the element contributing native scroll extent. */
+    /** Action attaching the [native size element](/virtual/guides/layout-elements#size-ref). */
     size: Action<HTMLElement>;
-    /** Action attaching the absolutely positioned rendered-range container. */
+    /** Action attaching the [rendered-items element](/virtual/guides/layout-elements#items-ref). */
     items: Action<HTMLElement>;
 }
 
@@ -117,6 +122,8 @@ export const createVirtualRange = (
  * Connect Svelte actions to the framework-neutral virtual layout adapter.
  *
  * @remarks Call this helper during Svelte component initialization.
+ * See the [layout-elements guide](/virtual/guides/layout-elements) for the
+ * required nesting.
  * @public
  */
 export const createVirtualLayout = (
@@ -141,7 +148,12 @@ export const createVirtualLayout = (
     };
 };
 
-/** Create the range store and layout actions for a common virtual list. @public */
+/**
+ * Create the range store and actions for the three
+ * [layout elements](/virtual/guides/layout-elements).
+ *
+ * @public
+ */
 export const createVirtualList = (
     model: VirtualScroller
 ): VirtualSvelteListBinding => ({

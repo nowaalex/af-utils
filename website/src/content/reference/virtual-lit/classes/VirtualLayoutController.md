@@ -12,6 +12,9 @@ generated: true
 
 Lit refs backed by the framework-neutral layout adapter.
 
+See the [layout-elements guide](/virtual/guides/layout-elements) for their
+nesting and responsibilities.
+
 ## Implements
 
 - `ReactiveController`
@@ -45,24 +48,30 @@ Create layout bindings for a Lit host.
 ### itemsRef
 
 ```ts
-readonly itemsRef: RefOrCallback;
+readonly itemsRef: Ref<HTMLElement>;
 ```
+
+Attach the [rendered-items element](/virtual/guides/layout-elements#items-ref).
 
 ---
 
 ### scrollerRef
 
 ```ts
-readonly scrollerRef: RefOrCallback;
+readonly scrollerRef: Ref<HTMLElement>;
 ```
+
+Attach the [scroller element](/virtual/guides/layout-elements#scroller-ref).
 
 ---
 
 ### sizeRef
 
 ```ts
-readonly sizeRef: RefOrCallback;
+readonly sizeRef: Ref<HTMLElement>;
 ```
+
+Attach the [native size element](/virtual/guides/layout-elements#size-ref).
 
 ## Methods
 
@@ -75,21 +84,22 @@ connect(
    itemsElement): void;
 ```
 
-Explicitly reconnect layout elements after an external hydration pass.
+Explicitly reconnect the three
+[layout elements](/virtual/guides/layout-elements).
 
 #### Parameters
 
 ##### scroller
 
-`HTMLElement`
+`HTMLElement` \| `null`
 
 ##### sizeElement
 
-`HTMLElement`
+`HTMLElement` \| `null`
 
 ##### itemsElement
 
-`HTMLElement`
+`HTMLElement` \| `null`
 
 #### Returns
 
@@ -133,4 +143,24 @@ Dispose DOM bindings with the host.
 
 ```ts
 ReactiveController.hostDisconnected;
+```
+
+---
+
+### hostUpdated()
+
+```ts
+hostUpdated(): void;
+```
+
+Attach the elements collected by Lit's ref directives after rendering.
+
+#### Returns
+
+`void`
+
+#### Implementation of
+
+```ts
+ReactiveController.hostUpdated;
 ```

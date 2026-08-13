@@ -90,7 +90,7 @@ Model owning list geometry and the rendered range.
 optional style?: JSX.CSSProperties;
 ```
 
-Inline style merged with the required scroller declarations.
+Inline presentation styles for the scroller.
 
 ## Type Parameters
 

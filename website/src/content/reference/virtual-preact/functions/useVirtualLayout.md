@@ -26,4 +26,5 @@ Connect stable Preact refs to the framework-neutral virtual layout adapter.
 
 [`VirtualPreactLayoutBinding`](/virtual/reference/virtual-preact/interfaces/VirtualPreactLayoutBinding)
 
-Refs for all virtual layout elements.
+The three refs explained in the
+[layout-elements guide](/virtual/guides/layout-elements).

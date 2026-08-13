@@ -99,9 +99,12 @@ const getFocusBorderCoverage = async (page: Page, list: Locator) => {
             bitmap.width,
             bitmap.height
         ).data;
+        // Sample only the fully covered device pixels. On fractional mobile
+        // DPRs the outer antialiased row belongs only partly to the 2 CSS px
+        // outline and should not count as an occluded border.
         const edgeWidth = Math.max(
             1,
-            Math.round(globalThis.devicePixelRatio * 2)
+            Math.floor(globalThis.devicePixelRatio * 2)
         );
         const horizontalEnd = Math.max(1, bitmap.width - 20);
         let dark = 0;
@@ -128,6 +131,57 @@ const getFocusBorderCoverage = async (page: Page, list: Locator) => {
 };
 
 await describeExample("virtual/list/scroll-to-item", example => {
+    if (example.framework === "lit") {
+        test("adds and removes rows before scrolling to the new end", async ({
+            page
+        }) => {
+            await page.goto(example.previewPath);
+            await waitForExampleHydration(page);
+
+            const list = page.getByRole("list");
+            const rowsToAdd = page.getByRole("spinbutton", {
+                name: "Rows to add:"
+            });
+            const submit = page.getByRole("button", {
+                name: "Add and scroll to end"
+            });
+            const getItemCount = () =>
+                page
+                    .getByRole("listitem")
+                    .first()
+                    .getAttribute("aria-setsize")
+                    .then(Number);
+            const expectEnd = async (itemCount: number) => {
+                const finalItem = page.locator(
+                    `[role="listitem"][aria-posinset="${itemCount}"]`
+                );
+                await expect(finalItem).toBeAttached({ timeout: 10_000 });
+                await expect
+                    .poll(() =>
+                        list.evaluate(element =>
+                            Math.abs(
+                                element.scrollHeight -
+                                    element.clientHeight -
+                                    element.scrollTop
+                            )
+                        )
+                    )
+                    .toBeLessThanOrEqual(1);
+            };
+
+            const initialCount = await getItemCount();
+            await rowsToAdd.fill("37");
+            await submit.click();
+            await expect.poll(getItemCount).toBe(initialCount + 37);
+            await expectEnd(initialCount + 37);
+
+            await rowsToAdd.fill("-53");
+            await submit.click();
+            await expect.poll(getItemCount).toBe(initialCount - 16);
+            await expectEnd(initialCount - 16);
+        });
+    }
+
     test("initially renders the final row immediately above the footer", async ({
         page
     }) => {

@@ -75,7 +75,7 @@ const itemAriaSize = (_model: VirtualScroller) => sizes.value.length;
 </script>
 
 <template>
-    <VirtualList :model="model" :class="css.list" role="list">
+    <VirtualList :model="model" :class="css.list" role="list" tabindex="-1">
         <template #header>
             <form
                 :ref="headerRef"

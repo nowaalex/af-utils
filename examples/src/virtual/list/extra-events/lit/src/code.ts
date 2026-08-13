@@ -54,7 +54,7 @@ export default class ExtraEvents extends LitElement {
     protected render() {
         const model = this._virtual.model;
         return html`<div
-            ${this._layout.scrollerRef}
+            ${ref(this._layout.scrollerRef)}
             data-layout
             style="width:100%;height:100%"
             role="list"
@@ -64,8 +64,8 @@ export default class ExtraEvents extends LitElement {
                 Rendered ${model.to - model.from} items. Range: ${model.from} -
                 ${model.to}
             </div>
-            <div ${this._layout.sizeRef} data-layout>
-                <div ${this._layout.itemsRef} data-layout>
+            <div ${ref(this._layout.sizeRef)} data-layout>
+                <div ${ref(this._layout.itemsRef)} data-layout>
                     ${mapVirtualRange(
                         model,
                         index => html`<div

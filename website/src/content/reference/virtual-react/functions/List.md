@@ -1,14 +1,14 @@
 ---
-title: "Function: List()"
+title: "Component: List"
 description: React component. Small abstraction, which in 90% cases allows to avoid hook boilerplate.
 package: "@af-utils/virtual-react"
 symbol: List
-kind: function
+kind: component
 referencePath: /virtual/reference/virtual-react/functions/List
 generated: true
 ---
 
-# List()
+# List
 
 ```ts
 function List<Data, C>(props): Element;

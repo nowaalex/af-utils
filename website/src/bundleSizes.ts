@@ -19,10 +19,10 @@ export default {
     },
     "@af-utils/virtual-lit": {
         "./dist/index.js": {
-            raw: 3572,
-            min: 2961,
-            minGz: 904,
-            minBrotli: 815
+            raw: 3881,
+            min: 3225,
+            minGz: 979,
+            minBrotli: 885
         }
     },
     "@af-utils/virtual-preact": {

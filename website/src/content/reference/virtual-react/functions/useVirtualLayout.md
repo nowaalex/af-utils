@@ -11,7 +11,7 @@ generated: true
 # useVirtualLayout()
 
 ```ts
-function useVirtualLayout(model): object;
+function useVirtualLayout(model): VirtualReactLayoutBinding;
 ```
 
 Connect stable React refs to the framework-neutral virtual layout adapter.
@@ -24,24 +24,7 @@ Connect stable React refs to the framework-neutral virtual layout adapter.
 
 ## Returns
 
-`object`
+[`VirtualReactLayoutBinding`](/virtual/reference/virtual-react/interfaces/VirtualReactLayoutBinding)
 
-Refs for the scroller, scroll-size, and rendered-items elements.
-
-### itemsRef
-
-```ts
-itemsRef: RefCallback<HTMLElement>;
-```
-
-### scrollerRef
-
-```ts
-scrollerRef: RefCallback<HTMLElement>;
-```
-
-### sizeRef
-
-```ts
-sizeRef: RefCallback<HTMLElement>;
-```
+The three refs explained in the
+[layout-elements guide](/virtual/guides/layout-elements).

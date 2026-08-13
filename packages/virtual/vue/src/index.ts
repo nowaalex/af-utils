@@ -55,14 +55,27 @@ export const useVirtualSnapshot = (
     return revision;
 };
 
-/** Vue refs for virtual layout elements. @public */
+/**
+ * Vue refs for the three elements explained in the
+ * [layout-elements guide](/virtual/guides/layout-elements).
+ *
+ * @public
+ */
 export interface VirtualVueLayoutBinding {
+    /** Attach the [scroller element](/virtual/guides/layout-elements#scroller-ref). */
     scrollerRef: VirtualVueElementRef;
+    /** Attach the [native size element](/virtual/guides/layout-elements#size-ref). */
     sizeRef: VirtualVueElementRef;
+    /** Attach the [rendered-items element](/virtual/guides/layout-elements#items-ref). */
     itemsRef: VirtualVueElementRef;
 }
 
-/** Connect Vue template refs to the framework-neutral layout adapter. @public */
+/**
+ * Connect Vue template refs for the three
+ * [layout elements](/virtual/guides/layout-elements).
+ *
+ * @public
+ */
 export const useVirtualLayout = (
     model: VirtualScroller
 ): VirtualVueLayoutBinding => {

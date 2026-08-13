@@ -1,0 +1,157 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+title: "Scroller, size, and items elements"
+description: "A visual guide to the three nested DOM elements that turn a small rendered range into a correctly sized virtual scroller."
+---
+
+# Three elements, one virtual list
+
+A virtual list renders only a small window of items, but the browser must still
+see the height of the complete collection. Three nested elements split those
+jobs cleanly:
+
+<div className="not-prose my-10 grid gap-5 xl:grid-cols-[minmax(22rem,1.15fr)_minmax(18rem,0.85fr)]">
+    <figure className="m-0 rounded-xl border border-slate-300 bg-slate-100 p-4 shadow-sm">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <figcaption className="font-semibold text-slate-900">
+                What the browser sees
+            </figcaption>
+            <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-600 shadow-sm">
+                10,000 rows × 40 px
+            </span>
+        </div>
+        <div className="relative h-[26rem] overflow-hidden rounded-lg border-2 border-blue-500 bg-blue-50 p-3 pr-8">
+            <div className="absolute left-3 top-3 z-10 rounded bg-blue-700 px-2 py-1 text-xs font-semibold text-white shadow">
+                scrollerRef · viewport 400 px
+            </div>
+            <div className="relative h-full rounded border-2 border-dashed border-teal-500 bg-gradient-to-b from-teal-50 via-white to-teal-50">
+                <div className="absolute left-3 top-14 rounded bg-teal-700 px-2 py-1 text-xs font-semibold text-white shadow">
+                    sizeRef · scroll height 400,000 px
+                </div>
+                <div className="absolute inset-x-3 top-[43%] rounded-lg border-2 border-violet-500 bg-violet-100 p-3 shadow-md">
+                    <div className="mb-2 text-xs font-semibold text-violet-900">
+                        itemsRef · translated to row 4,300
+                    </div>
+                    <div className="space-y-1">
+                        <div className="rounded bg-white px-2 py-1 text-xs text-slate-700">row 4,300</div>
+                        <div className="rounded bg-white px-2 py-1 text-xs text-slate-700">row 4,301</div>
+                        <div className="rounded bg-white px-2 py-1 text-xs text-slate-700">…only the nearby rows exist in DOM…</div>
+                    </div>
+                </div>
+            </div>
+            <div aria-hidden="true" className="absolute bottom-2 right-2 top-2 w-3 rounded-full bg-slate-300">
+                <div className="absolute left-0 right-0 top-[42%] h-16 rounded-full bg-slate-600"></div>
+            </div>
+        </div>
+    </figure>
+
+    <div className="grid content-start gap-3">
+        <section id="scroller-ref" className="scroll-mt-8 rounded-xl border border-blue-200 bg-blue-50 p-4">
+            <div className="mb-2 flex items-center gap-3">
+                <span className="grid size-8 place-items-center rounded-full bg-blue-700 font-bold text-white">1</span>
+                <h2 className="m-0 border-0 p-0 text-lg text-blue-950">scrollerRef</h2>
+            </div>
+            <p className="m-0 text-sm leading-6 text-blue-950">
+                The visible viewport. It owns <code>scrollTop</code>, receives
+                scroll events, and is styled by core with <code>overflow: auto</code>
+                and <code>contain: strict</code>.
+            </p>
+        </section>
+
+        <section id="size-ref" className="scroll-mt-8 rounded-xl border border-teal-200 bg-teal-50 p-4">
+            <div className="mb-2 flex items-center gap-3">
+                <span className="grid size-8 place-items-center rounded-full bg-teal-700 font-bold text-white">2</span>
+                <h2 className="m-0 border-0 p-0 text-lg text-teal-950">sizeRef</h2>
+            </div>
+            <p className="m-0 text-sm leading-6 text-teal-950">
+                The full native scroll extent. Core sets its height or width to
+                <code>model.scrollSize</code>, so the scrollbar represents every
+                item—even though most items are absent from the DOM.
+            </p>
+        </section>
+
+        <section id="items-ref" className="scroll-mt-8 rounded-xl border border-violet-200 bg-violet-50 p-4">
+            <div className="mb-2 flex items-center gap-3">
+                <span className="grid size-8 place-items-center rounded-full bg-violet-700 font-bold text-white">3</span>
+                <h2 className="m-0 border-0 p-0 text-lg text-violet-950">itemsRef</h2>
+            </div>
+            <p className="m-0 text-sm leading-6 text-violet-950">
+                The small rendered window. It contains only
+                <code>[model.from, model.to)</code> and core moves it to the right
+                location with a compositor-backed transform.
+            </p>
+        </section>
+    </div>
+
+</div>
+
+## The required nesting
+
+The three elements form one invariant tree. Application headers and footers may
+sit beside `sizeRef`, but `itemsRef` remains inside it:
+
+```text
+scrollerRef                         visible viewport and scroll owner
+├── header (optional)
+├── sizeRef                         complete native scroll extent
+│   └── itemsRef                    only the current [from, to) range
+└── footer (optional)
+```
+
+```tsx
+<div ref={scrollerRef}>
+    <div ref={sizeRef}>
+        <div ref={itemsRef}>{renderRange(model.from, model.to)}</div>
+    </div>
+</div>
+```
+
+Svelte exposes the same roles as the `scroller`, `size`, and `items` actions.
+Lit exposes them on `VirtualLayoutController`; Vue, React, Preact, and Solid use
+framework-native refs.
+
+## What changes while scrolling
+
+<div className="not-prose my-8 grid gap-3 md:grid-cols-3">
+    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            At the start
+        </div>
+        <div className="mb-3 h-28 rounded border border-blue-300 bg-blue-50 p-2">
+            <div className="h-8 rounded bg-violet-400"></div>
+        </div>
+        <code className="text-xs">from = 0</code>
+    </div>
+    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            In the middle
+        </div>
+        <div className="mb-3 flex h-28 items-center rounded border border-blue-300 bg-blue-50 p-2">
+            <div className="h-8 w-full rounded bg-violet-400"></div>
+        </div>
+        <code className="text-xs">transform: translateY(172000px)</code>
+    </div>
+    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            At the end
+        </div>
+        <div className="mb-3 flex h-28 items-end rounded border border-blue-300 bg-blue-50 p-2">
+            <div className="h-8 w-full rounded bg-violet-400"></div>
+        </div>
+        <code className="text-xs">to = itemCount</code>
+    </div>
+</div>
+
+`scrollerRef` stays the viewport and `sizeRef` stays the complete extent.
+Usually only the range inside `itemsRef` and its transform change. Measurements
+may also refine `sizeRef` when estimated sizes are replaced by real ones.
+
+## Ownership rule
+
+Core owns the layout-critical inline styles of all three elements after their
+refs attach. The framework owns which children exist inside `itemsRef`; the
+application still owns presentation such as the scroller's dimensions, border,
+background, and classes.
+
+This single-writer rule prevents a delayed framework commit from replacing
+newer geometry that core already published during scrolling.

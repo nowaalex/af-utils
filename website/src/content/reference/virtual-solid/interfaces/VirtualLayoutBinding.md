@@ -20,7 +20,7 @@ DOM refs produced by `createVirtualLayout`.
 itemsRef: VirtualElementRef;
 ```
 
-Attach the absolutely positioned rendered-range container.
+Attach the [rendered-items element](/virtual/guides/layout-elements#items-ref).
 
 ---
 
@@ -30,7 +30,7 @@ Attach the absolutely positioned rendered-range container.
 scrollerRef: VirtualElementRef;
 ```
 
-Attach the native element scroller.
+Attach the [scroller element](/virtual/guides/layout-elements#scroller-ref).
 
 ---
 
@@ -40,4 +40,4 @@ Attach the native element scroller.
 sizeRef: VirtualElementRef;
 ```
 
-Attach the element contributing native scroll extent.
+Attach the [native size element](/virtual/guides/layout-elements#size-ref).

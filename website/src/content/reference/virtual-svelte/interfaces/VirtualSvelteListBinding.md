@@ -24,7 +24,7 @@ Range store and layout actions for the common virtual-list shape.
 items: Action<HTMLElement>;
 ```
 
-Action attaching the absolutely positioned rendered-range container.
+Action attaching the [rendered-items element](/virtual/guides/layout-elements#items-ref).
 
 #### Inherited from
 
@@ -48,7 +48,7 @@ Readable array containing the currently rendered indexes.
 scroller: Action<HTMLElement>;
 ```
 
-Action attaching the native element scroller.
+Action attaching the [scroller element](/virtual/guides/layout-elements#scroller-ref).
 
 #### Inherited from
 
@@ -62,7 +62,7 @@ Action attaching the native element scroller.
 size: Action<HTMLElement>;
 ```
 
-Action attaching the element contributing native scroll extent.
+Action attaching the [native size element](/virtual/guides/layout-elements#size-ref).
 
 #### Inherited from
 

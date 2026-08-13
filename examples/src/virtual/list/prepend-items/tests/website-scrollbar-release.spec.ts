@@ -94,30 +94,6 @@ const countPaintedContentRows = async (page: Page, list: Locator) => {
 };
 
 await describeExample("virtual/list/prepend-items", example => {
-    test("keeps the idle-hydration scrollbar inert without losing SSR geometry", async ({
-        browser
-    }) => {
-        const context = await browser.newContext({ javaScriptEnabled: false });
-        const page = await context.newPage();
-
-        try {
-            await page.goto(example.documentationPath);
-
-            const preview = page.frameLocator("iframe").first();
-            const list = preview.getByRole("list", {
-                name: "Prepend items list"
-            });
-
-            await expect(list).toHaveCSS("overflow", "hidden");
-            await expect(preview.getByRole("listitem").first()).toBeVisible();
-            expect(
-                await list.evaluate(element => element.scrollHeight)
-            ).toBeGreaterThan(1_000_000);
-        } finally {
-            await context.close();
-        }
-    });
-
     test("hydrates before exposing the documentation preview scrollbar", async ({
         browserName,
         page

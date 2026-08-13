@@ -21,10 +21,6 @@ Preact components and hooks used to connect to `VirtualScroller`.
 
 - [ListProps](/virtual/reference/virtual-preact/type-aliases/ListProps)
 
-## Functions
-
-- [List](/virtual/reference/virtual-preact/functions/List)
-
 ## Hooks
 
 - [useScroller](/virtual/reference/virtual-preact/functions/useScroller)
@@ -35,3 +31,7 @@ Preact components and hooks used to connect to `VirtualScroller`.
 - [useVirtualLayout](/virtual/reference/virtual-preact/functions/useVirtualLayout)
 - [useVirtualModel](/virtual/reference/virtual-preact/functions/useVirtualModel)
 - [useVirtualSnapshot](/virtual/reference/virtual-preact/functions/useVirtualSnapshot)
+
+## Components
+
+- [List](/virtual/reference/virtual-preact/functions/List)

@@ -1,14 +1,14 @@
 ---
-title: "Function: List()"
+title: "Component: List"
 description: Render a virtual Solid list with model-owned DOM geometry.
 package: "@af-utils/virtual-solid"
 symbol: List
-kind: function
+kind: component
 referencePath: /virtual/reference/virtual-solid/functions/List
 generated: true
 ---
 
-# List()
+# List
 
 ```ts
 function List<Data>(props): Element;

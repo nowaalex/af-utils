@@ -16,7 +16,9 @@ Framework-neutral DOM layout adapter for [VirtualScroller](/virtual/reference/vi
 
 It keeps the scroll-size element and rendered-items element synchronized
 without scheduling framework renders. Framework adapters expose it through
-their native ref, action, or controller primitives.
+their native ref, action, or controller primitives. See the
+[layout-elements guide](/virtual/guides/layout-elements) for the required
+nesting and the role of each element.
 
 ## Constructors
 
@@ -60,7 +62,7 @@ Disconnect every element and event listener owned by this adapter.
 setItemsElement(element): void;
 ```
 
-Connect or disconnect the element containing currently rendered items.
+Connect or disconnect the [rendered-items element](/virtual/guides/layout-elements#items-ref).
 
 #### Parameters
 
@@ -80,7 +82,7 @@ Connect or disconnect the element containing currently rendered items.
 setScrollerElement(element): void;
 ```
 
-Attach or detach the scroll container and apply its required styles.
+Attach or detach the [scroller element](/virtual/guides/layout-elements#scroller-ref).
 
 #### Parameters
 
@@ -100,7 +102,7 @@ Attach or detach the scroll container and apply its required styles.
 setSizeElement(element): void;
 ```
 
-Connect or disconnect the element that provides native scroll size.
+Connect or disconnect the [native size element](/virtual/guides/layout-elements#size-ref).
 
 #### Parameters
 

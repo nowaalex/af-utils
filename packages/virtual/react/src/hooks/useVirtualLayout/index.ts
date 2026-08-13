@@ -4,15 +4,19 @@ import {
     VirtualScrollerLayout
 } from "@af-utils/virtual-core";
 import { type RefCallback, useCallback, useState } from "react";
+import type { VirtualReactLayoutBinding } from "../../types";
 import useIsomorphicLayoutEffect from "../useIsomorphicLayoutEffect";
 
 /**
  * @public
  * Connect stable React refs to the framework-neutral virtual layout adapter.
  *
- * @returns Refs for the scroller, scroll-size, and rendered-items elements.
+ * @returns The three refs explained in the
+ * [layout-elements guide](/virtual/guides/layout-elements).
  */
-const useVirtualLayout = (model: VirtualScroller) => {
+const useVirtualLayout = (
+    model: VirtualScroller
+): VirtualReactLayoutBinding => {
     const [resource] = useState(() => ({
         layout: new VirtualScrollerLayout(model),
         model

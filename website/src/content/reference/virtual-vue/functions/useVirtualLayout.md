@@ -1,6 +1,6 @@
 ---
 title: "Hook: useVirtualLayout()"
-description: Connect Vue template refs to the framework-neutral layout adapter.
+description: Connect Vue template refs for the three layout elements.
 package: "@af-utils/virtual-vue"
 symbol: useVirtualLayout
 kind: hook
@@ -14,7 +14,8 @@ generated: true
 function useVirtualLayout(model): VirtualVueLayoutBinding;
 ```
 
-Connect Vue template refs to the framework-neutral layout adapter.
+Connect Vue template refs for the three
+[layout elements](/virtual/guides/layout-elements).
 
 ## Parameters
 

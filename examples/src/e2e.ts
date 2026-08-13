@@ -115,11 +115,19 @@ export const getVerticalScrollbarX = (element: Locator) =>
 export const waitForExampleHydration = async (page: Page) => {
     await expect(page.locator("astro-island").first()).toBeAttached();
     await expect.poll(() => page.locator("astro-island[ssr]").count()).toBe(0);
+    await page.evaluate(
+        () =>
+            new Promise<void>(resolve => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => resolve());
+                });
+            })
+    );
 };
 
 export const requireNativeScrollbarPointer = (browserName: string) => {
     test.skip(
-        browserName !== "chromium",
-        "Playwright exposes pointer-draggable classic scrollbars only in Chromium"
+        browserName !== "chromium" || test.info().project.name !== "chromium",
+        "Playwright exposes pointer-draggable classic scrollbars only in desktop Chromium"
     );
 };

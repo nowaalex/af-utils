@@ -6,6 +6,7 @@ import {
     virtualItem
 } from "@af-utils/virtual-lit";
 import { html, LitElement, unsafeCSS } from "lit";
+import { ref } from "lit/directives/ref.js";
 import css from "./style.module.css";
 import stylesheet from "./style.module.css?inline";
 
@@ -39,15 +40,15 @@ export default class PrimitiveList extends LitElement {
     protected render() {
         const model = this._virtual.model;
         return html`<div
-            ${this._layout.scrollerRef}
+            ${ref(this._layout.scrollerRef)}
             data-layout
             style="width:100%;height:100%"
             class=${css.list}
             role="list"
             aria-label="Simple primitives list"
         >
-            <div ${this._layout.sizeRef} data-layout>
-                <div ${this._layout.itemsRef} data-layout>
+            <div ${ref(this._layout.sizeRef)} data-layout>
+                <div ${ref(this._layout.itemsRef)} data-layout>
                     ${mapVirtualRange(model, index => html`<div ${virtualItem(model, index)} class=${css.item} style="border-top:1px solid #ccc;padding:0.5em" role="listitem" aria-posinset=${index + 1} aria-setsize=${model.itemCount}>row ${index}</div>`)}
                 </div>
             </div>

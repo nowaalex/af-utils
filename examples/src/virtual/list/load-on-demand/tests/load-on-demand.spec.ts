@@ -19,13 +19,36 @@ const getItemCount = (items: Locator) =>
     );
 
 await describeExample("virtual/list/load-on-demand", example => {
-    test("loads one page after reaching the end", async ({ page }) => {
+    test("loads one page after reaching the end", async ({
+        page
+    }, testInfo) => {
         await page.goto(example.previewPath);
         await waitForExampleHydration(page);
 
         const list = page.getByRole("list", { name: "Load on demand list" });
         const items = page.getByRole("listitem");
         await expect(items.first()).toBeVisible();
+
+        if (testInfo.project.name.startsWith("mobile-")) {
+            let previousScrollHeight = -1;
+            let stableGeometrySamples = 0;
+            await expect
+                .poll(
+                    async () => {
+                        const scrollHeight = await list.evaluate(
+                            element => element.scrollHeight
+                        );
+                        stableGeometrySamples =
+                            scrollHeight === previousScrollHeight
+                                ? stableGeometrySamples + 1
+                                : 0;
+                        previousScrollHeight = scrollHeight;
+                        return stableGeometrySamples;
+                    },
+                    { intervals: [50, 100, 150] }
+                )
+                .toBeGreaterThanOrEqual(2);
+        }
 
         const initialItemCount = await getItemCount(items);
         expect(initialItemCount).toBeGreaterThan(0);

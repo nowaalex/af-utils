@@ -1,16 +1,16 @@
 ---
-title: "Interface: VirtualPreactLayoutBinding"
+title: "Interface: VirtualReactLayoutBinding"
 description: DOM refs produced by useVirtualLayout.
-package: "@af-utils/virtual-preact"
-symbol: VirtualPreactLayoutBinding
+package: "@af-utils/virtual-react"
+symbol: VirtualReactLayoutBinding
 kind: interface
-referencePath: /virtual/reference/virtual-preact/interfaces/VirtualPreactLayoutBinding
+referencePath: /virtual/reference/virtual-react/interfaces/VirtualReactLayoutBinding
 generated: true
 ---
 
-# VirtualPreactLayoutBinding
+# VirtualReactLayoutBinding
 
-DOM refs produced by [useVirtualLayout](/virtual/reference/virtual-preact/functions/useVirtualLayout).
+DOM refs produced by [useVirtualLayout](/virtual/reference/virtual-react/functions/useVirtualLayout).
 
 ## Properties
 

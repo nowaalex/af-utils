@@ -1,6 +1,6 @@
 ---
 title: "Interface: VirtualVueLayoutBinding"
-description: Vue refs for virtual layout elements.
+description: Vue refs for the three elements explained in the layout-elements guide.
 package: "@af-utils/virtual-vue"
 symbol: VirtualVueLayoutBinding
 kind: interface
@@ -10,7 +10,8 @@ generated: true
 
 # VirtualVueLayoutBinding
 
-Vue refs for virtual layout elements.
+Vue refs for the three elements explained in the
+[layout-elements guide](/virtual/guides/layout-elements).
 
 ## Properties
 
@@ -20,6 +21,8 @@ Vue refs for virtual layout elements.
 itemsRef: VirtualVueElementRef;
 ```
 
+Attach the [rendered-items element](/virtual/guides/layout-elements#items-ref).
+
 ---
 
 ### scrollerRef
@@ -28,6 +31,8 @@ itemsRef: VirtualVueElementRef;
 scrollerRef: VirtualVueElementRef;
 ```
 
+Attach the [scroller element](/virtual/guides/layout-elements#scroller-ref).
+
 ---
 
 ### sizeRef
@@ -35,3 +40,5 @@ scrollerRef: VirtualVueElementRef;
 ```ts
 sizeRef: VirtualVueElementRef;
 ```
+
+Attach the [native size element](/virtual/guides/layout-elements#size-ref).

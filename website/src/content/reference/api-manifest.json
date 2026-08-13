@@ -218,11 +218,11 @@
         },
         {
             "description": "Render a virtual Preact list with model-owned DOM geometry.",
-            "kind": "function",
+            "kind": "component",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/functions/List",
             "symbol": "List",
-            "title": "Function: List()"
+            "title": "Component: List"
         },
         {
             "description": "Synchronize a window or external scroller with a Preact-owned model.",
@@ -313,12 +313,20 @@
             "title": "Interface: ListProps"
         },
         {
+            "description": "DOM refs produced by useVirtualLayout.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-react",
+            "path": "/virtual/reference/virtual-react/interfaces/VirtualReactLayoutBinding",
+            "symbol": "VirtualReactLayoutBinding",
+            "title": "Interface: VirtualReactLayoutBinding"
+        },
+        {
             "description": "React component. Small abstraction, which in 90% cases allows to avoid hook boilerplate.",
-            "kind": "function",
+            "kind": "component",
             "package": "@af-utils/virtual-react",
             "path": "/virtual/reference/virtual-react/functions/List",
             "symbol": "List",
-            "title": "Function: List()"
+            "title": "Component: List"
         },
         {
             "description": "React hook. Synchronizes scroller with model.",
@@ -482,11 +490,11 @@
         },
         {
             "description": "Render a virtual Solid list with model-owned DOM geometry.",
-            "kind": "function",
+            "kind": "component",
             "package": "@af-utils/virtual-solid",
             "path": "/virtual/reference/virtual-solid/functions/List",
             "symbol": "List",
-            "title": "Function: List()"
+            "title": "Component: List"
         },
         {
             "description": "Svelte stores and actions used to connect to VirtualScroller.",
@@ -513,7 +521,7 @@
             "title": "Interface: VirtualSvelteItemBinding"
         },
         {
-            "description": "Svelte actions for virtual layout elements.",
+            "description": "Svelte actions for the three elements explained in the layout-elements guide.",
             "kind": "interface",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteLayoutBinding",
@@ -601,7 +609,7 @@
             "title": "Function: createVirtualLayout()"
         },
         {
-            "description": "Create the range store and layout actions for a common virtual list.",
+            "description": "Create the range store and actions for the three layout elements.",
             "kind": "function",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/functions/createVirtualList",
@@ -633,7 +641,7 @@
             "title": "Module: @af-utils/virtual-vue"
         },
         {
-            "description": "Vue refs for virtual layout elements.",
+            "description": "Vue refs for the three elements explained in the layout-elements guide.",
             "kind": "interface",
             "package": "@af-utils/virtual-vue",
             "path": "/virtual/reference/virtual-vue/interfaces/VirtualVueLayoutBinding",
@@ -689,7 +697,7 @@
             "title": "Hook: useVirtualItemRef()"
         },
         {
-            "description": "Connect Vue template refs to the framework-neutral layout adapter.",
+            "description": "Connect Vue template refs for the three layout elements.",
             "kind": "hook",
             "package": "@af-utils/virtual-vue",
             "path": "/virtual/reference/virtual-vue/functions/useVirtualLayout",

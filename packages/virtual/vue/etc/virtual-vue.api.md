@@ -70,11 +70,8 @@ export type VirtualVueItemBinding = readonly [VirtualScroller, number];
 
 // @public
 export interface VirtualVueLayoutBinding {
-    // (undocumented)
     itemsRef: VirtualVueElementRef;
-    // (undocumented)
     scrollerRef: VirtualVueElementRef;
-    // (undocumented)
     sizeRef: VirtualVueElementRef;
 }
 

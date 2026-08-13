@@ -7,6 +7,7 @@ import type { ListItemProps, ListProps } from "../../types";
 /**
  * Render a virtual Solid list with model-owned DOM geometry.
  *
+ * @group Components
  * @public
  */
 const List = <Data = unknown,>(props: ListProps<Data>) => {

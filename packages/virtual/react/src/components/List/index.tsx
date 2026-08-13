@@ -27,9 +27,11 @@ const VirtualItems = <Data,>({
 };
 
 /**
- * @public
  * React component.
  * Small abstraction, which in 90% cases allows to avoid hook boilerplate.
+ *
+ * @group Components
+ * @public
  */
 const List = <Data = unknown, C extends ElementType = "div">(
     props: ListProps<C, Data> & Omit<ComponentProps<C>, "children" | "ref">

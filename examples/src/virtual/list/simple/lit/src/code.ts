@@ -6,6 +6,7 @@ import {
     virtualItem
 } from "@af-utils/virtual-lit";
 import { html, LitElement } from "lit";
+import { ref } from "lit/directives/ref.js";
 
 export default class SimpleList extends LitElement {
     private readonly _virtual = new VirtualController(this, () => ({
@@ -35,14 +36,14 @@ export default class SimpleList extends LitElement {
     protected render() {
         const model = this._virtual.model;
         return html`<div
-            ${this._layout.scrollerRef}
+            ${ref(this._layout.scrollerRef)}
             data-layout
             style="width:100%;height:100%"
             role="list"
             aria-label="Simple virtual list"
         >
-            <div ${this._layout.sizeRef} data-layout>
-                <div ${this._layout.itemsRef} data-layout>
+            <div ${ref(this._layout.sizeRef)} data-layout>
+                <div ${ref(this._layout.itemsRef)} data-layout>
                     ${mapVirtualRange(model, index => html`<div ${virtualItem(model, index)} role="listitem" aria-posinset=${index + 1} aria-setsize=${model.itemCount} style="border-top:2px solid #ccc;padding:0.6em">row ${index}</div>`)}
                 </div>
             </div>

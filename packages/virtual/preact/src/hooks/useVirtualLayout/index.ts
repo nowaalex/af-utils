@@ -11,7 +11,8 @@ import { useIsomorphicLayoutEffect } from "../useVirtual";
 /**
  * Connect stable Preact refs to the framework-neutral virtual layout adapter.
  *
- * @returns Refs for all virtual layout elements.
+ * @returns The three refs explained in the
+ * [layout-elements guide](/virtual/guides/layout-elements).
  * @public
  */
 const useVirtualLayout = (

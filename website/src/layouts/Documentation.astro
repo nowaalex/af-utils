@@ -37,20 +37,16 @@ const flattenedItems = flattenMenu(items);
             class="lg:w-68 lg:min-w-68 lg:max-w-68"
         />
         <div
-            class="documentation-scroll min-w-0 flex flex-auto flex-col gap-10 overflow-auto bg-gradient-to-br from-white via-white to-slate-50 px-5 py-6 sm:px-8 lg:px-10"
+            class="documentation-scroll min-w-0 flex flex-auto flex-col gap-8 overflow-auto bg-gradient-to-br from-white via-white to-slate-50 p-4"
         >
             <main
-                class:list={[
-                    "prose mx-auto w-full flex-auto",
-                    contentClass,
-                    mainClass
-                ]}
+                class:list={["prose w-full flex-auto", contentClass, mainClass]}
             >
                 <slot />
             </main>
             <nav
                 class:list={[
-                    "mx-auto flex w-full flex-none items-center justify-between gap-4 font-medium",
+                    "flex w-full flex-none items-center justify-between gap-4 font-medium",
                     contentClass
                 ]}
             >

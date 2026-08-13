@@ -201,17 +201,6 @@
                 ]
             },
             {
-                "title": "Functions",
-                "children": [
-                    {
-                        "title": "List",
-                        "kind": 64,
-                        "path": "virtual-preact/functions/List",
-                        "isDeprecated": false
-                    }
-                ]
-            },
-            {
                 "title": "Hooks",
                 "children": [
                     {
@@ -263,6 +252,17 @@
                         "isDeprecated": false
                     }
                 ]
+            },
+            {
+                "title": "Components",
+                "children": [
+                    {
+                        "title": "List",
+                        "kind": 64,
+                        "path": "virtual-preact/functions/List",
+                        "isDeprecated": false
+                    }
+                ]
             }
         ],
         "path": "virtual-preact/index"
@@ -285,16 +285,11 @@
                         "kind": 256,
                         "path": "virtual-react/interfaces/ListProps",
                         "isDeprecated": false
-                    }
-                ]
-            },
-            {
-                "title": "Functions",
-                "children": [
+                    },
                     {
-                        "title": "List",
-                        "kind": 64,
-                        "path": "virtual-react/functions/List",
+                        "title": "VirtualReactLayoutBinding",
+                        "kind": 256,
+                        "path": "virtual-react/interfaces/VirtualReactLayoutBinding",
                         "isDeprecated": false
                     }
                 ]
@@ -348,6 +343,17 @@
                         "title": "useVirtualSnapshot",
                         "kind": 64,
                         "path": "virtual-react/functions/useVirtualSnapshot",
+                        "isDeprecated": false
+                    }
+                ]
+            },
+            {
+                "title": "Components",
+                "children": [
+                    {
+                        "title": "List",
+                        "kind": 64,
+                        "path": "virtual-react/functions/List",
                         "isDeprecated": false
                     }
                 ]
@@ -437,7 +443,12 @@
                         "kind": 64,
                         "path": "virtual-solid/functions/createVirtualSnapshot",
                         "isDeprecated": false
-                    },
+                    }
+                ]
+            },
+            {
+                "title": "Components",
+                "children": [
                     {
                         "title": "List",
                         "kind": 64,

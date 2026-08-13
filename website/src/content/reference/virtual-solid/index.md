@@ -31,4 +31,7 @@ Solid components and primitives used to connect to `VirtualScroller`.
 - [createVirtualItemRef](/virtual/reference/virtual-solid/functions/createVirtualItemRef)
 - [createVirtualLayout](/virtual/reference/virtual-solid/functions/createVirtualLayout)
 - [createVirtualSnapshot](/virtual/reference/virtual-solid/functions/createVirtualSnapshot)
+
+## Components
+
 - [List](/virtual/reference/virtual-solid/functions/List)

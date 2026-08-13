@@ -74,22 +74,37 @@ const splitPascalCase = value => value.replace(/([a-z0-9])([A-Z])/gu, "$1 $2");
 const isHook = model =>
     model.kindOf?.(ReflectionKind.Function) && /^use[A-Z\d]/u.test(model.name);
 
+const isComponent = model =>
+    model.kindOf?.(ReflectionKind.Function) &&
+    getComment(model)?.blockTags.some(
+        tag =>
+            tag.tag === "@group" &&
+            Comment.combineDisplayParts(tag.content).trim() === "Components"
+    );
+
 const getKind = model =>
     model.isDocument()
         ? "document"
-        : isHook(model)
-          ? "hook"
-          : (ReflectionKind[model.kind] ?? "reflection").toLowerCase();
+        : isComponent(model)
+          ? "component"
+          : isHook(model)
+            ? "hook"
+            : (ReflectionKind[model.kind] ?? "reflection").toLowerCase();
 
 const getPageTitle = model => {
     if (model.isProject()) return "Documentation";
 
     const kind = model.isDocument()
         ? "Document"
-        : isHook(model)
-          ? "Hook"
-          : splitPascalCase(ReflectionKind[model.kind] ?? "Reflection");
-    const suffix = model.kindOf?.(ReflectionKind.Function) ? "()" : "";
+        : isComponent(model)
+          ? "Component"
+          : isHook(model)
+            ? "Hook"
+            : splitPascalCase(ReflectionKind[model.kind] ?? "Reflection");
+    const suffix =
+        model.kindOf?.(ReflectionKind.Function) && !isComponent(model)
+            ? "()"
+            : "";
     return `${kind}: ${model.name}${suffix}`;
 };
 
@@ -131,6 +146,9 @@ const rewritePackageHeading = (contents, model) => {
     );
     return contents.replace(/^# .+$/mu, `# ${displayName}`);
 };
+
+const rewriteComponentHeading = (contents, model) =>
+    isComponent(model) ? contents.replace(/^# (.+)\(\)$/mu, "# $1") : contents;
 
 const normalizeNavigationPaths = items => {
     for (const item of items ?? []) {
@@ -209,8 +227,13 @@ export function load(app) {
     });
 
     app.renderer.on(MarkdownPageEvent.END, page => {
-        page.contents = rewritePackageHeading(
-            groupHooksInContents(rewriteInternalMarkdownLinks(page.contents)),
+        page.contents = rewriteComponentHeading(
+            rewritePackageHeading(
+                groupHooksInContents(
+                    rewriteInternalMarkdownLinks(page.contents)
+                ),
+                page.model
+            ),
             page.model
         );
     });

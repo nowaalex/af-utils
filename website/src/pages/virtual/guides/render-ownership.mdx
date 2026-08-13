@@ -84,9 +84,9 @@ same lifecycle boundary where the consumer is created.
     VirtualScrollerLayout
 </DocLink>
 owns scroll size, rendered range extent, and range transform after DOM
-attachment. Framework styles provide the initial SSR/hydration values and
-non-virtual presentation, but should not continuously reapply those geometry
-properties.
+attachment. Frameworks reconcile the children, while applications provide
+non-virtual presentation without reapplying geometry properties. See how the
+[three layout elements fit together](/virtual/guides/layout-elements).
 
 This boundary is what allows measurements to update the browser without a
 React render or a Solid computation.

@@ -1,6 +1,6 @@
 ---
 title: "Interface: VirtualSvelteLayoutBinding"
-description: Svelte actions for virtual layout elements.
+description: Svelte actions for the three elements explained in the layout-elements guide.
 package: "@af-utils/virtual-svelte"
 symbol: VirtualSvelteLayoutBinding
 kind: interface
@@ -10,7 +10,8 @@ generated: true
 
 # VirtualSvelteLayoutBinding
 
-Svelte actions for virtual layout elements.
+Svelte actions for the three elements explained in the
+[layout-elements guide](/virtual/guides/layout-elements).
 
 ## Extended by
 
@@ -24,7 +25,7 @@ Svelte actions for virtual layout elements.
 items: Action<HTMLElement>;
 ```
 
-Action attaching the absolutely positioned rendered-range container.
+Action attaching the [rendered-items element](/virtual/guides/layout-elements#items-ref).
 
 ---
 
@@ -34,7 +35,7 @@ Action attaching the absolutely positioned rendered-range container.
 scroller: Action<HTMLElement>;
 ```
 
-Action attaching the native element scroller.
+Action attaching the [scroller element](/virtual/guides/layout-elements#scroller-ref).
 
 ---
 
@@ -44,4 +45,4 @@ Action attaching the native element scroller.
 size: Action<HTMLElement>;
 ```
 
-Action attaching the element contributing native scroll extent.
+Action attaching the [native size element](/virtual/guides/layout-elements#size-ref).

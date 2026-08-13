@@ -62,7 +62,7 @@
     onMount(() => model.scrollToIndex(sizes.length - 1));
 </script>
 
-<div use:scroller class={css.list} role="list">
+<div use:scroller class={css.list} role="list" tabindex="-1">
     <form
         use:virtualStickyHeader={model}
         class={`${css.form} ${css.top0}`}

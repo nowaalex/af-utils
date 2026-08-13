@@ -41,7 +41,9 @@ interface ItemsGeometry {
  * @remarks
  * It keeps the scroll-size element and rendered-items element synchronized
  * without scheduling framework renders. Framework adapters expose it through
- * their native ref, action, or controller primitives.
+ * their native ref, action, or controller primitives. See the
+ * [layout-elements guide](/virtual/guides/layout-elements) for the required
+ * nesting and the role of each element.
  */
 class VirtualScrollerLayout {
     /** Model whose public layout snapshots are reflected into DOM styles. */
@@ -136,7 +138,7 @@ class VirtualScrollerLayout {
         );
     }
 
-    /** Attach or detach the scroll container and apply its required styles. */
+    /** Attach or detach the [scroller element](/virtual/guides/layout-elements#scroller-ref). */
     setScrollerElement(element: HTMLElement | null) {
         if (element) Object.assign(element.style, SCROLLER_ELEMENT_STYLE);
 
@@ -172,7 +174,7 @@ class VirtualScrollerLayout {
         }
     }
 
-    /** Connect or disconnect the element that provides native scroll size. */
+    /** Connect or disconnect the [native size element](/virtual/guides/layout-elements#size-ref). */
     setSizeElement(element: HTMLElement | null) {
         const previous = this._sizeElement;
         const changed = previous !== element;
@@ -191,7 +193,7 @@ class VirtualScrollerLayout {
         }
     }
 
-    /** Connect or disconnect the element containing currently rendered items. */
+    /** Connect or disconnect the [rendered-items element](/virtual/guides/layout-elements#items-ref). */
     setItemsElement(element: HTMLElement | null) {
         this._itemsElement = element;
 

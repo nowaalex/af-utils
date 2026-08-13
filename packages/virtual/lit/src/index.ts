@@ -10,7 +10,7 @@ import {
 } from "@af-utils/virtual-core";
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 import { Directive, directive } from "lit/directive.js";
-import { ref, type RefOrCallback } from "lit/directives/ref.js";
+import { createRef, ref } from "lit/directives/ref.js";
 
 type RuntimeParamsSnapshot = Readonly<
     Required<Pick<VirtualScrollerRuntimeParams, "itemCount">> &
@@ -120,35 +120,63 @@ export class VirtualSnapshotController implements ReactiveController {
     }
 }
 
-/** Lit refs backed by the framework-neutral layout adapter. @public */
+/**
+ * Lit refs backed by the framework-neutral layout adapter.
+ *
+ * See the [layout-elements guide](/virtual/guides/layout-elements) for their
+ * nesting and responsibilities.
+ *
+ * @public
+ */
 export class VirtualLayoutController implements ReactiveController {
-    readonly scrollerRef: RefOrCallback;
-    readonly sizeRef: RefOrCallback;
-    readonly itemsRef: RefOrCallback;
+    /** Attach the [scroller element](/virtual/guides/layout-elements#scroller-ref). */
+    readonly scrollerRef = createRef<HTMLElement>();
+    /** Attach the [native size element](/virtual/guides/layout-elements#size-ref). */
+    readonly sizeRef = createRef<HTMLElement>();
+    /** Attach the [rendered-items element](/virtual/guides/layout-elements#items-ref). */
+    readonly itemsRef = createRef<HTMLElement>();
     private readonly _layout: VirtualScrollerLayout;
+    private _scrollerElement: HTMLElement | null = null;
+    private _sizeElement: HTMLElement | null = null;
+    private _itemsElement: HTMLElement | null = null;
     private _connected = false;
 
     /** Create layout bindings for a Lit host. */
     constructor(host: ReactiveControllerHost, model: VirtualScroller) {
         this._layout = new VirtualScrollerLayout(model);
-        this.scrollerRef = element =>
-            this._layout.setScrollerElement(element as HTMLElement | null);
-        this.sizeRef = element =>
-            this._layout.setSizeElement(element as HTMLElement | null);
-        this.itemsRef = element =>
-            this._layout.setItemsElement(element as HTMLElement | null);
         host.addController(this);
     }
 
-    /** Explicitly reconnect layout elements after an external hydration pass. */
+    /** Attach the elements collected by Lit's ref directives after rendering. */
+    hostUpdated() {
+        this.connect(
+            this.scrollerRef.value ?? null,
+            this.sizeRef.value ?? null,
+            this.itemsRef.value ?? null
+        );
+    }
+
+    /**
+     * Explicitly reconnect the three
+     * [layout elements](/virtual/guides/layout-elements).
+     */
     connect(
-        scroller: HTMLElement,
-        sizeElement: HTMLElement,
-        itemsElement: HTMLElement
+        scroller: HTMLElement | null,
+        sizeElement: HTMLElement | null,
+        itemsElement: HTMLElement | null
     ) {
-        this._layout.setScrollerElement(scroller);
-        this._layout.setSizeElement(sizeElement);
-        this._layout.setItemsElement(itemsElement);
+        if (scroller !== this._scrollerElement) {
+            this._scrollerElement = scroller;
+            this._layout.setScrollerElement(scroller);
+        }
+        if (sizeElement !== this._sizeElement) {
+            this._sizeElement = sizeElement;
+            this._layout.setSizeElement(sizeElement);
+        }
+        if (itemsElement !== this._itemsElement) {
+            this._itemsElement = itemsElement;
+            this._layout.setItemsElement(itemsElement);
+        }
     }
 
     /** Mark the layout controller as attached. */
@@ -163,7 +191,12 @@ export class VirtualLayoutController implements ReactiveController {
         // callbacks need not run again. Delaying disposal preserves the
         // bindings when the host reconnects before the next frame.
         requestAnimationFrame(() => {
-            if (!this._connected) this._layout.dispose();
+            if (!this._connected) {
+                this._layout.dispose();
+                this._scrollerElement = null;
+                this._sizeElement = null;
+                this._itemsElement = null;
+            }
         });
     }
 }

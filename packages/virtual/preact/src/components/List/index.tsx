@@ -27,7 +27,12 @@ const VirtualItems = <Data,>({
     ));
 };
 
-/** Render a virtual Preact list with model-owned DOM geometry. @public */
+/**
+ * Render a virtual Preact list with model-owned DOM geometry.
+ *
+ * @group Components
+ * @public
+ */
 const List = <Data = unknown,>(props: ListProps<Data>) => {
     const {
         model,

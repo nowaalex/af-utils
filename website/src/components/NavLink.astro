@@ -13,7 +13,9 @@ const {
 
 const isActive = exact
     ? currentPath === compareHref
-    : typeof compareHref === "string" && currentPath.startsWith(compareHref);
+    : typeof compareHref === "string" &&
+      (currentPath === compareHref ||
+          currentPath.startsWith(`${compareHref}/`));
 ---
 
 <a

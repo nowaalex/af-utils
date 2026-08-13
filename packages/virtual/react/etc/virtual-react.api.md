@@ -59,16 +59,19 @@ export const useVirtualGridItemRef: (rows: VirtualScroller, rowIndex: number, co
 export const useVirtualItemRef: (model: VirtualScroller, index: number) => RefCallback<HTMLElement>;
 
 // @public
-export const useVirtualLayout: (model: VirtualScroller) => {
-    scrollerRef: RefCallback<HTMLElement>;
-    sizeRef: RefCallback<HTMLElement>;
-    itemsRef: RefCallback<HTMLElement>;
-};
+export const useVirtualLayout: (model: VirtualScroller) => VirtualReactLayoutBinding;
 
 // @public
 export const useVirtualModel: (params: VirtualScrollerInitialParams) => VirtualScroller;
 
 // @public
 export const useVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => number;
+
+// @public
+export interface VirtualReactLayoutBinding {
+    itemsRef: RefCallback<HTMLElement>;
+    scrollerRef: RefCallback<HTMLElement>;
+    sizeRef: RefCallback<HTMLElement>;
+}
 
 ```

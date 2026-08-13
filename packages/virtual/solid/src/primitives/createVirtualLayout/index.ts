@@ -9,7 +9,8 @@ import type { VirtualLayoutBinding } from "../../types";
  * Connect Solid refs to the framework-neutral virtual DOM layout adapter.
  *
  * @public
- * @returns Refs for the scroller, scroll-size, and rendered-items elements.
+ * @returns The three refs explained in the
+ * [layout-elements guide](/virtual/guides/layout-elements).
  */
 const createVirtualLayout = (model: VirtualScroller): VirtualLayoutBinding => {
     const layout = new VirtualScrollerLayout(model);

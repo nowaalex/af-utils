@@ -26,4 +26,5 @@ Connect Solid refs to the framework-neutral virtual DOM layout adapter.
 
 [`VirtualLayoutBinding`](/virtual/reference/virtual-solid/interfaces/VirtualLayoutBinding)
 
-Refs for the scroller, scroll-size, and rendered-items elements.
+The three refs explained in the
+[layout-elements guide](/virtual/guides/layout-elements).

@@ -16,10 +16,7 @@ React components and hooks used to connect to `VirtualScroller`.
 
 - [ListItemProps](/virtual/reference/virtual-react/interfaces/ListItemProps)
 - [ListProps](/virtual/reference/virtual-react/interfaces/ListProps)
-
-## Functions
-
-- [List](/virtual/reference/virtual-react/functions/List)
+- [VirtualReactLayoutBinding](/virtual/reference/virtual-react/interfaces/VirtualReactLayoutBinding)
 
 ## Hooks
 
@@ -31,3 +28,7 @@ React components and hooks used to connect to `VirtualScroller`.
 - [useVirtualLayout](/virtual/reference/virtual-react/functions/useVirtualLayout)
 - [useVirtualModel](/virtual/reference/virtual-react/functions/useVirtualModel)
 - [useVirtualSnapshot](/virtual/reference/virtual-react/functions/useVirtualSnapshot)
+
+## Components
+
+- [List](/virtual/reference/virtual-react/functions/List)

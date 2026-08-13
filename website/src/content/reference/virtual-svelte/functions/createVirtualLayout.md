@@ -29,3 +29,5 @@ Connect Svelte actions to the framework-neutral virtual layout adapter.
 ## Remarks
 
 Call this helper during Svelte component initialization.
+See the [layout-elements guide](/virtual/guides/layout-elements) for the
+required nesting.
