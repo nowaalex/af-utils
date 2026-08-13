@@ -3,8 +3,7 @@ import {
     VirtualController,
     VirtualLayoutController,
     VirtualSnapshotController,
-    virtualItem,
-    virtualStyle
+    virtualItem
 } from "@af-utils/virtual-lit";
 import { html, LitElement, unsafeCSS } from "lit";
 import css from "./style.module.css";
@@ -23,8 +22,7 @@ export default class DifferentScrollElement extends LitElement {
     );
     private readonly _layout = new VirtualLayoutController(
         this,
-        this._virtual.model,
-        { width: "100%", height: "100%" }
+        this._virtual.model
     );
 
     connectedCallback() {
@@ -43,24 +41,16 @@ export default class DifferentScrollElement extends LitElement {
         return html`<div
             ${this._layout.scrollerRef}
             data-layout
+            style="width:100%;height:100%"
             class=${css.list}
-            style=${virtualStyle(this._layout.scrollerStyle)}
             role="list"
         >
             <div class=${css.offset1}>Some offset</div>
             <div>
                 <div class=${css.offset2}>Some offset 2</div>
                 <div>
-                    <div
-                        ${this._layout.sizeRef}
-                        data-layout
-                        style=${virtualStyle(this._layout.sizeStyle)}
-                    >
-                        <div
-                            ${this._layout.itemsRef}
-                            data-layout
-                            style=${virtualStyle(this._layout.itemsStyle)}
-                        >
+                    <div ${this._layout.sizeRef} data-layout>
+                        <div ${this._layout.itemsRef} data-layout>
                             ${mapVirtualRange(
                                 model,
                                 index => html`<div

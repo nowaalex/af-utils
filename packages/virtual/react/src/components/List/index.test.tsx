@@ -3,7 +3,6 @@
 import { VirtualScroller } from "@af-utils/virtual-core";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import type { ListItemProps } from "../../types";
 import List from ".";
@@ -21,7 +20,7 @@ globalThis.ResizeObserver = NoopResizeObserver;
 
 const Item = ({ index }: ListItemProps) => <div>Item {index}</div>;
 
-describe("List hydration", () => {
+describe("List layout", () => {
     let container: HTMLDivElement;
 
     beforeEach(() => {
@@ -31,31 +30,30 @@ describe("List hydration", () => {
 
     afterEach(() => container.remove());
 
-    test("keeps server-rendered scrolling inert while preserving geometry", () => {
-        const model = new VirtualScroller({
-            estimatedItemSize: 40,
-            estimatedWidgetSize: 200,
-            itemCount: 10
-        });
-
-        container.innerHTML = renderToStaticMarkup(
-            <List model={model}>{Item}</List>
-        );
-        const scroller = container.firstElementChild as HTMLElement;
-        const sizeElement = scroller.children[0] as HTMLElement;
-
-        expect(scroller.style.overflow).toBe("hidden");
-        expect(sizeElement.style.height).toBe("400px");
-    });
-
-    test("enables scrolling only after the model is attached", () => {
+    test("lets core apply the complete layout after attachment", () => {
         const model = new VirtualScroller({ itemCount: 10 });
         const root = createRoot(container);
 
-        act(() => root.render(<List model={model}>{Item}</List>));
+        act(() =>
+            root.render(
+                <List
+                    model={model}
+                    style={{ width: 320, backgroundColor: "red" }}
+                >
+                    {Item}
+                </List>
+            )
+        );
 
         const scroller = container.firstElementChild as HTMLElement;
+        const sizeElement = scroller.firstElementChild as HTMLElement;
+        const itemsElement = sizeElement.firstElementChild as HTMLElement;
         expect(scroller.style.overflow).toBe("auto");
+        expect(scroller.style.contain).toBe("strict");
+        expect(scroller.style.width).toBe("320px");
+        expect(scroller.style.backgroundColor).toBe("red");
+        expect(sizeElement.style.height).toBe("400px");
+        expect(itemsElement.style.position).toBe("absolute");
 
         act(() => root.unmount());
     });

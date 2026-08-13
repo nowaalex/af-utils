@@ -36,7 +36,10 @@ export const HOT_PATHS = Object.freeze({
         "StickyElements",
         "_applyResizeEntries"
     ),
-    layoutUpdateItems: hotPath("VirtualScrollerLayout", "_updateItems")
+    layoutApplyItemsGeometry: hotPath(
+        "VirtualScrollerLayout",
+        "_applyItemsGeometry"
+    )
 });
 
 export const PRIVATE_FIELD_HOT_PATHS = Object.freeze({

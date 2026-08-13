@@ -20,10 +20,10 @@ Solid components and primitives used to connect to `VirtualScroller`.
 
 ## Interfaces
 
-| Interface                                                                                | Description                                                           |
-| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| [ListItemProps](/virtual/reference/virtual-solid/interfaces/ListItemProps)               | Props passed to one Solid virtual-list item component.                |
-| [VirtualLayoutBinding](/virtual/reference/virtual-solid/interfaces/VirtualLayoutBinding) | DOM refs and hydration-safe styles produced by `createVirtualLayout`. |
+| Interface                                                                                | Description                                            |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| [ListItemProps](/virtual/reference/virtual-solid/interfaces/ListItemProps)               | Props passed to one Solid virtual-list item component. |
+| [VirtualLayoutBinding](/virtual/reference/virtual-solid/interfaces/VirtualLayoutBinding) | DOM refs produced by `createVirtualLayout`.            |
 
 ## Type Aliases
 
@@ -32,7 +32,7 @@ Solid components and primitives used to connect to `VirtualScroller`.
 | [ListProps](/virtual/reference/virtual-solid/type-aliases/ListProps)                 | Props accepted by the Solid [List](/virtual/reference/virtual-solid/functions/List) component. |
 | [MaybeAccessor](/virtual/reference/virtual-solid/type-aliases/MaybeAccessor)         | A static value or a reactive Solid accessor returning that value.                              |
 | [VirtualElementRef](/virtual/reference/virtual-solid/type-aliases/VirtualElementRef) | Callback suitable for a Solid HTMLElement `ref` attribute.                                     |
-| [VirtualSolidStyle](/virtual/reference/virtual-solid/type-aliases/VirtualSolidStyle) | Style declarations accepted by the Solid virtual layout adapter.                               |
+| [VirtualSolidStyle](/virtual/reference/virtual-solid/type-aliases/VirtualSolidStyle) | Style declarations accepted by the Solid virtual list.                                         |
 
 ## Functions
 

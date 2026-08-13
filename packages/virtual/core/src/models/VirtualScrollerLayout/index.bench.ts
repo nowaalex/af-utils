@@ -11,10 +11,10 @@ const model = new VirtualScroller({
 });
 const layout = new VirtualScrollerLayout(model) as unknown as {
     _itemsElement: { style: Record<string, string> };
-    _updateItems(): void;
+    _applyItemsGeometry(): void;
 };
 layout._itemsElement = { style: {} };
 
 bench("synchronize rendered range styles", () => {
-    layout._updateItems();
+    layout._applyItemsGeometry();
 });

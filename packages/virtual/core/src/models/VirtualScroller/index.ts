@@ -196,7 +196,15 @@ class VirtualScroller {
     /** Prefix-size index containing estimates and measured item sizes. */
     private _sizeIndex = new SizeIndex(DEFAULT_ESTIMATED_ITEM_SIZE);
 
-    /** @readonly {@inheritDoc VirtualScrollerInitialParams.horizontal} */
+    /**
+     * @readonly Current scroll container orientation; see
+     * {@link VirtualScrollerInitialParams.horizontal}.
+     *
+     * @remarks
+     * This value is exposed as a directly readable runtime field and is
+     * therefore technically assignable. Consumers must treat it as read-only:
+     * assigning it is unsupported and may break model invariants.
+     */
     horizontal = false;
 
     /** @readonly Current number of items in the model. */
@@ -398,16 +406,26 @@ class VirtualScroller {
     /**
      * @readonly
      * Items range start with {@link VirtualScrollerRuntimeParams.overscanCount | overscanCount} included
+     *
      * @remarks
      * {@link VirtualScroller.from | from} \<= N \< {@link VirtualScroller.to | to}
+     *
+     * This value is exposed as a directly readable runtime field and is
+     * therefore technically assignable. Consumers must treat it as read-only:
+     * assigning it is unsupported and may break model invariants.
      */
     from = 0;
 
     /**
      * @readonly
      * Items range end with {@link VirtualScrollerRuntimeParams.overscanCount | overscanCount} included
+     *
      * @remarks
      * {@link VirtualScroller.from | from} \<= N \< {@link VirtualScroller.to | to}
+     *
+     * This value is exposed as a directly readable runtime field and is
+     * therefore technically assignable. Consumers must treat it as read-only:
+     * assigning it is unsupported and may break model invariants.
      */
     to = 0;
 

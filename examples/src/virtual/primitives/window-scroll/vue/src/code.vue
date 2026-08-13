@@ -26,8 +26,8 @@ onUnmounted(() => model.setScroller(null));
     <div>
         <div :class="css.offset2">Some offset 2</div>
         <div>
-            <div :ref="layout.sizeRef" :style="layout.sizeStyle">
-                <div :ref="layout.itemsRef" :style="layout.itemsStyle">
+            <div :ref="layout.sizeRef">
+                <div :ref="layout.itemsRef">
                     <div
                         v-for="index in indexes"
                         :key="index"

@@ -17,21 +17,19 @@ generated: true
 # Function: createVirtualLayout()
 
 ```ts
-function createVirtualLayout(model, scrollerStyle?): VirtualLayoutBinding;
+function createVirtualLayout(model): VirtualLayoutBinding;
 ```
 
 Connect Solid refs to the framework-neutral virtual DOM layout adapter.
 
 ## Parameters
 
-| Parameter       | Type                                                                                   |
-| --------------- | -------------------------------------------------------------------------------------- |
-| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)           |
-| `scrollerStyle` | [`VirtualSolidStyle`](/virtual/reference/virtual-solid/type-aliases/VirtualSolidStyle) |
+| Parameter | Type                                                                         |
+| --------- | ---------------------------------------------------------------------------- |
+| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
 
 ## Returns
 
 [`VirtualLayoutBinding`](/virtual/reference/virtual-solid/interfaces/VirtualLayoutBinding)
 
-Hydration-safe styles and refs for the scroller, scroll-size, and
-rendered-items elements.
+Refs for the scroller, scroll-size, and rendered-items elements.

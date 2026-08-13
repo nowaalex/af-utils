@@ -17,19 +17,17 @@ const ITEMS_ELEMENT_STYLE = {
     left: "0px"
 } as const;
 
+/** Required interaction and containment styles for the native scroller. */
+const SCROLLER_ELEMENT_STYLE = {
+    overflow: "auto",
+    contain: "strict"
+} as const;
+
 /** Keep range movement on one compositor-backed block for smooth scrolling. */
 const getItemsTransform = (horizontal: boolean, offset: number) =>
     horizontal
         ? `translate3d(${offset}px, 0px, 0px)`
         : `translate3d(0px, ${offset}px, 0px)`;
-
-/**
- * Serializable inline styles shared by server and client layout adapters.
- * @public
- */
-export type VirtualScrollerLayoutStyle = Readonly<
-    Record<string, string | number>
->;
 
 interface ItemsGeometry {
     _offset: number;
@@ -42,8 +40,8 @@ interface ItemsGeometry {
  *
  * @remarks
  * It keeps the scroll-size element and rendered-items element synchronized
- * without scheduling framework renders. React and Solid adapters can expose
- * this class through their native ref primitives.
+ * without scheduling framework renders. Framework adapters expose it through
+ * their native ref, action, or controller primitives.
  */
 class VirtualScrollerLayout {
     /** Model whose public layout snapshots are reflected into DOM styles. */
@@ -85,8 +83,8 @@ class VirtualScrollerLayout {
         return geometry;
     }
 
-    /** Stable subscriber that publishes the current native scroll extent. */
-    private readonly _updateSize = () => {
+    /** Apply the current native scroll extent to the attached size element. */
+    private readonly _applySizeGeometry = () => {
         const element = this._sizeElement;
         if (element) {
             element.style[this._model.horizontal ? "width" : "height"] =
@@ -94,8 +92,8 @@ class VirtualScrollerLayout {
         }
     };
 
-    /** Stable subscriber that positions and sizes the rendered item range. */
-    private readonly _updateItems = () => {
+    /** Apply the current rendered-range position and extent to its element. */
+    private readonly _applyItemsGeometry = () => {
         const element = this._itemsElement;
         if (element) {
             const geometry = this._readItemsGeometry();
@@ -110,121 +108,54 @@ class VirtualScrollerLayout {
         }
     };
 
-    /**
-     * Return a hydration-safe style for the scroll container.
-     *
-     * @param interactiveStyle - Style to expose after the model owns the DOM
-     * element. Before attachment, scrolling is disabled while every other
-     * declaration is preserved.
-     */
-    getScrollerElementStyle(
-        interactiveStyle: VirtualScrollerLayoutStyle
-    ): VirtualScrollerLayoutStyle {
-        if (this._scrollerElement) return interactiveStyle;
+    /** Apply every layout declaration owned by core to the size element. */
+    private _initializeSizeElement(element: HTMLElement) {
+        Object.assign(element.style, SIZE_ELEMENT_STYLE);
 
-        const {
-            overflow: _overflow,
-            overflowX: _overflowX,
-            overflowY: _overflowY,
-            overflowBlock: _overflowBlock,
-            overflowInline: _overflowInline,
-            ...nonScrollingStyle
-        } = interactiveStyle;
+        if (this._model.horizontal) {
+            element.style.height = "100%";
+        } else {
+            element.style.width = "100%";
+        }
 
-        return { ...nonScrollingStyle, overflow: "hidden" };
+        this._applySizeGeometry();
     }
 
-    /**
-     * Return the complete current style for the native scroll-size element.
-     *
-     * @remarks Framework adapters should serialize this snapshot during server
-     * rendering. Applying the scroll geometry only from a client ref changes
-     * the native scrollbar track during hydration and can invalidate a thumb
-     * drag that started against the server-rendered page.
-     */
-    getSizeElementStyle(): VirtualScrollerLayoutStyle {
-        return this._model.horizontal
-            ? {
-                  ...SIZE_ELEMENT_STYLE,
-                  width: `${this._model.scrollSize}px`,
-                  height: "100%"
-              }
-            : {
-                  ...SIZE_ELEMENT_STYLE,
-                  width: "100%",
-                  height: `${this._model.scrollSize}px`
-              };
-    }
-
-    /**
-     * Return the complete current style for the rendered item range.
-     *
-     * @remarks The snapshot is DOM-independent, so it is safe to use for both
-     * server markup and the first client render. Later model events are still
-     * synchronized directly by this adapter without framework rerenders.
-     */
-    getItemsElementStyle(): VirtualScrollerLayoutStyle {
+    /** Apply every layout declaration owned by core to the items element. */
+    private _initializeItemsElement(element: HTMLElement) {
         const geometry = this._readItemsGeometry();
+        const horizontal = this._model.horizontal;
 
-        return this._model.horizontal
-            ? {
-                  ...ITEMS_ELEMENT_STYLE,
-                  display: "flex",
-                  width: `${geometry._size}px`,
-                  height: "100%",
-                  transform: getItemsTransform(true, geometry._offset)
-              }
-            : {
-                  ...ITEMS_ELEMENT_STYLE,
-                  display: "block",
-                  width: "100%",
-                  height: `${geometry._size}px`,
-                  transform: getItemsTransform(false, geometry._offset)
-              };
+        Object.assign(element.style, ITEMS_ELEMENT_STYLE);
+        element.style.display = horizontal ? "flex" : "block";
+        element.style.width = horizontal ? `${geometry._size}px` : "100%";
+        element.style.height = horizontal ? "100%" : `${geometry._size}px`;
+        element.style.transform = getItemsTransform(
+            horizontal,
+            geometry._offset
+        );
     }
 
-    /**
-     * Attach or detach the scroll container and expose native scrolling only
-     * after the model listeners are installed.
-     */
-    setScrollerElement(
-        element: HTMLElement | null,
-        interactiveStyle: VirtualScrollerLayoutStyle
-    ) {
+    /** Attach or detach the scroll container and apply its required styles. */
+    setScrollerElement(element: HTMLElement | null) {
+        if (element) Object.assign(element.style, SCROLLER_ELEMENT_STYLE);
+
         if (element !== this._scrollerElement) {
             if (this._scrollerElement) this._model.setScroller(null);
             this._scrollerElement = element;
 
             if (element) this._model.setScroller(element);
         }
-
-        if (element) {
-            element.style.overflow = String(
-                interactiveStyle.overflow ?? "auto"
-            );
-
-            for (const property of [
-                "overflowX",
-                "overflowY",
-                "overflowBlock",
-                "overflowInline"
-            ] as const) {
-                const value = interactiveStyle[property];
-                if (value !== undefined) {
-                    element.style[property] = String(value);
-                }
-            }
-        }
     }
 
-    /** Subscribe attached layout elements to model geometry changes. */
-    private _connect() {
+    /** Ensure attached layout elements receive subsequent model geometry. */
+    private _ensureModelSubscriptions() {
         this._unsubscribeSize ??= this._model.subscribe(
-            this._updateSize,
+            this._applySizeGeometry,
             VirtualScrollerEventFlag.SCROLL_SIZE
         );
         this._unsubscribeItems ??= this._model.subscribe(
-            this._updateItems,
+            this._applyItemsGeometry,
             VirtualScrollerEventFlag.RANGE |
                 VirtualScrollerEventFlag.SCROLL_SIZE |
                 VirtualScrollerEventFlag.SIZES
@@ -252,8 +183,8 @@ class VirtualScrollerLayout {
         }
 
         if (element) {
-            this._connect();
-            Object.assign(element.style, this.getSizeElementStyle());
+            this._ensureModelSubscriptions();
+            this._initializeSizeElement(element);
             if (changed) this._model.setContainer(element);
         } else {
             this._disconnectIfUnused();
@@ -265,8 +196,8 @@ class VirtualScrollerLayout {
         this._itemsElement = element;
 
         if (element) {
-            this._connect();
-            Object.assign(element.style, this.getItemsElementStyle());
+            this._ensureModelSubscriptions();
+            this._initializeItemsElement(element);
         } else {
             this._disconnectIfUnused();
         }
@@ -274,7 +205,7 @@ class VirtualScrollerLayout {
 
     /** Disconnect every element and event listener owned by this adapter. */
     dispose() {
-        this.setScrollerElement(null, {});
+        this.setScrollerElement(null);
         this.setSizeElement(null);
         this.setItemsElement(null);
         this._unsubscribeSize?.();

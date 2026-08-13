@@ -71,12 +71,6 @@
                         "isDeprecated": false
                     },
                     {
-                        "title": "VirtualScrollerLayoutStyle",
-                        "kind": 2097152,
-                        "path": "virtual-core/type-aliases/VirtualScrollerLayoutStyle",
-                        "isDeprecated": false
-                    },
-                    {
                         "title": "VirtualScrollerScrollElement",
                         "kind": 2097152,
                         "path": "virtual-core/type-aliases/VirtualScrollerScrollElement",
@@ -167,12 +161,6 @@
                         "title": "virtualItem",
                         "kind": 64,
                         "path": "virtual-lit/functions/virtualItem",
-                        "isDeprecated": false
-                    },
-                    {
-                        "title": "virtualStyle",
-                        "kind": 64,
-                        "path": "virtual-lit/functions/virtualStyle",
                         "isDeprecated": false
                     }
                 ]

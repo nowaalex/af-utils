@@ -11,7 +11,6 @@ import { RefOrCallback } from 'lit/directives/ref.js';
 import { VirtualScroller } from '@af-utils/virtual-core';
 import { VirtualScrollerEventMask } from '@af-utils/virtual-core';
 import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
-import { VirtualScrollerLayoutStyle } from '@af-utils/virtual-core';
 
 // @public
 export class VirtualController implements ReactiveController {
@@ -31,22 +30,16 @@ export const virtualItem: (model: VirtualScroller, index: number) => ReturnType<
 
 // @public
 export class VirtualLayoutController implements ReactiveController {
-    constructor(host: ReactiveControllerHost, model: VirtualScroller, scrollerStyle?: VirtualScrollerLayoutStyle);
+    constructor(host: ReactiveControllerHost, model: VirtualScroller);
     connect(scroller: HTMLElement, sizeElement: HTMLElement, itemsElement: HTMLElement): void;
     hostConnected(): void;
     hostDisconnected(): void;
     // (undocumented)
     readonly itemsRef: RefOrCallback;
     // (undocumented)
-    readonly itemsStyle: VirtualScrollerLayoutStyle;
-    // (undocumented)
     readonly scrollerRef: RefOrCallback;
     // (undocumented)
-    readonly scrollerStyle: VirtualScrollerLayoutStyle;
-    // (undocumented)
     readonly sizeRef: RefOrCallback;
-    // (undocumented)
-    readonly sizeStyle: VirtualScrollerLayoutStyle;
 }
 
 // @public
@@ -55,8 +48,5 @@ export class VirtualSnapshotController implements ReactiveController {
     hostConnected(): void;
     hostDisconnected(): void;
 }
-
-// @public
-export const virtualStyle: (style: VirtualScrollerLayoutStyle) => string;
 
 ```

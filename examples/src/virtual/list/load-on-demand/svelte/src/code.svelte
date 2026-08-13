@@ -38,15 +38,7 @@
         itemCount: posts.length,
         estimatedItemSize: 500
     });
-    const {
-        range,
-        scroller,
-        size,
-        items,
-        scrollerStyle,
-        sizeStyle,
-        itemsStyle
-    } = createVirtualList(model);
+    const { range, scroller, size, items } = createVirtualList(model);
 
     const loadMore = async () => {
         if (loading || posts.length !== model.to) return;
@@ -67,14 +59,9 @@
     });
 </script>
 
-<div
-    use:scroller
-    style={scrollerStyle}
-    role="list"
-    aria-label="Load on demand list"
->
-    <div use:size style={sizeStyle}>
-        <div use:items style={itemsStyle}>
+<div use:scroller role="list" aria-label="Load on demand list">
+    <div use:size>
+        <div use:items>
             {#each $range as index (index)}
                 <div
                     use:virtualItem={{ model, index }}

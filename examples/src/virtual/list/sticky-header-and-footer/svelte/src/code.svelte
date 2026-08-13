@@ -9,23 +9,10 @@
     import css from "./style.module.css";
 
     const rows = createVirtual({ itemCount: 200_000 });
-    const {
-        range,
-        scroller,
-        size,
-        items,
-        scrollerStyle,
-        sizeStyle,
-        itemsStyle
-    } = createVirtualList(rows);
+    const { range, scroller, size, items } = createVirtualList(rows);
 </script>
 
-<div
-    use:scroller
-    style={scrollerStyle}
-    role="list"
-    aria-label="Sticky header and footer list"
->
+<div use:scroller role="list" aria-label="Sticky header and footer list">
     <div
         use:virtualStickyHeader={rows}
         class={css.header}
@@ -33,8 +20,8 @@
     >
         Header
     </div>
-    <div use:size style={sizeStyle}>
-        <div use:items style={itemsStyle}>
+    <div use:size>
+        <div use:items>
             {#each $range as index (index)}
                 <div
                     use:virtualItem={{ model: rows, index }}

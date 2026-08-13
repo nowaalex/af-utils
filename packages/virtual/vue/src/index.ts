@@ -6,8 +6,7 @@ import {
     VirtualScrollerEvent,
     type VirtualScrollerEventMask,
     type VirtualScrollerInitialParams,
-    VirtualScrollerLayout,
-    type VirtualScrollerLayoutStyle
+    VirtualScrollerLayout
 } from "@af-utils/virtual-core";
 import {
     markRaw,
@@ -15,7 +14,6 @@ import {
     h,
     onMounted,
     onScopeDispose,
-    reactive,
     shallowRef,
     toValue,
     watch,
@@ -57,30 +55,18 @@ export const useVirtualSnapshot = (
     return revision;
 };
 
-/** Vue refs and hydration-safe styles for virtual layout elements. @public */
+/** Vue refs for virtual layout elements. @public */
 export interface VirtualVueLayoutBinding {
     scrollerRef: VirtualVueElementRef;
     sizeRef: VirtualVueElementRef;
     itemsRef: VirtualVueElementRef;
-    scrollerStyle: VirtualScrollerLayoutStyle;
-    sizeStyle: VirtualScrollerLayoutStyle;
-    itemsStyle: VirtualScrollerLayoutStyle;
 }
 
 /** Connect Vue template refs to the framework-neutral layout adapter. @public */
 export const useVirtualLayout = (
-    model: VirtualScroller,
-    scrollerStyle: VirtualScrollerLayoutStyle = {}
+    model: VirtualScroller
 ): VirtualVueLayoutBinding => {
     const layout = markRaw(new VirtualScrollerLayout(model));
-    const interactiveStyle = {
-        overflow: "auto",
-        contain: "strict",
-        ...scrollerStyle
-    };
-    const renderedScrollerStyle = reactive({
-        ...layout.getScrollerElementStyle(interactiveStyle)
-    });
     let mounted = false;
     let scrollerElement: HTMLElement | null = null;
     let sizeElement: HTMLElement | null = null;
@@ -88,8 +74,7 @@ export const useVirtualLayout = (
 
     onMounted(() => {
         mounted = true;
-        Object.assign(renderedScrollerStyle, interactiveStyle);
-        layout.setScrollerElement(scrollerElement, interactiveStyle);
+        layout.setScrollerElement(scrollerElement);
         layout.setSizeElement(sizeElement);
         layout.setItemsElement(itemsElement);
     });
@@ -102,7 +87,7 @@ export const useVirtualLayout = (
         scrollerRef: element => {
             scrollerElement = element as HTMLElement | null;
             if (mounted) {
-                layout.setScrollerElement(scrollerElement, interactiveStyle);
+                layout.setScrollerElement(scrollerElement);
             }
         },
         sizeRef: element => {
@@ -112,10 +97,7 @@ export const useVirtualLayout = (
         itemsRef: element => {
             itemsElement = element as HTMLElement | null;
             if (mounted) layout.setItemsElement(itemsElement);
-        },
-        scrollerStyle: renderedScrollerStyle,
-        sizeStyle: layout.getSizeElementStyle(),
-        itemsStyle: layout.getItemsElementStyle()
+        }
     };
 };
 
@@ -214,8 +196,7 @@ export const VirtualList = defineComponent({
                 "div",
                 {
                     ...attrs,
-                    ref: layout.scrollerRef,
-                    style: layout.scrollerStyle
+                    ref: layout.scrollerRef
                 } as Record<string, unknown>,
                 [
                     slots.header
@@ -224,15 +205,13 @@ export const VirtualList = defineComponent({
                     h(
                         "div",
                         {
-                            ref: layout.sizeRef,
-                            style: layout.sizeStyle
+                            ref: layout.sizeRef
                         } as Record<string, unknown>,
                         [
                             h(
                                 "div",
                                 {
-                                    ref: layout.itemsRef,
-                                    style: layout.itemsStyle
+                                    ref: layout.itemsRef
                                 } as Record<string, unknown>,
                                 h(
                                     VirtualItems,

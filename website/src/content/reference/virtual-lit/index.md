@@ -23,7 +23,7 @@ Lit controllers and directives used to connect to `VirtualScroller`.
 | Class                                                                                         | Description                                                          |
 | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [VirtualController](/virtual/reference/virtual-lit/classes/VirtualController)                 | Lit reactive controller owning one virtual-scroller model.           |
-| [VirtualLayoutController](/virtual/reference/virtual-lit/classes/VirtualLayoutController)     | Lit refs and styles backed by the framework-neutral layout adapter.  |
+| [VirtualLayoutController](/virtual/reference/virtual-lit/classes/VirtualLayoutController)     | Lit refs backed by the framework-neutral layout adapter.             |
 | [VirtualSnapshotController](/virtual/reference/virtual-lit/classes/VirtualSnapshotController) | Lit controller that requests host updates for selected model events. |
 
 ## Functions
@@ -32,4 +32,3 @@ Lit controllers and directives used to connect to `VirtualScroller`.
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [virtualGridItem](/virtual/reference/virtual-lit/functions/virtualGridItem) | Lit element directive observed as both a virtual row and column. |
 | [virtualItem](/virtual/reference/virtual-lit/functions/virtualItem)         | Lit element directive that observes one rendered virtual item.   |
-| [virtualStyle](/virtual/reference/virtual-lit/functions/virtualStyle)       | Serialize a core style snapshot for Lit's style attribute.       |

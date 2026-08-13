@@ -3,8 +3,7 @@ import {
     VirtualController,
     VirtualLayoutController,
     VirtualSnapshotController,
-    virtualItem,
-    virtualStyle
+    virtualItem
 } from "@af-utils/virtual-lit";
 import { html, LitElement, unsafeCSS } from "lit";
 import { ref } from "lit/directives/ref.js";
@@ -51,8 +50,7 @@ export default class PrependItems extends LitElement {
     );
     private readonly _layout = new VirtualLayoutController(
         this,
-        this._virtual.model,
-        { width: "100%", height: "100%" }
+        this._virtual.model
     );
     private readonly _headerRef = (element?: Element) =>
         this._virtual.model.setStickyHeader(
@@ -91,7 +89,7 @@ export default class PrependItems extends LitElement {
         return html`<div
             ${this._layout.scrollerRef}
             data-layout
-            style=${virtualStyle(this._layout.scrollerStyle)}
+            style="width:100%;height:100%"
             role="list"
             aria-label="Prepend items list"
         >
@@ -109,16 +107,8 @@ export default class PrependItems extends LitElement {
                     }
                 </button>
             </div>
-            <div
-                ${this._layout.sizeRef}
-                data-layout
-                style=${virtualStyle(this._layout.sizeStyle)}
-            >
-                <div
-                    ${this._layout.itemsRef}
-                    data-layout
-                    style=${virtualStyle(this._layout.itemsStyle)}
-                >
+            <div ${this._layout.sizeRef} data-layout>
+                <div ${this._layout.itemsRef} data-layout>
                     ${mapVirtualRange(model, index => {
                         const item = this._items[index];
                         return html`<div

@@ -4,7 +4,7 @@ import type { Accessor, JSX } from "solid-js";
 /** @public A static value or a reactive Solid accessor returning that value. */
 export type MaybeAccessor<Value> = Value | Accessor<Value>;
 
-/** @public Style declarations accepted by the Solid virtual layout adapter. */
+/** @public Style declarations accepted by the Solid virtual list. */
 export type VirtualSolidStyle = Readonly<
     Record<string, string | number | undefined>
 >;
@@ -41,7 +41,7 @@ export type ListProps<Data = unknown> = Omit<
     style?: VirtualSolidStyle;
 };
 
-/** @public DOM refs and hydration-safe styles produced by `createVirtualLayout`. */
+/** @public DOM refs produced by `createVirtualLayout`. */
 export interface VirtualLayoutBinding {
     /** Attach the native element scroller. */
     scrollerRef: VirtualElementRef;
@@ -49,10 +49,4 @@ export interface VirtualLayoutBinding {
     sizeRef: VirtualElementRef;
     /** Attach the absolutely positioned rendered-range container. */
     itemsRef: VirtualElementRef;
-    /** Serialized initial scroller style for Solid SSR and hydration. */
-    scrollerStyle: string;
-    /** Serialized initial native scroll-size style. */
-    sizeStyle: string;
-    /** Serialized initial rendered-items geometry style. */
-    itemsStyle: string;
 }

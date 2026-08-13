@@ -9,16 +9,15 @@ import { Readable } from 'svelte/store';
 import { VirtualScroller } from '@af-utils/virtual-core';
 import { VirtualScrollerEventMask } from '@af-utils/virtual-core';
 import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
-import { VirtualScrollerLayoutStyle } from '@af-utils/virtual-core';
 
 // @public
 export const createVirtual: (params: MaybeReadable<VirtualScrollerInitialParams>) => VirtualScroller;
 
 // @public
-export const createVirtualLayout: (model: VirtualScroller, scrollerStyle?: VirtualScrollerLayoutStyle) => VirtualSvelteLayoutBinding;
+export const createVirtualLayout: (model: VirtualScroller) => VirtualSvelteLayoutBinding;
 
 // @public
-export const createVirtualList: (model: VirtualScroller, scrollerStyle?: VirtualScrollerLayoutStyle) => VirtualSvelteListBinding;
+export const createVirtualList: (model: VirtualScroller) => VirtualSvelteListBinding;
 
 // @public
 export const createVirtualRange: (model: VirtualScroller) => Readable<number[]>;
@@ -64,11 +63,8 @@ export interface VirtualSvelteItemBinding {
 // @public
 export interface VirtualSvelteLayoutBinding {
     items: Action<HTMLElement>;
-    itemsStyle: string;
     scroller: Action<HTMLElement>;
-    scrollerStyle: string;
     size: Action<HTMLElement>;
-    sizeStyle: string;
 }
 
 // @public
@@ -77,4 +73,3 @@ export interface VirtualSvelteListBinding extends VirtualSvelteLayoutBinding {
 }
 
 ```
-

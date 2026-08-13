@@ -9,19 +9,17 @@
 
     const model = createVirtual({ itemCount: 50_000 });
     const range = createVirtualRange(model);
-    const { scroller, size, items, scrollerStyle, sizeStyle, itemsStyle } =
-        createVirtualLayout(model);
+    const { scroller, size, items } = createVirtualLayout(model);
 </script>
 
 <div
     use:scroller
-    style={scrollerStyle}
     class={css.list}
     role="list"
     aria-label="Simple primitives list"
 >
-    <div use:size style={sizeStyle}>
-        <div use:items style={itemsStyle}>
+    <div use:size>
+        <div use:items>
             {#each $range as index (index)}
                 <div
                     use:virtualItem={{ model, index }}

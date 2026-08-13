@@ -9,17 +9,16 @@
 
     const model = createVirtual({ itemCount: 5_000 });
     const range = createVirtualRange(model);
-    const { scroller, size, items, scrollerStyle, sizeStyle, itemsStyle } =
-        createVirtualLayout(model);
+    const { scroller, size, items } = createVirtualLayout(model);
 </script>
 
-<div use:scroller class={css.list} role="list" style={scrollerStyle}>
+<div use:scroller class={css.list} role="list">
     <div class={css.offset1}>Some offset</div>
     <div>
         <div class={css.offset2}>Some offset 2</div>
         <div>
-            <div use:size style={sizeStyle}>
-                <div use:items style={itemsStyle}>
+            <div use:size>
+                <div use:items>
                     {#each $range as index (index)}
                         <div
                             use:virtualItem={{ model, index }}

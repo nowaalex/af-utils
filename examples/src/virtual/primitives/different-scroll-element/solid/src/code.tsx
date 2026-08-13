@@ -18,18 +18,13 @@ const DifferentScrollElement = () => {
     });
 
     return (
-        <div
-            class={css.list}
-            ref={layout.scrollerRef}
-            role="list"
-            style={layout.scrollerStyle}
-        >
+        <div class={css.list} ref={layout.scrollerRef} role="list">
             <div class={css.offset1}>Some offset</div>
             <div>
                 <div class={css.offset2}>Some offset 2</div>
                 <div>
-                    <div ref={layout.sizeRef} style={layout.sizeStyle}>
-                        <div ref={layout.itemsRef} style={layout.itemsStyle}>
+                    <div ref={layout.sizeRef}>
+                        <div ref={layout.itemsRef}>
                             <For each={indexes()}>
                                 {index => (
                                     <div

@@ -3,8 +3,7 @@ import {
     VirtualController,
     VirtualLayoutController,
     VirtualSnapshotController,
-    virtualItem,
-    virtualStyle
+    virtualItem
 } from "@af-utils/virtual-lit";
 import { html, LitElement, unsafeCSS } from "lit";
 import css from "./style.module.css";
@@ -46,14 +45,8 @@ export default class WindowScroll extends LitElement {
             <div>
                 <div class=${css.offset2}>Some offset 2</div>
                 <div>
-                    <div
-                        ${this._layout.sizeRef}
-                        style=${virtualStyle(this._layout.sizeStyle)}
-                    >
-                        <div
-                            ${this._layout.itemsRef}
-                            style=${virtualStyle(this._layout.itemsStyle)}
-                        >
+                    <div ${this._layout.sizeRef}>
+                        <div ${this._layout.itemsRef}>
                             ${mapVirtualRange(
                                 model,
                                 index => html`<div

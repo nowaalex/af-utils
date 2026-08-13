@@ -114,6 +114,21 @@ interface Props {
                         toggleMenu();
                     }
                 });
+
+            const activeItem = document.querySelector<HTMLElement>(
+                '.ds-menu-items [aria-current="page"]'
+            );
+            if (!activeItem) return;
+
+            let parent = activeItem.parentElement;
+            while (parent) {
+                if (parent instanceof HTMLDetailsElement) parent.open = true;
+                parent = parent.parentElement;
+            }
+
+            requestAnimationFrame(() => {
+                activeItem.scrollIntoView({ block: "nearest" });
+            });
         }
     }
 

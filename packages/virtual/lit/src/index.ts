@@ -6,7 +6,6 @@ import {
     type VirtualScrollerEventMask,
     type VirtualScrollerInitialParams,
     VirtualScrollerLayout,
-    type VirtualScrollerLayoutStyle,
     type VirtualScrollerRuntimeParams
 } from "@af-utils/virtual-core";
 import type { ReactiveController, ReactiveControllerHost } from "lit";
@@ -121,40 +120,19 @@ export class VirtualSnapshotController implements ReactiveController {
     }
 }
 
-/** Lit refs and styles backed by the framework-neutral layout adapter. @public */
+/** Lit refs backed by the framework-neutral layout adapter. @public */
 export class VirtualLayoutController implements ReactiveController {
-    readonly scrollerStyle: VirtualScrollerLayoutStyle;
-    readonly sizeStyle: VirtualScrollerLayoutStyle;
-    readonly itemsStyle: VirtualScrollerLayoutStyle;
     readonly scrollerRef: RefOrCallback;
     readonly sizeRef: RefOrCallback;
     readonly itemsRef: RefOrCallback;
     private readonly _layout: VirtualScrollerLayout;
-    private readonly _interactiveStyle: VirtualScrollerLayoutStyle;
     private _connected = false;
 
     /** Create layout bindings for a Lit host. */
-    constructor(
-        host: ReactiveControllerHost,
-        model: VirtualScroller,
-        scrollerStyle: VirtualScrollerLayoutStyle = {}
-    ) {
-        const interactiveStyle = {
-            overflow: "auto",
-            contain: "strict",
-            ...scrollerStyle
-        };
-        this._interactiveStyle = interactiveStyle;
+    constructor(host: ReactiveControllerHost, model: VirtualScroller) {
         this._layout = new VirtualScrollerLayout(model);
-        this.scrollerStyle =
-            this._layout.getScrollerElementStyle(interactiveStyle);
-        this.sizeStyle = this._layout.getSizeElementStyle();
-        this.itemsStyle = this._layout.getItemsElementStyle();
         this.scrollerRef = element =>
-            this._layout.setScrollerElement(
-                element as HTMLElement | null,
-                interactiveStyle
-            );
+            this._layout.setScrollerElement(element as HTMLElement | null);
         this.sizeRef = element =>
             this._layout.setSizeElement(element as HTMLElement | null);
         this.itemsRef = element =>
@@ -168,7 +146,7 @@ export class VirtualLayoutController implements ReactiveController {
         sizeElement: HTMLElement,
         itemsElement: HTMLElement
     ) {
-        this._layout.setScrollerElement(scroller, this._interactiveStyle);
+        this._layout.setScrollerElement(scroller);
         this._layout.setSizeElement(sizeElement);
         this._layout.setItemsElement(itemsElement);
     }
@@ -189,15 +167,6 @@ export class VirtualLayoutController implements ReactiveController {
         });
     }
 }
-
-/** Serialize a core style snapshot for Lit's style attribute. @public */
-export const virtualStyle = (style: VirtualScrollerLayoutStyle) =>
-    Object.entries(style)
-        .map(
-            ([property, value]) =>
-                `${property.replace(/[A-Z]/gu, letter => `-${letter.toLowerCase()}`)}:${String(value)}`
-        )
-        .join(";");
 
 class VirtualItemDirective extends Directive {
     private _element: HTMLElement | null = null;

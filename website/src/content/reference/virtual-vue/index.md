@@ -20,9 +20,9 @@ Vue primitives used to connect to `VirtualScroller`.
 
 ## Interfaces
 
-| Interface                                                                                    | Description                                                     |
-| -------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [VirtualVueLayoutBinding](/virtual/reference/virtual-vue/interfaces/VirtualVueLayoutBinding) | Vue refs and hydration-safe styles for virtual layout elements. |
+| Interface                                                                                    | Description                           |
+| -------------------------------------------------------------------------------------------- | ------------------------------------- |
+| [VirtualVueLayoutBinding](/virtual/reference/virtual-vue/interfaces/VirtualVueLayoutBinding) | Vue refs for virtual layout elements. |
 
 ## Type Aliases
 

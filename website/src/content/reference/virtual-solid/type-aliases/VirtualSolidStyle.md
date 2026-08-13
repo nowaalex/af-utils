@@ -1,6 +1,6 @@
 ---
 title: "Type Alias: VirtualSolidStyle"
-description: Style declarations accepted by the Solid virtual layout adapter.
+description: Style declarations accepted by the Solid virtual list.
 package: "@af-utils/virtual-solid"
 symbol: VirtualSolidStyle
 kind: typealias
@@ -20,4 +20,4 @@ generated: true
 type VirtualSolidStyle = Readonly<Record<string, string | number | undefined>>;
 ```
 
-Style declarations accepted by the Solid virtual layout adapter.
+Style declarations accepted by the Solid virtual list.

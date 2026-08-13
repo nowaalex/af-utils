@@ -20,7 +20,7 @@ export const createVirtualGridItemRef: (rows: VirtualScroller, rowIndex: MaybeAc
 export const createVirtualItemRef: (model: VirtualScroller, index: MaybeAccessor<number>) => VirtualElementRef;
 
 // @public
-export const createVirtualLayout: (model: VirtualScroller, scrollerStyle?: VirtualSolidStyle) => VirtualLayoutBinding;
+export const createVirtualLayout: (model: VirtualScroller) => VirtualLayoutBinding;
 
 // @public
 export const createVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => Accessor<number>;
@@ -54,11 +54,8 @@ export type VirtualElementRef = (element: HTMLElement) => void;
 // @public
 export interface VirtualLayoutBinding {
     itemsRef: VirtualElementRef;
-    itemsStyle: string;
     scrollerRef: VirtualElementRef;
-    scrollerStyle: string;
     sizeRef: VirtualElementRef;
-    sizeStyle: string;
 }
 
 // @public

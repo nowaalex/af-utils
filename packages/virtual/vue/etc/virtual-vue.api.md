@@ -19,7 +19,6 @@ import { ShallowRef } from 'vue';
 import { VirtualScroller } from '@af-utils/virtual-core';
 import { VirtualScrollerEventMask } from '@af-utils/virtual-core';
 import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
-import { VirtualScrollerLayoutStyle } from '@af-utils/virtual-core';
 import { VNode } from 'vue';
 
 // @public
@@ -29,7 +28,7 @@ export const useVirtual: (params: MaybeRefOrGetter<VirtualScrollerInitialParams>
 export const useVirtualItemRef: (model: VirtualScroller, index: MaybeRefOrGetter<number>) => VirtualVueElementRef;
 
 // @public
-export const useVirtualLayout: (model: VirtualScroller, scrollerStyle?: VirtualScrollerLayoutStyle) => VirtualVueLayoutBinding;
+export const useVirtualLayout: (model: VirtualScroller) => VirtualVueLayoutBinding;
 
 // @public
 export const useVirtualRange: (model: VirtualScroller) => () => number[];
@@ -74,16 +73,9 @@ export interface VirtualVueLayoutBinding {
     // (undocumented)
     itemsRef: VirtualVueElementRef;
     // (undocumented)
-    itemsStyle: VirtualScrollerLayoutStyle;
-    // (undocumented)
     scrollerRef: VirtualVueElementRef;
     // (undocumented)
-    scrollerStyle: VirtualScrollerLayoutStyle;
-    // (undocumented)
     sizeRef: VirtualVueElementRef;
-    // (undocumented)
-    sizeStyle: VirtualScrollerLayoutStyle;
 }
 
 ```
-

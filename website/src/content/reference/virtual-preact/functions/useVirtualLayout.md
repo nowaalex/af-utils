@@ -17,20 +17,19 @@ generated: true
 # Function: useVirtualLayout()
 
 ```ts
-function useVirtualLayout(model, scrollerStyle?): VirtualPreactLayoutBinding;
+function useVirtualLayout(model): VirtualPreactLayoutBinding;
 ```
 
 Connect stable Preact refs to the framework-neutral virtual layout adapter.
 
 ## Parameters
 
-| Parameter       | Type                                                                         |
-| --------------- | ---------------------------------------------------------------------------- |
-| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `scrollerStyle` | `CSSProperties`                                                              |
+| Parameter | Type                                                                         |
+| --------- | ---------------------------------------------------------------------------- |
+| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
 
 ## Returns
 
 [`VirtualPreactLayoutBinding`](/virtual/reference/virtual-preact/interfaces/VirtualPreactLayoutBinding)
 
-Hydration-safe styles and refs for all virtual layout elements.
+Refs for all virtual layout elements.

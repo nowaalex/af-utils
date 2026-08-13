@@ -13,40 +13,39 @@ test("keeps paint containment on the viewport instead of virtual layers", () => 
         itemCount: 100_000
     });
     const verticalLayout = new VirtualScrollerLayout(vertical);
-    const sizeStyle = verticalLayout.getSizeElementStyle();
-    const itemsStyle = verticalLayout.getItemsElementStyle();
+    const sizeElement = document.createElement("div");
+    const itemsElement = document.createElement("div");
+    verticalLayout.setSizeElement(sizeElement);
+    verticalLayout.setItemsElement(itemsElement);
 
-    expect(sizeStyle).toMatchObject({
-        contain: "size layout style",
-        overflow: "hidden",
-        overflowAnchor: "none",
-        height: "4000000px"
-    });
-    expect(sizeStyle).not.toHaveProperty("zIndex");
-    expect(itemsStyle).toMatchObject({
-        contain: "size layout style",
-        top: "0px",
-        transform: "translate3d(0px, 0px, 0px)"
-    });
-    expect(itemsStyle).not.toHaveProperty("overflow");
+    expect(sizeElement.style.contain).toBe("size layout style");
+    expect(sizeElement.style.overflow).toBe("hidden");
+    expect(sizeElement.style.overflowAnchor).toBe("none");
+    expect(sizeElement.style.height).toBe("4000000px");
+    expect(sizeElement.style.zIndex).toBe("");
+    expect(itemsElement.style.contain).toBe("size layout style");
+    expect(itemsElement.style.top).toBe("0px");
+    expect(itemsElement.style.transform).toBe("translate3d(0px, 0px, 0px)");
+    expect(itemsElement.style.overflow).toBe("");
 
     const horizontal = new VirtualScroller({
         estimatedItemSize: 40,
         horizontal: true,
         itemCount: 100_000
     });
-    const horizontalItemsStyle = new VirtualScrollerLayout(
-        horizontal
-    ).getItemsElementStyle();
+    const horizontalItemsElement = document.createElement("div");
+    new VirtualScrollerLayout(horizontal).setItemsElement(
+        horizontalItemsElement
+    );
 
-    expect(horizontalItemsStyle).toMatchObject({
-        contain: "size layout style",
-        left: "0px",
-        transform: "translate3d(0px, 0px, 0px)"
-    });
+    expect(horizontalItemsElement.style.contain).toBe("size layout style");
+    expect(horizontalItemsElement.style.left).toBe("0px");
+    expect(horizontalItemsElement.style.transform).toBe(
+        "translate3d(0px, 0px, 0px)"
+    );
 });
 
-test("enables a hydration-safe scroller only after model attachment", () => {
+test("applies required scroller styles when attaching the model", () => {
     const model = new VirtualScroller({
         estimatedWidgetSize: 200,
         itemCount: 100
@@ -59,30 +58,18 @@ test("enables a hydration-safe scroller only after model attachment", () => {
     });
     Object.defineProperty(scroller, "clientHeight", { value: 200 });
     const layout = new VirtualScrollerLayout(model);
-    const interactiveStyle = {
-        contain: "strict",
-        overflow: "auto",
-        overflowY: "scroll"
-    } as const;
 
-    expect(layout.getScrollerElementStyle(interactiveStyle)).toEqual({
-        contain: "strict",
-        overflow: "hidden"
-    });
-
-    layout.setScrollerElement(scroller, interactiveStyle);
+    layout.setScrollerElement(scroller);
 
     expect(scroller.style.overflow).toBe("auto");
-    expect(scroller.style.overflowY).toBe("scroll");
+    expect(scroller.style.contain).toBe("strict");
     expect(model.from).toBeGreaterThan(0);
-    expect(layout.getScrollerElementStyle(interactiveStyle)).toBe(
-        interactiveStyle
-    );
 
     scroller.style.overflow = "hidden";
-    layout.setScrollerElement(scroller, interactiveStyle);
+    scroller.style.contain = "none";
+    layout.setScrollerElement(scroller);
     expect(scroller.style.overflow).toBe("auto");
-    expect(scroller.style.overflowY).toBe("scroll");
+    expect(scroller.style.contain).toBe("strict");
 
     const setContainerSpy = vi.spyOn(model, "setContainer");
     const sizeElement = document.createElement("div");

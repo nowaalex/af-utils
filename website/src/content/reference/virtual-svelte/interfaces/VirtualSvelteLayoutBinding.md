@@ -1,6 +1,6 @@
 ---
 title: "Interface: VirtualSvelteLayoutBinding"
-description: Svelte actions and hydration-safe styles for virtual layout elements.
+description: Svelte actions for virtual layout elements.
 package: "@af-utils/virtual-svelte"
 symbol: VirtualSvelteLayoutBinding
 kind: interface
@@ -16,7 +16,7 @@ generated: true
 
 # Interface: VirtualSvelteLayoutBinding
 
-Svelte actions and hydration-safe styles for virtual layout elements.
+Svelte actions for virtual layout elements.
 
 ## Extended by
 
@@ -24,11 +24,8 @@ Svelte actions and hydration-safe styles for virtual layout elements.
 
 ## Properties
 
-| Property                                            | Type                      | Description                                                          |
-| --------------------------------------------------- | ------------------------- | -------------------------------------------------------------------- |
-| <a id="property-items"></a> `items`                 | `Action`\<`HTMLElement`\> | Action attaching the absolutely positioned rendered-range container. |
-| <a id="property-itemsstyle"></a> `itemsStyle`       | `string`                  | Serialized initial rendered-items geometry style.                    |
-| <a id="property-scroller"></a> `scroller`           | `Action`\<`HTMLElement`\> | Action attaching the native element scroller.                        |
-| <a id="property-scrollerstyle"></a> `scrollerStyle` | `string`                  | Serialized initial scroller style.                                   |
-| <a id="property-size"></a> `size`                   | `Action`\<`HTMLElement`\> | Action attaching the element contributing native scroll extent.      |
-| <a id="property-sizestyle"></a> `sizeStyle`         | `string`                  | Serialized initial native scroll-size style.                         |
+| Property                                  | Type                      | Description                                                          |
+| ----------------------------------------- | ------------------------- | -------------------------------------------------------------------- |
+| <a id="property-items"></a> `items`       | `Action`\<`HTMLElement`\> | Action attaching the absolutely positioned rendered-range container. |
+| <a id="property-scroller"></a> `scroller` | `Action`\<`HTMLElement`\> | Action attaching the native element scroller.                        |
+| <a id="property-size"></a> `size`         | `Action`\<`HTMLElement`\> | Action attaching the element contributing native scroll extent.      |

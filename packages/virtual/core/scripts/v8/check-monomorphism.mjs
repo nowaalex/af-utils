@@ -183,7 +183,7 @@ const hotPaths = resolveHotPaths(HOT_PATHS, {
     VirtualScrollerEvents: eventDispatcher.constructor.prototype,
     ScrollActivity: scrollActivity.constructor.prototype,
     StickyElements: sticky.constructor.prototype,
-    // _updateItems is an instance callback field, not a prototype method.
+    // _applyItemsGeometry is an instance callback field, not a prototype method.
     VirtualScrollerLayout: verticalLayout
 });
 const {
@@ -204,7 +204,7 @@ const {
     scrollActivityOnNativeScroll: onNativeScroll,
     scrollActivityOnNativeScrollEnd: onNativeScrollEnd,
     stickyApplyResizeEntries: stickyResize,
-    layoutUpdateItems: updateLayoutItems
+    layoutApplyItemsGeometry: applyItemsGeometry
 } = hotPaths.methods;
 
 let eventSink = 0;
@@ -279,7 +279,7 @@ const exerciseEventsAndMeasurements = (iterations) => {
 
 const exerciseLayout = (iterations) => {
     for (let iteration = 0; iteration < iterations; iteration++) {
-        updateLayoutItems();
+        applyItemsGeometry();
     }
 };
 

@@ -16,7 +16,6 @@ export { VirtualScrollerEvent } from "./constants";
 export { VirtualScrollerErrorCode } from "./errors/codes";
 export { VirtualScrollerError } from "./errors/VirtualScrollerError";
 export { default as VirtualScroller } from "./models/VirtualScroller";
-export type { VirtualScrollerLayoutStyle } from "./models/VirtualScrollerLayout";
 export { default as VirtualScrollerLayout } from "./models/VirtualScrollerLayout";
 
 export type {

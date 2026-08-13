@@ -7,7 +7,6 @@ import {
 } from "@af-utils/virtual-core";
 import { act, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import useVirtualLayout from ".";
 
@@ -68,31 +67,32 @@ describe("useVirtualLayout", () => {
         act(() => root.unmount());
     });
 
-    test("provides the complete layout geometry during server rendering", () => {
+    test("applies the complete layout geometry through client refs", () => {
         const model = new VirtualScroller({
             estimatedItemSize: 40,
             estimatedWidgetSize: 200,
             itemCount: 10
         });
+        const root = createRoot(container);
 
         const Harness = () => {
-            const { sizeRef, itemsRef, sizeStyle, itemsStyle } =
-                useVirtualLayout(model);
+            const { scrollerRef, sizeRef, itemsRef } = useVirtualLayout(model);
             return (
-                <div ref={sizeRef} style={sizeStyle} data-testid="size">
-                    <div
-                        ref={itemsRef}
-                        style={itemsStyle}
-                        data-testid="items"
-                    />
+                <div ref={scrollerRef} data-testid="scroller">
+                    <div ref={sizeRef} data-testid="size">
+                        <div ref={itemsRef} data-testid="items" />
+                    </div>
                 </div>
             );
         };
 
-        container.innerHTML = renderToStaticMarkup(<Harness />);
-        const size = container.firstElementChild as HTMLElement;
+        act(() => root.render(<Harness />));
+        const scroller = container.firstElementChild as HTMLElement;
+        const size = scroller.firstElementChild as HTMLElement;
         const items = size.firstElementChild as HTMLElement;
 
+        expect(scroller.style.overflow).toBe("auto");
+        expect(scroller.style.contain).toBe("strict");
         expect(size.style.height).toBe("400px");
         expect(size.style.position).toBe("relative");
         expect(size.style.contain).toBe("size layout style");
@@ -102,6 +102,7 @@ describe("useVirtualLayout", () => {
         expect(items.style.overflow).toBe("");
         expect(items.style.top).toBe("0px");
         expect(items.style.transform).toBe("translate3d(0px, 0px, 0px)");
+        act(() => root.unmount());
     });
 
     test("keeps the layout connected through StrictMode replay", () => {

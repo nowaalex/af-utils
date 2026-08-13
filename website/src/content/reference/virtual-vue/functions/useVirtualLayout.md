@@ -17,17 +17,16 @@ generated: true
 # Function: useVirtualLayout()
 
 ```ts
-function useVirtualLayout(model, scrollerStyle?): VirtualVueLayoutBinding;
+function useVirtualLayout(model): VirtualVueLayoutBinding;
 ```
 
 Connect Vue template refs to the framework-neutral layout adapter.
 
 ## Parameters
 
-| Parameter       | Type                                                                         |
-| --------------- | ---------------------------------------------------------------------------- |
-| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `scrollerStyle` | `VirtualScrollerLayoutStyle`                                                 |
+| Parameter | Type                                                                         |
+| --------- | ---------------------------------------------------------------------------- |
+| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
 
 ## Returns
 

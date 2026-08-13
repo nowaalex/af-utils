@@ -24,7 +24,7 @@ Svelte stores and actions used to connect to `VirtualScroller`.
 | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | [VirtualSvelteGridItemBinding](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteGridItemBinding) | Parameters accepted by the [virtualGridItem](/virtual/reference/virtual-svelte/variables/virtualGridItem) action. |
 | [VirtualSvelteItemBinding](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteItemBinding)         | Parameters accepted by the [virtualItem](/virtual/reference/virtual-svelte/variables/virtualItem) action.         |
-| [VirtualSvelteLayoutBinding](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteLayoutBinding)     | Svelte actions and hydration-safe styles for virtual layout elements.                                             |
+| [VirtualSvelteLayoutBinding](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteLayoutBinding)     | Svelte actions for virtual layout elements.                                                                       |
 | [VirtualSvelteListBinding](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteListBinding)         | Range store and layout actions for the common virtual-list shape.                                                 |
 
 ## Type Aliases

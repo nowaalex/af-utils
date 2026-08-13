@@ -89,14 +89,6 @@
             "title": "Type Alias: VirtualScrollerExactPosition"
         },
         {
-            "description": "Serializable inline styles shared by server and client layout adapters.",
-            "kind": "typealias",
-            "package": "@af-utils/virtual-core",
-            "path": "/virtual/reference/virtual-core/type-aliases/VirtualScrollerLayoutStyle",
-            "symbol": "VirtualScrollerLayoutStyle",
-            "title": "Type Alias: VirtualScrollerLayoutStyle"
-        },
-        {
             "description": "Scrollable container type",
             "kind": "typealias",
             "package": "@af-utils/virtual-core",
@@ -161,7 +153,7 @@
             "title": "Class: VirtualController"
         },
         {
-            "description": "Lit refs and styles backed by the framework-neutral layout adapter.",
+            "description": "Lit refs backed by the framework-neutral layout adapter.",
             "kind": "class",
             "package": "@af-utils/virtual-lit",
             "path": "/virtual/reference/virtual-lit/classes/VirtualLayoutController",
@@ -193,14 +185,6 @@
             "title": "Function: virtualItem()"
         },
         {
-            "description": "Serialize a core style snapshot for Lit's style attribute.",
-            "kind": "function",
-            "package": "@af-utils/virtual-lit",
-            "path": "/virtual/reference/virtual-lit/functions/virtualStyle",
-            "symbol": "virtualStyle",
-            "title": "Function: virtualStyle()"
-        },
-        {
             "description": "Preact components and hooks used to connect to VirtualScroller.",
             "kind": "module",
             "package": "@af-utils/virtual-preact",
@@ -217,7 +201,7 @@
             "title": "Interface: ListItemProps"
         },
         {
-            "description": "DOM refs and hydration-safe styles produced by useVirtualLayout.",
+            "description": "DOM refs produced by useVirtualLayout.",
             "kind": "interface",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/interfaces/VirtualPreactLayoutBinding",
@@ -417,7 +401,7 @@
             "title": "Interface: ListItemProps"
         },
         {
-            "description": "DOM refs and hydration-safe styles produced by createVirtualLayout.",
+            "description": "DOM refs produced by createVirtualLayout.",
             "kind": "interface",
             "package": "@af-utils/virtual-solid",
             "path": "/virtual/reference/virtual-solid/interfaces/VirtualLayoutBinding",
@@ -449,7 +433,7 @@
             "title": "Type Alias: VirtualElementRef"
         },
         {
-            "description": "Style declarations accepted by the Solid virtual layout adapter.",
+            "description": "Style declarations accepted by the Solid virtual list.",
             "kind": "typealias",
             "package": "@af-utils/virtual-solid",
             "path": "/virtual/reference/virtual-solid/type-aliases/VirtualSolidStyle",
@@ -529,7 +513,7 @@
             "title": "Interface: VirtualSvelteItemBinding"
         },
         {
-            "description": "Svelte actions and hydration-safe styles for virtual layout elements.",
+            "description": "Svelte actions for virtual layout elements.",
             "kind": "interface",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteLayoutBinding",
@@ -649,7 +633,7 @@
             "title": "Module: @af-utils/virtual-vue"
         },
         {
-            "description": "Vue refs and hydration-safe styles for virtual layout elements.",
+            "description": "Vue refs for virtual layout elements.",
             "kind": "interface",
             "package": "@af-utils/virtual-vue",
             "path": "/virtual/reference/virtual-vue/interfaces/VirtualVueLayoutBinding",

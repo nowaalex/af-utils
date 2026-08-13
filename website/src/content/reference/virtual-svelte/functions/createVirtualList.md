@@ -17,17 +17,16 @@ generated: true
 # Function: createVirtualList()
 
 ```ts
-function createVirtualList(model, scrollerStyle?): VirtualSvelteListBinding;
+function createVirtualList(model): VirtualSvelteListBinding;
 ```
 
 Create the range store and layout actions for a common virtual list.
 
 ## Parameters
 
-| Parameter       | Type                                                                         |
-| --------------- | ---------------------------------------------------------------------------- |
-| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `scrollerStyle` | `VirtualScrollerLayoutStyle`                                                 |
+| Parameter | Type                                                                         |
+| --------- | ---------------------------------------------------------------------------- |
+| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
 
 ## Returns
 

@@ -37,7 +37,7 @@ export type ListProps<Data = unknown> = Omit<
     style?: JSX.CSSProperties;
 };
 
-/** DOM refs and hydration-safe styles produced by {@link useVirtualLayout}. @public */
+/** DOM refs produced by {@link useVirtualLayout}. @public */
 export interface VirtualPreactLayoutBinding {
     /** Attach the native element scroller. */
     scrollerRef: RefCallback<HTMLElement>;
@@ -45,10 +45,4 @@ export interface VirtualPreactLayoutBinding {
     sizeRef: RefCallback<HTMLElement>;
     /** Attach the absolutely positioned rendered-range container. */
     itemsRef: RefCallback<HTMLElement>;
-    /** Initial and interactive scroller style. */
-    scrollerStyle: JSX.CSSProperties;
-    /** Initial native scroll-size style. */
-    sizeStyle: JSX.CSSProperties;
-    /** Initial rendered-items geometry style. */
-    itemsStyle: JSX.CSSProperties;
 }

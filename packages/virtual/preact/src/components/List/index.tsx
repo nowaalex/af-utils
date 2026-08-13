@@ -40,18 +40,18 @@ const List = <Data = unknown,>(props: ListProps<Data>) => {
         style,
         ...rest
     } = props;
-    const layout = useVirtualLayout(model, style);
+    const layout = useVirtualLayout(model);
 
     return (
         <div
             {...rest}
             ref={layout.scrollerRef}
-            style={layout.scrollerStyle}
+            style={style}
             tabIndex={tabIndex}
         >
             {header}
-            <div ref={layout.sizeRef} style={layout.sizeStyle}>
-                <div ref={layout.itemsRef} style={layout.itemsStyle}>
+            <div ref={layout.sizeRef}>
+                <div ref={layout.itemsRef}>
                     <VirtualItems
                         model={model}
                         Item={Item}

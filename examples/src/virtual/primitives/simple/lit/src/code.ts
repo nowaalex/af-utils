@@ -3,8 +3,7 @@ import {
     VirtualController,
     VirtualLayoutController,
     VirtualSnapshotController,
-    virtualItem,
-    virtualStyle
+    virtualItem
 } from "@af-utils/virtual-lit";
 import { html, LitElement, unsafeCSS } from "lit";
 import css from "./style.module.css";
@@ -23,8 +22,7 @@ export default class PrimitiveList extends LitElement {
     );
     private readonly _layout = new VirtualLayoutController(
         this,
-        this._virtual.model,
-        { width: "100%", height: "100%" }
+        this._virtual.model
     );
 
     connectedCallback() {
@@ -43,21 +41,13 @@ export default class PrimitiveList extends LitElement {
         return html`<div
             ${this._layout.scrollerRef}
             data-layout
-            style=${`${virtualStyle(this._layout.scrollerStyle)};overflow:auto`}
+            style="width:100%;height:100%"
             class=${css.list}
             role="list"
             aria-label="Simple primitives list"
         >
-            <div
-                ${this._layout.sizeRef}
-                data-layout
-                style=${virtualStyle(this._layout.sizeStyle)}
-            >
-                <div
-                    ${this._layout.itemsRef}
-                    data-layout
-                    style=${virtualStyle(this._layout.itemsStyle)}
-                >
+            <div ${this._layout.sizeRef} data-layout>
+                <div ${this._layout.itemsRef} data-layout>
                     ${mapVirtualRange(model, index => html`<div ${virtualItem(model, index)} class=${css.item} style="border-top:1px solid #ccc;padding:0.5em" role="listitem" aria-posinset=${index + 1} aria-setsize=${model.itemCount}>row ${index}</div>`)}
                 </div>
             </div>

@@ -9,8 +9,7 @@ import {
     VirtualScrollerEvent,
     type VirtualScrollerEventMask,
     type VirtualScrollerInitialParams,
-    VirtualScrollerLayout,
-    type VirtualScrollerLayoutStyle
+    VirtualScrollerLayout
 } from "@af-utils/virtual-core";
 import { onDestroy } from "svelte";
 import type { Action } from "svelte/action";
@@ -39,7 +38,7 @@ export interface VirtualSvelteGridItemBinding {
     columnIndex: number;
 }
 
-/** Svelte actions and hydration-safe styles for virtual layout elements. @public */
+/** Svelte actions for virtual layout elements. @public */
 export interface VirtualSvelteLayoutBinding {
     /** Action attaching the native element scroller. */
     scroller: Action<HTMLElement>;
@@ -47,12 +46,6 @@ export interface VirtualSvelteLayoutBinding {
     size: Action<HTMLElement>;
     /** Action attaching the absolutely positioned rendered-range container. */
     items: Action<HTMLElement>;
-    /** Serialized initial scroller style. */
-    scrollerStyle: string;
-    /** Serialized initial native scroll-size style. */
-    sizeStyle: string;
-    /** Serialized initial rendered-items geometry style. */
-    itemsStyle: string;
 }
 
 /** Range store and layout actions for the common virtual-list shape. @public */
@@ -66,20 +59,6 @@ const isReadable = <Value>(
     value: MaybeReadable<Value>
 ): value is Readable<Value> =>
     typeof (value as Partial<Readable<Value>>).subscribe === "function";
-
-/** Convert a DOM-style property name to serialized CSS syntax. */
-const toCSSProperty = (property: string) =>
-    property.startsWith("--")
-        ? property
-        : property.replace(/[A-Z]/gu, letter => `-${letter.toLowerCase()}`);
-
-/** Serialize one hydration-safe core layout style. */
-const serializeStyle = (style: VirtualScrollerLayoutStyle) =>
-    Object.entries(style)
-        .map(
-            ([property, value]) => `${toCSSProperty(property)}:${String(value)}`
-        )
-        .join(";");
 
 /**
  * Create a component-owned model and synchronize it with an optional store.
@@ -141,21 +120,15 @@ export const createVirtualRange = (
  * @public
  */
 export const createVirtualLayout = (
-    model: VirtualScroller,
-    scrollerStyle: VirtualScrollerLayoutStyle = {}
+    model: VirtualScroller
 ): VirtualSvelteLayoutBinding => {
     const layout = new VirtualScrollerLayout(model);
-    const interactiveStyle = {
-        overflow: "auto",
-        contain: "strict",
-        ...scrollerStyle
-    };
     onDestroy(() => layout.dispose());
 
     return {
         scroller: element => {
-            layout.setScrollerElement(element, interactiveStyle);
-            return { destroy: () => layout.setScrollerElement(null, {}) };
+            layout.setScrollerElement(element);
+            return { destroy: () => layout.setScrollerElement(null) };
         },
         size: element => {
             layout.setSizeElement(element);
@@ -164,21 +137,15 @@ export const createVirtualLayout = (
         items: element => {
             layout.setItemsElement(element);
             return { destroy: () => layout.setItemsElement(null) };
-        },
-        scrollerStyle: serializeStyle(
-            layout.getScrollerElementStyle(interactiveStyle)
-        ),
-        sizeStyle: serializeStyle(layout.getSizeElementStyle()),
-        itemsStyle: serializeStyle(layout.getItemsElementStyle())
+        }
     };
 };
 
 /** Create the range store and layout actions for a common virtual list. @public */
 export const createVirtualList = (
-    model: VirtualScroller,
-    scrollerStyle: VirtualScrollerLayoutStyle = {}
+    model: VirtualScroller
 ): VirtualSvelteListBinding => ({
-    ...createVirtualLayout(model, scrollerStyle),
+    ...createVirtualLayout(model),
     range: createVirtualRange(model)
 });
 

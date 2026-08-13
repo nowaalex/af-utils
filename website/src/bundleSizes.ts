@@ -11,58 +11,58 @@ export default {
     },
     "@af-utils/virtual-core": {
         "./dist/index.production.js": {
-            raw: 17545,
-            min: 17081,
-            minGz: 5844,
-            minBrotli: 5273
+            raw: 17135,
+            min: 16669,
+            minGz: 5718,
+            minBrotli: 5169
         }
     },
     "@af-utils/virtual-lit": {
         "./dist/index.js": {
-            raw: 4079,
-            min: 3405,
-            minGz: 1091,
-            minBrotli: 967
+            raw: 3572,
+            min: 2961,
+            minGz: 904,
+            minBrotli: 815
         }
     },
     "@af-utils/virtual-preact": {
         "./dist/index.js": {
-            raw: 2981,
-            min: 2202,
-            minGz: 987,
-            minBrotli: 900
+            raw: 2677,
+            min: 1951,
+            minGz: 891,
+            minBrotli: 821
         }
     },
     "@af-utils/virtual-react": {
         "./dist/index.js": {
-            raw: 6427,
-            min: 2306,
-            minGz: 1022,
-            minBrotli: 944
+            raw: 5672,
+            min: 2037,
+            minGz: 925,
+            minBrotli: 848
         }
     },
     "@af-utils/virtual-solid": {
         "./dist/index.js": {
-            raw: 3476,
-            min: 2625,
-            minGz: 1271,
-            minBrotli: 1127
+            raw: 2718,
+            min: 2034,
+            minGz: 978,
+            minBrotli: 896
         }
     },
     "@af-utils/virtual-svelte": {
         "./dist/index.js": {
-            raw: 3066,
-            min: 2476,
-            minGz: 954,
-            minBrotli: 836
+            raw: 2680,
+            min: 2159,
+            minGz: 777,
+            minBrotli: 697
         }
     },
     "@af-utils/virtual-vue": {
         "./dist/index.js": {
-            raw: 2951,
-            min: 2228,
-            minGz: 974,
-            minBrotli: 884
+            raw: 2611,
+            min: 1958,
+            minGz: 864,
+            minBrotli: 801
         }
     }
 } as const;

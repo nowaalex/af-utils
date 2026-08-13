@@ -50,7 +50,7 @@ export const useVirtualGridItemRef: (rows: VirtualScroller, rowIndex: number, co
 export const useVirtualItemRef: (model: VirtualScroller, index: number) => RefCallback<HTMLElement>;
 
 // @public
-export const useVirtualLayout: (model: VirtualScroller, scrollerStyle?: JSX.CSSProperties) => VirtualPreactLayoutBinding;
+export const useVirtualLayout: (model: VirtualScroller) => VirtualPreactLayoutBinding;
 
 // @public
 export const useVirtualModel: (params: VirtualScrollerInitialParams) => VirtualScroller;
@@ -61,12 +61,8 @@ export const useVirtualSnapshot: (model: VirtualScroller, events?: VirtualScroll
 // @public
 export interface VirtualPreactLayoutBinding {
     itemsRef: RefCallback<HTMLElement>;
-    itemsStyle: JSX.CSSProperties;
     scrollerRef: RefCallback<HTMLElement>;
-    scrollerStyle: JSX.CSSProperties;
     sizeRef: RefCallback<HTMLElement>;
-    sizeStyle: JSX.CSSProperties;
 }
 
 ```
-

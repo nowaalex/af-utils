@@ -10,7 +10,7 @@
 
     const model = createVirtual({ itemCount: 5_000 });
     const range = createVirtualRange(model);
-    const { size, items, sizeStyle, itemsStyle } = createVirtualLayout(model);
+    const { size, items } = createVirtualLayout(model);
 
     onMount(() => {
         model.setScroller(window);
@@ -22,8 +22,8 @@
 <div>
     <div class={css.offset2}>Some offset 2</div>
     <div>
-        <div use:size style={sizeStyle}>
-            <div use:items style={itemsStyle}>
+        <div use:size>
+            <div use:items>
                 {#each $range as index (index)}
                     <div use:virtualItem={{ model, index }} class={css.item}>
                         row {index}

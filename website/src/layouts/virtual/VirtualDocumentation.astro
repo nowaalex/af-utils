@@ -1,10 +1,15 @@
 ---
 import { getImage } from "astro:assets";
+import { exampleFrameworks } from "@af-utils/examples/config";
 import ogVirtual from "assets/og/virtual.png";
 import type { MenuItem } from "components/Menu.astro";
 import Documentation from "layouts/Documentation.astro";
 import defaultsDeep from "lodash/defaultsDeep";
 import { getMenuMapForProjectExamples } from "utils/examples";
+import {
+    frameworkPresentation,
+    virtualAdapterPackages
+} from "utils/frameworks";
 
 export type { Props } from "layouts/Base.astro";
 
@@ -31,8 +36,19 @@ const mapReferenceNavigation = (item: ReferenceNavigationItem): MenuItem => {
 
 const referenceItems = referenceNavigation.map((item) => {
     const mapped = mapReferenceNavigation(item);
+    const packageName = item.title;
+    const frameworkName = exampleFrameworks.find(
+        (_, index) => virtualAdapterPackages[index] === packageName
+    );
+    const framework = frameworkName
+        ? frameworkPresentation[frameworkName]
+        : undefined;
     return {
         ...mapped,
+        name: packageName.replace("@af-utils/virtual-", ""),
+        collapsible: true,
+        icon: framework?.icon ?? "material-symbols:data-object",
+        ...(framework?.iconClass ? { iconClass: framework.iconClass } : {}),
         children: [
             {
                 name: "Overview",

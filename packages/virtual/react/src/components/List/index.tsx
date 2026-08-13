@@ -47,25 +47,13 @@ const List = <Data = unknown, C extends ElementType = "div">(
         ...rest
     } = props;
 
-    const {
-        scrollerRef,
-        sizeRef,
-        itemsRef,
-        scrollerStyle,
-        sizeStyle,
-        itemsStyle
-    } = useVirtualLayout(model, style);
+    const { scrollerRef, sizeRef, itemsRef } = useVirtualLayout(model);
 
     return (
-        <C
-            {...rest}
-            style={scrollerStyle}
-            ref={scrollerRef}
-            tabIndex={tabIndex}
-        >
+        <C {...rest} style={style} ref={scrollerRef} tabIndex={tabIndex}>
             {header}
-            <div ref={sizeRef} style={sizeStyle}>
-                <div ref={itemsRef} style={itemsStyle}>
+            <div ref={sizeRef}>
+                <div ref={itemsRef}>
                     <VirtualItems
                         model={model}
                         Item={Item}

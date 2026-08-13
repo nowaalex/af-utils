@@ -19,18 +19,13 @@ const indexes = computed(() => {
 </script>
 
 <template>
-    <div
-        :ref="layout.scrollerRef"
-        :class="css.list"
-        :style="layout.scrollerStyle"
-        role="list"
-    >
+    <div :ref="layout.scrollerRef" :class="css.list" role="list">
         <div :class="css.offset1">Some offset</div>
         <div>
             <div :class="css.offset2">Some offset 2</div>
             <div>
-                <div :ref="layout.sizeRef" :style="layout.sizeStyle">
-                    <div :ref="layout.itemsRef" :style="layout.itemsStyle">
+                <div :ref="layout.sizeRef">
+                    <div :ref="layout.itemsRef">
                         <div
                             v-for="index in indexes"
                             :key="index"

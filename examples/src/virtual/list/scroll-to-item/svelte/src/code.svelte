@@ -18,15 +18,7 @@
         itemCount: sizes.length,
         estimatedItemSize: 78
     });
-    const {
-        range,
-        scroller,
-        size,
-        items,
-        scrollerStyle,
-        sizeStyle,
-        itemsStyle
-    } = createVirtualList(model);
+    const { range, scroller, size, items } = createVirtualList(model);
 
     const scrollFromForm = (target: EventTarget | null) => {
         const form = target as HTMLFormElement;
@@ -70,7 +62,7 @@
     onMount(() => model.scrollToIndex(sizes.length - 1));
 </script>
 
-<div use:scroller style={scrollerStyle} class={css.list} role="list">
+<div use:scroller class={css.list} role="list">
     <form
         use:virtualStickyHeader={model}
         class={`${css.form} ${css.top0}`}
@@ -87,8 +79,8 @@
         >
         <button class={css.btn} type="submit">Go</button>
     </form>
-    <div use:size style={sizeStyle}>
-        <div use:items style={itemsStyle}>
+    <div use:size>
+        <div use:items>
             {#each $range as index (index)}
                 <div
                     use:virtualItem={{ model, index }}

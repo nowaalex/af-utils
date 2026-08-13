@@ -6,7 +6,6 @@
 
 import type { ComponentProps } from 'react';
 import type { ComponentType } from 'react';
-import { CSSProperties } from 'react';
 import type { ElementType } from 'react';
 import { JSX } from 'react';
 import type { ReactElement } from 'react';
@@ -60,13 +59,10 @@ export const useVirtualGridItemRef: (rows: VirtualScroller, rowIndex: number, co
 export const useVirtualItemRef: (model: VirtualScroller, index: number) => RefCallback<HTMLElement>;
 
 // @public
-export const useVirtualLayout: (model: VirtualScroller, scrollerStyle?: CSSProperties) => {
+export const useVirtualLayout: (model: VirtualScroller) => {
     scrollerRef: RefCallback<HTMLElement>;
     sizeRef: RefCallback<HTMLElement>;
     itemsRef: RefCallback<HTMLElement>;
-    scrollerStyle: CSSProperties;
-    sizeStyle: CSSProperties;
-    itemsStyle: CSSProperties;
 };
 
 // @public

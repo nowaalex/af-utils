@@ -1,6 +1,6 @@
 ---
 title: "Interface: VirtualVueLayoutBinding"
-description: Vue refs and hydration-safe styles for virtual layout elements.
+description: Vue refs for virtual layout elements.
 package: "@af-utils/virtual-vue"
 symbol: VirtualVueLayoutBinding
 kind: interface
@@ -16,15 +16,12 @@ generated: true
 
 # Interface: VirtualVueLayoutBinding
 
-Vue refs and hydration-safe styles for virtual layout elements.
+Vue refs for virtual layout elements.
 
 ## Properties
 
-| Property                                            | Type                                                                                       |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| <a id="property-itemsref"></a> `itemsRef`           | [`VirtualVueElementRef`](/virtual/reference/virtual-vue/type-aliases/VirtualVueElementRef) |
-| <a id="property-itemsstyle"></a> `itemsStyle`       | `VirtualScrollerLayoutStyle`                                                               |
-| <a id="property-scrollerref"></a> `scrollerRef`     | [`VirtualVueElementRef`](/virtual/reference/virtual-vue/type-aliases/VirtualVueElementRef) |
-| <a id="property-scrollerstyle"></a> `scrollerStyle` | `VirtualScrollerLayoutStyle`                                                               |
-| <a id="property-sizeref"></a> `sizeRef`             | [`VirtualVueElementRef`](/virtual/reference/virtual-vue/type-aliases/VirtualVueElementRef) |
-| <a id="property-sizestyle"></a> `sizeStyle`         | `VirtualScrollerLayoutStyle`                                                               |
+| Property                                        | Type                                                                                       |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| <a id="property-itemsref"></a> `itemsRef`       | [`VirtualVueElementRef`](/virtual/reference/virtual-vue/type-aliases/VirtualVueElementRef) |
+| <a id="property-scrollerref"></a> `scrollerRef` | [`VirtualVueElementRef`](/virtual/reference/virtual-vue/type-aliases/VirtualVueElementRef) |
+| <a id="property-sizeref"></a> `sizeRef`         | [`VirtualVueElementRef`](/virtual/reference/virtual-vue/type-aliases/VirtualVueElementRef) |

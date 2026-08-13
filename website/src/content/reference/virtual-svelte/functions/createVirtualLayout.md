@@ -17,17 +17,16 @@ generated: true
 # Function: createVirtualLayout()
 
 ```ts
-function createVirtualLayout(model, scrollerStyle?): VirtualSvelteLayoutBinding;
+function createVirtualLayout(model): VirtualSvelteLayoutBinding;
 ```
 
 Connect Svelte actions to the framework-neutral virtual layout adapter.
 
 ## Parameters
 
-| Parameter       | Type                                                                         |
-| --------------- | ---------------------------------------------------------------------------- |
-| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `scrollerStyle` | `VirtualScrollerLayoutStyle`                                                 |
+| Parameter | Type                                                                         |
+| --------- | ---------------------------------------------------------------------------- |
+| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
 
 ## Returns
 

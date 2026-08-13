@@ -85,16 +85,10 @@ export interface VirtualScrollerInitialParams extends VirtualScrollerRuntimePara
 export class VirtualScrollerLayout {
     constructor(model: VirtualScroller);
     dispose(): void;
-    getItemsElementStyle(): VirtualScrollerLayoutStyle;
-    getScrollerElementStyle(interactiveStyle: VirtualScrollerLayoutStyle): VirtualScrollerLayoutStyle;
-    getSizeElementStyle(): VirtualScrollerLayoutStyle;
     setItemsElement(element: HTMLElement | null): void;
-    setScrollerElement(element: HTMLElement | null, interactiveStyle: VirtualScrollerLayoutStyle): void;
+    setScrollerElement(element: HTMLElement | null): void;
     setSizeElement(element: HTMLElement | null): void;
 }
-
-// @public
-export type VirtualScrollerLayoutStyle = Readonly<Record<string, string | number>>;
 
 // @public
 export interface VirtualScrollerRuntimeParams {

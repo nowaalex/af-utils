@@ -15,20 +15,12 @@
         itemCount: DEFAULT_ROW_COUNT,
         estimatedItemSize: 75
     });
-    const {
-        range,
-        scroller,
-        size,
-        items,
-        scrollerStyle,
-        sizeStyle,
-        itemsStyle
-    } = createVirtualList(model);
+    const { range, scroller, size, items } = createVirtualList(model);
 </script>
 
-<div use:scroller style={scrollerStyle} class={css.list} role="list">
-    <div use:size style={sizeStyle}>
-        <div use:items style={itemsStyle}>
+<div use:scroller class={css.list} role="list">
+    <div use:size>
+        <div use:items>
             {#each $range as index (index)}
                 <div
                     use:virtualItem={{ model, index }}

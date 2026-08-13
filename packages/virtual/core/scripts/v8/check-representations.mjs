@@ -338,7 +338,7 @@ assert(
 );
 
 const layout = new VirtualScrollerLayout(verticalModel);
-layout.getItemsElementStyle();
+layout.setItemsElement({ style: {} });
 assertFastObject("VirtualScrollerLayout", layout);
 assertFastObject("VirtualScrollerLayout._itemsGeometry", layout._itemsGeometry);
 

@@ -1,6 +1,6 @@
 ---
 title: "Class: VirtualLayoutController"
-description: Lit refs and styles backed by the framework-neutral layout adapter.
+description: Lit refs backed by the framework-neutral layout adapter.
 package: "@af-utils/virtual-lit"
 symbol: VirtualLayoutController
 kind: class
@@ -16,7 +16,7 @@ generated: true
 
 # Class: VirtualLayoutController
 
-Lit refs and styles backed by the framework-neutral layout adapter.
+Lit refs backed by the framework-neutral layout adapter.
 
 ## Implements
 
@@ -27,21 +27,17 @@ Lit refs and styles backed by the framework-neutral layout adapter.
 ### Constructor
 
 ```ts
-new VirtualLayoutController(
-   host,
-   model,
-   scrollerStyle?): VirtualLayoutController;
+new VirtualLayoutController(host, model): VirtualLayoutController;
 ```
 
 Create layout bindings for a Lit host.
 
 #### Parameters
 
-| Parameter       | Type                                                                         |
-| --------------- | ---------------------------------------------------------------------------- |
-| `host`          | `ReactiveControllerHost`                                                     |
-| `model`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `scrollerStyle` | `VirtualScrollerLayoutStyle`                                                 |
+| Parameter | Type                                                                         |
+| --------- | ---------------------------------------------------------------------------- |
+| `host`    | `ReactiveControllerHost`                                                     |
+| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
 
 #### Returns
 
@@ -49,14 +45,11 @@ Create layout bindings for a Lit host.
 
 ## Properties
 
-| Property                                            | Modifier   | Type                         |
-| --------------------------------------------------- | ---------- | ---------------------------- |
-| <a id="property-itemsref"></a> `itemsRef`           | `readonly` | `RefOrCallback`              |
-| <a id="property-itemsstyle"></a> `itemsStyle`       | `readonly` | `VirtualScrollerLayoutStyle` |
-| <a id="property-scrollerref"></a> `scrollerRef`     | `readonly` | `RefOrCallback`              |
-| <a id="property-scrollerstyle"></a> `scrollerStyle` | `readonly` | `VirtualScrollerLayoutStyle` |
-| <a id="property-sizeref"></a> `sizeRef`             | `readonly` | `RefOrCallback`              |
-| <a id="property-sizestyle"></a> `sizeStyle`         | `readonly` | `VirtualScrollerLayoutStyle` |
+| Property                                        | Modifier   | Type            |
+| ----------------------------------------------- | ---------- | --------------- |
+| <a id="property-itemsref"></a> `itemsRef`       | `readonly` | `RefOrCallback` |
+| <a id="property-scrollerref"></a> `scrollerRef` | `readonly` | `RefOrCallback` |
+| <a id="property-sizeref"></a> `sizeRef`         | `readonly` | `RefOrCallback` |
 
 ## Methods
 

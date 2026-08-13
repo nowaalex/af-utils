@@ -19,7 +19,7 @@ const List = <Data = unknown,>(props: ListProps<Data>) => {
         "style",
         "tabIndex"
     ]);
-    const layout = createVirtualLayout(local.model, local.style);
+    const layout = createVirtualLayout(local.model);
     const revision = createVirtualSnapshot(
         local.model,
         VirtualScrollerEvent.RANGE
@@ -46,12 +46,12 @@ const List = <Data = unknown,>(props: ListProps<Data>) => {
         <div
             {...rest}
             ref={layout.scrollerRef}
-            style={layout.scrollerStyle}
+            style={local.style}
             tabIndex={local.tabIndex ?? -1}
         >
             {local.header}
-            <div ref={layout.sizeRef} style={layout.sizeStyle}>
-                <div ref={layout.itemsRef} style={layout.itemsStyle}>
+            <div ref={layout.sizeRef}>
+                <div ref={layout.itemsRef}>
                     <For each={indexes()}>{renderItem}</For>
                 </div>
             </div>

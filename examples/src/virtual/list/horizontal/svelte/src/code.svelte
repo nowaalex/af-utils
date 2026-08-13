@@ -11,20 +11,12 @@
         estimatedItemSize: 75,
         horizontal: true
     });
-    const {
-        range,
-        scroller,
-        size,
-        items,
-        scrollerStyle,
-        sizeStyle,
-        itemsStyle
-    } = createVirtualList(columns);
+    const { range, scroller, size, items } = createVirtualList(columns);
 </script>
 
-<div use:scroller style={scrollerStyle}>
-    <div use:size style={sizeStyle}>
-        <div use:items style={itemsStyle}>
+<div use:scroller>
+    <div use:size>
+        <div use:items>
             {#each $range as index (index)}
                 <div
                     use:virtualItem={{ model: columns, index }}

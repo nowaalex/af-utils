@@ -6,25 +6,12 @@
     } from "@af-utils/virtual-svelte";
 
     const rows = createVirtual({ itemCount: 150_000 });
-    const {
-        range,
-        scroller,
-        size,
-        items,
-        scrollerStyle,
-        sizeStyle,
-        itemsStyle
-    } = createVirtualList(rows);
+    const { range, scroller, size, items } = createVirtualList(rows);
 </script>
 
-<div
-    use:scroller
-    style={scrollerStyle}
-    role="list"
-    aria-label="Simple virtual list"
->
-    <div use:size style={sizeStyle}>
-        <div use:items style={itemsStyle}>
+<div use:scroller role="list" aria-label="Simple virtual list">
+    <div use:size>
+        <div use:items>
             {#each $range as index (index)}
                 <div
                     use:virtualItem={{ model: rows, index }}

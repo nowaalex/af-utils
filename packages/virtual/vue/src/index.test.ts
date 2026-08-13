@@ -93,32 +93,27 @@ describe("Vue virtual adapter", () => {
         model.dispose();
     });
 
-    test("enables scrolling after Vue applies hydration-safe styles", async () => {
+    test("lets core apply the complete layout through Vue refs", async () => {
         const model = new VirtualScroller({ itemCount: 10 });
-        let layoutBinding: ReturnType<typeof useVirtualLayout> | undefined;
         const app = createApp(
             defineComponent({
                 setup() {
                     const layout = useVirtualLayout(model);
-                    layoutBinding = layout;
                     return () =>
                         h(
                             "div",
                             {
-                                ref: layout.scrollerRef,
-                                style: layout.scrollerStyle
+                                ref: layout.scrollerRef
                             },
                             [
                                 h(
                                     "div",
                                     {
-                                        ref: layout.sizeRef,
-                                        style: layout.sizeStyle
+                                        ref: layout.sizeRef
                                     },
                                     [
                                         h("div", {
-                                            ref: layout.itemsRef,
-                                            style: layout.itemsStyle
+                                            ref: layout.itemsRef
                                         })
                                     ]
                                 )
@@ -131,10 +126,13 @@ describe("Vue virtual adapter", () => {
         app.mount(container);
         await nextTick();
 
-        expect(
-            (container.firstElementChild as HTMLElement).style.overflow
-        ).toBe("auto");
-        expect(layoutBinding?.scrollerStyle.overflow).toBe("auto");
+        const scroller = container.firstElementChild as HTMLElement;
+        const sizeElement = scroller.firstElementChild as HTMLElement;
+        const itemsElement = sizeElement.firstElementChild as HTMLElement;
+        expect(scroller.style.overflow).toBe("auto");
+        expect(scroller.style.contain).toBe("strict");
+        expect(sizeElement.style.height).toBe("400px");
+        expect(itemsElement.style.transform).toBe("translate3d(0px, 0px, 0px)");
 
         app.unmount();
         model.dispose();

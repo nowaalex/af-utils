@@ -20,13 +20,12 @@ const indexes = () => {
 <template>
     <div
         :ref="layout.scrollerRef"
-        :style="layout.scrollerStyle"
         :class="css.list"
         role="list"
         aria-label="Simple primitives list"
     >
-        <div :ref="layout.sizeRef" :style="layout.sizeStyle">
-            <div :ref="layout.itemsRef" :style="layout.itemsStyle">
+        <div :ref="layout.sizeRef">
+            <div :ref="layout.itemsRef">
                 <div
                     v-for="index in indexes()"
                     :key="index"

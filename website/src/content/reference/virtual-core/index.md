@@ -63,7 +63,6 @@ What it doesn't do:
 | [VirtualScrollerEvent](/virtual/reference/virtual-core/type-aliases/VirtualScrollerEvent)                 | `VirtualScrollerEvent` is exported as a constant, so a separate type is needed to emulate enum behavior. |
 | [VirtualScrollerEventMask](/virtual/reference/virtual-core/type-aliases/VirtualScrollerEventMask)         | -                                                                                                        |
 | [VirtualScrollerExactPosition](/virtual/reference/virtual-core/type-aliases/VirtualScrollerExactPosition) | Numeric snapshot of scroll position                                                                      |
-| [VirtualScrollerLayoutStyle](/virtual/reference/virtual-core/type-aliases/VirtualScrollerLayoutStyle)     | Serializable inline styles shared by server and client layout adapters.                                  |
 | [VirtualScrollerScrollElement](/virtual/reference/virtual-core/type-aliases/VirtualScrollerScrollElement) | Scrollable container type                                                                                |
 
 ## Variables

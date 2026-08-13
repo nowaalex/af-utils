@@ -36,15 +36,7 @@
         estimatedItemSize: ESTIMATED_ITEM_SIZE_PX,
         itemCount: itemData.length
     });
-    const {
-        range,
-        scroller,
-        size,
-        items,
-        scrollerStyle,
-        sizeStyle,
-        itemsStyle
-    } = createVirtualList(model);
+    const { range, scroller, size, items } = createVirtualList(model);
 
     const prependItems = async () => {
         loading = true;
@@ -60,12 +52,7 @@
     };
 </script>
 
-<div
-    use:scroller
-    style={scrollerStyle}
-    role="list"
-    aria-label="Prepend items list"
->
+<div use:scroller role="list" aria-label="Prepend items list">
     <div use:virtualStickyHeader={model} class={css.listHeader}>
         <button
             type="button"
@@ -76,8 +63,8 @@
             Prepend {PREPEND_BATCH_SIZE} items{loading ? " (loading...)" : ""}
         </button>
     </div>
-    <div use:size style={sizeStyle}>
-        <div use:items style={itemsStyle}>
+    <div use:size>
+        <div use:items>
             {#each $range as index (itemData[index]?.id ?? index)}
                 <div
                     use:virtualItem={{ model, index }}
