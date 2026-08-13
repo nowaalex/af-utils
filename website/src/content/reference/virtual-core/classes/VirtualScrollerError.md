@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-core/classes/VirtualScrollerError
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScrollerError
-
-# Class: VirtualScrollerError
+# VirtualScrollerError
 
 Error thrown for an invalid virtual-scroller operation.
 
@@ -40,9 +34,22 @@ Create a package error with a stable machine-readable code.
 
 #### Parameters
 
-| Parameter | Type                                                                                                                                                                                                                                                                                                                                                                                      |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `code`    | \| `"AFV_INVALID_INDEX"` \| `"AFV_INVALID_OFFSET"` \| `"AFV_INVALID_ITEM_COUNT"` \| `"AFV_INVALID_ITEM_SIZE"` \| `"AFV_INVALID_WIDGET_SIZE"` \| `"AFV_INVALID_SCROLLER_OFFSET"` \| `"AFV_INVALID_OVERSCAN"` \| `"AFV_INVALID_ATTEMPTS"` \| `"AFV_INVALID_SPLICE"` \| `"AFV_INVALID_RANGE"` \| `"AFV_EMPTY_MODEL"` \| `"AFV_DISPOSED"` \| `"AFV_BATCH_INVARIANT"` \| `"AFV_MODEL_CHANGED"` |
+##### code
+
+\| `"AFV_INVALID_INDEX"`
+\| `"AFV_INVALID_OFFSET"`
+\| `"AFV_INVALID_ITEM_COUNT"`
+\| `"AFV_INVALID_ITEM_SIZE"`
+\| `"AFV_INVALID_WIDGET_SIZE"`
+\| `"AFV_INVALID_SCROLLER_OFFSET"`
+\| `"AFV_INVALID_OVERSCAN"`
+\| `"AFV_INVALID_ATTEMPTS"`
+\| `"AFV_INVALID_SPLICE"`
+\| `"AFV_INVALID_RANGE"`
+\| `"AFV_EMPTY_MODEL"`
+\| `"AFV_DISPOSED"`
+\| `"AFV_BATCH_INVARIANT"`
+\| `"AFV_MODEL_CHANGED"`
 
 #### Returns
 
@@ -56,14 +63,107 @@ Error.constructor;
 
 ## Properties
 
-| Property                                                | Modifier   | Type                                                                                                                                                                                                                                                                                                                                                                                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                       | Inherited from          |
-| ------------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| <a id="property-cause"></a> `cause?`                    | `public`   | `unknown`                                                                                                                                                                                                                                                                                                                                                                                 | -                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Error.cause`           |
-| <a id="property-code"></a> `code`                       | `readonly` | \| `"AFV_INVALID_INDEX"` \| `"AFV_INVALID_OFFSET"` \| `"AFV_INVALID_ITEM_COUNT"` \| `"AFV_INVALID_ITEM_SIZE"` \| `"AFV_INVALID_WIDGET_SIZE"` \| `"AFV_INVALID_SCROLLER_OFFSET"` \| `"AFV_INVALID_OVERSCAN"` \| `"AFV_INVALID_ATTEMPTS"` \| `"AFV_INVALID_SPLICE"` \| `"AFV_INVALID_RANGE"` \| `"AFV_EMPTY_MODEL"` \| `"AFV_DISPOSED"` \| `"AFV_BATCH_INVARIANT"` \| `"AFV_MODEL_CHANGED"` | Stable machine-readable error code.                                                                                                                                                                                                                                                                                                                                                                                                               | -                       |
-| <a id="property-message"></a> `message`                 | `public`   | `string`                                                                                                                                                                                                                                                                                                                                                                                  | -                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Error.message`         |
-| <a id="property-name"></a> `name`                       | `public`   | `string`                                                                                                                                                                                                                                                                                                                                                                                  | -                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Error.name`            |
-| <a id="property-stack"></a> `stack?`                    | `public`   | `string`                                                                                                                                                                                                                                                                                                                                                                                  | -                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Error.stack`           |
-| <a id="property-stacktracelimit"></a> `stackTraceLimit` | `static`   | `number`                                                                                                                                                                                                                                                                                                                                                                                  | The `Error.stackTraceLimit` property specifies the number of stack frames collected by a stack trace (whether generated by `new Error().stack` or `Error.captureStackTrace(obj)`). The default value is `10` but may be set to any valid JavaScript number. Changes will affect any stack trace captured _after_ the value has been changed. If set to a non-number value, or set to a negative number, stack traces will not capture any frames. | `Error.stackTraceLimit` |
+### cause?
+
+```ts
+optional cause?: unknown;
+```
+
+#### Inherited from
+
+```ts
+Error.cause;
+```
+
+---
+
+### code
+
+```ts
+readonly code:
+  | "AFV_INVALID_INDEX"
+  | "AFV_INVALID_OFFSET"
+  | "AFV_INVALID_ITEM_COUNT"
+  | "AFV_INVALID_ITEM_SIZE"
+  | "AFV_INVALID_WIDGET_SIZE"
+  | "AFV_INVALID_SCROLLER_OFFSET"
+  | "AFV_INVALID_OVERSCAN"
+  | "AFV_INVALID_ATTEMPTS"
+  | "AFV_INVALID_SPLICE"
+  | "AFV_INVALID_RANGE"
+  | "AFV_EMPTY_MODEL"
+  | "AFV_DISPOSED"
+  | "AFV_BATCH_INVARIANT"
+  | "AFV_MODEL_CHANGED";
+```
+
+Stable machine-readable error code.
+
+---
+
+### message
+
+```ts
+message: string;
+```
+
+#### Inherited from
+
+```ts
+Error.message;
+```
+
+---
+
+### name
+
+```ts
+name: string;
+```
+
+#### Inherited from
+
+```ts
+Error.name;
+```
+
+---
+
+### stack?
+
+```ts
+optional stack?: string;
+```
+
+#### Inherited from
+
+```ts
+Error.stack;
+```
+
+---
+
+### stackTraceLimit
+
+```ts
+static stackTraceLimit: number;
+```
+
+The `Error.stackTraceLimit` property specifies the number of stack frames
+collected by a stack trace (whether generated by `new Error().stack` or
+`Error.captureStackTrace(obj)`).
+
+The default value is `10` but may be set to any valid JavaScript number. Changes
+will affect any stack trace captured _after_ the value has been changed.
+
+If set to a non-number value, or set to a negative number, stack traces will
+not capture any frames.
+
+#### Inherited from
+
+```ts
+Error.stackTraceLimit;
+```
 
 ## Methods
 
@@ -119,10 +219,13 @@ a();
 
 #### Parameters
 
-| Parameter         | Type       |
-| ----------------- | ---------- |
-| `targetObject`    | `object`   |
-| `constructorOpt?` | `Function` |
+##### targetObject
+
+`object`
+
+##### constructorOpt?
+
+`Function`
 
 #### Returns
 
@@ -144,10 +247,13 @@ static prepareStackTrace(err, stackTraces): any;
 
 #### Parameters
 
-| Parameter     | Type         |
-| ------------- | ------------ |
-| `err`         | `Error`      |
-| `stackTraces` | `CallSite`[] |
+##### err
+
+`Error`
+
+##### stackTraces
+
+`CallSite`[]
 
 #### Returns
 

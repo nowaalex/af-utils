@@ -1,20 +1,14 @@
 ---
-title: "Function: useVirtualLayout()"
+title: "Hook: useVirtualLayout()"
 description: Connect Vue template refs to the framework-neutral layout adapter.
 package: "@af-utils/virtual-vue"
 symbol: useVirtualLayout
-kind: function
+kind: hook
 referencePath: /virtual/reference/virtual-vue/functions/useVirtualLayout
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-vue](/virtual/reference/virtual-vue/index) / useVirtualLayout
-
-# Function: useVirtualLayout()
+# useVirtualLayout()
 
 ```ts
 function useVirtualLayout(model): VirtualVueLayoutBinding;
@@ -24,9 +18,9 @@ Connect Vue template refs to the framework-neutral layout adapter.
 
 ## Parameters
 
-| Parameter | Type                                                                         |
-| --------- | ---------------------------------------------------------------------------- |
-| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
 
 ## Returns
 

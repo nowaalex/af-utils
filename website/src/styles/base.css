@@ -49,83 +49,120 @@
         @apply m-0 h-full border-0 p-4 shadow-none;
     }
 
+    .prose :not(pre) > code {
+        @apply rounded bg-slate-100 px-1 py-0.5 font-medium text-slate-800;
+        overflow-wrap: anywhere;
+    }
+
+    .prose :not(pre) > code::before,
+    .prose :not(pre) > code::after {
+        content: none !important;
+    }
+
+    .prose .table-scroll {
+        @apply my-8 overflow-x-auto;
+        scrollbar-gutter: stable;
+    }
+
+    .prose .table-scroll > table {
+        @apply my-0;
+    }
+
+    .reference-header code::before,
+    .reference-header code::after,
+    .reference-doc :not(pre) > code::before,
+    .reference-doc :not(pre) > code::after {
+        content: none !important;
+    }
+
+    .reference-doc {
+        --tw-prose-body: var(--color-slate-700);
+        --tw-prose-headings: var(--color-slate-950);
+        --tw-prose-links: var(--color-blue-700);
+        --tw-prose-bold: var(--color-slate-900);
+        --tw-prose-counters: var(--color-slate-500);
+        --tw-prose-bullets: var(--color-slate-400);
+        --tw-prose-hr: var(--color-slate-200);
+        --tw-prose-quotes: var(--color-slate-700);
+        --tw-prose-quote-borders: var(--color-blue-300);
+        --tw-prose-code: var(--color-violet-700);
+    }
+
+    .reference-doc > h1:first-child {
+        @apply mt-0 mb-4 text-4xl leading-tight tracking-tight sm:text-5xl;
+    }
+
+    .reference-doc > h1:first-child + p {
+        @apply mt-0 text-lg leading-8 text-slate-600;
+    }
+
+    .reference-doc :is(h1, h2, h3, h4, h5, h6) {
+        scroll-margin-top: 2rem;
+    }
+
+    .reference-doc h2 {
+        @apply mt-12 border-t border-slate-200 pt-8 text-2xl tracking-tight;
+    }
+
+    .reference-doc h3 {
+        @apply mt-10 text-xl tracking-tight;
+    }
+
     .reference-doc :is(h4, h5, h6) {
-        @apply mb-3 mt-6 border-l-4 border-violet-400 bg-violet-50 px-3 py-1.5 text-sm font-medium text-violet-900;
+        @apply mb-2 mt-6 border-0 bg-transparent p-0 text-xs font-semibold uppercase tracking-[0.1em] text-slate-500;
     }
 
-    .reference-doc :is(h4, h5, h6)[id^="returns"] {
-        @apply border-cyan-500 bg-cyan-50 text-cyan-900;
-    }
-
-    .reference-doc :is(h4, h5, h6)[id^="remarks"] {
-        @apply border-orange-400 bg-orange-50 text-orange-900;
-    }
-
-    .reference-doc table {
-        @apply border border-violet-200 bg-white text-sm;
-    }
-
-    .reference-doc table th {
-        @apply bg-violet-50 font-medium text-violet-900;
-    }
-
-    .reference-doc table td {
-        @apply border-violet-100;
-    }
-
-    .reference-doc table a {
-        @apply font-normal decoration-violet-300;
-    }
-
-    .reference-doc table strong {
-        @apply font-medium text-orange-800;
-    }
-
-    .reference-doc :is(h4, h5, h6) + table {
-        @apply mt-0;
-    }
-
-    .reference-doc :is(h4, h5, h6) + p {
-        @apply mt-2 text-gray-700;
+    .reference-doc :is(h4, h5, h6) + p,
+    .reference-doc :is(h4, h5, h6) + ul,
+    .reference-doc :is(h4, h5, h6) + ol {
+        @apply mt-2;
     }
 
     .reference-doc :not(pre) > code {
-        @apply font-normal text-violet-700;
+        @apply rounded bg-violet-50 px-1 py-0.5 font-normal text-violet-700;
+        overflow-wrap: anywhere;
     }
 
-    .reference-doc :is(h4, h5, h6)[id^="returns"] + p > code {
-        @apply text-cyan-700;
+    .reference-doc pre[data-theme] {
+        @apply rounded-lg border-slate-200 shadow-sm;
     }
 
-    .reference-doc table code {
-        @apply font-normal text-violet-700;
+    .reference-doc blockquote {
+        @apply rounded-r-md border-blue-300 bg-blue-50/60 py-1 pr-4 not-italic;
     }
 
-    .reference-doc table code::before,
-    .reference-doc table code::after {
-        content: none;
+    .reference-doc .table-scroll {
+        @apply my-6 overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm;
+        scrollbar-gutter: stable;
     }
 
-    .reference-doc table:has(th:nth-child(2):last-child) td:nth-child(2) code {
-        @apply text-cyan-700;
+    .reference-doc .table-scroll table {
+        @apply m-0 min-w-[34rem] border-0 text-[0.8125rem] leading-5;
     }
 
-    .reference-doc table:has(th:nth-child(3):last-child) td:nth-child(2) code {
-        @apply text-cyan-700;
+    .reference-doc .table-scroll th,
+    .reference-doc .table-scroll td {
+        @apply border-b border-slate-200 px-3 py-2.5 align-top;
     }
 
-    .reference-doc table:has(th:nth-child(4):last-child) td:nth-child(2) code,
-    .reference-doc table:has(th:nth-child(5):last-child) td:nth-child(3) code {
-        @apply text-cyan-700;
+    .reference-doc .table-scroll th {
+        @apply bg-slate-50 font-semibold text-slate-700;
     }
 
-    .reference-doc table:has(th:nth-child(4):last-child) td:nth-child(3) code,
-    .reference-doc table:has(th:nth-child(5):last-child) td:nth-child(4) code {
-        @apply text-orange-700;
+    .reference-doc .table-scroll tr:last-child td {
+        @apply border-b-0;
     }
 
-    .reference-doc table:has(th:nth-child(5):last-child) td:nth-child(2) code {
-        @apply text-gray-600;
+    .reference-doc .table-scroll a {
+        @apply font-medium decoration-blue-300 underline-offset-2;
+    }
+
+    .reference-doc .table-scroll :not(pre) > code {
+        @apply bg-transparent p-0 text-violet-700;
+    }
+
+    .reference-doc hr {
+        @apply my-10;
     }
 }
 

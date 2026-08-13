@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-svelte/variables/virtualContainer
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / virtualContainer
-
-# Variable: virtualContainer
+# virtualContainer
 
 ```ts
 const virtualContainer: Action<HTMLElement, VirtualScroller>;

@@ -46,6 +46,26 @@ const rehypeLinks: RehypePlugins[number] = () => tree =>
             }
         }
     });
+const rehypeScrollableTables: RehypePlugins[number] = () => tree =>
+    visit(tree, "element", (node, index, parent) => {
+        if (
+            node.tagName !== "table" ||
+            typeof index !== "number" ||
+            !parent ||
+            ("properties" in parent &&
+                Array.isArray(parent.properties.className) &&
+                parent.properties.className.includes("table-scroll"))
+        ) {
+            return;
+        }
+
+        parent.children[index] = {
+            type: "element",
+            tagName: "div",
+            properties: { className: ["table-scroll"] },
+            children: [node]
+        };
+    });
 
 export default defineConfig({
     site: env.PUBLIC_ORIGIN,
@@ -57,6 +77,7 @@ export default defineConfig({
             rehypePlugins: [
                 rehypeLinks,
                 rehypeSlug,
+                rehypeScrollableTables,
                 [rehypePrettyCode, { theme: codeTheme, keepBackground: true }]
             ],
             remarkPlugins: [remarkToc, remarkGfm],

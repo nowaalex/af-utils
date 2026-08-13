@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-svelte/functions/createVirtualRange
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / createVirtualRange
-
-# Function: createVirtualRange()
+# createVirtualRange()
 
 ```ts
 function createVirtualRange(model): Readable<number[]>;
@@ -24,9 +18,9 @@ Create a readable array containing the currently rendered indexes.
 
 ## Parameters
 
-| Parameter | Type                                                                         |
-| --------- | ---------------------------------------------------------------------------- |
-| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
 
 ## Returns
 

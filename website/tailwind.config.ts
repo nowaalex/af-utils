@@ -13,17 +13,12 @@ export default {
                         "--tw-prose-pre-code": "inherit",
                         "--tw-prose-pre-bg": "#fefdfd",
                         table: {
-                            /* prevent strething */
-                            width: "auto"
+                            width: "100%"
                         },
-                        "table td:not(:first-child), table th:not(:first-child)":
-                            {
-                                paddingLeft: "1rem"
-                            },
-                        "table td:not(:last-child), table th:not(:last-child)":
-                            {
-                                paddingRight: "1rem"
-                            },
+                        "table td, table th": {
+                            paddingLeft: "0.75rem",
+                            paddingRight: "0.75rem"
+                        },
                         "td p, th p": {
                             /* api-documenter started to generate tags for tables instead of md syntax */
                             margin: 0

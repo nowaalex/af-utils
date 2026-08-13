@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-lit/classes/VirtualController
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-lit](/virtual/reference/virtual-lit/index) / VirtualController
-
-# Class: VirtualController
+# VirtualController
 
 Lit reactive controller owning one virtual-scroller model.
 
@@ -34,10 +28,13 @@ Create and register a virtual model controller.
 
 #### Parameters
 
-| Parameter | Type                                                                                                            |
-| --------- | --------------------------------------------------------------------------------------------------------------- |
-| `host`    | `ReactiveControllerHost`                                                                                        |
-| `params`  | () => [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) |
+##### host
+
+`ReactiveControllerHost`
+
+##### params
+
+() => [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams)
 
 #### Returns
 
@@ -45,9 +42,11 @@ Create and register a virtual model controller.
 
 ## Properties
 
-| Property                            | Modifier   | Type                                                                         |
-| ----------------------------------- | ---------- | ---------------------------------------------------------------------------- |
-| <a id="property-model"></a> `model` | `readonly` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+### model
+
+```ts
+readonly model: VirtualScroller;
+```
 
 ## Methods
 

@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-svelte/variables/virtualItem
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / virtualItem
-
-# Variable: virtualItem
+# virtualItem
 
 ```ts
 const virtualItem: Action<HTMLElement, VirtualSvelteItemBinding>;

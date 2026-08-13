@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-svelte/variables/virtualStickyHeader
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / virtualStickyHeader
-
-# Variable: virtualStickyHeader
+# virtualStickyHeader
 
 ```ts
 const virtualStickyHeader: Action<HTMLElement, VirtualScroller>;

@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-core/classes/VirtualScrollerLayout
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScrollerLayout
-
-# Class: VirtualScrollerLayout
+# VirtualScrollerLayout
 
 Framework-neutral DOM layout adapter for [VirtualScroller](/virtual/reference/virtual-core/classes/VirtualScroller).
 
@@ -36,9 +30,9 @@ Create a DOM layout adapter for one model.
 
 #### Parameters
 
-| Parameter | Type                                                                         |
-| --------- | ---------------------------------------------------------------------------- |
-| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+##### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
 
 #### Returns
 
@@ -70,9 +64,9 @@ Connect or disconnect the element containing currently rendered items.
 
 #### Parameters
 
-| Parameter | Type                    |
-| --------- | ----------------------- |
-| `element` | `HTMLElement` \| `null` |
+##### element
+
+`HTMLElement` \| `null`
 
 #### Returns
 
@@ -90,9 +84,9 @@ Attach or detach the scroll container and apply its required styles.
 
 #### Parameters
 
-| Parameter | Type                    |
-| --------- | ----------------------- |
-| `element` | `HTMLElement` \| `null` |
+##### element
+
+`HTMLElement` \| `null`
 
 #### Returns
 
@@ -110,9 +104,9 @@ Connect or disconnect the element that provides native scroll size.
 
 #### Parameters
 
-| Parameter | Type                    |
-| --------- | ----------------------- |
-| `element` | `HTMLElement` \| `null` |
+##### element
+
+`HTMLElement` \| `null`
 
 #### Returns
 

@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-svelte/variables/virtualStickyFooter
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / virtualStickyFooter
-
-# Variable: virtualStickyFooter
+# virtualStickyFooter
 
 ```ts
 const virtualStickyFooter: Action<HTMLElement, VirtualScroller>;

@@ -208,7 +208,12 @@
                         "kind": 64,
                         "path": "virtual-preact/functions/List",
                         "isDeprecated": false
-                    },
+                    }
+                ]
+            },
+            {
+                "title": "Hooks",
+                "children": [
                     {
                         "title": "useScroller",
                         "kind": 64,
@@ -291,7 +296,12 @@
                         "kind": 64,
                         "path": "virtual-react/functions/List",
                         "isDeprecated": false
-                    },
+                    }
+                ]
+            },
+            {
+                "title": "Hooks",
+                "children": [
                     {
                         "title": "useScroller",
                         "kind": 64,
@@ -612,7 +622,7 @@
                 ]
             },
             {
-                "title": "Functions",
+                "title": "Hooks",
                 "children": [
                     {
                         "title": "useVirtual",

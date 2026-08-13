@@ -8,19 +8,26 @@ referencePath: /virtual/reference/virtual-svelte/interfaces/VirtualSvelteItemBin
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / VirtualSvelteItemBinding
-
-# Interface: VirtualSvelteItemBinding
+# VirtualSvelteItemBinding
 
 Parameters accepted by the [virtualItem](/virtual/reference/virtual-svelte/variables/virtualItem) action.
 
 ## Properties
 
-| Property                            | Type                                                                         | Description                   |
-| ----------------------------------- | ---------------------------------------------------------------------------- | ----------------------------- |
-| <a id="property-index"></a> `index` | `number`                                                                     | Current item index.           |
-| <a id="property-model"></a> `model` | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | Model that observes the item. |
+### index
+
+```ts
+index: number;
+```
+
+Current item index.
+
+---
+
+### model
+
+```ts
+model: VirtualScroller;
+```
+
+Model that observes the item.

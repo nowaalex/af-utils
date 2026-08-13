@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-core/type-aliases/VirtualScrollerScrol
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScrollerScrollElement
-
-# Type Alias: VirtualScrollerScrollElement
+# VirtualScrollerScrollElement
 
 ```ts
 type VirtualScrollerScrollElement = HTMLElement | Window;

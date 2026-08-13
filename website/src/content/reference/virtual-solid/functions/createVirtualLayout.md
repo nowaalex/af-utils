@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-solid/functions/createVirtualLayout
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-solid](/virtual/reference/virtual-solid/index) / createVirtualLayout
-
-# Function: createVirtualLayout()
+# createVirtualLayout()
 
 ```ts
 function createVirtualLayout(model): VirtualLayoutBinding;
@@ -24,9 +18,9 @@ Connect Solid refs to the framework-neutral virtual DOM layout adapter.
 
 ## Parameters
 
-| Parameter | Type                                                                         |
-| --------- | ---------------------------------------------------------------------------- |
-| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
 
 ## Returns
 

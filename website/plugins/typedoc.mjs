@@ -71,17 +71,24 @@ const getSymbol = (model, packageReflection) => {
 
 const splitPascalCase = value => value.replace(/([a-z0-9])([A-Z])/gu, "$1 $2");
 
+const isHook = model =>
+    model.kindOf?.(ReflectionKind.Function) && /^use[A-Z\d]/u.test(model.name);
+
 const getKind = model =>
     model.isDocument()
         ? "document"
-        : (ReflectionKind[model.kind] ?? "reflection").toLowerCase();
+        : isHook(model)
+          ? "hook"
+          : (ReflectionKind[model.kind] ?? "reflection").toLowerCase();
 
 const getPageTitle = model => {
     if (model.isProject()) return "Documentation";
 
     const kind = model.isDocument()
         ? "Document"
-        : splitPascalCase(ReflectionKind[model.kind] ?? "Reflection");
+        : isHook(model)
+          ? "Hook"
+          : splitPascalCase(ReflectionKind[model.kind] ?? "Reflection");
     const suffix = model.kindOf?.(ReflectionKind.Function) ? "()" : "";
     return `${kind}: ${model.name}${suffix}`;
 };
@@ -94,6 +101,37 @@ const rewriteInternalMarkdownLinks = contents =>
         "$1"
     );
 
+const groupHooksInContents = contents =>
+    contents.replace(
+        /(^## Functions\n\n)((?:- [^\n]+\n?)+)/gmu,
+        (_, _heading, list) => {
+            const items = list.trimEnd().split("\n");
+            const hooks = items.filter(item => /^- \[use[A-Z\d]/u.test(item));
+            if (hooks.length === 0) return `${_heading}${list}`;
+
+            const functions = items.filter(
+                item => !/^- \[use[A-Z\d]/u.test(item)
+            );
+            return [
+                ...(functions.length > 0
+                    ? [`## Functions\n\n${functions.join("\n")}`]
+                    : []),
+                `## Hooks\n\n${hooks.join("\n")}`
+            ].join("\n\n");
+        }
+    );
+
+const rewritePackageHeading = (contents, model) => {
+    const packageReflection = getPackageReflection(model);
+    if (!packageReflection || packageReflection !== model) return contents;
+
+    const displayName = packageReflection.name.replace(
+        "@af-utils/virtual-",
+        ""
+    );
+    return contents.replace(/^# .+$/mu, `# ${displayName}`);
+};
+
 const normalizeNavigationPaths = items => {
     for (const item of items ?? []) {
         if (item.path) item.path = item.path.replace(/\.md$/u, "");
@@ -101,9 +139,42 @@ const normalizeNavigationPaths = items => {
     }
 };
 
+const groupHooksInNavigation = items => {
+    for (const item of items ?? []) {
+        const children = item.children ?? [];
+        const functionsIndex = children.findIndex(
+            child => child.title === "Functions"
+        );
+
+        if (functionsIndex !== -1) {
+            const functions = children[functionsIndex];
+            const hooks = functions.children?.filter(child =>
+                /^use[A-Z\d]/u.test(child.title)
+            );
+            const otherFunctions = functions.children?.filter(
+                child => !/^use[A-Z\d]/u.test(child.title)
+            );
+
+            if (hooks?.length) {
+                item.children = [
+                    ...children.slice(0, functionsIndex),
+                    ...(otherFunctions?.length
+                        ? [{ ...functions, children: otherFunctions }]
+                        : []),
+                    { title: "Hooks", children: hooks },
+                    ...children.slice(functionsIndex + 1)
+                ];
+            }
+        }
+
+        groupHooksInNavigation(item.children);
+    }
+};
+
 export function load(app) {
     app.renderer.on(MarkdownRendererEvent.BEGIN, event => {
         pages.length = 0;
+        groupHooksInNavigation(event.navigation);
         normalizeNavigationPaths(event.navigation);
     });
 
@@ -138,7 +209,10 @@ export function load(app) {
     });
 
     app.renderer.on(MarkdownPageEvent.END, page => {
-        page.contents = rewriteInternalMarkdownLinks(page.contents);
+        page.contents = rewritePackageHeading(
+            groupHooksInContents(rewriteInternalMarkdownLinks(page.contents)),
+            page.model
+        );
     });
 
     app.renderer.postMarkdownRenderAsyncJobs.push(async event => {

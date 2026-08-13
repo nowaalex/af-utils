@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-core/type-aliases/VirtualScrollerError
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScrollerErrorCode
-
-# Type Alias: VirtualScrollerErrorCode
+# VirtualScrollerErrorCode
 
 ```ts
 type VirtualScrollerErrorCode = (typeof VirtualScrollerErrorCode)[number];

@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import ReferenceExamples from "components/ReferenceExamples.astro";
+import ReferenceHeader from "components/ReferenceHeader.astro";
+import ReferenceTableOfContents from "components/ReferenceTableOfContents.astro";
 import VirtualDocumentation from "layouts/virtual/VirtualDocumentation.astro";
 import { getRelatedExamples } from "utils/examples";
 
@@ -14,15 +16,34 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const relatedExamples = await getRelatedExamples(entry.data);
+const referenceHeadings = [
+    ...headings,
+    ...(relatedExamples.length > 0
+        ? [{ depth: 2, slug: "related-examples", text: "Related examples" }]
+        : [])
+];
 ---
 
 <VirtualDocumentation
     title={`${entry.data.title} reference`}
     description={entry.data.description}
-    mainClass="reference-doc"
+    contentClass="max-w-[80rem]"
+    mainClass="reference-page"
 >
-    <Content />
-    <ReferenceExamples examples={relatedExamples} />
+    <ReferenceHeader kind={entry.data.kind} packageName={entry.data.package} />
+    <ReferenceTableOfContents headings={referenceHeadings} variant="mobile" />
+    <div
+        class="xl:grid xl:grid-cols-[minmax(0,1fr)_12rem] xl:gap-8 2xl:grid-cols-[minmax(0,56rem)_14rem] 2xl:gap-10"
+    >
+        <article class="reference-doc prose min-w-0 max-w-none">
+            <Content />
+            <ReferenceExamples examples={relatedExamples} />
+        </article>
+        <ReferenceTableOfContents
+            headings={referenceHeadings}
+            variant="desktop"
+        />
+    </div>
 </VirtualDocumentation>

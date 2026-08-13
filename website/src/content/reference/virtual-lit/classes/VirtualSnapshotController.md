@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-lit/classes/VirtualSnapshotController
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-lit](/virtual/reference/virtual-lit/index) / VirtualSnapshotController
-
-# Class: VirtualSnapshotController
+# VirtualSnapshotController
 
 Lit controller that requests host updates for selected model events.
 
@@ -37,11 +31,17 @@ Create and register an event bridge.
 
 #### Parameters
 
-| Parameter | Type                                                                         | Default value                |
-| --------- | ---------------------------------------------------------------------------- | ---------------------------- |
-| `host`    | `ReactiveControllerHost`                                                     | `undefined`                  |
-| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | `undefined`                  |
-| `events`  | `number`                                                                     | `VirtualScrollerEvent.RANGE` |
+##### host
+
+`ReactiveControllerHost`
+
+##### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
+
+##### events?
+
+`number` = `VirtualScrollerEvent.RANGE`
 
 #### Returns
 

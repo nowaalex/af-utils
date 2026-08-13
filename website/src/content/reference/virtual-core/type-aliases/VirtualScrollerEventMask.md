@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-core/type-aliases/VirtualScrollerEvent
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScrollerEventMask
-
-# Type Alias: VirtualScrollerEventMask
+# VirtualScrollerEventMask
 
 ```ts
 type VirtualScrollerEventMask = number;

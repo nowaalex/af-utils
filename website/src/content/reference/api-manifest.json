@@ -226,67 +226,67 @@
         },
         {
             "description": "Synchronize a window or external scroller with a Preact-owned model.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/functions/useScroller",
             "symbol": "useScroller",
-            "title": "Function: useScroller()"
+            "title": "Hook: useScroller()"
         },
         {
             "description": "Create a Preact-owned virtual-scroller model and synchronize its parameters.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/functions/useVirtual",
             "symbol": "useVirtual",
-            "title": "Function: useVirtual()"
+            "title": "Hook: useVirtual()"
         },
         {
             "description": "Subscribe to model changes without scheduling a Preact render.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/functions/useVirtualEffect",
             "symbol": "useVirtualEffect",
-            "title": "Function: useVirtualEffect()"
+            "title": "Hook: useVirtualEffect()"
         },
         {
             "description": "Observe row and column sizes for one rendered grid cell.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/functions/useVirtualGridItemRef",
             "symbol": "useVirtualGridItemRef",
-            "title": "Function: useVirtualGridItemRef()"
+            "title": "Hook: useVirtualGridItemRef()"
         },
         {
             "description": "Observe one rendered item using a stable Preact callback ref.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/functions/useVirtualItemRef",
             "symbol": "useVirtualItemRef",
-            "title": "Function: useVirtualItemRef()"
+            "title": "Hook: useVirtualItemRef()"
         },
         {
             "description": "Connect stable Preact refs to the framework-neutral virtual layout adapter.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/functions/useVirtualLayout",
             "symbol": "useVirtualLayout",
-            "title": "Function: useVirtualLayout()"
+            "title": "Hook: useVirtualLayout()"
         },
         {
             "description": "Create and retain exactly one Preact-owned virtual-scroller model.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/functions/useVirtualModel",
             "symbol": "useVirtualModel",
-            "title": "Function: useVirtualModel()"
+            "title": "Hook: useVirtualModel()"
         },
         {
             "description": "Re-render the current Preact component when selected model events publish.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-preact",
             "path": "/virtual/reference/virtual-preact/functions/useVirtualSnapshot",
             "symbol": "useVirtualSnapshot",
-            "title": "Function: useVirtualSnapshot()"
+            "title": "Hook: useVirtualSnapshot()"
         },
         {
             "description": "React components and hooks used to connect to VirtualScroller.",
@@ -322,67 +322,67 @@
         },
         {
             "description": "React hook. Synchronizes scroller with model.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-react",
             "path": "/virtual/reference/virtual-react/functions/useScroller",
             "symbol": "useScroller",
-            "title": "Function: useScroller()"
+            "title": "Hook: useScroller()"
         },
         {
             "description": "React hook. Calls useVirtualModel and synchronizes it with props",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-react",
             "path": "/virtual/reference/virtual-react/functions/useVirtual",
             "symbol": "useVirtual",
-            "title": "Function: useVirtual()"
+            "title": "Hook: useVirtual()"
         },
         {
             "description": "Subscribe to model changes without scheduling a React render.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-react",
             "path": "/virtual/reference/virtual-react/functions/useVirtualEffect",
             "symbol": "useVirtualEffect",
-            "title": "Function: useVirtualEffect()"
+            "title": "Hook: useVirtualEffect()"
         },
         {
             "description": "Observe row and column sizes for one rendered grid cell.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-react",
             "path": "/virtual/reference/virtual-react/functions/useVirtualGridItemRef",
             "symbol": "useVirtualGridItemRef",
-            "title": "Function: useVirtualGridItemRef()"
+            "title": "Hook: useVirtualGridItemRef()"
         },
         {
             "description": "Observe one rendered item using a stable React callback ref.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-react",
             "path": "/virtual/reference/virtual-react/functions/useVirtualItemRef",
             "symbol": "useVirtualItemRef",
-            "title": "Function: useVirtualItemRef()"
+            "title": "Hook: useVirtualItemRef()"
         },
         {
             "description": "Connect stable React refs to the framework-neutral virtual layout adapter.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-react",
             "path": "/virtual/reference/virtual-react/functions/useVirtualLayout",
             "symbol": "useVirtualLayout",
-            "title": "Function: useVirtualLayout()"
+            "title": "Hook: useVirtualLayout()"
         },
         {
             "description": "React hook. Creates and stores exactly one VirtualScroller instance. It is not recreated during component lifecycle.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-react",
             "path": "/virtual/reference/virtual-react/functions/useVirtualModel",
             "symbol": "useVirtualModel",
-            "title": "Function: useVirtualModel()"
+            "title": "Hook: useVirtualModel()"
         },
         {
             "description": "Re-render the current component when selected model events are published.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-react",
             "path": "/virtual/reference/virtual-react/functions/useVirtualSnapshot",
             "symbol": "useVirtualSnapshot",
-            "title": "Function: useVirtualSnapshot()"
+            "title": "Hook: useVirtualSnapshot()"
         },
         {
             "description": "Solid components and primitives used to connect to VirtualScroller.",
@@ -674,43 +674,43 @@
         },
         {
             "description": "Vue-owned virtual-scroller model synchronized with reactive parameters.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-vue",
             "path": "/virtual/reference/virtual-vue/functions/useVirtual",
             "symbol": "useVirtual",
-            "title": "Function: useVirtual()"
+            "title": "Hook: useVirtual()"
         },
         {
             "description": "Create a Vue template-ref callback that observes one virtual item.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-vue",
             "path": "/virtual/reference/virtual-vue/functions/useVirtualItemRef",
             "symbol": "useVirtualItemRef",
-            "title": "Function: useVirtualItemRef()"
+            "title": "Hook: useVirtualItemRef()"
         },
         {
             "description": "Connect Vue template refs to the framework-neutral layout adapter.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-vue",
             "path": "/virtual/reference/virtual-vue/functions/useVirtualLayout",
             "symbol": "useVirtualLayout",
-            "title": "Function: useVirtualLayout()"
+            "title": "Hook: useVirtualLayout()"
         },
         {
             "description": "Reactive rendered indexes for a Vue render function or template.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-vue",
             "path": "/virtual/reference/virtual-vue/functions/useVirtualRange",
             "symbol": "useVirtualRange",
-            "title": "Function: useVirtualRange()"
+            "title": "Hook: useVirtualRange()"
         },
         {
             "description": "Reactive revision for selected model events.",
-            "kind": "function",
+            "kind": "hook",
             "package": "@af-utils/virtual-vue",
             "path": "/virtual/reference/virtual-vue/functions/useVirtualSnapshot",
             "symbol": "useVirtualSnapshot",
-            "title": "Function: useVirtualSnapshot()"
+            "title": "Hook: useVirtualSnapshot()"
         }
     ]
 }

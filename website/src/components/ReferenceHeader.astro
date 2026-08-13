@@ -1,0 +1,82 @@
+---
+import { exampleFrameworks } from "@af-utils/examples/config";
+import { Icon } from "astro-icon/components";
+import {
+    frameworkPresentation,
+    virtualAdapterPackages
+} from "utils/frameworks";
+
+interface Props {
+    kind: string;
+    packageName: string;
+}
+
+const { kind, packageName } = Astro.props;
+const packageSlug = packageName.replace("@af-utils/", "");
+const packageLabel = packageName.replace("@af-utils/virtual-", "");
+const frameworkName = exampleFrameworks.find(
+    (_, index) => virtualAdapterPackages[index] === packageName
+);
+const framework = frameworkName
+    ? frameworkPresentation[frameworkName]
+    : undefined;
+const kindLabel = kind.replace(/([a-z\d])([A-Z])/gu, "$1 $2");
+---
+
+<header class="reference-header mb-5 border-b border-slate-200 pb-5">
+    <nav
+        aria-label="Reference breadcrumb"
+        class="flex flex-wrap items-center gap-2 text-sm text-slate-500"
+    >
+        <a
+            href="/virtual/reference"
+            class="font-medium text-slate-600 no-underline transition-colors hover:text-blue-700"
+        >
+            Reference
+        </a>
+        {
+            packageName && (
+                <>
+                    <span aria-hidden="true" class="text-slate-300">
+                        /
+                    </span>
+                    <a
+                        href={`/virtual/reference/${packageSlug}/index`}
+                        class="inline-flex items-center gap-1.5 font-medium text-slate-700 no-underline transition-colors hover:text-blue-700"
+                    >
+                        {framework ? (
+                            <Icon
+                                aria-hidden="true"
+                                name={framework.icon}
+                                size={16}
+                                class:list={["shrink-0", framework.iconClass]}
+                            />
+                        ) : (
+                            <Icon
+                                aria-hidden="true"
+                                name="material-symbols:data-object"
+                                size={16}
+                                class="shrink-0 text-violet-600"
+                            />
+                        )}
+                        {packageLabel}
+                    </a>
+                </>
+            )
+        }
+    </nav>
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+        <span
+            class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-slate-600"
+        >
+            {kindLabel}
+        </span>
+        {
+            packageName && (
+                <code class="text-xs font-normal text-slate-500">
+                    {packageName}
+                </code>
+            )
+        }
+    </div>
+</header>

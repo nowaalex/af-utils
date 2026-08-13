@@ -27,7 +27,8 @@ const framework = startCase(getExampleDefinition(path).framework);
 <W
     title={`${title} (${framework})`}
     description={description}
-    mainClass="flex flex-col prose-p:m-0 gap-2"
+    contentClass="max-w-[80rem]"
+    mainClass="flex flex-col gap-2 prose-p:m-0"
 >
     <ExampleHeader path={path} title={title} class="mb-2" />
     <Description />

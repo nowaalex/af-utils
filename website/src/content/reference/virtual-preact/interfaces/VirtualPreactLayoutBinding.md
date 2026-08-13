@@ -8,20 +8,36 @@ referencePath: /virtual/reference/virtual-preact/interfaces/VirtualPreactLayoutB
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-preact](/virtual/reference/virtual-preact/index) / VirtualPreactLayoutBinding
-
-# Interface: VirtualPreactLayoutBinding
+# VirtualPreactLayoutBinding
 
 DOM refs produced by [useVirtualLayout](/virtual/reference/virtual-preact/functions/useVirtualLayout).
 
 ## Properties
 
-| Property                                        | Type                           | Description                                                |
-| ----------------------------------------------- | ------------------------------ | ---------------------------------------------------------- |
-| <a id="property-itemsref"></a> `itemsRef`       | `RefCallback`\<`HTMLElement`\> | Attach the absolutely positioned rendered-range container. |
-| <a id="property-scrollerref"></a> `scrollerRef` | `RefCallback`\<`HTMLElement`\> | Attach the native element scroller.                        |
-| <a id="property-sizeref"></a> `sizeRef`         | `RefCallback`\<`HTMLElement`\> | Attach the element contributing native scroll extent.      |
+### itemsRef
+
+```ts
+itemsRef: RefCallback<HTMLElement>;
+```
+
+Attach the absolutely positioned rendered-range container.
+
+---
+
+### scrollerRef
+
+```ts
+scrollerRef: RefCallback<HTMLElement>;
+```
+
+Attach the native element scroller.
+
+---
+
+### sizeRef
+
+```ts
+sizeRef: RefCallback<HTMLElement>;
+```
+
+Attach the element contributing native scroll extent.

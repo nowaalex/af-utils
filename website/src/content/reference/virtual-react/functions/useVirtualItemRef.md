@@ -1,20 +1,14 @@
 ---
-title: "Function: useVirtualItemRef()"
+title: "Hook: useVirtualItemRef()"
 description: Observe one rendered item using a stable React callback ref.
 package: "@af-utils/virtual-react"
 symbol: useVirtualItemRef
-kind: function
+kind: hook
 referencePath: /virtual/reference/virtual-react/functions/useVirtualItemRef
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / useVirtualItemRef
-
-# Function: useVirtualItemRef()
+# useVirtualItemRef()
 
 ```ts
 function useVirtualItemRef(model, index): RefCallback<HTMLElement>;
@@ -24,10 +18,13 @@ Observe one rendered item using a stable React callback ref.
 
 ## Parameters
 
-| Parameter | Type                                                                         |
-| --------- | ---------------------------------------------------------------------------- |
-| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `index`   | `number`                                                                     |
+### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
+
+### index
+
+`number`
 
 ## Returns
 

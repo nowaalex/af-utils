@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-preact/functions/List
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-preact](/virtual/reference/virtual-preact/index) / List
-
-# Function: List()
+# List()
 
 ```ts
 function List<Data>(props): Element;
@@ -24,15 +18,15 @@ Render a virtual Preact list with model-owned DOM geometry.
 
 ## Type Parameters
 
-| Type Parameter | Default type |
-| -------------- | ------------ |
-| `Data`         | `unknown`    |
+### Data
+
+`Data` = `unknown`
 
 ## Parameters
 
-| Parameter | Type                                                                              |
-| --------- | --------------------------------------------------------------------------------- |
-| `props`   | [`ListProps`](/virtual/reference/virtual-preact/type-aliases/ListProps)\<`Data`\> |
+### props
+
+[`ListProps`](/virtual/reference/virtual-preact/type-aliases/ListProps)\<`Data`\>
 
 ## Returns
 

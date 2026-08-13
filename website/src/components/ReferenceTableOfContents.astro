@@ -1,0 +1,168 @@
+---
+interface Heading {
+    depth: number;
+    slug: string;
+    text: string;
+}
+
+interface Props {
+    headings: readonly Heading[];
+    variant: "desktop" | "mobile";
+}
+
+const { headings, variant } = Astro.props;
+const items = headings.filter(
+    (heading) => heading.depth >= 2 && heading.depth <= 3
+);
+---
+
+{
+    items.length > 0 && (
+        <reference-table-of-contents
+            class:list={[
+                variant === "desktop"
+                    ? "hidden xl:block"
+                    : "mb-7 block xl:hidden"
+            ]}
+        >
+            {variant === "mobile" ? (
+                <details class="group rounded-lg border border-slate-200 bg-white shadow-sm">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-slate-800 [&::-webkit-details-marker]:hidden">
+                        On this page
+                        <span
+                            aria-hidden="true"
+                            class="size-2.5 -rotate-45 border-b border-r border-current text-slate-400 transition-transform group-open:rotate-45"
+                        />
+                    </summary>
+                    <nav
+                        aria-label="On this page"
+                        class="max-h-72 overflow-auto border-t border-slate-100 px-3 py-3"
+                    >
+                        <ol class="m-0 list-none space-y-0.5 p-0">
+                            {items.map((heading) => (
+                                <li class="m-0 p-0">
+                                    <a
+                                        data-reference-toc-link
+                                        href={`#${heading.slug}`}
+                                        class:list={[
+                                            "block border-l-2 border-transparent py-1 pr-2 text-sm font-normal text-slate-600 no-underline transition-colors hover:text-blue-700 aria-[current=location]:border-blue-500 aria-[current=location]:font-medium aria-[current=location]:text-blue-700",
+                                            heading.depth === 3
+                                                ? "pl-5"
+                                                : "pl-2"
+                                        ]}
+                                    >
+                                        {heading.text}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </nav>
+                </details>
+            ) : (
+                <div class="sticky top-6 max-h-[calc(100vh-3rem)] overflow-auto border-l border-slate-200 pl-5">
+                    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                        On this page
+                    </p>
+                    <nav aria-label="On this page">
+                        <ol class="m-0 list-none space-y-0.5 p-0">
+                            {items.map((heading) => (
+                                <li class="m-0 p-0">
+                                    <a
+                                        data-reference-toc-link
+                                        href={`#${heading.slug}`}
+                                        class:list={[
+                                            "block border-l-2 border-transparent py-1 pr-2 text-[0.8125rem] leading-5 font-normal text-slate-500 no-underline transition-colors hover:text-blue-700 aria-[current=location]:border-blue-500 aria-[current=location]:font-medium aria-[current=location]:text-blue-700",
+                                            heading.depth === 3
+                                                ? "pl-5"
+                                                : "pl-2"
+                                        ]}
+                                    >
+                                        {heading.text}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </nav>
+                </div>
+            )}
+        </reference-table-of-contents>
+    )
+}
+
+<script>
+    class ReferenceTableOfContents extends HTMLElement {
+        _controller?: AbortController;
+
+        /** Starts tracking the heading closest to the top of the reading pane. */
+        connectedCallback() {
+            this._controller?.abort();
+            this._controller = new AbortController();
+
+            const links = [
+                ...this.querySelectorAll<HTMLAnchorElement>(
+                    "[data-reference-toc-link]"
+                )
+            ];
+            const headings = links.flatMap((link) => {
+                const id = decodeURIComponent(link.hash.slice(1));
+                const heading = document.getElementById(id);
+                return heading ? [heading] : [];
+            });
+            const scroller = this.closest<HTMLElement>(".documentation-scroll");
+            if (links.length === 0 || headings.length === 0 || !scroller) {
+                return;
+            }
+
+            let frame = 0;
+            const update = () => {
+                frame = 0;
+                const activationLine =
+                    scroller.getBoundingClientRect().top + 96;
+                let activeHeading = headings[0];
+
+                for (const heading of headings) {
+                    if (heading.getBoundingClientRect().top > activationLine) {
+                        break;
+                    }
+                    activeHeading = heading;
+                }
+
+                for (const link of links) {
+                    const isActive =
+                        decodeURIComponent(link.hash.slice(1)) ===
+                        activeHeading?.id;
+                    if (isActive) {
+                        link.setAttribute("aria-current", "location");
+                    } else {
+                        link.removeAttribute("aria-current");
+                    }
+                }
+            };
+            const scheduleUpdate = () => {
+                if (!frame) frame = requestAnimationFrame(update);
+            };
+
+            scroller.addEventListener("scroll", scheduleUpdate, {
+                passive: true,
+                signal: this._controller.signal
+            });
+            window.addEventListener("resize", scheduleUpdate, {
+                passive: true,
+                signal: this._controller.signal
+            });
+            scheduleUpdate();
+        }
+
+        /** Stops listeners when Astro replaces the current reference page. */
+        disconnectedCallback() {
+            this._controller?.abort();
+        }
+    }
+
+    if (!customElements.get("reference-table-of-contents")) {
+        customElements.define(
+            "reference-table-of-contents",
+            ReferenceTableOfContents
+        );
+    }
+</script>

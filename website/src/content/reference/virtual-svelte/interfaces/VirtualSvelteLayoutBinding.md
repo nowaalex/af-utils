@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-svelte/interfaces/VirtualSvelteLayoutB
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / VirtualSvelteLayoutBinding
-
-# Interface: VirtualSvelteLayoutBinding
+# VirtualSvelteLayoutBinding
 
 Svelte actions for virtual layout elements.
 
@@ -24,8 +18,30 @@ Svelte actions for virtual layout elements.
 
 ## Properties
 
-| Property                                  | Type                      | Description                                                          |
-| ----------------------------------------- | ------------------------- | -------------------------------------------------------------------- |
-| <a id="property-items"></a> `items`       | `Action`\<`HTMLElement`\> | Action attaching the absolutely positioned rendered-range container. |
-| <a id="property-scroller"></a> `scroller` | `Action`\<`HTMLElement`\> | Action attaching the native element scroller.                        |
-| <a id="property-size"></a> `size`         | `Action`\<`HTMLElement`\> | Action attaching the element contributing native scroll extent.      |
+### items
+
+```ts
+items: Action<HTMLElement>;
+```
+
+Action attaching the absolutely positioned rendered-range container.
+
+---
+
+### scroller
+
+```ts
+scroller: Action<HTMLElement>;
+```
+
+Action attaching the native element scroller.
+
+---
+
+### size
+
+```ts
+size: Action<HTMLElement>;
+```
+
+Action attaching the element contributing native scroll extent.

@@ -1,20 +1,14 @@
 ---
-title: "Function: useVirtualLayout()"
+title: "Hook: useVirtualLayout()"
 description: Connect stable React refs to the framework-neutral virtual layout adapter.
 package: "@af-utils/virtual-react"
 symbol: useVirtualLayout
-kind: function
+kind: hook
 referencePath: /virtual/reference/virtual-react/functions/useVirtualLayout
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / useVirtualLayout
-
-# Function: useVirtualLayout()
+# useVirtualLayout()
 
 ```ts
 function useVirtualLayout(model): object;
@@ -24,9 +18,9 @@ Connect stable React refs to the framework-neutral virtual layout adapter.
 
 ## Parameters
 
-| Parameter | Type                                                                         |
-| --------- | ---------------------------------------------------------------------------- |
-| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
 
 ## Returns
 
@@ -34,8 +28,20 @@ Connect stable React refs to the framework-neutral virtual layout adapter.
 
 Refs for the scroller, scroll-size, and rendered-items elements.
 
-| Name          | Type                           |
-| ------------- | ------------------------------ |
-| `itemsRef`    | `RefCallback`\<`HTMLElement`\> |
-| `scrollerRef` | `RefCallback`\<`HTMLElement`\> |
-| `sizeRef`     | `RefCallback`\<`HTMLElement`\> |
+### itemsRef
+
+```ts
+itemsRef: RefCallback<HTMLElement>;
+```
+
+### scrollerRef
+
+```ts
+scrollerRef: RefCallback<HTMLElement>;
+```
+
+### sizeRef
+
+```ts
+sizeRef: RefCallback<HTMLElement>;
+```

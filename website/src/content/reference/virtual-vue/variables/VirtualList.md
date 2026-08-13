@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-vue/variables/VirtualList
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-vue](/virtual/reference/virtual-vue/index) / VirtualList
-
-# Variable: VirtualList
+# VirtualList
 
 ```ts
 const VirtualList: DefineComponent<

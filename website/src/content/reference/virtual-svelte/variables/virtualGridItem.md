@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-svelte/variables/virtualGridItem
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / virtualGridItem
-
-# Variable: virtualGridItem
+# virtualGridItem
 
 ```ts
 const virtualGridItem: Action<HTMLElement, VirtualSvelteGridItemBinding>;

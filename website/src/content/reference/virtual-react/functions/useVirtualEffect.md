@@ -1,20 +1,14 @@
 ---
-title: "Function: useVirtualEffect()"
+title: "Hook: useVirtualEffect()"
 description: Subscribe to model changes without scheduling a React render.
 package: "@af-utils/virtual-react"
 symbol: useVirtualEffect
-kind: function
+kind: hook
 referencePath: /virtual/reference/virtual-react/functions/useVirtualEffect
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / useVirtualEffect
-
-# Function: useVirtualEffect()
+# useVirtualEffect()
 
 ```ts
 function useVirtualEffect(model, callback, events?): void;
@@ -24,11 +18,17 @@ Subscribe to model changes without scheduling a React render.
 
 ## Parameters
 
-| Parameter  | Type                                                                         | Default value              |
-| ---------- | ---------------------------------------------------------------------------- | -------------------------- |
-| `model`    | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | `undefined`                |
-| `callback` | () => `void`                                                                 | `undefined`                |
-| `events`   | `number`                                                                     | `VirtualScrollerEvent.ALL` |
+### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
+
+### callback
+
+() => `void`
+
+### events?
+
+`number` = `VirtualScrollerEvent.ALL`
 
 ## Returns
 

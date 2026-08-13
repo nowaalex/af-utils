@@ -1,20 +1,14 @@
 ---
-title: "Function: useVirtual()"
+title: "Hook: useVirtual()"
 description: React hook. Calls useVirtualModel and synchronizes it with props
 package: "@af-utils/virtual-react"
 symbol: useVirtual
-kind: function
+kind: hook
 referencePath: /virtual/reference/virtual-react/functions/useVirtual
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / useVirtual
-
-# Function: useVirtual()
+# useVirtual()
 
 ```ts
 function useVirtual(params): VirtualScroller;
@@ -25,9 +19,9 @@ Calls [useVirtualModel](/virtual/reference/virtual-react/functions/useVirtualMod
 
 ## Parameters
 
-| Parameter | Type                                                                                                      |
-| --------- | --------------------------------------------------------------------------------------------------------- |
-| `params`  | [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) |
+### params
+
+[`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams)
 
 ## Returns
 

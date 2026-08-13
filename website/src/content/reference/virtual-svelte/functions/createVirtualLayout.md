@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-svelte/functions/createVirtualLayout
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / createVirtualLayout
-
-# Function: createVirtualLayout()
+# createVirtualLayout()
 
 ```ts
 function createVirtualLayout(model): VirtualSvelteLayoutBinding;
@@ -24,9 +18,9 @@ Connect Svelte actions to the framework-neutral virtual layout adapter.
 
 ## Parameters
 
-| Parameter | Type                                                                         |
-| --------- | ---------------------------------------------------------------------------- |
-| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
 
 ## Returns
 

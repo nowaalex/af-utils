@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-vue/variables/virtualItemDirective
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-vue](/virtual/reference/virtual-vue/index) / virtualItemDirective
-
-# Variable: virtualItemDirective
+# virtualItemDirective
 
 ```ts
 const virtualItemDirective: Directive<HTMLElement, VirtualVueItemBinding>;

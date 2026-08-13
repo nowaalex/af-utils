@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-solid/functions/createVirtualGridItemR
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-solid](/virtual/reference/virtual-solid/index) / createVirtualGridItemRef
-
-# Function: createVirtualGridItemRef()
+# createVirtualGridItemRef()
 
 ```ts
 function createVirtualGridItemRef(
@@ -29,12 +23,21 @@ Create a Solid ref that observes row and column sizes for one grid cell.
 
 ## Parameters
 
-| Parameter     | Type                                                                                       |
-| ------------- | ------------------------------------------------------------------------------------------ |
-| `rows`        | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)               |
-| `rowIndex`    | [`MaybeAccessor`](/virtual/reference/virtual-solid/type-aliases/MaybeAccessor)\<`number`\> |
-| `columns`     | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)               |
-| `columnIndex` | [`MaybeAccessor`](/virtual/reference/virtual-solid/type-aliases/MaybeAccessor)\<`number`\> |
+### rows
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
+
+### rowIndex
+
+[`MaybeAccessor`](/virtual/reference/virtual-solid/type-aliases/MaybeAccessor)\<`number`\>
+
+### columns
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
+
+### columnIndex
+
+[`MaybeAccessor`](/virtual/reference/virtual-solid/type-aliases/MaybeAccessor)\<`number`\>
 
 ## Returns
 

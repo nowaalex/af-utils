@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-lit/classes/VirtualLayoutController
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-lit](/virtual/reference/virtual-lit/index) / VirtualLayoutController
-
-# Class: VirtualLayoutController
+# VirtualLayoutController
 
 Lit refs backed by the framework-neutral layout adapter.
 
@@ -34,10 +28,13 @@ Create layout bindings for a Lit host.
 
 #### Parameters
 
-| Parameter | Type                                                                         |
-| --------- | ---------------------------------------------------------------------------- |
-| `host`    | `ReactiveControllerHost`                                                     |
-| `model`   | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
+##### host
+
+`ReactiveControllerHost`
+
+##### model
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
 
 #### Returns
 
@@ -45,11 +42,27 @@ Create layout bindings for a Lit host.
 
 ## Properties
 
-| Property                                        | Modifier   | Type            |
-| ----------------------------------------------- | ---------- | --------------- |
-| <a id="property-itemsref"></a> `itemsRef`       | `readonly` | `RefOrCallback` |
-| <a id="property-scrollerref"></a> `scrollerRef` | `readonly` | `RefOrCallback` |
-| <a id="property-sizeref"></a> `sizeRef`         | `readonly` | `RefOrCallback` |
+### itemsRef
+
+```ts
+readonly itemsRef: RefOrCallback;
+```
+
+---
+
+### scrollerRef
+
+```ts
+readonly scrollerRef: RefOrCallback;
+```
+
+---
+
+### sizeRef
+
+```ts
+readonly sizeRef: RefOrCallback;
+```
 
 ## Methods
 
@@ -66,11 +79,17 @@ Explicitly reconnect layout elements after an external hydration pass.
 
 #### Parameters
 
-| Parameter      | Type          |
-| -------------- | ------------- |
-| `scroller`     | `HTMLElement` |
-| `sizeElement`  | `HTMLElement` |
-| `itemsElement` | `HTMLElement` |
+##### scroller
+
+`HTMLElement`
+
+##### sizeElement
+
+`HTMLElement`
+
+##### itemsElement
+
+`HTMLElement`
 
 #### Returns
 

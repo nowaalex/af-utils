@@ -18,6 +18,13 @@
     "publicPath": "/virtual/reference/",
     "navigationJson": "website/src/content/reference/navigation.json",
     "readme": "none",
+    "hidePageHeader": true,
+    "hideBreadcrumbs": true,
+    "pageTitleTemplates": {
+        "index": "API reference",
+        "member": "{name}",
+        "module": "{name}"
+    },
     "excludeInternal": true,
     "excludePrivate": true,
     "excludeProtected": true,
@@ -45,14 +52,14 @@
     "includeVersion": false,
     "useCodeBlocks": true,
     "formatWithPrettier": false,
-    "indexFormat": "table",
-    "interfacePropertiesFormat": "table",
-    "classPropertiesFormat": "table",
-    "typeAliasPropertiesFormat": "table",
+    "indexFormat": "list",
+    "interfacePropertiesFormat": "list",
+    "classPropertiesFormat": "list",
+    "typeAliasPropertiesFormat": "list",
     "enumMembersFormat": "table",
-    "propertyMembersFormat": "table",
-    "typeDeclarationFormat": "table",
-    "parametersFormat": "table",
+    "propertyMembersFormat": "list",
+    "typeDeclarationFormat": "list",
+    "parametersFormat": "list",
     "frontmatterGlobals": {
         "generated": true
     }

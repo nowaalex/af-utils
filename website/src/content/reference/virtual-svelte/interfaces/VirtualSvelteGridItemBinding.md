@@ -8,21 +8,46 @@ referencePath: /virtual/reference/virtual-svelte/interfaces/VirtualSvelteGridIte
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-svelte](/virtual/reference/virtual-svelte/index) / VirtualSvelteGridItemBinding
-
-# Interface: VirtualSvelteGridItemBinding
+# VirtualSvelteGridItemBinding
 
 Parameters accepted by the [virtualGridItem](/virtual/reference/virtual-svelte/variables/virtualGridItem) action.
 
 ## Properties
 
-| Property                                        | Type                                                                         | Description                   |
-| ----------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------- |
-| <a id="property-columnindex"></a> `columnIndex` | `number`                                                                     | Current column index.         |
-| <a id="property-columns"></a> `columns`         | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | Model owning virtual columns. |
-| <a id="property-rowindex"></a> `rowIndex`       | `number`                                                                     | Current row index.            |
-| <a id="property-rows"></a> `rows`               | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) | Model owning virtual rows.    |
+### columnIndex
+
+```ts
+columnIndex: number;
+```
+
+Current column index.
+
+---
+
+### columns
+
+```ts
+columns: VirtualScroller;
+```
+
+Model owning virtual columns.
+
+---
+
+### rowIndex
+
+```ts
+rowIndex: number;
+```
+
+Current row index.
+
+---
+
+### rows
+
+```ts
+rows: VirtualScroller;
+```
+
+Model owning virtual rows.

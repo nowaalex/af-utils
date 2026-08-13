@@ -1,20 +1,14 @@
 ---
-title: "Function: useVirtualGridItemRef()"
+title: "Hook: useVirtualGridItemRef()"
 description: Observe row and column sizes for one rendered grid cell.
 package: "@af-utils/virtual-react"
 symbol: useVirtualGridItemRef
-kind: function
+kind: hook
 referencePath: /virtual/reference/virtual-react/functions/useVirtualGridItemRef
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-react](/virtual/reference/virtual-react/index) / useVirtualGridItemRef
-
-# Function: useVirtualGridItemRef()
+# useVirtualGridItemRef()
 
 ```ts
 function useVirtualGridItemRef(
@@ -29,12 +23,21 @@ Observe row and column sizes for one rendered grid cell.
 
 ## Parameters
 
-| Parameter     | Type                                                                         |
-| ------------- | ---------------------------------------------------------------------------- |
-| `rows`        | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `rowIndex`    | `number`                                                                     |
-| `columns`     | [`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller) |
-| `columnIndex` | `number`                                                                     |
+### rows
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
+
+### rowIndex
+
+`number`
+
+### columns
+
+[`VirtualScroller`](/virtual/reference/virtual-core/classes/VirtualScroller)
+
+### columnIndex
+
+`number`
 
 ## Returns
 

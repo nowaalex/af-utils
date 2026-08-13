@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-core/classes/VirtualScroller
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-core](/virtual/reference/virtual-core/index) / VirtualScroller
-
-# Class: VirtualScroller
+# VirtualScroller
 
 Core framework-agnostic model.
 
@@ -52,9 +46,9 @@ Create a virtual-scroller model from optional initial geometry.
 
 #### Parameters
 
-| Parameter | Type                                                                                                      |
-| --------- | --------------------------------------------------------------------------------------------------------- |
-| `params?` | [`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams) |
+##### params?
+
+[`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams)
 
 #### Returns
 
@@ -62,12 +56,66 @@ Create a virtual-scroller model from optional initial geometry.
 
 ## Properties
 
-| Property                                      | Modifier   | Type      | Default value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| --------------------------------------------- | ---------- | --------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <a id="property-from"></a> `from`             | `readonly` | `number`  | `0`           | Items range start with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-overscancount) included **Remarks** [from](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#property-to) This value is exposed as a directly readable runtime field and is therefore technically assignable. Consumers must treat it as read-only: assigning it is unsupported and may break model invariants. |
-| <a id="property-horizontal"></a> `horizontal` | `readonly` | `boolean` | `false`       | Current scroll container orientation; see [VirtualScrollerInitialParams.horizontal](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-horizontal). **Remarks** This value is exposed as a directly readable runtime field and is therefore technically assignable. Consumers must treat it as read-only: assigning it is unsupported and may break model invariants.                                                                                                                                |
-| <a id="property-scrollsize"></a> `scrollSize` | `readonly` | `number`  | `0.0`         | Sum of all published item sizes, in CSS pixels.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| <a id="property-to"></a> `to`                 | `readonly` | `number`  | `0`           | Items range end with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-overscancount) included **Remarks** [from](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#property-to) This value is exposed as a directly readable runtime field and is therefore technically assignable. Consumers must treat it as read-only: assigning it is unsupported and may break model invariants.   |
+### from
+
+```ts
+readonly from: number = 0;
+```
+
+Items range start with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#overscancount) included
+
+#### Remarks
+
+[from](/virtual/reference/virtual-core/classes/VirtualScroller#from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#to)
+
+This value is exposed as a directly readable runtime field and is
+therefore technically assignable. Consumers must treat it as read-only:
+assigning it is unsupported and may break model invariants.
+
+---
+
+### horizontal
+
+```ts
+readonly horizontal: boolean = false;
+```
+
+Current scroll container orientation; see
+[VirtualScrollerInitialParams.horizontal](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#horizontal).
+
+#### Remarks
+
+This value is exposed as a directly readable runtime field and is
+therefore technically assignable. Consumers must treat it as read-only:
+assigning it is unsupported and may break model invariants.
+
+---
+
+### scrollSize
+
+```ts
+readonly scrollSize: number = 0.0;
+```
+
+Sum of all published item sizes, in CSS pixels.
+
+---
+
+### to
+
+```ts
+readonly to: number = 0;
+```
+
+Items range end with [overscanCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#overscancount) included
+
+#### Remarks
+
+[from](/virtual/reference/virtual-core/classes/VirtualScroller#from) \<= N \< [to](/virtual/reference/virtual-core/classes/VirtualScroller#to)
+
+This value is exposed as a directly readable runtime field and is
+therefore technically assignable. Consumers must treat it as read-only:
+assigning it is unsupported and may break model invariants.
 
 ## Accessors
 
@@ -101,7 +149,7 @@ Return the item-space layout offset of the current rendered range.
 
 Normally this equals `getOffset(from)`. While size publication is
 deferred at the native scroll end, the range is aligned with the frozen
-public [scrollSize](/virtual/reference/virtual-core/classes/VirtualScroller#property-scrollsize) so newly measured
+public [scrollSize](/virtual/reference/virtual-core/classes/VirtualScroller#scrollsize) so newly measured
 geometry cannot leave a temporary blank area.
 
 Time complexity: `O(log2(itemCount))`.
@@ -132,8 +180,8 @@ Time complexity: `O(log2(itemCount))`.
 
 `number`
 
-Size from [from](/virtual/reference/virtual-core/classes/VirtualScroller#property-from) through the
-exclusive [to](/virtual/reference/virtual-core/classes/VirtualScroller#property-to) boundary, in CSS pixels.
+Size from [from](/virtual/reference/virtual-core/classes/VirtualScroller#from) through the
+exclusive [to](/virtual/reference/virtual-core/classes/VirtualScroller#to) boundary, in CSS pixels.
 
 ---
 
@@ -170,10 +218,17 @@ Start observing size of `element` at `index`
 
 #### Parameters
 
-| Parameter | Type          | Description      |
-| --------- | ------------- | ---------------- |
-| `element` | `HTMLElement` | element for item |
-| `index`   | `number`      | item index       |
+##### element
+
+`HTMLElement`
+
+element for item
+
+##### index
+
+`number`
+
+item index
 
 #### Returns
 
@@ -195,9 +250,11 @@ End observing size of `element`
 
 #### Parameters
 
-| Parameter | Type          | Description      |
-| --------- | ------------- | ---------------- |
-| `element` | `HTMLElement` | element for item |
+##### element
+
+`HTMLElement`
+
+element for item
 
 #### Returns
 
@@ -233,9 +290,11 @@ Return the item containing an item-space coordinate.
 
 #### Parameters
 
-| Parameter | Type     | Description                                           |
-| --------- | -------- | ----------------------------------------------------- |
-| `offset`  | `number` | Coordinate from the start of item `0`, in CSS pixels. |
+##### offset
+
+`number`
+
+Coordinate from the start of item `0`, in CSS pixels.
 
 #### Returns
 
@@ -245,7 +304,7 @@ Item index in the range `0 <= index < itemCount`.
 
 #### Remarks
 
-[itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-itemcount) must be \> 0.
+[itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#itemcount) must be \> 0.
 With item sizes `[40px, 60px]`, `getIndex(55)` returns `1`:
 
 ```plaintext
@@ -268,9 +327,11 @@ Return the leading item-space coordinate of an item boundary.
 
 #### Parameters
 
-| Parameter | Type     | Description                                  |
-| --------- | -------- | -------------------------------------------- |
-| `index`   | `number` | Boundary index in `0 <= index <= itemCount`. |
+##### index
+
+`number`
+
+Boundary index in `0 <= index <= itemCount`.
 
 #### Returns
 
@@ -298,9 +359,9 @@ Return a stable external-store snapshot for the selected events.
 
 #### Parameters
 
-| Parameter | Type     | Default value                  |
-| --------- | -------- | ------------------------------ |
-| `events`  | `number` | `VirtualScrollerEventFlag.ALL` |
+##### events?
+
+`number` = `VirtualScrollerEventFlag.ALL`
 
 #### Returns
 
@@ -318,9 +379,11 @@ Return the current measured or estimated extent of one item.
 
 #### Parameters
 
-| Parameter   | Type     | Description                                 |
-| ----------- | -------- | ------------------------------------------- |
-| `itemIndex` | `number` | Item index in `0 <= itemIndex < itemCount`. |
+##### itemIndex
+
+`number`
+
+Item index in `0 <= itemIndex < itemCount`.
 
 #### Returns
 
@@ -345,10 +408,13 @@ Reset cached sizes in a half-open item range to the current estimate.
 
 #### Parameters
 
-| Parameter | Type     | Default value |
-| --------- | -------- | ------------- |
-| `from`    | `number` | `0`           |
-| `to`      | `number` | `...`         |
+##### from?
+
+`number` = `0`
+
+##### to?
+
+`number` = `...`
 
 #### Returns
 
@@ -369,11 +435,25 @@ Scroll to an integer or fractional item position.
 
 #### Parameters
 
-| Parameter   | Type      | Default value                      | Description                                                                                                               |
-| ----------- | --------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `index`     | `number`  | `undefined`                        | Exact item position; `12.5` targets the midpoint of item `12` at the visible edge after accounting for the sticky header. |
-| `smooth?`   | `boolean` | `undefined`                        | Whether to request native smooth scrolling.                                                                               |
-| `attempts?` | `number`  | `DEFAULT_SCROLL_TO_INDEX_ATTEMPTS` | Maximum corrections while measured sizes converge; defaults to `5`.                                                       |
+##### index
+
+`number`
+
+Exact item position; `12.5` targets the midpoint of item
+`12` at the visible edge after accounting for the sticky header.
+
+##### smooth?
+
+`boolean`
+
+Whether to request native smooth scrolling.
+
+##### attempts?
+
+`number` = `DEFAULT_SCROLL_TO_INDEX_ATTEMPTS`
+
+Maximum corrections while measured sizes converge;
+defaults to `5`.
 
 #### Returns
 
@@ -397,10 +477,17 @@ Scroll to an item-space CSS-pixel coordinate.
 
 #### Parameters
 
-| Parameter | Type      | Description                                         |
-| --------- | --------- | --------------------------------------------------- |
-| `offset`  | `number`  | Distance from the start of item `0`, in CSS pixels. |
-| `smooth?` | `boolean` | Whether to request native smooth scrolling.         |
+##### offset
+
+`number`
+
+Distance from the start of item `0`, in CSS pixels.
+
+##### smooth?
+
+`boolean`
+
+Whether to request native smooth scrolling.
 
 #### Returns
 
@@ -427,9 +514,11 @@ Synchronize runtime parameters
 
 #### Parameters
 
-| Parameter       | Type                                                                                                      | Description        |
-| --------------- | --------------------------------------------------------------------------------------------------------- | ------------------ |
-| `runtimeParams` | [`VirtualScrollerRuntimeParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams) | runtime parameters |
+##### runtimeParams
+
+[`VirtualScrollerRuntimeParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerRuntimeParams)
+
+runtime parameters
 
 #### Returns
 
@@ -447,9 +536,11 @@ Informs model about items container element. Usually not needed.
 
 #### Parameters
 
-| Parameter | Type                    | Description       |
-| --------- | ----------------------- | ----------------- |
-| `element` | `HTMLElement` \| `null` | container element |
+##### element
+
+`HTMLElement` \| `null`
+
+container element
 
 #### Returns
 
@@ -490,9 +581,11 @@ Notify model about items quantity change
 
 #### Parameters
 
-| Parameter   | Type     | Description                                                                                                                                              |
-| ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `itemCount` | `number` | new items quantity. [VirtualScrollerRuntimeParams.itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#property-itemcount) |
+##### itemCount
+
+`number`
+
+new items quantity. [VirtualScrollerRuntimeParams.itemCount](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams#itemcount)
 
 #### Returns
 
@@ -510,9 +603,12 @@ Informs model about scrollable element.
 
 #### Parameters
 
-| Parameter | Type                                                                                                                     | Description      |
-| --------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------- |
-| `element` | \| [`VirtualScrollerScrollElement`](/virtual/reference/virtual-core/type-aliases/VirtualScrollerScrollElement) \| `null` | scroller element |
+##### element
+
+\| [`VirtualScrollerScrollElement`](/virtual/reference/virtual-core/type-aliases/VirtualScrollerScrollElement)
+\| `null`
+
+scroller element
 
 #### Returns
 
@@ -534,9 +630,11 @@ Start observing size of sticky footer `element`. Observing is finished if elemen
 
 #### Parameters
 
-| Parameter | Type                    | Description    |
-| --------- | ----------------------- | -------------- |
-| `element` | `HTMLElement` \| `null` | footer element |
+##### element
+
+`HTMLElement` \| `null`
+
+footer element
 
 #### Returns
 
@@ -563,9 +661,11 @@ Start observing size of sticky header `element`. Observing is finished if elemen
 
 #### Parameters
 
-| Parameter | Type                    | Description    |
-| --------- | ----------------------- | -------------- |
-| `element` | `HTMLElement` \| `null` | header element |
+##### element
+
+`HTMLElement` \| `null`
+
+header element
 
 #### Returns
 
@@ -595,11 +695,17 @@ Apply an index-based data splice to the size cache.
 
 #### Parameters
 
-| Parameter     | Type     |
-| ------------- | -------- |
-| `start`       | `number` |
-| `deleteCount` | `number` |
-| `insertCount` | `number` |
+##### start
+
+`number`
+
+##### deleteCount
+
+`number`
+
+##### insertCount
+
+`number`
 
 #### Returns
 
@@ -623,10 +729,17 @@ Subscribe to model events
 
 #### Parameters
 
-| Parameter  | Type         | Default value                  | Description           |
-| ---------- | ------------ | ------------------------------ | --------------------- |
-| `callBack` | () => `void` | `undefined`                    | event to be triggered |
-| `events`   | `number`     | `VirtualScrollerEventFlag.ALL` | events to subscribe   |
+##### callBack
+
+() => `void`
+
+event to be triggered
+
+##### events?
+
+`number` = `VirtualScrollerEventFlag.ALL`
+
+events to subscribe
 
 #### Returns
 

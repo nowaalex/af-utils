@@ -8,13 +8,7 @@ referencePath: /virtual/reference/virtual-solid/functions/createVirtual
 generated: true
 ---
 
-[**Documentation**](../../index)
-
----
-
-[Documentation](/virtual/reference/index) / [@af-utils/virtual-solid](/virtual/reference/virtual-solid/index) / createVirtual
-
-# Function: createVirtual()
+# createVirtual()
 
 ```ts
 function createVirtual(params): VirtualScroller;
@@ -24,9 +18,9 @@ Create a Solid-owned `VirtualScroller` and synchronize reactive parameters.
 
 ## Parameters
 
-| Parameter | Type                                                                                                                                                                                        |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `params`  | [`MaybeAccessor`](/virtual/reference/virtual-solid/type-aliases/MaybeAccessor)\<[`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams)\> |
+### params
+
+[`MaybeAccessor`](/virtual/reference/virtual-solid/type-aliases/MaybeAccessor)\<[`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams)\>
 
 ## Returns
 

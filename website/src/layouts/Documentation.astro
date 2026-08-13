@@ -14,25 +14,45 @@ function flattenMenu(arr: MenuItem[] | readonly MenuItem[]): MenuItem[] {
 export interface Props extends BaseLayoutProps {
     items: MenuItem[];
     productName: string;
+    contentClass?: string;
     mainClass?: string;
 }
 
-const { items, productName, mainClass, ...rest } = Astro.props;
+const {
+    items,
+    productName,
+    contentClass = "max-w-4xl",
+    mainClass,
+    ...rest
+} = Astro.props;
 
 const flattenedItems = flattenMenu(items);
 ---
 
 <BaseLayout {...rest}>
     <div class="h-screen flex flex-col lg:flex-row">
-        <Menu items={items} productName={productName} class="min-w-[20em]" />
+        <Menu
+            items={items}
+            productName={productName}
+            class="lg:w-68 lg:min-w-68 lg:max-w-68"
+        />
         <div
-            class="flex flex-col flex-auto gap-8 overflow-auto bg-gradient-to-br from-white via-white to-slate-50 p-4"
+            class="documentation-scroll min-w-0 flex flex-auto flex-col gap-10 overflow-auto bg-gradient-to-br from-white via-white to-slate-50 px-5 py-6 sm:px-8 lg:px-10"
         >
-            <main class:list={["prose flex-auto", mainClass]}>
+            <main
+                class:list={[
+                    "prose mx-auto w-full flex-auto",
+                    contentClass,
+                    mainClass
+                ]}
+            >
                 <slot />
             </main>
             <nav
-                class="flex flex-none items-center justify-between gap-4 font-medium"
+                class:list={[
+                    "mx-auto flex w-full flex-none items-center justify-between gap-4 font-medium",
+                    contentClass
+                ]}
             >
                 <NextPrevBlock items={flattenedItems} />
             </nav>
