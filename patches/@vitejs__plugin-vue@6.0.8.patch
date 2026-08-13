@@ -1,0 +1,16 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index e7ee6225b8a3817445d4b45bffe28c04d957ffc8..8a7e6ada03acf14ad5fbfe6ce5dee0c1f6a18de0 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1428,6 +1428,11 @@ async function transformMain(code, filename, options, pluginContext, ssr, custom
+ 		if (transformWithOxc) {
+ 			const { code, map } = await transformWithOxc(resolvedCode, filename, {
+ 				...options.devServer?.config.oxc,
++				// Vue SFCs must not inherit React Refresh from another renderer.
++				jsx: {
++					...options.devServer?.config.oxc?.jsx,
++					refresh: false
++				},
+ 				lang: "ts",
+ 				sourcemap: options.sourceMap
+ 			}, resolvedMap);
