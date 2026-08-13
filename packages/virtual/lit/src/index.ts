@@ -77,6 +77,10 @@ export class VirtualController implements ReactiveController {
     /** Dispose model resources with the host. */
     hostDisconnected() {
         this._connected = false;
+        // Hydration and DOM reparenting can synchronously disconnect and
+        // reconnect the same custom element. Disposal is terminal, so wait
+        // until the next frame and skip it when `hostConnected` has restored
+        // `_connected` in the meantime.
         requestAnimationFrame(() => {
             if (!this._connected) this.model.dispose();
         });
@@ -177,6 +181,9 @@ export class VirtualLayoutController implements ReactiveController {
     /** Dispose DOM bindings with the host. */
     hostDisconnected() {
         this._connected = false;
+        // Lit can retain rendered DOM across a transient reparent, so its ref
+        // callbacks need not run again. Delaying disposal preserves the
+        // bindings when the host reconnects before the next frame.
         requestAnimationFrame(() => {
             if (!this._connected) this._layout.dispose();
         });

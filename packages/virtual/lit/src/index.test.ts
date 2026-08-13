@@ -110,4 +110,21 @@ describe("Lit virtual adapter", () => {
         });
         expect(disposeSpy).toHaveBeenCalledOnce();
     });
+
+    test("preserves its model across a transient DOM move", async () => {
+        const host = new TestHost();
+        const disposeSpy = vi.spyOn(host.virtual.model, "dispose");
+        document.body.append(host);
+        await host.updateComplete;
+
+        host.remove();
+        document.body.append(host);
+        await new Promise<void>(resolve => {
+            requestAnimationFrame(() => {
+                resolve();
+            });
+        });
+
+        expect(disposeSpy).not.toHaveBeenCalled();
+    });
 });
