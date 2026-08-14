@@ -40,6 +40,9 @@ jobs:
             - name: Check generated example files and dependencies
               run: pnpm workspace:sync:check
 
+            - name: Check package READMEs
+              run: pnpm packages:readmes:check
+
             - name: Check formatting and lint warnings
               run: pnpm check:style
 

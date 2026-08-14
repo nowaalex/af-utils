@@ -1,6 +1,6 @@
 ---
 title: "Function: createVirtualSnapshot()"
-description: Create a readable numeric revision for selected model events.
+description: Create a rune-backed numeric revision for selected model events.
 package: "@af-utils/virtual-svelte"
 symbol: createVirtualSnapshot
 kind: function
@@ -11,10 +11,10 @@ generated: true
 # createVirtualSnapshot()
 
 ```ts
-function createVirtualSnapshot(model, events?): Readable<number>;
+function createVirtualSnapshot(model, events?): VirtualSvelteValue<number>;
 ```
 
-Create a readable numeric revision for selected model events.
+Create a rune-backed numeric revision for selected model events.
 
 ## Parameters
 
@@ -28,4 +28,4 @@ Create a readable numeric revision for selected model events.
 
 ## Returns
 
-`Readable`\<`number`\>
+[`VirtualSvelteValue`](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteValue)\<`number`\>

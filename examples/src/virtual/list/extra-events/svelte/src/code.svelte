@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
     import { VirtualScrollerEvent } from "@af-utils/virtual-core";
     import {
@@ -8,7 +10,6 @@
         virtualStickyFooter,
         virtualStickyHeader
     } from "@af-utils/virtual-svelte";
-    import { derived } from "svelte/store";
     import css from "./style.module.css";
 
     const rows = createVirtual({
@@ -25,23 +26,25 @@
         VirtualScrollerEvent.SCROLL_SIZE
     );
 
-    const rangeInfo = derived(
-        rangeRevision,
-        () =>
-            `Rendered ${rows.to - rows.from} items. Range: ${rows.from} - ${rows.to}`
-    );
-    const scrollSize = derived(scrollSizeRevision, () => rows.scrollSize);
+    const rangeInfo = $derived.by(() => {
+        void rangeRevision.current;
+        return `Rendered ${rows.to - rows.from} items. Range: ${rows.from} - ${rows.to}`;
+    });
+    const scrollSize = $derived.by(() => {
+        void scrollSizeRevision.current;
+        return rows.scrollSize;
+    });
 </script>
 
-<div use:scroller role="list" aria-label="Extra events list">
-    <div use:virtualStickyHeader={rows} class={`${css.row} ${css.top0}`}>
-        {$rangeInfo}
+<div {@attach scroller} role="list" aria-label="Extra events list">
+    <div {@attach virtualStickyHeader(rows)} class={`${css.row} ${css.top0}`}>
+        {rangeInfo}
     </div>
-    <div use:size>
-        <div use:items>
-            {#each $range as index (index)}
+    <div {@attach size}>
+        <div {@attach items}>
+            {#each range.current as index (index)}
                 <div
-                    use:virtualItem={{ model: rows, index }}
+                    {@attach virtualItem(() => ({ model: rows, index }))}
                     class={css.item}
                     role="listitem"
                     aria-posinset={index + 1}
@@ -52,7 +55,10 @@
             {/each}
         </div>
     </div>
-    <div use:virtualStickyFooter={rows} class={`${css.row} ${css.bottom0}`}>
-        Scroll size: {$scrollSize}px
+    <div
+        {@attach virtualStickyFooter(rows)}
+        class={`${css.row} ${css.bottom0}`}
+    >
+        Scroll size: {scrollSize}px
     </div>
 </div>

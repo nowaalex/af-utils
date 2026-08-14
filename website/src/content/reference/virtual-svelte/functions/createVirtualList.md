@@ -1,6 +1,6 @@
 ---
 title: "Function: createVirtualList()"
-description: Create the range store and actions for the three layout elements.
+description: Create the reactive range and attachments for the three layout elements.
 package: "@af-utils/virtual-svelte"
 symbol: createVirtualList
 kind: function
@@ -14,7 +14,7 @@ generated: true
 function createVirtualList(model): VirtualSvelteListBinding;
 ```
 
-Create the range store and actions for the three
+Create the reactive range and attachments for the three
 [layout elements](/virtual/guides/layout-elements).
 
 ## Parameters

@@ -51,18 +51,20 @@ describe("SizeIndex capacity", () => {
         const index = new SizeIndex(40);
 
         index._setCount(1);
-        expect(index._capacityValue).toBe(64);
+        expect(index._capacity).toBe(64);
         const internals = index as unknown as SizeIndexInternals;
         const sizes = internals._sizes;
         const tree = internals._tree;
 
         index._setCount(64);
-        expect(index._capacityValue).toBe(64);
+        expect(index._capacity).toBe(64);
         expect(internals._sizes).toBe(sizes);
         expect(internals._tree).toBe(tree);
 
         index._setCount(65);
-        expect(index._capacityValue).toBe(96);
+        expect(index._capacity).toBe(96);
+        expect(sizes.byteLength).toBe(0);
+        expect(tree.byteLength).toBe(0);
         expect(internals._mostSignificantBit).toBe(64);
     });
 
@@ -80,7 +82,7 @@ describe("SizeIndex capacity", () => {
         expect(() => index._setCount(MAX_SIZE_INDEX_CAPACITY + 1)).toThrow(
             VirtualScrollerError
         );
-        expect(index._capacityValue).toBe(0);
+        expect(index._capacity).toBe(0);
     });
 
     test("accepts the maximum count and reports invalid input precisely", () => {
@@ -99,14 +101,14 @@ describe("SizeIndex capacity", () => {
     test("reports whether count actually changed", () => {
         const index = new SizeIndex(40);
 
-        expect(index._countValue).toBe(0);
+        expect(index._count).toBe(0);
         expect(index._setCount(0)).toBe(false);
         expect(index._setCount(1)).toBe(true);
         expect(index._setCount(1)).toBe(false);
-        expect(index._countValue).toBe(1);
-        expect(index._totalSizeValue).toBe(40);
+        expect(index._count).toBe(1);
+        expect(index._totalSize).toBe(40);
         expect(index._setCount(0)).toBe(true);
-        expect(index._totalSizeValue).toBe(0);
+        expect(index._totalSize).toBe(0);
         expect(
             (index as unknown as SizeIndexInternals)._mostSignificantBit
         ).toBe(0);
@@ -122,7 +124,7 @@ describe("SizeIndex cached sizes", () => {
         const delta = index._updateSize(1, 75, updateLimit);
         index._completeUpdateBatch(updateLimit, delta);
 
-        expect(index._totalSizeValue).toBe(195);
+        expect(index._totalSize).toBe(195);
 
         expect(index._setEstimatedSize(100)).toEqual({
             changed: true,
@@ -132,7 +134,7 @@ describe("SizeIndex cached sizes", () => {
         expect(index._getSize(0)).toBe(100);
         expect(index._getSize(1)).toBe(100);
         expect(index._getSize(2)).toBe(100);
-        expect(index._totalSizeValue).toBe(400);
+        expect(index._totalSize).toBe(400);
     });
 
     test("preserves the requested cached range when the estimate changes", () => {
@@ -147,7 +149,7 @@ describe("SizeIndex cached sizes", () => {
         expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
             100, 20, 30, 100
         ]);
-        expect(index._totalSizeValue).toBe(250);
+        expect(index._totalSize).toBe(250);
     });
 
     test("does not report a change when only the preserved range differs", () => {
@@ -179,7 +181,7 @@ describe("SizeIndex cached sizes", () => {
         const index = new SizeIndex(40);
         index._setCount(2);
 
-        expect(index._estimatedSizeValue).toBe(40);
+        expect(index._estimatedSize).toBe(40);
         expect(index._setEstimatedSize(40)).toEqual({
             changed: false,
             totalDelta: 0
@@ -188,8 +190,8 @@ describe("SizeIndex cached sizes", () => {
             changed: true,
             totalDelta: 20
         });
-        expect(index._estimatedSizeValue).toBe(50);
-        expect(index._totalSizeValue).toBe(100);
+        expect(index._estimatedSize).toBe(50);
+        expect(index._totalSize).toBe(100);
 
         for (const estimate of [0, -1, Number.NaN, Number.POSITIVE_INFINITY]) {
             expect(() => index._setEstimatedSize(estimate)).toThrow(
@@ -209,7 +211,7 @@ describe("SizeIndex cached sizes", () => {
         index._setCount(8);
         index._setCount(65);
 
-        expect(index._capacityValue).toBe(96);
+        expect(index._capacity).toBe(96);
         expect(index._getSize(7)).toBe(17);
         expect(index._getSize(63)).toBe(40);
         expect(index._getSize(64)).toBe(40);
@@ -227,7 +229,7 @@ describe("SizeIndex cached sizes", () => {
         expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
             10, 40, 40, 50
         ]);
-        expect(index._totalSizeValue).toBe(140);
+        expect(index._totalSize).toBe(140);
         expect(index._invalidateSizes(1, 3)).toEqual({
             changed: false,
             totalDelta: 0
@@ -243,7 +245,7 @@ describe("SizeIndex cached sizes", () => {
             sizesChanged: true,
             totalDelta: -10
         });
-        expect(index._countValue).toBe(4);
+        expect(index._count).toBe(4);
         expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
             10, 40, 40, 50
         ]);
@@ -252,7 +254,7 @@ describe("SizeIndex cached sizes", () => {
         expect(Array.from({ length: 4 }, (_, i) => index._getSize(i))).toEqual([
             100, 100, 100, 100
         ]);
-        expect(index._totalSizeValue).toBe(400);
+        expect(index._totalSize).toBe(400);
     });
 
     test("ignores stale and invalid measurement updates", () => {
@@ -264,7 +266,7 @@ describe("SizeIndex cached sizes", () => {
         expect(index._updateSize(2, 10, updateLimit)).toBe(0);
         expect(index._updateSize(0, -1, updateLimit)).toBe(0);
         expect(index._updateSize(0, Number.NaN, updateLimit)).toBe(0);
-        expect(index._totalSizeValue).toBe(80);
+        expect(index._totalSize).toBe(80);
     });
 
     test("accepts zero-sized items and resets them with a new estimate", () => {
@@ -274,12 +276,12 @@ describe("SizeIndex cached sizes", () => {
 
         expect(index._updateSize(0, 0, updateLimit)).toBe(-40);
         index._completeUpdateBatch(updateLimit, -40);
-        expect(index._totalSizeValue).toBe(40);
+        expect(index._totalSize).toBe(40);
 
         index._setEstimatedSize(100);
         expect(index._getSize(0)).toBe(100);
         expect(index._getSize(1)).toBe(100);
-        expect(index._totalSizeValue).toBe(200);
+        expect(index._totalSize).toBe(200);
     });
 
     test("resets cached values equal to the previous estimate", () => {
@@ -292,7 +294,7 @@ describe("SizeIndex cached sizes", () => {
 
         expect(index._getSize(0)).toBe(100);
         expect(index._getSize(1)).toBe(100);
-        expect(index._totalSizeValue).toBe(200);
+        expect(index._totalSize).toBe(200);
     });
 
     test("updates the estimate without publishing unchanged effective sizes", () => {
@@ -334,7 +336,7 @@ describe("SizeIndex cached sizes", () => {
 
         expect(index._getSize(3)).toBe(50);
         expect(index._getSize(4)).toBe(40);
-        expect(index._totalSizeValue).toBe(330);
+        expect(index._totalSize).toBe(330);
     });
 
     test("rejects an index equal to count independently of update limit", () => {
@@ -342,7 +344,7 @@ describe("SizeIndex cached sizes", () => {
         index._setCount(2);
 
         expect(index._updateSize(2, 100, 3)).toBe(0);
-        expect(index._totalSizeValue).toBe(80);
+        expect(index._totalSize).toBe(80);
     });
 });
 
@@ -363,8 +365,8 @@ describe("SizeIndex prefix sums", () => {
         expect(index._getIndex(10)).toBe(0);
         expect(index._getIndex(11)).toBe(1);
         expect(index._getIndex(645)).toBe(64);
-        expect(index._getIndex(index._totalSizeValue)).toBe(64);
-        expect(index._getIndex(index._totalSizeValue + 1)).toBe(64);
+        expect(index._getIndex(index._totalSize)).toBe(64);
+        expect(index._getIndex(index._totalSize + 1)).toBe(64);
     });
 
     test("matches a naive implementation for deterministic random data", () => {
@@ -388,14 +390,14 @@ describe("SizeIndex prefix sums", () => {
             offsets[itemIndex + 1] = offsets[itemIndex] + sizes[itemIndex];
         }
 
-        expect(index._totalSizeValue).toBe(offsets[count]);
+        expect(index._totalSize).toBe(offsets[count]);
 
         for (let itemIndex = 0; itemIndex <= count; itemIndex++) {
             expect(index._getOffset(itemIndex)).toBe(offsets[itemIndex]);
         }
 
         for (let attempt = 0; attempt < 10_000; attempt++) {
-            const offset = random() * index._totalSizeValue;
+            const offset = random() * index._totalSize;
             let naiveIndex = 0;
 
             while (naiveIndex < count - 1 && offset > offsets[naiveIndex + 1]) {

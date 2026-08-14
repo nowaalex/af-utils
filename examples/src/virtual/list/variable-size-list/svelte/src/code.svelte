@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
     import {
         createVirtual,
@@ -18,12 +20,12 @@
     const { range, scroller, size, items } = createVirtualList(model);
 </script>
 
-<div use:scroller class={css.list} role="list">
-    <div use:size>
-        <div use:items>
-            {#each $range as index (index)}
+<div {@attach scroller} class={css.list} role="list">
+    <div {@attach size}>
+        <div {@attach items}>
+            {#each range.current as index (index)}
                 <div
-                    use:virtualItem={{ model, index }}
+                    {@attach virtualItem(() => ({ model, index }))}
                     class={css.item}
                     role="listitem"
                     aria-posinset={index + 1}

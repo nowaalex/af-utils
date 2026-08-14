@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
     import {
         createVirtual,
@@ -27,14 +29,14 @@
             setTimeout(resolve, SIMULATED_FETCH_DELAY_MS);
         });
 
-    let itemData = Array.from({ length: INITIAL_ITEM_COUNT }, (_, id) =>
-        createItem(id)
+    let itemData = $state(
+        Array.from({ length: INITIAL_ITEM_COUNT }, (_, id) => createItem(id))
     );
-    let loading = false;
-    let nextPrependedId = -1;
+    let loading = $state(false);
+    let nextPrependedId = $state(-1);
     const model = createVirtual({
         estimatedItemSize: ESTIMATED_ITEM_SIZE_PX,
-        itemCount: itemData.length
+        itemCount: INITIAL_ITEM_COUNT
     });
     const { range, scroller, size, items } = createVirtualList(model);
 
@@ -52,8 +54,8 @@
     };
 </script>
 
-<div use:scroller role="list" aria-label="Prepend items list">
-    <div use:virtualStickyHeader={model} class={css.listHeader}>
+<div {@attach scroller} role="list" aria-label="Prepend items list">
+    <div {@attach virtualStickyHeader(model)} class={css.listHeader}>
         <button
             type="button"
             class={css.prependButton}
@@ -63,11 +65,11 @@
             Prepend {PREPEND_BATCH_SIZE} items{loading ? " (loading...)" : ""}
         </button>
     </div>
-    <div use:size>
-        <div use:items>
-            {#each $range as index (itemData[index]?.id ?? index)}
+    <div {@attach size}>
+        <div {@attach items}>
+            {#each range.current as index (itemData[index]?.id ?? index)}
                 <div
-                    use:virtualItem={{ model, index }}
+                    {@attach virtualItem(() => ({ model, index }))}
                     class={css.item}
                     role="listitem"
                     aria-posinset={index + 1}

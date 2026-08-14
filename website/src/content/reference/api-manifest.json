@@ -497,7 +497,7 @@
             "title": "Component: List"
         },
         {
-            "description": "Svelte stores and actions used to connect to VirtualScroller.",
+            "description": "Svelte runes and attachments used to connect to VirtualScroller.",
             "kind": "module",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/index",
@@ -505,7 +505,7 @@
             "title": "Module: @af-utils/virtual-svelte"
         },
         {
-            "description": "Parameters accepted by the virtualGridItem action.",
+            "description": "Parameters accepted by the virtualGridItem attachment.",
             "kind": "interface",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteGridItemBinding",
@@ -513,7 +513,7 @@
             "title": "Interface: VirtualSvelteGridItemBinding"
         },
         {
-            "description": "Parameters accepted by the virtualItem action.",
+            "description": "Parameters accepted by the virtualItem attachment.",
             "kind": "interface",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteItemBinding",
@@ -521,7 +521,7 @@
             "title": "Interface: VirtualSvelteItemBinding"
         },
         {
-            "description": "Svelte actions for the three elements explained in the layout-elements guide.",
+            "description": "Svelte attachments for the three elements explained in the layout-elements guide.",
             "kind": "interface",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteLayoutBinding",
@@ -529,7 +529,7 @@
             "title": "Interface: VirtualSvelteLayoutBinding"
         },
         {
-            "description": "Range store and layout actions for the common virtual-list shape.",
+            "description": "Reactive range and layout attachments for a virtual list.",
             "kind": "interface",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteListBinding",
@@ -537,63 +537,23 @@
             "title": "Interface: VirtualSvelteListBinding"
         },
         {
-            "description": "A static value or a Svelte readable store containing that value.",
+            "description": "Rune-backed reactive value exposed by the Svelte adapter.",
+            "kind": "interface",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/interfaces/VirtualSvelteValue",
+            "symbol": "VirtualSvelteValue",
+            "title": "Interface: VirtualSvelteValue"
+        },
+        {
+            "description": "A static value or a getter containing that value.",
             "kind": "typealias",
             "package": "@af-utils/virtual-svelte",
-            "path": "/virtual/reference/virtual-svelte/type-aliases/MaybeReadable",
-            "symbol": "MaybeReadable",
-            "title": "Type Alias: MaybeReadable"
+            "path": "/virtual/reference/virtual-svelte/type-aliases/MaybeGetter",
+            "symbol": "MaybeGetter",
+            "title": "Type Alias: MaybeGetter"
         },
         {
-            "description": "Attach an arbitrary element as the model's rendered-item container.",
-            "kind": "variable",
-            "package": "@af-utils/virtual-svelte",
-            "path": "/virtual/reference/virtual-svelte/variables/virtualContainer",
-            "symbol": "virtualContainer",
-            "title": "Variable: virtualContainer"
-        },
-        {
-            "description": "Observe row and column sizes for one rendered grid cell.",
-            "kind": "variable",
-            "package": "@af-utils/virtual-svelte",
-            "path": "/virtual/reference/virtual-svelte/variables/virtualGridItem",
-            "symbol": "virtualGridItem",
-            "title": "Variable: virtualGridItem"
-        },
-        {
-            "description": "Observe one rendered virtual item through a Svelte action.",
-            "kind": "variable",
-            "package": "@af-utils/virtual-svelte",
-            "path": "/virtual/reference/virtual-svelte/variables/virtualItem",
-            "symbol": "virtualItem",
-            "title": "Variable: virtualItem"
-        },
-        {
-            "description": "Attach an arbitrary element as the model's scroller.",
-            "kind": "variable",
-            "package": "@af-utils/virtual-svelte",
-            "path": "/virtual/reference/virtual-svelte/variables/virtualScroller",
-            "symbol": "virtualScroller",
-            "title": "Variable: virtualScroller"
-        },
-        {
-            "description": "Attach an element as the model's sticky footer.",
-            "kind": "variable",
-            "package": "@af-utils/virtual-svelte",
-            "path": "/virtual/reference/virtual-svelte/variables/virtualStickyFooter",
-            "symbol": "virtualStickyFooter",
-            "title": "Variable: virtualStickyFooter"
-        },
-        {
-            "description": "Attach an element as the model's sticky header.",
-            "kind": "variable",
-            "package": "@af-utils/virtual-svelte",
-            "path": "/virtual/reference/virtual-svelte/variables/virtualStickyHeader",
-            "symbol": "virtualStickyHeader",
-            "title": "Variable: virtualStickyHeader"
-        },
-        {
-            "description": "Create a component-owned model and synchronize it with an optional store.",
+            "description": "Create a component-owned model and synchronize it with reactive parameters.",
             "kind": "function",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/functions/createVirtual",
@@ -601,7 +561,7 @@
             "title": "Function: createVirtual()"
         },
         {
-            "description": "Connect Svelte actions to the framework-neutral virtual layout adapter.",
+            "description": "Connect Svelte attachments to the framework-neutral virtual layout adapter.",
             "kind": "function",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/functions/createVirtualLayout",
@@ -609,7 +569,7 @@
             "title": "Function: createVirtualLayout()"
         },
         {
-            "description": "Create the range store and actions for the three layout elements.",
+            "description": "Create the reactive range and attachments for the three layout elements.",
             "kind": "function",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/functions/createVirtualList",
@@ -617,7 +577,7 @@
             "title": "Function: createVirtualList()"
         },
         {
-            "description": "Create a readable array containing the currently rendered indexes.",
+            "description": "Create a reactive array containing the currently rendered indexes.",
             "kind": "function",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/functions/createVirtualRange",
@@ -625,12 +585,60 @@
             "title": "Function: createVirtualRange()"
         },
         {
-            "description": "Create a readable numeric revision for selected model events.",
+            "description": "Create a rune-backed numeric revision for selected model events.",
             "kind": "function",
             "package": "@af-utils/virtual-svelte",
             "path": "/virtual/reference/virtual-svelte/functions/createVirtualSnapshot",
             "symbol": "createVirtualSnapshot",
             "title": "Function: createVirtualSnapshot()"
+        },
+        {
+            "description": "Create an attachment for an arbitrary rendered-item container.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/virtualContainer",
+            "symbol": "virtualContainer",
+            "title": "Function: virtualContainer()"
+        },
+        {
+            "description": "Create an attachment that observes row and column sizes for a grid cell.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/virtualGridItem",
+            "symbol": "virtualGridItem",
+            "title": "Function: virtualGridItem()"
+        },
+        {
+            "description": "Create an attachment that observes one rendered virtual item.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/virtualItem",
+            "symbol": "virtualItem",
+            "title": "Function: virtualItem()"
+        },
+        {
+            "description": "Create an attachment for an arbitrary scroller element.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/virtualScroller",
+            "symbol": "virtualScroller",
+            "title": "Function: virtualScroller()"
+        },
+        {
+            "description": "Create an attachment for the model's sticky footer.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/virtualStickyFooter",
+            "symbol": "virtualStickyFooter",
+            "title": "Function: virtualStickyFooter()"
+        },
+        {
+            "description": "Create an attachment for the model's sticky header.",
+            "kind": "function",
+            "package": "@af-utils/virtual-svelte",
+            "path": "/virtual/reference/virtual-svelte/functions/virtualStickyHeader",
+            "symbol": "virtualStickyHeader",
+            "title": "Function: virtualStickyHeader()"
         },
         {
             "description": "Vue primitives used to connect to VirtualScroller.",

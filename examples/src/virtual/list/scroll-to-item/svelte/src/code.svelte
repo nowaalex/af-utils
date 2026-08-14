@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
     import {
         createVirtual,
@@ -6,16 +8,17 @@
         virtualStickyFooter,
         virtualStickyHeader
     } from "@af-utils/virtual-svelte";
-    import { onMount } from "svelte";
     import css from "./style.module.css";
 
     const DEFAULT_ROW_COUNT = 50_000;
-    let sizes = Array.from(
-        { length: DEFAULT_ROW_COUNT },
-        (_, index) => 20 + ((index ** 2) & 31)
+    let sizes = $state(
+        Array.from(
+            { length: DEFAULT_ROW_COUNT },
+            (_, index) => 20 + ((index ** 2) & 31)
+        )
     );
     const model = createVirtual({
-        itemCount: sizes.length,
+        itemCount: DEFAULT_ROW_COUNT,
         estimatedItemSize: 78
     });
     const { range, scroller, size, items } = createVirtualList(model);
@@ -59,12 +62,14 @@
         changeRows(event.currentTarget);
     };
 
-    onMount(() => model.scrollToIndex(sizes.length - 1));
+    $effect(() => {
+        model.scrollToIndex(DEFAULT_ROW_COUNT - 1);
+    });
 </script>
 
-<div use:scroller class={css.list} role="list" tabindex="-1">
+<div {@attach scroller} class={css.list} role="list" tabindex="-1">
     <form
-        use:virtualStickyHeader={model}
+        {@attach virtualStickyHeader(model)}
         class={`${css.form} ${css.top0}`}
         onsubmit={submitScroll}
     >
@@ -79,11 +84,11 @@
         >
         <button class={css.btn} type="submit">Go</button>
     </form>
-    <div use:size>
-        <div use:items>
-            {#each $range as index (index)}
+    <div {@attach size}>
+        <div {@attach items}>
+            {#each range.current as index (index)}
                 <div
-                    use:virtualItem={{ model, index }}
+                    {@attach virtualItem(() => ({ model, index }))}
                     class={css.item}
                     role="listitem"
                     aria-posinset={index + 1}
@@ -96,7 +101,7 @@
         </div>
     </div>
     <form
-        use:virtualStickyFooter={model}
+        {@attach virtualStickyFooter(model)}
         class={`${css.form} ${css.bottom0}`}
         onsubmit={submitRows}
     >

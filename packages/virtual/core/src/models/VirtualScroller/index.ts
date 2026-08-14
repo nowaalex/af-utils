@@ -227,7 +227,7 @@ class VirtualScroller {
      * `4000px`; no separate flag has to be cleared or synchronized.
      */
     private get _hasDeferredScrollSize() {
-        return this._sizeIndex._totalSizeValue !== this.scrollSize;
+        return this._sizeIndex._totalSize !== this.scrollSize;
     }
 
     /**
@@ -271,7 +271,7 @@ class VirtualScroller {
         return Math.max(
             0.0,
             Math.min(
-                this._getNativeEndOffset(this._sizeIndex._totalSizeValue),
+                this._getNativeEndOffset(this._sizeIndex._totalSize),
                 this._scrollElementOffset + offset
             )
         );
@@ -341,7 +341,7 @@ class VirtualScroller {
         if (this._shouldAnchorRangeEnd) {
             return Math.max(
                 0.0,
-                this._sizeIndex._totalSizeValue - this._availableWidgetSize
+                this._sizeIndex._totalSize - this._availableWidgetSize
             );
         }
 
@@ -527,7 +527,7 @@ class VirtualScroller {
 
     /** Publish the current total item size when its public value changed. */
     private _publishScrollSize() {
-        const nextScrollSize = this._sizeIndex._totalSizeValue;
+        const nextScrollSize = this._sizeIndex._totalSize;
 
         if (nextScrollSize === this.scrollSize) {
             return;

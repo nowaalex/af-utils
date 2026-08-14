@@ -1,6 +1,6 @@
 ---
 title: "Interface: VirtualSvelteItemBinding"
-description: Parameters accepted by the virtualItem action.
+description: Parameters accepted by the virtualItem attachment.
 package: "@af-utils/virtual-svelte"
 symbol: VirtualSvelteItemBinding
 kind: interface
@@ -10,7 +10,7 @@ generated: true
 
 # VirtualSvelteItemBinding
 
-Parameters accepted by the [virtualItem](/virtual/reference/virtual-svelte/variables/virtualItem) action.
+Parameters accepted by the [virtualItem](/virtual/reference/virtual-svelte/functions/virtualItem) attachment.
 
 ## Properties
 

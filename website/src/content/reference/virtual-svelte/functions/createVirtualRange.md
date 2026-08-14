@@ -1,6 +1,6 @@
 ---
 title: "Function: createVirtualRange()"
-description: Create a readable array containing the currently rendered indexes.
+description: Create a reactive array containing the currently rendered indexes.
 package: "@af-utils/virtual-svelte"
 symbol: createVirtualRange
 kind: function
@@ -11,10 +11,10 @@ generated: true
 # createVirtualRange()
 
 ```ts
-function createVirtualRange(model): Readable<number[]>;
+function createVirtualRange(model): VirtualSvelteValue<number[]>;
 ```
 
-Create a readable array containing the currently rendered indexes.
+Create a reactive array containing the currently rendered indexes.
 
 ## Parameters
 
@@ -24,4 +24,4 @@ Create a readable array containing the currently rendered indexes.
 
 ## Returns
 
-`Readable`\<`number`[]\>
+[`VirtualSvelteValue`](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteValue)\<`number`[]\>

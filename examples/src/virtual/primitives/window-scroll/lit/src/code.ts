@@ -13,17 +13,17 @@ import stylesheet from "./style.module.css?inline";
 export default class WindowScroll extends LitElement {
     static styles = unsafeCSS(stylesheet);
 
-    private readonly _virtual = new VirtualController(this, () => ({
+    private readonly virtual = new VirtualController(this, () => ({
         itemCount: 5_000
     }));
-    private readonly _snapshot = new VirtualSnapshotController(
+    private readonly snapshot = new VirtualSnapshotController(
         this,
-        this._virtual.model,
+        this.virtual.model,
         VirtualScrollerEvent.RANGE
     );
-    private readonly _layout = new VirtualLayoutController(
+    private readonly layout = new VirtualLayoutController(
         this,
-        this._virtual.model
+        this.virtual.model
     );
 
     connectedCallback() {
@@ -32,26 +32,26 @@ export default class WindowScroll extends LitElement {
     }
 
     protected firstUpdated() {
-        this._virtual.model.setScroller(window);
+        this.virtual.model.setScroller(window);
     }
 
     disconnectedCallback() {
-        this._virtual.model.setScroller(null);
+        this.virtual.model.setScroller(null);
         super.disconnectedCallback();
     }
 
     protected render() {
-        const model = this._virtual.model;
+        const model = this.virtual.model;
         return html`<div class=${css.offset1}>Some offset</div>
             <div>
                 <div class=${css.offset2}>Some offset 2</div>
                 <div>
                     <div
-                        ${ref(this._layout.sizeRef)}
+                        ${ref(this.layout.sizeRef)}
                         role="list"
                         aria-label="Window virtual list"
                     >
-                        <div ${ref(this._layout.itemsRef)}>
+                        <div ${ref(this.layout.itemsRef)}>
                             ${mapVirtualRange(
                                 model,
                                 index => html`<div

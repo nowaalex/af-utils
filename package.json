@@ -39,6 +39,7 @@
         "packages:build": "nx run-many -t build --projects=\"tag:npm:public\"",
         "build": "nx run-many -t build --projects=\"tag:npm:public,website\"",
         "publint": "pnpm --filter './packages/**' exec publint",
+        "packages:readmes:check": "node scripts/check-package-readmes.mjs",
         "examples:versions": "nx run @af-utils/examples:versions",
         "examples:versions:check": "nx run @af-utils/examples:versions:check",
         "examples:build": "nx run-many -t build --projects=\"examples/**\"",

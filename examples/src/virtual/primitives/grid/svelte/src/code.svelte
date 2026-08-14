@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
     import {
         mapVirtualRangeWithOffset,
@@ -9,8 +11,7 @@
         createVirtualSnapshot,
         virtualGridItem
     } from "@af-utils/virtual-svelte";
-    import type { Action } from "svelte/action";
-    import { derived } from "svelte/store";
+    import type { Attachment } from "svelte/attachments";
     import css from "./style.module.css";
 
     const SIZE = 50_000;
@@ -30,25 +31,25 @@
         columns,
         VirtualScrollerEvent.ALL
     );
-    const cells = derived([rowRevision, columnRevision], () =>
-        mapVirtualRangeWithOffset(rows, (row, rowOffset) =>
+    const cells = $derived.by(() => {
+        void rowRevision.current;
+        void columnRevision.current;
+        return mapVirtualRangeWithOffset(rows, (row, rowOffset) =>
             mapVirtualRangeWithOffset(columns, (column, columnOffset) => ({
                 column,
                 columnOffset,
                 row,
                 rowOffset
             }))
-        ).flat()
-    );
+        ).flat();
+    });
 
-    const gridScroller: Action<HTMLElement> = (element) => {
+    const gridScroller: Attachment<HTMLElement> = (element) => {
         rows.setScroller(element);
         columns.setScroller(element);
-        return {
-            destroy() {
-                rows.setScroller(null);
-                columns.setScroller(null);
-            }
+        return () => {
+            rows.setScroller(null);
+            columns.setScroller(null);
         };
     };
 
@@ -82,20 +83,20 @@
         />
         <button type="submit" class={css.btn}>Scroll</button>
     </form>
-    <div class={css.grid} use:gridScroller data-testid="virtual-grid">
+    <div class={css.grid} {@attach gridScroller} data-testid="virtual-grid">
         <div
             class={css.gridItems}
             style:height={`${rows.scrollSize}px`}
             style:width={`${columns.scrollSize}px`}
         >
-            {#each $cells as cell (`${cell.row}:${cell.column}`)}
+            {#each cells as cell (`${cell.row}:${cell.column}`)}
                 <div
-                    use:virtualGridItem={{
+                    {@attach virtualGridItem(() => ({
                         rows,
                         rowIndex: cell.row,
                         columns,
                         columnIndex: cell.column
-                    }}
+                    }))}
                     class={css.cell}
                     data-row-index={cell.row}
                     data-column-index={cell.column}

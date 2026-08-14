@@ -43,8 +43,7 @@ describe("SizeIndex queries", () => {
 
         for (let query = 0; query < QUERY_COUNT; query++) {
             checksum += index._getIndex(
-                (((query * 104_729) % 1_000_000) / 1_000_000) *
-                    index._totalSizeValue
+                (((query * 104_729) % 1_000_000) / 1_000_000) * index._totalSize
             );
         }
 
@@ -82,7 +81,7 @@ describe("SizeIndex updates", () => {
             growingIndex._setCount(count);
         }
 
-        benchmarkSink = growingIndex._totalSizeValue;
+        benchmarkSink = growingIndex._totalSize;
     });
 });
 

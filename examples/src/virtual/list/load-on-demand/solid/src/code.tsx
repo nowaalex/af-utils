@@ -14,16 +14,25 @@ const descriptionParts = [
     "This deterministic text keeps framework screenshots comparable."
 ];
 
-const createDescriptions = (start: number) =>
-    Array.from({ length: 5 }, (_description, offset) =>
-        Array.from(
-            { length: 1 + ((start + offset) % descriptionParts.length) },
-            (_part, part) =>
+const createDescriptions = (start: number) => {
+    const descriptions: string[] = [];
+
+    for (let offset = 0; offset < 5; offset++) {
+        const parts: string[] = [];
+        const partCount = 1 + ((start + offset) % descriptionParts.length);
+
+        for (let part = 0; part < partCount; part++) {
+            parts.push(
                 descriptionParts[
                     (start + offset + part) % descriptionParts.length
                 ]
-        ).join(" ")
-    );
+            );
+        }
+        descriptions.push(parts.join(" "));
+    }
+
+    return descriptions;
+};
 
 const fetchDescriptions = (start: number) =>
     new Promise<string[]>(resolve => {

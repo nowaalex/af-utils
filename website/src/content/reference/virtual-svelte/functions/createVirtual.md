@@ -1,6 +1,6 @@
 ---
 title: "Function: createVirtual()"
-description: Create a component-owned model and synchronize it with an optional store.
+description: Create a component-owned model and synchronize it with reactive parameters.
 package: "@af-utils/virtual-svelte"
 symbol: createVirtual
 kind: function
@@ -14,13 +14,13 @@ generated: true
 function createVirtual(params): VirtualScroller;
 ```
 
-Create a component-owned model and synchronize it with an optional store.
+Create a component-owned model and synchronize it with reactive parameters.
 
 ## Parameters
 
 ### params
 
-[`MaybeReadable`](/virtual/reference/virtual-svelte/type-aliases/MaybeReadable)\<[`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams)\>
+[`MaybeGetter`](/virtual/reference/virtual-svelte/type-aliases/MaybeGetter)\<[`VirtualScrollerInitialParams`](/virtual/reference/virtual-core/interfaces/VirtualScrollerInitialParams)\>
 
 ## Returns
 

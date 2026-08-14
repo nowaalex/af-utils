@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
     import { VirtualScrollerEvent } from "@af-utils/virtual-core";
     import {
@@ -5,7 +7,7 @@
         createVirtualList,
         virtualItem
     } from "@af-utils/virtual-svelte";
-    import { onMount } from "svelte";
+    import { untrack } from "svelte";
     import css from "./style.module.css";
 
     const descriptionParts = [
@@ -14,28 +16,36 @@
         "This deterministic text keeps framework screenshots comparable."
     ];
 
-    const createDescriptions = (start: number) =>
-        Array.from({ length: 5 }, (_description, offset) =>
-            Array.from(
-                {
-                    length: 1 + ((start + offset) % descriptionParts.length)
-                },
-                (_part, part) =>
+    const createDescriptions = (start: number) => {
+        const descriptions: string[] = [];
+
+        for (let offset = 0; offset < 5; offset++) {
+            const parts: string[] = [];
+            const partCount = 1 + ((start + offset) % descriptionParts.length);
+
+            for (let part = 0; part < partCount; part++) {
+                parts.push(
                     descriptionParts[
                         (start + offset + part) % descriptionParts.length
                     ]
-            ).join(" ")
-        );
+                );
+            }
+            descriptions.push(parts.join(" "));
+        }
+
+        return descriptions;
+    };
 
     const fetchDescriptions = (start: number) =>
         new Promise<string[]>((resolve) => {
             setTimeout(resolve, 200, createDescriptions(start));
         });
 
-    let posts = createDescriptions(0);
-    let loading = false;
+    const initialPosts = createDescriptions(0);
+    let posts = $state(initialPosts);
+    let loading = $state(false);
     const model = createVirtual({
-        itemCount: posts.length,
+        itemCount: initialPosts.length,
         estimatedItemSize: 500
     });
     const { range, scroller, size, items } = createVirtualList(model);
@@ -49,22 +59,22 @@
         loading = false;
     };
 
-    onMount(() => {
+    $effect(() => {
         const unsubscribe = model.subscribe(
             () => void loadMore(),
             VirtualScrollerEvent.RANGE
         );
-        void loadMore();
+        untrack(() => void loadMore());
         return unsubscribe;
     });
 </script>
 
-<div use:scroller role="list" aria-label="Load on demand list">
-    <div use:size>
-        <div use:items>
-            {#each $range as index (index)}
+<div {@attach scroller} role="list" aria-label="Load on demand list">
+    <div {@attach size}>
+        <div {@attach items}>
+            {#each range.current as index (index)}
                 <div
-                    use:virtualItem={{ model, index }}
+                    {@attach virtualItem(() => ({ model, index }))}
                     class={css.item}
                     role="listitem"
                     aria-posinset={index + 1}

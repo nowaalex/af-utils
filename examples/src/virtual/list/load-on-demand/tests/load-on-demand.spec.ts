@@ -34,10 +34,7 @@ await describeExample("virtual/list/load-on-demand", example => {
             )
         );
         expect(positions).toEqual(
-            Array.from(
-                { length: positions.length },
-                (_value, index) => positions[0] + index
-            )
+            Array.from(positions.keys(), index => positions[0] + index)
         );
         expect(positions.at(-1)).toBeLessThanOrEqual(loadedItemCount);
     });

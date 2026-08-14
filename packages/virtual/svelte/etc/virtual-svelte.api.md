@@ -4,14 +4,13 @@
 
 ```ts
 
-import type { Action } from 'svelte/action';
-import { Readable } from 'svelte/store';
+import type { Attachment } from 'svelte/attachments';
 import { VirtualScroller } from '@af-utils/virtual-core';
 import { VirtualScrollerEventMask } from '@af-utils/virtual-core';
 import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
 
 // @public
-export const createVirtual: (params: MaybeReadable<VirtualScrollerInitialParams>) => VirtualScroller;
+export const createVirtual: (params: MaybeGetter<VirtualScrollerInitialParams>) => VirtualScroller;
 
 // @public
 export const createVirtualLayout: (model: VirtualScroller) => VirtualSvelteLayoutBinding;
@@ -20,31 +19,31 @@ export const createVirtualLayout: (model: VirtualScroller) => VirtualSvelteLayou
 export const createVirtualList: (model: VirtualScroller) => VirtualSvelteListBinding;
 
 // @public
-export const createVirtualRange: (model: VirtualScroller) => Readable<number[]>;
+export const createVirtualRange: (model: VirtualScroller) => VirtualSvelteValue<number[]>;
 
 // @public
-export const createVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => Readable<number>;
+export const createVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => VirtualSvelteValue<number>;
 
 // @public
-export type MaybeReadable<Value> = Value | Readable<Value>;
+export type MaybeGetter<Value> = Value | (() => Value);
 
 // @public
-export const virtualContainer: Action<HTMLElement, VirtualScroller>;
+export const virtualContainer: (model: VirtualScroller) => Attachment<HTMLElement>;
 
 // @public
-export const virtualGridItem: Action<HTMLElement, VirtualSvelteGridItemBinding>;
+export const virtualGridItem: (binding: MaybeGetter<VirtualSvelteGridItemBinding>) => Attachment<HTMLElement>;
 
 // @public
-export const virtualItem: Action<HTMLElement, VirtualSvelteItemBinding>;
+export const virtualItem: (binding: MaybeGetter<VirtualSvelteItemBinding>) => Attachment<HTMLElement>;
 
 // @public
-export const virtualScroller: Action<HTMLElement, VirtualScroller>;
+export const virtualScroller: (model: VirtualScroller) => Attachment<HTMLElement>;
 
 // @public
-export const virtualStickyFooter: Action<HTMLElement, VirtualScroller>;
+export const virtualStickyFooter: (model: VirtualScroller) => Attachment<HTMLElement>;
 
 // @public
-export const virtualStickyHeader: Action<HTMLElement, VirtualScroller>;
+export const virtualStickyHeader: (model: VirtualScroller) => Attachment<HTMLElement>;
 
 // @public
 export interface VirtualSvelteGridItemBinding {
@@ -62,14 +61,19 @@ export interface VirtualSvelteItemBinding {
 
 // @public
 export interface VirtualSvelteLayoutBinding {
-    items: Action<HTMLElement>;
-    scroller: Action<HTMLElement>;
-    size: Action<HTMLElement>;
+    items: Attachment<HTMLElement>;
+    scroller: Attachment<HTMLElement>;
+    size: Attachment<HTMLElement>;
 }
 
 // @public
 export interface VirtualSvelteListBinding extends VirtualSvelteLayoutBinding {
-    range: Readable<number[]>;
+    range: VirtualSvelteValue<number[]>;
+}
+
+// @public
+export interface VirtualSvelteValue<Value> {
+    readonly current: Value;
 }
 
 ```

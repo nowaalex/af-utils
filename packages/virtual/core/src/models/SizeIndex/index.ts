@@ -11,6 +11,19 @@ import { getLiftingLimit, syncWithArray, update } from "../../utils/fTree";
 /** Shared zero-allocation backing store used before the first capacity growth. */
 const EMPTY_SIZES = new Float64Array(0);
 
+/** Grow a fixed-length numeric store while preserving its contents. */
+const growFloat64Array = (array: Float64Array<ArrayBuffer>, length: number) => {
+    // TODO: Think about ArrayBuffer.resize().
+    // Every empty SizeIndex store shares this view; transferring it would detach all of them.
+    if (array === EMPTY_SIZES) return new Float64Array(length);
+
+    return new Float64Array(
+        array.buffer.transferToFixedLength(
+            length * Float64Array.BYTES_PER_ELEMENT
+        )
+    );
+};
+
 /**
  * Validate an item count before it is used to allocate typed arrays.
  *
@@ -105,19 +118,19 @@ export const getNextSizeIndexCapacity = (
  */
 class SizeIndex {
     /** Logical number of addressable items. */
-    private _count = 0;
+    _count = 0;
 
     /** Number of allocated slots shared by all typed-array backing stores. */
-    private _capacity = 0;
+    _capacity = 0;
 
     /** Highest power-of-two bit used to lift Fenwick-tree index searches. */
     private _mostSignificantBit = 0;
 
     /** Size assigned to new or explicitly invalidated item slots. */
-    private _estimatedSize: number;
+    _estimatedSize: number;
 
     /** Cached prefix sum for the complete logical range `[0, count)`. */
-    private _totalSize = 0.0;
+    _totalSize = 0.0;
 
     /**
      * Dense effective sizes, including estimates for invalidated item slots.
@@ -139,26 +152,6 @@ class SizeIndex {
     constructor(estimatedSize: number) {
         assertEstimatedSize(estimatedSize);
         this._estimatedSize = estimatedSize;
-    }
-
-    /** Logical number of addressable items. */
-    get _countValue() {
-        return this._count;
-    }
-
-    /** Number of allocated item slots; always greater than or equal to `count`. */
-    get _capacityValue() {
-        return this._capacity;
-    }
-
-    /** Prefix sum for the complete logical range `[0, count)`. */
-    get _totalSizeValue() {
-        return this._totalSize;
-    }
-
-    /** Size currently assigned to new or invalidated item slots. */
-    get _estimatedSizeValue() {
-        return this._estimatedSize;
     }
 
     /**
@@ -452,12 +445,11 @@ class SizeIndex {
             this._capacity,
             requiredCapacity
         );
-        const sizes = new Float64Array(capacity);
+        const sizes = growFloat64Array(this._sizes, capacity);
 
-        sizes.fill(this._estimatedSize);
-        sizes.set(this._sizes);
+        sizes.fill(this._estimatedSize, this._capacity);
 
-        const tree = new Float64Array(capacity + 1);
+        const tree = growFloat64Array(this._tree, capacity + 1);
         syncWithArray(tree, sizes);
 
         this._capacity = capacity;

@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
     import { VirtualScrollerEvent } from "@af-utils/virtual-core";
     import {
@@ -9,7 +11,6 @@
         virtualStickyFooter,
         virtualStickyHeader
     } from "@af-utils/virtual-svelte";
-    import { onMount } from "svelte";
     import css from "./style.module.css";
 
     const model = createVirtual({
@@ -17,10 +18,8 @@
         estimatedItemSize: 50
     });
     const range = createVirtualRange(model);
-    // oxlint-disable-next-line eslint/no-unassigned-vars -- Svelte bind:this assigns this reference during DOM creation.
-    let before: HTMLDivElement;
-    // oxlint-disable-next-line eslint/no-unassigned-vars -- Svelte bind:this assigns this reference during DOM creation.
-    let after: HTMLDivElement;
+    let before = $state<HTMLDivElement>();
+    let after = $state<HTMLDivElement>();
 
     const updateSpacers = () => {
         if (!before || !after) return;
@@ -32,7 +31,7 @@
         )}px`;
     };
 
-    onMount(() => {
+    $effect(() => {
         const unsubscribe = model.subscribe(
             updateSpacers,
             VirtualScrollerEvent.RANGE |
@@ -44,15 +43,15 @@
     });
 </script>
 
-<div class={css.wrapper} use:virtualScroller={model}>
+<div class={css.wrapper} {@attach virtualScroller(model)}>
     <table class={css.table}>
-        <thead class={css.thead} use:virtualStickyHeader={model}>
+        <thead class={css.thead} {@attach virtualStickyHeader(model)}>
             <tr>
                 <th scope="col">Column one</th>
                 <th scope="col">Column two</th>
             </tr>
         </thead>
-        <tbody use:virtualContainer={model}>
+        <tbody {@attach virtualContainer(model)}>
             <tr aria-hidden="true">
                 <td class={css.spacerCell} colspan={2}>
                     <div
@@ -62,8 +61,8 @@
                     ></div>
                 </td>
             </tr>
-            {#each $range as index (index)}
-                <tr use:virtualItem={{ model, index }}>
+            {#each range.current as index (index)}
+                <tr {@attach virtualItem(() => ({ model, index }))}>
                     <td>Cell one - {index}</td>
                     <td>
                         Cell two - {index}
@@ -91,7 +90,7 @@
                 </td>
             </tr>
         </tbody>
-        <tfoot class={css.tfoot} use:virtualStickyFooter={model}>
+        <tfoot class={css.tfoot} {@attach virtualStickyFooter(model)}>
             <tr>
                 <td>Row one</td>
                 <td>Row two</td>

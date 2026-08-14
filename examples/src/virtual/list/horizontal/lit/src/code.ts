@@ -13,19 +13,19 @@ import stylesheet from "./style.module.css?inline";
 export default class HorizontalList extends LitElement {
     static styles = unsafeCSS(stylesheet);
 
-    private readonly _virtual = new VirtualController(this, () => ({
+    private readonly virtual = new VirtualController(this, () => ({
         itemCount: 50_000,
         estimatedItemSize: 75,
         horizontal: true
     }));
-    private readonly _snapshot = new VirtualSnapshotController(
+    private readonly snapshot = new VirtualSnapshotController(
         this,
-        this._virtual.model,
+        this.virtual.model,
         VirtualScrollerEvent.RANGE
     );
-    private readonly _layout = new VirtualLayoutController(
+    private readonly layout = new VirtualLayoutController(
         this,
-        this._virtual.model
+        this.virtual.model
     );
 
     connectedCallback() {
@@ -36,20 +36,20 @@ export default class HorizontalList extends LitElement {
     protected firstUpdated() {
         const elements =
             this.renderRoot.querySelectorAll<HTMLElement>("[data-layout]");
-        this._layout.connect(elements[0], elements[1], elements[2]);
+        this.layout.connect(elements[0], elements[1], elements[2]);
     }
 
     protected render() {
-        const model = this._virtual.model;
+        const model = this.virtual.model;
         return html`<div
-            ${ref(this._layout.scrollerRef)}
+            ${ref(this.layout.scrollerRef)}
             data-layout
             role="list"
             aria-label="Horizontal virtual list"
             style="width:100%;height:100%"
         >
-            <div ${ref(this._layout.sizeRef)} data-layout>
-                <div ${ref(this._layout.itemsRef)} data-layout>
+            <div ${ref(this.layout.sizeRef)} data-layout>
+                <div ${ref(this.layout.itemsRef)} data-layout>
                     ${mapVirtualRange(
                         model,
                         index => html`<div

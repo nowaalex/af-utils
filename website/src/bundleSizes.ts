@@ -11,10 +11,10 @@ export default {
     },
     "@af-utils/virtual-core": {
         "./dist/index.production.js": {
-            raw: 17135,
-            min: 16669,
-            minGz: 5718,
-            minBrotli: 5169
+            raw: 17039,
+            min: 16573,
+            minGz: 5707,
+            minBrotli: 5139
         }
     },
     "@af-utils/virtual-lit": {
@@ -51,10 +51,10 @@ export default {
     },
     "@af-utils/virtual-svelte": {
         "./dist/index.js": {
-            raw: 2680,
-            min: 2159,
-            minGz: 777,
-            minBrotli: 697
+            raw: 2567,
+            min: 2067,
+            minGz: 789,
+            minBrotli: 711
         }
     },
     "@af-utils/virtual-vue": {

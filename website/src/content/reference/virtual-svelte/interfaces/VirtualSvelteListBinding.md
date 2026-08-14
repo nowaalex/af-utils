@@ -1,6 +1,6 @@
 ---
 title: "Interface: VirtualSvelteListBinding"
-description: Range store and layout actions for the common virtual-list shape.
+description: Reactive range and layout attachments for a virtual list.
 package: "@af-utils/virtual-svelte"
 symbol: VirtualSvelteListBinding
 kind: interface
@@ -10,7 +10,7 @@ generated: true
 
 # VirtualSvelteListBinding
 
-Range store and layout actions for the common virtual-list shape.
+Reactive range and layout attachments for a virtual list.
 
 ## Extends
 
@@ -21,10 +21,10 @@ Range store and layout actions for the common virtual-list shape.
 ### items
 
 ```ts
-items: Action<HTMLElement>;
+items: Attachment<HTMLElement>;
 ```
 
-Action attaching the [rendered-items element](/virtual/guides/layout-elements#items-ref).
+Attachment for the [rendered-items element](/virtual/guides/layout-elements#items-ref).
 
 #### Inherited from
 
@@ -35,20 +35,20 @@ Action attaching the [rendered-items element](/virtual/guides/layout-elements#it
 ### range
 
 ```ts
-range: Readable<number[]>;
+range: VirtualSvelteValue<number[]>;
 ```
 
-Readable array containing the currently rendered indexes.
+Reactive array containing the currently rendered indexes.
 
 ---
 
 ### scroller
 
 ```ts
-scroller: Action<HTMLElement>;
+scroller: Attachment<HTMLElement>;
 ```
 
-Action attaching the [scroller element](/virtual/guides/layout-elements#scroller-ref).
+Attachment for the [scroller element](/virtual/guides/layout-elements#scroller-ref).
 
 #### Inherited from
 
@@ -59,10 +59,10 @@ Action attaching the [scroller element](/virtual/guides/layout-elements#scroller
 ### size
 
 ```ts
-size: Action<HTMLElement>;
+size: Attachment<HTMLElement>;
 ```
 
-Action attaching the [native size element](/virtual/guides/layout-elements#size-ref).
+Attachment for the [native size element](/virtual/guides/layout-elements#size-ref).
 
 #### Inherited from
 

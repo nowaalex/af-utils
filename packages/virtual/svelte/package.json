@@ -2,7 +2,7 @@
     "name": "@af-utils/virtual-svelte",
     "private": false,
     "version": "0.0.1",
-    "description": "Svelte stores and actions for rendering large scrollable data",
+    "description": "Svelte runes and attachments for rendering large scrollable data",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/nowaalex/af-utils.git",
@@ -52,6 +52,7 @@
         "svelte": "^5.56.9"
     },
     "devDependencies": {
+        "@sveltejs/vite-plugin-svelte": "^7.3.0",
         "@types/node": "^26.2.0",
         "jsdom": "^30.0.1",
         "svelte": "^5.56.9",

@@ -150,18 +150,18 @@ assertSmi("SizeIndex._mostSignificantBit", sizeIndex._mostSignificantBit);
 assertFiniteDouble("SizeIndex._estimatedSize", sizeIndex._estimatedSize);
 assertFiniteDouble("SizeIndex._totalSize", sizeIndex._totalSize);
 assertFiniteDouble("SizeIndex._getOffset()", sizeIndex._getOffset(50_001));
-assertSmi("SizeIndex._getIndex()", sizeIndex._getIndex(sizeIndex._totalSizeValue / 2));
+assertSmi("SizeIndex._getIndex()", sizeIndex._getIndex(sizeIndex._totalSize / 2));
 assertTypedArray(
     "SizeIndex._sizes",
     sizeIndex._sizes,
     Float64Array,
-    sizeIndex._capacityValue
+    sizeIndex._capacity
 );
 assertTypedArray(
     "SizeIndex._tree",
     sizeIndex._tree,
     Float64Array,
-    sizeIndex._capacityValue + 1
+    sizeIndex._capacity + 1
 );
 assert(
     sizeIndex._sizes.buffer !== sizeIndex._tree.buffer,

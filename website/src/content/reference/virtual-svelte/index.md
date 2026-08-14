@@ -1,6 +1,6 @@
 ---
 title: "Module: @af-utils/virtual-svelte"
-description: Svelte stores and actions used to connect to VirtualScroller.
+description: Svelte runes and attachments used to connect to VirtualScroller.
 package: "@af-utils/virtual-svelte"
 symbol: ""
 kind: module
@@ -10,7 +10,22 @@ generated: true
 
 # svelte
 
-Svelte stores and actions used to connect to `VirtualScroller`.
+Svelte 5 runes and attachments for efficiently rendering large scrollable data
+sets with dynamic item sizes.
+
+## Installation
+
+```bash
+npm install @af-utils/virtual-svelte svelte
+```
+
+## Documentation
+
+- [Getting started](https://af-utils.com/virtual)
+- [Svelte examples](https://af-utils.com/virtual/examples/svelte/list/simple)
+- [API reference](https://af-utils.com/virtual/reference/virtual-svelte/index)
+
+Svelte runes and attachments used to connect to `VirtualScroller`.
 
 ## Interfaces
 
@@ -18,19 +33,11 @@ Svelte stores and actions used to connect to `VirtualScroller`.
 - [VirtualSvelteItemBinding](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteItemBinding)
 - [VirtualSvelteLayoutBinding](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteLayoutBinding)
 - [VirtualSvelteListBinding](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteListBinding)
+- [VirtualSvelteValue](/virtual/reference/virtual-svelte/interfaces/VirtualSvelteValue)
 
 ## Type Aliases
 
-- [MaybeReadable](/virtual/reference/virtual-svelte/type-aliases/MaybeReadable)
-
-## Variables
-
-- [virtualContainer](/virtual/reference/virtual-svelte/variables/virtualContainer)
-- [virtualGridItem](/virtual/reference/virtual-svelte/variables/virtualGridItem)
-- [virtualItem](/virtual/reference/virtual-svelte/variables/virtualItem)
-- [virtualScroller](/virtual/reference/virtual-svelte/variables/virtualScroller)
-- [virtualStickyFooter](/virtual/reference/virtual-svelte/variables/virtualStickyFooter)
-- [virtualStickyHeader](/virtual/reference/virtual-svelte/variables/virtualStickyHeader)
+- [MaybeGetter](/virtual/reference/virtual-svelte/type-aliases/MaybeGetter)
 
 ## Functions
 
@@ -39,3 +46,9 @@ Svelte stores and actions used to connect to `VirtualScroller`.
 - [createVirtualList](/virtual/reference/virtual-svelte/functions/createVirtualList)
 - [createVirtualRange](/virtual/reference/virtual-svelte/functions/createVirtualRange)
 - [createVirtualSnapshot](/virtual/reference/virtual-svelte/functions/createVirtualSnapshot)
+- [virtualContainer](/virtual/reference/virtual-svelte/functions/virtualContainer)
+- [virtualGridItem](/virtual/reference/virtual-svelte/functions/virtualGridItem)
+- [virtualItem](/virtual/reference/virtual-svelte/functions/virtualItem)
+- [virtualScroller](/virtual/reference/virtual-svelte/functions/virtualScroller)
+- [virtualStickyFooter](/virtual/reference/virtual-svelte/functions/virtualStickyFooter)
+- [virtualStickyHeader](/virtual/reference/virtual-svelte/functions/virtualStickyHeader)

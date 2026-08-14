@@ -19,6 +19,40 @@ The suite separates:
 Compare results from the same machine, Node version and power profile. CI
 timings are for regression detection, not absolute cross-machine claims.
 
+Dedicated benchmark runners publish their latest results as Markdown instead
+of leaving them only in terminal output.
+
+## SizeIndex capacity growth
+
+The [latest result](./scripts/benchmarks/size-index-growth/latest.md) compares
+fixed-array allocation and copy, the currently used
+`ArrayBuffer.prototype.transferToFixedLength`, and resizable-buffer `resize`.
+It isolates growing the `_sizes` typed array, preserving existing values and
+initializing its newly added tail. Fenwick-tree work is deliberately excluded.
+
+Regenerate the Node, Chromium, Firefox, and WebKit results with:
+
+```bash
+pnpm --filter @af-utils/virtual-core bench:size-index-growth
+```
+
+The runner rotates strategy order, validates identical output, takes the median
+after warmup, and writes the environment metadata and result tables directly to
+`scripts/benchmarks/size-index-growth/latest.md` beside the runner and fixture.
+
+## Item registration
+
+The browser runner compares explicit refs backed by a `WeakMap` with
+`MutationObserver` discovery using row and column attributes. Its
+[latest result](./scripts/benchmarks/item-registration/latest.md) covers
+Chromium, Firefox, and WebKit.
+
+Run it with:
+
+```bash
+pnpm --filter @af-utils/virtual-core bench:items:browser
+```
+
 ## TypeScript `private` versus native `#private`
 
 `src/benchmarks/privateFields.bench.ts` compares TypeScript `private` fields,
@@ -37,6 +71,11 @@ pnpm --filter @af-utils/virtual-core bench:private
 pnpm --filter @af-utils/virtual-core bench:private:browser
 ```
 
+The dedicated runners publish the
+[latest Node result](./scripts/benchmarks/private-fields/latest-node.md) and
+[latest browser result](./scripts/benchmarks/private-fields/latest-browser.md)
+beside the runner files.
+
 The dedicated runner resets both variants to identical state, alternates their
 execution order, runs garbage collection outside the timed blocks and reports
 the median of 21 paired rounds. The Vitest suite also includes the same cases as
@@ -48,7 +87,8 @@ the hot-loop comparison in headless Chromium, Firefox and WebKit. Run
 already installed. Browser construction timings are deliberately omitted
 because timer quantization and garbage collection dominate such a short block;
 the Node runner uses its high-resolution timer for that scenario. The browser
-runner does not modify the library build or write generated files.
+runner does not modify the library build; it only updates its latest Markdown
+result.
 
 The fixture checks both implementations for identical numeric results before
 collecting Vitest timings. `pnpm jit:check` additionally verifies that all four

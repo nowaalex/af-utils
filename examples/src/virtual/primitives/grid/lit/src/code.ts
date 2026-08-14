@@ -23,31 +23,31 @@ const scrollModelTo = (model: VirtualScroller, value: string) => {
 export default class Grid extends LitElement {
     static styles = unsafeCSS(stylesheet);
 
-    private readonly _rows = new VirtualController(this, () => ({
+    private readonly rows = new VirtualController(this, () => ({
         itemCount: SIZE,
         estimatedItemSize: 120,
         overscanCount: 2
     }));
-    private readonly _columns = new VirtualController(this, () => ({
+    private readonly columns = new VirtualController(this, () => ({
         itemCount: SIZE,
         estimatedItemSize: 200,
         overscanCount: 2,
         horizontal: true
     }));
-    private readonly _rowSnapshot = new VirtualSnapshotController(
+    private readonly rowSnapshot = new VirtualSnapshotController(
         this,
-        this._rows.model,
+        this.rows.model,
         VirtualScrollerEvent.ALL
     );
-    private readonly _columnSnapshot = new VirtualSnapshotController(
+    private readonly columnSnapshot = new VirtualSnapshotController(
         this,
-        this._columns.model,
+        this.columns.model,
         VirtualScrollerEvent.ALL
     );
-    private readonly _scrollerRef = (element?: Element) => {
+    private readonly scrollerRef = (element?: Element) => {
         const scroller = (element as HTMLElement | undefined) ?? null;
-        this._rows.model.setScroller(scroller);
-        this._columns.model.setScroller(scroller);
+        this.rows.model.setScroller(scroller);
+        this.columns.model.setScroller(scroller);
     };
 
     connectedCallback() {
@@ -55,18 +55,18 @@ export default class Grid extends LitElement {
         this.style.cssText = "display:grid;width:100%;height:100%";
     }
 
-    private _scrollFromForm(event: SubmitEvent) {
+    private scrollFromForm(event: SubmitEvent) {
         event.preventDefault();
         const form = new FormData(event.currentTarget as HTMLFormElement);
         scrollModelTo(
-            form.get("type") === "row" ? this._rows.model : this._columns.model,
+            form.get("type") === "row" ? this.rows.model : this.columns.model,
             String(form.get("index") ?? "")
         );
     }
 
     protected render() {
-        const rows = this._rows.model;
-        const columns = this._columns.model;
+        const rows = this.rows.model;
+        const columns = this.columns.model;
         const cells = mapVirtualRangeWithOffset(rows, (row, rowOffset) =>
             mapVirtualRangeWithOffset(columns, (column, columnOffset) => ({
                 column,
@@ -77,7 +77,7 @@ export default class Grid extends LitElement {
         ).flat();
 
         return html`<div class=${css.root}>
-            <form class=${css.form} @submit=${this._scrollFromForm}>
+            <form class=${css.form} @submit=${this.scrollFromForm}>
                 <select name="type">
                     <option value="row">Row</option>
                     <option value="col">Col</option>
@@ -93,7 +93,7 @@ export default class Grid extends LitElement {
                 <button type="submit" class=${css.btn}>Scroll</button>
             </form>
             <div
-                ${ref(this._scrollerRef)}
+                ${ref(this.scrollerRef)}
                 class=${css.grid}
                 data-testid="virtual-grid"
             >

@@ -216,7 +216,7 @@ const exerciseSizeIndex = (iterations) => {
 
     for (let iteration = 0; iteration < iterations; iteration++) {
         getOffset.call(index, iteration % 100_000);
-        getIndex.call(index, (iteration * 97) % index._totalSizeValue);
+        getIndex.call(index, (iteration * 97) % index._totalSize);
         totalDelta += updateSize.call(
             index,
             100 + (iteration % 64),

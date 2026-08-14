@@ -13,30 +13,30 @@ import stylesheet from "./style.module.css?inline";
 export default class ExtraEvents extends LitElement {
     static styles = unsafeCSS(stylesheet);
 
-    private readonly _virtual = new VirtualController(this, () => ({
+    private readonly virtual = new VirtualController(this, () => ({
         itemCount: 150_000,
         estimatedItemSize: 35
     }));
-    private readonly _rangeSnapshot = new VirtualSnapshotController(
+    private readonly rangeSnapshot = new VirtualSnapshotController(
         this,
-        this._virtual.model,
+        this.virtual.model,
         VirtualScrollerEvent.RANGE
     );
-    private readonly _scrollSizeSnapshot = new VirtualSnapshotController(
+    private readonly scrollSizeSnapshot = new VirtualSnapshotController(
         this,
-        this._virtual.model,
+        this.virtual.model,
         VirtualScrollerEvent.SCROLL_SIZE
     );
-    private readonly _layout = new VirtualLayoutController(
+    private readonly layout = new VirtualLayoutController(
         this,
-        this._virtual.model
+        this.virtual.model
     );
-    private readonly _headerRef = (element?: Element) =>
-        this._virtual.model.setStickyHeader(
+    private readonly headerRef = (element?: Element) =>
+        this.virtual.model.setStickyHeader(
             (element as HTMLElement | undefined) ?? null
         );
-    private readonly _footerRef = (element?: Element) =>
-        this._virtual.model.setStickyFooter(
+    private readonly footerRef = (element?: Element) =>
+        this.virtual.model.setStickyFooter(
             (element as HTMLElement | undefined) ?? null
         );
 
@@ -48,24 +48,24 @@ export default class ExtraEvents extends LitElement {
     protected firstUpdated() {
         const elements =
             this.renderRoot.querySelectorAll<HTMLElement>("[data-layout]");
-        this._layout.connect(elements[0], elements[1], elements[2]);
+        this.layout.connect(elements[0], elements[1], elements[2]);
     }
 
     protected render() {
-        const model = this._virtual.model;
+        const model = this.virtual.model;
         return html`<div
-            ${ref(this._layout.scrollerRef)}
+            ${ref(this.layout.scrollerRef)}
             data-layout
             style="width:100%;height:100%"
             role="list"
             aria-label="Extra events list"
         >
-            <div ${ref(this._headerRef)} class=${`${css.row} ${css.top0}`}>
+            <div ${ref(this.headerRef)} class=${`${css.row} ${css.top0}`}>
                 Rendered ${model.to - model.from} items. Range: ${model.from} -
                 ${model.to}
             </div>
-            <div ${ref(this._layout.sizeRef)} data-layout>
-                <div ${ref(this._layout.itemsRef)} data-layout>
+            <div ${ref(this.layout.sizeRef)} data-layout>
+                <div ${ref(this.layout.itemsRef)} data-layout>
                     ${mapVirtualRange(
                         model,
                         index => html`<div
@@ -80,7 +80,7 @@ export default class ExtraEvents extends LitElement {
                     )}
                 </div>
             </div>
-            <div ${ref(this._footerRef)} class=${`${css.row} ${css.bottom0}`}>
+            <div ${ref(this.footerRef)} class=${`${css.row} ${css.bottom0}`}>
                 Scroll size: ${model.scrollSize}px
             </div>
         </div>`;

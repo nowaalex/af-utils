@@ -1,6 +1,6 @@
 ---
 title: "Function: createVirtualLayout()"
-description: Connect Svelte actions to the framework-neutral virtual layout adapter.
+description: Connect Svelte attachments to the framework-neutral virtual layout adapter.
 package: "@af-utils/virtual-svelte"
 symbol: createVirtualLayout
 kind: function
@@ -14,7 +14,7 @@ generated: true
 function createVirtualLayout(model): VirtualSvelteLayoutBinding;
 ```
 
-Connect Svelte actions to the framework-neutral virtual layout adapter.
+Connect Svelte attachments to the framework-neutral virtual layout adapter.
 
 ## Parameters
 

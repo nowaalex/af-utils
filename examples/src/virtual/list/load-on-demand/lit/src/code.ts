@@ -16,16 +16,25 @@ const descriptionParts = [
     "This deterministic text keeps framework screenshots comparable."
 ];
 
-const createDescriptions = (start: number) =>
-    Array.from({ length: 5 }, (_description, offset) =>
-        Array.from(
-            { length: 1 + ((start + offset) % descriptionParts.length) },
-            (_part, part) =>
+const createDescriptions = (start: number) => {
+    const descriptions: string[] = [];
+
+    for (let offset = 0; offset < 5; offset++) {
+        const parts: string[] = [];
+        const partCount = 1 + ((start + offset) % descriptionParts.length);
+
+        for (let part = 0; part < partCount; part++) {
+            parts.push(
                 descriptionParts[
                     (start + offset + part) % descriptionParts.length
                 ]
-        ).join(" ")
-    );
+            );
+        }
+        descriptions.push(parts.join(" "));
+    }
+
+    return descriptions;
+};
 
 const fetchDescriptions = (start: number) =>
     new Promise<string[]>(resolve => {
@@ -35,21 +44,21 @@ const fetchDescriptions = (start: number) =>
 export default class Posts extends LitElement {
     static styles = unsafeCSS(stylesheet);
 
-    private _posts = createDescriptions(0);
-    private _loading = false;
-    private _unsubscribe: (() => void) | null = null;
-    private readonly _virtual = new VirtualController(this, () => ({
-        itemCount: this._posts.length,
+    private posts = createDescriptions(0);
+    private loading = false;
+    private unsubscribe: (() => void) | null = null;
+    private readonly virtual = new VirtualController(this, () => ({
+        itemCount: this.posts.length,
         estimatedItemSize: 500
     }));
-    private readonly _snapshot = new VirtualSnapshotController(
+    private readonly snapshot = new VirtualSnapshotController(
         this,
-        this._virtual.model,
+        this.virtual.model,
         VirtualScrollerEvent.RANGE
     );
-    private readonly _layout = new VirtualLayoutController(
+    private readonly layout = new VirtualLayoutController(
         this,
-        this._virtual.model
+        this.virtual.model
     );
 
     connectedCallback() {
@@ -58,43 +67,43 @@ export default class Posts extends LitElement {
     }
 
     disconnectedCallback() {
-        this._unsubscribe?.();
-        this._unsubscribe = null;
+        this.unsubscribe?.();
+        this.unsubscribe = null;
         super.disconnectedCallback();
     }
 
     protected firstUpdated() {
         const elements =
             this.renderRoot.querySelectorAll<HTMLElement>("[data-layout]");
-        this._layout.connect(elements[0], elements[1], elements[2]);
-        this._unsubscribe = this._virtual.model.subscribe(
-            () => void this._loadMore(),
+        this.layout.connect(elements[0], elements[1], elements[2]);
+        this.unsubscribe = this.virtual.model.subscribe(
+            () => void this.loadMore(),
             VirtualScrollerEvent.RANGE
         );
-        void this._loadMore();
+        void this.loadMore();
     }
 
-    private async _loadMore() {
-        const model = this._virtual.model;
-        if (this._loading || this._posts.length !== model.to) return;
-        this._loading = true;
-        const paragraphs = await fetchDescriptions(this._posts.length);
-        this._loading = false;
-        this._posts = [...this._posts, ...paragraphs];
+    private async loadMore() {
+        const model = this.virtual.model;
+        if (this.loading || this.posts.length !== model.to) return;
+        this.loading = true;
+        const paragraphs = await fetchDescriptions(this.posts.length);
+        this.loading = false;
+        this.posts = [...this.posts, ...paragraphs];
         this.requestUpdate();
     }
 
     protected render() {
-        const model = this._virtual.model;
+        const model = this.virtual.model;
         return html`<div
-            ${ref(this._layout.scrollerRef)}
+            ${ref(this.layout.scrollerRef)}
             data-layout
             style="width:100%;height:100%"
             role="list"
             aria-label="Load on demand list"
         >
-            <div ${ref(this._layout.sizeRef)} data-layout>
-                <div ${ref(this._layout.itemsRef)} data-layout>
+            <div ${ref(this.layout.sizeRef)} data-layout>
+                <div ${ref(this.layout.itemsRef)} data-layout>
                     ${mapVirtualRange(
                         model,
                         index => html`<div
@@ -105,7 +114,7 @@ export default class Posts extends LitElement {
                             aria-setsize=${model.itemCount}
                         >
                             <div class=${css.itemHeader}>some picture</div>
-                            <p>${this._posts[index]}</p>
+                            <p>${this.posts[index]}</p>
                         </div>`
                     )}
                 </div>

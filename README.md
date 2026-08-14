@@ -53,6 +53,11 @@ virtual-core aggregate test remains uncached because it includes V8 optimization
 invariants. Website reference and bundle-size generation is a separate cached Nx
 task; the browser-test workflow verifies that its tracked outputs are committed.
 
+- Every pnpm workspace package must have a `README.md` in the same directory as
+  its `package.json`. This includes private infrastructure packages and
+  standalone examples. The README must explain the package's purpose and point
+  readers to the relevant usage or development instructions. Run
+  `pnpm packages:readmes:check` to validate this contract.
 - Every production TypeScript class method, constructor, getter, setter, interface method signature, and method-like callback field must have a TSDoc comment, including private and package-internal members.
 - Use `/** ... */`; ordinary implementation comments do not replace API documentation.
 - Prefix class members and object properties with `_` when they are internal runtime implementation details so esbuild can mangle them.

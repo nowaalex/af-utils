@@ -34,26 +34,26 @@ const waitForPrependRequest = () =>
 export default class PrependItems extends LitElement {
     static styles = unsafeCSS(stylesheet);
 
-    private _items = Array.from({ length: INITIAL_ITEM_COUNT }, (_, id) =>
+    private items = Array.from({ length: INITIAL_ITEM_COUNT }, (_, id) =>
         createItem(id)
     );
-    private _loading = false;
-    private _nextPrependedId = -1;
-    private readonly _virtual = new VirtualController(this, () => ({
+    private loading = false;
+    private nextPrependedId = -1;
+    private readonly virtual = new VirtualController(this, () => ({
         estimatedItemSize: ESTIMATED_ITEM_SIZE_PX,
-        itemCount: this._items.length
+        itemCount: this.items.length
     }));
-    private readonly _snapshot = new VirtualSnapshotController(
+    private readonly snapshot = new VirtualSnapshotController(
         this,
-        this._virtual.model,
+        this.virtual.model,
         VirtualScrollerEvent.RANGE
     );
-    private readonly _layout = new VirtualLayoutController(
+    private readonly layout = new VirtualLayoutController(
         this,
-        this._virtual.model
+        this.virtual.model
     );
-    private readonly _headerRef = (element?: Element) =>
-        this._virtual.model.setStickyHeader(
+    private readonly headerRef = (element?: Element) =>
+        this.virtual.model.setStickyHeader(
             (element as HTMLElement | undefined) ?? null
         );
 
@@ -65,52 +65,52 @@ export default class PrependItems extends LitElement {
     protected firstUpdated() {
         const elements =
             this.renderRoot.querySelectorAll<HTMLElement>("[data-layout]");
-        this._layout.connect(elements[0], elements[1], elements[2]);
+        this.layout.connect(elements[0], elements[1], elements[2]);
     }
 
-    private async _prependItems() {
-        this._loading = true;
+    private async prependItems() {
+        this.loading = true;
         this.requestUpdate();
         await waitForPrependRequest();
         const newItems = Array.from({ length: PREPEND_BATCH_SIZE }, () =>
-            createItem(this._nextPrependedId--)
+            createItem(this.nextPrependedId--)
         );
-        const model = this._virtual.model;
+        const model = this.virtual.model;
         const desiredScrollPosition = newItems.length + model.visibleFrom;
         model.spliceItems(0, 0, newItems.length);
-        this._items = [...newItems, ...this._items];
+        this.items = [...newItems, ...this.items];
         model.scrollToIndex(desiredScrollPosition);
-        this._loading = false;
+        this.loading = false;
         this.requestUpdate();
     }
 
     protected render() {
-        const model = this._virtual.model;
+        const model = this.virtual.model;
         return html`<div
-            ${ref(this._layout.scrollerRef)}
+            ${ref(this.layout.scrollerRef)}
             data-layout
             style="width:100%;height:100%"
             role="list"
             aria-label="Prepend items list"
         >
-            <div ${ref(this._headerRef)} class=${css.listHeader}>
+            <div ${ref(this.headerRef)} class=${css.listHeader}>
                 <button
                     type="button"
                     class=${css.prependButton}
-                    ?disabled=${this._loading}
-                    @click=${() => void this._prependItems()}
+                    ?disabled=${this.loading}
+                    @click=${() => void this.prependItems()}
                 >
                     ${
-                        this._loading
+                        this.loading
                             ? `Prepend ${PREPEND_BATCH_SIZE} items (loading...)`
                             : `Prepend ${PREPEND_BATCH_SIZE} items`
                     }
                 </button>
             </div>
-            <div ${ref(this._layout.sizeRef)} data-layout>
-                <div ${ref(this._layout.itemsRef)} data-layout>
+            <div ${ref(this.layout.sizeRef)} data-layout>
+                <div ${ref(this.layout.itemsRef)} data-layout>
                     ${mapVirtualRange(model, index => {
-                        const item = this._items[index];
+                        const item = this.items[index];
                         return html`<div
                             ${virtualItem(model, index)}
                             class=${css.item}

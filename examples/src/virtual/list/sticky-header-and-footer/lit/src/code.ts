@@ -13,24 +13,24 @@ import stylesheet from "./style.module.css?inline";
 export default class StickyHeaderAndFooter extends LitElement {
     static styles = unsafeCSS(stylesheet);
 
-    private readonly _virtual = new VirtualController(this, () => ({
+    private readonly virtual = new VirtualController(this, () => ({
         itemCount: 200_000
     }));
-    private readonly _snapshot = new VirtualSnapshotController(
+    private readonly snapshot = new VirtualSnapshotController(
         this,
-        this._virtual.model,
+        this.virtual.model,
         VirtualScrollerEvent.RANGE
     );
-    private readonly _layout = new VirtualLayoutController(
+    private readonly layout = new VirtualLayoutController(
         this,
-        this._virtual.model
+        this.virtual.model
     );
-    private readonly _headerRef = (element?: Element) =>
-        this._virtual.model.setStickyHeader(
+    private readonly headerRef = (element?: Element) =>
+        this.virtual.model.setStickyHeader(
             (element as HTMLElement | undefined) ?? null
         );
-    private readonly _footerRef = (element?: Element) =>
-        this._virtual.model.setStickyFooter(
+    private readonly footerRef = (element?: Element) =>
+        this.virtual.model.setStickyFooter(
             (element as HTMLElement | undefined) ?? null
         );
 
@@ -42,27 +42,27 @@ export default class StickyHeaderAndFooter extends LitElement {
     protected firstUpdated() {
         const elements =
             this.renderRoot.querySelectorAll<HTMLElement>("[data-layout]");
-        this._layout.connect(elements[0], elements[1], elements[2]);
+        this.layout.connect(elements[0], elements[1], elements[2]);
     }
 
     protected render() {
-        const model = this._virtual.model;
+        const model = this.virtual.model;
         return html`<div
-            ${ref(this._layout.scrollerRef)}
+            ${ref(this.layout.scrollerRef)}
             data-layout
             style="width:100%;height:100%"
             role="list"
             aria-label="Sticky header and footer list"
         >
             <div
-                ${ref(this._headerRef)}
+                ${ref(this.headerRef)}
                 class=${css.header}
                 data-testid="sticky-header"
             >
                 Header
             </div>
-            <div ${ref(this._layout.sizeRef)} data-layout>
-                <div ${ref(this._layout.itemsRef)} data-layout>
+            <div ${ref(this.layout.sizeRef)} data-layout>
+                <div ${ref(this.layout.itemsRef)} data-layout>
                     ${mapVirtualRange(
                         model,
                         index => html`<div
@@ -78,7 +78,7 @@ export default class StickyHeaderAndFooter extends LitElement {
                 </div>
             </div>
             <div
-                ${ref(this._footerRef)}
+                ${ref(this.footerRef)}
                 class=${css.footer}
                 data-testid="sticky-footer"
             >

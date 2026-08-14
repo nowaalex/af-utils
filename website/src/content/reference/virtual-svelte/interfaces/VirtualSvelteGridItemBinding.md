@@ -1,6 +1,6 @@
 ---
 title: "Interface: VirtualSvelteGridItemBinding"
-description: Parameters accepted by the virtualGridItem action.
+description: Parameters accepted by the virtualGridItem attachment.
 package: "@af-utils/virtual-svelte"
 symbol: VirtualSvelteGridItemBinding
 kind: interface
@@ -10,7 +10,7 @@ generated: true
 
 # VirtualSvelteGridItemBinding
 
-Parameters accepted by the [virtualGridItem](/virtual/reference/virtual-svelte/variables/virtualGridItem) action.
+Parameters accepted by the [virtualGridItem](/virtual/reference/virtual-svelte/functions/virtualGridItem) attachment.
 
 ## Properties
 

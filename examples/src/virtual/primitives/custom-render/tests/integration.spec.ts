@@ -89,7 +89,7 @@ await describeExample("virtual/primitives/custom-render", example => {
                         const sample = () => {
                             largestGap = Math.max(largestGap, measureGap());
 
-                            if (++frames === 60)
+                            if (++frames === 180)
                                 resolve({
                                     allowedGap,
                                     baselineGap,
@@ -101,17 +101,23 @@ await describeExample("virtual/primitives/custom-render", example => {
                     })
             );
 
-            if (testInfo.project.name === "mobile-safari") {
-                // Playwright cannot synthesize mouse-wheel input in mobile
-                // WebKit. Exercise the same native scroll-event path directly.
-                await scroller.evaluate(async element => {
-                    for (let step = 0; step < 12; step++) {
-                        element.scrollTop += 4_000;
-                        // oxlint-disable-next-line eslint/no-await-in-loop -- Preserve the sequence of native scroll positions.
-                        await new Promise<void>(resolve => {
-                            requestAnimationFrame(() => resolve());
-                        });
-                    }
+            if (testInfo.project.name === "chromium") {
+                const { x, y } = await scroller.evaluate(element => {
+                    const bounds = element.getBoundingClientRect();
+                    return {
+                        x: Math.round(bounds.x + bounds.width / 2),
+                        y: Math.round(bounds.y + bounds.height / 2)
+                    };
+                });
+                const session = await page.context().newCDPSession(page);
+                // Keep one compositor-driven gesture in flight; discrete
+                // mouse.wheel calls yield between deltas and miss this bug.
+                await session.send("Input.synthesizeScrollGesture", {
+                    gestureSourceType: "mouse",
+                    speed: 24_000,
+                    x,
+                    y,
+                    yDistance: -48_000
                 });
             } else {
                 for (let step = 0; step < 12; step++) {

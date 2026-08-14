@@ -490,6 +490,12 @@
                         "kind": 256,
                         "path": "virtual-svelte/interfaces/VirtualSvelteListBinding",
                         "isDeprecated": false
+                    },
+                    {
+                        "title": "VirtualSvelteValue",
+                        "kind": 256,
+                        "path": "virtual-svelte/interfaces/VirtualSvelteValue",
+                        "isDeprecated": false
                     }
                 ]
             },
@@ -497,50 +503,9 @@
                 "title": "Type Aliases",
                 "children": [
                     {
-                        "title": "MaybeReadable",
+                        "title": "MaybeGetter",
                         "kind": 2097152,
-                        "path": "virtual-svelte/type-aliases/MaybeReadable",
-                        "isDeprecated": false
-                    }
-                ]
-            },
-            {
-                "title": "Variables",
-                "children": [
-                    {
-                        "title": "virtualContainer",
-                        "kind": 32,
-                        "path": "virtual-svelte/variables/virtualContainer",
-                        "isDeprecated": false
-                    },
-                    {
-                        "title": "virtualGridItem",
-                        "kind": 32,
-                        "path": "virtual-svelte/variables/virtualGridItem",
-                        "isDeprecated": false
-                    },
-                    {
-                        "title": "virtualItem",
-                        "kind": 32,
-                        "path": "virtual-svelte/variables/virtualItem",
-                        "isDeprecated": false
-                    },
-                    {
-                        "title": "virtualScroller",
-                        "kind": 32,
-                        "path": "virtual-svelte/variables/virtualScroller",
-                        "isDeprecated": false
-                    },
-                    {
-                        "title": "virtualStickyFooter",
-                        "kind": 32,
-                        "path": "virtual-svelte/variables/virtualStickyFooter",
-                        "isDeprecated": false
-                    },
-                    {
-                        "title": "virtualStickyHeader",
-                        "kind": 32,
-                        "path": "virtual-svelte/variables/virtualStickyHeader",
+                        "path": "virtual-svelte/type-aliases/MaybeGetter",
                         "isDeprecated": false
                     }
                 ]
@@ -576,6 +541,42 @@
                         "title": "createVirtualSnapshot",
                         "kind": 64,
                         "path": "virtual-svelte/functions/createVirtualSnapshot",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "virtualContainer",
+                        "kind": 64,
+                        "path": "virtual-svelte/functions/virtualContainer",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "virtualGridItem",
+                        "kind": 64,
+                        "path": "virtual-svelte/functions/virtualGridItem",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "virtualItem",
+                        "kind": 64,
+                        "path": "virtual-svelte/functions/virtualItem",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "virtualScroller",
+                        "kind": 64,
+                        "path": "virtual-svelte/functions/virtualScroller",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "virtualStickyFooter",
+                        "kind": 64,
+                        "path": "virtual-svelte/functions/virtualStickyFooter",
+                        "isDeprecated": false
+                    },
+                    {
+                        "title": "virtualStickyHeader",
+                        "kind": 64,
+                        "path": "virtual-svelte/functions/virtualStickyHeader",
                         "isDeprecated": false
                     }
                 ]

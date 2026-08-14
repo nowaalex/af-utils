@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
     import {
         createVirtual,
@@ -5,14 +7,13 @@
         createVirtualRange,
         virtualItem
     } from "@af-utils/virtual-svelte";
-    import { onMount } from "svelte";
     import css from "./style.module.css";
 
     const model = createVirtual({ itemCount: 5_000 });
     const range = createVirtualRange(model);
     const { size, items } = createVirtualLayout(model);
 
-    onMount(() => {
+    $effect(() => {
         model.setScroller(window);
         return () => model.setScroller(null);
     });
@@ -22,11 +23,11 @@
 <div>
     <div class={css.offset2}>Some offset 2</div>
     <div>
-        <div use:size role="list" aria-label="Window virtual list">
-            <div use:items>
-                {#each $range as index (index)}
+        <div {@attach size} role="list" aria-label="Window virtual list">
+            <div {@attach items}>
+                {#each range.current as index (index)}
                     <div
-                        use:virtualItem={{ model, index }}
+                        {@attach virtualItem(() => ({ model, index }))}
                         class={css.item}
                         role="listitem"
                         aria-posinset={index + 1}
