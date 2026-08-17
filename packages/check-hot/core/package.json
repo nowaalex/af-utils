@@ -1,0 +1,101 @@
+{
+    "name": "@af-utils/check-hot",
+    "version": "0.1.0",
+    "description": "Scenario-driven hot-path and JIT diagnostics for Node.js, Deno, and Bun",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nowaalex/af-utils.git",
+        "directory": "packages/check-hot/core"
+    },
+    "homepage": "https://github.com/nowaalex/af-utils/tree/master/packages/check-hot/core",
+    "bugs": "https://github.com/nowaalex/af-utils/issues",
+    "author": {
+        "name": "Alex Fomin",
+        "email": "nowaalex@gmail.com",
+        "url": "https://github.com/nowaalex/"
+    },
+    "license": "MIT",
+    "type": "module",
+    "files": [
+        "dist",
+        "docs",
+        "src/analyzer/README.md",
+        "src/analyzer/graph/README.md",
+        "src/analyzer/runtime-locations/*/README.md",
+        "src/analyzer/source-integrity/README.md",
+        "src/analyzer/rules/README.md",
+        "src/analyzer/rules/*/README.md",
+        "src/analyzer/rules/dataflow/README.md",
+        "src/problems/README.md",
+        "src/problems/*/README.md",
+        "src/runtime-oracles/README.md",
+        "src/runtime-oracles/*/README.md",
+        "src/source-identity/README.md",
+        "src/public-target/README.md",
+        "src/artifacts/README.md",
+        "src/runtime-events/README.md",
+        "src/sample-selection/README.md",
+        "README.md"
+    ],
+    "types": "./dist/index.d.ts",
+    "main": "./dist/index.js",
+    "exports": {
+        "./README.md": "./README.md",
+        "./analyzer": {
+            "types": "./dist/analyzer.d.ts",
+            "node": "./dist/analyzer.js",
+            "default": "./dist/analyzer.js"
+        },
+        "./annotations": {
+            "types": "./dist/annotations.d.ts",
+            "node": "./dist/annotations.js",
+            "default": "./dist/annotations.js"
+        },
+        ".": {
+            "types": "./dist/index.d.ts",
+            "node": "./dist/index.js",
+            "default": "./dist/index.js"
+        }
+    },
+    "bin": {
+        "check-hot": "./dist/cli.js"
+    },
+    "scripts": {
+        "build": "tsc && node scripts/ensure-bin.mjs",
+        "typecheck": "tsc -p tsconfig.test.json",
+        "test": "pnpm run build && vitest run",
+        "test:mutation": "stryker run"
+    },
+    "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+    },
+    "keywords": [
+        "ast",
+        "benchmark",
+        "deoptimization",
+        "javascriptcore",
+        "jit",
+        "maglev",
+        "monomorphism",
+        "turbofan",
+        "v8"
+    ],
+    "devDependencies": {
+        "@stryker-mutator/core": "^10.0.0",
+        "@stryker-mutator/vitest-runner": "^10.0.0",
+        "@types/node": "^26.2.0",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.10"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "sideEffects": false,
+    "dependencies": {
+        "oxc-parser": "^0.144.0",
+        "oxc-resolver": "^11.24.2",
+        "picocolors": "^1.1.1",
+        "tsx": "^4.23.12",
+        "zod": "^4.4.3"
+    }
+}

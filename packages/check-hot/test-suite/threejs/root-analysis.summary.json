@@ -1,0 +1,967 @@
+{
+    "schemaVersion": 1,
+    "package": {
+        "name": "three",
+        "version": "0.185.1",
+        "runtime": "node",
+        "entry": "build/three.module.js"
+    },
+    "metrics": {
+        "files": 1179,
+        "candidates": 21354,
+        "findings": 97065,
+        "obligations": 16538
+    },
+    "graph": {
+        "complete": false,
+        "diagnostics": [
+            "<three-package>/examples/jsm/inspector/tabs/Settings.js: nonliteral dynamic import at offset 5356 makes the module graph incomplete",
+            "<three-package>/examples/jsm/libs/demuxer_mp4.js: unresolved module edge \"https://cdn.jsdelivr.net/npm/mp4box@2.3.0/+esm\" (Cannot find module 'https://cdn.jsdelivr.net/npm/mp4box@2.3.0/+esm')",
+            "<three-package>/examples/jsm/loaders/LottieLoader.js: unresolved module edge \"https://cdn.jsdelivr.net/npm/lottie-web@5.13.0/+esm\" (Cannot find module 'https://cdn.jsdelivr.net/npm/lottie-web@5.13.0/+esm')",
+            "<three-package>/examples/jsm/loaders/TTFLoader.js: unresolved module edge \"https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/+esm\" (Cannot find module 'https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/+esm')",
+            "<three-package>/examples/jsm/physics/JoltPhysics.js: nonliteral dynamic import at offset 2612 makes the module graph incomplete",
+            "<three-package>/examples/jsm/physics/RapierPhysics.js: nonliteral dynamic import at offset 3123 makes the module graph incomplete"
+        ],
+        "externalBoundaries": 0
+    },
+    "ruleCounts": {
+        "parameter-property-access": 27994,
+        "dynamic-keyed-access": 24235,
+        "dynamic-keyed-access-in-loop": 22659,
+        "numeric-operation": 14829,
+        "ambiguous-keyed-receiver": 2389,
+        "large-complex-function": 1157,
+        "parameter-indexed-access": 1145,
+        "ambiguous-length-access": 876,
+        "late-instance-property-write": 627,
+        "allocation-in-loop": 591,
+        "delete-property": 203,
+        "shape-or-prototype-mutation": 133,
+        "callback-parameter-call": 106,
+        "callback-parameter-flow": 57,
+        "control-flow-in-loop": 41,
+        "heterogeneous-array-literal": 20,
+        "dynamic-eval": 2,
+        "mixed-array-element-kinds": 1
+    },
+    "topCandidates": [
+        {
+            "id": "src/materials/Material.js#Material.fromJSON@896:29119",
+            "path": "src/materials/Material.js",
+            "line": 896,
+            "score": 3389,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "14 call site(s)",
+                "360 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 1073,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "late-instance-property-write",
+                    "evidence": "static-hypothesis",
+                    "line": 1073,
+                    "message": "A method writes an instance property outside the constructor; the first write may transition the receiver shape.",
+                    "likelyCause": "Fields or prototypes change after objects have already trained optimized code.",
+                    "experiment": "Compare object maps and prototype state across setup, warmup, and guarded stress.",
+                    "possibleAction": {
+                        "action": "Initialize fields in a consistent order and complete structural changes before warmup.",
+                        "when": "Map or deoptimization evidence links the late mutation to the hot workload."
+                    }
+                },
+                {
+                    "problemId": "parameter-indexed-access",
+                    "evidence": "static-hypothesis",
+                    "line": 1004,
+                    "message": "A function parameter is used as an indexed/array-like receiver, so elements kind and packedness are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/loaders/ObjectLoader.js#ObjectLoader.parseObject@776:18437",
+            "path": "src/loaders/ObjectLoader.js",
+            "line": 776,
+            "score": 2026,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "3 loop(s)",
+                "83 call site(s)",
+                "194 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "dynamic-keyed-access-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 1211,
+                    "message": "A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                },
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 1207,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "ambiguous-keyed-receiver",
+                    "evidence": "static-hypothesis",
+                    "line": 1197,
+                    "message": "A function parameter is used as a dynamically keyed receiver, but the access does not prove whether it is an array, string, object, or collection-like value.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/extras/TextureUtils.js#getByteLength@100:3532",
+            "path": "src/extras/TextureUtils.js",
+            "line": 100,
+            "score": 585,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "48 call site(s)",
+                "106 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "numeric-operation",
+                    "evidence": "static-hypothesis",
+                    "line": 193,
+                    "message": "A function parameter reaches a numeric representation-sensitive operation.",
+                    "likelyCause": "A numeric operation observes values that move between SMI, heap-number, boundary, or exceptional numeric representations.",
+                    "experiment": "Exercise SMI, fractional, -0, NaN, integer boundaries, and overflow variants with semantic verification.",
+                    "possibleAction": {
+                        "action": "Normalize the accepted numeric domain or warm every intentional representation.",
+                        "when": "Engine evidence confirms a harmful representation transition and normalization preserves the API contract."
+                    }
+                },
+                {
+                    "problemId": "large-complex-function",
+                    "evidence": "static-hypothesis",
+                    "line": 100,
+                    "message": "The function spans 102 lines and has 44 branch nodes, making tiering and scenario coverage harder to reason about.",
+                    "likelyCause": "A large function or dense branch graph increases compilation and coverage complexity.",
+                    "experiment": "Use CPU hotness evidence and isolated branch scenarios before attributing a runtime cost to size alone.",
+                    "possibleAction": {
+                        "action": "Split independently hot branch families into smaller functions.",
+                        "when": "Runtime evidence shows compilation, inlining, or coverage pressure and the split preserves semantics."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/materials/ShaderMaterial.js#ShaderMaterial.fromJSON@413:10441",
+            "path": "src/materials/ShaderMaterial.js",
+            "line": 413,
+            "score": 399,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "2 loop(s)",
+                "13 call site(s)",
+                "34 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "allocation-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 413,
+                    "message": "7 allocation-shaped expression(s) occur inside loops.",
+                    "likelyCause": "Repeated allocation or exceptional/asynchronous control flow occurs inside a loop.",
+                    "experiment": "Run a representative large-input scenario and inspect allocation, GC, and branch-specific runtime evidence.",
+                    "possibleAction": {
+                        "action": "Hoist reusable state or separate exceptional/asynchronous work from the synchronous loop.",
+                        "when": "Profiling confirms the reported operation dominates the real hot workload."
+                    }
+                },
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 480,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 473,
+                    "message": "A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/materials/Material.js#Material.copy@1096:40078",
+            "path": "src/materials/Material.js",
+            "line": 1096,
+            "score": 520,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "1 loop(s)",
+                "5 call site(s)",
+                "47 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "late-instance-property-write",
+                    "evidence": "static-hypothesis",
+                    "line": 1161,
+                    "message": "A method writes an instance property outside the constructor; the first write may transition the receiver shape.",
+                    "likelyCause": "Fields or prototypes change after objects have already trained optimized code.",
+                    "experiment": "Compare object maps and prototype state across setup, warmup, and guarded stress.",
+                    "possibleAction": {
+                        "action": "Initialize fields in a consistent order and complete structural changes before warmup.",
+                        "when": "Map or deoptimization evidence links the late mutation to the hot workload."
+                    }
+                },
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 1172,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 1139,
+                    "message": "A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/materials/nodes/manager/NodeMaterialObserver.js#NodeMaterialObserver.equals@374:7958",
+            "path": "src/materials/nodes/manager/NodeMaterialObserver.js",
+            "line": 374,
+            "score": 453,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "5 loop(s)",
+                "12 call site(s)",
+                "38 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "delete-property",
+                    "evidence": "static-hypothesis",
+                    "line": 503,
+                    "message": "Deleting an object property can move objects to dictionary storage and invalidate optimized shape assumptions.",
+                    "likelyCause": "Deleting an indexed element creates a hole, while deleting a named field can invalidate stable object-map assumptions.",
+                    "experiment": "Inspect array elements kinds or object maps before and after the deletion in an isolated scenario.",
+                    "possibleAction": {
+                        "action": "Use a stable sentinel field value or an explicit packed-array removal operation.",
+                        "when": "The alternative preserves absence semantics and engine evidence confirms the deletion destabilizes the path."
+                    }
+                },
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 645,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 599,
+                    "message": "A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/materials/nodes/NodeMaterial.js#NodeMaterial.setDefaultValues@1213:29700",
+            "path": "src/materials/nodes/NodeMaterial.js",
+            "line": 1213,
+            "score": 166,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "2 loop(s)",
+                "4 call site(s)",
+                "11 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "shape-or-prototype-mutation",
+                    "evidence": "static-hypothesis",
+                    "line": 1238,
+                    "message": "Object.defineProperty can invalidate hidden-class or prototype-chain assumptions.",
+                    "likelyCause": "Fields or prototypes change after objects have already trained optimized code.",
+                    "experiment": "Compare object maps and prototype state across setup, warmup, and guarded stress.",
+                    "possibleAction": {
+                        "action": "Initialize fields in a consistent order and complete structural changes before warmup.",
+                        "when": "Map or deoptimization evidence links the late mutation to the hot workload."
+                    }
+                },
+                {
+                    "problemId": "ambiguous-keyed-receiver",
+                    "evidence": "static-hypothesis",
+                    "line": 1220,
+                    "message": "A function parameter is used as a dynamically keyed receiver, but the access does not prove whether it is an array, string, object, or collection-like value.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 1238,
+                    "message": "A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/webgl-fallback/utils/WebGLTimestampQueryPool.js#WebGLTimestampQueryPool.resolveQueriesAsync@185:4257",
+            "path": "src/renderers/webgl-fallback/utils/WebGLTimestampQueryPool.js",
+            "line": 185,
+            "score": 179,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "2 loop(s)",
+                "12 call site(s)",
+                "12 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "control-flow-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 238,
+                    "message": "AwaitExpression appears inside a loop and may dominate allocation or exception costs.",
+                    "likelyCause": "Repeated allocation or exceptional/asynchronous control flow occurs inside a loop.",
+                    "experiment": "Run a representative large-input scenario and inspect allocation, GC, and branch-specific runtime evidence.",
+                    "possibleAction": {
+                        "action": "Hoist reusable state or separate exceptional/asynchronous work from the synchronous loop.",
+                        "when": "Profiling confirms the reported operation dominates the real hot workload."
+                    }
+                },
+                {
+                    "problemId": "late-instance-property-write",
+                    "evidence": "static-hypothesis",
+                    "line": 268,
+                    "message": "A method writes an instance property outside the constructor; the first write may transition the receiver shape.",
+                    "likelyCause": "Fields or prototypes change after objects have already trained optimized code.",
+                    "experiment": "Compare object maps and prototype state across setup, warmup, and guarded stress.",
+                    "possibleAction": {
+                        "action": "Initialize fields in a consistent order and complete structural changes before warmup.",
+                        "when": "Map or deoptimization evidence links the late mutation to the hot workload."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 242,
+                    "message": "A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/webgl/WebGLProgram.js#WebGLProgram@412:10631",
+            "path": "src/renderers/webgl/WebGLProgram.js",
+            "line": 412,
+            "score": 2185,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "39 call site(s)",
+                "213 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 1020,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "parameter-indexed-access",
+                    "evidence": "static-hypothesis",
+                    "line": 685,
+                    "message": "A function parameter is used as an indexed/array-like receiver, so elements kind and packedness are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "large-complex-function",
+                    "evidence": "static-hypothesis",
+                    "line": 412,
+                    "message": "The function spans 619 lines and has 172 branch nodes, making tiering and scenario coverage harder to reason about.",
+                    "likelyCause": "A large function or dense branch graph increases compilation and coverage complexity.",
+                    "experiment": "Use CPU hotness evidence and isolated branch scenarios before attributing a runtime cost to size alone.",
+                    "possibleAction": {
+                        "action": "Split independently hot branch families into smaller functions.",
+                        "when": "Runtime evidence shows compilation, inlining, or coverage pressure and the split preserves semantics."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/helpers/CameraHelper.js#CameraHelper.setColors@167:3982",
+            "path": "src/helpers/CameraHelper.js",
+            "line": 167,
+            "score": 1550,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "51 call site(s)",
+                "150 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 218,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/webgpu/WebGPUBackend.js#WebGPUBackend._draw@1729:48111",
+            "path": "src/renderers/webgpu/WebGPUBackend.js",
+            "line": 1729,
+            "score": 641,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "5 loop(s)",
+                "26 call site(s)",
+                "57 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 1887,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "ambiguous-length-access",
+                    "evidence": "static-hypothesis",
+                    "line": 1783,
+                    "message": "A function parameter is read through .length, but this access alone does not prove whether the receiver is an array, string, or ordinary object.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "ambiguous-keyed-receiver",
+                    "evidence": "static-hypothesis",
+                    "line": 1785,
+                    "message": "A function parameter is used as a dynamically keyed receiver, but the access does not prove whether it is an array, string, object, or collection-like value.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/webgpu/WebGPUBackend.js#WebGPUBackend.needsRenderUpdate@2048:56279",
+            "path": "src/renderers/webgpu/WebGPUBackend.js",
+            "line": 2048,
+            "score": 582,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "7 call site(s)",
+                "55 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 2097,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "large-complex-function",
+                    "evidence": "static-hypothesis",
+                    "line": 2048,
+                    "message": "The function spans 58 lines and has 32 branch nodes, making tiering and scenario coverage harder to reason about.",
+                    "likelyCause": "A large function or dense branch graph increases compilation and coverage complexity.",
+                    "experiment": "Use CPU hotness evidence and isolated branch scenarios before attributing a runtime cost to size alone.",
+                    "possibleAction": {
+                        "action": "Split independently hot branch families into smaller functions.",
+                        "when": "Runtime evidence shows compilation, inlining, or coverage pressure and the split preserves semantics."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/webgl/WebGLState.js#WebGLState@6:859",
+            "path": "src/renderers/webgl/WebGLState.js",
+            "line": 6,
+            "score": 515,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "34 call site(s)",
+                "49 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 606,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access",
+                    "evidence": "static-hypothesis",
+                    "line": 589,
+                    "message": "The function performs keyed access with a dynamic key, so its inline cache may observe multiple key classes.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                },
+                {
+                    "problemId": "large-complex-function",
+                    "evidence": "static-hypothesis",
+                    "line": 6,
+                    "message": "The function spans 1363 lines and has 2 branch nodes, making tiering and scenario coverage harder to reason about.",
+                    "likelyCause": "A large function or dense branch graph increases compilation and coverage complexity.",
+                    "experiment": "Use CPU hotness evidence and isolated branch scenarios before attributing a runtime cost to size alone.",
+                    "possibleAction": {
+                        "action": "Split independently hot branch families into smaller functions.",
+                        "when": "Runtime evidence shows compilation, inlining, or coverage pressure and the split preserves semantics."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/common/Textures.js#Textures.updateTexture@204:5252",
+            "path": "src/renderers/common/Textures.js",
+            "line": 204,
+            "score": 507,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "1 loop(s)",
+                "24 call site(s)",
+                "44 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 416,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "large-complex-function",
+                    "evidence": "static-hypothesis",
+                    "line": 204,
+                    "message": "The function spans 215 lines and has 36 branch nodes, making tiering and scenario coverage harder to reason about.",
+                    "likelyCause": "A large function or dense branch graph increases compilation and coverage complexity.",
+                    "experiment": "Use CPU hotness evidence and isolated branch scenarios before attributing a runtime cost to size alone.",
+                    "possibleAction": {
+                        "action": "Split independently hot branch families into smaller functions.",
+                        "when": "Runtime evidence shows compilation, inlining, or coverage pressure and the split preserves semantics."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/common/Renderer.js#Renderer._projectObject@3080:82127",
+            "path": "src/renderers/common/Renderer.js",
+            "line": 3080,
+            "score": 506,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "3 loop(s)",
+                "26 call site(s)",
+                "42 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 3228,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "parameter-indexed-access",
+                    "evidence": "static-hypothesis",
+                    "line": 3166,
+                    "message": "A function parameter is used as an indexed/array-like receiver, so elements kind and packedness are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 3232,
+                    "message": "A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/loaders/DataTextureLoader.js#DataTextureLoader._applyTexData@113:2964",
+            "path": "src/loaders/DataTextureLoader.js",
+            "line": 113,
+            "score": 501,
+            "exported": true,
+            "reasons": ["public/exported API", "47 static risk(s)"],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 178,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/webgl-fallback/utils/WebGLTextureUtils.js#WebGLTextureUtils.copyTextureToTexture@809:23757",
+            "path": "src/renderers/webgl-fallback/utils/WebGLTextureUtils.js",
+            "line": 809,
+            "score": 499,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "2 loop(s)",
+                "58 call site(s)",
+                "46 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 1034,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access",
+                    "evidence": "static-hypothesis",
+                    "line": 936,
+                    "message": "The function performs keyed access with a dynamic key, so its inline cache may observe multiple key classes.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                },
+                {
+                    "problemId": "numeric-operation",
+                    "evidence": "static-hypothesis",
+                    "line": 834,
+                    "message": "A function parameter reaches a numeric representation-sensitive operation.",
+                    "likelyCause": "A numeric operation observes values that move between SMI, heap-number, boundary, or exceptional numeric representations.",
+                    "experiment": "Exercise SMI, fractional, -0, NaN, integer boundaries, and overflow variants with semantic verification.",
+                    "possibleAction": {
+                        "action": "Normalize the accepted numeric domain or warm every intentional representation.",
+                        "when": "Engine evidence confirms a harmful representation transition and normalization preserves the API contract."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/webgpu/utils/WebGPUTextureUtils.js#WebGPUTextureUtils.updateTexture@588:17584",
+            "path": "src/renderers/webgpu/utils/WebGPUTextureUtils.js",
+            "line": 588,
+            "score": 476,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "4 loop(s)",
+                "16 call site(s)",
+                "39 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 732,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 715,
+                    "message": "A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                },
+                {
+                    "problemId": "large-complex-function",
+                    "evidence": "static-hypothesis",
+                    "line": 588,
+                    "message": "The function spans 147 lines and has 20 branch nodes, making tiering and scenario coverage harder to reason about.",
+                    "likelyCause": "A large function or dense branch graph increases compilation and coverage complexity.",
+                    "experiment": "Use CPU hotness evidence and isolated branch scenarios before attributing a runtime cost to size alone.",
+                    "possibleAction": {
+                        "action": "Split independently hot branch families into smaller functions.",
+                        "when": "Runtime evidence shows compilation, inlining, or coverage pressure and the split preserves semantics."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/nodes/math/OperatorNode.js#OperatorNode.generate@197:4005",
+            "path": "src/nodes/math/OperatorNode.js",
+            "line": 197,
+            "score": 435,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "43 call site(s)",
+                "38 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 403,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "large-complex-function",
+                    "evidence": "static-hypothesis",
+                    "line": 197,
+                    "message": "The function spans 215 lines and has 52 branch nodes, making tiering and scenario coverage harder to reason about.",
+                    "likelyCause": "A large function or dense branch graph increases compilation and coverage complexity.",
+                    "experiment": "Use CPU hotness evidence and isolated branch scenarios before attributing a runtime cost to size alone.",
+                    "possibleAction": {
+                        "action": "Split independently hot branch families into smaller functions.",
+                        "when": "Runtime evidence shows compilation, inlining, or coverage pressure and the split preserves semantics."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "src/renderers/webgl-fallback/utils/WebGLTextureUtils.js#WebGLTextureUtils.updateTexture@529:16839",
+            "path": "src/renderers/webgl-fallback/utils/WebGLTextureUtils.js",
+            "line": 529,
+            "score": 421,
+            "exported": true,
+            "reasons": [
+                "public/exported API",
+                "5 loop(s)",
+                "26 call site(s)",
+                "33 static risk(s)"
+            ],
+            "findings": [
+                {
+                    "problemId": "parameter-property-access",
+                    "evidence": "static-hypothesis",
+                    "line": 686,
+                    "message": "A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.",
+                    "likelyCause": "A receiver parameter may arrive with different array representations or object maps.",
+                    "experiment": "Exercise representation-specific receiver variants and require exact-site plus engine evidence.",
+                    "possibleAction": {
+                        "action": "Normalize receiver construction or split genuinely distinct receiver families.",
+                        "when": "The measured access site becomes unstable for supported API inputs."
+                    }
+                },
+                {
+                    "problemId": "dynamic-keyed-access-in-loop",
+                    "evidence": "static-hypothesis",
+                    "line": 677,
+                    "message": "A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.",
+                    "likelyCause": "One keyed access observes string, numeric-index, symbol, or receiver-map diversity.",
+                    "experiment": "Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.",
+                    "possibleAction": {
+                        "action": "Separate key families or normalize keys at the API boundary.",
+                        "when": "Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access."
+                    }
+                },
+                {
+                    "problemId": "large-complex-function",
+                    "evidence": "static-hypothesis",
+                    "line": 529,
+                    "message": "The function spans 166 lines and has 17 branch nodes, making tiering and scenario coverage harder to reason about.",
+                    "likelyCause": "A large function or dense branch graph increases compilation and coverage complexity.",
+                    "experiment": "Use CPU hotness evidence and isolated branch scenarios before attributing a runtime cost to size alone.",
+                    "possibleAction": {
+                        "action": "Split independently hot branch families into smaller functions.",
+                        "when": "Runtime evidence shows compilation, inlining, or coverage pressure and the split preserves semantics."
+                    }
+                }
+            ]
+        }
+    ],
+    "limitations": [
+        "Static findings are risk indicators, not proof of a V8 or JavaScriptCore deoptimization.",
+        "Data-dependent shapes, value representations, callback identities, and production lifecycle order require dynamic scenarios.",
+        "Static imports and re-exports are resolved through package exports/imports, TypeScript paths, and extension aliases; dynamic specifiers still need runtime evidence.",
+        "Minified or generated distributions reduce source-level recommendation quality; analyze source and execute production builds when possible."
+    ]
+}

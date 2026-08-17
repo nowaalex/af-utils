@@ -1,83 +1,46 @@
-import { spawnSync } from "node:child_process";
 import { resolve } from "node:path";
-import "./build.mjs";
+
 import {
-    getHotPathMethodNames,
-    HOT_PATHS,
-    PRIVATE_FIELD_HOT_PATHS
-} from "./hot-paths.mjs";
+    formatHotRunSummary,
+    runHotSuite
+} from "@af-utils/check-hot";
 
 const inspect = process.argv.includes("--inspect");
-const checks = inspect
-    ? [
-          {
-              file: "check-representations.mjs",
-              scriptArguments: ["--debug-print"]
+const full = process.argv.includes("--full");
+const bun = process.argv.includes("--bun");
+const manualSummary = await runHotSuite({
+    suite: resolve(import.meta.dirname, "../../.jit/suite.mjs"),
+    ...(full
+        ? {
+              runtimes: ["node", "deno"],
+              v8Tiers: ["maglev", "turbofan"],
+              modes: ["combined", "isolated"],
+              repetitions: 2
           }
-      ]
-    : [
-          { file: "check-representations.mjs" },
-          {
-              file: "check-monomorphism.mjs",
-              hotPaths: HOT_PATHS,
-              traceDeoptimization: true
-          },
-          {
-              file: "check-private-fields.mjs",
-              hotPaths: PRIVATE_FIELD_HOT_PATHS,
-              traceDeoptimization: true
-          }
-      ];
+        : bun
+          ? {
+                runtimes: ["bun"],
+                modes: ["combined", "isolated"],
+                repetitions: 2
+            }
+          : {}),
+    inspect,
+    verbose: inspect
+});
+console.log(formatHotRunSummary(manualSummary, { verbose: inspect }));
 
-const escapeRegExp = (value) =>
-    value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// Exact AST offsets currently rely on Node Inspector. Deno/Bun still run the
+// broad manual suite above, while this second suite must close a non-empty AST
+// ledger against the exact minified JavaScript artifact executed by Node.
+const astSummary = await runHotSuite({
+    suite: resolve(import.meta.dirname, "ast-suite.mjs"),
+    runtimes: ["node"],
+    v8Tiers: ["turbofan"],
+    modes: ["combined"],
+    repetitions: 1,
+    inspect,
+    verbose: inspect
+});
+console.log(formatHotRunSummary(astSummary, { verbose: inspect }));
 
-const findTargetDeoptimizations = (output, definitions) => {
-    const functionPatterns = getHotPathMethodNames(definitions).map(
-        (method) =>
-            new RegExp(
-                `<(?:JSFunction|SharedFunctionInfo) ${escapeRegExp(method)}(?:\\s|>)`
-            )
-    );
-
-    return output
-        .split(/\r?\n/)
-        .filter(
-            (line) =>
-                (line.includes("deoptimizing") ||
-                    line.includes("for deoptimization")) &&
-                functionPatterns.some((pattern) => pattern.test(line))
-        );
-};
-
-for (const {
-    file,
-    hotPaths,
-    scriptArguments = [],
-    traceDeoptimization = false
-} of checks) {
-    const nodeArguments = ["--allow-natives-syntax"];
-    if (traceDeoptimization) nodeArguments.push("--trace-deopt");
-    nodeArguments.push(resolve(import.meta.dirname, file), ...scriptArguments);
-
-    const result = spawnSync(process.execPath, nodeArguments, {
-        encoding: "utf8",
-        maxBuffer: 16 * 1024 * 1024
-    });
-    const output = `${result.stdout ?? ""}${result.stderr ?? ""}`;
-
-    process.stdout.write(result.stdout ?? "");
-    process.stderr.write(result.stderr ?? "");
-
-    if (result.error) throw result.error;
-    if (result.status !== 0) process.exit(result.status ?? 1);
-
-    if (hotPaths) {
-        const deoptimizations = findTargetDeoptimizations(output, hotPaths);
-        if (deoptimizations.length > 0) {
-            throw new Error(
-                `V8 deoptimized a guarded hot path:\n${deoptimizations.join("\n")}`
-            );
-        }
-    }
-}
+if (!manualSummary.passed || !astSummary.passed) process.exitCode = 1;

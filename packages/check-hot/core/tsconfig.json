@@ -1,0 +1,11 @@
+{
+    "include": ["src"],
+    "exclude": ["src/**/*.test.ts", "src/**/*.test-utils.ts"],
+    "extends": "../../../tsconfig.base.json",
+    "compilerOptions": {
+        "declaration": true,
+        "outDir": "dist",
+        "rootDir": "src",
+        "types": ["node"]
+    }
+}

@@ -310,6 +310,7 @@ class SizeIndex {
      * @param index - Exclusive item boundary in `[0, count]`.
      * @returns Pixel offset of that boundary.
      */
+    // check-hot: SizeIndex._getOffset
     _getOffset(index: number) {
         let result = 0.0;
 
@@ -330,6 +331,7 @@ class SizeIndex {
      * belong to the preceding item, matching the model's existing scroll
      * position semantics.
      */
+    // check-hot: SizeIndex._getIndex
     _getIndex(offset: number) {
         // Stryker disable next-line all: The Fenwick search also returns zero here; this is a performance fast path.
         if (offset <= 0.0) {
@@ -397,6 +399,7 @@ class SizeIndex {
      * @returns Difference between the measured and previously cached size, or
      * zero for an invalid/no-op update.
      */
+    // check-hot: SizeIndex._updateSize
     _updateSize(index: number, size: number, updateLimit: number) {
         if (
             index < 0 ||
@@ -427,6 +430,7 @@ class SizeIndex {
      * {@link SizeIndex._updateSize} call.
      * @param totalDelta - Sum of the deltas returned by those calls.
      */
+    // check-hot: SizeIndex._completeUpdateBatch
     _completeUpdateBatch(updateLimit: number, totalDelta: number) {
         // Stryker disable next-line all: Applying a zero batch is equivalent but needlessly walks the tree.
         if (totalDelta !== 0.0) {

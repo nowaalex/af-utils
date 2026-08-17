@@ -115,6 +115,7 @@ class VirtualScrollerEvents {
     }
 
     /** Queue or immediately publish one event flag. */
+    // check-hot: VirtualScrollerEvents._emit
     _emit(event: VirtualScrollerEvent) {
         if (this._batchLevel > 0) {
             this._batchedEvents |= event;
@@ -131,11 +132,13 @@ class VirtualScrollerEvents {
     }
 
     /** Open a nestable synchronous event batch. */
+    // check-hot: VirtualScrollerEvents._beginBatch
     _beginBatch() {
         this._batchLevel++;
     }
 
     /** Close one event batch and publish at the outermost boundary. */
+    // check-hot: VirtualScrollerEvents._endBatch
     _endBatch() {
         assert(
             this._batchLevel > 0,
@@ -178,6 +181,7 @@ class VirtualScrollerEvents {
     }
 
     /** Synchronously notify subscriptions selected by an event mask. */
+    // check-hot: VirtualScrollerEvents._notify
     private _notify(events: VirtualScrollerEventMask) {
         const subscriptions = this._subscriptions;
         for (let i = 0, length = subscriptions.length; i < length; i++) {

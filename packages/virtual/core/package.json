@@ -23,7 +23,7 @@
         "api-extractor": "api-extractor run && rm -r dist/types",
         "test": "pnpm test:unit && pnpm test:v8",
         "test:unit": "vitest run",
-        "test:v8": "node scripts/v8/run-checks.mjs",
+        "test:v8": "pnpm jit:run",
         "test:artifacts": "node scripts/check-error-build.mjs",
         "test:mutation": "stryker run stryker.config.mjs",
         "bench": "vitest bench --run",
@@ -31,9 +31,12 @@
         "bench:items:browser": "node scripts/benchmarks/item-registration/run.mjs",
         "bench:private": "pnpm jit:build && node --expose-gc scripts/benchmarks/private-fields/node.mjs",
         "bench:private:browser": "node scripts/benchmarks/private-fields/browser.mjs",
-        "jit:build": "node scripts/v8/build.mjs",
+        "jit:build": "pnpm --filter @af-utils/check-hot build && node scripts/v8/build.mjs",
+        "jit:run": "pnpm jit:build && node scripts/v8/run-checks.mjs",
         "jit:check": "pnpm test:v8",
-        "jit:inspect": "node scripts/v8/run-checks.mjs --inspect"
+        "jit:check:full": "pnpm jit:run -- --full",
+        "jit:check:bun": "pnpm jit:run -- --bun",
+        "jit:inspect": "pnpm jit:run -- --inspect"
     },
     "files": [
         "dist/*"
@@ -78,6 +81,7 @@
         "windowing"
     ],
     "devDependencies": {
+        "@af-utils/check-hot": "workspace:*",
         "@types/node": "^26.2.0",
         "esbuild": "^0.28.2",
         "jsdom": "^30.0.1",

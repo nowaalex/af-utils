@@ -1,0 +1,59 @@
+{
+    "schemaVersion": 1,
+    "suite": "three",
+    "passed": true,
+    "coverageComplete": true,
+    "runtime": {
+        "name": "node",
+        "version": "26.7.0",
+        "engine": "v8",
+        "engineVersion": "14.6.202.34-node.28",
+        "tier": "turbofan",
+        "oracleId": "v8-native-intrinsics",
+        "oracleVersion": "1"
+    },
+    "tier": "turbofan",
+    "mode": "combined",
+    "scenarios": [
+        "lerp:math-utils-lerp",
+        "lerp:auto:obligation:src/math/MathUtils.js#lerp@116:4847::numeric-operation@4883:4904",
+        "lerp:auto:obligation:src/math/MathUtils.js#lerp@116:4847::numeric-operation@4883:4896",
+        "lerp:auto:obligation:src/math/MathUtils.js#lerp@116:4847::numeric-operation@4885:4890",
+        "lerp:auto:obligation:src/math/MathUtils.js#lerp@116:4847::numeric-operation@4899:4904"
+    ],
+    "targets": [
+        {
+            "id": "lerp",
+            "functionName": "lerp",
+            "engine": "v8",
+            "status": 41,
+            "optimized": true,
+            "requestedTier": "turbofan",
+            "activeTier": "turbofan"
+        }
+    ],
+    "selectedObligations": 4,
+    "ignoredObligations": 69,
+    "selectedStatuses": {
+        "passed": 4
+    },
+    "sampleIds": ["lerp:math-utils-lerp"],
+    "acceptedVariants": ["seed-number", "fractional-double", "negative-zero"],
+    "representations": ["heap-number", "smi", "negative-zero"],
+    "excludedVariants": [
+        {
+            "variant": "nan",
+            "reason": "the generated numeric input is outside this MathUtils recipe's documented domain"
+        },
+        {
+            "variant": "int32-overflow",
+            "reason": "the generated numeric input is outside this MathUtils recipe's documented domain"
+        },
+        {
+            "variant": "uint32-overflow",
+            "reason": "the generated numeric input is outside this MathUtils recipe's documented domain"
+        }
+    ],
+    "targetDeoptimizations": 0,
+    "problems": []
+}

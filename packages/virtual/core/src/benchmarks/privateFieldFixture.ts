@@ -40,6 +40,7 @@ export class TypeScriptPrivateState implements PrivateFieldState {
         this.direction = 1;
     }
 
+    // check-hot: TypeScriptPrivateState.step
     step(input: number) {
         const delta = (input & 15) - 7;
 
@@ -65,6 +66,7 @@ export class TypeScriptPrivateState implements PrivateFieldState {
         );
     }
 
+    // check-hot: TypeScriptPrivateState.run
     run(iterations: number, seed: number) {
         let checksum = 0.0;
 
@@ -109,6 +111,7 @@ export class NativePrivateState implements PrivateFieldState {
         this.#direction = 1;
     }
 
+    // check-hot: NativePrivateState.step
     step(input: number) {
         const delta = (input & 15) - 7;
 
@@ -134,6 +137,7 @@ export class NativePrivateState implements PrivateFieldState {
         );
     }
 
+    // check-hot: NativePrivateState.run
     run(iterations: number, seed: number) {
         let checksum = 0.0;
 

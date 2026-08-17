@@ -111,6 +111,7 @@ class StickyElements {
     }
 
     /** Apply sticky resize entries and publish their aggregate size delta. */
+    // check-hot: StickyElements._applyResizeEntries
     private _applyResizeEntries(entries: readonly ResizeObserverEntry[]) {
         let relativeOffset = 0.0;
 

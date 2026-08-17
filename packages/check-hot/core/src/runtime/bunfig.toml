@@ -1,0 +1,7 @@
+# Deterministic check-hot worker configuration. User/project preloads, custom
+# loaders, dotenv files, and network auto-install must not change measured code.
+env = false
+preload = []
+
+[install]
+auto = "disable"

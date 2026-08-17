@@ -1,0 +1,256 @@
+check-hot analyze: three@0.185.1
+entry: <three-package>/build/three.module.js (node export conditions)
+parsed: 1179 package file(s), 21354 function(s), 97065 risk(s), 16538 obligation(s), 0 external edge(s)
+
+Top 20 dynamic-check candidates:
+1. [3389] build/three.core.js#Material.fromJSON@21371:505188 — <three-package>/build/three.core.js:21371
+   public/exported API, 14 call site(s), 360 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   21373 │         if ( json.uuid !== undefined ) this.uuid = json.uuid;
+         │              ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   21373 │         if ( json.uuid !== undefined ) this.uuid = json.uuid;
+         │                                                    ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   21374 │         if ( json.name !== undefined ) this.name = json.name;
+         │              ^^^^^^^^^
+2. [3389] src/materials/Material.js#Material.fromJSON@896:29119 — <three-package>/src/materials/Material.js:896
+   public/exported API, 14 call site(s), 360 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   898 │         if ( json.uuid !== undefined ) this.uuid = json.uuid;
+       │              ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   898 │         if ( json.uuid !== undefined ) this.uuid = json.uuid;
+       │                                                    ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   899 │         if ( json.name !== undefined ) this.name = json.name;
+       │              ^^^^^^^^^
+3. [2185] src/renderers/webgl/WebGLProgram.js#WebGLProgram@412:10631 — <three-package>/src/renderers/webgl/WebGLProgram.js:412
+   public/exported API, 39 call site(s), 213 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   417 │     const gl = renderer.getContext();
+       │                ^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   419 │     const defines = parameters.defines;
+       │                     ^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   421 │     let vertexShader = parameters.vertexShader;
+       │                        ^^^^^^^^^^^^^^^^^^^^^^^
+4. [2026] build/three.core.js#ObjectLoader.parseObject@49232:1183652 — <three-package>/build/three.core.js:49232
+   public/exported API, 3 loop(s), 83 call site(s), 194 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   49298 │         switch ( data.type ) {
+         │                  ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   49304 │                 if ( data.background !== undefined ) {
+         │                      ^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   49306 │                     if ( Number.isInteger( data.background ) ) {
+         │                                            ^^^^^^^^^^^^^^^
+5. [2026] src/loaders/ObjectLoader.js#ObjectLoader.parseObject@776:18437 — <three-package>/src/loaders/ObjectLoader.js:776
+   public/exported API, 3 loop(s), 83 call site(s), 194 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   842 │         switch ( data.type ) {
+       │                  ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   848 │                 if ( data.background !== undefined ) {
+       │                      ^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   850 │                     if ( Number.isInteger( data.background ) ) {
+       │                                            ^^^^^^^^^^^^^^^
+6. [1550] build/three.core.js#CameraHelper.setColors@58497:1394589 — <three-package>/build/three.core.js:58497
+   public/exported API, 51 call site(s), 150 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   58505 │         colorAttribute.setXYZ( 0, frustum.r, frustum.g, frustum.b ); colorAttribute.setXYZ( 1, frustum.r, frustum.g, frustum.b ); // n1, n2
+         │                                   ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   58505 │         colorAttribute.setXYZ( 0, frustum.r, frustum.g, frustum.b ); colorAttribute.setXYZ( 1, frustum.r, frustum.g, frustum.b ); // n1, n2
+         │                                              ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   58505 │         colorAttribute.setXYZ( 0, frustum.r, frustum.g, frustum.b ); colorAttribute.setXYZ( 1, frustum.r, frustum.g, frustum.b ); // n1, n2
+         │                                                         ^^^^^^^^^
+7. [1550] src/helpers/CameraHelper.js#CameraHelper.setColors@167:3982 — <three-package>/src/helpers/CameraHelper.js:167
+   public/exported API, 51 call site(s), 150 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   175 │         colorAttribute.setXYZ( 0, frustum.r, frustum.g, frustum.b ); colorAttribute.setXYZ( 1, frustum.r, frustum.g, frustum.b ); // n1, n2
+       │                                   ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   175 │         colorAttribute.setXYZ( 0, frustum.r, frustum.g, frustum.b ); colorAttribute.setXYZ( 1, frustum.r, frustum.g, frustum.b ); // n1, n2
+       │                                              ^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   175 │         colorAttribute.setXYZ( 0, frustum.r, frustum.g, frustum.b ); colorAttribute.setXYZ( 1, frustum.r, frustum.g, frustum.b ); // n1, n2
+       │                                                         ^^^^^^^^^
+8. [816] examples/jsm/loaders/usd/USDComposer.js#USDComposer._buildGeometryWithSubsets@1864:45832 — <three-package>/examples/jsm/loaders/usd/USDComposer.js:1864
+   public/exported API, 11 loop(s), 45 call site(s), 74 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   1868 │         const points = fields[ 'points' ];
+        │                        ^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   1871 │         const faceVertexIndices = fields[ 'faceVertexIndices' ];
+        │                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   1872 │         const faceVertexCounts = fields[ 'faceVertexCounts' ];
+        │                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+9. [751] examples/jsm/utils/SkeletonUtils.js#retarget@39:842 — <three-package>/examples/jsm/utils/SkeletonUtils.js:39
+   public/exported API, 4 loop(s), 37 call site(s), 66 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   46 │     options.preserveBoneMatrix = options.preserveBoneMatrix !== undefined ? options.preserveBoneMatrix : true;
+      │     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   46 │     options.preserveBoneMatrix = options.preserveBoneMatrix !== undefined ? options.preserveBoneMatrix : true;
+      │                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   46 │     options.preserveBoneMatrix = options.preserveBoneMatrix !== undefined ? options.preserveBoneMatrix : true;
+      │                                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+10. [729] examples/jsm/transpiler/TSLEncoder.js#TSLEncoder.emitExpression@130:2423 — <three-package>/examples/jsm/transpiler/TSLEncoder.js:130
+   public/exported API, 2 loop(s), 34 call site(s), 66 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   134 │         if ( node.isAccessor ) {
+       │              ^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   136 │             if ( node.linker.reference === null ) {
+       │                  ^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   138 │                 this.addImport( node.property );
+       │                                 ^^^^^^^^^^^^^
+11. [708] examples/jsm/curves/NURBSUtils.js#calcBasisFunctionDerivatives@141:2725 — <three-package>/examples/jsm/curves/NURBSUtils.js:141
+   public/exported API, 12 loop(s), 5 call site(s), 70 static risk(s)
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   145 │         zeroArr[ i ] = 0.0;
+       │         ^^^^^^^^^^^^
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   150 │         ders[ i ] = zeroArr.slice( 0 );
+       │         ^^^^^^^^^
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   155 │         ndu[ i ] = zeroArr.slice( 0 );
+       │         ^^^^^^^^
+12. [666] examples/jsm/loaders/PCDLoader.js#PCDLoader.parse@172:3369 — <three-package>/examples/jsm/loaders/PCDLoader.js:172
+   public/exported API, 3 loop(s), 108 call site(s), 58 static risk(s)
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   393 │                 if ( lines[ i ] === '' ) continue;
+       │                      ^^^^^^^^^^
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   395 │                 const line = lines[ i ].split( ' ' );
+       │                              ^^^^^^^^^^
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   399 │                     position.push( parseFloat( line[ offset.x ] ) );
+       │                                                ^^^^^^^^^^^^^^^^
+13. [661] examples/jsm/utils/BufferGeometryUtils.js#toCreasedNormals@1315:32353 — <three-package>/examples/jsm/utils/BufferGeometryUtils.js:1315
+   public/exported API, 11 loop(s), 21 call site(s), 57 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   1319 │     const resultGeometry = geometry.index ? geometry.toNonIndexed() : geometry;
+        │                            ^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   1319 │     const resultGeometry = geometry.index ? geometry.toNonIndexed() : geometry;
+        │                                             ^^^^^^^^^^^^^^^^^^^^^
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   1336 │             positions[ 3 * i + 0 ] = posAttr.getX( i );
+        │             ^^^^^^^^^^^^^^^^^^^^^^
+14. [641] build/three.webgpu.js#WebGPUBackend._draw@85441:2097951 — <three-package>/build/three.webgpu.js:85441
+   public/exported API, 5 loop(s), 26 call site(s), 57 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   85445 │         const index = renderObject.getIndex();
+         │                       ^^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   85450 │         if ( currentSets.pipeline !== pipelineGPU ) {
+         │              ^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   85452 │             passEncoderGPU.setPipeline( pipelineGPU );
+         │             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+15. [641] src/renderers/webgpu/WebGPUBackend.js#WebGPUBackend._draw@1729:48111 — <three-package>/src/renderers/webgpu/WebGPUBackend.js:1729
+   public/exported API, 5 loop(s), 26 call site(s), 57 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   1733 │         const index = renderObject.getIndex();
+        │                       ^^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   1738 │         if ( currentSets.pipeline !== pipelineGPU ) {
+        │              ^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   1740 │             passEncoderGPU.setPipeline( pipelineGPU );
+        │             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+16. [585] src/extras/TextureUtils.js#getByteLength@100:3532 — <three-package>/src/extras/TextureUtils.js:100
+   public/exported API, 48 call site(s), 106 static risk(s)
+   info: Numeric representation transition [numeric-operation] — A function parameter reaches a numeric representation-sensitive operation.
+   108 │             return width * height;
+       │                    ^^^^^^^^^^^^^^
+   info: Numeric representation transition [numeric-operation] — A function parameter reaches a numeric representation-sensitive operation.
+   110 │             return ( ( width * height ) / typeByteLength.components ) * typeByteLength.byteLength;
+       │                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   info: Numeric representation transition [numeric-operation] — A function parameter reaches a numeric representation-sensitive operation.
+   110 │             return ( ( width * height ) / typeByteLength.components ) * typeByteLength.byteLength;
+       │                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+17. [582] build/three.webgpu.js#WebGPUBackend.needsRenderUpdate@85760:2106119 — <three-package>/build/three.webgpu.js:85760
+   public/exported API, 7 call site(s), 55 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   85768 │         const sampleCount = utils.getSampleCountRenderContext( renderObject.context );
+         │                                                                ^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   85769 │         const colorSpace = utils.getCurrentColorSpace( renderObject.context );
+         │                                                        ^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   85770 │         const colorFormat = utils.getCurrentColorFormat( renderObject.context );
+         │                                                          ^^^^^^^^^^^^^^^^^^^^
+18. [582] src/renderers/webgpu/WebGPUBackend.js#WebGPUBackend.needsRenderUpdate@2048:56279 — <three-package>/src/renderers/webgpu/WebGPUBackend.js:2048
+   public/exported API, 7 call site(s), 55 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   2056 │         const sampleCount = utils.getSampleCountRenderContext( renderObject.context );
+        │                                                                ^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   2057 │         const colorSpace = utils.getCurrentColorSpace( renderObject.context );
+        │                                                        ^^^^^^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   2058 │         const colorFormat = utils.getCurrentColorFormat( renderObject.context );
+        │                                                          ^^^^^^^^^^^^^^^^^^^^
+19. [578] examples/jsm/libs/surfaceNet.js#surfaceNet@13:272 — <three-package>/examples/jsm/libs/surfaceNet.js:13
+   public/exported API, 12 loop(s), 12 call site(s), 50 static risk(s)
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   63 │         scale[i] = (bounds[1][i] - bounds[0][i]) / dims[i];
+      │         ^^^^^^^^
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   63 │         scale[i] = (bounds[1][i] - bounds[0][i]) / dims[i];
+      │                     ^^^^^^^^^^^^
+   warning: Dynamic property-key access inside a loop [dynamic-keyed-access-in-loop] — A loop performs keyed access with a dynamic key; changing key/value shapes can make its inline cache polymorphic or megamorphic.
+   63 │         scale[i] = (bounds[1][i] - bounds[0][i]) / dims[i];
+      │                                    ^^^^^^^^^^^^
+20. [577] examples/jsm/transpiler/WGSLEncoder.js#WGSLEncoder.emitExpression@111:2331 — <three-package>/examples/jsm/transpiler/WGSLEncoder.js:111
+   public/exported API, 1 loop(s), 42 call site(s), 52 static risk(s)
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   117 │         if ( node.isAccessor ) {
+       │              ^^^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   124 │                 return `uniforms.${node.property}`;
+       │                                    ^^^^^^^^^^^^^
+   warning: Named-property parameter receiver [parameter-property-access] — A function parameter is used as a named-property receiver, so hidden-class and missing-field diversity are hot-path inputs.
+   128 │             code = node.property;
+       │                    ^^^^^^^^^^^^^
+
+Conditional problem guidance:
+- parameter-property-access [static-hypothesis]: Exercise stable, reordered, extra, and missing-field shapes after a stable warmup.
+  confirm: Exercise representation-specific receiver variants and require exact-site plus engine evidence.
+  possible action: Normalize receiver construction or split genuinely distinct receiver families. (The measured access site becomes unstable for supported API inputs.)
+- dynamic-keyed-access-in-loop [static-hypothesis]: Add isolated scenarios for stable and mixed key types, then inspect keyed-access deopts before rewriting the code.
+  confirm: Run string, index, and symbol variants accepted by the API and inspect keyed inline-cache transitions.
+  possible action: Separate key families or normalize keys at the API boundary. (Deep engine evidence confirms a harmful polymorphic or megamorphic keyed access.)
+- numeric-operation [static-hypothesis]: Exercise SMI, double, -0, NaN, int32/uint32 boundaries, and overflow where the API accepts them.
+  confirm: Exercise SMI, fractional, -0, NaN, integer boundaries, and overflow variants with semantic verification.
+  possible action: Normalize the accepted numeric domain or warm every intentional representation. (Engine evidence confirms a harmful representation transition and normalization preserves the API contract.)
+
+Problem: Analyzed runtime module graph is incomplete [analysis-module-graph-incomplete] — The runtime module graph is incomplete (6 diagnostic(s))
+confirm: Inspect every graph diagnostic and external boundary before generating scenarios.
+possible action: Make the edge statically resolvable, raise the bounded file limit, or model the boundary in an explicit suite. (The missing edge belongs to the inspected runtime graph; do not expand unrelated dependency packages into core.)
+
+Diagnostics:
+- <three-package>/examples/jsm/inspector/tabs/Settings.js: nonliteral dynamic import at offset 5356 makes the module graph incomplete
+- <three-package>/examples/jsm/libs/demuxer_mp4.js: unresolved module edge "https://cdn.jsdelivr.net/npm/mp4box@2.3.0/+esm" (Cannot find module 'https://cdn.jsdelivr.net/npm/mp4box@2.3.0/+esm')
+- <three-package>/examples/jsm/loaders/LottieLoader.js: unresolved module edge "https://cdn.jsdelivr.net/npm/lottie-web@5.13.0/+esm" (Cannot find module 'https://cdn.jsdelivr.net/npm/lottie-web@5.13.0/+esm')
+- <three-package>/examples/jsm/loaders/TTFLoader.js: unresolved module edge "https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/+esm" (Cannot find module 'https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/+esm')
+- <three-package>/examples/jsm/physics/JoltPhysics.js: nonliteral dynamic import at offset 2612 makes the module graph incomplete
+- <three-package>/examples/jsm/physics/RapierPhysics.js: nonliteral dynamic import at offset 3123 makes the module graph incomplete
+
+Boundaries:
+- Static findings are risk indicators, not proof of a V8 or JavaScriptCore deoptimization.
+- Data-dependent shapes, value representations, callback identities, and production lifecycle order require dynamic scenarios.
+- Static imports and re-exports are resolved through package exports/imports, TypeScript paths, and extension aliases; dynamic specifiers still need runtime evidence.
+- Minified or generated distributions reduce source-level recommendation quality; analyze source and execute production builds when possible.
+
+Next: generate a safe scaffold with `check-hot init <input>` or explicitly probe through an external runner with `--probe --test-runner <module>`.

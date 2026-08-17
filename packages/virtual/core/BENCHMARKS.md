@@ -108,19 +108,63 @@ independently.
 Treat the local ratio as a regression baseline rather than a universal browser
 constant; property-access microbenchmarks vary substantially between V8 releases.
 
-Run the V8 optimization smoke test with:
+Run the regular hot-path optimization gate with:
 
 ```bash
 pnpm jit:check
 ```
 
-It warms and explicitly optimizes `SizeIndex`, `VirtualScroller`, and
-`VirtualScrollerLayout` hot paths. It verifies stable hidden classes after V8
-construction slack tracking, then checks queries, item-count changes,
-measurements, subscriptions, revisions, event dispatch, layout updates, and
-mixed vertical/horizontal scroll synchronization. The command enables V8
-deoptimization tracing, so regressions are visible in CI logs. This is
-V8-specific and supplements browser traces.
+The package uses [`@af-utils/check-hot`](../../check-hot/README.md) with two
+complementary checks. A production-like minified bundle contains the broad
+manual suite and the library. This ensures `SizeIndex` is the same constructor
+used inside `VirtualScroller` and ensures private-property mangling matches the
+published build. The regular gate runs all scenarios together on
+Node/TurboFan.
+
+The build also emits an immutable `.jit/ast-targets.mjs`, analyzes those exact
+JavaScript bytes, and writes a generated `.jit/ast-plan.mjs`. The second suite
+uses the thick core mutation lifecycle to close every generated obligation:
+fresh semantic receivers, args-aware result verification, exact Inspector
+block hits for every numeric representation, guarded-stress replay, and the
+final optimization oracle. This is deliberately separate from source-map work:
+Oxc offsets and V8 coverage offsets refer to the same executed minified file,
+so TypeScript transformation cannot create false site matches. The current
+non-vacuous control covers both ordinary TypeScript-private fields and native
+ECMAScript private fields; the build fails if either target no longer maps to a
+unique analyzed function or produces no numeric evidence.
+
+The `check-hot:` source comments are the single source of truth for 28 ordinary
+prototype targets. `scripts/v8/build.mjs` uses Oxc-backed annotation discovery
+to bind each marker to its exact method and generates `.jit/annotated-targets.mjs`.
+The suite provides only one representative owner instance per class. Two layout
+targets remain explicit because they intentionally bind the same implementation
+to different vertical/horizontal state. Scenarios reference target objects, so
+method IDs and resolver functions are no longer copied into `suite.mjs`.
+
+The repeatable scenarios cover `SizeIndex` boundaries and fractional values,
+all four axis/scroller modes and both directions, 64-entry measurements with
+zero and stale entries, immediate/nested/reentrant events, native and fallback
+scroll activity, sticky header/footer measurements, vertical/horizontal layout,
+element/window adapters, and TypeScript/native private fields. V8 trace
+sentinels limit failures to guarded stress, so harmless warmup tier transitions
+are not reported as regressions.
+
+Run the larger Node+Deno, Maglev+TurboFan, combined+isolated matrix twice with:
+
+```bash
+pnpm --filter @af-utils/virtual-core jit:check:full
+```
+
+Run the JavaScriptCore adapter separately on a machine with Bun installed:
+
+```bash
+pnpm --filter @af-utils/virtual-core jit:check:bun
+```
+
+Deno exposes the same V8 status, map, representation, and guarded-deopt probes.
+Bun uses JavaScriptCore instead: its adapter checks DFG compilation and
+reoptimization retry counts without pretending those are V8 maps or TurboFan
+statuses.
 
 The same command also fails when representative instances fall back to
 dictionary properties, when internal JS arrays become sparse/dictionary arrays,
@@ -131,7 +175,7 @@ or when their V8 elements kind is wider than intended. It verifies:
   an empty subscription list after subscribe/unsubscribe;
 - a packed numeric representation before and after a fractional sticky size
   forces the expected `SMI -> DOUBLE` transition;
-- fixed, non-resizable `Float64Array`/`Uint8Array` buffers owned by `SizeIndex`;
+- two fixed, non-resizable `Float64Array` buffers owned by `SizeIndex`;
 - SMI counters and indexes alongside finite double size/offset paths;
 - fast properties and compatible hidden classes for axis, element-scroller,
   window-scroller, model, index, and layout objects.
@@ -149,9 +193,10 @@ and exact typed-array elements kinds, run:
 pnpm --filter @af-utils/virtual-core jit:inspect
 ```
 
-It adds V8 `%DebugPrint` output. This diagnostic is intentionally not parsed in
-CI because the text format and native intrinsic set are not stable APIs and can
-change with Node/V8 releases.
+It adds V8 `%DebugPrint` output. The normal report reduces trace entries to the
+function and deoptimization reason while machine-readable JSON and `--verbose`
+retain raw lines. `%DebugPrint` itself remains human-only because its text format
+and native intrinsic set can change with Node/V8 releases.
 
 ## Events and batching
 

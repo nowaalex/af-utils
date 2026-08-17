@@ -86,6 +86,7 @@ class ScrollActivity {
     }
 
     /** Record one native scroll event and schedule fallback idle detection. */
+    // check-hot: ScrollActivity._onNativeScroll
     _onNativeScroll() {
         this._lastScrollTimestampMs = this._scheduler._now();
         if ((this._flags & NATIVE_SCROLL_END_FLAG) === 0) {
@@ -94,6 +95,7 @@ class ScrollActivity {
     }
 
     /** Finish activity at a definitive native `scrollend` boundary. */
+    // check-hot: ScrollActivity._onNativeScrollEnd
     _onNativeScrollEnd() {
         // Stryker disable next-line ConditionalExpression: clearTimeout(0) is observably equivalent; the guard avoids a needless host call.
         if (this._programmaticReleaseTimer) {
@@ -105,6 +107,7 @@ class ScrollActivity {
     }
 
     /** Start programmatic activity with a failsafe release timeout. */
+    // check-hot: ScrollActivity._startProgrammaticScroll
     _startProgrammaticScroll(releaseAfterMs: number) {
         this._flags |= PROGRAMMATIC_PENDING_FLAG;
         // Stryker disable next-line ConditionalExpression: clearTimeout(0) is observably equivalent; the guard avoids a needless host call.
@@ -118,6 +121,7 @@ class ScrollActivity {
     }
 
     /** Set whether repeated `scrollToIndex` corrections are active. */
+    // check-hot: ScrollActivity._setIndexConverging
     _setIndexConverging(active: boolean) {
         if (active) this._flags |= INDEX_CONVERGING_FLAG;
         else this._flags &= ~INDEX_CONVERGING_FLAG;

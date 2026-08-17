@@ -68,7 +68,7 @@
             },
             "devDependencies": {
                 "@sveltejs/vite-plugin-svelte": "^7.3.0",
-                "svelte-check": "^4.7.5"
+                "svelte-check": "^4.7.6"
             }
         },
         "vue": {

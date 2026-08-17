@@ -61,6 +61,7 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
     }
 
     /** Read the element's native axis offset. */
+    // check-hot: ElementScrollerAdapter._readOffset
     _readOffset() {
         return this._axis._readElementOffset(this._target);
     }
@@ -168,6 +169,7 @@ export class WindowScrollerAdapter implements ScrollerAdapter {
     }
 
     /** Read the window's native axis offset. */
+    // check-hot: WindowScrollerAdapter._readOffset
     _readOffset() {
         return this._axis._readWindowOffset(this._target);
     }

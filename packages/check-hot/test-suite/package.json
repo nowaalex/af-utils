@@ -1,0 +1,129 @@
+{
+    "name": "@af-utils/check-hot-test-runners",
+    "version": "0.1.0",
+    "description": "Optional ecosystem-specific sample recipes for @af-utils/check-hot",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nowaalex/af-utils.git",
+        "directory": "packages/check-hot/test-suite"
+    },
+    "homepage": "https://github.com/nowaalex/af-utils/tree/master/packages/check-hot/test-suite",
+    "bugs": "https://github.com/nowaalex/af-utils/issues",
+    "author": {
+        "name": "Alex Fomin",
+        "email": "nowaalex@gmail.com",
+        "url": "https://github.com/nowaalex/"
+    },
+    "license": "MIT",
+    "type": "module",
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "types": "./dist/index.d.ts",
+    "main": "./dist/index.js",
+    "exports": {
+        "./README.md": "./README.md",
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./auto": {
+            "types": "./dist/auto.d.ts",
+            "default": "./dist/auto.js"
+        },
+        "./generic": {
+            "types": "./dist/generic.d.ts",
+            "default": "./dist/generic.js"
+        },
+        "./react": {
+            "types": "./dist/react.d.ts",
+            "default": "./dist/react.js"
+        },
+        "./svelte": {
+            "types": "./dist/svelte.d.ts",
+            "default": "./dist/svelte.js"
+        },
+        "./three": {
+            "types": "./dist/three.d.ts",
+            "default": "./dist/three.js"
+        },
+        "./lodash": {
+            "types": "./dist/lodash.d.ts",
+            "default": "./dist/lodash.js"
+        },
+        "./date-fns": {
+            "types": "./dist/date-fns.d.ts",
+            "default": "./dist/date-fns.js"
+        }
+    },
+    "scripts": {
+        "build": "tsc && node scripts/bundle.mjs",
+        "audit:threejs": "pnpm --filter @af-utils/check-hot build && pnpm run build && node threejs/audit.mjs",
+        "typecheck": "tsc -p tsconfig.test.json",
+        "test:threejs": "vitest run threejs",
+        "test": "pnpm run build && vitest run"
+    },
+    "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+    },
+    "keywords": [
+        "date-fns",
+        "jit",
+        "lodash",
+        "react",
+        "svelte",
+        "test-runner",
+        "three.js",
+        "v8"
+    ],
+    "dependencies": {
+        "semver": "^7.8.5"
+    },
+    "devDependencies": {
+        "@af-utils/check-hot": "workspace:*",
+        "@types/lodash": "^4.17.25",
+        "@types/node": "^26.2.0",
+        "@types/react": "^19.2.18",
+        "@types/semver": "^7.8.0",
+        "@types/three": "^0.185.0",
+        "date-fns": "^4.4.0",
+        "esbuild": "^0.28.2",
+        "lodash": "^4.18.1",
+        "react": "^19.2.8",
+        "svelte": "^5.56.9",
+        "three": "^0.185.1",
+        "tsx": "^4.23.12",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.10"
+    },
+    "peerDependencies": {
+        "@af-utils/check-hot": "^0.1.0",
+        "date-fns": ">=3 <5",
+        "lodash": ">=4 <5",
+        "react": ">=18 <20",
+        "svelte": ">=5 <6",
+        "three": ">=0.180 <0.186"
+    },
+    "peerDependenciesMeta": {
+        "date-fns": {
+            "optional": true
+        },
+        "lodash": {
+            "optional": true
+        },
+        "react": {
+            "optional": true
+        },
+        "svelte": {
+            "optional": true
+        },
+        "three": {
+            "optional": true
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "sideEffects": false
+}

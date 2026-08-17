@@ -510,6 +510,7 @@ class VirtualScroller {
      * @param callBack - event to be triggered
      * @param events - events to subscribe
      */
+    // check-hot: VirtualScroller.subscribe
     subscribe(
         callBack: () => void,
         events: VirtualScrollerEventMask = VirtualScrollerEventFlag.ALL
@@ -519,6 +520,7 @@ class VirtualScroller {
     }
 
     /** Return a stable external-store snapshot for the selected events. */
+    // check-hot: VirtualScroller.getRevision
     getRevision(
         events: VirtualScrollerEventMask = VirtualScrollerEventFlag.ALL
     ) {
@@ -633,6 +635,7 @@ class VirtualScroller {
     }
 
     /** Cache valid item measurements delivered for the current rendered range. */
+    // check-hot: VirtualScroller._applyMeasurements
     private _applyMeasurements(entries: readonly ResizeObserverEntry[]) {
         if (this._disposed) return;
         if (entries.length === 0) return;
@@ -791,6 +794,7 @@ class VirtualScroller {
      *
      * Time complexity: `O(log2(itemCount))`.
      */
+    // check-hot: VirtualScroller.getIndex
     getIndex(offset: number) {
         assert(
             Number.isFinite(offset),
@@ -814,6 +818,7 @@ class VirtualScroller {
      *
      * Time complexity: `O(log2(itemCount))`.
      */
+    // check-hot: VirtualScroller.getOffset
     getOffset(index: number) {
         assert(
             Number.isSafeInteger(index) &&
@@ -922,6 +927,7 @@ class VirtualScroller {
      * Forward motion grows the range from its end; backward motion grows it
      * from its start so overscan is placed in the direction of travel.
      */
+    // check-hot: VirtualScroller._syncScrollPosition
     private _syncScrollPosition() {
         /*
             scrollElement may not be null here.
@@ -1207,6 +1213,7 @@ class VirtualScroller {
      * Used to update current visible items range when scrolling down/right;
      * adds overscan reserve forward to reduce rerenders quantity
      */
+    // check-hot: VirtualScroller._updateRangeFromEnd
     private _updateRangeFromEnd() {
         const exactTo = this._exactTo;
 
@@ -1227,6 +1234,7 @@ class VirtualScroller {
      * Used to update current visible items range when scrolling up/left;
      * adds overscan reserve backward to reduce rerenders quantity
      */
+    // check-hot: VirtualScroller._updateRangeFromStart
     private _updateRangeFromStart() {
         const exactFrom = this._exactFrom;
 
@@ -1363,6 +1371,7 @@ class VirtualScroller {
      * Notify model about items quantity change
      * @param itemCount - new items quantity. {@link VirtualScrollerRuntimeParams.itemCount}
      */
+    // check-hot: VirtualScroller.setItemCount
     setItemCount(itemCount: number) {
         this._assertMutable();
         assertSizeIndexCount(itemCount);

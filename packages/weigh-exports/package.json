@@ -42,7 +42,7 @@
         "esbuild": "^0.28.2"
     },
     "dependencies": {
-        "@swc/core": "^1.15.47",
+        "@swc/core": "^1.16.0",
         "chalk": "^6.0.0",
         "tinyglobby": "^0.2.17"
     },
