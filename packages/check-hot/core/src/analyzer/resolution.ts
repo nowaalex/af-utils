@@ -332,7 +332,7 @@ const expandPublicExportPattern = async (
             targetPrefix.length,
             relativeTarget.length - targetSuffix.length
         );
-        concretePaths.push(publicPath.replace("*", star));
+        concretePaths.push(publicPath.replaceAll("*", () => star));
     }
     return [...new Set(concretePaths)].toSorted();
 };
@@ -406,7 +406,7 @@ export const packageExportsSelectFile = (
         if (!target) continue;
         const star = exportTargetMatch(target, relativeFile);
         if (star === undefined) continue;
-        const publicPath = declaredPath.replace("*", star);
+        const publicPath = declaredPath.replaceAll("*", () => star);
         const selectedKey = matchingExportKey(publicPath, exportKeys);
         const selectedTarget = selectedKey
             ? exportTargetForRuntime(exportMap[selectedKey], runtime)
@@ -453,7 +453,7 @@ export const discoverAnalysisEntries = async (
         // Silently skip them just as the selected native loader does.
         if (!runtimeTarget) continue;
         const targetExtension = runtimeTarget
-            ? extname(runtimeTarget.replace("*", "check-hot"))
+            ? extname(runtimeTarget.replaceAll("*", "check-hot"))
             : "";
         if (targetExtension && !supportedExtensions.includes(targetExtension)) {
             continue;

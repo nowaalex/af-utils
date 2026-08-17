@@ -12,5 +12,7 @@ allowBuilds:
     sharp: true
 minimumReleaseAgeExclude:
     - svelte@5.56.9
+overrides:
+    "astro-icon>@iconify/tools": 5.0.12
 patchedDependencies:
     "@vitejs/plugin-vue@6.0.8": patches/@vitejs__plugin-vue@6.0.8.patch

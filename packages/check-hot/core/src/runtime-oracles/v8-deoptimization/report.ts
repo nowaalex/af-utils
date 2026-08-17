@@ -1,14 +1,21 @@
 /** Stable information recoverable from V8's version-dependent trace text. */
 export const parseV8Deoptimization = (line: string) => {
-    const functionName = (
+    const extractReason = (endMarker: string) => {
+        const marker = "reason: ";
+        const markerIndex = line.indexOf(marker);
+        if (markerIndex === -1) return;
+        const valueStart = markerIndex + marker.length;
+        const valueEnd = line.indexOf(endMarker, valueStart);
+        return valueEnd === -1 ? undefined : line.slice(valueStart, valueEnd);
+    };
+    const functionName =
         line.match(/JSFunction ((?:get |set )?[^ <()>]+)/u)?.[1] ??
         line.match(/SharedFunctionInfo ((?:get |set )?[^ <()>]+)/u)?.[1] ??
         (line.includes("<JSFunction <") ? "anonymous function" : undefined) ??
-        "unknown function"
-    ).replace(/[>)]*$/u, "");
+        "unknown function";
     const reason =
-        line.match(/reason: (.+?)\): begin/u)?.[1] ??
-        line.match(/reason: ([^\]]+)\]/u)?.[1] ??
+        extractReason("): begin") ??
+        extractReason("]") ??
         (line.includes("dependent code")
             ? "dependent optimized code invalidated"
             : "unknown reason");

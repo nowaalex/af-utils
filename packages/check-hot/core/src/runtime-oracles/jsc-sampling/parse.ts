@@ -27,7 +27,7 @@ const tierNames = [
     "Unknown Executable"
 ] as const;
 const escapedTierNames = tierNames
-    .map(name => name.replaceAll(/[+]/gu, "\\$&"))
+    .map(name => name.replaceAll(/[.*+?^${}()|[\]\\]/gu, "\\$&"))
     .join("|");
 const tierLine = new RegExp(
     `^\\s*(${escapedTierNames}):\\s*(\\d+)\\s*\\((\\d+(?:\\.\\d+)?)%\\)\\s*$`,

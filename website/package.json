@@ -71,7 +71,8 @@
         "format:generated": "oxfmt ./src/bundleSizes.ts",
         "build:docs": "./build-docs.sh",
         "preview": "astro preview",
-        "astro": "astro"
+        "astro": "astro",
+        "test": "node --test plugins/*.test.mjs"
     },
     "dependencies": {
         "@af-utils/examples": "workspace:*",

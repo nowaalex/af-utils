@@ -12,19 +12,62 @@ const pages = [];
 
 const normalizeWhitespace = value => value.replace(/\s+/gu, " ").trim();
 
+const startsHtmlTag = (value, start) => {
+    let nameStart = start + 1;
+    const marker = value[nameStart];
+    if (marker === "!" || marker === "?") return true;
+    if (marker === "/") nameStart += 1;
+    const first = value.codePointAt(nameStart);
+    return (
+        first !== undefined &&
+        ((first >= 65 && first <= 90) || (first >= 97 && first <= 122))
+    );
+};
+
+export const stripHtml = value => {
+    const result = [];
+    for (let index = 0; index < value.length; index += 1) {
+        const character = value[index];
+        if (character !== "<") {
+            result.push(character);
+            continue;
+        }
+        let tagEnd = index + 1;
+        while (tagEnd < value.length && value[tagEnd] !== ">") {
+            if (value[tagEnd] === "<") break;
+            tagEnd += 1;
+        }
+        if (value[tagEnd] === "<") {
+            result.push("&lt;");
+            continue;
+        }
+        if (tagEnd === value.length) {
+            result.push(character);
+            continue;
+        }
+        if (!startsHtmlTag(value, index)) {
+            result.push(character);
+            continue;
+        }
+        index = tagEnd;
+    }
+    return result.join("");
+};
+
 const stripMarkdown = value =>
     normalizeWhitespace(
-        value
-            .replace(
-                /\{@(?:link|linkcode|linkplain)\s+([^}|]+)(?:\|([^}]+))?\}/gu,
-                (_, target, label) => label ?? target
-            )
-            .replace(/```[\s\S]*?```/gu, "")
-            .replace(/!\[([^\]]*)\]\([^)]*\)/gu, "$1")
-            .replace(/\[([^\]]+)\]\([^)]*\)/gu, "$1")
-            .replace(/`([^`]+)`/gu, "$1")
-            .replace(/[*_~]/gu, "")
-            .replace(/<[^>]*>/gu, "")
+        stripHtml(
+            value
+                .replace(
+                    /\{@(?:link|linkcode|linkplain)\s+([^}|]+)(?:\|([^}]+))?\}/gu,
+                    (_, target, label) => label ?? target
+                )
+                .replace(/```[\s\S]*?```/gu, "")
+                .replace(/!\[([^\]]*)\]\([^)]*\)/gu, "$1")
+                .replace(/\[([^\]]+)\]\([^)]*\)/gu, "$1")
+                .replace(/`([^`]+)`/gu, "$1")
+                .replace(/[*_~]/gu, "")
+        )
     );
 
 const getComment = model => {

@@ -8,6 +8,7 @@ import {
     analyzeHotModule,
     generateHotSuiteSource
 } from "../../src/analyzer.js";
+import { packageExportsSelectFile } from "../../src/analyzer/resolution.js";
 
 const directories: string[] = [];
 const candidatesNamed = (
@@ -811,6 +812,44 @@ describe("exports-first module graph", () => {
         });
         expect(report.files).toBe(4);
         expect(report.graphComplete).toBe(true);
+    });
+
+    test("treats dollar sequences in wildcard captures as literal path text", async () => {
+        const directory = await mkdtemp(join(tmpdir(), "check-hot-graph-"));
+        directories.push(directory);
+        await mkdir(join(directory, "src"));
+        const exportsValue = {
+            ".": "./src/index.js",
+            "./cash/*": "./src/*.js"
+        };
+        await writeFile(
+            join(directory, "package.json"),
+            JSON.stringify({
+                name: "dollar-wildcard-fixture",
+                type: "module",
+                exports: exportsValue
+            })
+        );
+        await writeFile(
+            join(directory, "src/index.js"),
+            "export function rootHot(value) { return value + 1; }"
+        );
+        await writeFile(
+            join(directory, "src/$&.js"),
+            "export function cashHot(value) { return value * 2; }"
+        );
+
+        const report = await analyzeHotModule({ input: directory });
+
+        expect(
+            report.candidates.find(candidate => candidate.name === "cashHot")
+        ).toMatchObject({
+            exported: true,
+            publicPaths: ["./cash/$&:cashHot"]
+        });
+        expect(
+            packageExportsSelectFile(exportsValue, "./src/$&.js", "node")
+        ).toBe(true);
     });
 
     test("skips type-only exports and honors more-specific null wildcard exclusions", async () => {
