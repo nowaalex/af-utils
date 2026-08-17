@@ -717,14 +717,14 @@ test.runIf(bunAvailable)(
     "runs the known-good control through Bun/JSC's public oracle",
     async () => {
         const summary = await runHotSuite({
-            suite: fixture("runtime-pass.mjs"),
+            suite: fixture("runtime-sampling-busy.mjs"),
             runtimes: ["bun"],
             modes: ["combined"],
             repetitions: 1,
-            warmupIterations: 500,
-            stressIterations: 100,
+            warmupIterations: 1_000,
+            stressIterations: 500,
             deoptScope: "none",
-            timeoutMs: 10_000
+            timeoutMs: 30_000
         });
 
         expect(summary.passed).toBe(true);
@@ -734,7 +734,7 @@ test.runIf(bunAvailable)(
             currentTier: "not-observable"
         });
     },
-    30_000
+    45_000
 );
 
 test.runIf(bunAvailable)(
@@ -754,12 +754,11 @@ test.runIf(bunAvailable)(
         const sampling = summary.runs[0].diagnostics?.jscSampling;
 
         expect(sampling).toBeDefined();
-        if (sampling?.gap) {
-            expect(sampling.gap).toContain("bun:jsc.profile is unavailable");
-        } else {
-            expect(sampling?.totalSamples).toBeGreaterThan(0);
-            expect(Object.keys(sampling?.tiers ?? {})).not.toHaveLength(0);
-        }
+        expect(sampling?.gap).toBeUndefined();
+        expect(sampling?.totalSamples).toBeGreaterThan(0);
+        expect(Object.keys(sampling?.tiers ?? {})).not.toHaveLength(0);
+        expect(sampling?.stackTraceCount).toBeGreaterThan(0);
+        expect(sampling?.stackTraces.length).toBeGreaterThan(0);
     },
     45_000
 );

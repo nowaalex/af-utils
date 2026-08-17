@@ -1,10 +1,14 @@
 import type { HotJscSamplingSummary } from "../../types.js";
 
+interface BunStructuredStackTraceTable {
+    traces: readonly unknown[];
+}
+
 /** Public subset returned by `bun:jsc.profile`. */
 export interface BunSamplingProfile {
     bytecodes: string;
     functions: string;
-    stackTraces: readonly string[];
+    stackTraces: readonly string[] | BunStructuredStackTraceTable;
 }
 
 const tierNames = [
@@ -13,6 +17,9 @@ const tierNames = [
     "DFG",
     "FTL",
     "js builtin",
+    "IPInt",
+    "BBQ",
+    "OMG",
     "Wasm",
     "Host",
     "RegExp",
@@ -27,9 +34,40 @@ const tierLine = new RegExp(
     "u"
 );
 const knownTierPrefix = new RegExp(`^\\s*(?:${escapedTierNames})\\s*:`, "u");
+const tierLikeLine = /^\s*([^:]+):\s*\d+\s*\(\d+(?:\.\d+)?%\)\s*$/u;
 const totalSample = /Total samples:\s*(\d+)(?=\s|$)/gu;
 const maxStackTraces = 50;
 const maxStackTraceCharacters = 4_096;
+
+const serializeStackTrace = (trace: unknown): string | undefined => {
+    if (typeof trace === "string") return trace;
+    if (typeof trace !== "object" || trace === null) return undefined;
+    try {
+        const serialized = JSON.stringify(trace);
+        return typeof serialized === "string" ? serialized : undefined;
+    } catch {
+        return undefined;
+    }
+};
+
+const extractTotals = (summary: string, issues: string[], label: string) => {
+    const totals = [...summary.matchAll(totalSample)].map(match =>
+        Number(match[1])
+    );
+    if (summary.includes("Total samples:") && totals.length === 0) {
+        issues.push(`malformed ${label} total sample count`);
+    }
+    if (
+        totals.some(total => !Number.isSafeInteger(total)) ||
+        new Set(totals).size > 1
+    ) {
+        issues.push(`conflicting or invalid ${label} total sample counts`);
+    }
+    const total = totals[0];
+    return total !== undefined && Number.isSafeInteger(total)
+        ? total
+        : undefined;
+};
 
 /** Parse Bun's documented formatted tier breakdown without claiming current tier. */
 export const parseJscSamplingProfile = (
@@ -55,22 +93,30 @@ export const parseJscSamplingProfile = (
         typeof record.bytecodes === "string" ? record.bytecodes : "";
     const functions =
         typeof record.functions === "string" ? record.functions : "";
+    const structuredStackTraces =
+        typeof record.stackTraces === "object" &&
+        record.stackTraces !== null &&
+        "traces" in record.stackTraces &&
+        Array.isArray(record.stackTraces.traces)
+            ? record.stackTraces.traces
+            : undefined;
     const rawStackTraces = Array.isArray(record.stackTraces)
         ? record.stackTraces
-        : [];
+        : (structuredStackTraces ?? []);
     if (typeof record.bytecodes !== "string") {
         issues.push("missing or invalid bytecode summary");
     }
     if (typeof record.functions !== "string") {
         issues.push("missing or invalid function summary");
     }
-    if (!Array.isArray(record.stackTraces)) {
+    if (!Array.isArray(record.stackTraces) && !structuredStackTraces) {
         issues.push("missing or invalid stack trace table");
     }
-    const validStackTraces = rawStackTraces.filter(trace => {
-        if (typeof trace === "string") return true;
+    const validStackTraces = rawStackTraces.flatMap(trace => {
+        const serialized = serializeStackTrace(trace);
+        if (serialized !== undefined) return [serialized];
         issues.push("invalid stack trace entry");
-        return false;
+        return [];
     });
     for (const line of bytecodes.split(/\r?\n/u)) {
         const match = tierLine.exec(line);
@@ -78,6 +124,10 @@ export const parseJscSamplingProfile = (
             if (knownTierPrefix.test(line)) {
                 issues.push(
                     `malformed tier line ${JSON.stringify(line.trim())}`
+                );
+            } else if (tierLikeLine.test(line)) {
+                issues.push(
+                    `unsupported tier line ${JSON.stringify(line.trim())}`
                 );
             }
             continue;
@@ -106,26 +156,15 @@ export const parseJscSamplingProfile = (
             decimalPoint < 0 ? 0 : percentText.length - decimalPoint - 1
         );
     }
-    const explicitTotals = [...functions.matchAll(totalSample)].map(match =>
-        Number(match[1])
-    );
-    if (functions.includes("Total samples:") && explicitTotals.length === 0) {
-        issues.push("malformed total sample count");
-    }
-    if (
-        explicitTotals.some(total => !Number.isSafeInteger(total)) ||
-        new Set(explicitTotals).size > 1
-    ) {
-        issues.push("conflicting or invalid total sample counts");
-    }
-    const explicitTotal = explicitTotals[0];
-    let hasExplicitTotal = false;
-    let totalSamples = 0;
-    if (explicitTotal !== undefined && Number.isSafeInteger(explicitTotal)) {
-        hasExplicitTotal = true;
-        totalSamples = explicitTotal;
+    const functionTotal = extractTotals(functions, issues, "function");
+    const bytecodeTotal = extractTotals(bytecodes, issues, "bytecode");
+    // Bun can include the profiler wrapper in the bytecode total while omitting
+    // it from the function table. Tier percentages use the bytecode total.
+    const tierTotal = bytecodeTotal ?? functionTotal;
+    const totalSamples = tierTotal ?? 0;
+    if (tierTotal !== undefined) {
         for (const [name, tier] of Object.entries(tiers)) {
-            if (explicitTotal === 0) {
+            if (tierTotal === 0) {
                 if (tier.samples !== 0 || tier.percent !== 0) {
                     issues.push(
                         `tier ${name} is inconsistent with zero total samples`
@@ -133,7 +172,7 @@ export const parseJscSamplingProfile = (
                 }
                 continue;
             }
-            const expectedPercent = (tier.samples / explicitTotal) * 100;
+            const expectedPercent = (tier.samples / tierTotal) * 100;
             const decimals = tierPercentDecimals.get(name) ?? 0;
             const tolerance = 0.5 * 10 ** -decimals;
             if (Math.abs(tier.percent - expectedPercent) > tolerance) {
@@ -163,7 +202,7 @@ export const parseJscSamplingProfile = (
         gap:
             issues.length > 0
                 ? `Bun's sampling output is not safely parseable: ${issues.join("; ")}.`
-                : !hasExplicitTotal
+                : tierTotal === undefined
                   ? "Bun's sampling output did not expose an explicit total; overlapping tier categories were retained but not summed."
                   : totalSamples === 0
                     ? "Bun's profiler returned no samples; tier distribution is unobserved."

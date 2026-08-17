@@ -58,6 +58,34 @@ describe("JSC sampling profile", () => {
         expect(result.stackTracesTruncated).toBe(true);
     });
 
+    test("normalizes Bun's structured stack trace table", () => {
+        const trace = {
+            timestamp: 123.5,
+            frames: [
+                {
+                    name: "hot",
+                    sourceURL: "fixture.js",
+                    line: 1,
+                    column: 2,
+                    category: "DFG"
+                }
+            ]
+        };
+        const result = parseJscSamplingProfile(
+            {
+                functions: "Total samples: 1",
+                bytecodes: "Total samples: 1\nDFG: 1 (100%)",
+                stackTraces: { traces: [trace] }
+            },
+            100
+        );
+
+        expect(result.stackTraces).toEqual([JSON.stringify(trace)]);
+        expect(result.stackTraceCount).toBe(1);
+        expect(result.stackTracesTruncated).toBe(false);
+        expect(result.gap).toBeUndefined();
+    });
+
     test.each([
         [Array.from({ length: 50 }, () => "short"), false],
         [Array.from({ length: 51 }, () => "short"), true],
@@ -85,6 +113,9 @@ describe("JSC sampling profile", () => {
             "DFG: 3 (3.75%)",
             "FTL: 4 (5%)",
             "js builtin: 5 (6.25%)",
+            "IPInt: 11 (13.75%)",
+            "BBQ: 12 (15%)",
+            "OMG: 13 (16.25%)",
             "Wasm: 6 (7.5%)",
             "Host: 7 (8.75%)",
             "RegExp: 8 (10%)",
@@ -109,6 +140,9 @@ describe("JSC sampling profile", () => {
             DFG: { samples: 3, percent: 3.75 },
             FTL: { samples: 4, percent: 5 },
             "js builtin": { samples: 5, percent: 6.25 },
+            IPInt: { samples: 11, percent: 13.75 },
+            BBQ: { samples: 12, percent: 15 },
+            OMG: { samples: 13, percent: 16.25 },
             Wasm: { samples: 6, percent: 7.5 },
             Host: { samples: 7, percent: 8.75 },
             RegExp: { samples: 8, percent: 10 },
@@ -135,6 +169,21 @@ describe("JSC sampling profile", () => {
         expect(result.gap).toBeUndefined();
     });
 
+    test("uses Bun's bytecode total for tier percentages when profiler tables differ", () => {
+        const result = parseJscSamplingProfile(
+            {
+                functions: "Total samples: 89",
+                bytecodes: "Total samples: 90\nDFG: 45 (50%)",
+                stackTraces: []
+            },
+            100
+        );
+
+        expect(result.totalSamples).toBe(90);
+        expect(result.tiers.DFG).toEqual({ samples: 45, percent: 50 });
+        expect(result.gap).toBeUndefined();
+    });
+
     test("accepts overlapping tier categories without summing them", () => {
         const result = parseJscSamplingProfile(
             {
@@ -151,6 +200,21 @@ describe("JSC sampling profile", () => {
             DFG: { samples: 30, percent: 30 }
         });
         expect(result.gap).toBeUndefined();
+    });
+
+    test("retains known tiers but reports an unsupported tier row", () => {
+        const result = parseJscSamplingProfile(
+            {
+                functions: "Total samples: 10",
+                bytecodes: "DFG: 5 (50%)\nFutureTier: 5 (50%)",
+                stackTraces: []
+            },
+            100
+        );
+
+        expect(result.tiers.DFG).toEqual({ samples: 5, percent: 50 });
+        expect(result.gap).toContain("unsupported tier line");
+        expect(result.gap).toContain("FutureTier");
     });
 
     test("accepts the exact printed rounding boundary", () => {
@@ -219,7 +283,7 @@ describe("JSC sampling profile", () => {
         const noTiers = parseJscSamplingProfile(
             {
                 functions: "Total samples: 12",
-                bytecodes: "FutureTier: 12 (100%)",
+                bytecodes: "Hottest bytecodes:",
                 stackTraces: []
             },
             100
@@ -294,16 +358,16 @@ describe("JSC sampling profile", () => {
     });
 
     test.each([
-        ["Total samples: -1", "malformed total sample count"],
-        ["Total samples: 1.5", "malformed total sample count"],
-        ["Total samples: 1x", "malformed total sample count"],
+        ["Total samples: -1", "malformed function total sample count"],
+        ["Total samples: 1.5", "malformed function total sample count"],
+        ["Total samples: 1x", "malformed function total sample count"],
         [
             "Total samples: 1\nTotal samples: 2",
-            "conflicting or invalid total sample counts"
+            "conflicting or invalid function total sample counts"
         ],
         [
             "Total samples: 9007199254740992",
-            "conflicting or invalid total sample counts"
+            "conflicting or invalid function total sample counts"
         ]
     ])("rejects malformed total evidence: %s", (functions, expected) => {
         const result = parseJscSamplingProfile(

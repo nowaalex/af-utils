@@ -93,6 +93,15 @@ const positiveInteger = (value: number, name: string) => {
 
 const unique = <Value>(values: readonly Value[]) => [...new Set(values)];
 
+const diagnosticVerdictKey = (problem: HotProblemOccurrence) =>
+    JSON.stringify([
+        problem.problemId,
+        problem.targetId,
+        problem.message.replace(/status=\d+/gu, "status=<runtime>"),
+        problem.detail,
+        problem.confidence
+    ]);
+
 const suiteWorkerLoader = (suite: HotSuite) =>
     suite.workerLoader ?? suite.analysis?.sourceLoader;
 
@@ -813,10 +822,18 @@ const collectCellDiagnostics = async (
             await rm(temporary, { recursive: true, force: true });
         }
     }
+    const uniqueDiagnosticContextProblems = [
+        ...new Map(
+            diagnosticContextProblems.map(problem => [
+                diagnosticVerdictKey(problem),
+                problem
+            ])
+        ).values()
+    ];
     diagnostics.problems = [
         ...new Map(
             [
-                ...diagnosticContextProblems,
+                ...uniqueDiagnosticContextProblems,
                 ...collectDiagnosticProblems(diagnostics)
             ].map(problem => [
                 JSON.stringify([
