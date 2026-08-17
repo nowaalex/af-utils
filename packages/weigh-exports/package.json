@@ -29,7 +29,7 @@
         "typecheck": "tsc --noEmit"
     },
     "engines": {
-        "node": ">=20.0.0"
+        "node": ">=24.19.0"
     },
     "keywords": [
         "bundle-size",
@@ -38,7 +38,7 @@
         "minify"
     ],
     "devDependencies": {
-        "@types/node": "^26.2.0",
+        "@types/node": "^24.13.3",
         "esbuild": "^0.28.2"
     },
     "dependencies": {

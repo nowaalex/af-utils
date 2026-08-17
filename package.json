@@ -4,7 +4,7 @@
     "name": "af-utils-monorepo",
     "engines": {
         "pnpm": ">=11.21.0",
-        "node": ">=22.12.0"
+        "node": ">=24.19.0"
     },
     "packageManager": "pnpm@11.21.0",
     "author": {
@@ -60,7 +60,7 @@
         "@playwright/test": "1.62.1",
         "@stryker-mutator/core": "^10.0.0",
         "@stryker-mutator/vitest-runner": "^10.0.0",
-        "@types/node": "^26.2.0",
+        "@types/node": "^24.13.3",
         "nx": "23.1.1",
         "oxfmt": "0.63.0",
         "oxlint": "1.78.0",

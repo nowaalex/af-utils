@@ -15,8 +15,8 @@ env:
     CI: true
 
 jobs:
-    check-hot-node-floor:
-        name: check-hot Node 20.19 dependency floor
+    check-hot-node-lts:
+        name: check-hot Node 24.19 LTS controls
         runs-on: ubuntu-latest
         env:
             CHECK_HOT_REQUIRE_RUNTIMES: node
@@ -27,10 +27,10 @@ jobs:
             - name: Install pnpm
               uses: pnpm/action-setup@v6
 
-            - name: Setup Node.js 20.19.0
+            - name: Setup Node.js 24.19.0
               uses: actions/setup-node@v7
               with:
-                  node-version: "20.19.0"
+                  node-version: "24.19.0"
                   cache: "pnpm"
 
             - name: Install Dependencies
@@ -39,7 +39,7 @@ jobs:
             - name: Build check-hot packages
               run: pnpm nx run-many -t build --projects=@af-utils/check-hot,@af-utils/check-hot-test-runners
 
-            - name: Run Node floor oracle and ecosystem controls
+            - name: Run Node LTS oracle and ecosystem controls
               run: pnpm nx run-many -t test --projects=@af-utils/check-hot,@af-utils/check-hot-test-runners
 
             - name: Enforce check-hot mutation-test ratchet

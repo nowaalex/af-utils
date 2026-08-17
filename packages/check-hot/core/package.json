@@ -68,7 +68,7 @@
         "test:mutation": "stryker run"
     },
     "engines": {
-        "node": "^20.19.0 || >=22.12.0"
+        "node": ">=24.19.0"
     },
     "keywords": [
         "ast",
@@ -84,7 +84,7 @@
     "devDependencies": {
         "@stryker-mutator/core": "^10.0.0",
         "@stryker-mutator/vitest-runner": "^10.0.0",
-        "@types/node": "^26.2.0",
+        "@types/node": "^24.13.3",
         "typescript": "^6.0.3",
         "vitest": "^4.1.10"
     },

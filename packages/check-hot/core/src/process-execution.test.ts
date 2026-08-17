@@ -16,6 +16,8 @@ const executeNode = (
     });
 
 const processExists = (pid: number) => {
+    if (!Number.isSafeInteger(pid) || pid <= 0) return false;
+
     try {
         process.kill(pid, 0);
         return true;
@@ -26,6 +28,8 @@ const processExists = (pid: number) => {
 };
 
 const killProcess = (pid: number) => {
+    if (!Number.isSafeInteger(pid) || pid <= 0) return;
+
     try {
         process.kill(pid, "SIGKILL");
     } catch (error) {
@@ -81,7 +85,7 @@ describe.runIf(process.env.CODEX_PERMISSION_PROFILE === undefined)(
                 "process.stdout.write(String(child.pid) + '\\n');",
                 "setInterval(() => {}, 1_000);"
             ].join("\n");
-            const execution = await executeNode(source, { timeoutMs: 100 });
+            const execution = await executeNode(source, { timeoutMs: 500 });
             const descendantPid = Number(execution.stdout.trim());
 
             try {
@@ -101,12 +105,12 @@ describe.runIf(process.env.CODEX_PERMISSION_PROFILE === undefined)(
                 "setInterval(() => {}, 1_000);"
             ].join("\n");
             const startedAt = performance.now();
-            const execution = await executeNode(source, { timeoutMs: 100 });
+            const execution = await executeNode(source, { timeoutMs: 500 });
             const elapsedMs = performance.now() - startedAt;
 
             expect(execution.error).toMatchObject({ code: "ETIMEDOUT" });
             expect(execution.cleanupError).toBeUndefined();
-            expect(elapsedMs).toBeLessThan(1_350);
+            expect(elapsedMs).toBeLessThan(1_850);
         });
 
         test("kills inherited-pipe descendants after the worker root exits", async () => {

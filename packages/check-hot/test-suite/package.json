@@ -65,7 +65,7 @@
         "test": "pnpm run build && vitest run"
     },
     "engines": {
-        "node": "^20.19.0 || >=22.12.0"
+        "node": ">=24.19.0"
     },
     "keywords": [
         "date-fns",
@@ -83,7 +83,7 @@
     "devDependencies": {
         "@af-utils/check-hot": "workspace:*",
         "@types/lodash": "^4.17.25",
-        "@types/node": "^26.2.0",
+        "@types/node": "^24.13.3",
         "@types/react": "^19.2.18",
         "@types/semver": "^7.8.0",
         "@types/three": "^0.185.0",
