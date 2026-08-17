@@ -268,7 +268,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/list/horizontal/lit:
@@ -409,7 +409,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/list/load-on-demand/lit:
@@ -553,7 +553,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/list/material-ui/react:
@@ -734,7 +734,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/list/scroll-to-item/lit:
@@ -878,7 +878,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/list/simple/lit:
@@ -1019,7 +1019,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/list/sticky-header-and-footer/lit:
@@ -1160,7 +1160,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/list/variable-size-list/lit:
@@ -1301,7 +1301,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/primitives/custom-render/lit:
@@ -1445,7 +1445,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/primitives/different-scroll-element/lit:
@@ -1589,7 +1589,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/primitives/grid/lit:
@@ -1733,7 +1733,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/primitives/simple/lit:
@@ -1877,7 +1877,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   examples/src/virtual/primitives/window-scroll/lit:
@@ -2021,7 +2021,7 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vue-tsc:
-        specifier: ^3.3.10
+        specifier: ^3.2.0
         version: 3.3.10(typescript@6.0.3)
 
   packages/check-hot/core:
