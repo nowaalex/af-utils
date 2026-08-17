@@ -42,7 +42,8 @@ describe.runIf(process.env.CODEX_PERMISSION_PROFILE === undefined)(
     () => {
         test("captures successful output and exit status", async () => {
             const execution = await executeNode(
-                'process.stdout.write("result"); process.stderr.write("trace")'
+                'process.stdout.write("result"); process.stderr.write("trace")',
+                { timeoutMs: 5_000 }
             );
 
             expect(execution).toMatchObject({
