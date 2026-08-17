@@ -15,6 +15,9 @@ const stdoutRetrySignal = new Int32Array(
 /** Prefix used to recover structured worker output from engine traces. */
 export const WORKER_RESULT_PREFIX = "@@CHECK_HOT_RESULT@@";
 
+/** Current live worker protocol version. */
+export const HOT_WORKER_PROTOCOL_VERSION = 1 as const;
+
 /** V8 trace function delimiting the start of guarded stress. */
 export const V8_STRESS_START = "__checkHotStressBoundary__";
 
@@ -23,6 +26,8 @@ export const V8_STRESS_END = "__checkHotStressEndBoundary__";
 
 /** Serializable request passed to one fresh runtime process. */
 export interface HotWorkerRequest {
+    /** Unique orchestrator identity for this exact disposable process. */
+    requestId: string;
     /** Suite module file URL. */
     suiteUrl: string;
     /** Scenario IDs selected for this process. */
@@ -100,5 +105,20 @@ export const emitProtocolLine = async (payload: string) => {
 };
 
 /** Emit one machine-readable result without suppressing engine trace output. */
-export const emitWorkerResult = (result: HotWorkerResult) =>
-    emitProtocolLine(`${WORKER_RESULT_PREFIX}${JSON.stringify(result)}\n`);
+export const emitWorkerResult = (
+    request: HotWorkerRequest,
+    result: HotWorkerResult
+) =>
+    emitProtocolLine(
+        `${WORKER_RESULT_PREFIX}${JSON.stringify({
+            protocolVersion: HOT_WORKER_PROTOCOL_VERSION,
+            requestId: request.requestId,
+            runtime: request.runtime,
+            tier: request.tier,
+            mode: request.mode,
+            scenarios: request.scenarios,
+            purpose: request.purpose ?? "measurement",
+            diagnostic: request.diagnostic,
+            result
+        })}\n`
+    );

@@ -44,6 +44,44 @@ export const problemDefinitions = defineProblemDefinitions(
             ]
         },
         {
+            id: "runtime-worker-result-invalid",
+            title: "Runtime worker result is invalid",
+            layer: "integrity",
+            outcome: "gap",
+            evidence: "proof-gap",
+            likelyCauses: [
+                "The worker emitted malformed, duplicated, stale, or request-inconsistent protocol output."
+            ],
+            confirmWith: [
+                "Inspect every retained protocol record and compare its version, request identity, runtime, tier, mode, purpose, scenarios, and coverage with the worker command."
+            ],
+            remediations: [
+                {
+                    action: "Fix the worker or suite protocol corruption and repeat the matrix cell.",
+                    when: "Exactly one schema-valid result can be bound to the current worker request."
+                }
+            ]
+        },
+        {
+            id: "runtime-worker-cleanup-failure",
+            title: "Runtime worker process tree was not cleaned up",
+            layer: "infrastructure",
+            outcome: "gap",
+            evidence: "proof-gap",
+            likelyCauses: [
+                "The operating system rejected process-tree termination, the platform cleanup command failed, or worker-owned streams remained open past the cleanup deadline."
+            ],
+            confirmWith: [
+                "Inspect the timeout or output-overflow error together with the retained cleanup failure and verify whether worker descendants still exist."
+            ],
+            remediations: [
+                {
+                    action: "Repair platform process-tree termination before repeating the workload.",
+                    when: "The runtime can guarantee bounded cleanup for the complete worker tree."
+                }
+            ]
+        },
+        {
             id: "runtime-worker-exit-failure",
             title: "Runtime worker exited unsuccessfully",
             layer: "infrastructure",

@@ -32,6 +32,14 @@ unsupported, ignored, and excluded obligations. Raw stdout/stderr, commands,
 statuses, trace lines, probe attempts, and coverage entries remain available in
 JSON or the generated versioned manifest.
 
+Live worker output is fail-closed: exactly one versioned terminal envelope must
+match the orchestrator's request identity, runtime, tier, mode, purpose, and
+scenario selection. Missing, malformed, duplicated, stale, or incomplete
+successful output is an infrastructure proof gap and can never become PASS.
+This protects the report from buggy suite output, not from deliberately hostile
+code executing inside the same measured process; hostile targets require an OS
+sandbox outside the current trust model.
+
 Every reportable failure uses the same JSON shape:
 
 ```json

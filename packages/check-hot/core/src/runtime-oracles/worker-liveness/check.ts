@@ -3,9 +3,11 @@ import type { HotProblemOccurrence } from "../../problems/types.js";
 /** Minimal process result needed to classify liveness independently of spawn. */
 export interface WorkerLivenessInput {
     error?: Error & { code?: string };
+    cleanupError?: Error & { code?: string };
     status: number | null;
     signal: string | null;
     resultFound: boolean;
+    resultError?: string;
     reportedProblemCount?: number;
     timeoutMs: number;
     label?: string;
@@ -17,7 +19,7 @@ export const checkWorkerLiveness = (
 ): readonly HotProblemOccurrence[] => {
     const problems: HotProblemOccurrence[] = [];
     const label = input.label ?? "Worker";
-    if (input.error && !(input.status === 0 && input.resultFound)) {
+    if (input.error) {
         problems.push({
             problemId:
                 input.error.code === "ETIMEDOUT"
@@ -29,7 +31,18 @@ export const checkWorkerLiveness = (
                     : input.error.message
         });
     }
-    if (!input.resultFound) {
+    if (input.cleanupError) {
+        problems.push({
+            problemId: "runtime-worker-cleanup-failure",
+            message: input.cleanupError.message
+        });
+    }
+    if (input.resultError) {
+        problems.push({
+            problemId: "runtime-worker-result-invalid",
+            message: input.resultError
+        });
+    } else if (!input.resultFound) {
         problems.push({
             problemId: "runtime-worker-result-missing",
             message: `${label} did not emit a structured result`

@@ -64,6 +64,7 @@
         "build": "tsc && node scripts/ensure-bin.mjs",
         "typecheck": "tsc -p tsconfig.test.json",
         "test": "pnpm run build && vitest run",
+        "test:process": "vitest run src/process-execution.test.ts",
         "test:mutation": "stryker run"
     },
     "engines": {
@@ -92,6 +93,7 @@
     },
     "sideEffects": false,
     "dependencies": {
+        "koffi": "^2.16.3",
         "oxc-parser": "^0.144.0",
         "oxc-resolver": "^11.24.2",
         "picocolors": "^1.1.1",

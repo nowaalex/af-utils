@@ -12,6 +12,24 @@ const RANGE_PATTERN = /Range:\s*(\d+)\s*-\s*(\d+)/u;
 const SCROLL_SIZE_PATTERN = /Scroll size:\s*([\d.]+)\s*px/u;
 const getPublishedScrollSize = async (view: Locator) =>
     Number((await view.textContent())?.match(SCROLL_SIZE_PATTERN)?.[1]);
+const getPublishedRangeState = (list: Locator) =>
+    list.evaluate((element, pattern) => {
+        const range = element.firstElementChild?.textContent?.match(
+            new RegExp(pattern, "u")
+        );
+        const items = [
+            ...element.querySelectorAll<HTMLElement>('[role="listitem"]')
+        ];
+        const firstItem = items[0];
+        const lastItem = items.at(-1);
+        if (!range || !firstItem || !lastItem) return;
+        return {
+            from: Number(range[1]),
+            to: Number(range[2]),
+            firstPosition: Number(firstItem.getAttribute("aria-posinset")),
+            lastPosition: Number(lastItem.getAttribute("aria-posinset"))
+        };
+    }, RANGE_PATTERN.source);
 
 await describeExample("virtual/list/extra-events", example => {
     test("publishes the selected range and scroll-size snapshots", async ({
@@ -27,7 +45,6 @@ await describeExample("virtual/list/extra-events", example => {
         await expect(rangeView).toContainText(RANGE_PATTERN);
         await expect(scrollSizeView).toContainText(SCROLL_SIZE_PATTERN);
 
-        const initialRange = await rangeView.textContent();
         const initialScrollSize = await getPublishedScrollSize(scrollSizeView);
         expect(initialScrollSize).toBeGreaterThan(0);
 
@@ -35,18 +52,17 @@ await describeExample("virtual/list/extra-events", example => {
             element.scrollTop = 1_000_000;
         });
 
-        await expect(rangeView).not.toHaveText(initialRange ?? "");
-        const range = (await rangeView.textContent())?.match(RANGE_PATTERN);
-        if (!range) throw new Error("Expected the rendered range snapshot");
-        const [, from, to] = range.map(Number);
-        const state = await getVirtualListState(list, {
-            headerSelector: ":scope > :first-child",
-            footerSelector: ":scope > :last-child"
-        });
-
-        expect(state.firstPosition).toBe(from + 1);
-        expect(state.lastPosition).toBe(to);
-        expect(Number(from)).toBeGreaterThan(1_000);
+        await expect
+            .poll(async () => {
+                const state = await getPublishedRangeState(list);
+                return (
+                    state !== undefined &&
+                    state.firstPosition === state.from + 1 &&
+                    state.lastPosition === state.to &&
+                    state.from > 1_000
+                );
+            })
+            .toBe(true);
         await expect
             .poll(() => getPublishedScrollSize(scrollSizeView))
             .not.toBe(initialScrollSize);

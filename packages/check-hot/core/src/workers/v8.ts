@@ -1057,7 +1057,7 @@ if (request.purpose === "preflight") {
     }
 }
 
-await emitWorkerResult(result);
+await emitWorkerResult(request, result);
 if (problems.length > 0) {
     if (deno) deno.exitCode = 1;
     else process.exitCode = 1;

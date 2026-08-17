@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
     mkdir,
     mkdtemp,
@@ -288,6 +289,18 @@ const createCommand = (
     ];
 };
 
+const identifyWorkerRequest = (
+    request: Omit<HotWorkerRequest, "requestId"> | HotWorkerRequest
+): HotWorkerRequest => ({ ...request, requestId: randomUUID() });
+
+const workerResultExpectation = (
+    request: HotWorkerRequest,
+    suite: HotSuite<unknown>
+) => ({
+    request,
+    obligationIds: (suite.obligations ?? []).map(obligation => obligation.id)
+});
+
 const addCpuProfileFlags = (
     command: readonly string[],
     runtime: HotRuntimeName,
@@ -446,7 +459,8 @@ const collectCellDiagnostics = async (
         delete workerEnvironment.NODE_PATH;
     const runDiagnostic = async (
         kind: HotDiagnosticKind,
-        command: readonly string[]
+        command: readonly string[],
+        diagnosticRequest: HotWorkerRequest
     ) => {
         const execution = await executeProcess(command, {
             cwd: process.cwd(),
@@ -470,10 +484,12 @@ const collectCellDiagnostics = async (
                 )
             ]);
         }
-        const diagnosticWorker = parseWorkerResult(
+        const parsedWorker = parseWorkerResult(
+            workerResultExpectation(diagnosticRequest, suite),
             execution.stdout ?? "",
             execution.stderr ?? ""
         );
+        const diagnosticWorker = parsedWorker.worker;
         const expectedTargets = worker?.targets
             .map(target => target.id)
             .toSorted();
@@ -482,9 +498,11 @@ const collectCellDiagnostics = async (
             .toSorted();
         const livenessProblems = checkWorkerLiveness({
             error: execution.error as (Error & { code?: string }) | undefined,
+            cleanupError: execution.cleanupError,
             status: execution.status,
             signal: execution.signal,
             resultFound: diagnosticWorker !== undefined,
+            resultError: parsedWorker.error,
             reportedProblemCount: diagnosticWorker?.problems.length,
             timeoutMs,
             label: `${kind} diagnostic worker`
@@ -540,14 +558,14 @@ const collectCellDiagnostics = async (
     };
     try {
         for (const kind of requested) {
-            const diagnosticRequest: HotWorkerRequest = {
+            const diagnosticRequest = identifyWorkerRequest({
                 ...request,
                 purpose: "diagnostic",
                 diagnostic: kind,
                 stressIterations:
                     options.diagnosticStressIterations?.[kind] ??
                     request.stressIterations
-            };
+            });
             let command: readonly string[] = createCommand(
                 cell,
                 diagnosticRequest,
@@ -571,7 +589,11 @@ const collectCellDiagnostics = async (
                 const logfile = join(directory, "v8.log");
                 command = addV8LogFlags(command, cell.runtime, logfile);
                 // oxlint-disable-next-line no-await-in-loop -- Each diagnostic is a separate process so it cannot perturb another evidence stream.
-                const diagnosticRun = await runDiagnostic(kind, command);
+                const diagnosticRun = await runDiagnostic(
+                    kind,
+                    command,
+                    diagnosticRequest
+                );
                 events.push(...(diagnosticRun.diagnosticWorker?.events ?? []));
                 if (diagnosticRun.gap) {
                     const requestedTargetIds =
@@ -689,7 +711,11 @@ const collectCellDiagnostics = async (
                     profileName
                 );
                 // oxlint-disable-next-line no-await-in-loop -- Sampling is isolated in its own non-gating process.
-                const diagnosticRun = await runDiagnostic(kind, command);
+                const diagnosticRun = await runDiagnostic(
+                    kind,
+                    command,
+                    diagnosticRequest
+                );
                 events.push(...(diagnosticRun.diagnosticWorker?.events ?? []));
                 if (diagnosticRun.gap) {
                     diagnostics.cpuProfile = {
@@ -766,7 +792,11 @@ const collectCellDiagnostics = async (
                 continue;
             }
             // oxlint-disable-next-line no-await-in-loop -- Bun sampling is isolated in a dedicated diagnostic process.
-            const diagnosticRun = await runDiagnostic(kind, command);
+            const diagnosticRun = await runDiagnostic(
+                kind,
+                command,
+                diagnosticRequest
+            );
             diagnostics.jscSampling = diagnosticRun.gap
                 ? diagnosticGaps([kind], cell.runtime, diagnosticRun.gap)
                       .jscSampling
@@ -816,7 +846,7 @@ const executeCell = async (
     environment: Readonly<Record<string, string>>,
     suite: HotSuite<unknown>
 ): Promise<HotRunResult> => {
-    const request: HotWorkerRequest = {
+    const request = identifyWorkerRequest({
         suiteUrl: suiteUrl.href,
         scenarios: cell.scenarios,
         runtime: cell.runtime,
@@ -826,7 +856,7 @@ const executeCell = async (
         warmupIterations: options.warmupIterations,
         stressIterations: options.stressIterations,
         purpose: "measurement"
-    };
+    });
     const startedAt = performance.now();
     const lifecycleEvents: HotRuntimeEvent[] = [];
     const workerEnvironment = { ...process.env, ...environment };
@@ -834,10 +864,10 @@ const executeCell = async (
         delete workerEnvironment.NODE_PATH;
     }
     if (typeof suite.preflight === "function") {
-        const preflightRequest: HotWorkerRequest = {
+        const preflightRequest = identifyWorkerRequest({
             ...request,
             purpose: "preflight"
-        };
+        });
         const preflightCommand = createCommand(
             cell,
             preflightRequest,
@@ -853,10 +883,12 @@ const executeCell = async (
         });
         const preflightStdout = preflightExecution.stdout ?? "";
         const preflightStderr = preflightExecution.stderr ?? "";
-        const preflightWorker = parseWorkerResult(
+        const parsedPreflightWorker = parseWorkerResult(
+            workerResultExpectation(preflightRequest, suite),
             preflightStdout,
             preflightStderr
         );
+        const preflightWorker = parsedPreflightWorker.worker;
         lifecycleEvents.push(...(preflightWorker?.events ?? []));
         const preflightProblems: HotProblemOccurrence[] = [
             ...(preflightWorker?.problems ?? []),
@@ -864,9 +896,11 @@ const executeCell = async (
                 error: preflightExecution.error as
                     | (Error & { code?: string })
                     | undefined,
+                cleanupError: preflightExecution.cleanupError,
                 status: preflightExecution.status,
                 signal: preflightExecution.signal,
                 resultFound: preflightWorker !== undefined,
+                resultError: parsedPreflightWorker.error,
                 reportedProblemCount: preflightWorker?.problems.length,
                 timeoutMs,
                 label: "Semantic preflight"
@@ -911,10 +945,10 @@ const executeCell = async (
                 outcome => outcome.status === "accepted"
             )
         ) {
-            const validationRequest: HotWorkerRequest = {
+            const validationRequest = identifyWorkerRequest({
                 ...request,
                 purpose: "validation"
-            };
+            });
             const validationCommand = createCommand(
                 cell,
                 validationRequest,
@@ -933,10 +967,12 @@ const executeCell = async (
             );
             const validationStdout = validationExecution.stdout ?? "";
             const validationStderr = validationExecution.stderr ?? "";
-            const validationWorker = parseWorkerResult(
+            const parsedValidationWorker = parseWorkerResult(
+                workerResultExpectation(validationRequest, suite),
                 validationStdout,
                 validationStderr
             );
+            const validationWorker = parsedValidationWorker.worker;
             lifecycleEvents.push(...(validationWorker?.events ?? []));
             const validationProblems: HotProblemOccurrence[] = [
                 ...(validationWorker?.problems ?? []),
@@ -944,9 +980,11 @@ const executeCell = async (
                     error: validationExecution.error as
                         | (Error & { code?: string })
                         | undefined,
+                    cleanupError: validationExecution.cleanupError,
                     status: validationExecution.status,
                     signal: validationExecution.signal,
                     resultFound: validationWorker !== undefined,
+                    resultError: parsedValidationWorker.error,
                     reportedProblemCount: validationWorker?.problems.length,
                     timeoutMs,
                     label: "Guarded AST-site validation"
@@ -1003,13 +1041,20 @@ const executeCell = async (
     const durationMs = Math.round(performance.now() - startedAt);
     const stdout = execution.stdout ?? "";
     const stderr = execution.stderr ?? "";
-    const worker = parseWorkerResult(stdout, stderr);
+    const parsedWorker = parseWorkerResult(
+        workerResultExpectation(request, suite),
+        stdout,
+        stderr
+    );
+    const worker = parsedWorker.worker;
     const problems: HotProblemOccurrence[] = [...(worker?.problems ?? [])];
     const livenessProblems = checkWorkerLiveness({
         error: execution.error as (Error & { code?: string }) | undefined,
+        cleanupError: execution.cleanupError,
         status: execution.status,
         signal: execution.signal,
         resultFound: worker !== undefined,
+        resultError: parsedWorker.error,
         reportedProblemCount: worker?.problems.length,
         timeoutMs
     });
@@ -1272,7 +1317,7 @@ export const runHotSuite = async (
                                   )
                               ).values()
                           ];
-                          const request: HotWorkerRequest = {
+                          const request = identifyWorkerRequest({
                               suiteUrl: suiteUrl.href,
                               scenarios: cell.scenarios,
                               runtime: cell.runtime,
@@ -1283,7 +1328,7 @@ export const runHotSuite = async (
                               stressIterations: options.stressIterations,
                               purpose: "measurement",
                               preflightOutcomes
-                          };
+                          });
                           try {
                               const collected = await collectCellDiagnostics(
                                   cell,

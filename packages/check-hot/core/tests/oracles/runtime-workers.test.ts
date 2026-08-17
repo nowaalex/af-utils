@@ -359,6 +359,18 @@ describe.runIf(childProcessesAvailable)(
             ).toContain("exceeded the 500ms timeout");
         });
 
+        test("rejects a second forged terminal worker result", async () => {
+            const summary = await runNode("runtime-forged-result.mjs");
+
+            expect(summary.passed).toBe(false);
+            expect(
+                summary.runs[0].problems.map(problem => problem.problemId)
+            ).toContain("runtime-worker-result-invalid");
+            expect(summary.runs[0].stdout).toContain(
+                "intentional real failure"
+            );
+        });
+
         test("accounts for every obligation when disposable preflight crashes", async () => {
             const summary = await runNode("runtime-preflight-crash.mjs");
 

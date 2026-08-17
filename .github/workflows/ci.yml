@@ -45,6 +45,28 @@ jobs:
             - name: Enforce check-hot mutation-test ratchet
               run: pnpm --filter @af-utils/check-hot test:mutation
 
+    check-hot-windows-process-tree:
+        name: check-hot Windows process-tree cleanup
+        runs-on: windows-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v7
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v6
+
+            - name: Setup Node.js 24.19.0
+              uses: actions/setup-node@v7
+              with:
+                  node-version: "24.19.0"
+                  cache: "pnpm"
+
+            - name: Install Dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Test bounded process-tree cleanup
+              run: pnpm --filter @af-utils/check-hot test:process
+
     check-hot-runtimes:
         name: check-hot Node/Deno/Bun oracles
         runs-on: ubuntu-latest

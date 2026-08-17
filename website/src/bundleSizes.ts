@@ -5,23 +5,23 @@ export default {
         "./dist/index.js": {
             raw: 6589,
             min: 2297,
-            minGz: 1025,
+            minGz: 1021,
             minBrotli: 919
         }
     },
     "@af-utils/virtual-core": {
         "./dist/index.production.js": {
-            raw: 17039,
-            min: 16573,
-            minGz: 5707,
-            minBrotli: 5139
+            raw: 17136,
+            min: 16650,
+            minGz: 5772,
+            minBrotli: 5202
         }
     },
     "@af-utils/virtual-lit": {
         "./dist/index.js": {
             raw: 3881,
             min: 3225,
-            minGz: 979,
+            minGz: 977,
             minBrotli: 885
         }
     },
@@ -29,7 +29,7 @@ export default {
         "./dist/index.js": {
             raw: 2677,
             min: 1951,
-            minGz: 891,
+            minGz: 890,
             minBrotli: 821
         }
     },
@@ -37,7 +37,7 @@ export default {
         "./dist/index.js": {
             raw: 5672,
             min: 2037,
-            minGz: 925,
+            minGz: 922,
             minBrotli: 848
         }
     },
@@ -45,7 +45,7 @@ export default {
         "./dist/index.js": {
             raw: 2718,
             min: 2034,
-            minGz: 978,
+            minGz: 982,
             minBrotli: 896
         }
     },
@@ -53,7 +53,7 @@ export default {
         "./dist/index.js": {
             raw: 2567,
             min: 2067,
-            minGz: 789,
+            minGz: 784,
             minBrotli: 711
         }
     },
@@ -61,7 +61,7 @@ export default {
         "./dist/index.js": {
             raw: 2611,
             min: 1958,
-            minGz: 864,
+            minGz: 860,
             minBrotli: 801
         }
     }

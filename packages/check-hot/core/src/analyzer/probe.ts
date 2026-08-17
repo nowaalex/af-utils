@@ -221,6 +221,7 @@ export const probeHotModule = async (
         return {
             timedOut: errorCode === "ETIMEDOUT",
             error: execution.error,
+            cleanupError: execution.cleanupError,
             status: execution.status,
             signal: execution.signal,
             stderr: execution.stderr ?? "",
@@ -243,6 +244,29 @@ export const probeHotModule = async (
         { ...baseRequest, phase: "discover" },
         timeout
     );
+    if (discoveryExecution.cleanupError) {
+        const primaryFailure = discoveryExecution.timedOut
+            ? `exceeded the ${timeout}ms timeout`
+            : (discoveryExecution.error?.message ??
+              (discoveryExecution.status !== 0
+                  ? `process exited with ${discoveryExecution.status ?? discoveryExecution.signal ?? "unknown status"}: ${discoveryExecution.stderr.trim()}`
+                  : undefined));
+        const failures = [
+            primaryFailure,
+            `process-tree cleanup failed: ${discoveryExecution.cleanupError.message}`
+        ];
+        throw new Error(
+            `Module recipe discovery failed: ${failures.filter(Boolean).join("; ")}`,
+            {
+                cause: new AggregateError(
+                    [
+                        discoveryExecution.error,
+                        discoveryExecution.cleanupError
+                    ].filter((error): error is Error => error !== undefined)
+                )
+            }
+        );
+    }
     if (discoveryExecution.timedOut) {
         throw new Error(
             `Module recipe discovery exceeded the ${timeout}ms timeout`
@@ -327,6 +351,23 @@ export const probeHotModule = async (
             },
             attemptTimeout
         );
+        if (execution.cleanupError) {
+            const primaryFailure = execution.timedOut
+                ? `isolated recipe attempt exceeded the ${attemptTimeout}ms hard timeout`
+                : (execution.error?.message ??
+                  (execution.status !== 0
+                      ? `attempt process exited with ${execution.status ?? execution.signal ?? "unknown status"}: ${execution.stderr.trim()}`
+                      : undefined));
+            return {
+                kind: "process-error",
+                error: [
+                    primaryFailure,
+                    `process-tree cleanup failed: ${execution.cleanupError.message}`
+                ]
+                    .filter(Boolean)
+                    .join("; ")
+            };
+        }
         if (execution.timedOut) return { kind: "timeout" };
         if (execution.error) {
             return { kind: "process-error", error: execution.error.message };
