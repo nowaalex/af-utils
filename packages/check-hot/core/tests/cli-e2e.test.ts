@@ -57,9 +57,33 @@ describe.runIf(childProcessesAvailable)("CLI local-package workflow", () => {
         const directory = await mkdtemp(join(tmpdir(), "check-hot-output-"));
         directories.push(directory);
         const cli = join(import.meta.dirname, "../dist/cli.js");
+        const resolutionBlocker = join(directory, "block-core.cjs");
+        await writeFile(
+            resolutionBlocker,
+            [
+                'const Module = require("node:module");',
+                "const resolveFilename = Module._resolveFilename;",
+                "Module._resolveFilename = function (request, ...argumentsValue) {",
+                '  if (request === "@af-utils/check-hot") {',
+                '    const error = new Error("blocked core resolution for the negative control");',
+                '    error.code = "MODULE_NOT_FOUND";',
+                "    throw error;",
+                "  }",
+                "  return Reflect.apply(resolveFilename, this, [request, ...argumentsValue]);",
+                "};"
+            ].join("\n")
+        );
         const result = spawnSync(
-            cli,
-            ["init", ".", "--out", join(directory, "suite.mjs")],
+            process.execPath,
+            [
+                "--require",
+                resolutionBlocker,
+                cli,
+                "init",
+                ".",
+                "--out",
+                join(directory, "suite.mjs")
+            ],
             {
                 cwd: join(import.meta.dirname, ".."),
                 encoding: "utf8"

@@ -37,6 +37,9 @@ const runNode = (name: string, overrides: Partial<RunHotSuiteOptions> = {}) =>
         ...overrides
     });
 
+const normalizeV8Status = (message: string) =>
+    message.replace(/status=\d+/gu, "status=<runtime>");
+
 const childProcessesAvailable =
     process.env.CODEX_PERMISSION_PROFILE === undefined &&
     spawnSync(
@@ -207,12 +210,18 @@ describe.runIf(childProcessesAvailable)(
             expect({
                 passed: diagnosed.runs[0].passed,
                 coverage: diagnosed.runs[0].coverage,
-                problems: diagnosed.runs[0].problems,
+                problems: diagnosed.runs[0].problems.map(problem => ({
+                    ...problem,
+                    message: normalizeV8Status(problem.message)
+                })),
                 deoptimizations: diagnosed.runs[0].deoptimizations
             }).toEqual({
                 passed: primary.runs[0].passed,
                 coverage: primary.runs[0].coverage,
-                problems: primary.runs[0].problems,
+                problems: primary.runs[0].problems.map(problem => ({
+                    ...problem,
+                    message: normalizeV8Status(problem.message)
+                })),
                 deoptimizations: primary.runs[0].deoptimizations
             });
         });
