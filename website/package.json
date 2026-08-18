@@ -30,6 +30,7 @@
                     "production",
                     "^production",
                     "examples",
+                    "{workspaceRoot}/site.config.json",
                     {
                         "dependentTasksOutputFiles": "website/src/bundleSizes.ts"
                     },

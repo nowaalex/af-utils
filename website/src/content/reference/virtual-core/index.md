@@ -24,10 +24,10 @@ Applications can normally use one of the framework-specific packages instead.
 
 ## Documentation
 
-- [Virtual scrolling overview](https://af-utils.com/virtual)
-- [Custom rendering guide](https://af-utils.com/virtual/guides/custom-rendering)
-- [Layout elements guide](https://af-utils.com/virtual/guides/layout-elements)
-- [API reference](https://af-utils.com/virtual/reference/virtual-core/index)
+- [Virtual scrolling overview](https://af-utils.vercel.app/virtual)
+- [Custom rendering guide](https://af-utils.vercel.app/virtual/guides/custom-rendering)
+- [Layout elements guide](https://af-utils.vercel.app/virtual/guides/layout-elements)
+- [API reference](https://af-utils.vercel.app/virtual/reference/virtual-core/index)
 
 Core framework-agnostic model.
 

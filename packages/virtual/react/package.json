@@ -8,7 +8,7 @@
         "url": "git+https://github.com/nowaalex/af-utils.git",
         "directory": "packages/virtual/react"
     },
-    "homepage": "https://af-utils.com/virtual",
+    "homepage": "https://af-utils.vercel.app/virtual",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
     "author": {
         "name": "Alex Fomin",

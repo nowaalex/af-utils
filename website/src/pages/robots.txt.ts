@@ -1,10 +1,11 @@
 import type { APIRoute } from "astro";
+import siteConfig from "../../../site.config.json";
 
 const robotsTxt = `
 User-agent: *
 Allow: /
 
-Sitemap: ${import.meta.env.PUBLIC_ORIGIN}/sitemap-index.xml`;
+Sitemap: ${siteConfig.origin}/sitemap-index.xml`;
 
 export const GET: APIRoute = () =>
     new Response(robotsTxt.trim(), {

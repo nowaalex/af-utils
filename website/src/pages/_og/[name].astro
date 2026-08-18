@@ -1,5 +1,6 @@
 ---
 import Base from "layouts/Base.astro";
+import siteConfig from "../../../../site.config.json";
 
 export const getStaticPaths = () => [
     {
@@ -31,6 +32,7 @@ export const getStaticPaths = () => [
 ];
 
 const { name, url, description } = Astro.props;
+const pageUrl = `${siteConfig.origin}${url}`;
 ---
 
 <Base>
@@ -39,7 +41,7 @@ const { name, url, description } = Astro.props;
     >
         <h1 class="text-[2.4em] font-extrabold m-0">af-utils/{name}</h1>
         <p class="m-0">{description}. Written in typescript.</p>
-        <a href={`https://af-utils.com${url}`}>https://af-utils.com{url}</a>
+        <a href={pageUrl}>{pageUrl}</a>
     </main>
 </Base>
 <style>

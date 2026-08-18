@@ -11,6 +11,6 @@ npm install @af-utils/virtual-vue vue
 
 ## Documentation
 
-- [Getting started](https://af-utils.com/virtual)
-- [Vue examples](https://af-utils.com/virtual/examples/vue/list/simple)
-- [API reference](https://af-utils.com/virtual/reference/virtual-vue/index)
+- [Getting started](https://af-utils.vercel.app/virtual)
+- [Vue examples](https://af-utils.vercel.app/virtual/examples/vue/list/simple)
+- [API reference](https://af-utils.vercel.app/virtual/reference/virtual-vue/index)

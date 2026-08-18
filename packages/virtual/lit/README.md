@@ -11,6 +11,6 @@ npm install @af-utils/virtual-lit lit
 
 ## Documentation
 
-- [Getting started](https://af-utils.com/virtual)
-- [Lit examples](https://af-utils.com/virtual/examples/lit/list/simple)
-- [API reference](https://af-utils.com/virtual/reference/virtual-lit/index)
+- [Getting started](https://af-utils.vercel.app/virtual)
+- [Lit examples](https://af-utils.vercel.app/virtual/examples/lit/list/simple)
+- [API reference](https://af-utils.vercel.app/virtual/reference/virtual-lit/index)

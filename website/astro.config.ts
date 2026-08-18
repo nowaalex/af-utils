@@ -20,12 +20,12 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
 import { visit } from "unist-util-visit";
-import { loadEnv } from "vite";
 import examples from "./integrations/examples";
 import { codeTheme } from "./src/utils/codeTheme";
 import stripTrailingSlash from "./src/utils/stripTrailingSlash";
+import siteConfig from "../site.config.json";
 
-const env = loadEnv("", process.cwd(), "") as ImportMetaEnv;
+const siteOrigin = siteConfig.origin;
 const frameworkIcons = exampleFrameworks.map(framework =>
     getExampleFrameworkDefinition(framework).icon.split(":")
 );
@@ -36,7 +36,7 @@ const getFrameworkIcons = (collection: string) =>
 const rehypeLinks: RehypePlugins[number] = () => tree =>
     visit(tree, "element", node => {
         if (node.tagName === "a" && typeof node.properties.href === "string") {
-            const href = node.properties.href.replace(env.PUBLIC_ORIGIN, "");
+            const href = node.properties.href.replace(siteOrigin, "");
 
             node.properties.href = href;
 
@@ -68,7 +68,7 @@ const rehypeScrollableTables: RehypePlugins[number] = () => tree =>
     });
 
 export default defineConfig({
-    site: env.PUBLIC_ORIGIN,
+    site: siteOrigin,
     vite: {
         plugins: [tailwindcss()]
     },
@@ -161,8 +161,8 @@ export default defineConfig({
         }),
         sitemap({
             filter: page =>
-                !page.startsWith(`${env.PUBLIC_ORIGIN}/examples`) &&
-                !page.startsWith(`${env.PUBLIC_ORIGIN}/example-source`),
+                !page.startsWith(`${siteOrigin}/examples`) &&
+                !page.startsWith(`${siteOrigin}/example-source`),
             serialize(item) {
                 // trailing slashes must be the same as canonical links
                 item.url = stripTrailingSlash(item.url);

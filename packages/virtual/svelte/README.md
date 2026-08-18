@@ -11,6 +11,6 @@ npm install @af-utils/virtual-svelte svelte
 
 ## Documentation
 
-- [Getting started](https://af-utils.com/virtual)
-- [Svelte examples](https://af-utils.com/virtual/examples/svelte/list/simple)
-- [API reference](https://af-utils.com/virtual/reference/virtual-svelte/index)
+- [Getting started](https://af-utils.vercel.app/virtual)
+- [Svelte examples](https://af-utils.vercel.app/virtual/examples/svelte/list/simple)
+- [API reference](https://af-utils.vercel.app/virtual/reference/virtual-svelte/index)
