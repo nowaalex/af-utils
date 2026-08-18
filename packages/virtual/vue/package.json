@@ -13,10 +13,10 @@
     "license": "MIT",
     "sideEffects": false,
     "scripts": {
-        "build": "vite build && vite build --ssr src/index.ts && tsc && pnpm api-extractor",
+        "build": "vite build && vite build --ssr src/index.ts && tsc && api-extractor run && rm -r dist/types",
         "typecheck": "tsc --noEmit",
-        "api-extractor": "api-extractor run && rm -r dist/types",
-        "test": "vitest run"
+        "test": "vitest run",
+        "publint": "publint"
     },
     "files": [
         "dist/*"

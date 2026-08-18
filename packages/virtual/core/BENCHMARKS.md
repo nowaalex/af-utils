@@ -3,7 +3,7 @@
 Run deterministic algorithm benchmarks with:
 
 ```bash
-pnpm bench
+pnpm nx run-many -t bench
 ```
 
 The suite separates:
@@ -33,7 +33,7 @@ initializing its newly added tail. Fenwick-tree work is deliberately excluded.
 Regenerate the Node, Chromium, Firefox, and WebKit results with:
 
 ```bash
-pnpm --filter @af-utils/virtual-core bench:size-index-growth
+pnpm nx run @af-utils/virtual-core:bench:size-index-growth
 ```
 
 The runner rotates strategy order, validates identical output, takes the median
@@ -50,7 +50,7 @@ Chromium, Firefox, and WebKit.
 Run it with:
 
 ```bash
-pnpm --filter @af-utils/virtual-core bench:items:browser
+pnpm nx run @af-utils/virtual-core:bench:items:browser
 ```
 
 ## TypeScript `private` versus native `#private`
@@ -67,8 +67,8 @@ identical operations. The suite measures:
 Run only this comparison with:
 
 ```bash
-pnpm --filter @af-utils/virtual-core bench:private
-pnpm --filter @af-utils/virtual-core bench:private:browser
+pnpm nx run @af-utils/virtual-core:bench:private
+pnpm nx run @af-utils/virtual-core:bench:private:browser
 ```
 
 The dedicated runners publish the
@@ -79,7 +79,7 @@ beside the runner files.
 The dedicated runner resets both variants to identical state, alternates their
 execution order, runs garbage collection outside the timed blocks and reports
 the median of 21 paired rounds. The Vitest suite also includes the same cases as
-part of the complete `pnpm bench` run.
+part of the complete `pnpm nx run-many -t bench` run.
 
 The browser command bundles only the fixture with esbuild in memory, then runs
 the hot-loop comparison in headless Chromium, Firefox and WebKit. Run
@@ -91,7 +91,8 @@ runner does not modify the library build; it only updates its latest Markdown
 result.
 
 The fixture checks both implementations for identical numeric results before
-collecting Vitest timings. `pnpm jit:check` additionally verifies that all four
+collecting Vitest timings. `pnpm nx run @af-utils/virtual-core:jit:check`
+additionally verifies that all four
 hot methods are optimized by V8, both instance kinds keep stable maps and
 neither falls back to dictionary properties. This is a runtime comparison only:
 it does not invoke Rolldown or compare generated-code size.
@@ -111,7 +112,7 @@ constant; property-access microbenchmarks vary substantially between V8 releases
 Run the regular hot-path optimization gate with:
 
 ```bash
-pnpm jit:check
+pnpm nx run @af-utils/virtual-core:jit:check
 ```
 
 The package uses [`@af-utils/check-hot`](../../check-hot/README.md) with two
@@ -152,13 +153,13 @@ are not reported as regressions.
 Run the larger Node+Deno, Maglev+TurboFan, combined+isolated matrix twice with:
 
 ```bash
-pnpm --filter @af-utils/virtual-core jit:check:full
+pnpm nx run @af-utils/virtual-core:jit:check:full
 ```
 
 Run the JavaScriptCore adapter separately on a machine with Bun installed:
 
 ```bash
-pnpm --filter @af-utils/virtual-core jit:check:bun
+pnpm nx run @af-utils/virtual-core:jit:check:bun
 ```
 
 Deno exposes the same V8 status, map, representation, and guarded-deopt probes.
@@ -190,7 +191,7 @@ For a human-readable dump of in-object fields, hidden classes, backing stores,
 and exact typed-array elements kinds, run:
 
 ```bash
-pnpm --filter @af-utils/virtual-core jit:inspect
+pnpm nx run @af-utils/virtual-core:jit:inspect
 ```
 
 It adds V8 `%DebugPrint` output. The normal report reduces trace entries to the
@@ -235,7 +236,7 @@ blocks: these checks protect hot transitions, not model allocation cost.
 Run mutation testing with:
 
 ```bash
-pnpm test:mutation
+pnpm nx run @af-utils/virtual-core:test:mutation
 ```
 
 Stryker mutates the numeric storage, Fenwick tree, event dispatcher, scroll

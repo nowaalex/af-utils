@@ -1,4 +1,4 @@
 #!/bin/sh
 set -eu
 
-pnpm check:style
+pnpm nx run workspace:check-style

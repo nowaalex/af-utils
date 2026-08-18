@@ -60,12 +60,22 @@
     "bin": {
         "check-hot": "./dist/cli.js"
     },
+    "nx": {
+        "targets": {
+            "test": {
+                "dependsOn": [
+                    "build"
+                ]
+            }
+        }
+    },
     "scripts": {
         "build": "tsc && node scripts/ensure-bin.mjs",
         "typecheck": "tsc -p tsconfig.test.json",
-        "test": "pnpm run build && vitest run",
+        "test": "vitest run",
         "test:process": "vitest run src/process-execution.test.ts",
-        "test:mutation": "stryker run"
+        "test:mutation": "stryker run",
+        "publint": "publint"
     },
     "engines": {
         "node": ">=24.19.0"

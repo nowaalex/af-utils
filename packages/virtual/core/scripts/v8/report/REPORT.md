@@ -92,13 +92,13 @@ batch nesting, and callbacks that unsubscribe during notification.
 From the repository root:
 
 ```sh
-pnpm --filter @af-utils/virtual-core test:v8
+pnpm nx run @af-utils/virtual-core:jit:check
 ```
 
 For verbose representation diagnostics:
 
 ```sh
-pnpm --filter @af-utils/virtual-core jit:inspect
+pnpm nx run @af-utils/virtual-core:jit:inspect
 ```
 
 Static findings are hypotheses. A future change should be recommended only when

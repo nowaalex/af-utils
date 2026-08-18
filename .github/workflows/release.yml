@@ -38,34 +38,37 @@ jobs:
               run: pnpm i --frozen-lockfile
 
             - name: Check generated example files and dependencies
-              run: pnpm workspace:sync:check
+              run: pnpm nx run @af-utils/examples:versions:check
 
             - name: Check package READMEs
-              run: pnpm packages:readmes:check
+              run: pnpm nx run workspace:packages-readmes-check
+
+            - name: Check Nx workspace contracts
+              run: pnpm nx run workspace:nx-contracts-check
 
             - name: Check formatting and lint warnings
-              run: pnpm check:style
+              run: pnpm nx run workspace:check-style
 
             - name: Typecheck
-              run: pnpm typecheck
+              run: pnpm nx run-many -t typecheck
 
             - name: Test packages and V8 optimization invariants
-              run: pnpm test
+              run: pnpm nx run-many -t test
 
             - name: Build packages
-              run: pnpm packages:build
+              run: pnpm nx run-many -t build --projects=tag:npm:public
 
             - name: Validate package tarballs
-              run: pnpm publint
+              run: pnpm nx run-many -t publint --projects=tag:npm:public
 
             - name: Install Playwright browsers
               run: pnpm exec playwright install --with-deps chromium firefox
 
             - name: Test examples in browser
-              run: pnpm test:e2e
+              run: pnpm nx run @af-utils/examples:e2e
 
             - name: Check generated website files
-              run: pnpm website:generated:check
+              run: pnpm nx run workspace:website-generated-check
 
             - name: Upload Playwright artifacts
               if: ${{ failure() }}

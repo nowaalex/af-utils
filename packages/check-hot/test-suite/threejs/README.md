@@ -7,11 +7,11 @@ keeps Three.js recipes in the optional test-runner package and separates:
 - a real target-scoped V8 run for `three/src/math/MathUtils.js#lerp`;
 - compact, portable JSON summaries and a human-readable report.
 
-Refresh everything from `packages/check-hot/test-suite`:
+Refresh everything from the repository root:
 
 ```sh
-pnpm audit:threejs
-pnpm test:threejs
+pnpm nx run @af-utils/check-hot-test-runners:audit:threejs
+pnpm nx run @af-utils/check-hot-test-runners:test:threejs
 ```
 
 `audit:threejs` first rebuilds core and the external test-runner bundle, then

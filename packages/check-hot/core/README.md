@@ -176,8 +176,9 @@ core contains no React, Lodash, date-fns, Svelte, or Three.js registry.
 
 ## Test quality
 
-`pnpm test` runs the ordinary Vitest suite and real runtime controls when their
-engine processes are available. `pnpm test:mutation` runs StrykerJS against the
+`pnpm nx run @af-utils/check-hot:test` runs the ordinary Vitest suite and real
+runtime controls when their engine processes are available.
+`pnpm nx run @af-utils/check-hot:test:mutation` runs StrykerJS against the
 configured deterministic scope: analyzer/data-flow rules, mutation
 construction and safety, public-target identity, problem/event helpers,
 V8/CPU/JSC diagnostic parsers, concurrency, and artifact trust boundaries. It

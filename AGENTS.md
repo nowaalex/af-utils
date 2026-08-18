@@ -1,1 +1,1 @@
-See [README.md](./README.md#repository-conventions).
+See [conventions.md](./conventions.md).

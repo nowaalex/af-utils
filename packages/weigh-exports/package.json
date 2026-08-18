@@ -26,7 +26,8 @@
     },
     "scripts": {
         "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=dist --external:@swc/* --external:chalk",
-        "typecheck": "tsc --noEmit"
+        "typecheck": "tsc --noEmit",
+        "publint": "publint"
     },
     "engines": {
         "node": ">=24.19.0"

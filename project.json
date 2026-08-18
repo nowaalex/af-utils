@@ -1,0 +1,109 @@
+{
+    "$schema": "./node_modules/nx/schemas/project-schema.json",
+    "name": "workspace",
+    "root": ".",
+    "projectType": "application",
+    "tags": ["workspace:root"],
+    "targets": {
+        "build": {
+            "executor": "nx:noop"
+        },
+        "test": {
+            "executor": "nx:noop"
+        },
+        "typecheck": {
+            "executor": "nx:noop"
+        },
+        "bench": {
+            "executor": "nx:noop"
+        },
+        "publint": {
+            "executor": "nx:noop"
+        },
+        "format-oxc": {
+            "executor": "nx:run-commands",
+            "cache": false,
+            "options": {
+                "command": "oxfmt .",
+                "cwd": "."
+            }
+        },
+        "format-templates": {
+            "executor": "nx:run-commands",
+            "cache": false,
+            "options": {
+                "command": "prettier --plugin=prettier-plugin-astro --plugin=prettier-plugin-svelte --write \"website/src/**/*.astro\" \"examples/src/**/*.svelte\"",
+                "cwd": "."
+            }
+        },
+        "format": {
+            "executor": "nx:noop",
+            "cache": false,
+            "dependsOn": ["format-oxc", "format-templates"]
+        },
+        "format-check-oxc": {
+            "executor": "nx:run-commands",
+            "cache": true,
+            "options": {
+                "command": "oxfmt --check .",
+                "cwd": "."
+            }
+        },
+        "format-check-templates": {
+            "executor": "nx:run-commands",
+            "cache": true,
+            "options": {
+                "command": "prettier --plugin=prettier-plugin-astro --plugin=prettier-plugin-svelte --check \"website/src/**/*.astro\" \"examples/src/**/*.svelte\"",
+                "cwd": "."
+            }
+        },
+        "format-check": {
+            "executor": "nx:noop",
+            "cache": true,
+            "dependsOn": ["format-check-oxc", "format-check-templates"]
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "cache": true,
+            "options": {
+                "command": "oxlint .",
+                "cwd": "."
+            }
+        },
+        "check-style": {
+            "executor": "nx:noop",
+            "cache": true,
+            "dependsOn": ["format-check", "lint"]
+        },
+        "packages-readmes-check": {
+            "executor": "nx:run-commands",
+            "cache": true,
+            "options": {
+                "command": "node scripts/check-package-readmes.mjs",
+                "cwd": "."
+            }
+        },
+        "nx-contracts-check": {
+            "executor": "nx:run-commands",
+            "cache": true,
+            "options": {
+                "command": "node scripts/check-nx-workspace.mjs",
+                "cwd": "."
+            }
+        },
+        "website-generated-check": {
+            "executor": "nx:run-commands",
+            "cache": false,
+            "dependsOn": [
+                {
+                    "target": "generate",
+                    "projects": ["website"]
+                }
+            ],
+            "options": {
+                "command": "node scripts/check-website-generated.mjs",
+                "cwd": "."
+            }
+        }
+    }
+}

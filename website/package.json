@@ -39,9 +39,45 @@
                 ]
             },
             "generate": {
+                "executor": "nx:noop",
+                "cache": false,
+                "dependsOn": [
+                    "generate:bundle-sizes",
+                    "generate:reference"
+                ]
+            },
+            "generate:bundle-sizes": {
                 "cache": true,
                 "dependsOn": [
-                    "^build"
+                    {
+                        "target": "build",
+                        "projects": [
+                            "tag:npm:public"
+                        ]
+                    }
+                ],
+                "inputs": [
+                    "generation",
+                    {
+                        "projects": [
+                            "tag:npm:public"
+                        ],
+                        "input": "production"
+                    }
+                ],
+                "outputs": [
+                    "{projectRoot}/src/bundleSizes.ts"
+                ]
+            },
+            "generate:reference": {
+                "cache": true,
+                "dependsOn": [
+                    {
+                        "target": "build",
+                        "projects": [
+                            "tag:npm:public"
+                        ]
+                    }
                 ],
                 "inputs": [
                     "generation",
@@ -54,7 +90,6 @@
                     "{workspaceRoot}/typedoc.json"
                 ],
                 "outputs": [
-                    "{projectRoot}/src/bundleSizes.ts",
                     "{projectRoot}/src/content/reference"
                 ]
             }
@@ -63,14 +98,10 @@
     "scripts": {
         "dev": "astro dev",
         "build": "astro check && astro build",
-        "generate": "pnpm generate:bundle-sizes && pnpm generate:reference",
-        "generate:bundle-sizes": "pnpm weigh-exports && pnpm format:generated",
-        "generate:reference": "./build-docs.sh",
-        "weigh-exports": "node ../packages/weigh-exports/dist/index.js -i '../packages/virtual/* ../packages/scrollend-polyfill' -o ./src/bundleSizes.ts",
+        "generate:bundle-sizes": "node ../packages/weigh-exports/dist/index.js -i '../packages/virtual/* ../packages/scrollend-polyfill' -o ./src/bundleSizes.ts && oxfmt ./src/bundleSizes.ts",
+        "generate:reference": "node build-docs.mjs",
         "start": "astro dev",
-        "format:generated": "oxfmt ./src/bundleSizes.ts",
-        "build:docs": "./build-docs.sh",
-        "preview": "astro preview",
+        "preview": "node preview.mjs",
         "astro": "astro",
         "test": "node --test plugins/*.test.mjs"
     },

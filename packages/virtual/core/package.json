@@ -16,27 +16,69 @@
         "url": "https://github.com/nowaalex/"
     },
     "license": "MIT",
+    "nx": {
+        "targets": {
+            "test": {
+                "executor": "nx:noop",
+                "dependsOn": [
+                    "test:unit",
+                    "jit:check"
+                ]
+            },
+            "bench:private": {
+                "dependsOn": [
+                    "jit:build"
+                ]
+            },
+            "jit:build": {
+                "dependsOn": [
+                    {
+                        "target": "build",
+                        "projects": [
+                            "@af-utils/check-hot"
+                        ]
+                    }
+                ]
+            },
+            "jit:check": {
+                "dependsOn": [
+                    "jit:build"
+                ]
+            },
+            "jit:check:full": {
+                "dependsOn": [
+                    "jit:build"
+                ]
+            },
+            "jit:check:bun": {
+                "dependsOn": [
+                    "jit:build"
+                ]
+            },
+            "jit:inspect": {
+                "dependsOn": [
+                    "jit:build"
+                ]
+            }
+        }
+    },
     "scripts": {
         "dev": "tsc -p tsconfig.dev.json && node scripts/build.mjs --watch",
-        "build": "tsc && node scripts/build.mjs && pnpm api-extractor && pnpm test:artifacts",
+        "build": "tsc && node scripts/build.mjs && api-extractor run && rm -r dist/types && node scripts/check-error-build.mjs",
         "typecheck": "tsc --noEmit",
-        "api-extractor": "api-extractor run && rm -r dist/types",
-        "test": "pnpm test:unit && pnpm test:v8",
         "test:unit": "vitest run",
-        "test:v8": "pnpm jit:run",
-        "test:artifacts": "node scripts/check-error-build.mjs",
         "test:mutation": "stryker run stryker.config.mjs",
         "bench": "vitest bench --run",
         "bench:size-index-growth": "node scripts/benchmarks/size-index-growth/run.mjs",
         "bench:items:browser": "node scripts/benchmarks/item-registration/run.mjs",
-        "bench:private": "pnpm jit:build && node --expose-gc scripts/benchmarks/private-fields/node.mjs",
+        "bench:private": "node --expose-gc scripts/benchmarks/private-fields/node.mjs",
         "bench:private:browser": "node scripts/benchmarks/private-fields/browser.mjs",
-        "jit:build": "pnpm --filter @af-utils/check-hot build && node scripts/v8/build.mjs",
-        "jit:run": "pnpm jit:build && node scripts/v8/run-checks.mjs",
-        "jit:check": "pnpm test:v8",
-        "jit:check:full": "pnpm jit:run -- --full",
-        "jit:check:bun": "pnpm jit:run -- --bun",
-        "jit:inspect": "pnpm jit:run -- --inspect"
+        "jit:build": "node scripts/v8/build.mjs",
+        "jit:check": "node scripts/v8/run-checks.mjs",
+        "jit:check:full": "node scripts/v8/run-checks.mjs --full",
+        "jit:check:bun": "node scripts/v8/run-checks.mjs --bun",
+        "jit:inspect": "node scripts/v8/run-checks.mjs --inspect",
+        "publint": "publint"
     },
     "files": [
         "dist/*"

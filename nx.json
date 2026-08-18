@@ -84,6 +84,11 @@
         "bench": {
             "cache": false,
             "parallelism": false
+        },
+        "publint": {
+            "cache": true,
+            "dependsOn": ["build"],
+            "inputs": ["production"]
         }
     },
     "analytics": false

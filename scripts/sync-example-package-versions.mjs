@@ -137,7 +137,7 @@ if (problems.length > 0) {
 
     if (checkOnly) {
         console.error(
-            "Run `pnpm examples:versions` to synchronize local package versions."
+            "Run `pnpm nx run @af-utils/examples:versions` to synchronize local package versions."
         );
     }
 

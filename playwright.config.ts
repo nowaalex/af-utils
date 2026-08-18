@@ -1,7 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
+import { fileURLToPath } from "node:url";
 
 const port = Number.parseInt(process.env.AF_E2E_PORT ?? "4173", 10);
 const baseURL = `http://127.0.0.1:${port}`;
+const websiteRoot = fileURLToPath(new URL("./website", import.meta.url));
 
 export default defineConfig({
     testDir: "./examples",
@@ -35,7 +37,8 @@ export default defineConfig({
         }
     ],
     webServer: {
-        command: `pnpm --filter website preview --host 127.0.0.1 --port ${port}`,
+        command: `node preview.mjs --host 127.0.0.1 --port ${port}`,
+        cwd: websiteRoot,
         url: baseURL,
         reuseExistingServer: !process.env.CI
     }

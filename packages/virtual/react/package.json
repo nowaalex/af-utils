@@ -18,16 +18,12 @@
     "license": "MIT",
     "sideEffects": false,
     "scripts": {
-        "dev": "pnpm build:types && pnpm esbuild:dev",
-        "build": "pnpm build:types && pnpm esbuild:build && pnpm api-extractor",
+        "dev": "tsc && esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/* --watch",
+        "build": "tsc && esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/* && api-extractor run && rm -r dist/types",
         "typecheck": "tsc --noEmit",
-        "build:types": "tsc",
-        "esbuild:base": "esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/*",
-        "esbuild:build": "pnpm esbuild:base",
-        "esbuild:dev": "pnpm esbuild:base --watch",
-        "api-extractor": "api-extractor run && rm -r dist/types",
         "test": "vitest run",
-        "bench": "vitest bench --run"
+        "bench": "vitest bench --run",
+        "publint": "publint"
     },
     "files": [
         "dist/*"

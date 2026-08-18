@@ -57,12 +57,27 @@
             "default": "./dist/date-fns.js"
         }
     },
+    "nx": {
+        "targets": {
+            "audit:threejs": {
+                "dependsOn": [
+                    "build"
+                ]
+            },
+            "test": {
+                "dependsOn": [
+                    "build"
+                ]
+            }
+        }
+    },
     "scripts": {
         "build": "tsc && node scripts/bundle.mjs",
-        "audit:threejs": "pnpm --filter @af-utils/check-hot build && pnpm run build && node threejs/audit.mjs",
+        "audit:threejs": "node threejs/audit.mjs",
         "typecheck": "tsc -p tsconfig.test.json",
         "test:threejs": "vitest run threejs",
-        "test": "pnpm run build && vitest run"
+        "test": "vitest run",
+        "publint": "publint"
     },
     "engines": {
         "node": ">=24.19.0"

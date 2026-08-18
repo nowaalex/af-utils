@@ -30,9 +30,9 @@ Integration tests cover observable behavior of the built examples in Chromium an
 Run the narrow spec while iterating, then run the complete production-build gate:
 
 ```sh
-pnpm test:examples -- path/to/spec.ts --project=chromium
-pnpm test:examples -- path/to/spec.ts --project=firefox
-pnpm test:examples
+pnpm nx run @af-utils/examples:e2e -- path/to/spec.ts --project=chromium
+pnpm nx run @af-utils/examples:e2e -- path/to/spec.ts --project=firefox
+pnpm nx run @af-utils/examples:e2e
 ```
 
 Use the Nx-backed command above even for a narrow run: it rebuilds the production examples and

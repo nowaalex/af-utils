@@ -3,7 +3,7 @@
 Run the React and core benchmark suites with:
 
 ```bash
-pnpm bench
+pnpm nx run-many -t bench
 ```
 
 `src/hooks/useVirtualSnapshot/index.bench.ts` compares the core numeric event revision

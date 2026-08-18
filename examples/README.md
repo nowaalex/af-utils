@@ -9,7 +9,9 @@ Every project under `examples/src/**` is a standalone npm project. It must be po
 - Do not use `workspace:`, `link:`, or `file:` dependency protocols in an example. External sandbox services cannot resolve those references after importing only the example directory.
 - Exact local package versions are intentional: they make a sandbox reproducible. Inside this monorepo, pnpm still links a matching local workspace package because `linkWorkspacePackages` is enabled.
 
-Run `pnpm examples:versions` after changing a public package version. `pnpm examples:versions:check` enforces the contract in CI, and the Changesets release PR updates these versions automatically.
+Run `pnpm nx run @af-utils/examples:versions` after changing a public package
+version. `pnpm nx run @af-utils/examples:versions:check` enforces the contract
+in CI, and the Changesets release PR updates these versions automatically.
 
 Virtual examples are grouped by behavior rather than framework:
 `virtual/<category>/<example>/<framework>`. For example,
@@ -19,10 +21,10 @@ only one implementation, such as `virtual/list/bootstrap/react`.
 
 Shared behavioral tests live at `virtual/<category>/<example>/tests`. A
 group-level `style.module.css` is the visual source of truth when an example
-has multiple implementations; `pnpm workspace:sync` copies it into each
+has multiple implementations; `pnpm nx run @af-utils/examples:versions` copies it into each
 standalone project, generates framework entrypoints and package metadata, and
 synchronizes exact local package versions. CI runs
-`pnpm workspace:sync:check`.
+`pnpm nx run @af-utils/examples:versions:check`.
 
 The standalone guarantee applies to the documentation branch after its corresponding npm release. A development or release branch that intentionally uses an unreleased API can only run inside the monorepo until that package version has been published; a registry-only sandbox cannot install code that does not exist in the registry yet.
 
@@ -33,7 +35,8 @@ The standalone guarantee applies to the documentation branch after its correspon
    and run on its own.
 2. Add the framework entry declared in `examples/structure.json` and describe
    the example in `README.md`.
-3. Run `pnpm examples:versions` and `pnpm install` from the repository root.
+3. Run `pnpm nx run @af-utils/examples:versions` and `pnpm install` from the
+   repository root.
 
 The website discovers the framework entry declared in `examples/structure.json`
 and `README.md` automatically. The first README paragraph is used as the page
@@ -63,7 +66,7 @@ iframes are not assigned a `src` until their tab is opened. Keep
 syntax-highlighting configuration in `website/src/utils/codeTheme.ts` rather
 than configuring individual views.
 
-`pnpm test:examples` is one Nx target. Its pipeline builds the production
+`pnpm nx run @af-utils/examples:e2e` builds the production
 documentation site and every standalone example before running the integration
 suite in Chromium and Firefox.
 Every route gets a hydration/error smoke test. Groups with multiple frameworks

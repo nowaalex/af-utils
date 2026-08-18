@@ -81,7 +81,8 @@ public `MathUtils` subpath and does not turn the heavy scan into a performance
 test.
 
 A reproducible checked-in audit and its report live in
-[`threejs/`](./threejs/README.md). `pnpm audit:threejs` refreshes the compact
+[`threejs/`](./threejs/README.md).
+`pnpm nx run @af-utils/check-hot-test-runners:audit:threejs` refreshes the compact
 root analysis and the target-scoped `MathUtils.lerp` runtime proof without
 placing Three.js behavior in core.
 
