@@ -65,9 +65,11 @@
     "scripts": {
         "dev": "tsc -p tsconfig.dev.json && node scripts/build.mjs --watch",
         "build": "tsc && node scripts/build.mjs && api-extractor run && rm -r dist/types && node scripts/check-error-build.mjs",
+        "api-report": "api-extractor run --local",
         "typecheck": "tsc --noEmit",
         "test:unit": "vitest run",
         "test:mutation": "stryker run stryker.config.mjs",
+        "test:mutation:full": "stryker run stryker.full.config.mjs",
         "bench": "vitest bench --run",
         "bench:size-index-growth": "node scripts/benchmarks/size-index-growth/run.mjs",
         "bench:items:browser": "node scripts/benchmarks/item-registration/run.mjs",
@@ -124,11 +126,13 @@
     ],
     "devDependencies": {
         "@af-utils/check-hot": "workspace:*",
-        "@types/node": "^24.13.3",
+        "@codspeed/vitest-plugin": "^5.7.1",
+        "@types/node": "^26.3.0",
+        "@typescript/native": "npm:typescript@^7.0.2",
         "esbuild": "^0.28.2",
+        "fast-check": "^4.9.0",
         "jsdom": "^30.0.1",
-        "typescript": "^6.0.3",
-        "vitest": "^4.1.10"
+        "vitest": "^4.1.11"
     },
     "publishConfig": {
         "access": "public"

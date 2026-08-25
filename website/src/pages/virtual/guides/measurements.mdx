@@ -1,0 +1,79 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+title: "Measurement and dynamic sizes"
+description: "Understand estimates, item attachment, ResizeObserver measurements, and stable scrolling when virtual rows have different sizes."
+---
+
+import ExampleImplementationLinks from "components/ExampleImplementationLinks.astro";
+
+# Measurement and dynamic sizes
+
+The model starts with `estimatedItemSize` so it can calculate a range before any
+item exists in the DOM. After an item mounts, the adapter attaches its element
+and core measures the border box with `ResizeObserver`.
+
+<div className="not-prose my-8 grid gap-3 md:grid-cols-3">
+    <section className="rounded-lg border border-slate-300 bg-white p-4">
+        <div className="mb-2 text-sm font-semibold text-slate-900">
+            1 · Estimate
+        </div>
+        <p className="m-0 text-sm text-slate-600">
+            Core calculates the first range and scrollbar without waiting for
+            DOM.
+        </p>
+    </section>
+    <section className="rounded-lg border border-slate-300 bg-white p-4">
+        <div className="mb-2 text-sm font-semibold text-slate-900">
+            2 · Measure
+        </div>
+        <p className="m-0 text-sm text-slate-600">
+            Mounted items report their real border-box size.
+        </p>
+    </section>
+    <section className="rounded-lg border border-slate-300 bg-white p-4">
+        <div className="mb-2 text-sm font-semibold text-slate-900">
+            3 · Correct
+        </div>
+        <p className="m-0 text-sm text-slate-600">
+            Core updates offsets and preserves the visible anchor or list end.
+        </p>
+    </section>
+</div>
+
+Choose an estimate close to the common item size. It does not need to be exact;
+better estimates simply reduce correction work before enough rows have been
+measured.
+
+## Use the framework's item binding
+
+Every mounted virtual item must be associated with its current index. The exact
+syntax is intentionally kept in the runnable variable-size examples:
+
+<ExampleImplementationLinks
+    label="Variable-size list implementations"
+    path="virtual/react/basics/variable-size"
+/>
+
+Do not read `clientHeight`, `clientWidth`, or `getBoundingClientRect()` in each
+item renderer. Core owns measurement batching and applies size changes without
+requiring a framework render when the rendered range stays the same.
+
+## When content changes after mount
+
+No manual invalidation is needed for ordinary DOM size changes: the observer
+remeasures the attached item. Call `invalidateItemSizes()` only when cached
+sizes must be forgotten before the browser can report a new layout, such as a
+renderer whose dimensions change outside observed DOM.
+
+Sticky headers and footers also reserve measured viewport space. Their complete
+lifecycle is demonstrated in the
+[sticky header and footer example](/virtual/examples/react/basics/sticky-header-and-footer).
+
+## If rows appear to jump
+
+1. Verify that the item binding receives the current index.
+2. Use stable data keys when records can move; see
+   [data changes and anchoring](/virtual/guides/data-changes).
+3. Improve `estimatedItemSize` when initial items vary greatly.
+4. Ensure application CSS does not overwrite the layout-owned transform or
+   size properties described in [how virtual layout works](/virtual/guides/layout-elements).

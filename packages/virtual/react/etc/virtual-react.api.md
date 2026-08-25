@@ -16,9 +16,6 @@ import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
 import type { VirtualScrollerScrollElement } from '@af-utils/virtual-core';
 
 // @public
-export const List: <Data = unknown, C extends ElementType = "div">(props: ListProps<C, Data> & Omit<ComponentProps<C>, "children" | "ref">) => JSX.Element;
-
-// @public
 export interface ListItemProps<Data = unknown> {
     data?: Data;
     index: number;
@@ -34,8 +31,7 @@ export interface ListProps<C extends ElementType = "div", Data = unknown> {
     component?: C;
     // (undocumented)
     footer?: ReactElement | null;
-    // (undocumented)
-    getKey?: (index: number, itemData: Data) => string | number;
+    getItemKey?: (index: number) => string | number;
     // (undocumented)
     header?: ReactElement | null;
     itemData?: Data;
@@ -62,10 +58,10 @@ export const useVirtualItemRef: (model: VirtualScroller, index: number) => RefCa
 export const useVirtualLayout: (model: VirtualScroller) => VirtualReactLayoutBinding;
 
 // @public
-export const useVirtualModel: (params: VirtualScrollerInitialParams) => VirtualScroller;
+export const useVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => number;
 
 // @public
-export const useVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => number;
+export const VirtualList: <Data = unknown, C extends ElementType = "div">(props: ListProps<C, Data> & Omit<ComponentProps<C>, "children" | "ref">) => JSX.Element;
 
 // @public
 export interface VirtualReactLayoutBinding {

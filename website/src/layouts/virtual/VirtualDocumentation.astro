@@ -1,20 +1,16 @@
 ---
 import { getImage } from "astro:assets";
-import { exampleFrameworks } from "@af-utils/examples/config";
 import ogVirtual from "assets/og/virtual.png";
 import type { MenuItem } from "components/Menu.astro";
 import Documentation from "layouts/Documentation.astro";
 import defaultsDeep from "lodash/defaultsDeep";
 import { getMenuMapForProjectExamples } from "utils/examples";
-import {
-    frameworkPresentation,
-    virtualAdapterPackages
-} from "utils/frameworks";
+import { frameworkPresentation, getAdapterFramework } from "utils/frameworks";
 
 export type { Props } from "layouts/Documentation.astro";
 
 import type { CollectionEntry } from "astro:content";
-import referenceNavigation from "../../content/reference/navigation.json";
+import referenceNavigation from "../../../.generated/reference/navigation.json";
 
 const getReferencePath = (path: string | null | undefined) =>
     path ? `/virtual/reference/${path}` : "/virtual/reference/index";
@@ -37,9 +33,7 @@ const mapReferenceNavigation = (item: ReferenceNavigationItem): MenuItem => {
 const referenceItems = referenceNavigation.map((item) => {
     const mapped = mapReferenceNavigation(item);
     const packageName = item.title;
-    const frameworkName = exampleFrameworks.find(
-        (_, index) => virtualAdapterPackages[index] === packageName
-    );
+    const frameworkName = getAdapterFramework(packageName);
     const framework = frameworkName
         ? frameworkPresentation[frameworkName]
         : undefined;
@@ -60,9 +54,11 @@ const referenceItems = referenceNavigation.map((item) => {
     };
 });
 
+const exampleItems = getMenuMapForProjectExamples("virtual");
+
 const items = [
     {
-        name: "Description",
+        name: "Start here",
         path: "",
         children: [
             {
@@ -71,30 +67,59 @@ const items = [
                 exact: true
             },
             {
-                name: "FAQ",
-                path: "/virtual/faq"
+                name: "Framework setup",
+                path: "/virtual/frameworks"
             },
             {
-                name: "Bundle size impact",
-                path: "/virtual/size"
+                name: "FAQ and troubleshooting",
+                path: "/virtual/faq"
+            }
+        ]
+    },
+    ...exampleItems,
+    {
+        name: "Core concepts",
+        path: "/virtual/guides",
+        children: [
+            {
+                name: "How virtual layout works",
+                path: "/virtual/guides/layout-elements"
+            },
+            {
+                name: "Measurement and dynamic sizes",
+                path: "/virtual/guides/measurements"
+            },
+            {
+                name: "Data changes and anchoring",
+                path: "/virtual/guides/data-changes"
             }
         ]
     },
     {
-        name: "Guides",
+        name: "Advanced",
         path: "/virtual/guides",
         children: [
             {
+                name: "Choose an API level",
+                path: "/virtual/guides/custom-rendering"
+            },
+            {
                 name: "Render ownership",
                 path: "/virtual/guides/render-ownership"
+            }
+        ]
+    },
+    {
+        name: "Package details",
+        path: "/virtual",
+        children: [
+            {
+                name: "Bundle size",
+                path: "/virtual/size"
             },
             {
-                name: "Layout elements",
-                path: "/virtual/guides/layout-elements"
-            },
-            {
-                name: "Custom rendering",
-                path: "/virtual/guides/custom-rendering"
+                name: "Support and compatibility",
+                path: "/virtual/support"
             }
         ]
     },
@@ -109,8 +134,7 @@ const items = [
             },
             ...referenceItems
         ]
-    },
-    ...getMenuMapForProjectExamples("virtual")
+    }
 ];
 
 const img = await getImage({ src: ogVirtual, quality: 20, format: "png" });

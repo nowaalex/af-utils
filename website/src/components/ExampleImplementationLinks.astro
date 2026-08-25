@@ -1,0 +1,35 @@
+---
+import FrameworkIcon from "components/FrameworkIcon.astro";
+import startCase from "lodash/startCase";
+import { getEquivalentExamples, getExamplePagePath } from "utils/examples";
+
+interface Props {
+    label: string;
+    path: string;
+}
+
+const { label, path } = Astro.props;
+const implementations = getEquivalentExamples(path);
+---
+
+<nav aria-label={label} class="not-prose my-6">
+    <ul class="m-0 grid list-none gap-2 p-0 sm:grid-cols-2 xl:grid-cols-4">
+        {
+            implementations.map((example) => (
+                <li class="m-0 p-0">
+                    <a
+                        href={getExamplePagePath(example.route)}
+                        data-astro-prefetch="hover"
+                        class="flex min-h-12 items-center gap-3 rounded-lg border border-slate-300 bg-white px-4 py-2 font-medium text-slate-800 no-underline shadow-sm transition hover:border-blue-400 hover:text-blue-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        <FrameworkIcon
+                            framework={example.framework}
+                            size={20}
+                        />
+                        {startCase(example.framework)}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>

@@ -20,6 +20,7 @@
     "scripts": {
         "dev": "tsc && esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/* --watch",
         "build": "tsc && esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/* && api-extractor run && rm -r dist/types",
+        "api-report": "api-extractor run --local",
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
         "bench": "vitest bench --run",
@@ -52,20 +53,20 @@
         "windowing"
     ],
     "devDependencies": {
-        "@types/node": "^24.13.3",
+        "@types/node": "^26.3.0",
         "@types/react": "^19.2.18",
-        "@types/react-dom": "^19.2.4",
+        "@types/react-dom": "^19.2.5",
+        "@typescript/native": "npm:typescript@^7.0.2",
         "esbuild": "^0.28.2",
         "jsdom": "^30.0.1",
         "react-dom": "^19.2.8",
-        "typescript": "^6.0.3",
-        "vitest": "^4.1.10"
+        "vitest": "^4.1.11"
     },
     "dependencies": {
         "@af-utils/virtual-core": "workspace:*"
     },
     "peerDependencies": {
-        "react": "^19.2.8"
+        "react": "^19.0.0"
     },
     "publishConfig": {
         "access": "public"

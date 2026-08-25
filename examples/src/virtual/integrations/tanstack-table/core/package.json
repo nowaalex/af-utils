@@ -1,0 +1,19 @@
+{
+    "name": "@af-utils/virtual-examples-core-integrations-tanstack-table",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "serve": "vite preview"
+    },
+    "type": "module",
+    "dependencies": {
+        "@af-utils/virtual-core": "1.0.2",
+        "@tanstack/table-core": "^9.1.2"
+    },
+    "devDependencies": {
+        "typescript": "^6.0.3",
+        "vite": "^8.2.2"
+    }
+}

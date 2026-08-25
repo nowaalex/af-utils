@@ -1,0 +1,21 @@
+{
+    "name": "@af-utils/virtual-examples-solid-custom-layouts-table",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "serve": "vite preview"
+    },
+    "type": "module",
+    "dependencies": {
+        "@af-utils/virtual-core": "1.0.2",
+        "@af-utils/virtual-solid": "0.0.1",
+        "solid-js": "^1.9.15"
+    },
+    "devDependencies": {
+        "typescript": "^6.0.3",
+        "vite": "^8.2.2",
+        "vite-plugin-solid": "^2.11.14"
+    }
+}

@@ -252,7 +252,6 @@ export const executeProcess = async (
             if (settled) return;
             settled = true;
             clearTimeout(timeout);
-            // oxlint-disable-next-line promise/no-multiple-resolved -- Close and bounded cleanup converge here behind the settled guard above.
             resolve({
                 stdout,
                 stderr,

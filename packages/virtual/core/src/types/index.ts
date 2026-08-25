@@ -15,6 +15,29 @@ export type VirtualScrollerScrollElement = HTMLElement | Window;
  */
 export type VirtualScrollerExactPosition = number;
 
+/** @public Alignment used by {@link VirtualScroller.scrollToIndex}. */
+export type VirtualScrollerScrollAlignment =
+    | "start"
+    | "center"
+    | "end"
+    | "auto";
+
+/**
+ * @public
+ * Options accepted by {@link VirtualScroller.scrollToIndex}.
+ */
+export interface VirtualScrollerScrollToIndexOptions {
+    /**
+     * Position the item at the start, center, or end of the usable viewport.
+     * `auto` avoids scrolling a fully visible item and otherwise uses the
+     * nearest edge. Defaults to `start`.
+     */
+    align?: VirtualScrollerScrollAlignment;
+
+    /** Native scrolling behavior. Defaults to `auto`. */
+    behavior?: "auto" | "smooth";
+}
+
 /**
  * @public
  * {@link VirtualScroller} parameters that may change over time.
@@ -43,9 +66,11 @@ export interface VirtualScrollerRuntimeParams {
      * Total items quantity
      *
      * @remarks
-     * Maximum supported value is `1_073_741_823` (`2^30 - 1`).
-     * This limit exists, because item sizes cache implementation has bitwise operations, which work only with int32.
-     * The implementation uses a fixed upper capacity so Fenwick tree bitwise traversal stays inside the positive signed 32-bit range.
+     * Maximum supported value is `4_194_303` (`2^22 - 1`).
+     * The dense size and Fenwick stores use roughly 16 bytes per item, so the
+     * maximum consumes about 64 MiB before ordinary object and DOM overhead.
+     * The bound also keeps bitwise Fenwick traversal inside the positive
+     * signed 32-bit range.
      * But there is one more limit. W3C does not provide maximum allowed values for height, width, margin, etc.
      *
      * CSS theoretically supports infinite precision and infinite ranges for all value types;
@@ -58,8 +83,6 @@ export interface VirtualScrollerRuntimeParams {
      *
      * @privateRemarks
      * TODO: format remarks with blockquote when api-extractor starts supporting it
-     * TODO: document the practical memory ceiling of the dense Float64/Fenwick
-     * stores and the precision tradeoff of Float64 accumulated scroll sizes.
      */
     itemCount?: number;
 

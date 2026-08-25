@@ -5,7 +5,7 @@ import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import type { ListItemProps } from "../../types";
-import List from ".";
+import VirtualList from ".";
 
 class NoopResizeObserver implements ResizeObserver {
     observe() {}
@@ -19,8 +19,11 @@ globalThis.ResizeObserver = NoopResizeObserver;
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
 const Item = ({ index }: ListItemProps) => <div>Item {index}</div>;
+const KeyedItem = ({ index, data }: ListItemProps<{ id: string }[]>) => (
+    <div data-id={data?.[index].id}>{data?.[index].id}</div>
+);
 
-describe("List layout", () => {
+describe("VirtualList layout", () => {
     let container: HTMLDivElement;
 
     beforeEach(() => {
@@ -36,12 +39,12 @@ describe("List layout", () => {
 
         act(() =>
             root.render(
-                <List
+                <VirtualList
                     model={model}
                     style={{ width: 320, backgroundColor: "red" }}
                 >
                     {Item}
-                </List>
+                </VirtualList>
             )
         );
 
@@ -55,6 +58,32 @@ describe("List layout", () => {
         expect(sizeElement.style.height).toBe("400px");
         expect(itemsElement.style.position).toBe("absolute");
 
+        act(() => root.unmount());
+    });
+
+    test("preserves keyed item DOM when data order changes", () => {
+        let items = [{ id: "a" }, { id: "b" }, { id: "c" }];
+        const model = new VirtualScroller({
+            itemCount: items.length
+        });
+        const root = createRoot(container);
+        const renderList = () =>
+            root.render(
+                <VirtualList
+                    model={model}
+                    itemData={items}
+                    getItemKey={index => items[index].id}
+                >
+                    {KeyedItem}
+                </VirtualList>
+            );
+
+        act(renderList);
+        const retained = container.querySelector('[data-id="a"]');
+        items = [items[2], items[1], items[0]];
+        act(renderList);
+
+        expect(container.querySelector('[data-id="a"]')).toBe(retained);
         act(() => root.unmount());
     });
 });

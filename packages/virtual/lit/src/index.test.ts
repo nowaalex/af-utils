@@ -1,11 +1,10 @@
-import { VirtualScrollerEvent } from "@af-utils/virtual-core";
 import { html, LitElement } from "lit";
 import { ref } from "lit/directives/ref.js";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import {
     VirtualController,
-    VirtualLayoutController,
-    VirtualSnapshotController,
+    virtualGridItem,
+    virtualRange,
     virtualItem
 } from ".";
 
@@ -27,21 +26,22 @@ class TestHost extends LitElement {
         estimatedItemSize: this.estimatedItemSize,
         itemCount: this.count
     }));
-    readonly snapshot = new VirtualSnapshotController(
-        this,
-        this.virtual.model,
-        VirtualScrollerEvent.ALL
-    );
+
+    protected render() {
+        return html`${virtualRange(
+            this.virtual.model,
+            index => html`<span>${index}</span>`
+        )}`;
+    }
 }
 
 customElements.define("virtual-lit-test-host", TestHost);
 
 class ItemTestHost extends LitElement {
-    readonly model = new VirtualController(this, () => ({ itemCount: 1 }))
-        .model;
+    readonly virtual = new VirtualController(this, () => ({ itemCount: 1 }));
 
     protected render() {
-        return html`<div ${virtualItem(this.model, 0)}>item</div>`;
+        return html`<div ${virtualItem(this.virtual.model, 0)}>item</div>`;
     }
 }
 
@@ -49,18 +49,59 @@ customElements.define("virtual-lit-item-test-host", ItemTestHost);
 
 class LayoutTestHost extends LitElement {
     readonly virtual = new VirtualController(this, () => ({ itemCount: 10 }));
-    readonly layout = new VirtualLayoutController(this, this.virtual.model);
 
     protected render() {
-        return html`<div ${ref(this.layout.scrollerRef)} data-scroller>
-            <div ${ref(this.layout.sizeRef)} data-size>
-                <div ${ref(this.layout.itemsRef)} data-items></div>
+        return html`<div ${ref(this.virtual.scrollerRef)} data-scroller>
+            <div ${ref(this.virtual.sizeRef)} data-size>
+                <div ${ref(this.virtual.itemsRef)} data-items></div>
             </div>
         </div>`;
     }
 }
 
 customElements.define("virtual-lit-layout-test-host", LayoutTestHost);
+
+class GridTestHost extends LitElement {
+    readonly rows = new VirtualController(this, () => ({ itemCount: 2 }));
+    readonly columns = new VirtualController(this, () => ({
+        horizontal: true,
+        itemCount: 2
+    }));
+
+    protected render() {
+        return html`${[0, 1].flatMap(row =>
+            [0, 1].map(
+                column => html`<div
+                    ${virtualGridItem(
+                        this.rows.model,
+                        row,
+                        this.columns.model,
+                        column
+                    )}
+                ></div>`
+            )
+        )}`;
+    }
+}
+
+customElements.define("virtual-lit-grid-test-host", GridTestHost);
+
+class KeyedTestHost extends LitElement {
+    items = [{ id: "a" }, { id: "b" }, { id: "c" }];
+    readonly virtual = new VirtualController(this, () => ({
+        itemCount: this.items.length
+    }));
+
+    protected render() {
+        return html`${virtualRange(
+            this.virtual.model,
+            index => html`<span data-id=${this.items[index].id}></span>`,
+            index => this.items[index].id
+        )}`;
+    }
+}
+
+customElements.define("virtual-lit-keyed-test-host", KeyedTestHost);
 
 describe("Lit virtual adapter", () => {
     afterEach(() => {
@@ -79,35 +120,34 @@ describe("Lit virtual adapter", () => {
         await host.updateComplete;
         expect(host.virtual.model.itemCount).toBe(20);
 
-        const requestUpdateSpy = vi.spyOn(host, "requestUpdate");
-        host.virtual.model.setItemCount(30);
-        expect(requestUpdateSpy).toHaveBeenCalled();
+        host.virtual.model.setItemCount(1);
+        await new Promise(resolve => {
+            setTimeout(resolve, 0);
+        });
+        expect(host.renderRoot.querySelectorAll("span")).toHaveLength(1);
     });
 
-    test("only synchronizes changed runtime parameters", async () => {
+    test("makes unchanged runtime synchronization a no-op", async () => {
         const host = new TestHost();
         document.body.append(host);
         await host.updateComplete;
-        const setSpy = vi.spyOn(host.virtual.model, "set");
+        const revision = host.virtual.model.getRevision();
 
         host.requestUpdate();
         await host.updateComplete;
-        expect(setSpy).not.toHaveBeenCalled();
+        expect(host.virtual.model.getRevision()).toBe(revision);
 
+        host.count = 100;
         host.estimatedItemSize = 48;
         host.requestUpdate();
         await host.updateComplete;
-        expect(setSpy).toHaveBeenCalledOnce();
-        expect(setSpy).toHaveBeenCalledWith({
-            estimatedItemSize: 48,
-            itemCount: 10
-        });
+        expect(host.virtual.model.getSize(99)).toBe(48);
     });
 
     test("keeps an item attached across unchanged host renders", async () => {
         const host = new ItemTestHost();
-        const attachSpy = vi.spyOn(host.model, "attachItem");
-        const detachSpy = vi.spyOn(host.model, "detachItem");
+        const attachSpy = vi.spyOn(host.virtual.model, "attachItem");
+        const detachSpy = vi.spyOn(host.virtual.model, "detachItem");
         document.body.append(host);
         await host.updateComplete;
         expect(attachSpy).toHaveBeenCalledOnce();
@@ -116,6 +156,18 @@ describe("Lit virtual adapter", () => {
         await host.updateComplete;
         expect(attachSpy).toHaveBeenCalledOnce();
         expect(detachSpy).not.toHaveBeenCalled();
+    });
+
+    test("observes only the first virtual grid row and column", async () => {
+        const host = new GridTestHost();
+        const rowsAttach = vi.spyOn(host.rows.model, "attachItem");
+        const columnsAttach = vi.spyOn(host.columns.model, "attachItem");
+
+        document.body.append(host);
+        await host.updateComplete;
+
+        expect(rowsAttach).toHaveBeenCalledTimes(2);
+        expect(columnsAttach).toHaveBeenCalledTimes(2);
     });
 
     test("connects layout refs used as Lit element directives", async () => {
@@ -135,9 +187,23 @@ describe("Lit virtual adapter", () => {
         expect(items?.style.position).toBe("absolute");
     });
 
+    test("preserves keyed item DOM when its index changes", async () => {
+        const host = new KeyedTestHost();
+        document.body.append(host);
+        await host.updateComplete;
+        const retained = host.renderRoot.querySelector('[data-id="a"]');
+
+        host.items = [host.items[2], host.items[1], host.items[0]];
+        host.requestUpdate();
+        await host.updateComplete;
+
+        expect(host.renderRoot.querySelector('[data-id="a"]')).toBe(retained);
+    });
+
     test("disposes its model when the host disconnects", async () => {
         const host = new TestHost();
-        const disposeSpy = vi.spyOn(host.virtual.model, "dispose");
+        const model = host.virtual.model;
+        const disposeSpy = vi.spyOn(model, "dispose");
         document.body.append(host);
         await host.updateComplete;
         host.remove();
@@ -147,6 +213,25 @@ describe("Lit virtual adapter", () => {
             });
         });
         expect(disposeSpy).toHaveBeenCalledOnce();
+    });
+
+    test("recreates model and layout after a completed disconnect", async () => {
+        const host = new LayoutTestHost();
+        document.body.append(host);
+        await host.updateComplete;
+        const firstModel = host.virtual.model;
+
+        host.remove();
+        await new Promise<void>(resolve => {
+            requestAnimationFrame(() => resolve());
+        });
+        document.body.append(host);
+        await host.updateComplete;
+
+        expect(host.virtual.model).not.toBe(firstModel);
+        expect(() => host.virtual.model.setItemCount(20)).not.toThrow();
+        const size = host.renderRoot.querySelector<HTMLElement>("[data-size]");
+        expect(size?.style.height).toBe("800px");
     });
 
     test("preserves its model across a transient DOM move", async () => {

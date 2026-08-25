@@ -4,7 +4,11 @@ import { resolvePackageBin } from "./package-bin.mjs";
 const child = spawn(
     process.execPath,
     [resolvePackageBin("astro", "astro"), "preview", ...process.argv.slice(2)],
-    { stdio: "inherit" }
+    {
+        stdio: "inherit",
+        cwd: import.meta.dirname,
+        env: { ...process.env, ASTRO_PREVIEW_BACKGROUND: "0" }
+    }
 );
 const signalHandlers = new Map(
     ["SIGINT", "SIGTERM"].map(signal => [signal, () => child.kill(signal)])

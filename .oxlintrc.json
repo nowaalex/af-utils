@@ -32,7 +32,7 @@
                 "patterns": [
                     {
                         "message": "Import published packages through their declared public entrypoints.",
-                        "regex": "^@af-utils/(?:scrollend-polyfill|weigh-exports|virtual-core|virtual-react|virtual-solid)/.+"
+                        "regex": "^@af-utils/(?:scrollend-polyfill|weigh-exports|virtual-(?:core|lit|preact|react|solid|svelte|vue))/.+"
                     }
                 ]
             }
@@ -42,6 +42,10 @@
         "eslint/require-unicode-regexp": "error",
         "eslint/require-await": "error",
         "import/no-cycle": "error",
+        "import/no-duplicates": "error",
+        "typescript/consistent-type-imports": "error",
+        "typescript/no-for-in-array": "error",
+        "typescript/no-import-type-side-effects": "error",
         "typescript/prefer-enum-initializers": "error",
         "unicorn/explicit-length-check": "error",
         "unicorn/new-for-builtins": "error",

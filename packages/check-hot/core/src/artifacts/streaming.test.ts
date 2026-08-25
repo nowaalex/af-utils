@@ -1,4 +1,6 @@
 import { open, readFile, rm } from "node:fs/promises";
+import type * as NodeFs from "node:fs";
+import type * as NodeFsPromises from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -11,7 +13,7 @@ const ioControl = vi.hoisted(() => ({
 }));
 
 vi.mock("node:fs", async importOriginal => {
-    const actual = await importOriginal<typeof import("node:fs")>();
+    const actual = await importOriginal<typeof NodeFs>();
     return {
         ...actual,
         createReadStream: (
@@ -33,7 +35,7 @@ vi.mock("node:fs", async importOriginal => {
 });
 
 vi.mock("node:fs/promises", async importOriginal => {
-    const actual = await importOriginal<typeof import("node:fs/promises")>();
+    const actual = await importOriginal<typeof NodeFsPromises>();
     return {
         ...actual,
         readFile: (

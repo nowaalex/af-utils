@@ -1,28 +1,41 @@
 ---
 layout: layouts/virtual/VirtualDocumentation.astro
-title: "Virtual bundle size"
-description: "All packages were carefully optimized to be as small as possible. Exact sizes are provided here."
+title: "Bundle size"
+description: "See the combined production payload of virtual core and each framework adapter, with raw, minified, gzip, and Brotli measurements."
 ---
 
 import SizeInfo from "components/SizeInfo.astro";
 import sizes from "bundleSizes";
+import { addBundleSizes } from "utils/bundleSizes";
 import { virtualAdapterPackages } from "utils/frameworks";
+
+export const coreSize =
+    sizes["@af-utils/virtual-core"]["./dist/index.production.js"];
 
 # Virtual bundle size impact
 
-All packages were carefully optimized to be as small as possible.
+An application using a framework adapter also includes virtual core. The table
+therefore shows the combined payload users evaluate, rather than presenting the
+smaller adapter file by itself.
 
 <SizeInfo
     items={[
-        [
-            sizes["@af-utils/virtual-core"]["./dist/index.production.js"],
-            "@af-utils/virtual-core"
-        ],
+        [coreSize, "Core only"],
         ...virtualAdapterPackages.map(name => [
-            sizes[name]["./dist/index.js"],
-            name
+            addBundleSizes(coreSize, sizes[name]["./dist/index.js"]),
+            `Core + ${name.replace("@af-utils/virtual-", "")}`
         ])
     ]}
 />
 
-The displayed minified sizes are produced with the SWC minifier.
+## How the numbers are produced
+
+The website build first builds the current workspace packages, reads their
+published ESM exports, minifies with SWC, and generates raw, gzip, and Brotli
+sizes. Peer frameworks such as React, Vue, or Lit are external and are not
+included.
+
+Core and adapter files are measured separately and added in the table. This is
+a conservative compressed estimate: a final application bundle may compress
+shared tokens together and tree-shake unused exports. Use these values to compare
+adapter impact, then measure the production application for an exact result.

@@ -4,6 +4,7 @@
 
 ```ts
 
+import { DirectiveResult } from 'lit/directive.js';
 import type { ReactiveController } from 'lit';
 import type { ReactiveControllerHost } from 'lit';
 import { Ref } from 'lit/directives/ref.js';
@@ -14,12 +15,14 @@ import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
 
 // @public
 export class VirtualController implements ReactiveController {
-    constructor(host: ReactiveControllerHost, params: () => VirtualScrollerInitialParams);
+    constructor(host: ReactiveControllerHost, params: () => VirtualScrollerInitialParams, hostEvents?: VirtualScrollerEventMask);
     hostConnected(): void;
     hostDisconnected(): void;
     hostUpdated(): void;
-    // (undocumented)
-    readonly model: VirtualScroller;
+    readonly itemsRef: Ref<HTMLElement>;
+    get model(): VirtualScroller;
+    readonly scrollerRef: Ref<HTMLElement>;
+    readonly sizeRef: Ref<HTMLElement>;
 }
 
 // @public
@@ -29,22 +32,12 @@ export const virtualGridItem: (rows: VirtualScroller, row: number, columns: Virt
 export const virtualItem: (model: VirtualScroller, index: number) => ReturnType<typeof ref>;
 
 // @public
-export class VirtualLayoutController implements ReactiveController {
-    constructor(host: ReactiveControllerHost, model: VirtualScroller);
-    connect(scroller: HTMLElement | null, sizeElement: HTMLElement | null, itemsElement: HTMLElement | null): void;
-    hostConnected(): void;
-    hostDisconnected(): void;
-    hostUpdated(): void;
-    readonly itemsRef: Ref<HTMLElement>;
-    readonly scrollerRef: Ref<HTMLElement>;
-    readonly sizeRef: Ref<HTMLElement>;
-}
+export const virtualRange: (model: VirtualScroller, renderItem: VirtualRangeRenderer, getItemKey?: VirtualRangeGetItemKey) => DirectiveResult;
 
 // @public
-export class VirtualSnapshotController implements ReactiveController {
-    constructor(host: ReactiveControllerHost, model: VirtualScroller, events?: VirtualScrollerEventMask);
-    hostConnected(): void;
-    hostDisconnected(): void;
-}
+export type VirtualRangeGetItemKey = (index: number) => string | number;
+
+// @public
+export type VirtualRangeRenderer = (index: number) => unknown;
 
 ```

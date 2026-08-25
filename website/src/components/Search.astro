@@ -1,0 +1,46 @@
+{
+    import.meta.env.DEV ? (
+        <div
+            class="border-b border-slate-200 p-3"
+            data-pagefind-ignore
+            data-pagefind-placeholder
+        >
+            <div
+                class="flex h-10 items-center gap-2 border border-slate-300 bg-white px-3 text-sm text-slate-500"
+                role="search"
+                aria-label="Documentation search unavailable in development"
+            >
+                <span aria-hidden="true">⌕</span>
+                <span>Search is available in the production preview</span>
+            </div>
+        </div>
+    ) : (
+        <>
+            <link rel="stylesheet" href="/pagefind/pagefind-component-ui.css" />
+            <script
+                is:inline
+                src="/pagefind/pagefind-component-ui.js"
+                type="module"
+            />
+            <div class="border-b border-slate-200 p-3" data-pagefind-ignore>
+                <pagefind-config base-url="/" />
+                <pagefind-searchbox
+                    placeholder="Search documentation"
+                    show-sub-results
+                />
+            </div>
+        </>
+    )
+}
+
+<style>
+    pagefind-searchbox {
+        --pf-background: #ffffff;
+        --pf-border: #cbd5e1;
+        --pf-border-focus: #1d4ed8;
+        --pf-border-radius: 0;
+        --pf-font: inherit;
+        --pf-searchbox-max-width: none;
+        --pf-text: #334155;
+    }
+</style>

@@ -42,9 +42,9 @@
         "polyfill"
     ],
     "devDependencies": {
-        "@types/node": "^24.13.3",
-        "typescript": "^6.0.3",
-        "vitest": "^4.1.10"
+        "@types/node": "^26.3.0",
+        "@typescript/native": "npm:typescript@^7.0.2",
+        "vitest": "^4.1.11"
     },
     "publishConfig": {
         "access": "public"

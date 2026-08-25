@@ -4,6 +4,8 @@ export interface AxisAdapter {
     _readElementOffset(element: HTMLElement): number;
     /** Read an element's client size on this axis. */
     _readElementSize(element: HTMLElement): number;
+    /** Read the border between an element's outer and client origins. */
+    _readElementClientStart(element: HTMLElement): number;
     /** Read a window's native scroll offset on this axis. */
     _readWindowOffset(windowObject: Window): number;
     /** Read a window's viewport size on this axis. */
@@ -29,6 +31,7 @@ export interface AxisAdapter {
 export const verticalAxisAdapter: AxisAdapter = {
     _readElementOffset: element => element.scrollTop,
     _readElementSize: element => element.clientHeight,
+    _readElementClientStart: element => element.clientTop,
     _readWindowOffset: windowObject => windowObject.scrollY,
     _readWindowSize: windowObject => windowObject.innerHeight,
     _readEntrySize: entry => entry.borderBoxSize[0].blockSize,
@@ -42,6 +45,7 @@ export const verticalAxisAdapter: AxisAdapter = {
 export const horizontalAxisAdapter: AxisAdapter = {
     _readElementOffset: element => element.scrollLeft,
     _readElementSize: element => element.clientWidth,
+    _readElementClientStart: element => element.clientLeft,
     _readWindowOffset: windowObject => windowObject.scrollX,
     _readWindowSize: windowObject => windowObject.innerWidth,
     _readEntrySize: entry => entry.borderBoxSize[0].inlineSize,

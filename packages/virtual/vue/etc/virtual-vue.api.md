@@ -4,66 +4,73 @@
 
 ```ts
 
+import { AllowedComponentProps } from 'vue';
+import { ComponentCustomProps } from 'vue';
 import { ComponentOptionsMixin } from 'vue';
-import { ComponentProvideOptions } from 'vue';
 import { ComponentPublicInstance } from 'vue';
+import { ComputedRef } from 'vue';
 import { DefineComponent } from 'vue';
 import { Directive } from 'vue';
-import { ExtractPropTypes } from 'vue';
 import { MaybeRefOrGetter } from 'vue';
-import { PublicProps } from 'vue';
 import { Raw } from 'vue';
-import { RendererElement } from 'vue';
-import { RendererNode } from 'vue';
 import { ShallowRef } from 'vue';
+import { SlotsType } from 'vue';
 import { VirtualScroller } from '@af-utils/virtual-core';
 import { VirtualScrollerEventMask } from '@af-utils/virtual-core';
 import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
 import { VNode } from 'vue';
+import { VNodeProps } from 'vue';
 
 // @public
 export const useVirtual: (params: MaybeRefOrGetter<VirtualScrollerInitialParams>) => Raw<VirtualScroller>;
 
 // @public
-export const useVirtualItemRef: (model: VirtualScroller, index: MaybeRefOrGetter<number>) => VirtualVueElementRef;
-
-// @public
 export const useVirtualLayout: (model: VirtualScroller) => VirtualVueLayoutBinding;
 
 // @public
-export const useVirtualRange: (model: VirtualScroller) => () => number[];
+export const useVirtualRange: (model: VirtualScroller) => ComputedRef<number[]>;
 
 // @public
 export const useVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => ShallowRef<number>;
 
 // @public
+export const virtualGridItemDirective: Directive<HTMLElement, VirtualVueGridItemBinding>;
+
+// @public
 export const virtualItemDirective: Directive<HTMLElement, VirtualVueItemBinding>;
 
 // @public
-export const VirtualList: DefineComponent<ExtractPropTypes<    {
-model: {
-type: typeof VirtualScroller;
-required: true;
-};
-itemData: {
-type: null;
-required: false;
-};
-}>, () => VNode<RendererNode, RendererElement, {
-[key: string]: any;
-}>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ExtractPropTypes<    {
-model: {
-type: typeof VirtualScroller;
-required: true;
-};
-itemData: {
-type: null;
-required: false;
-};
-}>> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>;
+export const VirtualList: VirtualListComponent;
+
+// @public
+export type VirtualListComponent = DefineComponent<{
+    model: VirtualScroller;
+    getItemKey?: (index: number) => string | number;
+}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<{
+    model: VirtualScroller;
+    getItemKey?: (index: number) => string | number;
+}>, {}, VirtualListSlots>;
+
+// @public
+export type VirtualListSlots = SlotsType<{
+    header(): VNode[];
+    default(props: {
+        model: VirtualScroller;
+        index: number;
+    }): VNode[];
+    footer(): VNode[];
+}>;
 
 // @public
 export type VirtualVueElementRef = (element: Element | ComponentPublicInstance | null) => void;
+
+// @public
+export type VirtualVueGridItemBinding = readonly [
+rows: VirtualScroller,
+row: number,
+columns: VirtualScroller,
+column: number
+];
 
 // @public
 export type VirtualVueItemBinding = readonly [VirtualScroller, number];

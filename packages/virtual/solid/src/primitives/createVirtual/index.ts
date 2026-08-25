@@ -21,13 +21,10 @@ import readAccessor from "../../utils/readAccessor";
 const createVirtual = (params: MaybeAccessor<VirtualScrollerInitialParams>) => {
     const initialParams = readAccessor(params);
     const model = new VirtualScroller(initialParams);
-    let initialized = false;
 
     createRenderEffect(() => {
         const nextParams = readAccessor(params);
-
-        if (initialized) model.set(nextParams);
-        else initialized = true;
+        model.set(nextParams);
     });
     onCleanup(() => model.dispose());
 

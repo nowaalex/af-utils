@@ -39,13 +39,11 @@ const views = [
 ] as const;
 const externalViews = [
     {
-        allow: "accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write",
         label: "CodeSandbox",
         name: "codesandbox",
         url: codeSandboxUrl.toString()
     },
     {
-        allow: "cross-origin-isolated; clipboard-read; clipboard-write",
         label: "StackBlitz",
         name: "stackblitz",
         url: stackBlitzUrl.toString()
@@ -103,6 +101,7 @@ const externalViews = [
             title={`${title} Preview`}
             class="h-[35vh] w-full border border-slate-300 bg-white xl:h-auto"
             src={`/examples/${path}`}
+            sandbox="allow-forms allow-scripts allow-same-origin"
             loading="lazy"></iframe>
         <div
             class="flex min-h-[35vh] overflow-hidden border border-slate-300 bg-white xl:min-h-0"
@@ -137,7 +136,8 @@ const externalViews = [
                     class="h-[70vh] w-full border border-slate-300 bg-white xl:h-full"
                     data-src={view.url}
                     loading="lazy"
-                    allow={view.allow}
+                    allow="clipboard-read; clipboard-write; cross-origin-isolated"
+                    sandbox="allow-downloads allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts"
                 />
             </section>
         ))
@@ -146,10 +146,17 @@ const externalViews = [
 
 <script>
     class ExampleTabs extends HTMLElement {
+        #controller: AbortController | undefined;
+        #initialObserver: IntersectionObserver | undefined;
+
         /** Connects tabs, lazy source loading, and full-screen interaction. */
         connectedCallback() {
-            if (this.dataset.ready) return;
-            this.dataset.ready = "true";
+            this.#controller?.abort();
+            this.#initialObserver?.disconnect();
+
+            const controller = new AbortController();
+            const { signal } = controller;
+            this.#controller = controller;
 
             const tabs = Array.from(
                 this.querySelectorAll<HTMLButtonElement>("[data-example-tab]")
@@ -164,14 +171,13 @@ const externalViews = [
             );
             const sourceCache = new Map<string, Promise<string>>();
             let selectedSource = "";
-            let initialObserver: IntersectionObserver | undefined;
 
             const loadSource = async (url: string) => {
                 selectedSource = url;
                 codeOutput?.setAttribute("aria-busy", "true");
                 let request = sourceCache.get(url);
                 if (!request) {
-                    request = fetch(url).then((response) => {
+                    request = fetch(url, { signal }).then((response) => {
                         if (!response.ok) {
                             throw new Error(
                                 `Source request failed: ${response.status}`
@@ -224,35 +230,46 @@ const externalViews = [
             };
 
             for (const tab of tabs) {
-                tab.addEventListener("click", () => selectTab(tab));
-                tab.addEventListener("keydown", (event) => {
-                    if (
-                        event.key !== "ArrowLeft" &&
-                        event.key !== "ArrowRight"
-                    ) {
-                        return;
-                    }
-
-                    event.preventDefault();
-                    const direction = event.key === "ArrowRight" ? 1 : -1;
-                    const next =
-                        tabs[
-                            (tabs.indexOf(tab) + direction + tabs.length) %
-                                tabs.length
-                        ];
-                    if (!next) return;
-                    selectTab(next);
-                    next.focus();
+                tab.addEventListener("click", () => selectTab(tab), {
+                    signal
                 });
+                tab.addEventListener(
+                    "keydown",
+                    (event) => {
+                        if (
+                            event.key !== "ArrowLeft" &&
+                            event.key !== "ArrowRight"
+                        ) {
+                            return;
+                        }
+
+                        event.preventDefault();
+                        const direction = event.key === "ArrowRight" ? 1 : -1;
+                        const next =
+                            tabs[
+                                (tabs.indexOf(tab) + direction + tabs.length) %
+                                    tabs.length
+                            ];
+                        if (!next) return;
+                        selectTab(next);
+                        next.focus();
+                    },
+                    { signal }
+                );
             }
 
-            this.addEventListener("example-file-select", (event) => {
-                const url = (event as CustomEvent<{ url?: string }>).detail.url;
-                if (url) {
-                    initialObserver?.disconnect();
-                    void loadSource(url);
-                }
-            });
+            this.addEventListener(
+                "example-file-select",
+                (event) => {
+                    const url = (event as CustomEvent<{ url?: string }>).detail
+                        .url;
+                    if (url) {
+                        this.#initialObserver?.disconnect();
+                        void loadSource(url);
+                    }
+                },
+                { signal }
+            );
 
             const initialSource = codeOutput?.dataset.initialSource;
             if (
@@ -260,13 +277,13 @@ const externalViews = [
                 initialSource &&
                 "IntersectionObserver" in window
             ) {
-                initialObserver = new IntersectionObserver((entries) => {
+                this.#initialObserver = new IntersectionObserver((entries) => {
                     if (entries.some((entry) => entry.isIntersecting)) {
-                        initialObserver?.disconnect();
+                        this.#initialObserver?.disconnect();
                         void loadSource(initialSource);
                     }
                 });
-                initialObserver.observe(codeOutput);
+                this.#initialObserver.observe(codeOutput);
             } else if (initialSource) {
                 void loadSource(initialSource);
             }
@@ -294,19 +311,32 @@ const externalViews = [
                     if (exitIcon) exitIcon.hidden = !expanded;
                 };
 
-                fullscreenToggle.addEventListener("click", async () => {
-                    if (document.fullscreenElement === this) {
-                        await document.exitFullscreen();
-                    } else {
-                        await this.requestFullscreen();
-                    }
-                });
+                fullscreenToggle.addEventListener(
+                    "click",
+                    async () => {
+                        if (document.fullscreenElement === this) {
+                            await document.exitFullscreen();
+                        } else {
+                            await this.requestFullscreen();
+                        }
+                    },
+                    { signal }
+                );
                 document.addEventListener(
                     "fullscreenchange",
-                    updateFullscreenToggle
+                    updateFullscreenToggle,
+                    { signal }
                 );
                 updateFullscreenToggle();
             }
+        }
+
+        /** Releases observers, requests, and global listeners after navigation. */
+        disconnectedCallback() {
+            this.#controller?.abort();
+            this.#controller = undefined;
+            this.#initialObserver?.disconnect();
+            this.#initialObserver = undefined;
         }
     }
 

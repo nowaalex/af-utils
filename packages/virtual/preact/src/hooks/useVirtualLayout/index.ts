@@ -1,10 +1,9 @@
 import {
-    assert,
     type VirtualScroller,
     VirtualScrollerLayout
 } from "@af-utils/virtual-core";
 import type { RefCallback } from "preact";
-import { useCallback, useState } from "preact/hooks";
+import { useCallback, useMemo } from "preact/hooks";
 import type { VirtualPreactLayoutBinding } from "../../types";
 import { useIsomorphicLayoutEffect } from "../useVirtual";
 
@@ -18,12 +17,7 @@ import { useIsomorphicLayoutEffect } from "../useVirtual";
 const useVirtualLayout = (
     model: VirtualScroller
 ): VirtualPreactLayoutBinding => {
-    const [resource] = useState(() => ({
-        layout: new VirtualScrollerLayout(model),
-        model
-    }));
-    assert(resource.model === model, 13);
-    const layout = resource.layout;
+    const layout = useMemo(() => new VirtualScrollerLayout(model), [model]);
     useIsomorphicLayoutEffect(() => () => layout.dispose(), [layout]);
 
     const scrollerRef = useCallback<RefCallback<HTMLElement>>(

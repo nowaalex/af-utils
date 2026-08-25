@@ -1,24 +1,17 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join, relative } from "node:path";
+import { findFiles, findPackageManifests } from "./file-discovery.mjs";
 
 const root = process.cwd();
 const failures = [];
 
 const readJson = path => JSON.parse(readFileSync(path, "utf8"));
 
-const manifestPaths = [];
-const visit = directory => {
-    for (const entry of readdirSync(directory, { withFileTypes: true })) {
-        if (entry.name === "node_modules") continue;
-        const path = join(directory, entry.name);
-        if (entry.isDirectory()) visit(path);
-        else if (entry.name === "package.json") manifestPaths.push(path);
-    }
-};
-
-for (const directory of ["packages", "examples", "website"]) {
-    visit(join(root, directory));
-}
+const manifestPaths = await findPackageManifests(root, [
+    "packages",
+    "examples",
+    "website"
+]);
 
 let publicPackages = 0;
 for (const path of manifestPaths) {
@@ -53,6 +46,7 @@ const nxAliases = [
     "test",
     "test:e2e",
     "test:mutation",
+    "test:mutation:full",
     "bench",
     "jit:check",
     "typecheck",
@@ -66,6 +60,7 @@ const nxAliases = [
     "workspace:sync",
     "workspace:sync:check",
     "website:generated:check",
+    "website:lighthouse",
     "nx:contracts:check"
 ];
 for (const name of nxAliases) {
@@ -74,11 +69,13 @@ for (const name of nxAliases) {
     }
 }
 
-for (const workflow of [
-    ".github/workflows/ci.yml",
-    ".github/workflows/release.yml"
-]) {
-    const content = readFileSync(join(root, workflow), "utf8");
+const workflows = await findFiles(root, [
+    ".github/workflows/*.yml",
+    ".github/workflows/*.yaml"
+]);
+for (const workflow of workflows) {
+    const content = readFileSync(workflow, "utf8");
+    const displayPath = relative(root, workflow);
     for (const line of content.split("\n")) {
         const command = line.match(/^\s*run:\s*(pnpm .+)$/u)?.[1];
         if (
@@ -88,7 +85,7 @@ for (const workflow of [
             !command.startsWith("pnpm i ") &&
             !command.startsWith("pnpm exec playwright install ")
         ) {
-            failures.push(`${workflow} bypasses Nx with: ${command}`);
+            failures.push(`${displayPath} bypasses Nx with: ${command}`);
         }
     }
 }
@@ -98,6 +95,6 @@ if (failures.length > 0) {
     process.exitCode = 1;
 } else {
     console.log(
-        `Nx workspace contract passed for ${manifestPaths.length} projects and ${publicPackages} publishable packages`
+        `Nx workspace contract passed for ${manifestPaths.length} manifests and ${publicPackages} publishable packages`
     );
 }

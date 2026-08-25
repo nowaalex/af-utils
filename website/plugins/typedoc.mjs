@@ -1,5 +1,3 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
 import {
     MarkdownPageEvent,
     MarkdownRendererEvent
@@ -7,8 +5,6 @@ import {
 import { Comment, ReflectionKind } from "typedoc";
 
 const REFERENCE_ROOT = "/virtual/reference/";
-
-const pages = [];
 
 const normalizeWhitespace = value => value.replace(/\s+/gu, " ").trim();
 
@@ -153,13 +149,13 @@ const getPageTitle = model => {
 
 const getReferencePath = url => `${REFERENCE_ROOT}${url.replace(/\.md$/u, "")}`;
 
-const rewriteInternalMarkdownLinks = contents =>
+export const rewriteInternalMarkdownLinks = contents =>
     contents.replace(
         /(\]\((?![a-z][a-z\d+.-]*:|\/\/)[^)\n]*?)\.md(?=#[^)]*\)|\))/giu,
         "$1"
     );
 
-const groupHooksInContents = contents =>
+export const groupHooksInContents = contents =>
     contents.replace(
         /(^## Functions\n\n)((?:- [^\n]+\n?)+)/gmu,
         (_, _heading, list) => {
@@ -234,7 +230,6 @@ const groupHooksInNavigation = items => {
 
 export function load(app) {
     app.renderer.on(MarkdownRendererEvent.BEGIN, event => {
-        pages.length = 0;
         groupHooksInNavigation(event.navigation);
         normalizeNavigationPaths(event.navigation);
     });
@@ -258,15 +253,6 @@ export function load(app) {
             kind,
             referencePath
         };
-
-        pages.push({
-            description,
-            kind,
-            package: packageName,
-            path: referencePath,
-            symbol,
-            title
-        });
     });
 
     app.renderer.on(MarkdownPageEvent.END, page => {
@@ -278,16 +264,6 @@ export function load(app) {
                 page.model
             ),
             page.model
-        );
-    });
-
-    app.renderer.postMarkdownRenderAsyncJobs.push(async event => {
-        const outputFile = join(event.outputDirectory, "api-manifest.json");
-        await mkdir(event.outputDirectory, { recursive: true });
-        await writeFile(
-            outputFile,
-            `${JSON.stringify({ pages }, null, 2)}\n`,
-            "utf8"
         );
     });
 }

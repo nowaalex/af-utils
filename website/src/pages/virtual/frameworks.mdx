@@ -1,0 +1,51 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+title: "Framework setup"
+description: "Choose the af-utils virtual adapter that matches your renderer and open its canonical runnable example."
+---
+
+import ExampleImplementationLinks from "components/ExampleImplementationLinks.astro";
+
+# Framework setup
+
+Use the adapter for the framework that owns your item DOM. All adapters share
+the same core geometry and measurement behavior, but their public bindings
+follow the lifecycle and reactivity conventions of their framework.
+
+| Renderer     | Install                                        |
+| ------------ | ---------------------------------------------- |
+| React        | `npm install @af-utils/virtual-react react`    |
+| Preact       | `npm install @af-utils/virtual-preact preact`  |
+| Solid        | `npm install @af-utils/virtual-solid solid-js` |
+| Svelte       | `npm install @af-utils/virtual-svelte svelte`  |
+| Lit          | `npm install @af-utils/virtual-lit lit`        |
+| Vue          | `npm install @af-utils/virtual-vue vue`        |
+| No framework | `npm install @af-utils/virtual-core`           |
+
+The package manifests define the exact supported peer ranges. See
+[support and compatibility](/virtual/support) before upgrading a framework
+major.
+
+## Start from working code
+
+The implementations below are built and tested as standalone applications.
+Each page includes its complete source tree and package manifest.
+
+<ExampleImplementationLinks
+    label="Framework setup examples"
+    path="virtual/react/basics/simple-list"
+/>
+
+## Pick the right entry point
+
+| Requirement                       | Start with                                                                                                                                         |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| One ordinary scrolling list       | The simple-list implementation above                                                                                                               |
+| Direct access to range state      | [Simple primitives](/virtual/examples/react/basics/simple-primitives)                                                                              |
+| A window or nested scroller       | [Nested container](/virtual/examples/react/custom-layouts/nested-container) or [window scrolling](/virtual/examples/react/scrolling/window-scroll) |
+| A table or two-axis grid          | [Choose an API level](/virtual/guides/custom-rendering)                                                                                            |
+| Canvas or a new framework adapter | `@af-utils/virtual-core`                                                                                                                           |
+
+Do not begin with core merely to reduce bundle size. Framework adapters are thin
+bindings around core and remove lifecycle code that an application would
+otherwise need to own.

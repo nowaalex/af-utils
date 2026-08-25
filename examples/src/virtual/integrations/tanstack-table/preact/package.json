@@ -1,0 +1,22 @@
+{
+    "name": "@af-utils/virtual-examples-preact-integrations-tanstack-table",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "serve": "vite preview"
+    },
+    "type": "module",
+    "dependencies": {
+        "@af-utils/virtual-core": "1.0.2",
+        "@af-utils/virtual-preact": "0.0.1",
+        "preact": "^10.29.8",
+        "@tanstack/preact-table": "^9.1.2"
+    },
+    "devDependencies": {
+        "typescript": "^6.0.3",
+        "vite": "^8.2.2",
+        "@preact/preset-vite": "^2.10.6"
+    }
+}

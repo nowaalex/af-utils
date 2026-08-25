@@ -114,16 +114,40 @@ export const getBoundaryGap = async (
     itemEdge: "top" | "bottom",
     boundaryEdge: "top" | "bottom"
 ) => {
-    const [itemBounds, boundaryBounds] = await Promise.all([
-        item.boundingBox(),
+    const [visibleItemEdge, boundaryBounds] = await Promise.all([
+        item.evaluate((element, edge) => {
+            const bounds = element.getBoundingClientRect();
+            let visibleTop = bounds.top;
+            let visibleBottom = bounds.bottom;
+
+            for (
+                let ancestor = element.parentElement;
+                ancestor;
+                ancestor = ancestor.parentElement
+            ) {
+                const { overflowY } = getComputedStyle(ancestor);
+                if (
+                    overflowY === "hidden" ||
+                    overflowY === "clip" ||
+                    overflowY === "auto" ||
+                    overflowY === "scroll"
+                ) {
+                    const clippingBounds = ancestor.getBoundingClientRect();
+                    visibleTop = Math.max(visibleTop, clippingBounds.top);
+                    visibleBottom = Math.min(
+                        visibleBottom,
+                        clippingBounds.bottom
+                    );
+                }
+            }
+
+            return edge === "top" ? visibleTop : visibleBottom;
+        }, itemEdge),
         boundary.boundingBox()
     ]);
 
-    return itemBounds && boundaryBounds
-        ? Math.abs(
-              getBoxEdge(itemBounds, itemEdge) -
-                  getBoxEdge(boundaryBounds, boundaryEdge)
-          )
+    return boundaryBounds
+        ? Math.abs(visibleItemEdge - getBoxEdge(boundaryBounds, boundaryEdge))
         : Number.POSITIVE_INFINITY;
 };
 

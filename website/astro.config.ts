@@ -26,6 +26,7 @@ import { codeTheme } from "./src/utils/codeTheme";
 import stripTrailingSlash from "./src/utils/stripTrailingSlash";
 
 const env = loadEnv("", process.cwd(), "") as ImportMetaEnv;
+const publicOrigin = new URL(env.PUBLIC_ORIGIN).origin;
 const frameworkIcons = exampleFrameworks.map(framework =>
     getExampleFrameworkDefinition(framework).icon.split(":")
 );
@@ -36,14 +37,25 @@ const getFrameworkIcons = (collection: string) =>
 const rehypeLinks: RehypePlugins[number] = () => tree =>
     visit(tree, "element", node => {
         if (node.tagName === "a" && typeof node.properties.href === "string") {
-            const href = node.properties.href.replace(env.PUBLIC_ORIGIN, "");
+            const originalHref = node.properties.href;
+            let href = originalHref;
+
+            try {
+                const url = new URL(originalHref, publicOrigin);
+                if (url.origin === publicOrigin) {
+                    href = `${url.pathname}${url.search}${url.hash}`;
+                } else if (
+                    url.protocol === "http:" ||
+                    url.protocol === "https:"
+                ) {
+                    node.properties.target = "_blank";
+                    node.properties.rel = ["noopener", "noreferrer"];
+                }
+            } catch {
+                // Non-URL schemes and malformed author input stay untouched.
+            }
 
             node.properties.href = href;
-
-            if (href.startsWith("https://")) {
-                node.properties.target = "_blank";
-                node.properties.rel = ["noopener"];
-            }
         }
     });
 const rehypeScrollableTables: RehypePlugins[number] = () => tree =>
@@ -68,7 +80,7 @@ const rehypeScrollableTables: RehypePlugins[number] = () => tree =>
     });
 
 export default defineConfig({
-    site: env.PUBLIC_ORIGIN,
+    site: publicOrigin,
     vite: {
         plugins: [tailwindcss()]
     },
@@ -160,9 +172,13 @@ export default defineConfig({
             }
         }),
         sitemap({
-            filter: page =>
-                !page.startsWith(`${env.PUBLIC_ORIGIN}/examples`) &&
-                !page.startsWith(`${env.PUBLIC_ORIGIN}/example-source`),
+            filter: page => {
+                const pathname = new URL(page).pathname;
+                return !["/examples", "/example-source"].some(
+                    prefix =>
+                        pathname === prefix || pathname.startsWith(`${prefix}/`)
+                );
+            },
             serialize(item) {
                 // trailing slashes must be the same as canonical links
                 item.url = stripTrailingSlash(item.url);

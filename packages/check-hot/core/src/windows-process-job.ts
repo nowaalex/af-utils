@@ -1,7 +1,8 @@
 import { createRequire } from "node:module";
+import type * as Koffi from "koffi";
 
 const loadNativeDependency = createRequire(import.meta.url);
-const koffi = loadNativeDependency("koffi") as typeof import("koffi");
+const koffi = loadNativeDependency("koffi") as typeof Koffi;
 
 const PROCESS_TERMINATE = 0x0001;
 const PROCESS_SET_QUOTA = 0x0100;

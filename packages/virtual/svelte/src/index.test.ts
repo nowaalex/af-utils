@@ -9,7 +9,7 @@ describe("Svelte adapter", () => {
         const firstAttach = vi.spyOn(first, "attachItem");
         const firstDetach = vi.spyOn(first, "detachItem");
 
-        const detach = virtualItem({ model: first, index: 0 })(element);
+        const detach = virtualItem(first, 0)(element);
         expect(firstAttach).toHaveBeenCalledWith(element, 0);
         detach?.();
         expect(firstDetach).toHaveBeenCalledWith(element);
@@ -28,9 +28,7 @@ describe("Svelte adapter", () => {
         const rowsDetach = vi.spyOn(rows, "detachItem");
         const columnsAttach = vi.spyOn(columns, "attachItem");
         const columnsDetach = vi.spyOn(columns, "detachItem");
-        const binding = { rows, rowIndex: 0, columns, columnIndex: 0 };
-
-        const detach = virtualGridItem(binding)(element);
+        const detach = virtualGridItem(rows, 0, columns, 0)(element);
 
         expect(rowsAttach).toHaveBeenCalledOnce();
         expect(columnsAttach).toHaveBeenCalledOnce();

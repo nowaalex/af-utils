@@ -12,5 +12,6 @@ npm install @af-utils/virtual-solid solid-js
 ## Documentation
 
 - [Getting started](https://af-utils.com/virtual)
-- [Solid examples](https://af-utils.com/virtual/examples/solid/list/simple)
+- [Solid examples](https://af-utils.com/virtual/examples/solid/basics/simple-list)
+- [Support and compatibility](https://af-utils.com/virtual/support)
 - [API reference](https://af-utils.com/virtual/reference/virtual-solid/index)

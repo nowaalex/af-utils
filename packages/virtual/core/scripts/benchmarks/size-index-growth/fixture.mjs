@@ -50,8 +50,8 @@ export const runSizeIndexGrowthBenchmark = () => {
 
         for (const capacity of capacities) {
             const nextSizes = new Float64Array(capacity);
-            nextSizes.fill(ESTIMATED_SIZE);
             nextSizes.set(sizes);
+            nextSizes.fill(ESTIMATED_SIZE, sizes.length);
             sizes = nextSizes;
             sizes[capacity - 1] = capacity + 0.5;
         }

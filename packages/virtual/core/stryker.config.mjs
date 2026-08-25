@@ -9,7 +9,11 @@ const config = {
         "src/models/VirtualScroller/events/index.ts",
         "src/models/VirtualScroller/scrollActivity/index.ts",
         "src/models/VirtualScroller/stickyElements/index.ts",
+        "src/models/VirtualScrollerLayout/index.ts",
+        "src/platform/scrollerAdapters/index.ts",
+        "src/platform/axisAdapters/index.ts",
         "src/utils/fTree/index.ts",
+        "src/utils/rangeMappers/index.ts",
         "!src/**/*.test.ts",
         "!src/**/*.bench.ts"
     ],

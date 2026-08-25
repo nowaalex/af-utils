@@ -1,5 +1,21 @@
 # Examples
 
+> **Change Contract**
+>
+> - **Responsibility:** keep every published example runnable as an isolated
+>   sandbox and keep equivalent framework implementations behaviorally aligned.
+> - **Boundary:** examples demonstrate product behavior; conceptual guidance
+>   belongs on the documentation site, and package/API contracts belong in
+>   package manifests and generated reference pages.
+> - **Invariants:** `examples/structure.json` owns framework discovery; one
+>   group-level `README.md` owns the shared behavior description; generated
+>   implementation files must match their templates and shared sources.
+> - **Configuration owners:** `examples/structure.json`,
+>   `examples/package.json`, group-level styles/tests/READMEs, and
+>   `examples/templates/`.
+> - **Targeted check:**
+>   `pnpm nx run @af-utils/examples:versions:check`.
+
 Every project under `examples/src/**` is a standalone npm project. It must be possible to open its GitHub directory directly in CodeSandbox, StackBlitz, or a similar service without access to the rest of the pnpm workspace. This matches the [StackBlitz GitHub importer contract](https://developer.stackblitz.com/guides/integration/open-from-github#organizing-the-project-in-your-repository), which imports only the selected example directory.
 
 ## Standalone sandbox contract
@@ -7,7 +23,7 @@ Every project under `examples/src/**` is a standalone npm project. It must be po
 - Every example package must have `"private": true`. Examples are neither versioned by Changesets nor published to npm.
 - Dependencies on public local `@af-utils/*` packages must use the exact registry version from the corresponding `packages/**/package.json`.
 - Do not use `workspace:`, `link:`, or `file:` dependency protocols in an example. External sandbox services cannot resolve those references after importing only the example directory.
-- Exact local package versions are intentional: they make a sandbox reproducible. Inside this monorepo, pnpm still links a matching local workspace package because `linkWorkspacePackages` is enabled.
+- Exact local package versions are intentional: they make a sandbox reproducible. The leaf packages are deliberately excluded from the pnpm/Nx project graph; the parent `@af-utils/examples` workspace package provides their shared local development dependencies.
 
 Run `pnpm nx run @af-utils/examples:versions` after changing a public package
 version. `pnpm nx run @af-utils/examples:versions:check` enforces the contract
@@ -15,9 +31,9 @@ in CI, and the Changesets release PR updates these versions automatically.
 
 Virtual examples are grouped by behavior rather than framework:
 `virtual/<category>/<example>/<framework>`. For example,
-`virtual/list/simple/react` and `virtual/list/simple/solid` are standalone
+`virtual/basics/simple-list/react` and `virtual/basics/simple-list/solid` are standalone
 implementations of the same example. Framework-specific integrations may have
-only one implementation, such as `virtual/list/bootstrap/react`.
+only one implementation, such as `virtual/integrations/material-ui/react`.
 
 Shared behavioral tests live at `virtual/<category>/<example>/tests`. A
 group-level `style.module.css` is the visual source of truth when an example
@@ -33,21 +49,28 @@ The standalone guarantee applies to the documentation branch after its correspon
 1. Create a private package under
    `examples/src/<project>/<category>/<example>/<framework>` that can install
    and run on its own.
-2. Add the framework entry declared in `examples/structure.json` and describe
-   the example in `README.md`.
+2. Add the framework entry declared in `examples/structure.json`. Describe
+   shared behavior once in the example group's `README.md`; put
+   framework-specific explanation in source comments only when the code itself
+   is otherwise unclear.
 3. Run `pnpm nx run @af-utils/examples:versions` and `pnpm install` from the
    repository root.
 
 The website discovers the framework entry declared in `examples/structure.json`
-and `README.md` automatically. The first README paragraph is used as the page
-description, so no separate metadata or website route needs to be added.
+and its generated implementation `README.md` automatically. The first README
+paragraph is used as the page description, so begin the group README with the
+behavior a user can observe. `sync-examples.mjs` copies that description to all
+implementations; do not maintain framework-by-framework paraphrases.
 
 `examples/structure.json` is the declarative source of truth for the examples
 directory and every framework's entry file, adapter package, template,
-dependencies, build command, icon, and public route aliases.
+dependencies, build command, and icon.
 `examples/config.ts` derives paths and route mappings from it. Website
 integrations, components, generators, and tests must consume this configuration
 instead of assembling physical paths or duplicating framework metadata.
+Generated standalone boilerplate lives as ordinary files under
+`examples/templates/<template>`; `sync-examples.mjs` copies those files and
+resolves their dependency versions from `examples/package.json`.
 Vite file discovery stays in the colocated
 `examples/src/catalog.ts`, so its glob patterns are relative to the files they
 describe. Every file in an implementation is exposed in the website source
@@ -66,9 +89,10 @@ iframes are not assigned a `src` until their tab is opened. Keep
 syntax-highlighting configuration in `website/src/utils/codeTheme.ts` rather
 than configuring individual views.
 
-`pnpm nx run @af-utils/examples:e2e` builds the production
-documentation site and every standalone example before running the integration
-suite in Chromium and Firefox.
+`pnpm nx run @af-utils/examples:build` validates every standalone package as one
+cached Nx task. `pnpm nx run @af-utils/examples:e2e` builds the production
+documentation site before running the integration suite in Chromium, Firefox,
+and WebKit.
 Every route gets a hydration/error smoke test. Groups with multiple frameworks
 additionally get an exact screenshot comparison; keep generated data
 deterministic so pixel differences represent real rendering differences.
@@ -78,7 +102,7 @@ group-level `tests` directory and use `describeExample` to run once per
 framework. Native scrollbar pointer tests run in Chromium because headless
 Firefox exposes overlay scrollbars that Playwright cannot drag; route,
 hydration, error, programmatic scrolling, and pixel-parity checks still run in
-both browsers.
+all browsers where the interaction is supported.
 
 If an example cannot be server-rendered, set
 `"af-utils": { "astroClientOnly": "react" }` (or another Astro renderer name)

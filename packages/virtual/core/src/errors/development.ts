@@ -37,8 +37,8 @@ const messages: readonly MessageFactory[] = [
         `estimatedScrollElementOffset must be finite. Received: ${describe(first)}.`,
     first =>
         `overscanCount must be a non-negative safe integer. Received: ${describe(first)}.`,
-    first =>
-        `scrollToIndex attempts must be a positive safe integer. Received: ${describe(first)}.`,
+    () => 'scrollToIndex align must be "start", "center", "end", or "auto".',
+    () => 'scrollToIndex behavior must be "auto" or "smooth".',
     (first, second, third, fourth) =>
         `Invalid collection splice for itemCount ${describe(fourth)}. Received: start=${describe(first)}, deleteCount=${describe(second)}, insertCount=${describe(third)}.`,
     (first, second, third) =>
@@ -47,9 +47,7 @@ const messages: readonly MessageFactory[] = [
     () =>
         "This VirtualScroller has been disposed and can no longer be mutated or attached to DOM elements.",
     (first, second) =>
-        `Cannot end an event batch at depth ${describe(second)}; expected at least ${describe(first)}.`,
-    () =>
-        "useVirtualLayout requires a stable VirtualScroller instance. Remount the component with a new key to replace its model."
+        `Cannot end an event batch at depth ${describe(second)}; expected at least ${describe(first)}.`
 ];
 
 /** @internal */

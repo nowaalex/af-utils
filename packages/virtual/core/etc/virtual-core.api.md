@@ -5,9 +5,6 @@
 ```ts
 
 // @public
-export const assert: (condition: boolean, code: number) => asserts condition;
-
-// @public
 export const mapVirtualRange: <T>(model: VirtualScroller, callback: (index: number) => T) => T[];
 
 // @public
@@ -30,7 +27,7 @@ export class VirtualScroller {
     get renderedRangeOffset(): number;
     get renderedRangeSize(): number;
     scrollSize: number;
-    scrollToIndex(index: VirtualScrollerExactPosition, smooth?: boolean, attempts?: number): void;
+    scrollToIndex(index: VirtualScrollerExactPosition, options?: VirtualScrollerScrollToIndexOptions): void;
     scrollToOffset(offset: number, smooth?: boolean): void;
     set(runtimeParams: VirtualScrollerRuntimeParams): void;
     setContainer(element: HTMLElement | null): void;
@@ -52,7 +49,7 @@ export class VirtualScrollerError extends Error {
 }
 
 // @public
-export const VirtualScrollerErrorCode: readonly ["AFV_INVALID_INDEX", "AFV_INVALID_OFFSET", "AFV_INVALID_ITEM_COUNT", "AFV_INVALID_ITEM_SIZE", "AFV_INVALID_WIDGET_SIZE", "AFV_INVALID_SCROLLER_OFFSET", "AFV_INVALID_OVERSCAN", "AFV_INVALID_ATTEMPTS", "AFV_INVALID_SPLICE", "AFV_INVALID_RANGE", "AFV_EMPTY_MODEL", "AFV_DISPOSED", "AFV_BATCH_INVARIANT", "AFV_MODEL_CHANGED"];
+export const VirtualScrollerErrorCode: readonly ["AFV_INVALID_INDEX", "AFV_INVALID_OFFSET", "AFV_INVALID_ITEM_COUNT", "AFV_INVALID_ITEM_SIZE", "AFV_INVALID_WIDGET_SIZE", "AFV_INVALID_SCROLLER_OFFSET", "AFV_INVALID_OVERSCAN", "AFV_INVALID_SCROLL_ALIGNMENT", "AFV_INVALID_SCROLL_BEHAVIOR", "AFV_INVALID_SPLICE", "AFV_INVALID_RANGE", "AFV_EMPTY_MODEL", "AFV_DISPOSED", "AFV_BATCH_INVARIANT"];
 
 // @public
 export type VirtualScrollerErrorCode = (typeof VirtualScrollerErrorCode)[number];
@@ -98,6 +95,15 @@ export interface VirtualScrollerRuntimeParams {
 }
 
 // @public
+export type VirtualScrollerScrollAlignment = "start" | "center" | "end" | "auto";
+
+// @public
 export type VirtualScrollerScrollElement = HTMLElement | Window;
+
+// @public
+export interface VirtualScrollerScrollToIndexOptions {
+    align?: VirtualScrollerScrollAlignment;
+    behavior?: "auto" | "smooth";
+}
 
 ```

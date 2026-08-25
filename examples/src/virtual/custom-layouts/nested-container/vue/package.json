@@ -1,0 +1,22 @@
+{
+    "name": "@af-utils/virtual-examples-vue-custom-layouts-nested-container",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc && vite build",
+        "serve": "vite preview"
+    },
+    "type": "module",
+    "dependencies": {
+        "@af-utils/virtual-core": "1.0.2",
+        "@af-utils/virtual-vue": "0.0.1",
+        "vue": "^3.5.0"
+    },
+    "devDependencies": {
+        "typescript": "^6.0.3",
+        "vite": "^8.2.2",
+        "@vitejs/plugin-vue": "^6.0.8",
+        "vue-tsc": "^3.3.11"
+    }
+}

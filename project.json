@@ -5,21 +5,6 @@
     "projectType": "application",
     "tags": ["workspace:root"],
     "targets": {
-        "build": {
-            "executor": "nx:noop"
-        },
-        "test": {
-            "executor": "nx:noop"
-        },
-        "typecheck": {
-            "executor": "nx:noop"
-        },
-        "bench": {
-            "executor": "nx:noop"
-        },
-        "publint": {
-            "executor": "nx:noop"
-        },
         "format-oxc": {
             "executor": "nx:run-commands",
             "cache": false,
@@ -63,10 +48,23 @@
             "dependsOn": ["format-check-oxc", "format-check-templates"]
         },
         "lint": {
+            "executor": "nx:noop",
+            "cache": true,
+            "dependsOn": ["lint-fast", "lint-type-aware"]
+        },
+        "lint-fast": {
             "executor": "nx:run-commands",
             "cache": true,
             "options": {
                 "command": "oxlint .",
+                "cwd": "."
+            }
+        },
+        "lint-type-aware": {
+            "executor": "nx:run-commands",
+            "cache": true,
+            "options": {
+                "command": "oxlint -c .oxlintrc.type-aware.json packages/virtual",
                 "cwd": "."
             }
         },
@@ -102,6 +100,20 @@
             ],
             "options": {
                 "command": "node scripts/check-website-generated.mjs",
+                "cwd": "."
+            }
+        },
+        "lighthouse": {
+            "executor": "nx:run-commands",
+            "cache": false,
+            "dependsOn": [
+                {
+                    "target": "build",
+                    "projects": ["website"]
+                }
+            ],
+            "options": {
+                "command": "node scripts/run-lighthouse.mjs",
                 "cwd": "."
             }
         }

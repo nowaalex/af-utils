@@ -16,7 +16,7 @@ export interface ListItemProps<Data = unknown> {
     data?: Data;
 }
 
-/** Props accepted by the Preact {@link List} component. @public */
+/** Props accepted by the Preact `VirtualList` component. @public */
 export type ListProps<Data = unknown> = Omit<
     JSX.HTMLAttributes<HTMLDivElement>,
     "children" | "ref" | "style"
@@ -25,10 +25,10 @@ export type ListProps<Data = unknown> = Omit<
     model: VirtualScroller;
     /** Component used to render one virtual item. */
     children: ComponentType<ListItemProps<Data>>;
+    /** Resolve stable item identities after records change index. */
+    getItemKey?: (index: number) => string | number;
     /** Data forwarded to every rendered item. */
     itemData?: Data;
-    /** Return a stable key for one item index. */
-    getKey?: (index: number, itemData: Data) => string | number;
     /** Content rendered before the native scroll-size element. */
     header?: ComponentChildren;
     /** Content rendered after the native scroll-size element. */

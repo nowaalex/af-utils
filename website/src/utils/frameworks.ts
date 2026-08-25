@@ -24,6 +24,13 @@ export const frameworkPresentation = Object.fromEntries(
     })
 ) as Record<ExampleFramework, FrameworkPresentation>;
 
-export const virtualAdapterPackages = exampleFrameworks.map(
-    framework => getExampleFrameworkDefinition(framework).adapterPackage
-);
+export const virtualAdapterPackages = exampleFrameworks
+    .map(framework => getExampleFrameworkDefinition(framework).adapterPackage)
+    .filter(packageName => packageName !== "@af-utils/virtual-core");
+
+export const getAdapterFramework = (packageName: string) =>
+    exampleFrameworks.find(
+        framework =>
+            getExampleFrameworkDefinition(framework).adapterPackage ===
+                packageName && packageName !== "@af-utils/virtual-core"
+    );

@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-import { stripHtml } from "./typedoc.mjs";
+import {
+    groupHooksInContents,
+    rewriteInternalMarkdownLinks,
+    stripHtml
+} from "./typedoc.mjs";
 
 test("strips complete HTML tags without removing their text", () => {
     assert.equal(
@@ -33,4 +38,15 @@ test("handles a large delimiter-only input without suffix rescans", () => {
     const stripped = stripHtml(value);
 
     assert.equal(stripped.replaceAll("&lt;", ""), "<");
+});
+
+test("keeps TypeDoc page rewriting aligned with the golden fixture", async () => {
+    const [input, expected] = await Promise.all(
+        ["typedoc-page.input.md", "typedoc-page.expected.md"].map(fileName =>
+            readFile(new URL(`./fixtures/${fileName}`, import.meta.url), "utf8")
+        )
+    );
+    const actual = groupHooksInContents(rewriteInternalMarkdownLinks(input));
+
+    assert.equal(actual.trimEnd(), expected.trimEnd());
 });

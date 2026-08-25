@@ -2,7 +2,7 @@ import { VirtualScroller, VirtualScrollerEvent } from "@af-utils/virtual-core";
 import { createRoot, createSignal, type JSX } from "solid-js";
 import { render } from "solid-js/web";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import List from "./components/List";
+import VirtualList from "./components/List";
 import createVirtual from "./primitives/createVirtual";
 import { createVirtualItemRef } from "./primitives/createVirtualItemRef";
 import createVirtualSnapshot from "./primitives/createVirtualSnapshot";
@@ -23,12 +23,23 @@ globalThis.ResizeObserver = NoopResizeObserver;
 
 const Item = (props: ListItemProps): JSX.Element => (
     <div ref={createVirtualItemRef(props.model, props.index)}>
-        Item {props.index}
+        Item {props.index()}
     </div>
 );
 
 const noopDispose = () => {};
 const noopSetItemCount = (_value: number) => {};
+interface KeyedRecord {
+    id: string;
+}
+
+const KeyedItem = (props: ListItemProps<KeyedRecord[]>) => (
+    <div
+        ref={createVirtualItemRef(props.model, props.index)}
+        data-id={props.data?.[props.index()]?.id}
+        data-index={props.index()}
+    />
+);
 
 describe("Solid virtual adapter", () => {
     let container: HTMLDivElement;
@@ -60,10 +71,10 @@ describe("Solid virtual adapter", () => {
         });
 
         expect(model?.itemCount).toBe(10);
-        expect(setSpy).toHaveBeenCalledTimes(1);
+        expect(setSpy).toHaveBeenCalledTimes(2);
         setItemCount(20);
         expect(model?.itemCount).toBe(20);
-        expect(setSpy).toHaveBeenCalledTimes(2);
+        expect(setSpy).toHaveBeenCalledTimes(3);
         disposeRoot();
     });
 
@@ -94,7 +105,7 @@ describe("Solid virtual adapter", () => {
 
         const Harness = () => {
             renders++;
-            return <List model={model}>{Item}</List>;
+            return <VirtualList model={model}>{Item}</VirtualList>;
         };
         const dispose = render(() => <Harness />, container);
         const scroller = container.firstElementChild as HTMLElement;
@@ -124,5 +135,36 @@ describe("Solid virtual adapter", () => {
         expect(attachSpy).toHaveBeenCalledWith(item, 0);
         dispose();
         expect(detachSpy).toHaveBeenCalledWith(item);
+    });
+
+    test("preserves keyed item DOM and updates its reactive index", () => {
+        const [items, setItems] = createSignal([
+            { id: "a" },
+            { id: "b" },
+            { id: "c" }
+        ]);
+        const model = new VirtualScroller({
+            itemCount: items().length
+        });
+        const dispose = render(
+            () => (
+                <VirtualList
+                    model={model}
+                    itemData={items()}
+                    getItemKey={index => items()[index].id}
+                >
+                    {KeyedItem}
+                </VirtualList>
+            ),
+            container
+        );
+        const retained = container.querySelector('[data-id="a"]');
+
+        setItems(current => [current[2], current[1], current[0]]);
+
+        expect(container.querySelector('[data-id="a"]')).toBe(retained);
+        expect(retained?.getAttribute("data-index")).toBe("2");
+        dispose();
+        model.dispose();
     });
 });

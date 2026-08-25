@@ -12,32 +12,6 @@ import type { Attachment } from "svelte/attachments";
 /** A static value or a getter containing that value. @public */
 export type MaybeGetter<Value> = Value | (() => Value);
 
-/** Rune-backed reactive value exposed by the Svelte adapter. @public */
-export interface VirtualSvelteValue<Value> {
-    /** Current reactive value. */
-    readonly current: Value;
-}
-
-/** Parameters accepted by the {@link virtualItem} attachment. @public */
-export interface VirtualSvelteItemBinding {
-    /** Model that observes the item. */
-    model: VirtualScroller;
-    /** Current item index. */
-    index: number;
-}
-
-/** Parameters accepted by the {@link virtualGridItem} attachment. @public */
-export interface VirtualSvelteGridItemBinding {
-    /** Model owning virtual rows. */
-    rows: VirtualScroller;
-    /** Current row index. */
-    rowIndex: number;
-    /** Model owning virtual columns. */
-    columns: VirtualScroller;
-    /** Current column index. */
-    columnIndex: number;
-}
-
 /**
  * Svelte attachments for the three elements explained in the
  * [layout-elements guide](/virtual/guides/layout-elements).
@@ -55,8 +29,10 @@ export interface VirtualSvelteLayoutBinding {
 
 /** Reactive range and layout attachments for a virtual list. @public */
 export interface VirtualSvelteListBinding extends VirtualSvelteLayoutBinding {
+    /** Component-owned virtual-scroller model. */
+    model: VirtualScroller;
     /** Reactive array containing the currently rendered indexes. */
-    range: VirtualSvelteValue<number[]>;
+    range: () => number[];
 }
 
 /** Read a static value or invoke its getter. */
@@ -73,12 +49,9 @@ export const createVirtual = (
     params: MaybeGetter<VirtualScrollerInitialParams>
 ) => {
     const model = new VirtualScroller(readGetter(params));
-    let initialized = false;
 
     $effect(() => {
-        const nextParams = readGetter(params);
-        if (initialized) model.set(nextParams);
-        else initialized = true;
+        model.set(readGetter(params));
     });
     $effect(() => () => model.dispose());
 
@@ -93,7 +66,7 @@ export const createVirtual = (
 export const createVirtualSnapshot = (
     model: VirtualScroller,
     events: VirtualScrollerEventMask = VirtualScrollerEvent.RANGE
-): VirtualSvelteValue<number> => {
+): (() => number) => {
     let revision = $state(model.getRevision(events));
 
     $effect(() => {
@@ -103,27 +76,20 @@ export const createVirtualSnapshot = (
         }, events);
     });
 
-    return {
-        /** Return the current reactive model revision. */
-        get current() {
-            return revision;
-        }
-    };
+    return () => revision;
 };
 
 /** Create a reactive array containing the currently rendered indexes. @public */
 export const createVirtualRange = (
     model: VirtualScroller
-): VirtualSvelteValue<number[]> => {
+): (() => number[]) => {
     const snapshot = createVirtualSnapshot(model, VirtualScrollerEvent.RANGE);
+    const range = $derived.by(() => {
+        snapshot();
+        return mapVirtualRange(model, index => index);
+    });
 
-    return {
-        /** Map the currently rendered indexes after the latest range event. */
-        get current() {
-            void snapshot.current;
-            return mapVirtualRange(model, index => index);
-        }
-    };
+    return () => range;
 };
 
 /**
@@ -134,7 +100,7 @@ export const createVirtualRange = (
  * required nesting.
  * @public
  */
-export const createVirtualLayout = (
+const createVirtualLayout = (
     model: VirtualScroller
 ): VirtualSvelteLayoutBinding => {
     const layout = new VirtualScrollerLayout(model);
@@ -163,11 +129,17 @@ export const createVirtualLayout = (
  * @public
  */
 export const createVirtualList = (
-    model: VirtualScroller
-): VirtualSvelteListBinding => ({
-    ...createVirtualLayout(model),
-    range: createVirtualRange(model)
-});
+    params: VirtualScroller | MaybeGetter<VirtualScrollerInitialParams>
+): VirtualSvelteListBinding => {
+    const model =
+        params instanceof VirtualScroller ? params : createVirtual(params);
+
+    return {
+        model,
+        ...createVirtualLayout(model),
+        range: createVirtualRange(model)
+    };
+};
 
 /** Create an attachment for an arbitrary scroller element. @public */
 export const virtualScroller =
@@ -187,67 +159,72 @@ export const virtualContainer =
 
 /** Create an attachment that observes one rendered virtual item. @public */
 export const virtualItem =
-    (binding: MaybeGetter<VirtualSvelteItemBinding>): Attachment<HTMLElement> =>
+    (
+        model: VirtualScroller,
+        index: MaybeGetter<number>
+    ): Attachment<HTMLElement> =>
     element => {
-        let current = untrack(() => readGetter(binding));
-        current.model.attachItem(element, current.index);
+        let currentIndex = untrack(() => readGetter(index));
+        model.attachItem(element, currentIndex);
 
-        if (typeof binding === "function") {
+        if (typeof index === "function") {
             $effect(() => {
-                const next = binding();
-                if (
-                    next.model === current.model &&
-                    next.index === current.index
-                ) {
-                    return;
-                }
-                current.model.detachItem(element);
-                current = next;
-                current.model.attachItem(element, current.index);
+                const nextIndex = index();
+                if (nextIndex === currentIndex) return;
+                model.detachItem(element);
+                currentIndex = nextIndex;
+                model.attachItem(element, currentIndex);
             });
         }
 
-        return () => current.model.detachItem(element);
+        return () => model.detachItem(element);
     };
 
 /** Create an attachment that observes row and column sizes for a grid cell. @public */
 export const virtualGridItem =
     (
-        binding: MaybeGetter<VirtualSvelteGridItemBinding>
+        rows: VirtualScroller,
+        rowIndex: MaybeGetter<number>,
+        columns: VirtualScroller,
+        columnIndex: MaybeGetter<number>
     ): Attachment<HTMLElement> =>
     element => {
-        let current = untrack(() => readGetter(binding));
+        let currentRowIndex = untrack(() => readGetter(rowIndex));
+        let currentColumnIndex = untrack(() => readGetter(columnIndex));
         let attached = 0;
         const attach = () => {
-            if (current.rows.from === current.rowIndex) {
-                current.columns.attachItem(element, current.columnIndex);
+            if (rows.from === currentRowIndex) {
+                columns.attachItem(element, currentColumnIndex);
                 attached |= 1;
             }
-            if (current.columns.from === current.columnIndex) {
-                current.rows.attachItem(element, current.rowIndex);
+            if (columns.from === currentColumnIndex) {
+                rows.attachItem(element, currentRowIndex);
                 attached |= 2;
             }
         };
         const detach = () => {
-            if (attached & 1) current.columns.detachItem(element);
-            if (attached & 2) current.rows.detachItem(element);
+            if (attached & 1) columns.detachItem(element);
+            if (attached & 2) rows.detachItem(element);
             attached = 0;
         };
 
         attach();
-        if (typeof binding === "function") {
+        if (
+            typeof rowIndex === "function" ||
+            typeof columnIndex === "function"
+        ) {
             $effect(() => {
-                const next = binding();
+                const nextRowIndex = readGetter(rowIndex);
+                const nextColumnIndex = readGetter(columnIndex);
                 if (
-                    next.rows === current.rows &&
-                    next.rowIndex === current.rowIndex &&
-                    next.columns === current.columns &&
-                    next.columnIndex === current.columnIndex
+                    nextRowIndex === currentRowIndex &&
+                    nextColumnIndex === currentColumnIndex
                 ) {
                     return;
                 }
                 detach();
-                current = next;
+                currentRowIndex = nextRowIndex;
+                currentColumnIndex = nextColumnIndex;
                 attach();
             });
         }

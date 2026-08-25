@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components";
 import Breadcrumb from "./Breadcrumb.astro";
 import MenuSubtree from "./MenuSubtree.astro";
+import Search from "./Search.astro";
 
 export interface MenuItem {
     name: string;
@@ -25,6 +26,7 @@ interface Props {
 
 <input aria-hidden="true" type="checkbox" class="ds-menu-checkbox hidden" />
 <div
+    data-pagefind-ignore
     class:list={[
         "flex flex-col lg:overflow-y-auto lg:border-r lg:border-slate-200",
         className
@@ -65,6 +67,7 @@ interface Props {
             {productName}
         </Breadcrumb>
     </div>
+    <Search />
     <nav
         id="main-navigation"
         aria-label="Main navigation"

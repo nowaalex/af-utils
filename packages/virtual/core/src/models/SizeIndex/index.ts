@@ -13,15 +13,20 @@ const EMPTY_SIZES = new Float64Array(0);
 
 /** Grow a fixed-length numeric store while preserving its contents. */
 const growFloat64Array = (array: Float64Array<ArrayBuffer>, length: number) => {
-    // TODO: Think about ArrayBuffer.resize().
     // Every empty SizeIndex store shares this view; transferring it would detach all of them.
     if (array === EMPTY_SIZES) return new Float64Array(length);
 
-    return new Float64Array(
-        array.buffer.transferToFixedLength(
-            length * Float64Array.BYTES_PER_ELEMENT
-        )
-    );
+    if (typeof array.buffer.transferToFixedLength === "function") {
+        return new Float64Array(
+            array.buffer.transferToFixedLength(
+                length * Float64Array.BYTES_PER_ELEMENT
+            )
+        );
+    }
+
+    const grown = new Float64Array(length);
+    grown.set(array);
+    return grown;
 };
 
 /**
@@ -132,13 +137,7 @@ class SizeIndex {
     /** Cached prefix sum for the complete logical range `[0, count)`. */
     _totalSize = 0.0;
 
-    /**
-     * Dense effective sizes, including estimates for invalidated item slots.
-     *
-     * TODO: Benchmark and document the practical memory limit of the two dense
-     * Float64 stores, and re-evaluate precision against a chunked or sparse
-     * representation before changing the documented numeric limit.
-     */
+    /** Dense effective sizes, including estimates for invalidated item slots. */
     private _sizes = EMPTY_SIZES;
 
     /** Fenwick tree over `_sizes`, stored with a one-based root convention. */

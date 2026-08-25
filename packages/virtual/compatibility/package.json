@@ -1,0 +1,36 @@
+{
+    "name": "@af-utils/virtual-compatibility",
+    "private": true,
+    "version": "0.0.0",
+    "description": "Published-package compatibility contract for virtual framework adapters",
+    "type": "module",
+    "scripts": {
+        "compat": "node scripts/run.mjs"
+    },
+    "nx": {
+        "targets": {
+            "compat": {
+                "cache": false,
+                "dependsOn": [
+                    "^build"
+                ]
+            }
+        }
+    },
+    "engines": {
+        "node": ">=24.19.0"
+    },
+    "devDependencies": {
+        "@af-utils/virtual-core": "workspace:*",
+        "@af-utils/virtual-lit": "workspace:*",
+        "@af-utils/virtual-preact": "workspace:*",
+        "@af-utils/virtual-react": "workspace:*",
+        "@af-utils/virtual-solid": "workspace:*",
+        "@af-utils/virtual-svelte": "workspace:*",
+        "@af-utils/virtual-vue": "workspace:*",
+        "@playwright/test": "1.62.1",
+        "@typescript/native": "npm:typescript@^7.0.2",
+        "esbuild": "^0.28.2",
+        "typescript": "npm:@typescript/typescript6@^6.0.2"
+    }
+}

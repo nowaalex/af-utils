@@ -62,22 +62,7 @@ export const getExampleLocation = (
         };
     }
 
-    const category = groupSegments[1] ?? "";
-    if (!category) throw new Error(`Missing example category: ${groupPath}`);
-
-    const definition = getExampleFrameworkDefinition(framework);
-    const aliases =
-        "routeCategoryAliases" in definition
-            ? definition.routeCategoryAliases
-            : undefined;
-    const routeCategory =
-        aliases?.[category as keyof typeof aliases] ?? category;
-    const route = [
-        "virtual",
-        framework,
-        routeCategory,
-        ...groupSegments.slice(2)
-    ].join("/");
+    const route = ["virtual", framework, ...groupSegments.slice(1)].join("/");
 
     return { framework, groupPath, implementationPath, route };
 };
@@ -87,21 +72,10 @@ export const getExampleImplementationPath = (route: string) => {
     if (segments[0] !== "virtual") return route;
 
     const framework = segments[1] ?? "";
-    const routeCategory = segments[2] ?? "";
     if (!isExampleFramework(framework)) {
         throw new Error(`Unknown example framework in route: ${route}`);
     }
-
-    const definition = getExampleFrameworkDefinition(framework);
-    const aliases =
-        "routeCategoryAliases" in definition
-            ? definition.routeCategoryAliases
-            : {};
-    const category =
-        Object.entries(aliases).find(
-            ([, alias]) => alias === routeCategory
-        )?.[0] ?? routeCategory;
-    return ["virtual", category, ...segments.slice(3), framework].join("/");
+    return ["virtual", ...segments.slice(2), framework].join("/");
 };
 
 export const getExampleRouteEntryFile = (route: string) =>

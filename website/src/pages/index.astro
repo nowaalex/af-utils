@@ -59,6 +59,7 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
             </a>
         </header>
         <main
+            data-pagefind-body
             class="prose-xl prose-a:text-violet-700 prose-a:no-underline flex-auto px-[5vmin] py-12"
         >
             <h1>af-utils/*</h1>
@@ -68,6 +69,7 @@ const sizif = await getImage({ src: sizifImg, quality: 16 });
                     <a href="/virtual">Virtual scroll</a>{" "}
                     for rendering only visible part of huge lists or grids
                     <span
+                        role="img"
                         class="not-prose ml-2 inline-flex translate-y-0.5 items-center gap-1.5"
                         aria-label={`Available for ${exampleFrameworks.join(", ")}`}
                     >

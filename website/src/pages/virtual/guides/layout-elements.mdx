@@ -1,12 +1,12 @@
 ---
 layout: layouts/virtual/VirtualDocumentation.astro
-title: "Scroller, size, and items elements"
-description: "A visual guide to the three nested DOM elements that turn a small rendered range into a correctly sized virtual scroller."
+title: "How virtual layout works"
+description: "A visual guide to the viewport, total-size spacer, and rendered window that turn a small item range into a complete scrollbar."
 ---
 
 import DocLink from "components/DocLink.astro";
 
-# Three elements, one virtual list
+# How virtual layout works
 
 A virtual list renders only a small window of items, but the browser must still
 see the height of the complete collection. Three nested elements split those
@@ -56,10 +56,10 @@ jobs cleanly:
         <section id="scroller-ref" className="scroll-mt-8 rounded-xl border border-blue-200 bg-blue-50 p-4">
             <div className="mb-2 flex items-center gap-3">
                 <span className="grid size-8 place-items-center rounded-full bg-blue-700 font-bold text-white">1</span>
-                <h2 className="m-0 border-0 p-0 text-lg text-blue-950">scrollerRef</h2>
+                <h2 className="m-0 border-0 p-0 text-lg text-blue-950">Viewport</h2>
             </div>
             <p className="m-0 text-sm leading-6 text-blue-950">
-                The visible viewport. It owns <code>scrollTop</code>, receives
+                The visible viewport, often bound as <code>scrollerRef</code>. It owns <code>scrollTop</code>, receives
                 scroll events, and is styled by core with <code>overflow: auto</code>
                 and <code>contain: strict</code>.
             </p>
@@ -68,10 +68,10 @@ jobs cleanly:
         <section id="size-ref" className="scroll-mt-8 rounded-xl border border-teal-200 bg-teal-50 p-4">
             <div className="mb-2 flex items-center gap-3">
                 <span className="grid size-8 place-items-center rounded-full bg-teal-700 font-bold text-white">2</span>
-                <h2 className="m-0 border-0 p-0 text-lg text-teal-950">sizeRef</h2>
+                <h2 className="m-0 border-0 p-0 text-lg text-teal-950">Total-size spacer</h2>
             </div>
             <p className="m-0 text-sm leading-6 text-teal-950">
-                The full native scroll extent. Core sets its height or width to
+                The full native scroll extent, often bound as <code>sizeRef</code>. Core sets its height or width to
                 <code>model.scrollSize</code>, so the scrollbar represents every
                 item—even though most items are absent from the DOM.
             </p>
@@ -80,10 +80,10 @@ jobs cleanly:
         <section id="items-ref" className="scroll-mt-8 rounded-xl border border-violet-200 bg-violet-50 p-4">
             <div className="mb-2 flex items-center gap-3">
                 <span className="grid size-8 place-items-center rounded-full bg-violet-700 font-bold text-white">3</span>
-                <h2 className="m-0 border-0 p-0 text-lg text-violet-950">itemsRef</h2>
+                <h2 className="m-0 border-0 p-0 text-lg text-violet-950">Rendered window</h2>
             </div>
             <p className="m-0 text-sm leading-6 text-violet-950">
-                The small rendered window. It contains only the current model
+                The small rendered window, often bound as <code>itemsRef</code>. It contains only the current model
                 range and core moves it to the right location with a
                 compositor-backed transform.
             </p>
@@ -95,13 +95,13 @@ jobs cleanly:
 ## The required nesting
 
 The three elements form one invariant tree. Application headers and footers may
-sit beside `sizeRef`, but `itemsRef` remains inside it:
+sit beside the spacer, but the rendered window remains inside it:
 
 ```text
-scrollerRef                         visible viewport and scroll owner
+viewport                            visible area and scroll owner
 ├── header (optional)
-├── sizeRef                         complete native scroll extent
-│   └── itemsRef                    only the current [from, to) range
+├── total-size spacer               complete native scroll extent
+│   └── rendered window             only the current [from, to) range
 └── footer (optional)
 ```
 
@@ -113,20 +113,25 @@ scrollerRef                         visible viewport and scroll owner
 </div>
 ```
 
-Svelte exposes the same roles as the `scroller`, `size`, and `items` actions.
-Lit exposes them on `VirtualLayoutController`; Vue, React, Preact, and Solid use
-framework-native refs.
+The names differ by framework, but the roles do not:
+
+| Adapter          | Viewport / spacer / window bindings                      |
+| ---------------- | -------------------------------------------------------- |
+| React and Preact | `scrollerRef`, `sizeRef`, `itemsRef`                     |
+| Solid            | `scrollerRef`, `sizeRef`, `itemsRef`                     |
+| Vue              | `scrollerRef`, `sizeRef`, `itemsRef`                     |
+| Svelte           | `scroller`, `size`, `items` attachments                  |
+| Lit              | refs on the same `VirtualController` that owns the model |
+| Core             | setters on `VirtualScrollerLayout`                       |
+
+See the [nested-container implementations](/virtual/examples/react/custom-layouts/nested-container)
+when these roles cannot be immediate parent and child elements.
 
 The half-open rendered range starts at
 
-<DocLink slug="virtual-core/classes/VirtualScroller#property-from">
-    model.from
-</DocLink>
+<DocLink slug="virtual-core/classes/VirtualScroller#from">model.from</DocLink>
 and ends before
-<DocLink slug="virtual-core/classes/VirtualScroller#property-to">
-    model.to
-</DocLink>
-.
+<DocLink slug="virtual-core/classes/VirtualScroller#to">model.to</DocLink>.
 
 ## What changes while scrolling
 
@@ -160,14 +165,15 @@ and ends before
     </div>
 </div>
 
-`scrollerRef` stays the viewport and `sizeRef` stays the complete extent.
-Usually only the range inside `itemsRef` and its transform change. Measurements
-may also refine `sizeRef` when estimated sizes are replaced by real ones.
+The viewport stays the scroll owner and the spacer stays the complete extent.
+Usually only the range inside the rendered window and its transform change.
+Measurements may also refine the spacer when estimates are replaced by real
+sizes.
 
 ## Ownership rule
 
 Core owns the layout-critical inline styles of all three elements after their
-refs attach. The framework owns which children exist inside `itemsRef`; the
+bindings attach. The framework owns which children exist inside the rendered window; the
 application still owns presentation such as the scroller's dimensions, border,
 background, and classes.
 

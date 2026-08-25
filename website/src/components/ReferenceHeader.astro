@@ -1,10 +1,6 @@
 ---
-import { exampleFrameworks } from "@af-utils/examples/config";
 import { Icon } from "astro-icon/components";
-import {
-    frameworkPresentation,
-    virtualAdapterPackages
-} from "utils/frameworks";
+import { frameworkPresentation, getAdapterFramework } from "utils/frameworks";
 
 interface Props {
     kind: string;
@@ -14,9 +10,7 @@ interface Props {
 const { kind, packageName } = Astro.props;
 const packageSlug = packageName.replace("@af-utils/", "");
 const packageLabel = packageName.replace("@af-utils/virtual-", "");
-const frameworkName = exampleFrameworks.find(
-    (_, index) => virtualAdapterPackages[index] === packageName
-);
+const frameworkName = getAdapterFramework(packageName);
 const framework = frameworkName
     ? frameworkPresentation[frameworkName]
     : undefined;

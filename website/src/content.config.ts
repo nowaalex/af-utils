@@ -5,7 +5,7 @@ import { z } from "astro/zod";
 const reference = defineCollection({
     loader: glob({
         pattern: "**/*.md",
-        base: "./src/content/reference",
+        base: "./.generated/reference",
         // TypeDoc symbol filenames intentionally preserve identifier casing.
         generateId: ({ entry }) => entry.replace(/\.md$/u, "")
     }),

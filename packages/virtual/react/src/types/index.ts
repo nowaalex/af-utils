@@ -8,26 +8,27 @@ import type {
 
 /**
  * @public
- * Props passed to List item
+ * Props passed to a `VirtualList` item.
  */
 export interface ListItemProps<Data = unknown> {
     model: VirtualScroller;
     /** item index */
     index: number;
-    /** links to {@link ListProps.itemData} */
+    /** Links to {@link ListProps.itemData}. */
     data?: Data;
 }
 
 /**
  * @public
- * {@link List} component props
+ * `VirtualList` component props.
  */
 export interface ListProps<C extends ElementType = "div", Data = unknown> {
     model: VirtualScroller;
     children: ComponentType<ListItemProps<Data>>;
+    /** Resolve stable item identities after records change index. */
+    getItemKey?: (index: number) => string | number;
     /** could be accessed in {@link ListItemProps.data} */
     itemData?: Data;
-    getKey?: (index: number, itemData: Data) => string | number;
     component?: C;
     header?: ReactElement | null;
     footer?: ReactElement | null;

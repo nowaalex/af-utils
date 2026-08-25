@@ -1,0 +1,18 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "categories": {
+        "correctness": "off"
+    },
+    "options": {
+        "denyWarnings": true,
+        "typeAware": true
+    },
+    "plugins": ["typescript"],
+    "rules": {
+        "typescript/await-thenable": "error",
+        "typescript/no-floating-promises": "error",
+        "typescript/no-misused-promises": "error",
+        "typescript/no-unnecessary-type-assertion": "error",
+        "typescript/switch-exhaustiveness-check": "error"
+    }
+}

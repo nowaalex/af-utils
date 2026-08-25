@@ -17,6 +17,8 @@ npx weigh-exports --input "packages/*" --output bundle-sizes.ts
 
 The CLI reads each package's `exports`, prints a size table, and optionally
 writes the results as a typed TypeScript module.
+See the [package source and issue tracker](https://github.com/nowaalex/af-utils/tree/master/packages/weigh-exports)
+for development and support.
 
 ## Options
 

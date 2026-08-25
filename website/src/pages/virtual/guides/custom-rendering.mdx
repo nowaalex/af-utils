@@ -1,85 +1,66 @@
 ---
 layout: layouts/virtual/VirtualDocumentation.astro
-title: "Custom rendering"
-description: "Choose between the high-level List, framework layout primitives, and direct model subscriptions without giving up measurement or scroll anchoring."
+title: "Choose an API level"
+description: "Start with the smallest virtual-list binding and move to layout primitives or core only when the required DOM needs more control."
 ---
 
-import DocLink from "components/DocLink.astro";
+import ExampleImplementationLinks from "components/ExampleImplementationLinks.astro";
 
-# Custom rendering
+# Choose an API level
 
-Use the highest API level that can express the required markup. All levels use
-the same `VirtualScroller`, item measurement cache, and scroll anchoring.
+Every level uses the same `VirtualScroller` sizes, offsets, anchoring, and item
+measurement. Choose by DOM ownership, not by expected data size.
 
-## High-level list
+| Level             | Use it when                                                          | Framework entry point                                                                                     |
+| ----------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| List binding      | One viewport contains one virtual block                              | `VirtualList` in React, Preact, Solid, and Vue; `createVirtualList` in Svelte; `VirtualController` in Lit |
+| Layout primitives | The viewport, size element, and rendered range need custom nesting   | Framework refs, attachments, composables, or controller refs                                              |
+| Direct core       | The renderer is canvas, a new adapter, or has no framework lifecycle | `VirtualScroller` and optionally `VirtualScrollerLayout`                                                  |
 
-Choose framework `List` when a scroll element can contain one size element and
-one rendered-items block. It owns the required layout refs and subscribes only
-to range changes.
+## Start with the list binding
 
-- [React list examples](/virtual/examples/react/list/simple)
-- [Solid list examples](/virtual/examples/solid/list/simple)
+It owns the three layout bindings and limits framework updates to the rendered
+range. The canonical implementations are intentionally kept in examples rather
+than repeated here.
 
-## Framework layout primitives
+<ExampleImplementationLinks
+    label="High-level list bindings"
+    path="virtual/react/basics/simple-list"
+/>
 
-When the DOM needs extra wrappers or the scroller and items container are not
-the same element, use the framework's layout binding instead of `List`. The
-[layout elements guide](/virtual/guides/layout-elements) explains the required
-DOM, refs, ownership, and scrolling geometry once; this page only helps choose
-the appropriate rendering level.
+## Move down for custom DOM
 
-Relevant APIs include
+Use framework layout primitives when content separates the viewport from the
+virtual size element, or when the page itself scrolls. The required nesting and
+style ownership do not change; only the framework binding changes.
 
-<DocLink slug="virtual-react/functions/useVirtualLayout">
-    useVirtualLayout
-</DocLink>
-and
-<DocLink slug="virtual-solid/functions/createVirtualLayout">
-    createVirtualLayout
-</DocLink>
-.
+<ExampleImplementationLinks
+    label="Nested scroller implementations"
+    path="virtual/react/custom-layouts/nested-container"
+/>
 
-- [React nested scroller example](/virtual/examples/react/hook/different-scroll-element)
-- [Solid nested scroller example](/virtual/examples/solid/primitives/different-scroll-element)
-- [Window scrolling with React](/virtual/examples/react/hook/window-scroll)
-- [Window scrolling with Solid](/virtual/examples/solid/primitives/window-scroll)
+Read [how virtual layout works](/virtual/guides/layout-elements) before changing
+the tree. Headers and footers may be siblings of the size element, but the
+rendered-items element remains inside it.
 
-## Fully custom layout
+## Use a specialized renderer
 
-Tables, canvas renderers, and grids may not accept the default block layout.
-Subscribe to the necessary event flags and read geometry from the model:
+Semantic tables often need before/after spacer rows instead of an absolutely
+positioned block. Two-axis grids need independent row and column models. Those
+renderers still ask core for range and pixel geometry rather than reimplementing
+virtualization.
 
-```ts
-const unsubscribe = model.subscribe(updateLayout, VirtualScrollerEvent.ALL);
+<ExampleImplementationLinks
+    label="Custom table renderers"
+    path="virtual/react/custom-layouts/table"
+/>
 
-function updateLayout() {
-    const before = model.renderedRangeOffset;
-    const rendered = model.renderedRangeSize;
-    const after = Math.max(0, model.scrollSize - before - rendered);
+<ExampleImplementationLinks
+    label="Two-axis grid renderers"
+    path="virtual/react/custom-layouts/grid"
+/>
 
-    beforeElement.style.height = `${before}px`;
-    afterElement.style.height = `${after}px`;
-}
-```
-
-This callback changes DOM geometry without asking React or Solid to render.
-Only the view responsible for
-
-<DocLink slug="virtual-core/classes/VirtualScroller#property-from">
-    model.from
-</DocLink>
-through
-<DocLink slug="virtual-core/classes/VirtualScroller#property-to">
-    model.to
-</DocLink>
-needs a range subscription.
-
-- [React table renderer](/virtual/examples/react/hook/custom-render)
-- [Solid table renderer](/virtual/examples/solid/primitives/custom-render)
-- [Two-axis React grid](/virtual/examples/react/hook/grid)
-- [Two-axis Solid grid](/virtual/examples/solid/primitives/grid)
-
-Always attach each mounted item using its real index. The core observer then
-measures its border box and updates the shared size index; custom layout code
-does not need to read `clientWidth`, `clientHeight`, or
-`getBoundingClientRect()`.
+Use direct subscriptions only for values the renderer consumes imperatively.
+The [render ownership guide](/virtual/guides/render-ownership) explains which
+events require framework child reconciliation and which can stay in core-owned
+DOM updates.

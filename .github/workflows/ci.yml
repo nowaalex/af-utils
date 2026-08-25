@@ -15,25 +15,28 @@ env:
     CI: true
 
 jobs:
+    quality:
+        uses: ./.github/workflows/quality.yml
+
     check-hot-node-lts:
         name: check-hot Node 24.19 LTS controls
         runs-on: ubuntu-latest
         env:
             CHECK_HOT_REQUIRE_RUNTIMES: node
         steps:
-            - name: Checkout Repo
-              uses: actions/checkout@v7
+            - name: Checkout repository
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
 
             - name: Install pnpm
-              uses: pnpm/action-setup@v6
+              uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
 
-            - name: Setup Node.js 24.19.0
-              uses: actions/setup-node@v7
+            - name: Set up Node.js 24.19.0
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
               with:
                   node-version: "24.19.0"
-                  cache: "pnpm"
+                  cache: pnpm
 
-            - name: Install Dependencies
+            - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
             - name: Run Node LTS oracle and ecosystem controls
@@ -46,19 +49,19 @@ jobs:
         name: check-hot Windows process-tree cleanup
         runs-on: windows-latest
         steps:
-            - name: Checkout Repo
-              uses: actions/checkout@v7
+            - name: Checkout repository
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
 
             - name: Install pnpm
-              uses: pnpm/action-setup@v6
+              uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
 
-            - name: Setup Node.js 24.19.0
-              uses: actions/setup-node@v7
+            - name: Set up Node.js 24.19.0
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
               with:
                   node-version: "24.19.0"
-                  cache: "pnpm"
+                  cache: pnpm
 
-            - name: Install Dependencies
+            - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
             - name: Test bounded process-tree cleanup
@@ -70,93 +73,30 @@ jobs:
         env:
             CHECK_HOT_REQUIRE_RUNTIMES: node,deno,bun
         steps:
-            - name: Checkout Repo
-              uses: actions/checkout@v7
+            - name: Checkout repository
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
 
             - name: Install pnpm
-              uses: pnpm/action-setup@v6
+              uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
 
-            - name: Setup Node.js 24.19.0
-              uses: actions/setup-node@v7
+            - name: Set up Node.js 24.19.0
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
               with:
                   node-version: "24.19.0"
-                  cache: "pnpm"
+                  cache: pnpm
 
-            - name: Setup Deno 2.x
-              uses: denoland/setup-deno@v2
+            - name: Set up Deno 2.9.5
+              uses: denoland/setup-deno@e95548e56dfa95d4e1a28d6f422fafe75c4c26fb # v2.0.3
               with:
                   deno-version: "v2.9.5"
 
-            - name: Setup Bun 1.3.14
-              uses: oven-sh/setup-bun@v2
+            - name: Set up Bun 1.3.14
+              uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
               with:
                   bun-version: "1.3.14"
 
-            - name: Install Dependencies
+            - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
             - name: Run real runtime and ecosystem controls
               run: pnpm nx run-many -t test --projects=@af-utils/check-hot,@af-utils/check-hot-test-runners
-
-    check:
-        name: Check
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout Repo
-              uses: actions/checkout@v7
-
-            - name: Install pnpm
-              uses: pnpm/action-setup@v6
-
-            - name: Setup Node.js 24.19.0
-              uses: actions/setup-node@v7
-              with:
-                  node-version: "24.19.0"
-                  cache: "pnpm"
-
-            - name: Install Dependencies
-              run: pnpm install --frozen-lockfile
-
-            - name: Check generated example files and dependencies
-              run: pnpm nx run @af-utils/examples:versions:check
-
-            - name: Check package READMEs
-              run: pnpm nx run workspace:packages-readmes-check
-
-            - name: Check Nx workspace contracts
-              run: pnpm nx run workspace:nx-contracts-check
-
-            - name: Check formatting and lint warnings
-              run: pnpm nx run workspace:check-style
-
-            - name: Typecheck
-              run: pnpm nx run-many -t typecheck
-
-            - name: Test packages and V8 optimization invariants
-              run: pnpm nx run-many -t test
-
-            - name: Build packages
-              run: pnpm nx run-many -t build --projects=tag:npm:public
-
-            - name: Validate package tarballs
-              run: pnpm nx run-many -t publint --projects=tag:npm:public
-
-            - name: Install Playwright browsers
-              run: pnpm exec playwright install --with-deps chromium firefox
-
-            - name: Test examples in browser
-              run: pnpm nx run @af-utils/examples:e2e
-
-            - name: Check generated website files
-              run: pnpm nx run workspace:website-generated-check
-
-            - name: Upload Playwright artifacts
-              if: ${{ failure() }}
-              uses: actions/upload-artifact@v7
-              with:
-                  name: playwright-report
-                  path: |
-                      playwright-report/
-                      test-results/
-                  if-no-files-found: ignore
-                  retention-days: 7

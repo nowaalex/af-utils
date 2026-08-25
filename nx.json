@@ -1,15 +1,6 @@
 {
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "defaultBase": "master",
-    "tui": {
-        "enabled": true,
-        "autoExit": true
-    },
-    "pluginsConfig": {
-        "@nx/js": {
-            "projectsAffectedByDependencyUpdates": "auto"
-        }
-    },
     "namedInputs": {
         "default": ["{projectRoot}/**/*", "sharedGlobals"],
         "production": [
@@ -22,9 +13,8 @@
             "!{projectRoot}/README.md"
         ],
         "sharedGlobals": [
-            "{workspaceRoot}/api-extractor.json",
+            "{workspaceRoot}/api-extractor-base.json",
             "{workspaceRoot}/package.json",
-            "{workspaceRoot}/pnpm-lock.yaml",
             "{workspaceRoot}/pnpm-workspace.yaml",
             "{workspaceRoot}/tsconfig.base.json",
             { "runtime": "node --version" }
@@ -34,38 +24,13 @@
         "build": {
             "cache": true,
             "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
-            "outputs": ["{projectRoot}/dist"]
+            "inputs": ["production", "^production"]
         },
-        "dev": {
-            "cache": false,
-            "continuous": true
+        "test": {
+            "cache": true,
+            "dependsOn": ["^build"],
+            "inputs": ["default", "^production"]
         },
-        "preview": {
-            "cache": false,
-            "continuous": true
-        },
-        "serve": {
-            "cache": false,
-            "continuous": true
-        },
-        "start": {
-            "cache": false,
-            "continuous": true
-        },
-        "test": [
-            {
-                "cache": true,
-                "dependsOn": ["^build"],
-                "inputs": ["default", "^production"]
-            },
-            {
-                "filter": {
-                    "projects": ["@af-utils/virtual-core"]
-                },
-                "cache": false
-            }
-        ],
         "typecheck": {
             "cache": true,
             "dependsOn": ["^build"],
@@ -77,7 +42,7 @@
             "dependsOn": [
                 {
                     "target": "build",
-                    "projects": ["examples/**", "website"]
+                    "projects": ["website"]
                 }
             ]
         },

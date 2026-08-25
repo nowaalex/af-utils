@@ -1,0 +1,1 @@
+[VirtualList](https://af-utils.com/virtual/reference/virtual-react/functions/VirtualList) supports the `component` prop, so it can be integrated with Material UI. Pass `disablePadding` to `MuiList` to preserve the virtual layout.

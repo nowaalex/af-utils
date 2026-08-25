@@ -14,24 +14,24 @@ import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
 export const createVirtual: (params: MaybeAccessor<VirtualScrollerInitialParams>) => VirtualScroller;
 
 // @public
-export const createVirtualGridItemRef: (rows: VirtualScroller, rowIndex: MaybeAccessor<number>, columns: VirtualScroller, columnIndex: MaybeAccessor<number>) => VirtualElementRef;
+export const createVirtualGridItemRef: (rows: VirtualScroller, rowIndex: MaybeAccessor<number>, columns: VirtualScroller, columnIndex: MaybeAccessor<number>) => ((element: HTMLElement) => void);
 
 // @public
-export const createVirtualItemRef: (model: VirtualScroller, index: MaybeAccessor<number>) => VirtualElementRef;
+export const createVirtualItemRef: (model: VirtualScroller, index: MaybeAccessor<number>) => ((element: HTMLElement) => void);
 
 // @public
 export const createVirtualLayout: (model: VirtualScroller) => VirtualLayoutBinding;
 
 // @public
-export const createVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => Accessor<number>;
+export const createVirtualRange: (model: VirtualScroller) => Accessor<number[]>;
 
 // @public
-export const List: <Data = unknown>(props: ListProps<Data>) => JSX.Element;
+export const createVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => Accessor<number>;
 
 // @public
 export interface ListItemProps<Data = unknown> {
     data?: Data;
-    index: number;
+    index: Accessor<number>;
     model: VirtualScroller;
 }
 
@@ -39,26 +39,24 @@ export interface ListItemProps<Data = unknown> {
 export type ListProps<Data = unknown> = Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref" | "style"> & {
     model: VirtualScroller;
     children: (props: ListItemProps<Data>) => JSX.Element;
+    getItemKey?: (index: number) => string | number;
     itemData?: Data;
     header?: JSX.Element;
     footer?: JSX.Element;
-    style?: VirtualSolidStyle;
+    style?: Readonly<Record<string, string | number | undefined>>;
 };
 
 // @public
 export type MaybeAccessor<Value> = Value | Accessor<Value>;
 
 // @public
-export type VirtualElementRef = (element: HTMLElement) => void;
-
-// @public
 export interface VirtualLayoutBinding {
-    itemsRef: VirtualElementRef;
-    scrollerRef: VirtualElementRef;
-    sizeRef: VirtualElementRef;
+    itemsRef: (element: HTMLElement) => void;
+    scrollerRef: (element: HTMLElement) => void;
+    sizeRef: (element: HTMLElement) => void;
 }
 
 // @public
-export type VirtualSolidStyle = Readonly<Record<string, string | number | undefined>>;
+export const VirtualList: <Data = unknown>(props: ListProps<Data>) => JSX.Element;
 
 ```

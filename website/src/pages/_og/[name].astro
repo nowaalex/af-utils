@@ -16,7 +16,7 @@ export const getStaticPaths = () => [
         props: {
             name: "virtual",
             description:
-                "Performant library for rendering only visible part of huge lists or grids (currently available for React)",
+                "High-performance virtual scrolling for huge lists and grids. Adapters for React, Preact, Solid, Svelte, Lit, and Vue",
             url: "/virtual"
         }
     },
@@ -38,7 +38,7 @@ const { name, url, description } = Astro.props;
         class="flex flex-col text-center justify-around gap-4 p-8 w-[1200px] h-[630px] text-4xl prose"
     >
         <h1 class="text-[2.4em] font-extrabold m-0">af-utils/{name}</h1>
-        <p class="m-0">{description}. Written in typescript.</p>
+        <p class="m-0">{description}. Written in TypeScript.</p>
         <a href={`https://af-utils.com${url}`}>https://af-utils.com{url}</a>
     </main>
 </Base>

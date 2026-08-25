@@ -1,7 +1,10 @@
-# Scrollend Event Polyfill
+# @af-utils/scrollend-polyfill
 
-This polyfill adds [scrollend event](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollend_event)
-support via `addEventListener` / `removeEventListener`. `onscrollend` event handler is not supported.
+This package adds the
+[`scrollend` event](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollend_event)
+to browsers that do not expose it natively. It supports
+`addEventListener`/`removeEventListener`; assigning `onscrollend` is outside the
+polyfill boundary.
 
 ## Installation
 
@@ -11,15 +14,19 @@ npm install @af-utils/scrollend-polyfill
 
 ## Usage
 
-```tsx
+```ts
 import "@af-utils/scrollend-polyfill";
 ```
 
-Just import once at the top level. Does nothing when used in `node` environment.
+Import it once at the application entry point. The module does nothing in Node
+or when the browser already supports `scrollend`.
 
-## Implementation Details
+## When the event fires
 
-Scroll is considered ended when:
+The polyfill dispatches `scrollend` after scrolling has been quiet for a short
+period and no tracked touch gesture remains active. Touch cancellation and
+aborted, captured, duplicate, or one-time listeners follow the normal event
+listener lifecycle.
 
-- touch events are not active ( user released touch );
-- `scroll` event was not fired within `100ms` since last invocation.
+See the [runnable React example](https://af-utils.com/scrollend-polyfill/examples/react)
+and [bundle-size report](https://af-utils.com/scrollend-polyfill/size).

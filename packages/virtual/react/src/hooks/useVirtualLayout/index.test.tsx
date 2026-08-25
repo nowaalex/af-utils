@@ -1,10 +1,6 @@
 // @vitest-environment jsdom
 
-import {
-    VirtualScroller,
-    type VirtualScrollerError,
-    VirtualScrollerErrorCode
-} from "@af-utils/virtual-core";
+import { VirtualScroller } from "@af-utils/virtual-core";
 import { act, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
@@ -131,7 +127,7 @@ describe("useVirtualLayout", () => {
         act(() => root.unmount());
     });
 
-    test("rejects replacing the model without remounting", () => {
+    test("replaces the layout when the model changes", () => {
         const first = new VirtualScroller({ itemCount: 10 });
         const second = new VirtualScroller({ itemCount: 20 });
         const root = createRoot(container);
@@ -139,14 +135,7 @@ describe("useVirtualLayout", () => {
         act(() => root.render(<StableModelHarness model={first} />));
         expect(() =>
             act(() => root.render(<StableModelHarness model={second} />))
-        ).toThrow(
-            expect.objectContaining<Partial<VirtualScrollerError>>({
-                code: VirtualScrollerErrorCode[13],
-                message: expect.stringContaining(
-                    "useVirtualLayout requires a stable VirtualScroller"
-                )
-            })
-        );
+        ).not.toThrow();
         act(() => root.unmount());
     });
 });

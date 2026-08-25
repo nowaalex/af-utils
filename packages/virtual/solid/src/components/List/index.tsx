@@ -1,7 +1,6 @@
-import { mapVirtualRange, VirtualScrollerEvent } from "@af-utils/virtual-core";
-import { createMemo, For, splitProps } from "solid-js";
+import { For, splitProps } from "solid-js";
 import createVirtualLayout from "../../primitives/createVirtualLayout";
-import createVirtualSnapshot from "../../primitives/createVirtualSnapshot";
+import createVirtualRange from "../../primitives/createVirtualRange";
 import type { ListItemProps, ListProps } from "../../types";
 
 /**
@@ -10,10 +9,11 @@ import type { ListItemProps, ListProps } from "../../types";
  * @group Components
  * @public
  */
-const List = <Data = unknown,>(props: ListProps<Data>) => {
+const VirtualList = <Data = unknown,>(props: ListProps<Data>) => {
     const [local, rest] = splitProps(props, [
         "model",
         "children",
+        "getItemKey",
         "itemData",
         "header",
         "footer",
@@ -21,17 +21,13 @@ const List = <Data = unknown,>(props: ListProps<Data>) => {
         "tabIndex"
     ]);
     const layout = createVirtualLayout(local.model);
-    const revision = createVirtualSnapshot(
-        local.model,
-        VirtualScrollerEvent.RANGE
-    );
-    const indexes = createMemo(() => {
-        revision();
-        return mapVirtualRange(local.model, index => index);
-    });
+    const indexes = createVirtualRange(local.model);
+    const keys = () =>
+        indexes().map(index => local.getItemKey?.(index) ?? index);
 
-    /** Render one range index with live access to optional item data. */
-    const renderItem = (index: number) => {
+    /** Render one stable item key with live access to its current index. */
+    const renderItem = (_key: string | number, position: () => number) => {
+        const index = () => indexes()[position()];
         const itemProps: ListItemProps<Data> = {
             model: local.model,
             index,
@@ -48,12 +44,12 @@ const List = <Data = unknown,>(props: ListProps<Data>) => {
             {...rest}
             ref={layout.scrollerRef}
             style={local.style}
-            tabIndex={local.tabIndex ?? -1}
+            tabIndex={local.tabIndex ?? 0}
         >
             {local.header}
             <div ref={layout.sizeRef}>
                 <div ref={layout.itemsRef}>
-                    <For each={indexes()}>{renderItem}</For>
+                    <For each={keys()}>{renderItem}</For>
                 </div>
             </div>
             {local.footer}
@@ -61,4 +57,4 @@ const List = <Data = unknown,>(props: ListProps<Data>) => {
     );
 };
 
-export default List;
+export default VirtualList;

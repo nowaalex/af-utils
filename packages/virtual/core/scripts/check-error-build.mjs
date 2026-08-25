@@ -82,16 +82,6 @@ const codeIndex = 2;
 const code = browserProduction.VirtualScrollerErrorCode[codeIndex];
 const builtInClassProperties = ["length", "name", "prototype"];
 
-browserProduction.assert(true, codeIndex);
-browserDevelopment.assert(true, codeIndex);
-assert.throws(
-    () => browserProduction.assert(false, codeIndex),
-    error =>
-        error instanceof browserProduction.VirtualScrollerError &&
-        error.code === code &&
-        error.message === code
-);
-
 assert(productionError instanceof browserProduction.VirtualScrollerError);
 assert.equal(productionError.code, code);
 assert.equal(productionError.message, code);
@@ -102,8 +92,14 @@ assert(!browserProductionSource.includes("process.env"));
 assert(!browserProductionSource.includes("globalThis.ResizeObserver"));
 assert(!browserProductionSource.includes("/**"));
 assert(nodeProductionSource.includes("globalThis.ResizeObserver"));
-assert.equal(browserProductionSource.match(/AFV_/gu)?.length, 14);
-assert.equal(nodeProductionSource.match(/AFV_/gu)?.length, 14);
+assert.equal(
+    browserProductionSource.match(/AFV_/gu)?.length,
+    browserProduction.VirtualScrollerErrorCode.length
+);
+assert.equal(
+    nodeProductionSource.match(/AFV_/gu)?.length,
+    nodeProduction.VirtualScrollerErrorCode.length
+);
 assert.deepEqual(
     Object.getOwnPropertyNames(
         browserProduction.VirtualScrollerError

@@ -1,0 +1,75 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+title: "Data changes and scroll anchoring"
+description: "Append, prepend, filter, sort, and lazily load virtual data while preserving identity and the user's scroll position."
+---
+
+import ExampleImplementationLinks from "components/ExampleImplementationLinks.astro";
+
+# Data changes and scroll anchoring
+
+Changing data has two independent effects: records may receive new indexes, and
+the visible pixel anchor may need to stay in place. Stable keys solve the first;
+the virtual model's collection methods and scrolling API solve the second.
+
+## Stable identity
+
+Pass `getItemKey` to `VirtualList` whenever records can prepend, filter, sort, or
+reorder. Lit accepts the same resolver as the third `virtualRange()` argument;
+Svelte uses the record identifier directly in its keyed each block. Return a
+unique data identifier, not the current index.
+
+Item identity belongs to the renderer rather than the geometry model. Core
+continues to own sizes, ranges, measurements, and scroll anchoring without
+depending on application records.
+
+This keeps framework-local item state and DOM identity attached to the record
+while its index changes. Solid exposes the current index as an accessor so its
+item measurement binding also follows a moved keyed owner.
+
+The TanStack Table integrations exercise sorting and filtering with stable row
+IDs:
+
+<ExampleImplementationLinks
+    label="TanStack Table integrations"
+    path="virtual/react/integrations/tanstack-table"
+/>
+
+## Append and follow the end
+
+A feed should follow new messages only while the user is already at the latest
+message. Once the user scrolls away, appending must preserve their position and
+offer an explicit way back.
+
+<ExampleImplementationLinks
+    label="Live feed implementations"
+    path="virtual/react/data-changes/live-feed"
+/>
+
+## Prepend without moving the visible record
+
+For an index-based insertion, call `spliceItems()` so cached sizes move with the
+retained indexes, then restore the captured fractional position with
+`scrollToIndex()`. The complete ordering is covered by the tested prepend
+implementations:
+
+<ExampleImplementationLinks
+    label="Prepend implementations"
+    path="virtual/react/data-changes/prepend-items"
+/>
+
+## Load more near the rendered end
+
+Subscribe to range changes, guard against duplicate requests, append the result
+to application data, and let the adapter synchronize `itemCount`. Do not copy a
+second loading protocol into the page; use the
+[load-on-demand example](/virtual/examples/react/data-changes/load-on-demand),
+which contains the request guard and cleanup together.
+
+## Programmatic scrolling
+
+`scrollToIndex(index, options)` accepts `align: "start" | "center" | "end" |
+"auto"` and `behavior: "auto" | "smooth"`. Measurement convergence is an
+internal core concern rather than a public retry count. See the
+[scroll-to-item implementations](/virtual/examples/react/scrolling/scroll-to-item)
+for forms, sticky layout elements, and collection-size changes.

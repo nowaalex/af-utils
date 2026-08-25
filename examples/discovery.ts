@@ -5,7 +5,7 @@ import {
     exampleEntryFiles,
     examplesDirectory,
     getExampleLocation
-} from "./config";
+} from "./config.ts";
 
 export interface DiscoveredExample extends ExampleLocation {
     astroClientOnly?: string;
@@ -16,6 +16,7 @@ export interface DiscoveredExample extends ExampleLocation {
 const entrySuffixes = Object.values(exampleEntryFiles).map(entryFile =>
     entryFile.split("/").join(sep)
 );
+const ignoredDirectories = new Set(["dist", "node_modules"]);
 
 const getImplementationDirectory = (entryFile: string, entrySuffix: string) =>
     entrySuffix.split(sep).reduce(directory => dirname(directory), entryFile);
@@ -26,6 +27,9 @@ export const discoverExamples = async (
     const entries = await readdir(directory, { withFileTypes: true });
     const discovered = await Promise.all(
         entries.map(async entry => {
+            if (entry.isDirectory() && ignoredDirectories.has(entry.name)) {
+                return [];
+            }
             const entryPath = resolve(directory, entry.name);
             if (entry.isDirectory()) return discoverExamples(entryPath);
             const entrySuffix = entrySuffixes.find(suffix =>
@@ -54,7 +58,12 @@ export const discoverExamples = async (
                 await readFile(
                     resolve(implementationDirectory, "package.json"),
                     "utf8"
-                )
+                ).catch(error => {
+                    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+                        return "{}";
+                    }
+                    throw error;
+                })
             );
 
             return [

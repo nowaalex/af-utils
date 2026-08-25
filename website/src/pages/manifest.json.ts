@@ -17,11 +17,24 @@ export async function GET() {
 
     return new Response(
         JSON.stringify({
+            name: "af-utils",
+            short_name: "af-utils",
+            description: "Small, focused JavaScript and TypeScript utilities",
+            start_url: "/",
+            scope: "/",
+            display: "standalone",
+            background_color: "#ffffff",
+            theme_color: "#1d4ed8",
             icons: images.map(image => ({
                 src: image.src,
                 type: `image/${image.options.format}`,
                 sizes: `${image.options.width}x${image.options.height}`
             }))
-        })
+        }),
+        {
+            headers: {
+                "Content-Type": "application/manifest+json; charset=utf-8"
+            }
+        }
     );
 }

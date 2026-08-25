@@ -20,17 +20,10 @@ This package was carefully optimized to be as small as possible.
     ]}
 />
 
-## Minifier configuration
+## How the number is produced
 
-During bundle size measurement `process.env.NODE_ENV` was set to `production`
-to cut away some extra checks and verbose errors.
-
-```ts
-const MINIFIER_CONFIG = {
-    compress: {
-        global_defs: {
-            "process.env.NODE_ENV": "production"
-        }
-    }
-};
-```
+The website builds the current package and passes its published JavaScript
+export to `@af-utils/weigh-exports`. That tool measures raw output, minifies it
+with the repository's production configuration, and then records gzip and
+Brotli sizes. The minifier configuration stays in the tool rather than being
+copied into this page.

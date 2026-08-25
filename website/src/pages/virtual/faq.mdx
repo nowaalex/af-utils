@@ -1,69 +1,80 @@
 ---
 layout: layouts/virtual/VirtualDocumentation.astro
-title: "Frequently asked questions"
-description: "Something is not working as expected? Or just curious? Here is the list of hints that may be interesting."
+title: "FAQ and troubleshooting"
+description: "Short answers for empty lists, measurement jumps, item identity, feed anchoring, CSS ownership, SSR, and collection limits."
 ---
 
 import DocLink from "components/DocLink.astro";
 
-# Frequently asked questions
+# FAQ and troubleshooting
 
-Something is not working as expected? Or just curious? Here is the list of hints that may be interesting.
+## The list is blank
 
-## There are other virtual scroll libraries. Why this one?
+Check that the viewport has a real height or width, `itemCount` is greater than
+zero, and all three layout bindings are attached with the required nesting. Use
+[how virtual layout works](/virtual/guides/layout-elements) to compare roles,
+then compare the component with the
+[simple-list example](/virtual/examples/react/basics/simple-list) for its
+framework.
 
-Awesome libraries, which inspired me to create my own:
+## Rows jump when they are first shown
 
-- [tanstack virtual](https://tanstack.com/virtual/)
-- [react-virtualized](https://github.com/bvaughn/react-virtualized)
-- [react-window](https://github.com/bvaughn/react-window)
-- [react-cool-virtual](https://github.com/wellyshen/react-cool-virtual)
-- [react-virtuoso](https://virtuoso.dev/)
+The initial estimate differs from the measured border-box size. Choose a closer
+`estimatedItemSize` and verify that every mounted item uses the adapter's item
+binding with its current index. See
+[measurement and dynamic sizes](/virtual/guides/measurements).
 
-Features I was missing there and implemented/improved here:
+## Why does every item need a ref, directive, or attachment?
 
-- flexible <DocLink slug="virtual-core/index">core api</DocLink>, which exposes
-    <DocLink slug="virtual-core/classes/VirtualScroller#getindex">
-        getIndex
-    </DocLink>
-    and
-    <DocLink slug="virtual-core/classes/VirtualScroller#getoffset">
-        getOffset
-    </DocLink>
-    methods;
-- built-in event emitter, supporting different <DocLink slug="virtual-core/variables/VirtualScrollerEvent">events</DocLink>;
-- scroll position persistence after [prepending items](/virtual/examples/react/list/prepend-items);
-- isolated rerendering with separate [subscriptions](/virtual/examples/react/list/extra-events);
-- support of both [react hook](/virtual/examples/react/hook/simple) and [react component](/virtual/examples/react/list/simple) api, which allows to
-  combine advantages of both aproaches.
+Core must associate a `ResizeObserver` measurement with a collection index.
+The framework binding supplies that association and cleans it up when the item
+unmounts. Do not replace it with a manual layout read in the item renderer.
 
-## Why do I need to use ref?
+## A sorted or prepended row lost its local state
 
-In order to work smoothly, library must know scrolled item sizes. Initially they equal <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#property-estimateditemsize">estimatedItemSize</DocLink>. But this is usually not
-enough, because estimated and real sizes may differ. `ResizeObserver` is used internally
-for more accurate measurements, but you must provide mounted items explicitly in
-conjunction with their indexes.
+Pass `getItemKey` to the framework list renderer, or use the record identifier
+as the key in a Svelte each block. Index keys identify a position, not a record,
+so framework-local state cannot follow data that moves.
+The [TanStack Table examples](/virtual/examples/react/integrations/tanstack-table)
+show keyed sorting and filtering; the
+[prepend examples](/virtual/examples/react/data-changes/prepend-items) show
+index and scroll-position changes together.
 
-## Do I need to use css classes, provided in examples?
+## Why did a live feed stop following new messages?
 
-Not necessary. This website was build with [tailwind](https://tailwindcss.com/),
-but you may use your styling approach.
+That should happen after the user scrolls away from the latest item. Preserve
+their position and offer an explicit jump back instead of forcing the viewport
+down. Use the tested
+[live-feed implementation](/virtual/examples/react/data-changes/live-feed).
 
-## How many items virtual scroller can handle?
+## Can headers and footers be inside the viewport?
 
-Maximum quantity library can handle is `1_073_741_823` (`2^30 - 1`), but it is better not to use such huge values. <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#property-itemcount">Read more</DocLink>
+Yes. Place them beside the total-size spacer and attach sticky elements through
+the model when they reserve viewport space. Keep the rendered window inside the
+spacer. See the
+[sticky header and footer example](/virtual/examples/react/basics/sticky-header-and-footer).
 
-## Is Server-side rendering supported?
+## Do example CSS classes have to be copied?
 
-Yes, you can adjust quantity of server-rendered items. <DocLink slug="virtual-core/interfaces/VirtualScrollerInitialParams#property-estimatedwidgetsize">Read more</DocLink>
+No. Presentation is application-owned. The viewport still needs a usable size,
+and application styles must not overwrite the layout-owned size, position, or
+transform properties listed in
+[render ownership](/virtual/guides/render-ownership).
 
-## How are dynamic measurements synchronized with a dragged scrollbar?
+## Is server-side rendering supported?
 
-Items are remeasured on the fly. If <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#property-estimateditemsize">estimated item size</DocLink>
-differs from the real one, <DocLink slug="virtual-core/classes/VirtualScroller#property-scrollsize">scrollSize</DocLink> changes. Changing the native scroll range
-while its thumb is being dragged would move the thumb away from the pointer.
+Yes. Estimates create the initial range before DOM attachment and measured
+sizes replace them after hydration. See
+[support and compatibility](/virtual/support) and the adapter's working
+example rather than maintaining separate server markup.
 
-The model therefore queues measurements during a native pointer drag and commits them as one batch after pointer release. The scroll range and
-rendered offsets always change together. Outside a drag, reaching the end anchors the list to its new end, while ordinary and programmatic scrolling
-is never rescaled by an unrelated size ratio. An accurate <DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#property-estimateditemsize">estimated item size</DocLink>
-still reduces the amount of correction needed after release.
+## How many items are supported?
+
+The limit is high enough for millions of items, but browser CSS dimensions and
+application memory usually become practical constraints first. The exact core
+limit, memory rationale, and browser-layout caveat live in
+
+<DocLink slug="virtual-core/interfaces/VirtualScrollerRuntimeParams#itemcount">
+    `itemCount`
+</DocLink>
+.

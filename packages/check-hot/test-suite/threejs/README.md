@@ -1,5 +1,18 @@
 # Three.js check-hot audit
 
+> **Change Contract**
+>
+> - **Responsibility:** keep one reproducible consumer audit of Three.js static
+>   candidates and a target-scoped runtime proof.
+> - **Boundary:** this folder records evidence; Three.js recipes remain in the
+>   optional test-runner package and never move into core.
+> - **Invariants:** portable summaries are committed, machine-specific suites
+>   and raw artifacts are generated, and static findings remain hypotheses.
+> - **Configuration owners:** the audit scripts and Three.js adapter own the
+>   workload; generated artifacts own current measured results.
+> - **Targeted check:**
+>   `pnpm nx run @af-utils/check-hot-test-runners:test:threejs`.
+
 This folder is a reproducible consumer audit, not part of `check-hot` core. It
 keeps Three.js recipes in the optional test-runner package and separates:
 

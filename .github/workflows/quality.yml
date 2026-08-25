@@ -1,0 +1,90 @@
+name: Quality
+
+on:
+    workflow_call:
+
+permissions:
+    contents: read
+
+env:
+    CI: true
+
+jobs:
+    quality:
+        name: Quality
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
+
+            - name: Set up Node.js 24.19.0
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+              with:
+                  node-version: "24.19.0"
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Check generated example files and dependencies
+              run: pnpm nx run @af-utils/examples:versions:check
+
+            - name: Check package READMEs
+              run: pnpm nx run workspace:packages-readmes-check
+
+            - name: Check Nx workspace contracts
+              run: pnpm nx run workspace:nx-contracts-check
+
+            - name: Check formatting and lint warnings
+              run: pnpm nx run workspace:check-style
+
+            - name: Typecheck
+              run: pnpm nx run-many -t typecheck
+
+            - name: Test packages
+              run: pnpm nx run-many -t test
+
+            - name: Build packages
+              run: pnpm nx run-many -t build --projects=tag:npm:public
+
+            - name: Validate package tarballs
+              run: pnpm nx run-many -t publint --projects=tag:npm:public
+
+            - name: Install Playwright browsers
+              run: pnpm exec playwright install --with-deps chromium firefox webkit
+
+            - name: Check minimum framework versions
+              run: pnpm nx run @af-utils/virtual-compatibility:compat
+
+            - name: Test examples and website in browsers
+              run: pnpm nx run @af-utils/examples:e2e
+
+            - name: Check generated website files
+              run: pnpm nx run workspace:website-generated-check
+
+            - name: Check internal website links
+              uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+              with:
+                  args: >-
+                      --offline
+                      --root-dir '${{ github.workspace }}/website/dist'
+                      '${{ github.workspace }}/website/dist/**/*.html'
+                  fail: true
+
+            - name: Enforce Lighthouse scores and resource budgets
+              run: pnpm nx run workspace:lighthouse
+
+            - name: Upload browser and Lighthouse reports
+              if: ${{ failure() }}
+              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+              with:
+                  name: quality-reports
+                  path: |
+                      .lighthouseci/
+                      playwright-report/
+                      test-results/
+                  if-no-files-found: ignore
+                  retention-days: 7

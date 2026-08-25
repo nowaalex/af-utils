@@ -1,106 +1,82 @@
 ---
 layout: layouts/virtual/VirtualDocumentation.astro
 title: "Getting started"
-description: "Virtualize large lists with dynamic item sizes using React, Preact, Solid, Svelte, Lit, Vue, or the framework-neutral core."
+description: "Render large lists without mounting every item, then let af-utils measure dynamic content and keep scrolling stable."
 ---
 
 import { Image } from "astro:assets";
 import messyImg from "assets/messy.jpg";
-import List from "@af-utils/examples/src/virtual/list/simple/solid/src/code";
+import ExampleImplementationLinks from "components/ExampleImplementationLinks.astro";
+import List from "@af-utils/examples/src/virtual/basics/simple-list/solid/src/code";
 
-# Getting started
+# Virtual scrolling, from the first list
 
-When you need to render a list or grid with a lot of rows or columns, you may face performance problems.
-A lot of DOM nodes must be created, but only a few of them are visible.
-One way to optimize this is called **virtual scroll**.
-Based on scroll position and size of each item we can calculate the range to show.
-Only visible elements are rendered with this approach.
+A normal list creates one DOM element for every record. A virtual list keeps the
+complete data collection but mounts only the small range that can be seen. This
+reduces layout and rendering work without changing how the application owns its
+data.
 
-<div className="not-prose grid max-w-screen-xl gap-8 md:grid-cols-2">
-    <Image
-        alt="Messy room with only webcam-visible piece cleaned"
-        src={messyImg}
-        quality={40}
-    />
-    <div className="contain-strict grid h-64 overflow-hidden md:h-full border">
-        <List client:visible />
-    </div>
+<div className="not-prose my-8 grid max-w-screen-xl gap-6 md:grid-cols-2">
+    <figure className="m-0 grid gap-3">
+        <Image
+            alt="A room where only the part visible to a camera is tidy"
+            src={messyImg}
+            quality={40}
+            className="h-64 w-full object-cover"
+        />
+        <figcaption className="text-sm text-slate-600">
+            Virtualization does the work needed for the visible area instead of
+            preparing the whole room.
+        </figcaption>
+    </figure>
+    <figure className="m-0 grid gap-3">
+        <div className="contain-strict grid h-64 overflow-hidden border">
+            <List client:visible />
+        </div>
+        <figcaption className="text-sm text-slate-600">
+            The data contains 150,000 rows; the browser mounts only the current
+            window and nearby overscan.
+        </figcaption>
+    </figure>
 </div>
 
-Variable item sizes with <span className="whitespace-nowrap">on-the-fly</span> remeasurement are also supported.
+Real item sizes may differ from the initial estimate. Mounted items are measured
+with `ResizeObserver`, and the model corrects offsets while keeping the visible
+position stable.
 
-## Installation
+## Build the first list
 
-Install desired adapter using your package manager
+1. Open the simple-list implementation for your stack.
+2. Install the package shown in that example's `package.json`.
+3. Copy the example from its **Code** tab, then replace its generated rows with
+   your data and item component.
 
-- ### React
+<ExampleImplementationLinks
+    label="Simple list implementations"
+    path="virtual/react/basics/simple-list"
+/>
 
-    The React adapter supports React 19.2 or newer within the React 19 major release. Older React versions are not supported.
+The example is the canonical minimal implementation. The documentation does not
+repeat it so that fixes to lifecycle, measurement, or framework syntax have one
+source of truth.
 
-    ```bash
-    npm install @af-utils/virtual-react react@^19.2.8
-    ```
+## What each layer owns
 
-- ### Solid
+| Layer             | Responsibility                                              |
+| ----------------- | ----------------------------------------------------------- |
+| Your application  | Data, item content, accessibility, and presentation         |
+| Framework adapter | Component lifecycle and keyed child reconciliation          |
+| Virtual core      | Sizes, offsets, rendered range, anchoring, and DOM geometry |
 
-    The Solid adapter uses fine-grained range updates and requires Solid 1.9 or newer.
+For a normal list, use the highest-level API offered by the adapter. Lit uses one
+`VirtualController`, Svelte uses the binding returned by `createVirtualList`, and
+React, Preact, Solid, and Vue expose `VirtualList`. Use layout primitives or core
+directly only when the required DOM cannot use that shape.
 
-    ```bash
-    npm install @af-utils/virtual-solid solid-js@^1.9.14
-    ```
+## Where to go next
 
-- ### Preact
-
-    The Preact adapter exposes a compact component and hooks that follow the React adapter's model ownership.
-
-    ```bash
-    npm install @af-utils/virtual-preact preact@^10.29.8
-    ```
-
-- ### Svelte
-
-    The Svelte adapter uses readable stores and actions, so only the rendered range participates in updates.
-
-    ```bash
-    npm install @af-utils/virtual-svelte svelte@^5.56.9
-    ```
-
-- ### Lit
-
-    The Lit adapter provides reactive controllers and directives for web components.
-
-    ```bash
-    npm install @af-utils/virtual-lit lit@^3.3.0
-    ```
-
-- ### Vue
-
-    The Vue adapter provides composables, a list component, and a virtual-item directive.
-
-    ```bash
-    npm install @af-utils/virtual-vue vue@^3.5.0
-    ```
-
-- ### Core (no framework)
-
-    Library core is just housing sizes and offsets, so rendering falls on your shoulders.
-
-    ```bash
-    npm install @af-utils/virtual-core
-    ```
-
-## Typescript
-
-Library core and adapters are written in [Typescript](https://www.typescriptlang.org/) with [TSDoc](https://tsdoc.org/) comments.
-This results in good [IntelliSense](https://code.visualstudio.com/docs/editor/intellisense)
-
-## Supported browsers
-
-```json
-"browserslist": [
-    ">0.6%",
-    "not op_mini all"
-]
-```
-
-[Browserslist.dev](https://browserslist.dev/?q=PjAuNiUsbm90IG9wX21pbmkgYWxs)
+- [Install and choose a framework](/virtual/frameworks)
+- [See how the three layout elements work](/virtual/guides/layout-elements)
+- [Handle dynamic measurement](/virtual/guides/measurements)
+- [Append, prepend, filter, or sort data](/virtual/guides/data-changes)
+- [Choose a lower API level](/virtual/guides/custom-rendering)

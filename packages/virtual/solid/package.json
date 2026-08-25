@@ -20,6 +20,7 @@
     "scripts": {
         "dev": "vite build --watch",
         "build": "vite build && vite build --ssr src/index.ts && tsc && api-extractor run && rm -r dist/types",
+        "api-report": "api-extractor run --local",
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
         "publint": "publint"
@@ -50,18 +51,18 @@
         "windowing"
     ],
     "devDependencies": {
-        "@types/node": "^24.13.3",
+        "@types/node": "^26.3.0",
+        "@typescript/native": "npm:typescript@^7.0.2",
         "jsdom": "^30.0.1",
-        "typescript": "^6.0.3",
-        "vite": "^8.2.1",
+        "vite": "^8.2.2",
         "vite-plugin-solid": "^2.11.14",
-        "vitest": "^4.1.10"
+        "vitest": "^4.1.11"
     },
     "dependencies": {
         "@af-utils/virtual-core": "workspace:*"
     },
     "peerDependencies": {
-        "solid-js": "^1.9.14"
+        "solid-js": "^1.5.0"
     },
     "publishConfig": {
         "access": "public"

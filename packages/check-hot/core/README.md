@@ -1,5 +1,19 @@
 # @af-utils/check-hot
 
+> **Change Contract**
+>
+> - **Responsibility:** turn package-aware source facts into isolated runtime
+>   experiments and honest engine-evidence reports.
+> - **Boundary:** static findings are hypotheses, not lint failures; optional
+>   ecosystem recipes live in `@af-utils/check-hot-test-runners`.
+> - **Invariants:** every requested obligation has a terminal outcome, measured
+>   code and analyzed code have authenticated identity, and unavailable proof
+>   can never become a pass.
+> - **Configuration owners:** CLI and report types live in source; problem and
+>   oracle folders own their IDs and proof boundaries; package scripts own
+>   verification entry points.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 `check-hot` finds JavaScript/TypeScript code paths that do not remain healthy in
 the optimizing compilers of Node.js, Deno, Bun, and future supported runtimes.
 It combines package-aware AST analysis, automatically planned input mutations,
@@ -50,42 +64,17 @@ blocked; inspect the report and its reproduction command. For an unrecognized
 module, `init` without `--probe` creates an honest scaffold: add deterministic
 samples to the generated file before running it.
 
-## Project goals
+## How decisions are made
 
-- Detect optimization weaknesses in JS/TS with as little hand-written scenario
-  code as possible.
-- Convert every eligible fact proven by AST/provenance analysis into an
-  automatic check obligation. Every obligation must end as passed, failed,
-  blocked, unsupported, or explicitly ignored with a reason; silent omission is
-  never coverage.
-- Use AST and symbol/provenance information as the primary source of facts.
-  Regex is reserved for external text protocols such as V8 traces and fallback
-  comment scanning for source languages without a parser adapter.
-- Resolve the analyzed consumer entry through `package.json`
-  `exports`/`imports`, TypeScript path aliases, and NodeNext extension
-  substitution. For installed packages, each fresh worker performs native
-  resolution for every selected public root/subpath and must match the
-  analyzer's package-relative artifacts, package version, source graph, and
-  resolver-sensitive tree before target import.
-  Local file inputs remain relative to the generated suite.
-- Produce machine-readable JSON and optional colorized source code frames for
-  humans.
-- Keep the orchestration/mutation core thick and ecosystem adapters thin and
-  separately installable.
+The analyzer turns proven source facts into explicit runtime obligations. Fresh
+workers then verify semantic behavior, source identity, and the evidence that
+the selected JavaScript engine can actually expose. A missing graph edge,
+unsupported oracle, or incomplete measurement stays visible instead of being
+promoted to success.
 
-## Explicit non-goals
-
-This project does **not** implement ESLint, Oxlint, Biome, or a general style
-checker. An AST finding is evidence used to construct an engine experiment; it
-is not a syntax ban or proof that code is bad. `check-hot` must not fail merely
-because code uses `delete`, has a large function, allocates in a loop, or matches
-a style smell. Failure requires runtime evidence or an incomplete/unsupported
-coverage obligation that policy explicitly requires.
-
-It also does not promise that one engine's evidence means the same thing on
-another engine. V8 can expose active tiers and deoptimization traces. Bun's
-public JavaScriptCore probes expose compilation/retry evidence but not an
-equivalent current-tier oracle; the report keeps those meanings distinct.
+The detailed pipeline and invariants live in
+[Architecture](./docs/architecture.md). Product boundaries and deliberate
+non-goals live in [Related tools](./docs/related-tools.md).
 
 ## Packages
 
@@ -106,6 +95,7 @@ and the
 - [Runtime and engine oracles](./docs/runtime-oracles.md)
 - [Console and JSON reporting](./docs/reporting.md)
 - [Related tools and design boundaries](./docs/related-tools.md)
+- [Verification strategy](./docs/testing.md)
 
 ## CLI
 
@@ -173,22 +163,3 @@ but authenticates each one before evaluation. Same-named exports do not
 collide: the root keeps `hot`, while a subpath uses a visible ID such as
 `./feature::hot`. These locators and all package names come from analysis;
 core contains no React, Lodash, date-fns, Svelte, or Three.js registry.
-
-## Test quality
-
-`pnpm nx run @af-utils/check-hot:test` runs the ordinary Vitest suite and real
-runtime controls when their engine processes are available.
-`pnpm nx run @af-utils/check-hot:test:mutation` runs StrykerJS against the
-configured deterministic scope: analyzer/data-flow rules, mutation
-construction and safety, public-target identity, problem/event helpers,
-V8/CPU/JSC diagnostic parsers, concurrency, and artifact trust boundaries. It
-does not mean “95.5% of every core source file”: process orchestration,
-`module-suite` integration, and engine workers are covered by ordinary,
-adversarial, and real Node/Deno/Bun controls instead. The producer and consumer
-checks for mutation-plan partitions intentionally remain independent so one
-shared validation bug cannot create a false proof. The pnpm configuration names
-the Vitest plugin explicitly, as required by the
-[StrykerJS pnpm guidance](https://stryker-mutator.io/docs/stryker-js/troubleshooting/#plugins-cant-be-found-when-using-pnpm-as-package-manager).
-Its breaking threshold applies only to the exact checked-in `mutate` list and
-must be supported by one fresh, unfiltered JSON report; focused parser scores
-are not combined into an aggregate claim.

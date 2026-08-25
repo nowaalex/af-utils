@@ -13,16 +13,13 @@ import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
 export const createVirtual: (params: MaybeGetter<VirtualScrollerInitialParams>) => VirtualScroller;
 
 // @public
-export const createVirtualLayout: (model: VirtualScroller) => VirtualSvelteLayoutBinding;
+export const createVirtualList: (params: VirtualScroller | MaybeGetter<VirtualScrollerInitialParams>) => VirtualSvelteListBinding;
 
 // @public
-export const createVirtualList: (model: VirtualScroller) => VirtualSvelteListBinding;
+export const createVirtualRange: (model: VirtualScroller) => (() => number[]);
 
 // @public
-export const createVirtualRange: (model: VirtualScroller) => VirtualSvelteValue<number[]>;
-
-// @public
-export const createVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => VirtualSvelteValue<number>;
+export const createVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => (() => number);
 
 // @public
 export type MaybeGetter<Value> = Value | (() => Value);
@@ -31,10 +28,10 @@ export type MaybeGetter<Value> = Value | (() => Value);
 export const virtualContainer: (model: VirtualScroller) => Attachment<HTMLElement>;
 
 // @public
-export const virtualGridItem: (binding: MaybeGetter<VirtualSvelteGridItemBinding>) => Attachment<HTMLElement>;
+export const virtualGridItem: (rows: VirtualScroller, rowIndex: MaybeGetter<number>, columns: VirtualScroller, columnIndex: MaybeGetter<number>) => Attachment<HTMLElement>;
 
 // @public
-export const virtualItem: (binding: MaybeGetter<VirtualSvelteItemBinding>) => Attachment<HTMLElement>;
+export const virtualItem: (model: VirtualScroller, index: MaybeGetter<number>) => Attachment<HTMLElement>;
 
 // @public
 export const virtualScroller: (model: VirtualScroller) => Attachment<HTMLElement>;
@@ -46,20 +43,6 @@ export const virtualStickyFooter: (model: VirtualScroller) => Attachment<HTMLEle
 export const virtualStickyHeader: (model: VirtualScroller) => Attachment<HTMLElement>;
 
 // @public
-export interface VirtualSvelteGridItemBinding {
-    columnIndex: number;
-    columns: VirtualScroller;
-    rowIndex: number;
-    rows: VirtualScroller;
-}
-
-// @public
-export interface VirtualSvelteItemBinding {
-    index: number;
-    model: VirtualScroller;
-}
-
-// @public
 export interface VirtualSvelteLayoutBinding {
     items: Attachment<HTMLElement>;
     scroller: Attachment<HTMLElement>;
@@ -68,12 +51,8 @@ export interface VirtualSvelteLayoutBinding {
 
 // @public
 export interface VirtualSvelteListBinding extends VirtualSvelteLayoutBinding {
-    range: VirtualSvelteValue<number[]>;
-}
-
-// @public
-export interface VirtualSvelteValue<Value> {
-    readonly current: Value;
+    model: VirtualScroller;
+    range: () => number[];
 }
 
 ```

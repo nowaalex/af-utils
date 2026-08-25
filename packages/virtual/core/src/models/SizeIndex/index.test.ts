@@ -1,4 +1,14 @@
 import { describe, expect, test } from "vitest";
+import {
+    array,
+    assert as assertProperty,
+    constant,
+    integer,
+    nat,
+    oneof,
+    property,
+    record
+} from "fast-check";
 import { VirtualScrollerError } from "#virtual-errors";
 import { MAX_SIZE_INDEX_CAPACITY } from "../../constants";
 import {
@@ -31,6 +41,42 @@ const applySizes = (index: SizeIndex, sizes: readonly number[]) => {
 
     index._completeUpdateBatch(updateLimit, totalDelta);
 };
+
+type SizeIndexOperation =
+    | { kind: "count"; count: number }
+    | { kind: "estimate"; size: number }
+    | { kind: "resize"; index: number; size: number }
+    | {
+          kind: "splice";
+          start: number;
+          deleteCount: number;
+          insertCount: number;
+      };
+
+const sizeIndexOperation = oneof<SizeIndexOperation>(
+    record({
+        kind: constant("count"),
+        count: integer({ min: 0, max: 128 })
+    }),
+    record({
+        kind: constant("estimate"),
+        size: integer({ min: 1, max: 256 })
+    }),
+    record({
+        kind: constant("resize"),
+        index: nat(),
+        size: integer({ min: 1, max: 256 })
+    }),
+    record({
+        kind: constant("splice"),
+        start: nat(),
+        deleteCount: nat({ max: 32 }),
+        insertCount: nat({ max: 32 })
+    })
+);
+
+const createEstimatedSizes = (count: number, estimate: number) =>
+    Array.from({ length: count }, () => estimate);
 
 describe("SizeIndex capacity", () => {
     test("grows geometrically and never beyond the fixed limit", () => {
@@ -66,6 +112,34 @@ describe("SizeIndex capacity", () => {
         expect(sizes.byteLength).toBe(0);
         expect(tree.byteLength).toBe(0);
         expect(internals._mostSignificantBit).toBe(64);
+    });
+
+    test("grows without transferable ArrayBuffer support", () => {
+        const transfer = ArrayBuffer.prototype.transferToFixedLength;
+        // oxlint-disable-next-line eslint/no-extend-native -- The test must emulate an engine without transferable ArrayBuffers.
+        Object.defineProperty(ArrayBuffer.prototype, "transferToFixedLength", {
+            configurable: true,
+            value: undefined
+        });
+
+        try {
+            const index = new SizeIndex(40);
+            index._setCount(64);
+            const updateLimit = index._getUpdateLimit(0, 1);
+            const totalDelta = index._updateSize(0, 80, updateLimit);
+            index._completeUpdateBatch(updateLimit, totalDelta);
+            index._setCount(65);
+
+            expect(index._getSize(0)).toBe(80);
+            expect(index._getSize(64)).toBe(40);
+        } finally {
+            // oxlint-disable-next-line eslint/no-extend-native -- Restore the built-in immediately after the compatibility-path test.
+            Object.defineProperty(
+                ArrayBuffer.prototype,
+                "transferToFixedLength",
+                { configurable: true, value: transfer }
+            );
+        }
     });
 
     test.each([-1, 1.5, Number.NaN, Number.POSITIVE_INFINITY])(
@@ -345,6 +419,103 @@ describe("SizeIndex cached sizes", () => {
 
         expect(index._updateSize(2, 100, 3)).toBe(0);
         expect(index._totalSize).toBe(80);
+    });
+});
+
+describe("SizeIndex reference model", () => {
+    test("matches a plain-array model across generated operation sequences", () => {
+        assertProperty(
+            property(
+                array(sizeIndexOperation, { maxLength: 200 }),
+                operations => {
+                    const index = new SizeIndex(40);
+                    const sizes: number[] = [];
+                    let estimate = 40;
+
+                    for (const operation of operations) {
+                        switch (operation.kind) {
+                            case "count": {
+                                const oldCount = sizes.length;
+                                sizes.length = operation.count;
+                                if (operation.count > oldCount) {
+                                    sizes.fill(
+                                        estimate,
+                                        oldCount,
+                                        operation.count
+                                    );
+                                }
+                                index._setCount(operation.count);
+                                break;
+                            }
+                            case "estimate": {
+                                if (operation.size === estimate) break;
+                                estimate = operation.size;
+                                sizes.fill(estimate);
+                                index._setEstimatedSize(estimate);
+                                break;
+                            }
+                            case "resize": {
+                                if (sizes.length === 0) break;
+                                const itemIndex =
+                                    operation.index % sizes.length;
+                                const updateLimit = index._getUpdateLimit(
+                                    itemIndex,
+                                    itemIndex + 1
+                                );
+                                const delta = index._updateSize(
+                                    itemIndex,
+                                    operation.size,
+                                    updateLimit
+                                );
+                                index._completeUpdateBatch(updateLimit, delta);
+                                sizes[itemIndex] = operation.size;
+                                break;
+                            }
+                            case "splice": {
+                                const start =
+                                    operation.start % (sizes.length + 1);
+                                const deleteCount = Math.min(
+                                    operation.deleteCount,
+                                    sizes.length - start
+                                );
+                                const insertCount = Math.min(
+                                    operation.insertCount,
+                                    128 - sizes.length + deleteCount
+                                );
+                                if (deleteCount === 0 && insertCount === 0) {
+                                    break;
+                                }
+                                sizes.splice(
+                                    start,
+                                    deleteCount,
+                                    ...createEstimatedSizes(
+                                        insertCount,
+                                        estimate
+                                    )
+                                );
+                                index._splice(start, deleteCount, insertCount);
+                                break;
+                            }
+                        }
+
+                        expect(index._count).toBe(sizes.length);
+                        expect(index._totalSize).toBe(
+                            sizes.reduce((sum, size) => sum + size, 0)
+                        );
+                        if (sizes.length > 0) {
+                            const probe = sizes.length >> 1;
+                            expect(index._getSize(probe)).toBe(sizes[probe]);
+                            expect(index._getOffset(probe)).toBe(
+                                sizes
+                                    .slice(0, probe)
+                                    .reduce((sum, size) => sum + size, 0)
+                            );
+                        }
+                    }
+                }
+            ),
+            { numRuns: 200 }
+        );
     });
 });
 

@@ -9,24 +9,45 @@ import {
     VirtualScrollerLayout
 } from "@af-utils/virtual-core";
 import {
-    markRaw,
+    computed,
     defineComponent,
+    Fragment,
     h,
+    markRaw,
     onMounted,
     onScopeDispose,
     shallowRef,
     toValue,
     watch,
-    type MaybeRefOrGetter,
-    type Directive,
+    type AllowedComponentProps,
+    type ComponentCustomProps,
+    type ComponentOptionsMixin,
     type ComponentPublicInstance,
-    type ShallowRef
+    type DefineComponent,
+    type Directive,
+    type MaybeRefOrGetter,
+    type PropType,
+    type ShallowRef,
+    type SlotsType,
+    type VNode,
+    type VNodeProps
 } from "vue";
 
 /** DOM template-ref callback accepted by Vue. @public */
 export type VirtualVueElementRef = (
     element: Element | ComponentPublicInstance | null
 ) => void;
+
+/** Resolve a native HTMLElement from a Vue template-ref value. */
+const resolveHTMLElement = (
+    element: Element | ComponentPublicInstance | null
+) => {
+    if (element instanceof HTMLElement) return element;
+    if (element && "$el" in element && element.$el instanceof HTMLElement) {
+        return element.$el;
+    }
+    return null;
+};
 
 /** Vue-owned virtual-scroller model synchronized with reactive parameters. @public */
 export const useVirtual = (
@@ -98,38 +119,24 @@ export const useVirtualLayout = (
 
     return {
         scrollerRef: element => {
-            scrollerElement = element as HTMLElement | null;
+            const nextElement = resolveHTMLElement(element);
+            if (nextElement === scrollerElement) return;
+            scrollerElement = nextElement;
             if (mounted) {
                 layout.setScrollerElement(scrollerElement);
             }
         },
         sizeRef: element => {
-            sizeElement = element as HTMLElement | null;
+            const nextElement = resolveHTMLElement(element);
+            if (nextElement === sizeElement) return;
+            sizeElement = nextElement;
             if (mounted) layout.setSizeElement(sizeElement);
         },
         itemsRef: element => {
-            itemsElement = element as HTMLElement | null;
+            const nextElement = resolveHTMLElement(element);
+            if (nextElement === itemsElement) return;
+            itemsElement = nextElement;
             if (mounted) layout.setItemsElement(itemsElement);
-        }
-    };
-};
-
-/** Create a Vue template-ref callback that observes one virtual item. @public */
-export const useVirtualItemRef = (
-    model: VirtualScroller,
-    index: MaybeRefOrGetter<number>
-): VirtualVueElementRef => {
-    let attached: HTMLElement | null = null;
-    const detach = () => {
-        if (attached) model.detachItem(attached);
-        attached = null;
-    };
-    onScopeDispose(detach);
-    return element => {
-        detach();
-        if (element) {
-            attached = element as HTMLElement;
-            model.attachItem(attached, toValue(index));
         }
     };
 };
@@ -155,42 +162,140 @@ export const virtualItemDirective: Directive<
     }
 };
 
+/** Directive value accepted by {@link virtualGridItemDirective}. @public */
+export type VirtualVueGridItemBinding = readonly [
+    rows: VirtualScroller,
+    row: number,
+    columns: VirtualScroller,
+    column: number
+];
+
+interface VirtualVueGridItemState {
+    binding: VirtualVueGridItemBinding;
+    attached: number;
+}
+
+const gridItemStates = new WeakMap<HTMLElement, VirtualVueGridItemState>();
+
+/** Attach only the first visible row and column needed for grid measurement. */
+const attachGridItem = (
+    element: HTMLElement,
+    binding: VirtualVueGridItemBinding
+) => {
+    const [rows, row, columns, column] = binding;
+    let attached = 0;
+
+    if (rows.from === row) {
+        columns.attachItem(element, column);
+        attached |= 1;
+    }
+    if (columns.from === column) {
+        rows.attachItem(element, row);
+        attached |= 2;
+    }
+    gridItemStates.set(element, { attached, binding });
+};
+
+/** Detach the dimensions previously selected by {@link attachGridItem}. */
+const detachGridItem = (element: HTMLElement) => {
+    const state = gridItemStates.get(element);
+    if (!state) return;
+    const [rows, , columns] = state.binding;
+    if (state.attached & 1) columns.detachItem(element);
+    if (state.attached & 2) rows.detachItem(element);
+    gridItemStates.delete(element);
+};
+
+/** Vue directive that observes O(rows + columns) representative grid cells. @public */
+export const virtualGridItemDirective: Directive<
+    HTMLElement,
+    VirtualVueGridItemBinding
+> = {
+    mounted(element, { value }) {
+        attachGridItem(element, value);
+    },
+    updated(element, { value, oldValue }) {
+        if (
+            oldValue?.[0] === value[0] &&
+            oldValue[1] === value[1] &&
+            oldValue[2] === value[2] &&
+            oldValue[3] === value[3]
+        ) {
+            return;
+        }
+        detachGridItem(element);
+        attachGridItem(element, value);
+    },
+    unmounted: detachGridItem
+};
+
 /** Reactive rendered indexes for a Vue render function or template. @public */
 export const useVirtualRange = (model: VirtualScroller) => {
     const revision = useVirtualSnapshot(model, VirtualScrollerEvent.RANGE);
-    return () => {
+    return computed(() => {
         void revision.value;
         return mapVirtualRange(model, index => index);
-    };
+    });
 };
-
-/** Keep optional content slots outside the range-driven render effect. */
-const VirtualSlot = defineComponent({
-    name: "VirtualSlot",
-    setup(_props, { slots }) {
-        return () => slots.default?.();
-    }
-});
 
 /** Re-render only virtual items when the model publishes a new range. */
 const VirtualItems = defineComponent({
     name: "VirtualItems",
     props: {
         model: { type: VirtualScroller, required: true },
-        itemData: { type: null, required: false }
+        getItemKey: {
+            type: Function as PropType<(index: number) => string | number>,
+            required: false
+        }
     },
+    slots: Object as SlotsType<{
+        default(props: { model: VirtualScroller; index: number }): VNode[];
+    }>,
     setup(props, { slots }) {
         const range = useVirtualRange(props.model);
         return () =>
-            range().map(index =>
-                slots.default?.({
-                    model: props.model,
-                    index,
-                    data: props.itemData
-                })
+            range.value.map(index =>
+                h(
+                    Fragment,
+                    { key: props.getItemKey?.(index) ?? index },
+                    slots.default?.({
+                        model: props.model,
+                        index
+                    }) ?? []
+                )
             );
     }
 });
+
+/** Slots exposed by {@link VirtualList}. @public */
+export type VirtualListSlots = SlotsType<{
+    header(): VNode[];
+    default(props: { model: VirtualScroller; index: number }): VNode[];
+    footer(): VNode[];
+}>;
+
+/** Stable public component type that does not depend on Vue patch internals. @public */
+export type VirtualListComponent = DefineComponent<
+    {
+        model: VirtualScroller;
+        getItemKey?: (index: number) => string | number;
+    },
+    {},
+    {},
+    {},
+    {},
+    ComponentOptionsMixin,
+    ComponentOptionsMixin,
+    {},
+    string,
+    VNodeProps & AllowedComponentProps & ComponentCustomProps,
+    Readonly<{
+        model: VirtualScroller;
+        getItemKey?: (index: number) => string | number;
+    }>,
+    {},
+    VirtualListSlots
+>;
 
 /** Minimal Vue virtual-list component for the common block-list case. @public */
 export const VirtualList = defineComponent({
@@ -199,9 +304,13 @@ export const VirtualList = defineComponent({
     props: {
         /** Model owning list geometry. */
         model: { type: VirtualScroller, required: true },
-        /** Optional data forwarded to the item slot. */
-        itemData: { type: null, required: false }
+        /** Resolve stable item identities after records change index. */
+        getItemKey: {
+            type: Function as PropType<(index: number) => string | number>,
+            required: false
+        }
     },
+    slots: Object as VirtualListSlots,
     setup(props, { attrs, slots }) {
         const layout = useVirtualLayout(props.model);
         return () =>
@@ -212,9 +321,7 @@ export const VirtualList = defineComponent({
                     ref: layout.scrollerRef
                 } as Record<string, unknown>,
                 [
-                    slots.header
-                        ? h(VirtualSlot, null, { default: slots.header })
-                        : null,
+                    slots.header?.(),
                     h(
                         "div",
                         {
@@ -230,7 +337,7 @@ export const VirtualList = defineComponent({
                                     VirtualItems,
                                     {
                                         model: props.model,
-                                        itemData: props.itemData
+                                        getItemKey: props.getItemKey
                                     },
                                     slots.default
                                         ? { default: slots.default }
@@ -239,10 +346,8 @@ export const VirtualList = defineComponent({
                             )
                         ]
                     ),
-                    slots.footer
-                        ? h(VirtualSlot, null, { default: slots.footer })
-                        : null
+                    slots.footer?.()
                 ]
             );
     }
-});
+}) as VirtualListComponent;

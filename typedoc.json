@@ -1,6 +1,7 @@
 {
     "$schema": "./node_modules/typedoc-plugin-markdown/typedoc-plugin-markdown.schema.json",
     "entryPoints": ["packages/virtual/*"],
+    "exclude": ["packages/virtual/compatibility"],
     "entryPointStrategy": "packages",
     "packageOptions": {
         "entryPoints": ["src/index.ts"]
@@ -12,11 +13,11 @@
     ],
     "theme": "markdown",
     "router": "member",
-    "out": "website/src/content/reference",
+    "out": "website/.generated/reference",
     "cleanOutputDir": true,
     "entryFileName": "index",
     "publicPath": "/virtual/reference/",
-    "navigationJson": "website/src/content/reference/navigation.json",
+    "navigationJson": "website/.generated/reference/navigation.json",
     "readme": "none",
     "hidePageHeader": true,
     "hideBreadcrumbs": true,

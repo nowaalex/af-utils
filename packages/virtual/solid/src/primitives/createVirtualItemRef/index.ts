@@ -1,6 +1,6 @@
 import type { VirtualScroller } from "@af-utils/virtual-core";
 import { createRenderEffect, onCleanup } from "solid-js";
-import type { MaybeAccessor, VirtualElementRef } from "../../types";
+import type { MaybeAccessor } from "../../types";
 import readAccessor from "../../utils/readAccessor";
 
 /**
@@ -9,10 +9,19 @@ import readAccessor from "../../utils/readAccessor";
  * @public
  */
 export const createVirtualItemRef =
-    (model: VirtualScroller, index: MaybeAccessor<number>): VirtualElementRef =>
+    (
+        model: VirtualScroller,
+        index: MaybeAccessor<number>
+    ): ((element: HTMLElement) => void) =>
     element => {
+        if (typeof index !== "function") {
+            model.attachItem(element, index);
+            onCleanup(() => model.detachItem(element));
+            return;
+        }
+
         createRenderEffect(() => {
-            model.attachItem(element, readAccessor(index));
+            model.attachItem(element, index());
             onCleanup(() => model.detachItem(element));
         });
     };
@@ -28,11 +37,12 @@ export const createVirtualGridItemRef =
         rowIndex: MaybeAccessor<number>,
         columns: VirtualScroller,
         columnIndex: MaybeAccessor<number>
-    ): VirtualElementRef =>
+    ): ((element: HTMLElement) => void) =>
     element => {
-        createRenderEffect(() => {
-            const currentRowIndex = readAccessor(rowIndex);
-            const currentColumnIndex = readAccessor(columnIndex);
+        const attach = (
+            currentRowIndex: number,
+            currentColumnIndex: number
+        ) => {
             let attached = 0;
 
             if (rows.from === currentRowIndex) {
@@ -44,9 +54,23 @@ export const createVirtualGridItemRef =
                 attached |= 2;
             }
 
-            onCleanup(() => {
+            return () => {
                 if (attached & 1) columns.detachItem(element);
                 if (attached & 2) rows.detachItem(element);
-            });
+            };
+        };
+
+        if (
+            typeof rowIndex !== "function" &&
+            typeof columnIndex !== "function"
+        ) {
+            onCleanup(attach(rowIndex, columnIndex));
+            return;
+        }
+
+        createRenderEffect(() => {
+            const currentRowIndex = readAccessor(rowIndex);
+            const currentColumnIndex = readAccessor(columnIndex);
+            onCleanup(attach(currentRowIndex, currentColumnIndex));
         });
     };

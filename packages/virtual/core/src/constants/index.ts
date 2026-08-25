@@ -75,10 +75,11 @@ export const SIZE_INDEX_GROWTH_DENOMINATOR = 2;
  * Largest logical item count supported by `SizeIndex`.
  *
  * @remarks
- * Fenwick tree indexes use signed 32-bit bitwise operations. Keeping the
- * capacity below 2^30 guarantees that index + lowestSetBit(index) stays
- * positive during tree traversal.
+ * Two dense `Float64Array` stores use roughly 16 bytes per item. The limit
+ * keeps their combined payload near 64 MiB while still allowing more than
+ * four million virtual items. It also stays safely inside the signed 32-bit
+ * range used by Fenwick-tree traversal.
  *
  * @internal
  */
-export const MAX_SIZE_INDEX_CAPACITY = 0x3fffffff;
+export const MAX_SIZE_INDEX_CAPACITY = 0x3fffff;

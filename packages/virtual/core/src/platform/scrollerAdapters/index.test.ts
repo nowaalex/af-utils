@@ -44,7 +44,10 @@ describe("scroller adapters", () => {
         const scroller = document.createElement("div");
         const container = document.createElement("div");
 
-        Object.defineProperty(scroller, "scrollTop", { value: 30 });
+        Object.defineProperties(scroller, {
+            clientTop: { value: 5 },
+            scrollTop: { value: 30 }
+        });
         vi.spyOn(scroller, "getBoundingClientRect").mockReturnValue({
             top: 100
         } as DOMRect);
@@ -57,8 +60,48 @@ describe("scroller adapters", () => {
             verticalAxisAdapter
         );
 
-        expect(adapter._distanceTo(container)).toBe(105);
+        expect(adapter._distanceTo(container)).toBe(100);
         expect(adapter._distanceTo(scroller)).toBe(0);
+    });
+
+    test("element resize observation reports the client viewport", () => {
+        const scroller = document.createElement("div");
+        Object.defineProperty(scroller, "clientHeight", { value: 180 });
+        let resizeCallback: ResizeObserverCallback | undefined;
+        const disconnect = vi.fn();
+        const observe = vi.fn();
+        vi.stubGlobal(
+            "ResizeObserver",
+            class {
+                constructor(callback: ResizeObserverCallback) {
+                    resizeCallback = callback;
+                }
+                disconnect = disconnect;
+                observe = observe;
+            }
+        );
+        const callback = vi.fn();
+        const adapter = new ElementScrollerAdapter(
+            scroller,
+            verticalAxisAdapter
+        );
+        const dispose = adapter._observeResize(callback);
+
+        resizeCallback?.(
+            [
+                {
+                    borderBoxSize: [{ blockSize: 200 }],
+                    target: scroller
+                } as ResizeObserverEntry
+            ],
+            {} as ResizeObserver
+        );
+
+        expect(observe).toHaveBeenCalledWith(scroller);
+        expect(callback).toHaveBeenCalledWith(180);
+        dispose();
+        expect(disconnect).toHaveBeenCalledOnce();
+        vi.unstubAllGlobals();
     });
 
     test("window adapter calculates container distance", () => {

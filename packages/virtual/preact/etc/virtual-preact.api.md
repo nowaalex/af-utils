@@ -14,9 +14,6 @@ import { VirtualScrollerInitialParams } from '@af-utils/virtual-core';
 import type { VirtualScrollerScrollElement } from '@af-utils/virtual-core';
 
 // @public
-export const List: <Data = unknown>(props: ListProps<Data>) => JSX.Element;
-
-// @public
 export interface ListItemProps<Data = unknown> {
     data?: Data;
     index: number;
@@ -27,8 +24,8 @@ export interface ListItemProps<Data = unknown> {
 export type ListProps<Data = unknown> = Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref" | "style"> & {
     model: VirtualScroller;
     children: ComponentType<ListItemProps<Data>>;
+    getItemKey?: (index: number) => string | number;
     itemData?: Data;
-    getKey?: (index: number, itemData: Data) => string | number;
     header?: ComponentChildren;
     footer?: ComponentChildren;
     style?: JSX.CSSProperties;
@@ -53,10 +50,10 @@ export const useVirtualItemRef: (model: VirtualScroller, index: number) => RefCa
 export const useVirtualLayout: (model: VirtualScroller) => VirtualPreactLayoutBinding;
 
 // @public
-export const useVirtualModel: (params: VirtualScrollerInitialParams) => VirtualScroller;
+export const useVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => number;
 
 // @public
-export const useVirtualSnapshot: (model: VirtualScroller, events?: VirtualScrollerEventMask) => number;
+export const VirtualList: <Data = unknown>(props: ListProps<Data>) => JSX.Element;
 
 // @public
 export interface VirtualPreactLayoutBinding {

@@ -3,7 +3,8 @@ import { dirname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
     examplesDirectory,
-    examplesImportPrefix
+    examplesImportPrefix,
+    getExampleFrameworkDefinition
 } from "@af-utils/examples/config";
 import {
     type DiscoveredExample,
@@ -18,7 +19,27 @@ const getExampleImportPath = (example: DiscoveredExample) => {
     return `${examplesImportPrefix}${codePath}`;
 };
 
-const renderExamplePage = (example: DiscoveredExample) => `---
+const renderExamplePage = (example: DiscoveredExample) => {
+    const customElementTag = getExampleFrameworkDefinition(
+        example.framework
+    ).customElementTag;
+
+    if (customElementTag) {
+        return `---
+import ExamplePreview from "layouts/ExamplePreview.astro";
+---
+
+<ExamplePreview>
+    <${customElementTag} />
+</ExamplePreview>
+
+<script>
+    import ${JSON.stringify(getExampleImportPath(example))};
+</script>
+`;
+    }
+
+    return `---
 import ExamplePreview from "layouts/ExamplePreview.astro";
 import Example from ${JSON.stringify(getExampleImportPath(example))};
 ---
@@ -31,6 +52,7 @@ import Example from ${JSON.stringify(getExampleImportPath(example))};
     } />
 </ExamplePreview>
 `;
+};
 
 export default function examples(): AstroIntegration {
     return {

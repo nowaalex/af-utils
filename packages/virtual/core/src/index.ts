@@ -3,14 +3,6 @@
  * {@inheritDoc VirtualScroller}
  */
 
-import { assert as assertInternal } from "#virtual-errors";
-
-/**
- * Assert a condition using the active development or production error build.
- * @public
- */
-export const assert: (condition: boolean, code: number) => asserts condition =
-    assertInternal;
 export type { VirtualScrollerEventMask } from "./constants";
 export { VirtualScrollerEvent } from "./constants";
 export { VirtualScrollerErrorCode } from "./errors/codes";
@@ -22,6 +14,8 @@ export type {
     VirtualScrollerExactPosition,
     VirtualScrollerInitialParams,
     VirtualScrollerRuntimeParams,
+    VirtualScrollerScrollAlignment,
+    VirtualScrollerScrollToIndexOptions,
     VirtualScrollerScrollElement
 } from "./types";
 export {

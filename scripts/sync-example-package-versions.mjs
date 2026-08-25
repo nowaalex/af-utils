@@ -1,5 +1,6 @@
-import { readdir, readFile, writeFile } from "node:fs/promises";
-import { join, relative, resolve } from "node:path";
+import { readFile, writeFile } from "node:fs/promises";
+import { relative, resolve } from "node:path";
+import { findPackageManifests } from "./file-discovery.mjs";
 
 const rootDirectory = resolve(import.meta.dirname, "..");
 const checkOnly = process.argv.includes("--check");
@@ -12,43 +13,11 @@ const dependencyFields = [
     "optionalDependencies",
     "peerDependencies"
 ];
-const ignoredDirectories = new Set([
-    ".git",
-    ".stryker-tmp",
-    ".vite",
-    "coverage",
-    "dist",
-    "node_modules"
-]);
 
 if (unknownArguments.length > 0) {
     console.error(`Unknown argument(s): ${unknownArguments.join(", ")}`);
     process.exit(1);
 }
-
-const findPackageManifests = async directory => {
-    const entries = (
-        await readdir(directory, { withFileTypes: true })
-    ).toSorted((left, right) => left.name.localeCompare(right.name));
-
-    return (
-        await Promise.all(
-            entries.map(entry => {
-                const entryPath = join(directory, entry.name);
-
-                if (
-                    entry.isDirectory() &&
-                    !ignoredDirectories.has(entry.name)
-                ) {
-                    return findPackageManifests(entryPath);
-                }
-                return entry.isFile() && entry.name === "package.json"
-                    ? [entryPath]
-                    : [];
-            })
-        )
-    ).flat();
-};
 
 const readManifest = async manifestPath =>
     JSON.parse(await readFile(manifestPath, "utf8"));
@@ -56,7 +25,7 @@ const readManifest = async manifestPath =>
 const publicPackages = new Map();
 
 const packageManifests = await Promise.all(
-    (await findPackageManifests(join(rootDirectory, "packages"))).map(
+    (await findPackageManifests(rootDirectory, ["packages"])).map(
         async manifestPath => ({
             manifest: await readManifest(manifestPath),
             manifestPath
@@ -80,7 +49,7 @@ const problems = [];
 const updatedManifests = [];
 
 const exampleManifests = await Promise.all(
-    (await findPackageManifests(join(rootDirectory, "examples", "src"))).map(
+    (await findPackageManifests(rootDirectory, ["examples/src"])).map(
         async manifestPath => ({
             manifest: await readManifest(manifestPath),
             manifestPath

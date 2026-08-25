@@ -17,4 +17,5 @@ Applications can normally use one of the framework-specific packages instead.
 - [Virtual scrolling overview](https://af-utils.com/virtual)
 - [Custom rendering guide](https://af-utils.com/virtual/guides/custom-rendering)
 - [Layout elements guide](https://af-utils.com/virtual/guides/layout-elements)
+- [Support and compatibility](https://af-utils.com/virtual/support)
 - [API reference](https://af-utils.com/virtual/reference/virtual-core/index)

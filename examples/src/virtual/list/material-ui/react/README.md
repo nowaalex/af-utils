@@ -1,1 +1,0 @@
-[List](https://af-utils.com/virtual/reference/virtual-react/functions/List) supports `component` prop, so it can be easily integrated with Material UI or [Bootstrap](https://af-utils.com/virtual/examples/react/list/bootstrap). Also `disablePadding` should be passed to `MuiList`.

@@ -53,7 +53,7 @@ class PerMaskRevisions {
     }
 
     get(mask: number) {
-        return this._revisions[mask & VirtualScrollerEvent.ALL] as number;
+        return this._revisions[mask & VirtualScrollerEvent.ALL];
     }
 }
 

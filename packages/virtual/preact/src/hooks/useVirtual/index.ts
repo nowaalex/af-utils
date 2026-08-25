@@ -7,8 +7,8 @@ import { useEffect, useLayoutEffect, useRef } from "preact/hooks";
 const useIsomorphicLayoutEffect =
     typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-/** Create and retain exactly one Preact-owned virtual-scroller model. @public */
-export const useVirtualModel = (params: VirtualScrollerInitialParams) => {
+/** Create and retain exactly one Preact-owned virtual-scroller model. */
+const useVirtualModel = (params: VirtualScrollerInitialParams) => {
     const model = (useRef<VirtualScroller | null>(null).current ??=
         new VirtualScroller(params));
     useEffect(() => () => model.dispose(), [model]);
@@ -23,15 +23,9 @@ export const useVirtualModel = (params: VirtualScrollerInitialParams) => {
 const useVirtual = (params: VirtualScrollerInitialParams) => {
     const model = useVirtualModel(params);
 
-    useIsomorphicLayoutEffect(
-        () => model.set(params),
-        [
-            model,
-            params.estimatedItemSize,
-            params.itemCount,
-            params.overscanCount
-        ]
-    );
+    useIsomorphicLayoutEffect(() => {
+        model.set(params);
+    });
     return model;
 };
 

@@ -9,21 +9,16 @@ const VirtualItems = <Data,>({
     model,
     Item,
     data,
-    getKey
+    getItemKey
 }: {
     model: ListItemProps<Data>["model"];
     Item: ComponentType<ListItemProps<Data>>;
     data: Data | undefined;
-    getKey: (index: number, data: Data) => string | number;
+    getItemKey: (index: number) => string | number;
 }) => {
     useVirtualSnapshot(model, VirtualScrollerEvent.RANGE);
     return mapVirtualRange(model, index => (
-        <Item
-            key={getKey(index, data as Data)}
-            model={model}
-            index={index}
-            data={data}
-        />
+        <Item key={getItemKey(index)} model={model} index={index} data={data} />
     ));
 };
 
@@ -33,15 +28,15 @@ const VirtualItems = <Data,>({
  * @group Components
  * @public
  */
-const List = <Data = unknown,>(props: ListProps<Data>) => {
+const VirtualList = <Data = unknown,>(props: ListProps<Data>) => {
     const {
         model,
         children: Item,
+        getItemKey = index => index,
         itemData,
         header,
         footer,
-        getKey = index => index,
-        tabIndex = -1,
+        tabIndex = 0,
         style,
         ...rest
     } = props;
@@ -61,7 +56,7 @@ const List = <Data = unknown,>(props: ListProps<Data>) => {
                         model={model}
                         Item={Item}
                         data={itemData}
-                        getKey={getKey}
+                        getItemKey={getItemKey}
                     />
                 </div>
             </div>
@@ -70,4 +65,4 @@ const List = <Data = unknown,>(props: ListProps<Data>) => {
     );
 };
 
-export default List;
+export default VirtualList;

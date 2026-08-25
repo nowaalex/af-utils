@@ -1,0 +1,28 @@
+.example {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0.5rem;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0.5rem;
+    font-family: system-ui, sans-serif;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.status {
+    margin-inline-start: auto;
+    color: #475569;
+}
+.list {
+    min-height: 0;
+    border: 1px solid #cbd5e1;
+}
+.item {
+    box-sizing: border-box;
+    padding: 0.7rem;
+    border-bottom: 1px solid #e2e8f0;
+}

@@ -10,4 +10,3 @@ const runNodeBin = (packageName, binName, arguments_) => {
 };
 
 runNodeBin("typedoc", "typedoc", ["--options", "../typedoc.json"]);
-runNodeBin("oxfmt", "oxfmt", ["./src/content/reference"]);

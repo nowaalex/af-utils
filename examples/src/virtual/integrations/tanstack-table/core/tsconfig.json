@@ -1,0 +1,11 @@
+{
+    "include": ["global.d.ts", "src"],
+    "compilerOptions": {
+        "noEmit": true,
+        "lib": ["DOM", "DOM.Iterable", "ES2023"],
+        "moduleResolution": "Bundler",
+        "module": "ESNext",
+        "target": "ESNext",
+        "strict": true
+    }
+}

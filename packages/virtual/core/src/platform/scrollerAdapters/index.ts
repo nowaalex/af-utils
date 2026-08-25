@@ -7,8 +7,6 @@ export interface ScrollerAdapter {
     _readOffset(): number;
     /** Read the viewport size on the configured axis. */
     _readViewportSize(): number;
-    /** Read an observed border-box size on the configured axis. */
-    _readEntrySize(entry: ResizeObserverEntry): number;
     /** Measure a container's offset from the native scroll origin. */
     _distanceTo(container: HTMLElement | null): number;
     /** Scroll to a native axis offset. */
@@ -71,11 +69,6 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
         return this._axis._readElementSize(this._target);
     }
 
-    /** Read an observed border-box size on the scrolling axis. */
-    _readEntrySize(entry: ResizeObserverEntry) {
-        return this._axis._readEntrySize(entry);
-    }
-
     /** Measure an items container from the element's scroll origin. */
     _distanceTo(container: HTMLElement | null) {
         // `null` means that items start at the scroll origin. The same-target
@@ -88,7 +81,8 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
         return (
             this._readOffset() +
             this._axis._readRectStart(container.getBoundingClientRect()) -
-            this._axis._readRectStart(this._target.getBoundingClientRect())
+            this._axis._readRectStart(this._target.getBoundingClientRect()) -
+            this._axis._readElementClientStart(this._target)
         );
     }
 
@@ -122,11 +116,11 @@ export class ElementScrollerAdapter implements ScrollerAdapter {
         this._target.removeEventListener("scrollend", listener);
     }
 
-    /** Observe changes to the element's border-box size. */
+    /** Observe changes and report the element's client viewport size. */
     _observeResize(callback: (size: number) => void) {
         const observer = new ResizeObserver(entries => {
             if (entries.length > 0) {
-                callback(this._readEntrySize(entries[entries.length - 1]));
+                callback(this._readViewportSize());
             }
         });
 
@@ -177,11 +171,6 @@ export class WindowScrollerAdapter implements ScrollerAdapter {
     /** Read the window viewport size on the scrolling axis. */
     _readViewportSize() {
         return this._axis._readWindowSize(this._target);
-    }
-
-    /** Read an observed border-box size on the scrolling axis. */
-    _readEntrySize(entry: ResizeObserverEntry) {
-        return this._axis._readEntrySize(entry);
     }
 
     /** Measure an items container from the document scroll origin. */

@@ -1,0 +1,95 @@
+---
+layout: layouts/virtual/VirtualDocumentation.astro
+title: "Support and compatibility"
+description: "Browser, TypeScript, SSR, and framework compatibility boundaries for af-utils virtual packages."
+---
+
+import { readFile } from "node:fs/promises";
+
+export const browserslist = JSON.parse(
+    await readFile(new URL("../../../../package.json", import.meta.url), "utf8")
+).browserslist;
+
+export const frameworkSupport = await Promise.all(
+    [
+        ["React", "react", "react"],
+        ["Preact", "preact", "preact"],
+        ["Solid", "solid", "solid-js"],
+        ["Svelte", "svelte", "svelte"],
+        ["Lit", "lit", "lit"],
+        ["Vue", "vue", "vue"]
+    ].map(async ([framework, directory, peer]) => {
+        const manifestUrl = new URL(
+            `../../../../packages/virtual/${directory}/package.json`,
+            import.meta.url
+        );
+        const manifest = JSON.parse(await readFile(manifestUrl, "utf8"));
+        return [framework, manifest.name, manifest.peerDependencies[peer]];
+    })
+);
+
+# Support and compatibility
+
+## Browsers
+
+Published packages target the Browserslist query <code>{browserslist}</code>,
+read from the root build configuration.
+
+Browser rendering requires a native `ResizeObserver` for item measurement. The
+Node export installs only an inert server-side observer so models can be
+created before DOM attachment; it does not polyfill browser measurement.
+
+## TypeScript
+
+Core and adapters publish declarations generated from their public APIs. The
+compatibility contract checks every adapter's declarations with TypeScript 6
+and checks the combined public surface with TypeScript 7. The
+[API reference](/virtual/reference/index) is generated from the same public
+source.
+
+## Server rendering
+
+Models can be created without attached DOM elements. Initial
+`estimatedWidgetSize`, `estimatedItemSize`, and `overscanCount` determine the
+initial range; real elements replace those estimates after hydration. Adapters
+defer DOM attachment to their normal mounted lifecycle, but the repository does
+not currently provide a dedicated SSR example.
+
+## Framework versions
+
+Each adapter package declares its supported range in `peerDependencies`; that
+manifest is the source of truth. This table reads those manifests during the
+website build instead of copying their values into prose.
+
+<table>
+    <thead>
+        <tr>
+            <th>Framework</th>
+            <th>Adapter</th>
+            <th>Supported range</th>
+        </tr>
+    </thead>
+    <tbody>
+        {frameworkSupport.map(([framework, packageName, range]) => (
+            <tr>
+                <td>{framework}</td>
+                <td>
+                    <code>{packageName}</code>
+                </td>
+                <td>
+                    <code>{range}</code>
+                </td>
+            </tr>
+        ))}
+    </tbody>
+</table>
+
+A packed-package compatibility test installs every declared lower bound with
+strict peer checks, validates public types and Node exports, and runs a small
+lifecycle in Chromium. Standalone examples use current framework releases and
+test real application behavior instead of repeating the minimum-version
+matrix.
+
+Older framework majors outside the declared ranges are not supported through
+legacy adapter branches. Open [framework setup](/virtual/frameworks) for package
+names and runnable examples.

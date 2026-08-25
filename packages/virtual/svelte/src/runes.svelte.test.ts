@@ -16,13 +16,14 @@ test("synchronizes rune parameters, snapshots, and lifecycle", () => {
         );
 
         $effect(() => {
-            revision = snapshot.current;
+            revision = snapshot();
         });
     });
 
+    itemCount = 4;
     flushSync();
     const initialRevision = revision;
-    expect(model.itemCount).toBe(3);
+    expect(model.itemCount).toBe(4);
 
     itemCount = 5;
     flushSync();
@@ -44,15 +45,23 @@ test("keeps an unchanged reactive grid binding attached", () => {
     const rowsDetach = vi.spyOn(rows, "detachItem");
     const columnsAttach = vi.spyOn(columns, "attachItem");
     const columnsDetach = vi.spyOn(columns, "detachItem");
-    let binding = $state({ rows, rowIndex: 0, columns, columnIndex: 0 });
+    let rowIndex = $state(0);
+    let columnIndex = $state(0);
     const lifecycle: { detach: (() => void) | null } = { detach: null };
 
     const cleanup = $effect.root(() => {
-        lifecycle.detach = virtualGridItem(() => binding)(element) ?? null;
+        lifecycle.detach =
+            virtualGridItem(
+                rows,
+                () => rowIndex,
+                columns,
+                () => columnIndex
+            )(element) ?? null;
     });
     flushSync();
 
-    binding = { rows, rowIndex: 0, columns, columnIndex: 0 };
+    rowIndex = 0;
+    columnIndex = 0;
     flushSync();
     expect(rowsAttach).toHaveBeenCalledOnce();
     expect(columnsAttach).toHaveBeenCalledOnce();

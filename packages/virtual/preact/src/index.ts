@@ -3,9 +3,9 @@
  * Preact components and hooks used to connect to `VirtualScroller`.
  */
 
-export { default as List } from "./components/List";
+export { default as VirtualList } from "./components/List";
 export { default as useScroller } from "./hooks/useScroller";
-export { default as useVirtual, useVirtualModel } from "./hooks/useVirtual";
+export { default as useVirtual } from "./hooks/useVirtual";
 export { default as useVirtualEffect } from "./hooks/useVirtualEffect";
 export {
     useVirtualGridItemRef,

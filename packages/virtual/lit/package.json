@@ -14,6 +14,7 @@
     "sideEffects": false,
     "scripts": {
         "build": "vite build && vite build --ssr src/index.ts && tsc && api-extractor run && rm -r dist/types",
+        "api-report": "api-extractor run --local",
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
         "publint": "publint"
@@ -33,15 +34,15 @@
         "@af-utils/virtual-core": "workspace:*"
     },
     "peerDependencies": {
-        "lit": "^3.3.0"
+        "lit": "^2.0.0 || ^3.0.0"
     },
     "devDependencies": {
-        "@types/node": "^24.13.3",
+        "@types/node": "^26.3.0",
+        "@typescript/native": "npm:typescript@^7.0.2",
         "jsdom": "^30.0.1",
         "lit": "^3.3.0",
-        "typescript": "^6.0.3",
-        "vite": "^8.2.1",
-        "vitest": "^4.1.10"
+        "vite": "^8.2.2",
+        "vitest": "^4.1.11"
     },
     "publishConfig": {
         "access": "public"

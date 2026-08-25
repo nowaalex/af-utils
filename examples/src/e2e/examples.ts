@@ -14,13 +14,22 @@ const discoveredExamples = discoverExamples();
 
 export const describeExample = async (
     groupPath: string,
-    defineTests: (target: ExampleTestTarget) => void
+    defineTests: (target: ExampleTestTarget) => void,
+    expectedFrameworks: readonly ExampleFramework[] = []
 ) => {
     const examples = (await discoveredExamples).filter(
         example => example.groupPath === groupPath
     );
     if (examples.length === 0) {
         throw new Error(`No implementations found for example: ${groupPath}`);
+    }
+    const missingFrameworks = expectedFrameworks.filter(
+        framework => !examples.some(example => example.framework === framework)
+    );
+    if (missingFrameworks.length > 0) {
+        throw new Error(
+            `Missing ${groupPath} implementations: ${missingFrameworks.join(", ")}`
+        );
     }
 
     for (const example of examples) {
@@ -37,7 +46,9 @@ export const describeExample = async (
 };
 
 export const waitForExampleHydration = async (page: Page) => {
-    await expect(page.locator("astro-island").first()).toBeAttached();
+    await expect(
+        page.locator("astro-island, [data-example-ready]").first()
+    ).toBeAttached();
     await expect.poll(() => page.locator("astro-island[ssr]").count()).toBe(0);
     await page.evaluate(
         () =>

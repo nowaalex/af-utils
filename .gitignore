@@ -14,5 +14,7 @@ logs
 .nx/workspace-data/
 playwright-report/
 test-results/
+.lighthouseci/
 /git-worktrees/
-website/src/generated/
+website/.generated/
+website/.astro/

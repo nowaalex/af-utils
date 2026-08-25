@@ -13,34 +13,41 @@
                 "{workspaceRoot}/examples/config.ts",
                 "{workspaceRoot}/examples/discovery.ts",
                 "{workspaceRoot}/examples/structure.json"
-            ],
-            "generation": [
-                "default",
-                "!{projectRoot}/src/bundleSizes.ts",
-                "!{projectRoot}/src/content/reference/**/*"
             ]
         },
         "targets": {
+            "dev": {
+                "dependsOn": [
+                    "generate"
+                ]
+            },
+            "test": {
+                "dependsOn": []
+            },
+            "typecheck": {
+                "dependsOn": [
+                    "...",
+                    "generate"
+                ]
+            },
             "build": {
                 "dependsOn": [
-                    "^build",
+                    "...",
                     "generate"
                 ],
                 "inputs": [
-                    "production",
-                    "^production",
+                    "...",
                     "examples",
                     {
-                        "dependentTasksOutputFiles": "website/src/bundleSizes.ts"
+                        "dependentTasksOutputFiles": "website/.generated/bundleSizes.ts"
                     },
                     {
-                        "dependentTasksOutputFiles": "website/src/content/reference/**/*"
+                        "dependentTasksOutputFiles": "website/.generated/reference/**/*"
                     }
                 ]
             },
             "generate": {
                 "executor": "nx:noop",
-                "cache": false,
                 "dependsOn": [
                     "generate:bundle-sizes",
                     "generate:reference"
@@ -57,7 +64,7 @@
                     }
                 ],
                 "inputs": [
-                    "generation",
+                    "default",
                     {
                         "projects": [
                             "tag:npm:public"
@@ -66,7 +73,7 @@
                     }
                 ],
                 "outputs": [
-                    "{projectRoot}/src/bundleSizes.ts"
+                    "{projectRoot}/.generated/bundleSizes.ts"
                 ]
             },
             "generate:reference": {
@@ -80,7 +87,7 @@
                     }
                 ],
                 "inputs": [
-                    "generation",
+                    "default",
                     {
                         "projects": [
                             "tag:npm:public"
@@ -90,17 +97,17 @@
                     "{workspaceRoot}/typedoc.json"
                 ],
                 "outputs": [
-                    "{projectRoot}/src/content/reference"
+                    "{projectRoot}/.generated/reference"
                 ]
             }
         }
     },
     "scripts": {
         "dev": "astro dev",
-        "build": "astro check && astro build",
-        "generate:bundle-sizes": "node ../packages/weigh-exports/dist/index.js -i '../packages/virtual/* ../packages/scrollend-polyfill' -o ./src/bundleSizes.ts && oxfmt ./src/bundleSizes.ts",
+        "build": "node build-site.mjs",
+        "typecheck": "astro check",
+        "generate:bundle-sizes": "node build-bundle-sizes.mjs",
         "generate:reference": "node build-docs.mjs",
-        "start": "astro dev",
         "preview": "node preview.mjs",
         "astro": "astro",
         "test": "node --test plugins/*.test.mjs"
@@ -117,9 +124,9 @@
         "@af-utils/virtual-vue": "workspace:*",
         "@astrojs/check": "^0.9.10",
         "@astrojs/lit": "^4.0.0",
-        "@astrojs/markdown-remark": "^7.2.2",
-        "@astrojs/preact": "^6.0.2",
-        "@astrojs/react": "^6.0.2",
+        "@astrojs/markdown-remark": "^7.2.4",
+        "@astrojs/preact": "^6.0.4",
+        "@astrojs/react": "^6.0.4",
         "@astrojs/sitemap": "^3.7.3",
         "@astrojs/solid-js": "^7.0.2",
         "@astrojs/svelte": "^9.0.1",
@@ -128,8 +135,8 @@
         "@iconify-json/simple-icons": "^1.2.93",
         "@lit-labs/ssr-client": "^1.1.7",
         "@webcomponents/template-shadowroot": "^0.2.1",
-        "astro": "^7.2.2",
-        "astro-icon": "^1.1.5",
+        "astro": "^7.2.6",
+        "astro-icon": "^1.2.0",
         "astro-seo": "^1.1.0",
         "lit": "^3.3.0",
         "preact": "^10.29.8",
@@ -139,29 +146,30 @@
         "sharp": "^0.35.3",
         "sharp-ico": "^0.1.5",
         "shiki": "4.4.3",
-        "solid-js": "^1.9.14",
-        "svelte": "^5.56.9",
-        "vite": "^8.2.1",
+        "solid-js": "^1.9.15",
+        "svelte": "^5.56.10",
+        "vite": "^8.2.2",
         "vue": "^3.5.0"
     },
     "devDependencies": {
         "@af-utils/weigh-exports": "workspace:*",
-        "@astrojs/mdx": "^7.0.5",
+        "@astrojs/mdx": "^7.0.8",
         "@astrojs/vue": "^7.0.2",
         "@tailwindcss/forms": "^0.5.11",
         "@tailwindcss/typography": "^0.5.20",
         "@tailwindcss/vite": "^4.3.3",
         "@types/lodash": "^4.17.25",
         "@types/mdx": "^2.0.14",
-        "@types/node": "^24.13.3",
+        "@types/node": "^26.3.0",
         "@types/react": "^19.2.18",
-        "@types/react-dom": "^19.2.4",
+        "@types/react-dom": "^19.2.5",
         "lodash": "^4.18.1",
         "rehype-pretty-code": "^0.14.5",
         "rehype-slug": "^6.0.0",
         "remark-gfm": "4.0.1",
         "remark-toc": "^9.0.0",
         "tailwindcss": "^4.3.3",
+        "typescript": "^6.0.3",
         "unist-util-visit": "^5.1.0"
     }
 }

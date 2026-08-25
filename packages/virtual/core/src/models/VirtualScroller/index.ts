@@ -17,6 +17,7 @@ import type {
     VirtualScrollerExactPosition,
     VirtualScrollerInitialParams,
     VirtualScrollerRuntimeParams,
+    VirtualScrollerScrollToIndexOptions,
     VirtualScrollerScrollElement
 } from "../../types";
 import SizeIndex, {
@@ -310,9 +311,10 @@ class VirtualScroller {
     private get _isAtPublishedEnd() {
         return (
             this._scrollerAdapter !== null &&
-            this._getNativeEndOffset(this.scrollSize) -
-                this._scrollerAdapter._readOffset() <=
-                END_OFFSET_TOLERANCE
+            Math.abs(
+                this._getNativeEndOffset(this.scrollSize) -
+                    this._scrollerAdapter._readOffset()
+            ) <= END_OFFSET_TOLERANCE
         );
     }
 
@@ -434,7 +436,7 @@ class VirtualScroller {
 
     /**
      * Apply a measured viewport extent to range geometry.
-     * @param size - Full border-box extent of the scroller in CSS pixels.
+     * @param size - Client viewport extent of the scroller in CSS pixels.
      */
     private _setScrollElementSize(size: number) {
         if (this._disposed) return;
@@ -698,22 +700,24 @@ class VirtualScroller {
                     this._publishOrDeferScrollSize();
                 } else {
                     this._publishScrollSize();
-
-                    if (shouldPreservePublishedEnd) {
-                        this._scheduleEndCorrection();
-                    } else if (
-                        anchorDiff !== 0.0 &&
-                        this._canCorrectAnchor &&
-                        this._scrollerAdapter
-                    ) {
-                        this._scheduleOffsetCorrection(
-                            this._scrollerAdapter._readOffset() + anchorDiff
-                        );
-                    }
                 }
 
                 if (shouldDeferScrollSize || totalDiff < 0.0) {
                     this._updateRangeFromEnd();
+                }
+            }
+
+            if (!shouldDeferScrollSize) {
+                if (shouldPreservePublishedEnd && totalDiff !== 0.0) {
+                    this._scheduleEndCorrection();
+                } else if (
+                    anchorDiff !== 0.0 &&
+                    this._canCorrectAnchor &&
+                    this._scrollerAdapter
+                ) {
+                    this._scheduleOffsetCorrection(
+                        this._scrollerAdapter._readOffset() + anchorDiff
+                    );
                 }
             }
 
@@ -980,9 +984,7 @@ class VirtualScroller {
         if (element && this._scrollerAdapter?._matchesTarget(element)) return;
 
         if (this._scrollerAdapter) {
-            clearInterval(this._scrollToIndexTimer);
-            this._scrollToIndexTimer = 0;
-            this._scrollActivity._setIndexConverging(false);
+            this._cancelIndexConvergence();
             clearTimeout(this._scrollerOffsetTimer);
             this._unobserveResize();
             this._unobservePointer();
@@ -1258,13 +1260,7 @@ class VirtualScroller {
      * native target = items-container offset + requested item-space offset
      * ```
      */
-    scrollToOffset(offset: number, smooth?: boolean) {
-        this._assertMutable();
-        assert(
-            Number.isFinite(offset),
-            VirtualScrollerErrorIndex.INVALID_OFFSET,
-            offset
-        );
+    private _scrollToOffset(offset: number, smooth?: boolean) {
         const targetOffset = this._getNativeScrollTarget(offset);
 
         if (this._scrollerAdapter) {
@@ -1280,14 +1276,36 @@ class VirtualScroller {
         }
     }
 
+    /** Cancel pending measured-size corrections for the previous index target. */
+    private _cancelIndexConvergence() {
+        clearInterval(this._scrollToIndexTimer);
+        this._scrollToIndexTimer = 0;
+        this._scrollActivity._setIndexConverging(false);
+    }
+
+    /**
+     * Scroll to an item-space CSS-pixel coordinate.
+     *
+     * @param offset - Distance from the start of item `0`, in CSS pixels.
+     * @param smooth - Whether to request native smooth scrolling.
+     */
+    scrollToOffset(offset: number, smooth?: boolean) {
+        this._assertMutable();
+        assert(
+            Number.isFinite(offset),
+            VirtualScrollerErrorIndex.INVALID_OFFSET,
+            offset
+        );
+        this._cancelIndexConvergence();
+        this._scrollToOffset(offset, smooth);
+    }
+
     /**
      * Scroll to an integer or fractional item position.
      *
      * @param index - Exact item position; `12.5` targets the midpoint of item
      * `12` at the visible edge after accounting for the sticky header.
-     * @param smooth - Whether to request native smooth scrolling.
-     * @param attempts - Maximum corrections while measured sizes converge;
-     * defaults to `5`.
+     * @param options - Alignment and native scrolling behavior.
      *
      * @remarks
      * Checks the target immediately and then while measurements converge,
@@ -1296,8 +1314,7 @@ class VirtualScroller {
      */
     scrollToIndex(
         index: VirtualScrollerExactPosition,
-        smooth?: boolean,
-        attempts = DEFAULT_SCROLL_TO_INDEX_ATTEMPTS
+        options: VirtualScrollerScrollToIndexOptions = {}
     ) {
         this._assertMutable();
         assert(
@@ -1306,36 +1323,91 @@ class VirtualScroller {
             index,
             this._itemCount
         );
+        const align = options.align ?? "start";
+        const behavior = options.behavior ?? "auto";
         assert(
-            Number.isSafeInteger(attempts) && attempts >= 1,
-            VirtualScrollerErrorIndex.INVALID_ATTEMPTS,
-            attempts
+            align === "start" ||
+                align === "center" ||
+                align === "end" ||
+                align === "auto",
+            VirtualScrollerErrorIndex.INVALID_SCROLL_ALIGNMENT
+        );
+        assert(
+            behavior === "auto" || behavior === "smooth",
+            VirtualScrollerErrorIndex.INVALID_SCROLL_BEHAVIOR
         );
 
-        clearInterval(this._scrollToIndexTimer);
-        this._scrollToIndexTimer = 0;
+        this._cancelIndexConvergence();
         this._scrollActivity._setIndexConverging(true);
         const wholeIndex = Math.trunc(index);
+        const smooth = behavior === "smooth";
+        let attempts = DEFAULT_SCROLL_TO_INDEX_ATTEMPTS;
+        let lastNativeTarget: number | null = null;
+
+        /** Resolve the aligned item-space target from current measured sizes. */
+        const getTargetOffset = () => {
+            const itemStart = this.getOffset(wholeIndex);
+            const itemSize = this._sizeIndex._getSize(wholeIndex);
+            const exactOffset = itemStart + itemSize * (index - wholeIndex);
+            const startOffset = exactOffset - this._sticky._headerSize;
+
+            if (align === "start") return startOffset;
+            if (align === "center") {
+                return (
+                    itemStart +
+                    itemSize / 2 -
+                    this._sticky._headerSize -
+                    this._availableWidgetSize / 2
+                );
+            }
+            const endOffset =
+                itemStart +
+                itemSize -
+                this._sticky._headerSize -
+                this._availableWidgetSize;
+            if (align === "end") return endOffset;
+
+            const visibleStart = this._visibleStart;
+            const visibleEnd = visibleStart + this._availableWidgetSize;
+            if (
+                itemStart >= visibleStart &&
+                itemStart + itemSize <= visibleEnd
+            ) {
+                return null;
+            }
+            return itemStart < visibleStart ? startOffset : endOffset;
+        };
 
         /** Scroll only when measurement convergence moved the native target. */
         const scrollToCurrentTarget = () => {
-            const offset =
-                this.getOffset(wholeIndex) +
-                this._sizeIndex._getSize(wholeIndex) * (index - wholeIndex) -
-                this._sticky._headerSize;
+            const offset = getTargetOffset();
+            if (offset === null) return false;
             const adapter = this._scrollerAdapter;
+            const nativeTarget = this._getNativeScrollTarget(offset);
+
+            if (
+                lastNativeTarget !== null &&
+                Math.abs(lastNativeTarget - nativeTarget) <=
+                    SCROLL_TARGET_TOLERANCE
+            ) {
+                return true;
+            }
 
             if (
                 !adapter ||
-                Math.abs(
-                    adapter._readOffset() - this._getNativeScrollTarget(offset)
-                ) > SCROLL_TARGET_TOLERANCE
+                Math.abs(adapter._readOffset() - nativeTarget) >
+                    SCROLL_TARGET_TOLERANCE
             ) {
-                this.scrollToOffset(offset, smooth);
+                lastNativeTarget = nativeTarget;
+                this._scrollToOffset(offset, smooth);
             }
+            return true;
         };
 
-        scrollToCurrentTarget();
+        if (!scrollToCurrentTarget()) {
+            this._scrollActivity._setIndexConverging(false);
+            return;
+        }
         attempts--;
 
         if (attempts === 0) {
@@ -1377,6 +1449,7 @@ class VirtualScroller {
         assertSizeIndexCount(itemCount);
 
         if (this._itemCount !== itemCount) {
+            this._cancelIndexConvergence();
             this._sizeIndex._setCount(itemCount);
             this._events._beginBatch();
 
@@ -1500,6 +1573,7 @@ class VirtualScroller {
 
         const nextItemCount = this._itemCount - deleteCount + insertCount;
         assertSizeIndexCount(nextItemCount);
+        this._cancelIndexConvergence();
         const { sizesChanged } = this._sizeIndex._splice(
             start,
             deleteCount,
@@ -1531,6 +1605,16 @@ class VirtualScroller {
         const itemCount = runtimeParams.itemCount ?? this._itemCount;
         const overscanCount = runtimeParams.overscanCount;
 
+        if (
+            itemCount === this._itemCount &&
+            (estimatedItemSize === undefined ||
+                estimatedItemSize === this._sizeIndex._estimatedSize) &&
+            (overscanCount === undefined ||
+                overscanCount === this._overscanCount)
+        ) {
+            return;
+        }
+
         if (estimatedItemSize !== undefined) {
             assertEstimatedSize(estimatedItemSize);
         }
@@ -1546,11 +1630,17 @@ class VirtualScroller {
             // current range. The value is picked up by the next natural range
             // recalculation. Assign it first so a simultaneous size/count
             // change uses the new reserve.
-            if (overscanCount !== undefined) {
+            if (
+                overscanCount !== undefined &&
+                overscanCount !== this._overscanCount
+            ) {
                 this._overscanCount = overscanCount;
             }
 
-            if (estimatedItemSize !== undefined) {
+            if (
+                estimatedItemSize !== undefined &&
+                estimatedItemSize !== this._sizeIndex._estimatedSize
+            ) {
                 this._resetCachedSizes(this.from, this.to, estimatedItemSize);
             }
 
@@ -1566,9 +1656,8 @@ class VirtualScroller {
 
         this.setScroller(null);
         this._disposed = true;
-        clearInterval(this._scrollToIndexTimer);
+        this._cancelIndexConvergence();
         clearTimeout(this._scrollerOffsetTimer);
-        this._scrollToIndexTimer = 0;
         this._scrollerOffsetTimer = 0;
         this._pointerActive = false;
         this._pendingScrollOffset = 0.0;

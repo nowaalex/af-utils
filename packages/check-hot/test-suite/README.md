@@ -1,5 +1,20 @@
 # @af-utils/check-hot-test-runners
 
+> **Change Contract**
+>
+> - **Responsibility:** provide optional, version-aware semantic seed recipes
+>   for ecosystems inspected by `@af-utils/check-hot`.
+> - **Boundary:** adapters describe valid samples and supported package/runtime
+>   policy; thick core owns probing, mutation, isolation, evidence, and terminal
+>   accounting.
+> - **Invariants:** published entry points are self-contained, manifests pin the
+>   exact runner/runtime/target identity, and unsupported versions fail before
+>   sample execution.
+> - **Configuration owners:** adapter modules own recipes; their validation
+>   functions own version ranges; package exports own public entry points.
+> - **Targeted check:**
+>   `pnpm nx run @af-utils/check-hot-test-runners:test`.
+
 Optional, version-aware ecosystem recipes for `@af-utils/check-hot`. This is a
 separate package so the orchestration core contains no React, Svelte, Lodash,
 date-fns, or other checked-library behavior.
@@ -32,12 +47,10 @@ logic inside the source graph authenticated by the probe manifest. Source
 modules remain DRY; bundling is a distribution/integrity boundary, not a copy of
 ecosystem logic into core.
 
-This release declares policy for Node `>=20.19 <21 || >=22.12 <28`, Deno `>=2 <3`, and Bun
-`>=1.2 <2`.
-Package adapters additionally require Lodash `>=4 <5`, date-fns `>=3 <5`,
-React `>=18 <20`, or Svelte `>=5 <6`. These ranges are executable policy in
-`validate`; they are not a claim that every patch in the interval has been run
-in this repository. The installed workspace versions are exercised by real
+Supported runtime and ecosystem ranges are executable policy in each adapter's
+`validate` implementation rather than a second list maintained in this README.
+Those ranges are not a claim that every patch in an interval has been run in
+this repository. The installed workspace versions are exercised by real
 probe/replay tests and CI runs engine-oracle controls on Node, Deno, and Bun.
 Engine versions are recorded when the runtime exposes them; a Bun report shows
 `jsc@unknown` when its active build does not provide a separate JavaScriptCore
