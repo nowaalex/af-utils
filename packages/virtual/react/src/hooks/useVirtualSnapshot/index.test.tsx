@@ -41,7 +41,7 @@ describe("useVirtualSnapshot", () => {
         act(() => root.render(<Harness value={1} />));
         expect(subscribeSpy).toHaveBeenCalledTimes(1);
 
-        act(() => model.setItemCount(20));
+        act(() => void model.setItemCount(20));
         expect(renders).toBe(3);
         act(() => root.unmount());
     });

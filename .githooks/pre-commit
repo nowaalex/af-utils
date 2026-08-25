@@ -9,4 +9,4 @@ if [ "$actual_node_version" != "$expected_node_version" ]; then
     exit 1
 fi
 
-pnpm nx run workspace:check-style --skip-nx-cache
+pnpm nx run workspace:check-style

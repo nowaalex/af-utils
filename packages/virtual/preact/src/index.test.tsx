@@ -42,7 +42,8 @@ describe("Preact adapter", () => {
 
         void act(() => render(<App />, container));
         expect(model?.itemCount).toBe(3);
-        const dispose = vi.spyOn(model!, "dispose");
+        if (!model) throw new Error("Virtual model was not created");
+        const dispose = vi.spyOn(model, "dispose");
 
         itemCount = 7;
         void act(() => render(<App />, container));

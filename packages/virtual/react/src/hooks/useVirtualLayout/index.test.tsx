@@ -56,7 +56,7 @@ describe("useVirtualLayout", () => {
         expect(setContainerSpy).toHaveBeenCalledWith(size);
         expect(setContainerSpy).not.toHaveBeenCalledWith(items);
 
-        act(() => model.setItemCount(20));
+        act(() => void model.setItemCount(20));
         expect(size.style.height).toBe("800px");
         expect(renders).toBe(1);
 
@@ -122,7 +122,7 @@ describe("useVirtualLayout", () => {
             )
         );
         const size = container.firstElementChild as HTMLElement;
-        act(() => model.setItemCount(20));
+        act(() => void model.setItemCount(20));
         expect(size.style.height).toBe("800px");
         act(() => root.unmount());
     });
