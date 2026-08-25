@@ -48,10 +48,10 @@ const PrependItems = () => {
         Array.from({ length: INITIAL_ITEM_COUNT }, (_, id) => createItem(id))
     );
     const [loading, setLoading] = createSignal(false);
-    const model = createVirtual(() => ({
+    const model = createVirtual({
         estimatedItemSize: ESTIMATED_ITEM_SIZE_PX,
-        itemCount: items().length
-    }));
+        itemCount: INITIAL_ITEM_COUNT
+    });
     let nextPrependedId = -1;
 
     const prependItems = async () => {
