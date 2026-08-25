@@ -11,7 +11,7 @@ npm install @af-utils/virtual-preact preact
 
 ## Documentation
 
-- [Getting started](https://af-utils.com/virtual)
-- [Preact examples](https://af-utils.com/virtual/examples/preact/basics/simple-list)
-- [Support and compatibility](https://af-utils.com/virtual/support)
-- [API reference](https://af-utils.com/virtual/reference/virtual-preact/index)
+- [Getting started](https://af-utils.vercel.app/virtual)
+- [Preact examples](https://af-utils.vercel.app/virtual/examples/preact/basics/simple-list)
+- [Support and compatibility](https://af-utils.vercel.app/virtual/support)
+- [API reference](https://af-utils.vercel.app/virtual/reference/virtual-preact/index)

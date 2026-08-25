@@ -7,7 +7,7 @@
         "url": "git+https://github.com/nowaalex/af-utils.git",
         "directory": "packages/weigh-exports"
     },
-    "homepage": "https://github.com/nowaalex/af-utils/tree/master/packages/weigh-exports",
+    "homepage": "https://github.com/nowaalex/af-utils/tree/main/packages/weigh-exports",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
     "author": {
         "name": "Alex Fomin",

@@ -19,7 +19,7 @@
         "type": "git",
         "url": "https://github.com/nowaalex/af-utils"
     },
-    "homepage": "https://af-utils.com",
+    "homepage": "https://af-utils.vercel.app",
     "license": "MIT",
     "scripts": {
         "nx": "nx",
@@ -44,6 +44,8 @@
         "publint": "nx run-many -t publint --projects=tag:npm:public",
         "packages:readmes:check": "nx run workspace:packages-readmes-check",
         "nx:contracts:check": "nx run workspace:nx-contracts-check",
+        "site:sync": "nx run workspace:site-origin-sync",
+        "site:sync:check": "nx run workspace:site-origin-check",
         "examples:build": "nx run @af-utils/examples:build",
         "examples:sync": "nx run @af-utils/examples:sync",
         "examples:sync:check": "nx run @af-utils/examples:sync:check",

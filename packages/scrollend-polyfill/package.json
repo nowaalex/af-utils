@@ -8,7 +8,7 @@
         "url": "git+https://github.com/nowaalex/af-utils.git",
         "directory": "packages/scrollend-polyfill"
     },
-    "homepage": "https://af-utils.com/scrollend-polyfill",
+    "homepage": "https://af-utils.vercel.app/scrollend-polyfill",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
     "author": {
         "name": "Alex Fomin",

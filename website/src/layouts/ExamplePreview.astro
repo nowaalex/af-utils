@@ -1,5 +1,6 @@
 ---
 import HeadFont from "components/head/Font.astro";
+import siteConfig from "../../../site.config.json";
 
 const canonicalPath = Astro.url.pathname.replace(
     /^\/examples\/([^/]+)/,
@@ -15,7 +16,7 @@ const canonicalPath = Astro.url.pathname.replace(
         <HeadFont />
         <link
             rel="canonical"
-            href={new URL(canonicalPath, import.meta.env.PUBLIC_ORIGIN)}
+            href={new URL(canonicalPath, siteConfig.origin)}
         />
         <style>
             html,

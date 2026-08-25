@@ -28,5 +28,5 @@ period and no tracked touch gesture remains active. Touch cancellation and
 aborted, captured, duplicate, or one-time listeners follow the normal event
 listener lifecycle.
 
-See the [runnable React example](https://af-utils.com/scrollend-polyfill/examples/react)
-and [bundle-size report](https://af-utils.com/scrollend-polyfill/size).
+See the [runnable React example](https://af-utils.vercel.app/scrollend-polyfill/examples/react)
+and [bundle-size report](https://af-utils.vercel.app/scrollend-polyfill/size).

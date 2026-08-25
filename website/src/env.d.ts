@@ -2,7 +2,6 @@
 /// <reference types="astro/client" />
 
 interface ImportMetaEnv {
-    readonly PUBLIC_ORIGIN: string;
     readonly PUBLIC_TITLE_PREFIX: string;
     readonly PUBLIC_GITHUB_BRANCH: string;
     readonly PUBLIC_GITHUB_SUFFIX: string;

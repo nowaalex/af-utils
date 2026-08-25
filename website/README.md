@@ -15,7 +15,7 @@
 
 The Astro documentation website for the af-utils packages and their standalone
 examples.
-It publishes at [af-utils.com](https://af-utils.com/).
+It publishes at [af-utils.com](https://af-utils.vercel.app/).
 
 ## Development
 

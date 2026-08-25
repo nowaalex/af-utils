@@ -7,7 +7,7 @@
         "url": "git+https://github.com/nowaalex/af-utils.git",
         "directory": "packages/check-hot/test-suite"
     },
-    "homepage": "https://github.com/nowaalex/af-utils/tree/master/packages/check-hot/test-suite",
+    "homepage": "https://github.com/nowaalex/af-utils/tree/main/packages/check-hot/test-suite",
     "bugs": "https://github.com/nowaalex/af-utils/issues",
     "author": {
         "name": "Alex Fomin",

@@ -9,7 +9,7 @@ on:
             - pnpm-lock.yaml
     push:
         branches:
-            - master
+            - main
         paths:
             - packages/virtual/core/**
             - .github/workflows/performance.yml

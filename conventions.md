@@ -38,6 +38,8 @@ Use these commands from the repository root:
 | Validate generated examples and versions | `pnpm nx run @af-utils/examples:versions:check`               |
 | Validate package READMEs                 | `pnpm nx run workspace:packages-readmes-check`                |
 | Validate Nx task ownership               | `pnpm nx run workspace:nx-contracts-check`                    |
+| Update the canonical site origin         | `pnpm nx run workspace:site-origin-sync`                      |
+| Validate canonical site links            | `pnpm nx run workspace:site-origin-check`                     |
 | Validate package tarballs                | `pnpm nx run-many -t publint --projects=tag:npm:public`       |
 | Run browser integration tests            | `pnpm nx run @af-utils/examples:e2e`                          |
 | Validate generated website files         | `pnpm nx run workspace:website-generated-check`               |
@@ -51,6 +53,24 @@ CI uses the explicit Nx commands so the task graph is visible in logs. Use
 `pnpm nx graph` to inspect relationships and
 `pnpm nx affected -t build test typecheck` for an affected-only local check.
 Repository CI intentionally runs the complete gates.
+
+`site.config.json` owns the production website origin. Published package
+metadata and documentation must contain literal URLs, so the site-origin sync
+target updates those derived copies. Change only the config value, then run the
+sync target; the style gate rejects stale af-utils origins.
+
+## Releases
+
+Every pull request that changes a publishable package must include an
+appropriate Changeset. The release workflow on `main` validates the complete
+workspace, creates or updates the Version Packages pull request, and publishes
+after that pull request is merged.
+
+npm publishing uses a Trusted Publisher bound to the `nowaalex/af-utils`
+repository and `release.yml` workflow. New package names require one initial
+authenticated publish before their package-level Trusted Publisher can be
+configured; subsequent releases use GitHub OIDC without a long-lived publish
+token.
 
 ## Documentation
 

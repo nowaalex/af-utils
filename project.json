@@ -26,6 +26,41 @@
             "cache": false,
             "dependsOn": ["format-oxc", "format-templates"]
         },
+        "site-origin-sync": {
+            "executor": "nx:run-commands",
+            "cache": false,
+            "options": {
+                "command": "node scripts/sync-site-origin.mjs",
+                "cwd": "."
+            }
+        },
+        "site-origin-test": {
+            "executor": "nx:run-commands",
+            "cache": true,
+            "inputs": [
+                "{workspaceRoot}/site.config.json",
+                "{workspaceRoot}/scripts/sync-site-origin.mjs",
+                "{workspaceRoot}/scripts/sync-site-origin.test.mjs"
+            ],
+            "options": {
+                "command": "node --test scripts/sync-site-origin.test.mjs",
+                "cwd": "."
+            }
+        },
+        "site-origin-check": {
+            "executor": "nx:run-commands",
+            "cache": true,
+            "dependsOn": ["site-origin-test"],
+            "inputs": [
+                "default",
+                "{workspaceRoot}/site.config.json",
+                "{workspaceRoot}/scripts/sync-site-origin.mjs"
+            ],
+            "options": {
+                "command": "node scripts/sync-site-origin.mjs --check",
+                "cwd": "."
+            }
+        },
         "format-check-oxc": {
             "executor": "nx:run-commands",
             "cache": true,
@@ -71,7 +106,7 @@
         "check-style": {
             "executor": "nx:noop",
             "cache": true,
-            "dependsOn": ["format-check", "lint"]
+            "dependsOn": ["format-check", "lint", "site-origin-check"]
         },
         "packages-readmes-check": {
             "executor": "nx:run-commands",

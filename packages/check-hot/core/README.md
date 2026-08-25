@@ -81,9 +81,9 @@ non-goals live in [Related tools](./docs/related-tools.md).
 The optional `@af-utils/check-hot-test-runners` package contains maintained
 seed providers for external ecosystems. No inspected-library registry or recipe
 lives in this core package. See the
-[workspace boundary](https://github.com/nowaalex/af-utils/tree/master/packages/check-hot)
+[workspace boundary](https://github.com/nowaalex/af-utils/tree/main/packages/check-hot)
 and the
-[test-suite documentation](https://github.com/nowaalex/af-utils/tree/master/packages/check-hot/test-suite).
+[test-suite documentation](https://github.com/nowaalex/af-utils/tree/main/packages/check-hot/test-suite).
 
 ## Documentation
 

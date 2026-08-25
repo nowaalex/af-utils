@@ -11,7 +11,7 @@ npm install @af-utils/virtual-solid solid-js
 
 ## Documentation
 
-- [Getting started](https://af-utils.com/virtual)
-- [Solid examples](https://af-utils.com/virtual/examples/solid/basics/simple-list)
-- [Support and compatibility](https://af-utils.com/virtual/support)
-- [API reference](https://af-utils.com/virtual/reference/virtual-solid/index)
+- [Getting started](https://af-utils.vercel.app/virtual)
+- [Solid examples](https://af-utils.vercel.app/virtual/examples/solid/basics/simple-list)
+- [Support and compatibility](https://af-utils.vercel.app/virtual/support)
+- [API reference](https://af-utils.vercel.app/virtual/reference/virtual-solid/index)

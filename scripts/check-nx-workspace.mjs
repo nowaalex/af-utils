@@ -54,6 +54,8 @@ const nxAliases = [
     "build",
     "publint",
     "packages:readmes:check",
+    "site:sync",
+    "site:sync:check",
     "examples:build",
     "examples:sync",
     "examples:sync:check",

@@ -20,13 +20,12 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
 import { visit } from "unist-util-visit";
-import { loadEnv } from "vite";
 import examples from "./integrations/examples";
 import { codeTheme } from "./src/utils/codeTheme";
 import stripTrailingSlash from "./src/utils/stripTrailingSlash";
+import siteConfig from "../site.config.json";
 
-const env = loadEnv("", process.cwd(), "") as ImportMetaEnv;
-const publicOrigin = new URL(env.PUBLIC_ORIGIN).origin;
+const siteOrigin = siteConfig.origin;
 const frameworkIcons = exampleFrameworks.map(framework =>
     getExampleFrameworkDefinition(framework).icon.split(":")
 );
@@ -41,8 +40,8 @@ const rehypeLinks: RehypePlugins[number] = () => tree =>
             let href = originalHref;
 
             try {
-                const url = new URL(originalHref, publicOrigin);
-                if (url.origin === publicOrigin) {
+                const url = new URL(originalHref, siteOrigin);
+                if (url.origin === siteOrigin) {
                     href = `${url.pathname}${url.search}${url.hash}`;
                 } else if (
                     url.protocol === "http:" ||
@@ -80,7 +79,7 @@ const rehypeScrollableTables: RehypePlugins[number] = () => tree =>
     });
 
 export default defineConfig({
-    site: publicOrigin,
+    site: siteOrigin,
     vite: {
         plugins: [tailwindcss()]
     },
@@ -172,13 +171,9 @@ export default defineConfig({
             }
         }),
         sitemap({
-            filter: page => {
-                const pathname = new URL(page).pathname;
-                return !["/examples", "/example-source"].some(
-                    prefix =>
-                        pathname === prefix || pathname.startsWith(`${prefix}/`)
-                );
-            },
+            filter: page =>
+                !page.startsWith(`${siteOrigin}/examples`) &&
+                !page.startsWith(`${siteOrigin}/example-source`),
             serialize(item) {
                 // trailing slashes must be the same as canonical links
                 item.url = stripTrailingSlash(item.url);

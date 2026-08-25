@@ -38,6 +38,7 @@
                 "inputs": [
                     "...",
                     "examples",
+                    "{workspaceRoot}/site.config.json",
                     {
                         "dependentTasksOutputFiles": "website/.generated/bundleSizes.ts"
                     },
