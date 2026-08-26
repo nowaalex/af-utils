@@ -1,5 +1,7 @@
 # af-utils
 
+[![CodSpeed](https://img.shields.io/endpoint?url=https://codspeed.io/badge.json)](https://app.codspeed.io/nowaalex/af-utils?utm_source=badge)
+
 Practical open-source utilities.
 
 [Website](https://af-utils.vercel.app) ·

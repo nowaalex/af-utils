@@ -17,6 +17,15 @@
     },
     "license": "MIT",
     "sideEffects": false,
+    "nx": {
+        "targets": {
+            "bench": {
+                "dependsOn": [
+                    "^build"
+                ]
+            }
+        }
+    },
     "scripts": {
         "dev": "tsc && esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/* --watch",
         "build": "tsc && esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/* && api-extractor run && rm -r dist/types",
@@ -53,6 +62,7 @@
         "windowing"
     ],
     "devDependencies": {
+        "@codspeed/vitest-plugin": "^5.7.1",
         "@types/node": "^26.3.0",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.5",
