@@ -9,8 +9,8 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/virtual-core": "1.0.2",
-        "@af-utils/virtual-svelte": "0.0.1",
+        "@af-utils/virtual-core": "2.0.0",
+        "@af-utils/virtual-svelte": "1.0.0",
         "svelte": "^5.56.10",
         "@tanstack/svelte-table": "^9.1.2"
     },

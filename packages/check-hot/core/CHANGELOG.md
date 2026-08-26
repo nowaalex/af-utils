@@ -1,5 +1,13 @@
 # @af-utils/check-hot
 
+## 0.1.1
+
+### Patch Changes
+
+- 2d391a4: Reject malformed, duplicated, stale, and request-inconsistent worker results,
+  propagate process-tree cleanup failures, and bound worker cleanup to the complete
+  OS containment with POSIX process groups and Windows Job Objects.
+
 ## 0.1.0
 
 - Add scenario-driven Node.js and Deno V8 diagnostics.

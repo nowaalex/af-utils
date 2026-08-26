@@ -1,6 +1,6 @@
 {
     "name": "@af-utils/weigh-exports",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "CLI for measuring minified, gzip, and Brotli sizes of package exports",
     "repository": {
         "type": "git",

@@ -9,8 +9,8 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/virtual-core": "1.0.2",
-        "@af-utils/virtual-solid": "0.0.1",
+        "@af-utils/virtual-core": "2.0.0",
+        "@af-utils/virtual-solid": "1.0.0",
         "solid-js": "^1.9.15"
     },
     "devDependencies": {

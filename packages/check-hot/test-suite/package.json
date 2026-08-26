@@ -113,7 +113,7 @@
         "vitest": "^4.1.11"
     },
     "peerDependencies": {
-        "@af-utils/check-hot": "^0.1.0",
+        "@af-utils/check-hot": "^0.1.1",
         "date-fns": ">=3 <5",
         "lodash": ">=4 <5",
         "react": ">=18 <20",
