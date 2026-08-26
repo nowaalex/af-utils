@@ -44,6 +44,7 @@ Use these commands from the repository root:
 | Run browser integration tests            | `pnpm nx run @af-utils/examples:e2e`                          |
 | Validate generated website files         | `pnpm nx run workspace:website-generated-check`               |
 | Run stable core benchmarks               | `pnpm nx run @af-utils/virtual-core:bench`                    |
+| Run every benchmark suite                | `pnpm nx run-many -t bench`                                   |
 | Run the bounded mutation suite           | `pnpm nx run @af-utils/virtual-core:test:mutation`            |
 | Check V8 optimization invariants         | `pnpm nx run @af-utils/virtual-core:jit:check`                |
 | Enforce website performance budgets      | `pnpm nx run workspace:lighthouse`                            |
