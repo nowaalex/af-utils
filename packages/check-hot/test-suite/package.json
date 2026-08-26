@@ -1,5 +1,6 @@
 {
     "name": "@af-utils/check-hot-test-runners",
+    "private": true,
     "version": "0.1.0",
     "description": "Optional ecosystem-specific sample recipes for @af-utils/check-hot",
     "repository": {
