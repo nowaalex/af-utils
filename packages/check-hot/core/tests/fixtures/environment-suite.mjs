@@ -1,9 +1,13 @@
 import { createModuleSuite } from "../../dist/index.js";
+import packageManifest from "../../package.json" with { type: "json" };
 
 export default createModuleSuite({
     name: "worker-environment-fixture",
     environment: { CHECK_HOT_FIXTURE: "worker-only" },
-    package: { name: "@af-utils/check-hot", version: "0.1.0" },
+    package: {
+        name: packageManifest.name,
+        version: packageManifest.version
+    },
     resolve: () => import.meta.resolve("./environment-module.mjs"),
     load: () => import("./environment-module.mjs"),
     samples: {
