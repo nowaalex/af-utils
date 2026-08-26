@@ -73,12 +73,12 @@ const fileIconClass =
         </li>
     ) : (
         <li>
-            <button
-                type="button"
-                aria-pressed={node.url === selectedUrl}
+            <a
+                href={node.url}
+                data-astro-reload
+                aria-current={node.url === selectedUrl ? "true" : undefined}
                 data-file-tree-item
-                data-file-url={node.url}
-                class="flex w-full cursor-pointer items-center gap-1.5 py-0.5 pl-5 pr-1 text-left text-slate-700 transition-colors hover:bg-slate-200 aria-pressed:bg-slate-700 aria-pressed:text-white"
+                class="flex w-full cursor-pointer items-center gap-1.5 py-0.5 pl-5 pr-1 text-left text-slate-700 no-underline transition-colors hover:bg-slate-200 aria-current:bg-slate-700 aria-current:text-white"
                 title={node.path}
             >
                 {fileIcon && (
@@ -90,7 +90,7 @@ const fileIconClass =
                     />
                 )}
                 <span class="truncate">{node.name}</span>
-            </button>
+            </a>
         </li>
     )
 }

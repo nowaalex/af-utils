@@ -81,7 +81,7 @@ const tree = buildExampleFileTree(files);
                 "[data-file-tree-expand]"
             );
             const files = Array.from(
-                this.querySelectorAll<HTMLButtonElement>(
+                this.querySelectorAll<HTMLAnchorElement>(
                     "[data-file-tree-item]"
                 )
             );
@@ -107,17 +107,30 @@ const tree = buildExampleFileTree(files);
             });
 
             for (const file of files) {
-                file.addEventListener("click", () => {
+                file.addEventListener("click", (event) => {
+                    if (
+                        !event.pointerType ||
+                        event.button !== 0 ||
+                        event.altKey ||
+                        event.ctrlKey ||
+                        event.metaKey ||
+                        event.shiftKey
+                    ) {
+                        return;
+                    }
+
+                    event.preventDefault();
                     for (const item of files) {
-                        item.setAttribute(
-                            "aria-pressed",
-                            String(item === file)
-                        );
+                        if (item === file) {
+                            item.setAttribute("aria-current", "true");
+                        } else {
+                            item.removeAttribute("aria-current");
+                        }
                     }
                     this.dispatchEvent(
                         new CustomEvent("example-file-select", {
                             bubbles: true,
-                            detail: { url: file.dataset.fileUrl }
+                            detail: { url: file.getAttribute("href") }
                         })
                     );
                 });
