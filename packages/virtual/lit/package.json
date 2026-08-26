@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-lit",
     "private": false,
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Lit controllers and directives for rendering large scrollable data",
     "repository": {
         "type": "git",

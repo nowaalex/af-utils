@@ -12,7 +12,7 @@
         "astroClientOnly": "react"
     },
     "dependencies": {
-        "@af-utils/virtual-react": "1.0.2",
+        "@af-utils/virtual-react": "2.0.0",
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
         "@mui/material": "^9.3.1",
