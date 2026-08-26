@@ -53,10 +53,13 @@
         "workspace:sync:check": "nx run @af-utils/examples:versions:check",
         "website:generated:check": "nx run workspace:website-generated-check",
         "website:lighthouse": "nx run workspace:lighthouse",
+        "verify:prepush": "nx run workspace:verify:prepush",
+        "verify:full": "nx run workspace:verify:full",
+        "packages:ready": "nx run workspace:packages-ready",
         "hooks:install": "git config core.hooksPath .githooks",
         "prepare": "pnpm hooks:install",
         "changeset:version": "changeset version && pnpm nx run @af-utils/examples:versions && pnpm install --lockfile-only --no-frozen-lockfile",
-        "release": "changeset publish"
+        "release": "nx run workspace:packages-ready && changeset publish"
     },
     "browserslist": ">0.6%, not op_mini all",
     "devDependencies": {

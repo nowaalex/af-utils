@@ -1,0 +1,9 @@
+version: v1.25.0
+ignore:
+    SNYK-JS-EXTRACTZIP-17660777:
+        - '@lhci/cli > lighthouse > puppeteer-core > @puppeteer/browsers > extract-zip':
+              reason: >-
+                  Dev/CI-only transitive dependency of Lighthouse; no fixed
+                  extract-zip release is available upstream. Revisit when a
+                  patched release is published.
+              expires: '2026-11-30T23:59:59.000Z'
