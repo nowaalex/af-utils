@@ -19,7 +19,7 @@ export async function GET() {
         JSON.stringify({
             name: "af-utils",
             short_name: "af-utils",
-            description: "Small, focused JavaScript and TypeScript utilities",
+            description: "Practical open-source utilities.",
             start_url: "/",
             scope: "/",
             display: "standalone",

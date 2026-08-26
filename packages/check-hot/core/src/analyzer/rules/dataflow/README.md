@@ -1,5 +1,17 @@
 # Binding writes and parameter provenance
 
+> **Change Contract**
+>
+> - **Responsibility:** prove that a value at an operation still originates from
+>   a particular public parameter and binding.
+> - **Boundary:** provenance must not follow identifier spelling across scopes
+>   or survive an invalidating write without proof.
+> - **Invariants:** bindings, destructuring paths, aliases, and write order stay
+>   scope-accurate at the exact operation.
+> - **Configuration owners:** [../dataflow.ts](../dataflow.ts) owns provenance;
+>   [binding-writes.ts](./binding-writes.ts) owns write invalidation.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 This feature decides whether a value at one AST operation still originates from
 a public function parameter. Runtime mutation is allowed only while that origin
 is binding-accurate and valid at the exact operation.

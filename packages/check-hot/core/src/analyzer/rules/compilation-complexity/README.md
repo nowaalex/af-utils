@@ -1,5 +1,17 @@
 # Compilation complexity
 
+> **Change Contract**
+>
+> - **Responsibility:** rank large or branch-heavy functions for scenario and
+>   coverage attention.
+> - **Boundary:** size and branch counts must not become optimizer failures or
+>   claims about a runtime's compilation budget.
+> - **Invariants:** complexity remains advisory and attaches to one exact
+>   function owner.
+> - **Configuration owner:** [detector.ts](./detector.ts) owns the measured
+>   syntax features and reporting threshold.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 Large, branch-heavy functions are harder to cover by scenarios and may encounter

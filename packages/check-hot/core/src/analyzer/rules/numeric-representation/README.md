@@ -1,5 +1,17 @@
 # Numeric representation
 
+> **Change Contract**
+>
+> - **Responsibility:** find public numeric inputs reaching exact arithmetic
+>   sites and define representation-changing experiments.
+> - **Boundary:** the rule must not report proven string concatenation as
+>   arithmetic or treat a static numeric pattern as a deoptimization.
+> - **Invariants:** scope-aware dataflow proves the argument-to-site path and
+>   every mutation passes semantic and representation checks.
+> - **Configuration owners:** [detector.ts](./detector.ts) and
+>   [experiment.ts](./experiment.ts).
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 V8 may optimize arithmetic after seeing only small integers (SMIs). A later

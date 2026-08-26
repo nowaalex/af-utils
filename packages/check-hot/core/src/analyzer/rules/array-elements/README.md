@@ -1,5 +1,17 @@
 # Local array elements
 
+> **Change Contract**
+>
+> - **Responsibility:** detect local array operations that may change elements
+>   representation and define safe runtime mutation families.
+> - **Boundary:** the rule must not merge unrelated receivers or claim a fixed
+>   engine threshold for holes, density, or dictionary storage.
+> - **Invariants:** findings retain exact local receivers and automatic
+>   experiments preserve the accepted semantic domain.
+> - **Configuration owners:** [detector.ts](./detector.ts) owns static facts;
+>   [experiment.ts](./experiment.ts) owns runtime mutations.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 Holes, far-index writes, or unrelated pushed value classes can generalize an

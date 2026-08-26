@@ -1,5 +1,17 @@
 # Public target identity
 
+> **Change Contract**
+>
+> - **Responsibility:** represent a public callable by structured module and
+>   export paths across analyzer, manifest, worker, and report boundaries.
+> - **Boundary:** target identity must not be parsed from display strings or
+>   reduced to a local function name.
+> - **Invariants:** locators round-trip without ambiguity and preserve nested
+>   export paths and receiver requirements.
+> - **Configuration owner:** [index.ts](./index.ts) owns the locator schema,
+>   formatting, and parsing rules.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## Problem
 
 A package may export different functions with the same local name:

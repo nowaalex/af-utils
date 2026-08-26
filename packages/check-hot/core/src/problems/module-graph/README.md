@@ -1,5 +1,17 @@
 # Runtime module graph completeness
 
+> **Change Contract**
+>
+> - **Responsibility:** expose unresolved, dynamic, external, or
+>   runtime-conditioned graph boundaries that limit analysis completeness.
+> - **Boundary:** incomplete traversal must not be silently treated as full
+>   package coverage or bypassed without an explicit user decision.
+> - **Invariants:** every unenumerated edge remains visible and automatic suite
+>   generation fails closed unless the boundary is accepted.
+> - **Configuration owners:** [check.ts](./check.ts) and
+>   [problem.ts](./problem.ts).
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## Problem
 
 If a dynamic import, `require`, package export, or resolver-sensitive edge cannot

@@ -1,5 +1,17 @@
 # Generated-output safety
 
+> **Change Contract**
+>
+> - **Responsibility:** prove that ignored generated output cannot change the
+>   runtime resolution graph it authenticates.
+> - **Boundary:** output paths must not be excluded by filename convention or
+>   convenience when they could become imports or public exports.
+> - **Invariants:** every selected edge, extension fallback, directory index,
+>   and active export pattern is checked before exclusion.
+> - **Configuration owner:**
+>   [output-safety.ts](./output-safety.ts) owns the proof.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 `check-hot init` usually writes a suite near the target. That output must be
 excluded from the package-tree hash or the freshly generated suite would
 invalidate itself. Blind exclusion is unsafe, however.

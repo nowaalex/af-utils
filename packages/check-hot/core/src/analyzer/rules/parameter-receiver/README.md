@@ -1,5 +1,17 @@
 # Public parameter as a receiver
 
+> **Change Contract**
+>
+> - **Responsibility:** classify object-shape and array-elements operations on a
+>   receiver proven to come from a public parameter.
+> - **Boundary:** ambiguous computed access or `length` reads must not be
+>   promoted to array or object-shape mutations without separate proof.
+> - **Invariants:** receiver role, operation kind, and parameter origin remain
+>   exact at the reported site.
+> - **Configuration owner:** [detector.ts](./detector.ts) owns classification and
+>   automation eligibility.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 Named reads such as `point.x` depend on object shape; proven numeric indexing

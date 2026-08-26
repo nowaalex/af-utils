@@ -1,43 +1,47 @@
-# af-utils/\*
+# af-utils
 
-Small open-source tools for browser and JavaScript performance work.
+Practical open-source utilities.
 
-## [Virtual scroll](https://af-utils.vercel.app/virtual)
+[Website](https://af-utils.vercel.app) ·
+[Virtual scrolling](https://af-utils.vercel.app/virtual) ·
+[Scrollend polyfill](https://af-utils.vercel.app/scrollend-polyfill) ·
+[Contributing](conventions.md)
 
-![Virtual scroll opengraph image](website/src/assets/og/virtual.png)
+<p align="center">
+    <img src="website/src/assets/readme/hero.svg" alt="" width="960" />
+</p>
 
-Render large collections while mounting only the visible range. Start with the
-[framework setup](https://af-utils.vercel.app/virtual/frameworks), then open the
-runnable example for your stack. Exact framework, browser, and TypeScript
-support lives in the
-[compatibility guide](https://af-utils.vercel.app/virtual/support).
+## Projects
 
-### Common use cases
+### Virtual scrolling
 
-- [vertical](https://af-utils.vercel.app/virtual/examples/react/basics/simple-list) / [horizontal](https://af-utils.vercel.app/virtual/examples/react/basics/horizontal) / [grid](https://af-utils.vercel.app/virtual/examples/react/custom-layouts/grid) / [custom](https://af-utils.vercel.app/virtual/examples/react/custom-layouts/table) modes
-- [dynamic item sizes](https://af-utils.vercel.app/virtual/examples/react/basics/variable-size)
-- [sticky header and footer](https://af-utils.vercel.app/virtual/examples/react/basics/sticky-header-and-footer)
-- [scrollToIndex method](https://af-utils.vercel.app/virtual/examples/react/scrolling/scroll-to-item)
-- [load on demand](https://af-utils.vercel.app/virtual/examples/react/data-changes/load-on-demand)
-- [window scroll](https://af-utils.vercel.app/virtual/examples/react/scrolling/window-scroll)
-- [Material UI integration](https://af-utils.vercel.app/virtual/examples/react/integrations/material-ui)
-- [React](https://af-utils.vercel.app/virtual/examples/react/basics/simple-list) / [Preact](https://af-utils.vercel.app/virtual/examples/preact/basics/simple-list) / [Solid](https://af-utils.vercel.app/virtual/examples/solid/basics/simple-list) / [Svelte](https://af-utils.vercel.app/virtual/examples/svelte/basics/simple-list) / [Lit](https://af-utils.vercel.app/virtual/examples/lit/basics/simple-list) / [Vue](https://af-utils.vercel.app/virtual/examples/vue/basics/simple-list) adapters
+Render large lists, grids, tables, and dynamically sized content without
+mounting everything at once.
 
-## [Scrollend polyfill](https://af-utils.vercel.app/scrollend-polyfill)
+Available for React, Preact, Solid, Svelte, Lit, Vue, and a framework-agnostic
+core.
 
-![Scrollend polyfill opengraph image](website/src/assets/og/scrollend-polyfill.png)
+[Choose a framework](https://af-utils.vercel.app/virtual/frameworks) ·
+[Browse examples](https://af-utils.vercel.app/virtual/examples/react/basics/simple-list) ·
+[Check compatibility](https://af-utils.vercel.app/virtual/support)
 
-## Developer tools
+### Scrollend polyfill
 
-- [`@af-utils/check-hot`](packages/check-hot/core/README.md) checks hot-path
-  optimization assumptions against real JavaScript runtimes.
-- [`@af-utils/weigh-exports`](packages/weigh-exports/README.md) measures the
-  bundled impact of public package exports and feeds the website size reports.
+Use the standard `scrollend` event API consistently in browsers that still need
+a polyfill.
+
+[Get started](https://af-utils.vercel.app/scrollend-polyfill) ·
+[Open the runnable example](https://af-utils.vercel.app/scrollend-polyfill/examples/react) ·
+[See the bundle size](https://af-utils.vercel.app/scrollend-polyfill/size)
 
 ## Contributing
 
-Development workflow and repository rules live in [conventions.md](conventions.md).
+Install the workspace dependencies with:
 
-```bash
-pnpm nx run-many -t test typecheck
+```sh
+pnpm install
 ```
+
+The complete development workflow and repository rules live in
+[conventions.md](conventions.md). This repository is licensed under the
+[MIT License](LICENSE).

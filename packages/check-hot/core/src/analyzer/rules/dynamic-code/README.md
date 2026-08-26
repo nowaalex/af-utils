@@ -1,5 +1,17 @@
 # Dynamic code
 
+> **Change Contract**
+>
+> - **Responsibility:** detect direct global `eval` and expose its effect on
+>   analyzer confidence and automation.
+> - **Boundary:** shadowed bindings must not be reported as the intrinsic, and a
+>   dynamic-code finding must not claim a runtime failure by itself.
+> - **Invariants:** direct `eval` remains advisory while blocking any later
+>   provenance proof it could invalidate.
+> - **Configuration owner:** [detector.ts](./detector.ts) owns detection and the
+>   automation barrier.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 ```js

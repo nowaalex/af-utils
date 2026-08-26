@@ -1,5 +1,17 @@
 # Analyzer rule features
 
+> **Change Contract**
+>
+> - **Responsibility:** define the common structure and registration path for
+>   problem-specific analyzer features.
+> - **Boundary:** a feature owns one risk and its proof metadata; it must not
+>   introduce a second shared traversal or duplicate common dataflow logic.
+> - **Invariants:** detector, catalog metadata, examples, remediation, and tests
+>   remain colocated and every feature is dispatched once.
+> - **Configuration owners:** [index.ts](./index.ts) owns dispatch;
+>   [catalog.ts](./catalog.ts) and each feature's `detector.ts` own registration.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 Every problem-specific directory owns four things together:
 
 - `README.md`: what can go wrong, a minimal risk example, how runtime evidence

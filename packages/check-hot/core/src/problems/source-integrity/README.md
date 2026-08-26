@@ -1,5 +1,17 @@
 # Source identity and runtime resolution
 
+> **Change Contract**
+>
+> - **Responsibility:** reject evidence when analyzed, probed, and executed
+>   source or resolution state no longer has the same identity.
+> - **Boundary:** matching display names or entry paths must not substitute for
+>   authenticated bytes, conditions, and package-relative artifacts.
+> - **Invariants:** identity is checked before target import and every mismatch
+>   remains a terminal source-integrity problem.
+> - **Configuration owners:** [check.ts](./check.ts) owns validation;
+>   [problem.ts](./problem.ts) owns problem metadata.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## Problem
 
 A result is stale if the runtime imports a different artifact from the one Oxc

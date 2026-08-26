@@ -1,5 +1,17 @@
 # Runtime worker liveness
 
+> **Change Contract**
+>
+> - **Responsibility:** validate process completion, cleanup, result-envelope
+>   integrity, and terminal accounting for every runtime matrix cell.
+> - **Boundary:** a crash, timeout, malformed result, or cleanup failure must not
+>   be reported as target-code performance evidence.
+> - **Invariants:** each cell runs in a fresh process group, emits one matching
+>   versioned result, and leaves every obligation in a terminal state.
+> - **Configuration owners:** [check.ts](./check.ts) owns validation;
+>   [problem.ts](./problem.ts) owns infrastructure failures.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## Problem
 
 A timeout, crash, unsupported flag, failed process-tree cleanup, or missing,

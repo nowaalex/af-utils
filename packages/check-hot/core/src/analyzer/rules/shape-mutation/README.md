@@ -1,5 +1,17 @@
 # Object shape and prototype mutation
 
+> **Change Contract**
+>
+> - **Responsibility:** detect late object-shape and prototype mutations with
+>   exact class, receiver, and global-binding ownership.
+> - **Boundary:** declared or constructor-initialized fields and shadowed
+>   `Object` or `Reflect` bindings must not be reported as mutations.
+> - **Invariants:** class identity is node-accurate across scopes and automatic
+>   experiments preserve the accepted semantic domain.
+> - **Configuration owners:** [detector.ts](./detector.ts) and
+>   [experiment.ts](./experiment.ts).
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 Writing a new instance field after construction, redefining a property, or

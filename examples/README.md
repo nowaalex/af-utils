@@ -2,7 +2,7 @@
 
 > **Change Contract**
 >
-> - **Responsibility:** keep every published example runnable as an isolated
+> - **Responsibility:** keep every documented example runnable as an isolated
 >   sandbox and keep equivalent framework implementations behaviorally aligned.
 > - **Boundary:** examples demonstrate product behavior; conceptual guidance
 >   belongs on the documentation site, and package/API contracts belong in
@@ -56,54 +56,7 @@ The standalone guarantee applies to the documentation branch after its correspon
 3. Run `pnpm nx run @af-utils/examples:versions` and `pnpm install` from the
    repository root.
 
-The website discovers the framework entry declared in `examples/structure.json`
-and its generated implementation `README.md` automatically. The first README
-paragraph is used as the page description, so begin the group README with the
-behavior a user can observe. `sync-examples.mjs` copies that description to all
-implementations; do not maintain framework-by-framework paraphrases.
+Continue with the focused maintainer guides:
 
-`examples/structure.json` is the declarative source of truth for the examples
-directory and every framework's entry file, adapter package, template,
-dependencies, build command, and icon.
-`examples/config.ts` derives paths and route mappings from it. Website
-integrations, components, generators, and tests must consume this configuration
-instead of assembling physical paths or duplicating framework metadata.
-Generated standalone boilerplate lives as ordinary files under
-`examples/templates/<template>`; `sync-examples.mjs` copies those files and
-resolves their dependency versions from `examples/package.json`.
-Vite file discovery stays in the colocated
-`examples/src/catalog.ts`, so its glob patterns are relative to the files they
-describe. Every file in an implementation is exposed in the website source
-viewer except files under `node_modules` or `dist` and `CHANGELOG.md` files.
-
-The Astro integration injects one prerendered preview route per discovered
-implementation. This gives Astro a static framework import for SSR and a
-separate lazy hydration chunk for each example without maintaining a manual
-component registry.
-
-Example source, including Vue single-file components, is highlighted by Shiki
-while Astro prerenders the site. The generated HTML fragments share the same
-theme as Markdown code blocks and are fetched only when the code pane becomes
-visible or a file is selected. Shiki is never shipped to the browser; sandbox
-iframes are not assigned a `src` until their tab is opened. Keep
-syntax-highlighting configuration in `website/src/utils/codeTheme.ts` rather
-than configuring individual views.
-
-`pnpm nx run @af-utils/examples:build` validates every standalone package as one
-cached Nx task. `pnpm nx run @af-utils/examples:e2e` builds the production
-documentation site before running the integration suite in Chromium, Firefox,
-and WebKit.
-Every route gets a hydration/error smoke test. Groups with multiple frameworks
-additionally get an exact screenshot comparison; keep generated data
-deterministic so pixel differences represent real rendering differences.
-
-Tests that exercise behavior shared by all implementations belong in the
-group-level `tests` directory and use `describeExample` to run once per
-framework. Native scrollbar pointer tests run in Chromium because headless
-Firefox exposes overlay scrollbars that Playwright cannot drag; route,
-hydration, error, programmatic scrolling, and pixel-parity checks still run in
-all browsers where the interaction is supported.
-
-If an example cannot be server-rendered, set
-`"af-utils": { "astroClientOnly": "react" }` (or another Astro renderer name)
-in its `package.json`. Omit this field for the normal `client:visible` preview.
+- [Generation and website integration](./docs/generation.md)
+- [Browser and cross-framework testing](./docs/testing.md)

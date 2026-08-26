@@ -1,0 +1,44 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 1200 360"
+    role="img"
+    aria-labelledby="title description"
+>
+    <title id="title">af-utils</title>
+    <desc id="description">Practical open-source utilities.</desc>
+    <defs>
+        <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f5f0ff" />
+            <stop offset="0.5" stop-color="#ffffff" />
+            <stop offset="1" stop-color="#eefcff" />
+        </linearGradient>
+        <linearGradient id="wordmark" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#6d28d9" />
+            <stop offset="1" stop-color="#be185d" />
+        </linearGradient>
+    </defs>
+    <rect width="1200" height="360" rx="32" fill="url(#background)" />
+    <circle cx="100" cy="70" r="120" fill="#8b5cf6" opacity="0.08" />
+    <circle cx="1110" cy="310" r="150" fill="#06b6d4" opacity="0.08" />
+    <text
+        x="570"
+        y="165"
+        fill="url(#wordmark)"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="88"
+        font-weight="700"
+        text-anchor="middle"
+    >af-utils/</text>
+    <g transform="translate(815 100)" fill="#a21caf">
+        <path d="M24 0 31 17 48 24 31 31 24 48 17 31 0 24 17 17Z" />
+        <circle cx="47" cy="3" r="5" opacity="0.7" />
+    </g>
+    <text
+        x="600"
+        y="245"
+        fill="#334155"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="34"
+        text-anchor="middle"
+    >Practical open-source utilities.</text>
+</svg>

@@ -1,5 +1,17 @@
 # Coverage and semantic proof
 
+> **Change Contract**
+>
+> - **Responsibility:** decide whether each analyzer obligation has exact-site,
+>   mutation-aware semantic proof and a terminal outcome.
+> - **Boundary:** optimizer status, execution of a parent function, or a
+>   result-type check alone must not close an obligation.
+> - **Invariants:** every obligation is accounted for and only authenticated
+>   baseline/stress evidence with the required verifier can pass.
+> - **Configuration owners:** [check.ts](./check.ts) owns proof evaluation;
+>   [problem.ts](./problem.ts) owns failure reporting.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## Problem
 
 A function can remain optimized while the intended mutation never reaches the

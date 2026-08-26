@@ -1,5 +1,17 @@
 # Source and resolver identity
 
+> **Change Contract**
+>
+> - **Responsibility:** authenticate the package-local runtime source and
+>   resolver state used by an analysis plan.
+> - **Boundary:** identity must not depend on package-manager layout or ignore a
+>   generated file before output-safety proves that exclusion harmless.
+> - **Invariants:** hashing order is deterministic and every runtime-relevant
+>   local source, native asset, and resolver input is represented.
+> - **Configuration owner:** [index.ts](./index.ts) owns identity collection and
+>   hashing.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 A hot-path result is meaningful only for the source graph that was analyzed.
 Hashing just the entry file is insufficient:
 

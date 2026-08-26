@@ -1,5 +1,17 @@
 # Property deletion
 
+> **Change Contract**
+>
+> - **Responsibility:** distinguish object-property deletion from proven local
+>   array-index deletion and describe their separate risk classes.
+> - **Boundary:** an ambiguous receiver must not be called an array or converted
+>   into an automatic destructive experiment.
+> - **Invariants:** array-specific findings require a proven local array and all
+>   other findings remain conservative and advisory.
+> - **Configuration owner:** [detector.ts](./detector.ts) owns receiver
+>   classification and finding metadata.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 `delete object.field` can move an object toward dictionary storage, while

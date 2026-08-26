@@ -1,5 +1,17 @@
 # V8 active tier
 
+> **Change Contract**
+>
+> - **Responsibility:** verify the requested currently attached V8 optimization
+>   tier after guarded stress.
+> - **Boundary:** a generic optimized-status bit must not be promoted to Maglev
+>   or TurboFan evidence.
+> - **Invariants:** the requested tier is explicit, checked after stress, and any
+>   other optimized state remains `other-optimized`.
+> - **Configuration owners:** [check.ts](./check.ts) owns evaluation;
+>   [problem.ts](./problem.ts) owns failures.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## Problem
 
 `%GetOptimizationStatus` can report some optimized code without proving that the

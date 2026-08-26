@@ -1,5 +1,17 @@
 # JavaScriptCore compilation stability
 
+> **Change Contract**
+>
+> - **Responsibility:** evaluate Bun/JavaScriptCore compilation and retry
+>   evidence that is observable through the worker boundary.
+> - **Boundary:** historical compilation counts must not be presented as the
+>   currently attached tier or as FTL proof.
+> - **Invariants:** guarded stress cannot increase retry count and unavailable
+>   current-tier evidence remains explicitly unobservable.
+> - **Configuration owners:** [check.ts](./check.ts) owns evaluation;
+>   [problem.ts](./problem.ts) owns failures.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## Problem
 
 Bun exposes DFG compilation and reoptimization counters, but not a public

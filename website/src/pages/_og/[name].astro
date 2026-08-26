@@ -7,8 +7,7 @@ export const getStaticPaths = () => [
         params: { name: "index" },
         props: {
             name: "*",
-            description:
-                "Simple open-source tools that just work (usually fast)",
+            description: "Practical open-source utilities",
             url: ""
         }
     },
@@ -40,7 +39,7 @@ const pageUrl = `${siteConfig.origin}${url}`;
         class="flex flex-col text-center justify-around gap-4 p-8 w-[1200px] h-[630px] text-4xl prose"
     >
         <h1 class="text-[2.4em] font-extrabold m-0">af-utils/{name}</h1>
-        <p class="m-0">{description}. Written in TypeScript.</p>
+        <p class="m-0">{description}.</p>
         <a href={pageUrl}>{pageUrl}</a>
     </main>
 </Base>

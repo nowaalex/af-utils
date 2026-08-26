@@ -1,5 +1,17 @@
 # Runtime module graph
 
+> **Change Contract**
+>
+> - **Responsibility:** enumerate the package-local runtime graph reachable from
+>   a selected entry without executing target code.
+> - **Boundary:** graph traversal must not parse external packages as target
+>   code or reimplement runtime resolution.
+> - **Invariants:** literal edges are deduplicated, traversal stays bounded, and
+>   every unresolved or external edge remains visible.
+> - **Configuration owners:** [requests.ts](./requests.ts) owns edge extraction;
+>   [index.ts](./index.ts) owns traversal and the boundary ledger.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 This folder answers one narrow question: which files can the selected runtime
 reach from the requested package entry without executing user code?
 

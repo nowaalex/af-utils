@@ -1,5 +1,17 @@
 # Return representation
 
+> **Change Contract**
+>
+> - **Responsibility:** identify public functions with materially different
+>   static return families for scenario coverage.
+> - **Boundary:** mixed syntax kinds must not be reported as a deoptimization or
+>   as proof that every return branch was executed.
+> - **Invariants:** findings attach to one function owner and remain advisory
+>   until isolated and combined scenarios verify behavior.
+> - **Configuration owner:** [detector.ts](./detector.ts) owns return-family
+>   classification.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 A function returning several unrelated value classes may force callers to

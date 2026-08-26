@@ -1,5 +1,17 @@
 # Dynamic property keys
 
+> **Change Contract**
+>
+> - **Responsibility:** detect public dynamic keys at exact keyed-access sites
+>   and define key-class experiments.
+> - **Boundary:** literal keys and unproven key origins must not become automatic
+>   polymorphism claims.
+> - **Invariants:** every accepted key variant reaches the same access and passes
+>   the argument-aware semantic verifier after warmup.
+> - **Configuration owners:** [detector.ts](./detector.ts) and
+>   [experiment.ts](./experiment.ts).
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 ```js

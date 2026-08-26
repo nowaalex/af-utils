@@ -1,5 +1,17 @@
 # Problem catalog
 
+> **Change Contract**
+>
+> - **Responsibility:** define stable problem identities, severity metadata,
+>   messages, and their registration in one catalog.
+> - **Boundary:** catalog entries describe proof gaps or failures; they must not
+>   hide thrown diagnostics or create a second result-status model.
+> - **Invariants:** every problem ID is unique, registered once, and serializes
+>   through the shared public problem types.
+> - **Configuration owners:** [catalog.ts](./catalog.ts),
+>   [definition.ts](./definition.ts), and [types.ts](./types.ts).
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 `problems` is the discoverability layer of check-hot. The catalog answers three
 questions without requiring a reader to follow the complete analyzer/worker
 call graph:

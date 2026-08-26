@@ -6,7 +6,7 @@ allow that dependency to change after discovery while the old manifest still
 looks valid.
 
 `bundle.mjs` bundles shared implementation and third-party runtime helpers into
-the published entrypoints. TypeScript still emits declarations first. The build
+the built entrypoints. TypeScript still emits declarations first. The build
 fails if esbuild reports any remaining external runtime import.
 
 This is package infrastructure, not inspected-library logic: React, Svelte,

@@ -19,37 +19,44 @@ the optimizing compilers of Node.js, Deno, Bun, and future supported runtimes.
 It combines package-aware AST analysis, automatically planned input mutations,
 fresh-process runtime scenarios, engine evidence, and a coverage ledger.
 
-## Status: alpha MVP
+## Status: private alpha MVP
 
-`check-hot` is currently an alpha-quality minimum viable product. Its public
-TypeScript API, CLI flags, generated suite and probe-manifest formats, problem
-catalog, JSON reports, and test-runner protocol may change between releases.
-Backward compatibility with earlier alpha versions is not guaranteed, and a
-breaking change may be shipped without a compatibility layer or deprecation
-period. Pin the exact package version in CI and regenerate suites/manifests after
-upgrading.
+`check-hot` is currently a private workspace package and is not published to
+npm. Its TypeScript API, CLI flags, generated suite and probe-manifest formats,
+problem catalog, JSON reports, and test-runner protocol may change between
+revisions. Pin the repository revision in CI and regenerate suites/manifests
+after updating it.
+
+Build both workspace packages from the repository root, then enter the
+`test-suite` package so pnpm's isolated dependency tree can resolve `lodash` and
+the test runner:
 
 ```sh
-pnpm add --save-dev @af-utils/check-hot @af-utils/check-hot-test-runners lodash
-check-hot analyze lodash --code-frame --color auto
-check-hot init lodash \
+pnpm nx run-many -t build --projects=@af-utils/check-hot,@af-utils/check-hot-test-runners
+cd packages/check-hot/test-suite
+node ../core/dist/cli.js analyze lodash --code-frame --color auto
+node ../core/dist/cli.js init lodash \
   --probe \
   --function head \
   --test-runner @af-utils/check-hot-test-runners/lodash \
   --probe-runtime node \
   --out check-hot.node.mjs
-check-hot run check-hot.node.mjs --runtime node
+node ../core/dist/cli.js run check-hot.node.mjs --runtime node
 ```
+
+`run` exits non-zero when an obligation or runtime oracle fails. That exit code
+is a measured product result, not an installation failure; inspect the reported
+problem and reproduction command before changing the target or scenario.
 
 For an integrity-checked offline report and optional non-gating diagnostics:
 
 ```sh
-check-hot run check-hot.node.mjs \
+node ../core/dist/cli.js run check-hot.node.mjs \
   --runtime node \
   --artifacts .check-hot/node-001 \
   --diagnostics v8-ic-maps,cpu-profile \
   --diagnostic-stress v8-ic-maps=1000,cpu-profile=50000
-check-hot report .check-hot/node-001 --verbose
+node ../core/dist/cli.js report .check-hot/node-001 --verbose
 ```
 
 Diagnostics run in separate processes and cannot change the primary
@@ -136,8 +143,8 @@ all three runtimes are required; one suite cannot replay another runtime's
 conditional-export graph or probe fingerprint.
 
 `CHECK_HOT_NODE`, `CHECK_HOT_DENO`, and `CHECK_HOT_BUN` select runtime
-executables. The published `check-hot` bin is executable; the build verifies
-mode `0755`.
+executables. The built `check-hot` bin is executable; the build verifies mode
+`0755`.
 
 Passing means the declared and automatically derived workloads remained valid
 on the exact runtime, engine, oracle, and adapter versions in the report. It is

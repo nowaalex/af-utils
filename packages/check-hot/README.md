@@ -3,7 +3,7 @@
 > **Change Contract**
 >
 > - **Responsibility:** keep optimizer experiments, engine evidence, and
->   ecosystem seed recipes in independently publishable packages.
+>   ecosystem seed recipes in independently buildable workspace packages.
 > - **Boundary:** core owns analysis and measurement; the optional test-runner
 >   package owns library-specific recipes. Core must never acquire an ecosystem
 >   registry.
@@ -11,7 +11,7 @@
 >   outcome, and static findings never become performance verdicts by
 >   themselves.
 > - **Configuration owners:** each child package's `package.json` and colocated
->   documentation own its public surface and checks.
+>   documentation own its interface and checks.
 > - **Targeted check:** `pnpm nx run-many -t test --projects=@af-utils/check-hot,@af-utils/check-hot-test-runners`.
 
 The `check-hot` project aims to find optimization weaknesses in JS/TS code on
@@ -26,11 +26,11 @@ decides whether an optimization weakness exists. Package analysis follows
 `package.json` exports/imports and TypeScript resolution. Human output may use
 colorized source code frames, while JSON stays stable and ANSI-free.
 
-The directory contains two deliberately separate npm packages:
+The directory contains two deliberately separate private workspace packages:
 
-- [`core`](./core/README.md) publishes `@af-utils/check-hot`: AST analysis,
+- [`core`](./core/README.md) builds `@af-utils/check-hot`: AST analysis,
   mutation planning, runtime orchestration, engine oracles, and reporting.
-- [`test-suite`](./test-suite/README.md) publishes
+- [`test-suite`](./test-suite/README.md) builds
   `@af-utils/check-hot-test-runners`: optional, versioned seed providers for
   external ecosystems.
 

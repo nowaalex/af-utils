@@ -1,5 +1,17 @@
 # Analyzer modules
 
+> **Change Contract**
+>
+> - **Responsibility:** define how source resolution, parsing, provenance,
+>   findings, obligations, probes, and suite generation compose.
+> - **Boundary:** analyzer stages must prove source facts; they must not execute
+>   target code or promote a static risk to a runtime failure.
+> - **Invariants:** each fact has one owning stage, public reports expose no
+>   competing internal model, and generated obligations retain exact owners.
+> - **Configuration owners:** [model.ts](./model.ts),
+>   [provenance.ts](./provenance.ts), and [rules/index.ts](./rules/index.ts).
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 The analyzer is a pipeline, not one collection of unrelated lint checks. Keep
 each concern in the module that can prove it:
 

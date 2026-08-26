@@ -1,5 +1,17 @@
 # V8 code-creation locations
 
+> **Change Contract**
+>
+> - **Responsibility:** derive the exact V8 code-creation coordinate for an
+>   authenticated JavaScript function node.
+> - **Boundary:** coordinates must not widen to a function span or rely on a
+>   display name when the engine reports a narrower location.
+> - **Invariants:** every supported syntax kind is backed by real-engine
+>   controls and unsupported syntax remains an explicit correlation gap.
+> - **Configuration owners:** [derive.ts](./derive.ts) owns derivation;
+>   [derive.test.ts](./derive.test.ts) owns admitted syntax controls.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 V8's optional IC/Map log identifies a JavaScript function by a code-creation
 source coordinate. That coordinate is not the start of the function AST node:
 for ordinary functions and methods V8 reports the opening parameter `(`, a

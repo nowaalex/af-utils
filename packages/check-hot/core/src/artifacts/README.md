@@ -1,5 +1,17 @@
 # Offline-inspectable artifact bundles
 
+> **Change Contract**
+>
+> - **Responsibility:** persist an inspectable bundle of primary results,
+>   diagnostics, commands, event streams, and file integrity metadata.
+> - **Boundary:** a bundle must not claim hermetic replay, redact implicitly, or
+>   treat an unsigned inventory as proof against a malicious bundle author.
+> - **Invariants:** bundle creation is exclusive, the manifest accounts for
+>   every retained file, and sensitive raw evidence remains explicit.
+> - **Configuration owners:** [index.ts](./index.ts) owns the format and
+>   [streaming.test.ts](./streaming.test.ts) owns bounded-write controls.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 Artifact bundles separate collection from interpretation. `check-hot run
 --artifacts <new-directory>` writes the exact primary summary, per-cell command,
 stdout/stderr, event streams, optional raw V8/CPU profiles, runtime/oracle

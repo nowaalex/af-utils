@@ -1,5 +1,17 @@
 # Bun JavaScriptCore sampling
 
+> **Change Contract**
+>
+> - **Responsibility:** parse Bun's sampling profile into an advisory tier and
+>   hottest-code summary for a separate diagnostic rerun.
+> - **Boundary:** missing FTL samples or short-function visibility must not
+>   become an optimization failure or current-tier claim.
+> - **Invariants:** sampling remains advisory, bounded, and separate from the
+>   primary JavaScriptCore compilation/retry verdict.
+> - **Configuration owners:** [parse.ts](./parse.ts) owns parsing;
+>   [problem.ts](./problem.ts) owns diagnostic gaps.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 This optional oracle wraps guarded stress in Bun's public `bun:jsc.profile`
 sampling profiler during a separate diagnostic rerun. It reports the sampled
 LLInt, Baseline, DFG, and FTL distribution plus Bun's formatted hottest

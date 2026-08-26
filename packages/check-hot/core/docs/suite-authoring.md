@@ -2,7 +2,7 @@
 
 Automatic AST mutations still need at least one semantically valid seed for APIs
 whose inputs cannot be inferred safely. Seeds can be explicit or provided by a
-separately installed test runner.
+separate test runner.
 
 ```ts
 import { defineHotSuite, defineHotTarget } from "@af-utils/check-hot";
@@ -65,17 +65,20 @@ the annotations subpath is Node/Oxc build tooling, while the generated target
 module is plain portable JavaScript. Reject detached owners and alias collisions
 instead of silently selecting one.
 
-## External seed providers
+## Workspace seed providers
+
+The package is currently private. Build the core and test-runner workspace
+packages from the repository root, then enter `test-suite` so pnpm's isolated
+dependency tree can resolve the target and runner:
 
 ```sh
-pnpm add --save-dev \
-  @af-utils/check-hot \
-  @af-utils/check-hot-test-runners
-
-check-hot init my-library \
+pnpm nx run-many -t build --projects=@af-utils/check-hot,@af-utils/check-hot-test-runners
+cd packages/check-hot/test-suite
+node ../core/dist/cli.js init lodash \
   --probe \
+  --function head \
   --probe-runtime node \
-  --test-runner @af-utils/check-hot-test-runners/generic \
+  --test-runner @af-utils/check-hot-test-runners/lodash \
   --out check-hot.suite.mjs
 ```
 

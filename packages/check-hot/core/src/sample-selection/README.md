@@ -1,5 +1,17 @@
 # Adaptive semantic sample selection
 
+> **Change Contract**
+>
+> - **Responsibility:** select a declared semantic recipe that reaches and
+>   verifies one analyzer obligation before fresh measurement.
+> - **Boundary:** selection must not invent inputs, weaken an existing verifier,
+>   or turn a missed source site into a successful obligation.
+> - **Invariants:** candidates are tried in stable manifest order, selection is
+>   persisted by ID, and every rejected candidate retains a bounded reason.
+> - **Configuration owner:** [index.ts](./index.ts) owns selection and its
+>   terminal outcomes.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 An analyzer obligation identifies a public argument and mutation family, but it
 cannot know which semantic recipe reaches the exact internal source site. A
 fixed first recipe is therefore unsafe: a valid function can have several input

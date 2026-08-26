@@ -1,5 +1,17 @@
 # CPU-profile hotness ranking
 
+> **Change Contract**
+>
+> - **Responsibility:** parse a bounded diagnostic CPU profile and rank samples
+>   correlated with authenticated analyzer candidates.
+> - **Boundary:** sample counts must not become a benchmark, production-hotness
+>   claim, or proof that an unobserved function is cold.
+> - **Invariants:** whole-process and target-correlated totals remain distinct,
+>   and the diagnostic never changes the primary verdict.
+> - **Configuration owners:** [parse.ts](./parse.ts) owns profile parsing;
+>   [problem.ts](./problem.ts) owns diagnostic gaps.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 This optional diagnostic rerun records a runtime `.cpuprofile` and ranks
 functions by observed sample count. Sampling is a prioritization signal, not a
 benchmark and not proof that an unobserved function is cold.

@@ -1,5 +1,17 @@
 # V8 guarded deoptimization
 
+> **Change Contract**
+>
+> - **Responsibility:** detect V8 deoptimizations occurring inside the exact
+>   guarded-stress interval of a primary worker.
+> - **Boundary:** warmup, startup, and diagnostic-rerun trace lines must not be
+>   attributed to the target stress interval.
+> - **Invariants:** compiled sentinels delimit the interval and any target
+>   deoptimization inside it remains a failure even after recompilation.
+> - **Configuration owners:** [check.ts](./check.ts) owns evaluation;
+>   [report.ts](./report.ts) owns trace interpretation.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## Problem
 
 A function can reach Maglev or TurboFan during warmup and then deoptimize when

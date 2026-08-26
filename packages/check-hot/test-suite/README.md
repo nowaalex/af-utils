@@ -7,7 +7,7 @@
 > - **Boundary:** adapters describe valid samples and supported package/runtime
 >   policy; thick core owns probing, mutation, isolation, evidence, and terminal
 >   accounting.
-> - **Invariants:** published entry points are self-contained, manifests pin the
+> - **Invariants:** built entry points are self-contained, manifests pin the
 >   exact runner/runtime/target identity, and unsupported versions fail before
 >   sample execution.
 > - **Configuration owners:** adapter modules own recipes; their validation
@@ -20,13 +20,19 @@ separate package so the orchestration core contains no React, Svelte, Lodash,
 date-fns, or other checked-library behavior.
 
 Those libraries appear as optional peer dependencies in this package's
-`package.json`; consumers install only the ecosystems they inspect. They also
-appear as development dependencies so this workspace runs real integration
-probes instead of claiming compatibility from synthetic stand-ins alone.
+`package.json`, so a future consumer would need only the ecosystems it inspects.
+They also appear as development dependencies so this workspace runs real
+integration probes instead of claiming compatibility from synthetic stand-ins
+alone. The package is currently private and is not published to npm.
+
+Build both private workspace packages from the repository root, then enter this
+package so pnpm's isolated dependency tree can resolve `lodash`, core, and the
+test runner:
 
 ```sh
-pnpm add --save-dev @af-utils/check-hot @af-utils/check-hot-test-runners
-check-hot init lodash \
+pnpm nx run-many -t build --projects=@af-utils/check-hot,@af-utils/check-hot-test-runners
+cd packages/check-hot/test-suite
+node ../core/dist/cli.js init lodash \
   --probe \
   --function head \
   --probe-runtime node \
@@ -41,7 +47,7 @@ the runner's supported version ranges before executing samples. A stale
 manifest, runner upgrade, package upgrade, or unsupported runtime fails
 explicitly and requires a fresh probe or runner update.
 
-Published runner entrypoints are bundled and build-checked to contain no
+Built runner entrypoints are bundled and build-checked to contain no
 external runtime imports. That keeps helpers such as `semver` and shared recipe
 logic inside the source graph authenticated by the probe manifest. Source
 modules remain DRY; bundling is a distribution/integrity boundary, not a copy of
@@ -100,7 +106,7 @@ root analysis and the target-scoped `MathUtils.lerp` runtime proof without
 placing Three.js behavior in core.
 
 ```sh
-check-hot init three/src/math/MathUtils.js \
+node ../core/dist/cli.js init three/src/math/MathUtils.js \
   --probe \
   --function lerp \
   --probe-runtime node \

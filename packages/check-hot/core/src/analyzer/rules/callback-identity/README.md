@@ -1,5 +1,17 @@
 # Callback identity
 
+> **Change Contract**
+>
+> - **Responsibility:** identify callback-bearing sites where changing function
+>   identities can alter dispatch behavior.
+> - **Boundary:** the rule must not treat an inner closure's execution as proof
+>   for its exported parent or mutate callbacks without a semantic verifier.
+> - **Invariants:** findings retain the exact owning function and callback site;
+>   mutation families remain stable, polymorphic, or megamorphic by design.
+> - **Configuration owners:** [detector.ts](./detector.ts) and
+>   [experiment.ts](./experiment.ts).
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 ```js

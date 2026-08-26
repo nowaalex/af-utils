@@ -1,5 +1,17 @@
 # Loop pressure
 
+> **Change Contract**
+>
+> - **Responsibility:** identify allocations and control-flow features inside an
+>   owning loop so scenarios can target likely pressure points.
+> - **Boundary:** the rule must not call a syntax count a performance result or
+>   attribute a nested function body's work to its outer owner.
+> - **Invariants:** loop ownership is exact and findings remain scenario hints
+>   until runtime evidence exists.
+> - **Configuration owners:** [detector.ts](./detector.ts) and
+>   [experiment.ts](./experiment.ts).
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## What can go wrong
 
 Allocations, `await`, `yield`, and exception regions inside a tight loop may

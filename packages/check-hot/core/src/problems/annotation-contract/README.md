@@ -1,5 +1,17 @@
 # Annotation contract
 
+> **Change Contract**
+>
+> - **Responsibility:** validate that each `check-hot:` marker binds uniquely to
+>   the declaration it claims to identify.
+> - **Boundary:** comments identify intent; they must not count as runtime
+>   evidence or bind across unrelated syntax.
+> - **Invariants:** markers are immediate, unique, and reconciled against the
+>   exact requested target set before workers execute.
+> - **Configuration owners:** [check.ts](./check.ts) owns validation;
+>   [problem.ts](./problem.ts) owns the emitted problem definition.
+> - **Targeted check:** `pnpm nx run @af-utils/check-hot:test`.
+
 ## Problem
 
 A `check-hot:` marker that is detached, duplicated, or attached to a different
