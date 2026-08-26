@@ -167,6 +167,11 @@
 }
 
 @layer components {
+    /* Pagefind adds this live region after SSR; keep its 1px children out of document flow to avoid an extra scrollbar. */
+    [data-pagefind-announcer] {
+        position: fixed;
+    }
+
     .ds-framework-accordion {
         interpolate-size: allow-keywords;
     }
