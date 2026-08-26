@@ -61,6 +61,11 @@ sync target; the style gate rejects stale af-utils origins.
 
 ## Releases
 
+GitHub accepts updates to `main` only through a pull request whose
+[Quality workflow](.github/workflows/quality.yml) succeeds; the
+[repository ruleset](https://github.com/nowaalex/af-utils/rules/21577769)
+enforces this policy.
+
 Every pull request that changes a publishable package must include an
 appropriate Changeset. The release workflow on `main` validates the complete
 workspace, creates or updates the Version Packages pull request, and publishes
