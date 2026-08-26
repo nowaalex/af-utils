@@ -41,6 +41,9 @@ Use these commands from the repository root:
 | Update the canonical site origin         | `pnpm nx run workspace:site-origin-sync`                      |
 | Validate canonical site links            | `pnpm nx run workspace:site-origin-check`                     |
 | Validate package tarballs                | `pnpm nx run-many -t publint --projects=tag:npm:public`       |
+| Prepare packages for publication         | `pnpm nx run workspace:packages-ready`                        |
+| Run the pre-push verification graph      | `pnpm nx run workspace:verify:prepush`                        |
+| Run the complete quality graph           | `pnpm nx run workspace:verify:full`                           |
 | Run browser integration tests            | `pnpm nx run @af-utils/examples:e2e`                          |
 | Validate generated website files         | `pnpm nx run workspace:website-generated-check`               |
 | Run stable core benchmarks               | `pnpm nx run @af-utils/virtual-core:bench`                    |
@@ -53,6 +56,12 @@ CI uses the explicit Nx commands so the task graph is visible in logs. Use
 `pnpm nx graph` to inspect relationships and
 `pnpm nx affected -t build test typecheck` for an affected-only local check.
 Repository CI intentionally runs the complete gates.
+
+The pre-push hook runs the cacheable `workspace:verify:prepush` graph. The
+hosted Quality workflow adds minimum-version compatibility, browser integration,
+generated website, link, and Lighthouse checks. Its browser jobs run Chromium,
+Firefox, and WebKit in parallel while the required `quality / Quality` status
+remains the aggregate result.
 
 `site.config.json` owns the production website origin. Published package
 metadata and documentation must contain literal URLs, so the site-origin sync
@@ -67,9 +76,12 @@ GitHub accepts updates to `main` only through a pull request whose
 enforces this policy.
 
 Every pull request that changes a publishable package must include an
-appropriate Changeset. The release workflow on `main` validates the complete
-workspace, creates or updates the Version Packages pull request, and publishes
-after that pull request is merged.
+appropriate Changeset. The required Quality workflow validates the complete
+workspace before `main` can advance. The release workflow relies on that
+protected result, creates or updates the Version Packages pull request, and
+publishes after that pull request is merged. The publish command runs
+`workspace:packages-ready` on the release runner so the exact package artifacts
+are built and checked before Changesets sends them to npm.
 
 npm publishing uses a Trusted Publisher bound to the `nowaalex/af-utils`
 repository and `release.yml` workflow. New package names require one initial

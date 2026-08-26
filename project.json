@@ -124,6 +124,38 @@
                 "cwd": "."
             }
         },
+        "packages-ready": {
+            "executor": "nx:noop",
+            "cache": true,
+            "dependsOn": [
+                {
+                    "target": "publint",
+                    "projects": ["tag:npm:public"]
+                }
+            ]
+        },
+        "verify:prepush": {
+            "executor": "nx:noop",
+            "cache": true,
+            "dependsOn": [
+                {
+                    "target": "versions:check",
+                    "projects": ["@af-utils/examples"]
+                },
+                "packages-readmes-check",
+                "nx-contracts-check",
+                "check-style",
+                {
+                    "target": "typecheck",
+                    "projects": ["*"]
+                },
+                {
+                    "target": "test",
+                    "projects": ["*"]
+                },
+                "packages-ready"
+            ]
+        },
         "website-generated-check": {
             "executor": "nx:run-commands",
             "cache": false,
@@ -151,6 +183,27 @@
                 "command": "node scripts/run-lighthouse.mjs",
                 "cwd": "."
             }
+        },
+        "verify:website": {
+            "executor": "nx:noop",
+            "cache": false,
+            "dependsOn": ["website-generated-check", "lighthouse"]
+        },
+        "verify:full": {
+            "executor": "nx:noop",
+            "cache": false,
+            "dependsOn": [
+                "verify:prepush",
+                "verify:website",
+                {
+                    "target": "compat",
+                    "projects": ["@af-utils/virtual-compatibility"]
+                },
+                {
+                    "target": "e2e",
+                    "projects": ["@af-utils/examples"]
+                }
+            ]
         }
     }
 }

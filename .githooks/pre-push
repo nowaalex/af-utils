@@ -1,12 +1,5 @@
 #!/bin/sh
 set -eu
 
-expected_node_version=$(tr -d "\r\n" < .nvmrc)
-actual_node_version=$(node -p 'process.versions.node')
-
-if [ "$actual_node_version" != "$expected_node_version" ]; then
-    echo "Node $expected_node_version is required; found $actual_node_version. Run: nvm use" >&2
-    exit 1
-fi
-
-pnpm nx run workspace:check-style --skip-nx-cache
+.githooks/check-node
+pnpm nx run workspace:verify:prepush

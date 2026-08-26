@@ -10,9 +10,10 @@ env:
     CI: true
 
 jobs:
-    quality:
-        name: Quality
+    checks:
+        name: Checks
         runs-on: ubuntu-latest
+        timeout-minutes: 15
         steps:
             - name: Checkout repository
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
@@ -20,50 +21,91 @@ jobs:
             - name: Install pnpm
               uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
 
-            - name: Set up Node.js 24.19.0
+            - name: Set up Node.js
               uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
               with:
-                  node-version: "24.19.0"
+                  node-version-file: .nvmrc
                   cache: pnpm
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Check generated example files and dependencies
-              run: pnpm nx run @af-utils/examples:versions:check
+            - name: Run cacheable workspace checks
+              run: pnpm nx run workspace:verify:prepush
 
-            - name: Check package READMEs
-              run: pnpm nx run workspace:packages-readmes-check
+    browsers:
+        name: Browser (${{ matrix.browser }})
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        strategy:
+            fail-fast: false
+            matrix:
+                browser: [chromium, firefox, webkit]
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
 
-            - name: Check Nx workspace contracts
-              run: pnpm nx run workspace:nx-contracts-check
+            - name: Install pnpm
+              uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
 
-            - name: Check formatting and lint warnings
-              run: pnpm nx run workspace:check-style
+            - name: Set up Node.js
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+              with:
+                  node-version-file: .nvmrc
+                  cache: pnpm
 
-            - name: Typecheck
-              run: pnpm nx run-many -t typecheck
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
 
-            - name: Test packages
-              run: pnpm nx run-many -t test
+            - name: Install Playwright browser
+              run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
 
-            - name: Build packages
-              run: pnpm nx run-many -t build --projects=tag:npm:public
+            - name: Test examples and website in ${{ matrix.browser }}
+              env:
+                  AF_E2E_OUTPUT_DIR: test-results/${{ matrix.browser }}
+              run: >-
+                  pnpm nx run @af-utils/examples:e2e --
+                  --project=${{ matrix.browser }}
 
-            - name: Validate package tarballs
-              run: pnpm nx run-many -t publint --projects=tag:npm:public
+            - name: Upload browser report
+              if: ${{ failure() }}
+              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
+              with:
+                  name: quality-browser-${{ matrix.browser }}
+                  path: |
+                      playwright-report/
+                      test-results/
+                  if-no-files-found: ignore
+                  retention-days: 7
 
-            - name: Install Playwright browsers
-              run: pnpm exec playwright install --with-deps chromium firefox webkit
+    website:
+        name: Website
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
+
+            - name: Set up Node.js
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+              with:
+                  node-version-file: .nvmrc
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Install Chromium
+              run: pnpm exec playwright install --with-deps chromium
 
             - name: Check minimum framework versions
               run: pnpm nx run @af-utils/virtual-compatibility:compat
 
-            - name: Test examples and website in browsers
-              run: pnpm nx run @af-utils/examples:e2e
-
-            - name: Check generated website files
-              run: pnpm nx run workspace:website-generated-check
+            - name: Check generated website files and performance budgets
+              run: pnpm nx run workspace:verify:website
 
             - name: Check internal website links
               uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
@@ -74,17 +116,28 @@ jobs:
                       '${{ github.workspace }}/website/dist/**/*.html'
                   fail: true
 
-            - name: Enforce Lighthouse scores and resource budgets
-              run: pnpm nx run workspace:lighthouse
-
-            - name: Upload browser and Lighthouse reports
+            - name: Upload website reports
               if: ${{ failure() }}
               uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.0
               with:
-                  name: quality-reports
-                  path: |
-                      .lighthouseci/
-                      playwright-report/
-                      test-results/
+                  name: quality-website
+                  path: .lighthouseci/
                   if-no-files-found: ignore
                   retention-days: 7
+
+    quality:
+        name: Quality
+        if: ${{ always() }}
+        needs: [checks, browsers, website]
+        runs-on: ubuntu-latest
+        timeout-minutes: 2
+        steps:
+            - name: Confirm every quality job succeeded
+              env:
+                  CHECKS_RESULT: ${{ needs.checks.result }}
+                  BROWSERS_RESULT: ${{ needs.browsers.result }}
+                  WEBSITE_RESULT: ${{ needs.website.result }}
+              run: |
+                  test "$CHECKS_RESULT" = success
+                  test "$BROWSERS_RESULT" = success
+                  test "$WEBSITE_RESULT" = success
