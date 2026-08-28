@@ -1,6 +1,7 @@
 import { rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { build, context } from "esbuild";
+import { browserBuildTarget } from "../../../../scripts/browser-build-target.mjs";
 
 const packageRoot = resolve(import.meta.dirname, "..");
 const legacyOutputFiles = ["dist/index.js", "dist/index.node.js"];
@@ -25,7 +26,8 @@ const commonOptions = {
     logLevel: "info",
     outdir: "dist",
     platform: "neutral",
-    sourcemap: "linked"
+    sourcemap: "linked",
+    target: browserBuildTarget
 };
 
 const developmentOptions = {

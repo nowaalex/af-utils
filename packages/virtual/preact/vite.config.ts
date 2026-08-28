@@ -1,10 +1,12 @@
 import preactPreset from "@preact/preset-vite";
 import { defineConfig } from "vitest/config";
+import { browserBuildTarget } from "../../../scripts/browser-build-target.mjs";
 
 export default defineConfig(({ isSsrBuild }) => ({
     plugins: [preactPreset()],
     build: {
         emptyOutDir: !isSsrBuild,
+        target: browserBuildTarget,
         ...(isSsrBuild
             ? { ssr: "src/index.ts" }
             : {

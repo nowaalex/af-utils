@@ -1,10 +1,12 @@
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vitest/config";
+import { browserBuildTarget } from "../../../scripts/browser-build-target.mjs";
 
 export default defineConfig(({ isSsrBuild }) => ({
     plugins: [vue()],
     build: {
         emptyOutDir: !isSsrBuild,
+        target: browserBuildTarget,
         ...(isSsrBuild
             ? { ssr: "src/index.ts" }
             : {

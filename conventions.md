@@ -90,6 +90,11 @@ authenticated publish before their package-level Trusted Publisher can be
 configured; subsequent releases use GitHub OIDC without a long-lived publish
 token.
 
+A Changeset summary must describe the observable change for every package it
+versions. When packages from different products need different explanations,
+use separate Changesets so each generated package changelog remains
+product-specific.
+
 ## Documentation
 
 Every pnpm workspace package must have a `README.md` beside its `package.json`,

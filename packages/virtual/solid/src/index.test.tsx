@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import VirtualList from "./components/List";
 import createVirtual from "./primitives/createVirtual";
 import { createVirtualItemRef } from "./primitives/createVirtualItemRef";
+import createVirtualLayout from "./primitives/createVirtualLayout";
 import createVirtualSnapshot from "./primitives/createVirtualSnapshot";
 import type { ListItemProps } from "./types";
 
@@ -120,6 +121,65 @@ describe("Solid virtual adapter", () => {
         expect(sizeElement.style.height).toBe("800px");
         expect(renders).toBe(1);
         dispose();
+    });
+
+    test("rebinds layout refs when Solid replaces their elements", () => {
+        const [alternate, setAlternate] = createSignal(false);
+        const model = new VirtualScroller({
+            estimatedItemSize: 40,
+            itemCount: 10
+        });
+        const setScrollerSpy = vi.spyOn(model, "setScroller");
+        const setContainerSpy = vi.spyOn(model, "setContainer");
+
+        const Harness = () => {
+            const layout = createVirtualLayout(model);
+            return (
+                <>
+                    {alternate() ? (
+                        <section
+                            data-layout="alternate"
+                            ref={layout.scrollerRef}
+                        >
+                            <div ref={layout.sizeRef}>
+                                <div ref={layout.itemsRef} />
+                            </div>
+                        </section>
+                    ) : (
+                        <div data-layout="initial" ref={layout.scrollerRef}>
+                            <div ref={layout.sizeRef}>
+                                <div ref={layout.itemsRef} />
+                            </div>
+                        </div>
+                    )}
+                </>
+            );
+        };
+        const dispose = render(() => <Harness />, container);
+        const initialScroller = container.querySelector(
+            '[data-layout="initial"]'
+        ) as HTMLElement;
+        const initialSize = initialScroller.firstElementChild as HTMLElement;
+
+        expect(setScrollerSpy).toHaveBeenLastCalledWith(initialScroller);
+        expect(setContainerSpy).toHaveBeenLastCalledWith(initialSize);
+
+        setAlternate(true);
+
+        const alternateScroller = container.querySelector(
+            '[data-layout="alternate"]'
+        ) as HTMLElement;
+        const alternateSize =
+            alternateScroller.firstElementChild as HTMLElement;
+        expect(alternateScroller).not.toBe(initialScroller);
+        expect(setScrollerSpy).toHaveBeenLastCalledWith(alternateScroller);
+        expect(setContainerSpy).toHaveBeenLastCalledWith(alternateSize);
+
+        model.setItemCount(20);
+        expect(alternateSize.style.height).toBe("800px");
+
+        dispose();
+        model.dispose();
     });
 
     test("detaches item observation with its Solid owner", () => {

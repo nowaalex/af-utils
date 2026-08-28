@@ -2,7 +2,7 @@ import {
     type VirtualScroller,
     VirtualScrollerLayout
 } from "@af-utils/virtual-core";
-import { onCleanup, onMount } from "solid-js";
+import { onCleanup } from "solid-js";
 import type { VirtualLayoutBinding } from "../../types";
 
 /**
@@ -14,26 +14,20 @@ import type { VirtualLayoutBinding } from "../../types";
  */
 const createVirtualLayout = (model: VirtualScroller): VirtualLayoutBinding => {
     const layout = new VirtualScrollerLayout(model);
-    let scrollerElement: HTMLElement | null = null;
-    let sizeElement: HTMLElement | null = null;
-    let itemsElement: HTMLElement | null = null;
-
-    onMount(() => {
-        layout.setScrollerElement(scrollerElement);
-        layout.setSizeElement(sizeElement);
-        layout.setItemsElement(itemsElement);
-    });
     onCleanup(() => layout.dispose());
 
     return {
         scrollerRef: element => {
-            scrollerElement = element;
+            layout.setScrollerElement(element);
+            onCleanup(() => layout.setScrollerElement(null));
         },
         sizeRef: element => {
-            sizeElement = element;
+            layout.setSizeElement(element);
+            onCleanup(() => layout.setSizeElement(null));
         },
         itemsRef: element => {
-            itemsElement = element;
+            layout.setItemsElement(element);
+            onCleanup(() => layout.setItemsElement(null));
         }
     };
 };

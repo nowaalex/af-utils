@@ -12,6 +12,15 @@
             "!{projectRoot}/CHANGELOG.md",
             "!{projectRoot}/README.md"
         ],
+        "browserBuildTarget": [
+            "{workspaceRoot}/scripts/browser-build-target.mjs",
+            {
+                "externalDependencies": [
+                    "browserslist",
+                    "browserslist-to-esbuild"
+                ]
+            }
+        ],
         "sharedGlobals": [
             "{workspaceRoot}/api-extractor-base.json",
             "{workspaceRoot}/package.json",
@@ -24,7 +33,7 @@
         "build": {
             "cache": true,
             "dependsOn": ["^build"],
-            "inputs": ["production", "^production"]
+            "inputs": ["production", "^production", "browserBuildTarget"]
         },
         "test": {
             "cache": true,

@@ -5,10 +5,20 @@ description: "Browser, TypeScript, SSR, and framework compatibility boundaries f
 ---
 
 import { readFile } from "node:fs/promises";
+import {
+    browserBuildTarget,
+    browserslistQuery
+} from "../../../../scripts/browser-build-target.mjs";
 
-export const browserslist = JSON.parse(
-    await readFile(new URL("../../../../package.json", import.meta.url), "utf8")
-).browserslist;
+export const coreManifest = JSON.parse(
+    await readFile(
+        new URL(
+            "../../../../packages/virtual/core/package.json",
+            import.meta.url
+        ),
+        "utf8"
+    )
+);
 
 export const frameworkSupport = await Promise.all(
     [
@@ -32,8 +42,9 @@ export const frameworkSupport = await Promise.all(
 
 ## Browsers
 
-Published packages target the Browserslist query <code>{browserslist}</code>,
-read from the root build configuration.
+Published browser bundles target <code>{browserBuildTarget.join(", ")}</code>.
+The target is derived during every package build from the root Browserslist
+query <code>{browserslistQuery}</code>; package build files do not copy it.
 
 Browser rendering requires a native `ResizeObserver` for item measurement. The
 Node export installs only an inert server-side observer so models can be
@@ -47,7 +58,10 @@ and checks the combined public surface with TypeScript 7. The
 [API reference](/virtual/reference/index) is generated from the same public
 source.
 
-## Server rendering
+## Node and server rendering
+
+The core package requires Node <code>{coreManifest.engines.node}</code>. Framework
+adapters inherit this installation boundary through their dependency on core.
 
 Models can be created without attached DOM elements. Initial
 `estimatedWidgetSize`, `estimatedItemSize`, and `overscanCount` determine the

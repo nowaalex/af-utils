@@ -60,12 +60,24 @@
                     {
                         "target": "build",
                         "projects": [
+                            "@af-utils/weigh-exports"
+                        ]
+                    },
+                    {
+                        "target": "build",
+                        "projects": [
                             "tag:npm:public"
                         ]
                     }
                 ],
                 "inputs": [
                     "default",
+                    {
+                        "projects": [
+                            "@af-utils/weigh-exports"
+                        ],
+                        "input": "production"
+                    },
                     {
                         "projects": [
                             "tag:npm:public"
@@ -132,11 +144,11 @@
         "@astrojs/solid-js": "^7.0.2",
         "@astrojs/svelte": "^9.0.1",
         "@iconify-json/logos": "^1.2.13",
-        "@iconify-json/material-symbols": "^1.2.89",
+        "@iconify-json/material-symbols": "^1.2.90",
         "@iconify-json/simple-icons": "^1.2.93",
         "@lit-labs/ssr-client": "^1.1.7",
         "@webcomponents/template-shadowroot": "^0.2.1",
-        "astro": "^7.2.6",
+        "astro": "^7.2.9",
         "astro-icon": "^1.2.0",
         "astro-seo": "^1.1.0",
         "lit": "^3.3.0",
@@ -144,13 +156,13 @@
         "pretty-bytes": "^7.1.1",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
-        "sharp": "^0.35.3",
+        "sharp": "^0.35.4",
         "sharp-ico": "^0.1.5",
         "shiki": "4.4.3",
         "solid-js": "^1.9.15",
         "svelte": "^5.56.10",
         "vite": "^8.2.2",
-        "vue": "^3.5.0"
+        "vue": "^3.5.42"
     },
     "devDependencies": {
         "@af-utils/weigh-exports": "workspace:*",
@@ -161,7 +173,7 @@
         "@tailwindcss/vite": "^4.3.3",
         "@types/lodash": "^4.17.25",
         "@types/mdx": "^2.0.14",
-        "@types/node": "^26.3.0",
+        "@types/node": "^26.4.0",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.5",
         "lodash": "^4.18.1",

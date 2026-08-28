@@ -17,6 +17,15 @@
     },
     "license": "MIT",
     "type": "module",
+    "nx": {
+        "targets": {
+            "test": {
+                "dependsOn": [
+                    "build"
+                ]
+            }
+        }
+    },
     "files": [
         "dist/*"
     ],
@@ -28,6 +37,7 @@
     "scripts": {
         "build": "tsc && esbuild ./src/index.ts --bundle --format=esm --platform=node --outdir=dist --external:@swc/* --external:chalk",
         "typecheck": "tsc --noEmit",
+        "test": "vitest run",
         "publint": "publint"
     },
     "engines": {
@@ -40,16 +50,14 @@
         "minify"
     ],
     "devDependencies": {
-        "@types/node": "^26.3.0",
+        "@types/node": "^26.4.0",
         "@typescript/native": "npm:typescript@^7.0.2",
-        "esbuild": "^0.28.2"
+        "esbuild": "^0.28.2",
+        "vitest": "^4.1.11"
     },
     "dependencies": {
         "@swc/core": "^1.16.1",
         "chalk": "^6.0.0",
         "tinyglobby": "^0.2.17"
-    },
-    "publishConfig": {
-        "access": "public"
     }
 }

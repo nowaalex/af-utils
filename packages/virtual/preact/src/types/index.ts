@@ -12,7 +12,7 @@ export interface ListItemProps<Data = unknown> {
     model: VirtualScroller;
     /** Current item index. */
     index: number;
-    /** Data forwarded from {@link ListProps.itemData}. */
+    /** Data forwarded from the list's `itemData` property. */
     data?: Data;
 }
 
