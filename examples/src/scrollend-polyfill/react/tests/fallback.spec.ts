@@ -1,9 +1,7 @@
 import { expect, test } from "../../../e2e/fixture";
 import { openExample } from "../../../e2e/examples";
 
-test("dispatches scrollend through the fallback after scroll becomes idle", async ({
-    page
-}) => {
+test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
         const visited = new Set<object>();
         for (const value of [window, document, document.documentElement]) {
@@ -17,7 +15,11 @@ test("dispatches scrollend through the fallback after scroll becomes idle", asyn
     });
     await openExample(page, "/examples/scrollend-polyfill/react");
     expect(await page.evaluate(() => "onscrollend" in window)).toBe(false);
+});
 
+test("dispatches scrollend through the fallback after scroll becomes idle", async ({
+    page
+}) => {
     const eventType = await page.getByTestId("scrollend-scroller").evaluate(
         element =>
             new Promise<string>((resolve, reject) => {
@@ -38,4 +40,33 @@ test("dispatches scrollend through the fallback after scroll becomes idle", asyn
     );
 
     expect(eventType).toBe("scrollend");
+});
+
+test("waits for the active touch gesture to end", async ({ page }) => {
+    const dispatchCounts = await page
+        .getByTestId("scrollend-scroller")
+        .evaluate(async element => {
+            let count = 0;
+            element.addEventListener("scrollend", () => count++);
+
+            const touchStart = new Event("touchstart");
+            Object.defineProperty(touchStart, "changedTouches", {
+                value: [{ identifier: 1 }]
+            });
+            window.dispatchEvent(touchStart);
+            element.dispatchEvent(new Event("scroll"));
+            await new Promise(resolve => {
+                setTimeout(resolve, 150);
+            });
+            const whileTouching = count;
+
+            const touchEnd = new Event("touchend");
+            Object.defineProperty(touchEnd, "changedTouches", {
+                value: [{ identifier: 1 }]
+            });
+            window.dispatchEvent(touchEnd);
+            return { afterTouchEnd: count, whileTouching };
+        });
+
+    expect(dispatchCounts).toEqual({ afterTouchEnd: 1, whileTouching: 0 });
 });
