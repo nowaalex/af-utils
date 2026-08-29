@@ -2,7 +2,10 @@
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "defaultBase": "main",
     "namedInputs": {
-        "default": ["{projectRoot}/**/*", "sharedGlobals"],
+        "default": [
+            "{projectRoot}/**/*",
+            "sharedGlobals"
+        ],
         "production": [
             "default",
             "!{projectRoot}/**/*.bench.*",
@@ -26,24 +29,42 @@
             "{workspaceRoot}/package.json",
             "{workspaceRoot}/pnpm-workspace.yaml",
             "{workspaceRoot}/tsconfig.base.json",
-            { "runtime": "node --version" }
+            {
+                "runtime": "node --version"
+            }
         ]
     },
     "targetDefaults": {
         "build": {
             "cache": true,
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production", "browserBuildTarget"]
+            "dependsOn": [
+                "^build"
+            ],
+            "inputs": [
+                "production",
+                "^production",
+                "browserBuildTarget"
+            ]
         },
         "test": {
             "cache": true,
-            "dependsOn": ["^build"],
-            "inputs": ["default", "^production"]
+            "dependsOn": [
+                "^build"
+            ],
+            "inputs": [
+                "default",
+                "^production"
+            ]
         },
         "typecheck": {
             "cache": true,
-            "dependsOn": ["^build"],
-            "inputs": ["default", "^default"]
+            "dependsOn": [
+                "^build"
+            ],
+            "inputs": [
+                "default",
+                "^default"
+            ]
         },
         "e2e": {
             "cache": false,
@@ -51,7 +72,9 @@
             "dependsOn": [
                 {
                     "target": "build",
-                    "projects": ["website"]
+                    "projects": [
+                        "website"
+                    ]
                 }
             ]
         },
@@ -61,9 +84,14 @@
         },
         "publint": {
             "cache": true,
-            "dependsOn": ["build"],
-            "inputs": ["production"]
+            "dependsOn": [
+                "build"
+            ],
+            "inputs": [
+                "production"
+            ]
         }
     },
-    "analytics": false
+    "analytics": false,
+    "nxCloudId": "6a8f12dad70befb24e89bec7"
 }
