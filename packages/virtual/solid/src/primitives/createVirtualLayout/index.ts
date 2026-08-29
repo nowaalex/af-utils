@@ -14,11 +14,13 @@ import type { VirtualLayoutBinding } from "../../types";
  */
 const createVirtualLayout = (model: VirtualScroller): VirtualLayoutBinding => {
     const layout = new VirtualScrollerLayout(model);
+    let mounted = false;
     let scrollerElement: HTMLElement | null = null;
     let sizeElement: HTMLElement | null = null;
     let itemsElement: HTMLElement | null = null;
 
     onMount(() => {
+        mounted = true;
         layout.setScrollerElement(scrollerElement);
         layout.setSizeElement(sizeElement);
         layout.setItemsElement(itemsElement);
@@ -28,12 +30,30 @@ const createVirtualLayout = (model: VirtualScroller): VirtualLayoutBinding => {
     return {
         scrollerRef: element => {
             scrollerElement = element;
+            if (mounted) layout.setScrollerElement(element);
+            onCleanup(() => {
+                if (scrollerElement !== element) return;
+                scrollerElement = null;
+                if (mounted) layout.setScrollerElement(null);
+            });
         },
         sizeRef: element => {
             sizeElement = element;
+            if (mounted) layout.setSizeElement(element);
+            onCleanup(() => {
+                if (sizeElement !== element) return;
+                sizeElement = null;
+                if (mounted) layout.setSizeElement(null);
+            });
         },
         itemsRef: element => {
             itemsElement = element;
+            if (mounted) layout.setItemsElement(element);
+            onCleanup(() => {
+                if (itemsElement !== element) return;
+                itemsElement = null;
+                if (mounted) layout.setItemsElement(null);
+            });
         }
     };
 };

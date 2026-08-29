@@ -51,7 +51,7 @@
         "windowing"
     ],
     "devDependencies": {
-        "@types/node": "^26.3.0",
+        "@types/node": "^26.4.0",
         "@typescript/native": "npm:typescript@^7.0.2",
         "jsdom": "^30.0.1",
         "vite": "^8.2.2",

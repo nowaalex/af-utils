@@ -2,7 +2,7 @@
 
 import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { join, normalize, parse } from "node:path";
+import { join, normalize, parse, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import chalk from "chalk";
 import { glob } from "tinyglobby";
@@ -39,9 +39,12 @@ if (values.input) {
     const inputPatterns = values.input.trim().split(/\s+/u);
     packagePaths = [
         ...new Set(
-            (await glob(inputPatterns, { onlyDirectories: true })).map(path =>
-                normalize(path)
-            )
+            (
+                await glob(inputPatterns, {
+                    expandDirectories: false,
+                    onlyDirectories: true
+                })
+            ).map(path => normalize(path))
         )
     ].toSorted();
 }
@@ -51,7 +54,7 @@ if (packagePaths.length === 0) {
 }
 
 if (values.output) {
-    parsedOutput = await parse(values.output);
+    parsedOutput = parse(resolve(values.output));
     outputTsFile = join(parsedOutput.dir, parsedOutput.name + ".ts");
 }
 
@@ -72,12 +75,27 @@ const packageExports = (
                 );
             }
 
-            const filteredExports = exportsToGlobPatterns(
-                pkgJson.exports
-            ).filter(pattern => /\.[cm]?js/u.test(pattern));
+            const filteredExports = [
+                ...new Set(
+                    exportsToGlobPatterns(pkgJson.exports).filter(pattern =>
+                        /\.[cm]?js/u.test(pattern)
+                    )
+                )
+            ];
+            const exportFiles = [
+                ...new Set(
+                    (
+                        await glob(filteredExports, {
+                            cwd: path,
+                            expandDirectories: false,
+                            onlyFiles: true
+                        })
+                    ).map(name => (name.startsWith("./") ? name : `./${name}`))
+                )
+            ];
             const exports = (
                 await Promise.all(
-                    filteredExports.map(async (name: string) => {
+                    exportFiles.map(async (name: string) => {
                         const fileContent = await readFile(join(path, name), {
                             encoding: "utf-8"
                         });
@@ -123,7 +141,7 @@ if (parsedOutput) {
     );
     await writeFile(
         outputTsFile,
-        `// This file was generated automatically\n\nexport default ${jsonStr} as const;`
+        `// This file was generated automatically\n// Package names: ${JSON.stringify(packageExports.map(([name]) => name))}\n\nexport default ${jsonStr} as const;`
     );
 }
 console.log(

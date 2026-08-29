@@ -11,7 +11,7 @@
 
 ### Patch Changes
 
-- dff0b7e: improved logging/warnings + fixed VirtualScroller.getOffset ssr bug
+- dff0b7e: improved CLI logging and warnings
 
 ## 0.0.6
 

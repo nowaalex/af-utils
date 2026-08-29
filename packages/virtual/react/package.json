@@ -27,8 +27,8 @@
         }
     },
     "scripts": {
-        "dev": "tsc && esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/* --watch",
-        "build": "tsc && esbuild ./src/index.ts --format=esm --outdir=dist --bundle --platform=neutral --external:react --external:react/jsx-runtime --external:@af-utils/* && api-extractor run && rm -r dist/types",
+        "dev": "tsc && node scripts/build.mjs --watch",
+        "build": "tsc && node scripts/build.mjs && api-extractor run && rm -r dist/types",
         "api-report": "api-extractor run --local",
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
@@ -63,7 +63,7 @@
     ],
     "devDependencies": {
         "@codspeed/vitest-plugin": "^5.7.1",
-        "@types/node": "^26.3.0",
+        "@types/node": "^26.4.0",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.5",
         "@typescript/native": "npm:typescript@^7.0.2",

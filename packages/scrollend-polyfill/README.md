@@ -28,5 +28,14 @@ period and no tracked touch gesture remains active. Touch cancellation and
 aborted, captured, duplicate, or one-time listeners follow the normal event
 listener lifecycle.
 
+### Trackpad limitation
+
+Browsers expose desktop trackpad scrolling as a stream of `wheel` and `scroll`
+events, without a reliable event for fingers remaining in contact with or being
+released from the trackpad. The polyfill therefore uses the quiet period for
+trackpad input and may dispatch `scrollend` while the user's fingers are still
+resting on the trackpad. Native `scrollend`, when available, remains responsible
+for the complete browser-managed gesture and momentum lifecycle.
+
 See the [runnable React example](https://af-utils.vercel.app/scrollend-polyfill/examples/react)
 and [bundle-size report](https://af-utils.vercel.app/scrollend-polyfill/size).

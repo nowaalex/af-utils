@@ -1,8 +1,10 @@
 import { defineConfig } from "vitest/config";
+import { browserBuildTarget } from "../../../scripts/browser-build-target.mjs";
 
 export default defineConfig(({ isSsrBuild }) => ({
     build: {
         emptyOutDir: !isSsrBuild,
+        target: browserBuildTarget,
         ...(isSsrBuild
             ? { ssr: "src/index.ts" }
             : {

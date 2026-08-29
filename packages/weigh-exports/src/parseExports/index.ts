@@ -4,16 +4,7 @@ type ExportConditions = {
     [condition: string]: Exports;
 };
 
-const ignoredConditions = new Set([
-    "node",
-    "deno",
-    "electron",
-    "development",
-    "production",
-    "react-native",
-    "electron",
-    "types"
-]);
+const ignoredConditions = new Set(["development", "production", "types"]);
 
 const exportsToGlobPatterns = (map: Exports): string[] => {
     switch (typeof map) {

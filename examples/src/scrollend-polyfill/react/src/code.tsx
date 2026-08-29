@@ -18,7 +18,11 @@ const ReactExample = () => {
     }, []);
 
     return (
-        <div ref={ref} style={{ overflow: "auto", height: 200 }}>
+        <div
+            ref={ref}
+            data-testid="scrollend-scroller"
+            style={{ overflow: "auto", height: 200 }}
+        >
             <div
                 style={{
                     height: 1000,

@@ -10,7 +10,7 @@
     "type": "module",
     "dependencies": {
         "@af-utils/virtual-core": "2.0.0",
-        "@tanstack/table-core": "^9.1.2"
+        "@tanstack/table-core": "^9.2.3"
     },
     "devDependencies": {
         "typescript": "^6.0.3",
