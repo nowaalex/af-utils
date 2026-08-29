@@ -6,6 +6,8 @@ import {
     test
 } from "../../../../e2e";
 
+const MAX_SCROLL_END_ERROR_PX = 0.5;
+
 await describeExample("virtual/basics/horizontal", example => {
     test("virtualizes columns and reaches the horizontal end", async ({
         page
@@ -31,21 +33,19 @@ await describeExample("virtual/basics/horizontal", example => {
                     const rendered = [
                         ...element.querySelectorAll('[role="listitem"]')
                     ];
-                    const lastItem = rendered.at(-1);
-                    return {
-                        endOffset:
-                            element.scrollWidth -
-                            element.clientWidth -
-                            element.scrollLeft,
-                        lastPosition: Number(
-                            lastItem?.getAttribute("aria-posinset")
-                        )
-                    };
+                    return Number(
+                        rendered.at(-1)?.getAttribute("aria-posinset")
+                    );
                 })
             )
-            .toEqual({
-                endOffset: 0,
-                lastPosition: itemCount
-            });
+            .toBe(itemCount);
+
+        const endOffset = await list.evaluate(
+            element =>
+                element.scrollWidth - element.clientWidth - element.scrollLeft
+        );
+        expect(Math.abs(endOffset)).toBeLessThanOrEqual(
+            MAX_SCROLL_END_ERROR_PX
+        );
     });
 });

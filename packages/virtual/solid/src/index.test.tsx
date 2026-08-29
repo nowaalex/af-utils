@@ -123,6 +123,31 @@ describe("Solid virtual adapter", () => {
         dispose();
     });
 
+    test("connects initial layout elements after DOM insertion", () => {
+        const model = new VirtualScroller({ itemCount: 10 });
+        const scrollerConnectionStates: boolean[] = [];
+        const containerConnectionStates: boolean[] = [];
+        vi.spyOn(model, "setScroller").mockImplementation(element => {
+            if (element instanceof HTMLElement) {
+                scrollerConnectionStates.push(element.isConnected);
+            }
+        });
+        vi.spyOn(model, "setContainer").mockImplementation(element => {
+            if (element) containerConnectionStates.push(element.isConnected);
+        });
+
+        const dispose = render(
+            () => <VirtualList model={model}>{Item}</VirtualList>,
+            container
+        );
+
+        expect(scrollerConnectionStates).toEqual([true]);
+        expect(containerConnectionStates).toEqual([true]);
+
+        dispose();
+        model.dispose();
+    });
+
     test("rebinds layout refs when Solid replaces their elements", () => {
         const [alternate, setAlternate] = createSignal(false);
         const model = new VirtualScroller({

@@ -1,5 +1,13 @@
 import { spawnSync } from "node:child_process";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import {
+    mkdir,
+    mkdtemp,
+    mkdtempDisposable,
+    readFile,
+    rm,
+    symlink,
+    writeFile
+} from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { pathToFileURL } from "node:url";
@@ -242,11 +250,20 @@ describe.runIf(childProcessesAvailable)("CLI local-package workflow", () => {
     }, 30_000);
 
     test("generates outside the target package, probes its public export, and runs the suite", async () => {
-        const directory = await mkdtemp(join(import.meta.dirname, ".cli-e2e-"));
-        directories.push(directory);
+        await using disposableDirectory = await mkdtempDisposable(
+            join(tmpdir(), "check-hot-cli-e2e-")
+        );
+        const directory = disposableDirectory.path;
         const target = join(directory, "target");
         const output = join(directory, "generated", "suite.mjs");
         const runner = join(directory, "runner.mjs");
+        const dependencyScope = join(directory, "node_modules/@af-utils");
+        await mkdir(dependencyScope, { recursive: true });
+        await symlink(
+            join(import.meta.dirname, ".."),
+            join(dependencyScope, "check-hot"),
+            "junction"
+        );
         await mkdir(target);
         await writeFile(
             join(target, "package.json"),
