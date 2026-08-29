@@ -31,6 +31,8 @@ import {
     probeHotModule
 } from "@af-utils/check-hot/analyzer";
 
+const DATE_FNS_ARITHMETIC_TEST_TIMEOUT_MS = 15_000;
+
 const contextFor = (
     packageName: string,
     packageVersion: string,
@@ -326,6 +328,9 @@ describe("external ecosystem test runners", () => {
         });
     });
 
+    // Cold-loading the date-fns root and checking all 72 operation/amount pairs
+    // can exceed Vitest's 5-second default while Nx runs other projects on a
+    // shared CI runner, so keep the larger timeout scoped to this integration.
     test("verifies each supported date-fns arithmetic family independently", async () => {
         const dateFns = (await import("date-fns")) as Record<string, unknown>;
         const names = [
@@ -392,7 +397,7 @@ describe("external ecosystem test runners", () => {
             [businessCandidate]
         );
         expect(dateFnsTestRunner.listSamples(businessContext)).toEqual({});
-    });
+    }, DATE_FNS_ARITHMETIC_TEST_TIMEOUT_MS);
 
     test("seeds the date-fns invalid-amount branch and excludes early-return numeric variants", async () => {
         const dateFns = await import("date-fns");
