@@ -66,9 +66,129 @@
                 ]
             },
             "test": {
+                "executor": "nx:noop",
+                "dependsOn": [
+                    "test:fast",
+                    "test:ecosystem:lodash",
+                    "test:ecosystem:date-fns",
+                    "test:ecosystem:react",
+                    "test:ecosystem:svelte",
+                    "test:ecosystem:three"
+                ]
+            },
+            "test:fast": {
+                "executor": "nx:run-commands",
+                "cache": true,
                 "dependsOn": [
                     "build"
-                ]
+                ],
+                "inputs": [
+                    "default",
+                    "^production",
+                    "checkHotRuntimeControls"
+                ],
+                "options": {
+                    "command": "vitest run",
+                    "cwd": "packages/check-hot/test-suite",
+                    "env": {
+                        "CHECK_HOT_ECOSYSTEM": "none"
+                    }
+                }
+            },
+            "test:ecosystem:lodash": {
+                "executor": "nx:run-commands",
+                "cache": true,
+                "dependsOn": [
+                    "build"
+                ],
+                "inputs": [
+                    "default",
+                    "^production",
+                    "checkHotRuntimeControls"
+                ],
+                "options": {
+                    "command": "vitest run tests/runners.test.ts -t \"replays lodash through a real V8 worker\"",
+                    "cwd": "packages/check-hot/test-suite",
+                    "env": {
+                        "CHECK_HOT_ECOSYSTEM": "lodash"
+                    }
+                }
+            },
+            "test:ecosystem:date-fns": {
+                "executor": "nx:run-commands",
+                "cache": true,
+                "dependsOn": [
+                    "build"
+                ],
+                "inputs": [
+                    "default",
+                    "^production",
+                    "checkHotRuntimeControls"
+                ],
+                "options": {
+                    "command": "vitest run tests/runners.test.ts -t \"replays date-fns through a real V8 worker\"",
+                    "cwd": "packages/check-hot/test-suite",
+                    "env": {
+                        "CHECK_HOT_ECOSYSTEM": "date-fns"
+                    }
+                }
+            },
+            "test:ecosystem:react": {
+                "executor": "nx:run-commands",
+                "cache": true,
+                "dependsOn": [
+                    "build"
+                ],
+                "inputs": [
+                    "default",
+                    "^production",
+                    "checkHotRuntimeControls"
+                ],
+                "options": {
+                    "command": "vitest run tests/runners.test.ts -t \"replays react through a real V8 worker\"",
+                    "cwd": "packages/check-hot/test-suite",
+                    "env": {
+                        "CHECK_HOT_ECOSYSTEM": "react"
+                    }
+                }
+            },
+            "test:ecosystem:svelte": {
+                "executor": "nx:run-commands",
+                "cache": true,
+                "dependsOn": [
+                    "build"
+                ],
+                "inputs": [
+                    "default",
+                    "^production",
+                    "checkHotRuntimeControls"
+                ],
+                "options": {
+                    "command": "vitest run tests/runners.test.ts -t \"replays svelte through a real V8 worker\"",
+                    "cwd": "packages/check-hot/test-suite",
+                    "env": {
+                        "CHECK_HOT_ECOSYSTEM": "svelte"
+                    }
+                }
+            },
+            "test:ecosystem:three": {
+                "executor": "nx:run-commands",
+                "cache": true,
+                "dependsOn": [
+                    "build"
+                ],
+                "inputs": [
+                    "default",
+                    "^production",
+                    "checkHotRuntimeControls"
+                ],
+                "options": {
+                    "command": "vitest run tests/runners.test.ts -t \"replays three through a real V8 worker\"",
+                    "cwd": "packages/check-hot/test-suite",
+                    "env": {
+                        "CHECK_HOT_ECOSYSTEM": "three"
+                    }
+                }
             }
         }
     },

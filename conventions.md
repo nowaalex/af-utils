@@ -56,13 +56,23 @@ Root `package.json` scripts are convenience aliases for these Nx entry points.
 CI uses the explicit Nx commands so the task graph is visible in logs. Use
 `pnpm nx graph` to inspect relationships and
 `pnpm nx affected -t build test typecheck` for an affected-only local check.
-Repository CI intentionally runs the complete gates.
+Repository CI intentionally runs the complete gates. Hosted workflows set
+`NX_PARALLEL` to a percentage so Nx derives concurrency from the runner's
+available processors instead of a checked-in machine-specific count.
 
 The pre-push hook runs the cacheable `workspace:verify:prepush` graph. The
 hosted Quality workflow adds minimum-version compatibility, browser integration,
 generated website, link, and Lighthouse checks. Its browser jobs run Chromium,
 Firefox, and WebKit in parallel while the required `quality / Quality` status
-remains the aggregate result.
+remains the aggregate result. CI runs Quality for pull requests and protected
+`main` updates, so a trusted `main` run can seed the shared Nx Cloud cache.
+
+`nx.json` owns the non-secret Nx Cloud workspace identity. The
+`nx-cloud-read-only` GitHub environment supplies pull-request cache access from
+its `NX_READONLY` secret, while `nx-cloud-protected` supplies `NX_RW` only to
+protected `main` jobs. Workflows choose the matching secret explicitly instead
+of falling back across scopes. Developers authenticate with their own Nx Cloud
+login; never add a CI access token to `nx.json` or another tracked file.
 
 `site.config.json` owns the production website origin. Published package
 metadata and documentation must contain literal URLs, so the site-origin sync
@@ -72,7 +82,7 @@ sync target; the style gate rejects stale af-utils origins.
 ## Releases
 
 GitHub accepts updates to `main` only through a pull request whose
-[Quality workflow](.github/workflows/quality.yml) succeeds; the
+[Quality jobs](.github/workflows/ci.yml) succeed; the
 [repository ruleset](https://github.com/nowaalex/af-utils/rules/21577769)
 enforces this policy.
 

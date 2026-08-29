@@ -50,6 +50,8 @@ const contextFor = (
 const mapValues = (values: number[], callback: (value: number) => number) =>
     values.map(value => callback(value));
 const require = createRequire(import.meta.url);
+const integrationProbeSampleTimeoutMs = 15_000;
+const integrationSemanticControlTimeoutMs = 30_000;
 const installedVersion = (packageName: string, entry = packageName) => {
     let directory = dirname(require.resolve(entry));
     while (true) {
@@ -116,7 +118,11 @@ const runInstalledRecipeInV8 = async (options: {
     };
 }) => {
     const functionName = options.functionValue.name;
-    const directory = await mkdtemp(join(import.meta.dirname, ".runtime-"));
+    // Preserve bare workspace imports without mutating the adapter tree hashed
+    // by source-integrity checks when ecosystem targets run concurrently.
+    const directory = await mkdtemp(
+        join(import.meta.dirname, "../node_modules/.check-hot-runtime-")
+    );
     const suitePath = join(directory, "suite.mjs");
     const filteredRunnerPath = join(directory, "runner.ts");
     try {
@@ -127,6 +133,7 @@ const runInstalledRecipeInV8 = async (options: {
                 `const functionName = ${JSON.stringify(functionName)};`,
                 "export default {",
                 "  ...runner,",
+                `  perSampleTimeoutMs: ${integrationProbeSampleTimeoutMs},`,
                 "  listSamples(context) {",
                 "    const selected = runner.listSamples(context);",
                 "    return selected[functionName] ? { [functionName]: selected[functionName] } : {};",
@@ -326,73 +333,82 @@ describe("external ecosystem test runners", () => {
         });
     });
 
-    test("verifies each supported date-fns arithmetic family independently", async () => {
-        const dateFns = (await import("date-fns")) as Record<string, unknown>;
-        const names = [
-            "addDays",
-            "subDays",
-            "addHours",
-            "subHours",
-            "addMinutes",
-            "subMinutes",
-            "addMonths",
-            "subMonths",
-            "addWeeks",
-            "subWeeks",
-            "addYears",
-            "subYears"
-        ];
-        const amounts = [1, 2.25, -0, Number.NaN, 2 ** 31, 2 ** 32];
+    test(
+        "verifies each supported date-fns arithmetic family independently",
+        async () => {
+            const dateFns = (await import("date-fns")) as Record<
+                string,
+                unknown
+            >;
+            const names = [
+                "addDays",
+                "subDays",
+                "addHours",
+                "subHours",
+                "addMinutes",
+                "subMinutes",
+                "addMonths",
+                "subMonths",
+                "addWeeks",
+                "subWeeks",
+                "addYears",
+                "subYears"
+            ];
+            const amounts = [1, 2.25, -0, Number.NaN, 2 ** 31, 2 ** 32];
 
-        for (const name of names) {
-            const fn = dateFns[name];
-            if (typeof fn !== "function") {
-                throw new TypeError(`Installed date-fns has no ${name}`);
+            for (const name of names) {
+                const fn = dateFns[name];
+                if (typeof fn !== "function") {
+                    throw new TypeError(`Installed date-fns has no ${name}`);
+                }
+                const candidate = { name, fn, receiver: null };
+                const context = contextFor(
+                    "date-fns",
+                    installedVersion("date-fns"),
+                    [candidate]
+                );
+                const samples = dateFnsTestRunner.createSamples(
+                    context,
+                    dateFnsTestRunner.listSamples(context)
+                );
+                const sample = samples[name]?.[0];
+                if (!sample?.verifyMutation) {
+                    throw new TypeError(
+                        `${name} has no exact mutation verifier`
+                    );
+                }
+                for (const [index, amount] of amounts.entries()) {
+                    const args = [...sample.args(index, "stress")];
+                    args[1] = amount;
+                    const result = Reflect.apply(fn, null, args);
+                    // oxlint-disable-next-line no-await-in-loop -- Every arithmetic family/representation pair is an independent semantic oracle control.
+                    await sample.verifyMutation({
+                        obligationId: `fixture:${name}`,
+                        mutationFamily: "numeric-representation",
+                        variant: `amount-${index}`,
+                        receiver: null,
+                        args,
+                        result,
+                        iteration: index,
+                        phase: "stress"
+                    });
+                }
             }
-            const candidate = { name, fn, receiver: null };
-            const context = contextFor(
+
+            const businessCandidate = {
+                name: "addBusinessDays",
+                fn: dateFns.addBusinessDays as CallableFunction,
+                receiver: null
+            };
+            const businessContext = contextFor(
                 "date-fns",
                 installedVersion("date-fns"),
-                [candidate]
+                [businessCandidate]
             );
-            const samples = dateFnsTestRunner.createSamples(
-                context,
-                dateFnsTestRunner.listSamples(context)
-            );
-            const sample = samples[name]?.[0];
-            if (!sample?.verifyMutation) {
-                throw new TypeError(`${name} has no exact mutation verifier`);
-            }
-            for (const [index, amount] of amounts.entries()) {
-                const args = [...sample.args(index, "stress")];
-                args[1] = amount;
-                const result = Reflect.apply(fn, null, args);
-                // oxlint-disable-next-line no-await-in-loop -- Every arithmetic family/representation pair is an independent semantic oracle control.
-                await sample.verifyMutation({
-                    obligationId: `fixture:${name}`,
-                    mutationFamily: "numeric-representation",
-                    variant: `amount-${index}`,
-                    receiver: null,
-                    args,
-                    result,
-                    iteration: index,
-                    phase: "stress"
-                });
-            }
-        }
-
-        const businessCandidate = {
-            name: "addBusinessDays",
-            fn: dateFns.addBusinessDays as CallableFunction,
-            receiver: null
-        };
-        const businessContext = contextFor(
-            "date-fns",
-            installedVersion("date-fns"),
-            [businessCandidate]
-        );
-        expect(dateFnsTestRunner.listSamples(businessContext)).toEqual({});
-    });
+            expect(dateFnsTestRunner.listSamples(businessContext)).toEqual({});
+        },
+        integrationSemanticControlTimeoutMs
+    );
 
     test("seeds the date-fns invalid-amount branch and excludes early-return numeric variants", async () => {
         const dateFns = await import("date-fns");
@@ -870,15 +886,38 @@ describe("external ecosystem test runners", () => {
         180_000
     );
 
-    test.runIf(childProcessesAvailable)(
-        "replays one accepted recipe per installed ecosystem through a real V8 worker",
-        async () => {
-            const lodash = (await import("lodash")).default;
-            const dateFns = await import("date-fns");
-            const react = await import("react");
-            const svelte = await import("svelte/compiler");
-            const integrations = [
-                {
+    const runtimeEcosystemNames = [
+        "lodash",
+        "date-fns",
+        "react",
+        "svelte",
+        "three"
+    ] as const;
+    const requestedRuntimeEcosystem = process.env.CHECK_HOT_ECOSYSTEM;
+    if (
+        requestedRuntimeEcosystem !== undefined &&
+        requestedRuntimeEcosystem !== "none" &&
+        !runtimeEcosystemNames.includes(
+            requestedRuntimeEcosystem as (typeof runtimeEcosystemNames)[number]
+        )
+    ) {
+        throw new TypeError(
+            `Unknown CHECK_HOT_ECOSYSTEM ${requestedRuntimeEcosystem}`
+        );
+    }
+    const selectedRuntimeEcosystems = requestedRuntimeEcosystem
+        ? runtimeEcosystemNames.filter(
+              ecosystem => ecosystem === requestedRuntimeEcosystem
+          )
+        : runtimeEcosystemNames;
+
+    const loadRuntimeIntegration = async (
+        ecosystem: (typeof runtimeEcosystemNames)[number]
+    ): Promise<Parameters<typeof runInstalledRecipeInV8>[0]> => {
+        switch (ecosystem) {
+            case "lodash": {
+                const lodash = (await import("lodash")).default;
+                return {
                     packageName: "lodash",
                     packageVersion: installedVersion("lodash"),
                     importSpecifier: "lodash",
@@ -895,8 +934,11 @@ describe("external ecosystem test runners", () => {
                         engineVersion: "14.6.202.34-node.28",
                         outcome: "tier-mismatch"
                     }
-                },
-                {
+                };
+            }
+            case "date-fns": {
+                const dateFns = await import("date-fns");
+                return {
                     packageName: "date-fns",
                     packageVersion: installedVersion("date-fns"),
                     importSpecifier: "date-fns/addDays",
@@ -919,8 +961,11 @@ describe("external ecosystem test runners", () => {
                     expectedSelectedSampleIds: [
                         "addDays:date-invalid-amount-branch"
                     ]
-                },
-                {
+                };
+            }
+            case "react": {
+                const react = await import("react");
+                return {
                     packageName: "react",
                     packageVersion: installedVersion("react"),
                     importSpecifier: "react",
@@ -942,8 +987,11 @@ describe("external ecosystem test runners", () => {
                         engineVersion: "14.6.202.34-node.28",
                         outcome: "tier-mismatch"
                     }
-                },
-                {
+                };
+            }
+            case "svelte": {
+                const svelte = await import("svelte/compiler");
+                return {
                     packageName: "svelte",
                     packageVersion: installedVersion(
                         "svelte",
@@ -959,8 +1007,11 @@ describe("external ecosystem test runners", () => {
                     },
                     analyze: true,
                     expectGraphIncomplete: true
-                },
-                {
+                };
+            }
+            case "three": {
+                const three = await import("three");
+                return {
                     packageName: "three",
                     packageVersion: installedVersion("three"),
                     importSpecifier: "three/src/math/MathUtils.js",
@@ -968,8 +1019,8 @@ describe("external ecosystem test runners", () => {
                     runnerSource: new URL("../dist/three.js", import.meta.url),
                     functionValue: {
                         name: "lerp",
-                        fn: (await import("three")).MathUtils.lerp,
-                        receiver: (await import("three")).MathUtils
+                        fn: three.MathUtils.lerp,
+                        receiver: three.MathUtils
                     },
                     analyze: true,
                     testedPrimary: {
@@ -977,20 +1028,18 @@ describe("external ecosystem test runners", () => {
                         engineVersion: "14.6.202.34-node.28",
                         outcome: "pass"
                     }
-                }
-            ] satisfies readonly Parameters<typeof runInstalledRecipeInV8>[0][];
-
-            const results: Awaited<
-                ReturnType<typeof runInstalledRecipeInV8>
-            >[] = [];
-            /* oxlint-disable no-await-in-loop -- Each temporary runner tree must finish and clean up before the next integrity snapshot. */
-            for (const integration of integrations) {
-                results.push(await runInstalledRecipeInV8(integration));
+                };
             }
-            /* oxlint-enable no-await-in-loop */
-            for (const [index, integration] of integrations.entries()) {
+        }
+    };
+
+    for (const ecosystem of selectedRuntimeEcosystems) {
+        test.runIf(childProcessesAvailable)(
+            `replays ${ecosystem} through a real V8 worker`,
+            async () => {
+                const integration = await loadRuntimeIntegration(ecosystem);
                 const { analysisGraphComplete, summary, obligationIds } =
-                    results[index];
+                    await runInstalledRecipeInV8(integration);
                 if (integration.analyze) {
                     expect(analysisGraphComplete).toBe(
                         !integration.expectGraphIncomplete
@@ -1229,7 +1278,7 @@ describe("external ecosystem test runners", () => {
                             ).toBeLessThanOrEqual(1);
                         }
                     }
-                    continue;
+                    return;
                 }
                 expect(
                     summary.passed,
@@ -1246,8 +1295,8 @@ describe("external ecosystem test runners", () => {
                         .filter(Boolean)
                         .join("\n")}`
                 ).toBe(true);
-            }
-        },
-        240_000
-    );
+            },
+            240_000
+        );
+    }
 });

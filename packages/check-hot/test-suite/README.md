@@ -62,11 +62,13 @@ Engine versions are recorded when the runtime exposes them; a Bun report shows
 `jsc@unknown` when its active build does not provide a separate JavaScriptCore
 version string.
 
-Workspace integration tests do not manufacture accepted manifests. Core probes
-one representative export from every installed ecosystem in repeated fresh
-processes and then runs the accepted recipe in a real V8 worker. Lodash,
-date-fns, React, Svelte compiler, and the narrow Three.js MathUtils module run
-the complete `analyze → obligations → generated suite → worker ledger` path.
+Workspace integration tests do not manufacture accepted manifests. The Nx
+aggregate schedules a separate cacheable real-worker target for each installed
+ecosystem, so the controls can run in parallel and retain independent cache
+keys. Core probes one representative export in repeated fresh processes and
+then runs the accepted recipe in a real V8 worker. Lodash, date-fns, React,
+Svelte compiler, and the narrow Three.js MathUtils module run the complete
+`analyze → obligations → generated suite → worker ledger` path.
 Selected obligations must reach exact source evidence with mutation-aware
 verification; a clean pass and a separately proven V8 tier mismatch are kept as
 different outcomes. Exact expected tier outcomes are asserted only for recorded
