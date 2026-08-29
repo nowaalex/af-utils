@@ -21,6 +21,15 @@
                 ]
             }
         ],
+        "checkHotRuntimeControls": [
+            "{workspaceRoot}/.github/workflows/ci.yml",
+            { "env": "CHECK_HOT_REQUIRE_RUNTIMES" },
+            { "env": "CHECK_HOT_HEAVY_ECOSYSTEM" },
+            { "env": "CHECK_HOT_NODE" },
+            { "env": "CHECK_HOT_DENO" },
+            { "env": "CHECK_HOT_BUN" },
+            { "env": "CODEX_PERMISSION_PROFILE" }
+        ],
         "sharedGlobals": [
             "{workspaceRoot}/api-extractor-base.json",
             "{workspaceRoot}/package.json",
@@ -65,5 +74,6 @@
             "inputs": ["production"]
         }
     },
-    "analytics": false
+    "analytics": false,
+    "nxCloudId": "6a8f12dad70befb24e89bec7"
 }

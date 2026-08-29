@@ -12,16 +12,26 @@ concurrency:
 permissions:
     contents: read
 
+env:
+    NX_PARALLEL: 100%
+
 jobs:
     release:
         name: Release
         runs-on: ubuntu-latest
         timeout-minutes: 15
+        environment: nx-cloud-protected
+        env:
+            NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_RW }}
         permissions:
             contents: write
             pull-requests: write
             id-token: write
         steps:
+            - name: Require scoped Nx Cloud token
+              if: ${{ env.NX_CLOUD_ACCESS_TOKEN == '' }}
+              run: exit 1
+
             - name: Checkout repository
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
 
