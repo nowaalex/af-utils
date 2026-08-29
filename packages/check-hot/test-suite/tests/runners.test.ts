@@ -331,73 +331,82 @@ describe("external ecosystem test runners", () => {
     // Cold-loading the date-fns root and checking all 72 operation/amount pairs
     // can exceed Vitest's 5-second default while Nx runs other projects on a
     // shared CI runner, so keep the larger timeout scoped to this integration.
-    test("verifies each supported date-fns arithmetic family independently", async () => {
-        const dateFns = (await import("date-fns")) as Record<string, unknown>;
-        const names = [
-            "addDays",
-            "subDays",
-            "addHours",
-            "subHours",
-            "addMinutes",
-            "subMinutes",
-            "addMonths",
-            "subMonths",
-            "addWeeks",
-            "subWeeks",
-            "addYears",
-            "subYears"
-        ];
-        const amounts = [1, 2.25, -0, Number.NaN, 2 ** 31, 2 ** 32];
+    test(
+        "verifies each supported date-fns arithmetic family independently",
+        async () => {
+            const dateFns = (await import("date-fns")) as Record<
+                string,
+                unknown
+            >;
+            const names = [
+                "addDays",
+                "subDays",
+                "addHours",
+                "subHours",
+                "addMinutes",
+                "subMinutes",
+                "addMonths",
+                "subMonths",
+                "addWeeks",
+                "subWeeks",
+                "addYears",
+                "subYears"
+            ];
+            const amounts = [1, 2.25, -0, Number.NaN, 2 ** 31, 2 ** 32];
 
-        for (const name of names) {
-            const fn = dateFns[name];
-            if (typeof fn !== "function") {
-                throw new TypeError(`Installed date-fns has no ${name}`);
+            for (const name of names) {
+                const fn = dateFns[name];
+                if (typeof fn !== "function") {
+                    throw new TypeError(`Installed date-fns has no ${name}`);
+                }
+                const candidate = { name, fn, receiver: null };
+                const context = contextFor(
+                    "date-fns",
+                    installedVersion("date-fns"),
+                    [candidate]
+                );
+                const samples = dateFnsTestRunner.createSamples(
+                    context,
+                    dateFnsTestRunner.listSamples(context)
+                );
+                const sample = samples[name]?.[0];
+                if (!sample?.verifyMutation) {
+                    throw new TypeError(
+                        `${name} has no exact mutation verifier`
+                    );
+                }
+                for (const [index, amount] of amounts.entries()) {
+                    const args = [...sample.args(index, "stress")];
+                    args[1] = amount;
+                    const result = Reflect.apply(fn, null, args);
+                    // oxlint-disable-next-line no-await-in-loop -- Every arithmetic family/representation pair is an independent semantic oracle control.
+                    await sample.verifyMutation({
+                        obligationId: `fixture:${name}`,
+                        mutationFamily: "numeric-representation",
+                        variant: `amount-${index}`,
+                        receiver: null,
+                        args,
+                        result,
+                        iteration: index,
+                        phase: "stress"
+                    });
+                }
             }
-            const candidate = { name, fn, receiver: null };
-            const context = contextFor(
+
+            const businessCandidate = {
+                name: "addBusinessDays",
+                fn: dateFns.addBusinessDays as CallableFunction,
+                receiver: null
+            };
+            const businessContext = contextFor(
                 "date-fns",
                 installedVersion("date-fns"),
-                [candidate]
+                [businessCandidate]
             );
-            const samples = dateFnsTestRunner.createSamples(
-                context,
-                dateFnsTestRunner.listSamples(context)
-            );
-            const sample = samples[name]?.[0];
-            if (!sample?.verifyMutation) {
-                throw new TypeError(`${name} has no exact mutation verifier`);
-            }
-            for (const [index, amount] of amounts.entries()) {
-                const args = [...sample.args(index, "stress")];
-                args[1] = amount;
-                const result = Reflect.apply(fn, null, args);
-                // oxlint-disable-next-line no-await-in-loop -- Every arithmetic family/representation pair is an independent semantic oracle control.
-                await sample.verifyMutation({
-                    obligationId: `fixture:${name}`,
-                    mutationFamily: "numeric-representation",
-                    variant: `amount-${index}`,
-                    receiver: null,
-                    args,
-                    result,
-                    iteration: index,
-                    phase: "stress"
-                });
-            }
-        }
-
-        const businessCandidate = {
-            name: "addBusinessDays",
-            fn: dateFns.addBusinessDays as CallableFunction,
-            receiver: null
-        };
-        const businessContext = contextFor(
-            "date-fns",
-            installedVersion("date-fns"),
-            [businessCandidate]
-        );
-        expect(dateFnsTestRunner.listSamples(businessContext)).toEqual({});
-    }, DATE_FNS_ARITHMETIC_TEST_TIMEOUT_MS);
+            expect(dateFnsTestRunner.listSamples(businessContext)).toEqual({});
+        },
+        DATE_FNS_ARITHMETIC_TEST_TIMEOUT_MS
+    );
 
     test("seeds the date-fns invalid-amount branch and excludes early-return numeric variants", async () => {
         const dateFns = await import("date-fns");
