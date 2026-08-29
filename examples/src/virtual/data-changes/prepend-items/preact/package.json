@@ -9,8 +9,8 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/virtual-core": "2.0.0",
-        "@af-utils/virtual-preact": "1.0.0",
+        "@af-utils/virtual-core": "2.0.1",
+        "@af-utils/virtual-preact": "1.0.1",
         "preact": "^10.29.8"
     },
     "devDependencies": {

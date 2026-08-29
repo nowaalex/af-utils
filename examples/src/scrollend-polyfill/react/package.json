@@ -9,7 +9,7 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/scrollend-polyfill": "0.0.15",
+        "@af-utils/scrollend-polyfill": "0.0.16",
         "react": "^19.2.8",
         "react-dom": "^19.2.8"
     },

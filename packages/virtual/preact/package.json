@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-preact",
     "private": false,
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Preact components and hooks for rendering large scrollable data",
     "repository": {
         "type": "git",

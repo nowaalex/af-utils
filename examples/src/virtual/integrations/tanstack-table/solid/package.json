@@ -9,8 +9,8 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/virtual-core": "2.0.0",
-        "@af-utils/virtual-solid": "1.0.0",
+        "@af-utils/virtual-core": "2.0.1",
+        "@af-utils/virtual-solid": "1.0.1",
         "solid-js": "^1.9.15",
         "@tanstack/solid-table": "^9.2.3"
     },
