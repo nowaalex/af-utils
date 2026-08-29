@@ -9,8 +9,8 @@
     },
     "type": "module",
     "dependencies": {
-        "@af-utils/virtual-core": "2.0.0",
-        "@af-utils/virtual-lit": "1.0.0",
+        "@af-utils/virtual-core": "2.0.1",
+        "@af-utils/virtual-lit": "1.0.1",
         "lit": "^3.3.0"
     },
     "devDependencies": {

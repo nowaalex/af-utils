@@ -1,5 +1,11 @@
 # @af-utils/virtual-core
 
+## 2.0.1
+
+### Patch Changes
+
+- c2eed28: Compile browser bundles from the workspace Browserslist target while retaining the documented Node and SSR entry points.
+
 ## 2.0.0
 
 ### Major Changes

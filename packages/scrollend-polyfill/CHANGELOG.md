@@ -1,5 +1,11 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.16
+
+### Patch Changes
+
+- c2eed28: Compile the polyfill from the workspace Browserslist target and cover the real browser fallback when native `scrollend` is unavailable.
+
 ## 0.0.15
 
 ### Patch Changes

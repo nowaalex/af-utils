@@ -1,7 +1,7 @@
 {
     "name": "@af-utils/virtual-svelte",
     "private": false,
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Svelte runes and attachments for rendering large scrollable data",
     "repository": {
         "type": "git",

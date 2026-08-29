@@ -1,5 +1,14 @@
 # @af-utils/virtual-solid
 
+## 1.0.1
+
+### Patch Changes
+
+- c2eed28: Keep the virtual layout model synchronized when Solid replaces its container or scroll element refs, while deferring initial DOM measurement until those elements are mounted.
+- c2eed28: Compile browser bundles from the workspace Browserslist target while retaining the documented Node and SSR entry points.
+- Updated dependencies [c2eed28]
+    - @af-utils/virtual-core@2.0.1
+
 ## 1.0.0
 
 ### Major Changes
