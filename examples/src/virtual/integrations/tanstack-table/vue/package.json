@@ -12,7 +12,7 @@
         "@af-utils/virtual-core": "2.0.1",
         "@af-utils/virtual-vue": "1.0.1",
         "vue": "^3.5.42",
-        "@tanstack/vue-table": "^9.2.3"
+        "@tanstack/vue-table": "^9.2.4"
     },
     "devDependencies": {
         "typescript": "^6.0.3",
