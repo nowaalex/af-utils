@@ -12,7 +12,7 @@
         "@af-utils/virtual-core": "2.0.1",
         "@af-utils/virtual-preact": "1.0.1",
         "preact": "^10.29.8",
-        "@tanstack/preact-table": "^9.2.3"
+        "@tanstack/preact-table": "^9.2.4"
     },
     "devDependencies": {
         "typescript": "^6.0.3",
