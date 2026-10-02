@@ -95,7 +95,7 @@
     "devDependencies": {
         "@stryker-mutator/core": "^10.0.0",
         "@stryker-mutator/vitest-runner": "^10.0.0",
-        "@types/node": "^26.4.1",
+        "@types/node": "^26.6.3",
         "@typescript/native": "npm:typescript@^7.0.2",
         "vitest": "^4.1.11"
     },
@@ -104,11 +104,11 @@
     },
     "sideEffects": false,
     "dependencies": {
-        "koffi": "^3.2.0",
+        "koffi": "^3.3.2",
         "oxc-parser": "^0.148.0",
         "oxc-resolver": "^11.24.2",
         "picocolors": "^1.1.1",
-        "tsx": "^4.23.13",
-        "zod": "^4.5.4"
+        "tsx": "^4.23.15",
+        "zod": "^4.6.5"
     }
 }
