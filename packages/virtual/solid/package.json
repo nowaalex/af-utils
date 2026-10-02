@@ -51,10 +51,10 @@
         "windowing"
     ],
     "devDependencies": {
-        "@types/node": "^26.4.1",
+        "@types/node": "^26.6.3",
         "@typescript/native": "npm:typescript@^7.0.2",
-        "jsdom": "^30.0.1",
-        "vite": "^8.2.2",
+        "jsdom": "^30.1.1",
+        "vite": "^8.3.2",
         "vite-plugin-solid": "^2.11.14",
         "vitest": "^4.1.11"
     },

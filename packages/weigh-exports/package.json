@@ -50,14 +50,14 @@
         "minify"
     ],
     "devDependencies": {
-        "@types/node": "^26.4.1",
+        "@types/node": "^26.6.3",
         "@typescript/native": "npm:typescript@^7.0.2",
         "esbuild": "^0.28.2",
         "vitest": "^4.1.11"
     },
     "dependencies": {
-        "@swc/core": "^1.16.1",
-        "chalk": "^6.0.0",
+        "@swc/core": "1.16.1",
+        "chalk": "^6.0.1",
         "tinyglobby": "^0.2.17"
     }
 }

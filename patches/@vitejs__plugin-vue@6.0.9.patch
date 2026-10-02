@@ -1,8 +1,8 @@
 diff --git a/dist/index.mjs b/dist/index.mjs
-index e7ee6225b8a3817445d4b45bffe28c04d957ffc8..8a7e6ada03acf14ad5fbfe6ce5dee0c1f6a18de0 100644
+index 7d6dfe3f6de9f2dd5fd2bc7ac9d6bb2d6da9d9e4..8a7e6ada03acf14ad5fbfe6ce5dee0c1f6a18de0 100644
 --- a/dist/index.mjs
 +++ b/dist/index.mjs
-@@ -1428,6 +1428,11 @@ async function transformMain(code, filename, options, pluginContext, ssr, custom
+@@ -1435,6 +1435,11 @@ async function transformMain(code, filename, options, pluginContext, ssr, custom
  		if (transformWithOxc) {
  			const { code, map } = await transformWithOxc(resolvedCode, filename, {
  				...options.devServer?.config.oxc,
