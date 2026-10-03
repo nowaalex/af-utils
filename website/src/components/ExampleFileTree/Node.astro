@@ -34,63 +34,61 @@ const fileIconClass =
             : undefined;
 ---
 
-{
-    node.kind === "folder" ? (
-        <li>
-            <details open class="group/folder">
-                <summary
-                    class="flex cursor-pointer list-none items-center gap-1 py-0.5 pr-1 text-slate-700 transition-colors hover:bg-slate-200 [&::-webkit-details-marker]:hidden"
-                    title={node.path}
-                >
-                    <Icon
-                        aria-hidden="true"
-                        name="material-symbols:chevron-right"
-                        size={16}
-                        class="shrink-0 text-slate-500 transition-transform group-open/folder:rotate-90"
-                    />
-                    <span class="grid size-4 shrink-0 place-items-center">
-                        <Icon
-                            aria-hidden="true"
-                            name="material-symbols:folder"
-                            size={17}
-                            class="text-amber-500 group-open/folder:hidden"
-                        />
-                        <Icon
-                            aria-hidden="true"
-                            name="material-symbols:folder-open"
-                            size={17}
-                            class="hidden text-amber-500 group-open/folder:block"
-                        />
-                    </span>
-                    <span class="truncate">{node.name}</span>
-                </summary>
-                <ul class="m-0 list-none pl-3.5">
-                    {node.children.map((child) => (
-                        <Astro.self node={child} selectedUrl={selectedUrl} />
-                    ))}
-                </ul>
-            </details>
-        </li>
-    ) : (
-        <li>
-            <a
-                href={node.url}
-                data-astro-reload
-                aria-current={node.url === selectedUrl ? "true" : undefined}
-                data-file-tree-item
-                class="flex w-full cursor-pointer items-center gap-1.5 py-0.5 pl-5 pr-1 text-left text-slate-700 no-underline transition-colors hover:bg-slate-200 aria-current:bg-slate-700 aria-current:text-white"
+{node.kind === "folder" ? (
+    <li>
+        <details open class="group/folder">
+            <summary
+                class="flex cursor-pointer list-none items-center gap-1 py-0.5 pr-1 text-slate-700 transition-colors hover:bg-slate-200 [&::-webkit-details-marker]:hidden"
                 title={node.path}
             >
-                {fileIcon && (
+                <Icon
+                    aria-hidden="true"
+                    name="material-symbols:chevron-right"
+                    size={16}
+                    class="shrink-0 text-slate-500 transition-transform group-open/folder:rotate-90"
+                />
+                <span class="grid size-4 shrink-0 place-items-center">
                     <Icon
                         aria-hidden="true"
-                        name={fileIcon}
-                        size={15}
-                        class:list={["shrink-0", fileIconClass]}
+                        name="material-symbols:folder"
+                        size={17}
+                        class="text-amber-500 group-open/folder:hidden"
                     />
-                )}
+                    <Icon
+                        aria-hidden="true"
+                        name="material-symbols:folder-open"
+                        size={17}
+                        class="hidden text-amber-500 group-open/folder:block"
+                    />
+                </span>
                 <span class="truncate">{node.name}</span>
-            </a>
-        </li>
-    )
-}
+            </summary>
+            <ul class="m-0 list-none pl-3.5">
+                {node.children.map((child) => (
+                    <Astro.self node={child} selectedUrl={selectedUrl} />
+                ))}
+            </ul>
+        </details>
+    </li>
+) : (
+    <li>
+        <a
+            href={node.url}
+            data-astro-reload
+            aria-current={node.url === selectedUrl ? "true" : undefined}
+            data-file-tree-item
+            class="flex w-full cursor-pointer items-center gap-1.5 py-0.5 pl-5 pr-1 text-left text-slate-700 no-underline transition-colors hover:bg-slate-200 aria-current:bg-slate-700 aria-current:text-white"
+            title={node.path}
+        >
+            {fileIcon && (
+                <Icon
+                    aria-hidden="true"
+                    name={fileIcon}
+                    size={15}
+                    class:list={["shrink-0", fileIconClass]}
+                />
+            )}
+            <span class="truncate">{node.name}</span>
+        </a>
+    </li>
+)}

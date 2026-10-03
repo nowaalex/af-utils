@@ -28,7 +28,7 @@
         "@af-utils/virtual-solid": "workspace:*",
         "@af-utils/virtual-svelte": "workspace:*",
         "@af-utils/virtual-vue": "workspace:*",
-        "@playwright/test": "1.62.1",
+        "@playwright/test": "1.63.0",
         "@typescript/native": "npm:typescript@^7.0.2",
         "esbuild": "^0.28.2",
         "typescript": "npm:@typescript/typescript6@^6.0.2"

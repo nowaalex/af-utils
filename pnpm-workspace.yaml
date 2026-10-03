@@ -10,11 +10,11 @@ allowBuilds:
     koffi: true
     nx: true
     sharp: true
-minimumReleaseAgeExclude:
-    - svelte@5.56.9
 overrides:
-    "astro-icon>@iconify/tools": 5.0.12
-    "nx>brace-expansion": 5.0.9
+    "nx>brace-expansion": 5.0.12
+    "nx>axios": 1.20.0
+    "nx>smol-toml": 1.7.1
+    "typed-rest-client>qs": 6.16.0
     "@lhci/cli>tmp": 0.2.7
     "external-editor>tmp": 0.2.7
 patchedDependencies:

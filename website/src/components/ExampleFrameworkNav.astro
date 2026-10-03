@@ -15,36 +15,32 @@ const implementations = getEquivalentExamples(path);
     aria-label="Framework implementation"
     class="not-prose max-w-full border border-slate-300 bg-slate-100"
 >
-    <ul
-        class="framework-grid m-0 grid min-w-full grid-cols-3 list-none p-0 sm:flex"
-    >
-        {
-            implementations.map((example) => {
-                const current = example.route === path;
+    <ul class="framework-grid m-0 grid min-w-full grid-cols-3 list-none p-0 sm:flex">
+        {implementations.map((example) => {
+            const current = example.route === path;
 
-                return (
-                    <li class="m-0 flex min-w-0 p-0 sm:flex-1">
-                        <a
-                            href={getExamplePagePath(example.route)}
-                            aria-current={current ? "page" : undefined}
-                            data-astro-prefetch="hover"
-                            class:list={[
-                                "flex min-h-9 min-w-0 flex-1 items-center justify-center gap-2 px-2 text-sm font-medium no-underline transition-colors focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-blue-600 sm:px-3",
-                                current
-                                    ? "bg-white text-slate-950 shadow-[inset_0_-2px_0_#2563eb]"
-                                    : "text-slate-600 hover:bg-slate-200 hover:text-slate-950"
-                            ]}
-                        >
-                            <FrameworkIcon
-                                framework={example.framework}
-                                size={18}
-                            />
-                            {startCase(example.framework)}
-                        </a>
-                    </li>
-                );
-            })
-        }
+            return (
+                <li class="m-0 flex min-w-0 p-0 sm:flex-1">
+                    <a
+                        href={getExamplePagePath(example.route)}
+                        aria-current={current ? "page" : undefined}
+                        data-astro-prefetch="hover"
+                        class:list={[
+                            "flex min-h-9 min-w-0 flex-1 items-center justify-center gap-2 px-2 text-sm font-medium no-underline transition-colors focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-blue-600 sm:px-3",
+                            current
+                                ? "bg-white text-slate-950 shadow-[inset_0_-2px_0_#2563eb]"
+                                : "text-slate-600 hover:bg-slate-200 hover:text-slate-950"
+                        ]}
+                    >
+                        <FrameworkIcon
+                            framework={example.framework}
+                            size={18}
+                        />
+                        {startCase(example.framework)}
+                    </a>
+                </li>
+            );
+        })}
     </ul>
 </nav>
 

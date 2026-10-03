@@ -28,49 +28,43 @@ const kindLabel = kind.replace(/([a-z\d])([A-Z])/gu, "$1 $2");
         >
             Reference
         </a>
-        {
-            packageName && (
-                <>
-                    <span aria-hidden="true" class="text-slate-300">
-                        /
-                    </span>
-                    <a
-                        href={`/virtual/reference/${packageSlug}/index`}
-                        class="inline-flex items-center gap-1.5 font-medium text-slate-700 no-underline transition-colors hover:text-blue-700"
-                    >
-                        {framework ? (
-                            <Icon
-                                aria-hidden="true"
-                                name={framework.icon}
-                                size={16}
-                                class:list={["shrink-0", framework.iconClass]}
-                            />
-                        ) : (
-                            <Icon
-                                aria-hidden="true"
-                                name="material-symbols:data-object"
-                                size={16}
-                                class="shrink-0 text-violet-600"
-                            />
-                        )}
-                        {packageLabel}
-                    </a>
-                </>
-            )
-        }
+        {packageName && (
+            <>
+                <span aria-hidden="true" class="text-slate-300">
+                    /
+                </span>
+                <a
+                    href={`/virtual/reference/${packageSlug}/index`}
+                    class="inline-flex items-center gap-1.5 font-medium text-slate-700 no-underline transition-colors hover:text-blue-700"
+                >
+                    {framework ? (
+                        <Icon
+                            aria-hidden="true"
+                            name={framework.icon}
+                            size={16}
+                            class:list={["shrink-0", framework.iconClass]}
+                        />
+                    ) : (
+                        <Icon
+                            aria-hidden="true"
+                            name="material-symbols:data-object"
+                            size={16}
+                            class="shrink-0 text-violet-600"
+                        />
+                    )}
+                    {packageLabel}
+                </a>
+            </>
+        )}
     </nav>
     <div class="mt-4 flex flex-wrap items-center gap-2">
-        <span
-            class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-slate-600"
-        >
+        <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-slate-600">
             {kindLabel}
         </span>
-        {
-            packageName && (
-                <code class="text-xs font-normal text-slate-500">
-                    {packageName}
-                </code>
-            )
-        }
+        {packageName && (
+            <code class="text-xs font-normal text-slate-500">
+                {packageName}
+            </code>
+        )}
     </div>
 </header>

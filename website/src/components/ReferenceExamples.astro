@@ -9,41 +9,39 @@ interface Props {
 const { examples } = Astro.props;
 ---
 
-{
-    examples.length > 0 && (
-        <section aria-labelledby="related-examples" class="not-prose mt-12">
-            <h2
-                id="related-examples"
-                class="!m-0 !mb-4 !border-0 !p-0 text-2xl font-semibold text-slate-900"
-            >
-                Related examples
-            </h2>
-            <ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-2">
-                {examples.map((example) => (
-                    <li>
-                        <a
-                            href={example.path}
-                            class="block h-full rounded-lg border border-slate-200 bg-white p-4 no-underline shadow-sm transition hover:border-blue-300 hover:bg-blue-50/50"
-                        >
-                            <span class="mb-2 flex items-center justify-between gap-3">
-                                <strong class="font-semibold text-blue-800">
-                                    {example.title}
-                                </strong>
-                                <span class="flex items-center gap-1.5 bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
-                                    <FrameworkIcon
-                                        framework={example.framework}
-                                        size={15}
-                                    />
-                                    {example.framework}
-                                </span>
+{examples.length > 0 && (
+    <section aria-labelledby="related-examples" class="not-prose mt-12">
+        <h2
+            id="related-examples"
+            class="!m-0 !mb-4 !border-0 !p-0 text-2xl font-semibold text-slate-900"
+        >
+            Related examples
+        </h2>
+        <ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-2">
+            {examples.map((example) => (
+                <li>
+                    <a
+                        href={example.path}
+                        class="block h-full rounded-lg border border-slate-200 bg-white p-4 no-underline shadow-sm transition hover:border-blue-300 hover:bg-blue-50/50"
+                    >
+                        <span class="mb-2 flex items-center justify-between gap-3">
+                            <strong class="font-semibold text-blue-800">
+                                {example.title}
+                            </strong>
+                            <span class="flex items-center gap-1.5 bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
+                                <FrameworkIcon
+                                    framework={example.framework}
+                                    size={15}
+                                />
+                                {example.framework}
                             </span>
-                            <span class="block text-sm leading-6 text-slate-600">
-                                {example.description}
-                            </span>
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        </section>
-    )
-}
+                        </span>
+                        <span class="block text-sm leading-6 text-slate-600">
+                            {example.description}
+                        </span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </section>
+)}

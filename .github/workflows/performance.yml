@@ -37,7 +37,7 @@ jobs:
             id-token: write
         steps:
             - name: Checkout repository
-              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
             - name: Install pnpm
               uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
@@ -55,7 +55,7 @@ jobs:
               run: pnpm nx run @af-utils/virtual-core:build
 
             - name: Run stable benchmarks
-              uses: CodSpeedHQ/action@373d6868929f444bc08d901fd0eb0ad52a8875ea # v5.2.1
+              uses: CodSpeedHQ/action@c4fd08a3a159bd0cc208da1e0edf32b8c47d75e5 # v5.4.0
               with:
                   mode: simulation
                   run: pnpm nx run-many -t bench
@@ -67,7 +67,7 @@ jobs:
         timeout-minutes: 60
         steps:
             - name: Checkout repository
-              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
             - name: Install pnpm
               uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6

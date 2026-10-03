@@ -13,12 +13,8 @@ const { files, selectedUrl } = Astro.props;
 const tree = buildExampleFileTree(files);
 ---
 
-<example-file-tree
-    class="example-file-tree flex w-40 flex-none flex-col overflow-hidden border-r border-slate-300 bg-slate-100/80 text-xs sm:w-48"
->
-    <div
-        class="flex h-9 flex-none items-center border-b border-slate-300 bg-slate-100"
-    >
+<example-file-tree class="example-file-tree flex w-40 flex-none flex-col overflow-hidden border-r border-slate-300 bg-slate-100/80 text-xs sm:w-48">
+    <div class="flex h-9 flex-none items-center border-b border-slate-300 bg-slate-100">
         <span
             data-file-tree-title
             class="min-w-0 flex-auto truncate px-2 font-medium text-slate-700"
@@ -54,7 +50,9 @@ const tree = buildExampleFileTree(files);
         aria-label="Project files"
         class="m-0 min-h-0 flex-auto list-none overflow-auto py-1"
     >
-        {tree.map((node) => <Node node={node} selectedUrl={selectedUrl} />)}
+        {tree.map((node) => (
+            <Node node={node} selectedUrl={selectedUrl} />
+        ))}
     </ul>
 </example-file-tree>
 
