@@ -1,5 +1,11 @@
 # @af-utils/scrollend-polyfill
 
+## 0.0.17
+
+### Patch Changes
+
+- 64d7af4: Rebuild the scrollend polyfill with refreshed development dependencies without changing event behavior or its public API.
+
 ## 0.0.16
 
 ### Patch Changes
