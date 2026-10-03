@@ -16,31 +16,27 @@ const prev = idx > 0 ? items[idx - 1] : null;
 const next = idx < items.length - 1 ? items[idx + 1] : null;
 ---
 
-{
-    prev ? (
-        <a
-            href={prev.path}
-            aria-label={`Previous: ${prev.name}`}
-            class="flex items-center gap-1 px-2 py-1 text-ellipsis break-words text-left transition-colors hover:bg-slate-200"
-        >
-            <Icon name="material-symbols:arrow-back" class="text-blue-600" />
-            {prev.name}
-        </a>
-    ) : (
-        <div />
-    )
-}
-{
-    next ? (
-        <a
-            href={next.path}
-            aria-label={`Next: ${next.name}`}
-            class="flex items-center gap-1 px-2 py-1 text-ellipsis break-words text-right transition-colors hover:bg-slate-200"
-        >
-            {next.name}
-            <Icon name="material-symbols:arrow-forward" class="text-teal-600" />
-        </a>
-    ) : (
-        <div />
-    )
-}
+{prev ? (
+    <a
+        href={prev.path}
+        aria-label={`Previous: ${prev.name}`}
+        class="flex items-center gap-1 px-2 py-1 text-ellipsis break-words text-left transition-colors hover:bg-slate-200"
+    >
+        <Icon name="material-symbols:arrow-back" class="text-blue-600" />
+        {prev.name}
+    </a>
+) : (
+    <div />
+)}
+{next ? (
+    <a
+        href={next.path}
+        aria-label={`Next: ${next.name}`}
+        class="flex items-center gap-1 px-2 py-1 text-ellipsis break-words text-right transition-colors hover:bg-slate-200"
+    >
+        {next.name}
+        <Icon name="material-symbols:arrow-forward" class="text-teal-600" />
+    </a>
+) : (
+    <div />
+)}

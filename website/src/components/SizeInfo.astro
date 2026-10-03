@@ -14,46 +14,44 @@ const { items } = Astro.props;
 const singleItemSizes = items[0]?.[0];
 ---
 
-{
-    items.length === 0 ? null : items.length === 1 ? (
-        <table>
-            <thead>
+{items.length === 0 ? null : items.length === 1 ? (
+    <table>
+        <thead>
+            <tr>
+                <th>Compression</th>
+                <th>Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            {sizeColumns.map((s) => (
                 <tr>
-                    <th>Compression</th>
-                    <th>Size</th>
+                    <td>{s}</td>
+                    <td>
+                        {singleItemSizes && prettyBytes(singleItemSizes[s])}
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {sizeColumns.map((s) => (
-                    <tr>
-                        <td>{s}</td>
-                        <td>
-                            {singleItemSizes && prettyBytes(singleItemSizes[s])}
-                        </td>
-                    </tr>
+            ))}
+        </tbody>
+    </table>
+) : (
+    <table>
+        <thead>
+            <tr>
+                <th>Package</th>
+                {sizeColumns.map((col) => (
+                    <th>{col}</th>
                 ))}
-            </tbody>
-        </table>
-    ) : (
-        <table>
-            <thead>
+            </tr>
+        </thead>
+        <tbody>
+            {items.map(([sizes, name]) => (
                 <tr>
-                    <th>Package</th>
+                    <td>{name}</td>
                     {sizeColumns.map((col) => (
-                        <th>{col}</th>
+                        <td>{prettyBytes(sizes[col])}</td>
                     ))}
                 </tr>
-            </thead>
-            <tbody>
-                {items.map(([sizes, name]) => (
-                    <tr>
-                        <td>{name}</td>
-                        {sizeColumns.map((col) => (
-                            <td>{prettyBytes(sizes[col])}</td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    )
-}
+            ))}
+        </tbody>
+    </table>
+)}

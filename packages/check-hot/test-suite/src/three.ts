@@ -8,7 +8,7 @@ import type { HotRecipeResolver } from "./shared.js";
 import { createRecipeTestRunner, testRunnerVersion } from "./shared.js";
 
 /** Three.js peer range exercised by this adapter. */
-export const threePackageRange = ">=0.180 <0.186";
+export const threePackageRange = ">=0.180 <0.187";
 
 type NumericOperation = (...values: number[]) => number;
 

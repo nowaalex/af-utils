@@ -34,9 +34,7 @@ const referenceHeadings = [
 >
     <ReferenceHeader kind={entry.data.kind} packageName={entry.data.package} />
     <ReferenceTableOfContents headings={referenceHeadings} variant="mobile" />
-    <div
-        class="xl:grid xl:grid-cols-[minmax(0,1fr)_12rem] xl:gap-8 2xl:grid-cols-[minmax(0,56rem)_14rem] 2xl:gap-10"
-    >
+    <div class="xl:grid xl:grid-cols-[minmax(0,1fr)_12rem] xl:gap-8 2xl:grid-cols-[minmax(0,56rem)_14rem] 2xl:gap-10">
         <article class="reference-doc prose min-w-0 max-w-none">
             <Content />
             <ReferenceExamples examples={relatedExamples} />

@@ -32,9 +32,7 @@ interface Props {
         className
     ]}
 >
-    <div
-        class="flex-none sticky top-0 flex items-center h-[62px] gap-4 border-slate-200 border-b bg-menu px-4 z-[20] drop-shadow-sm lg:drop-shadow-none"
-    >
+    <div class="flex-none sticky top-0 flex items-center h-[62px] gap-4 border-slate-200 border-b bg-menu px-4 z-[20] drop-shadow-sm lg:drop-shadow-none">
         <button
             type="button"
             class="ds-menu-opener items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
@@ -47,7 +45,8 @@ interface Props {
                 name="material-symbols:menu"
                 class="text-blue-700"
                 aria-hidden="true"
-            />Menu
+            />
+            Menu
         </button>
         <button
             type="button"
@@ -61,11 +60,10 @@ interface Props {
                 name="material-symbols:close"
                 class="text-slate-600"
                 aria-hidden="true"
-            />Close
+            />
+            Close
         </button>
-        <Breadcrumb>
-            {productName}
-        </Breadcrumb>
+        <Breadcrumb>{productName}</Breadcrumb>
     </div>
     <Search />
     <nav
@@ -73,7 +71,9 @@ interface Props {
         aria-label="Main navigation"
         class="ds-menu-items z-10 flex-auto bg-menu p-4 text-sm"
     >
-        {items.map((node) => <MenuSubtree node={node} depth={0} />)}
+        {items.map((node) => (
+            <MenuSubtree node={node} depth={0} />
+        ))}
 
         <h2 class="mb-2 mt-5 text-base font-semibold">Links</h2>
 
@@ -85,7 +85,8 @@ interface Props {
                     rel="noopener noreferrer"
                     class="flex items-center gap-2 px-2 py-1 font-normal no-underline transition-colors hover:bg-slate-200 hover:text-slate-950"
                 >
-                    <Icon name="logos:github-icon" size={20} />Github
+                    <Icon name="logos:github-icon" size={20} />
+                    Github
                 </a>
             </li>
             <li>
@@ -95,7 +96,8 @@ interface Props {
                     rel="noopener noreferrer"
                     class="flex items-center gap-2 px-2 py-1 font-normal no-underline transition-colors hover:bg-indigo-100 hover:text-indigo-900"
                 >
-                    <Icon name="logos:discord-icon" size={20} />Discord
+                    <Icon name="logos:discord-icon" size={20} />
+                    Discord
                 </a>
             </li>
         </ul>

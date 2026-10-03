@@ -51,27 +51,21 @@ const externalViews = [
 ] as const;
 ---
 
-<example-tabs
-    class="example-tabs not-prose mt-1 flex min-h-[35rem] flex-auto flex-col overflow-hidden border border-slate-300 bg-white shadow-sm"
->
-    <div
-        class="flex flex-none items-center border-b border-slate-300 bg-slate-100"
-    >
+<example-tabs class="example-tabs not-prose mt-1 flex min-h-[35rem] flex-auto flex-col overflow-hidden border border-slate-300 bg-white shadow-sm">
+    <div class="flex flex-none items-center border-b border-slate-300 bg-slate-100">
         <div
             role="tablist"
             aria-label="Example view"
             class="flex min-w-0 flex-auto overflow-x-auto"
         >
-            {
-                views.map((view, index) => (
-                    <TabButton
-                        label={view.label}
-                        name={view.name}
-                        selected={index === 0}
-                        tabId={tabId}
-                    />
-                ))
-            }
+            {views.map((view, index) => (
+                <TabButton
+                    label={view.label}
+                    name={view.name}
+                    selected={index === 0}
+                    tabId={tabId}
+                />
+            ))}
         </div>
         <button
             type="button"
@@ -102,10 +96,9 @@ const externalViews = [
             class="h-[35vh] w-full border border-slate-300 bg-white xl:h-auto"
             src={`/examples/${path}`}
             sandbox="allow-forms allow-scripts allow-same-origin"
-            loading="lazy"></iframe>
-        <div
-            class="flex min-h-[35vh] overflow-hidden border border-slate-300 bg-white xl:min-h-0"
-        >
+            loading="lazy"
+        ></iframe>
+        <div class="flex min-h-[35vh] overflow-hidden border border-slate-300 bg-white xl:min-h-0">
             <ExampleFileTree files={files} selectedUrl={files[0]?.url ?? ""} />
             <div
                 role="region"
@@ -121,27 +114,25 @@ const externalViews = [
         </div>
     </section>
 
-    {
-        externalViews.map((view) => (
-            <section
-                hidden
-                role="tabpanel"
-                id={`${tabId}-${view.name}-panel`}
-                aria-labelledby={`${tabId}-${view.name}-tab`}
-                data-example-panel={view.name}
-                class="flex-auto bg-slate-100/70 p-3"
-            >
-                <iframe
-                    title={`${title} in ${view.label}`}
-                    class="h-[70vh] w-full border border-slate-300 bg-white xl:h-full"
-                    data-src={view.url}
-                    loading="lazy"
-                    allow="clipboard-read; clipboard-write; cross-origin-isolated"
-                    sandbox="allow-downloads allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts"
-                />
-            </section>
-        ))
-    }
+    {externalViews.map((view) => (
+        <section
+            hidden
+            role="tabpanel"
+            id={`${tabId}-${view.name}-panel`}
+            aria-labelledby={`${tabId}-${view.name}-tab`}
+            data-example-panel={view.name}
+            class="flex-auto bg-slate-100/70 p-3"
+        >
+            <iframe
+                title={`${title} in ${view.label}`}
+                class="h-[70vh] w-full border border-slate-300 bg-white xl:h-full"
+                data-src={view.url}
+                loading="lazy"
+                allow="clipboard-read; clipboard-write; cross-origin-isolated"
+                sandbox="allow-downloads allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts"
+            />
+        </section>
+    ))}
 </example-tabs>
 
 <script>

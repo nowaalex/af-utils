@@ -30,19 +30,17 @@ const gitPiece = `${import.meta.env.PUBLIC_GITHUB_SUFFIX}/tree/${import.meta.env
     <div class="flex flex-wrap items-center justify-between gap-x-10 gap-y-3">
         <h1 class="m-0">{title}</h1>
         <div class="flex flex-wrap items-center gap-2 font-medium">
-            {
-                Links.map((link) => (
-                    <a
-                        href={`${link.url}${gitPiece}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        class="flex items-center gap-1.5 px-2 py-1 no-underline transition-colors hover:bg-slate-100 hover:text-blue-800"
-                    >
-                        {link.icon && <Icon name={link.icon} size={20} />}
-                        {link.name}
-                    </a>
-                ))
-            }
+            {Links.map((link) => (
+                <a
+                    href={`${link.url}${gitPiece}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="flex items-center gap-1.5 px-2 py-1 no-underline transition-colors hover:bg-slate-100 hover:text-blue-800"
+                >
+                    {link.icon && <Icon name={link.icon} size={20} />}
+                    {link.name}
+                </a>
+            ))}
         </div>
     </div>
     <ExampleFrameworkNav path={path} />

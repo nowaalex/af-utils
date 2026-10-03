@@ -69,6 +69,22 @@ metadata and documentation must contain literal URLs, so the site-origin sync
 target updates those derived copies. Change only the config value, then run the
 sync target; the style gate rejects stale af-utils origins.
 
+## Dependency maintenance
+
+The root `package.json` pins pnpm; `.nvmrc` selects the Node.js version used
+by CI. Regenerate standalone example manifests with
+`pnpm nx run @af-utils/examples:versions` after changing their dependencies.
+
+Keep Vitest on the supported major declared by `@codspeed/vitest-plugin` and
+Preact on the major supported by `@astrojs/preact` and the published adapter.
+The native TypeScript compiler is installed as `@typescript/native`; tools
+that consume the TypeScript JavaScript API still need TypeScript 6. Remove
+these constraints when the dependent integrations support the newer majors.
+
+`pnpm-workspace.yaml` owns the scoped security overrides and Vue transform
+patch. Recheck them against upstream releases during updates, remove obsolete
+entries, and use `pnpm peers check` and `pnpm audit` to inspect the result.
+
 ## Releases
 
 GitHub accepts updates to `main` only through a pull request whose

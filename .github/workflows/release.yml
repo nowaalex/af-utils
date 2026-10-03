@@ -23,7 +23,7 @@ jobs:
             id-token: write
         steps:
             - name: Checkout repository
-              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
             - name: Install pnpm
               uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
@@ -39,7 +39,7 @@ jobs:
               run: pnpm install --frozen-lockfile
 
             - name: Create release pull request or publish
-              uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2
+              uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   version-script: pnpm changeset:version
