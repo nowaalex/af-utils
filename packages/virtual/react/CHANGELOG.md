@@ -1,5 +1,13 @@
 # @af-utils/react-virtual-list
 
+## 2.0.2
+
+### Patch Changes
+
+- 64d7af4: Rebuild the virtual scrolling packages with refreshed development dependencies while preserving their runtime APIs and supported framework versions.
+- Updated dependencies [64d7af4]
+    - @af-utils/virtual-core@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
